@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using NegativeLayer.Extensions;
 
 namespace LightBulb.Views
 {
@@ -31,7 +30,7 @@ namespace LightBulb.Views
 
         private void NavigateGeneralSettingsButton_OnClick(object sender, RoutedEventArgs e)
         {
-            ContentFrame.Source = "/LightBulb;component/Views/GeneralSettingsPage.xaml".ToUri();
+            ContentFrame.Navigate(new GeneralSettingsPage());
         }
 
         private void NavigateGeolocationSettingsButton_OnClick(object sender, RoutedEventArgs e)
