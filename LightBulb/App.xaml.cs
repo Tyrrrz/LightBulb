@@ -10,8 +10,14 @@ namespace LightBulb
             DispatcherHelper.Initialize();
         }
 
+        private void App_OnStartup(object sender, StartupEventArgs e)
+        {
+            Settings.Default.TryLoad();
+        }
+
         private void App_OnExit(object sender, ExitEventArgs exitEventArgs)
         {
+            Settings.Default.TrySave();
             Locator.Cleanup();
         }
     }
