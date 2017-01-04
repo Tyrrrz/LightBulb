@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using NegativeLayer.Extensions;
 
 namespace LightBulb.Views
 {
@@ -26,6 +27,21 @@ namespace LightBulb.Views
         {
             if (e.ChangedButton == MouseButton.Left)
                 DragMove();
+        }
+
+        private void NavigateGeneralSettingsButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ContentFrame.Source = "/LightBulb;component/Views/GeneralSettingsPage.xaml".ToUri();
+        }
+
+        private void NavigateGeolocationSettingsButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void NavigateAppRulesButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

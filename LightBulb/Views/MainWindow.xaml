@@ -10,7 +10,6 @@
         Background="Transparent"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Deactivated="MainWindow_OnDeactivated"
-        FocusManager.FocusedElement="{Binding ElementName=VideoIDTextBox}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Loaded="MainWindow_OnLoaded"
         ShowInTaskbar="False"
@@ -34,13 +33,21 @@
             <Border x:Name="HeaderBorder"
                     Height="50"
                     Margin="0,0,0,5"
+                    Padding="5,0,0,0"
                     Background="{DynamicResource PrimaryHueDarkBrush}"
                     CornerRadius="12,12,0,0"
                     MouseDown="HeaderBorder_OnMouseDown"
                     TextElement.Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
-                <WrapPanel Margin="0,5,0,0" VerticalAlignment="Center">
+                <Grid Margin="0,5,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
                     <!--  On/Off button and logo  -->
-                    <ToggleButton Margin="5,0,0,0"
+                    <ToggleButton Grid.Column="0"
+                                  VerticalAlignment="Center"
                                   IsChecked="{Binding IsEnabled}"
                                   ToolTip="Enable or disable the gamma control">
                         <ToggleButton.Style>
@@ -83,56 +90,53 @@
                     </ToggleButton>
 
                     <!--  Application Name  -->
-                    <TextBlock Margin="5,0,0,0"
+                    <TextBlock Grid.Column="1"
+                               Margin="5,0,0,0"
                                VerticalAlignment="Center"
                                FontSize="16"
                                FontWeight="Bold"
                                Text="LightBulb" />
-                </WrapPanel>
+
+                    <!--  Section navigation buttons  -->
+                    <WrapPanel Grid.Column="2"
+                               Margin="5,0,5,0"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Orientation="Horizontal">
+                        <Button x:Name="NavigateGeneralSettingsButton"
+                                Padding="4"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Click="NavigateGeneralSettingsButton_OnClick"
+                                ToolTip="General">
+                            <materialDesign:PackIcon Kind="Settings" />
+                        </Button>
+                        <Button x:Name="NavigateGeolocationSettingsButton"
+                                Padding="4"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Click="NavigateGeolocationSettingsButton_OnClick"
+                                ToolTip="Geolocation">
+                            <materialDesign:PackIcon Kind="Earth" />
+                        </Button>
+                        <Button x:Name="NavigateAppRulesButton"
+                                Padding="4"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Click="NavigateAppRulesButton_OnClick"
+                                ToolTip="Rules">
+                            <materialDesign:PackIcon Kind="ViewDashboard" />
+                        </Button>
+                    </WrapPanel>
+                </Grid>
             </Border>
 
             <!--  Content  -->
-            <StackPanel Background="{DynamicResource MaterialDesignPaper}" Orientation="Vertical">
-                <!--  Day-time temperature  -->
-                <TextBlock Margin="5">
-                    <Run Text="Day-time color temperature:" />
-                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Value, ElementName=MaxTempSlider, Mode=OneWay}" /><Run Text="K" />
-                </TextBlock>
-                <Slider x:Name="MaxTempSlider"
-                        Margin="5,0,5,5"
-                        IsSnapToTickEnabled="True"
-                        LargeChange="1000"
-                        Maximum="6500"
-                        Minimum="{Binding Value, ElementName=MinTempSlider}"
-                        SmallChange="100"
-                        TickFrequency="100"
-                        TickPlacement="BottomRight"
-                        Value="{Binding Settings.MaxTemperature}" />
-
-                <!--  Night-time temperature  -->
-                <TextBlock Margin="5">
-                    <Run Text="Night-time color temperature:" />
-                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Value, ElementName=MinTempSlider, Mode=OneWay}" /><Run Text="K" />
-                </TextBlock>
-                <Slider x:Name="MinTempSlider"
-                        Margin="5,0,5,5"
-                        IsSnapToTickEnabled="True"
-                        LargeChange="1000"
-                        Maximum="{Binding Value, ElementName=MaxTempSlider}"
-                        Minimum="2500"
-                        SmallChange="100"
-                        TickFrequency="100"
-                        TickPlacement="BottomRight"
-                        Value="{Binding Settings.MinTemperature}" />
-
-                <!--  Polling enabled/disabled  -->
-                <WrapPanel Orientation="Horizontal">
-                    <TextBlock Margin="5"
-                               Text="Enable gamma polling:"
-                               ToolTip="Continuous polling makes sure the gamma settings are not overriden by Windows or other applications by refreshing it in small intervals. May have a slight impact on performance when this is enabled." />
-                    <ToggleButton VerticalAlignment="Center" IsChecked="{Binding Settings.IsPollingEnabled}" />
-                </WrapPanel>
-            </StackPanel>
+            <Frame x:Name="ContentFrame"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Stretch"
+                   NavigationUIVisibility="Hidden"
+                   Source="/LightBulb;component/Views/GeneralSettingsPage.xaml" />
         </StackPanel>
     </Border>
 </Window>
