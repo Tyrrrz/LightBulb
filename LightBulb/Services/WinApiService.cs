@@ -22,7 +22,6 @@ namespace LightBulb.Services
         public WinApiService()
         {
             _originalRamp = GetDisplayGammaRamp();
-            ThrowIfWin32Error();
         }
 
         private Win32Exception GetLastError()
@@ -41,16 +40,16 @@ namespace LightBulb.Services
         private void SetDisplayGammaRamp(Ramp ramp)
         {
             var dc = GetDC(IntPtr.Zero);
-            SetDeviceGammaRamp(dc, ref ramp);
-            ThrowIfWin32Error();
+            if (!SetDeviceGammaRamp(dc, ref ramp))
+                ThrowIfWin32Error();
         }
 
         private Ramp GetDisplayGammaRamp()
         {
             var dc = GetDC(IntPtr.Zero);
             var ramp = new Ramp();
-            GetDeviceGammaRamp(dc, ref ramp);
-            ThrowIfWin32Error();
+            if (!GetDeviceGammaRamp(dc, ref ramp))
+                ThrowIfWin32Error();
             return ramp;
         }
 
@@ -61,9 +60,7 @@ namespace LightBulb.Services
 
         public void RestoreDefault()
         {
-            var ramp = new Ramp();
-            ramp.Init();
-            SetDisplayGammaRamp(ramp);
+            SetColorIntensity(1);
         }
 
         public void SetColorIntensity(double red, double green, double blue)
@@ -86,7 +83,7 @@ namespace LightBulb.Services
             SetColorIntensity(uniform, uniform, uniform);
         }
 
-        public void SetTemperature(ushort temp)
+        public void SetTemperature(ushort temp, double intensity = 1)
         {
             // http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
 
@@ -118,6 +115,10 @@ namespace LightBulb.Services
                 else
                     bluei = (Math.Log(tempf - 10)*138.5177312231 - 305.0447927307).Clamp(0, 255)/255d;
             }
+
+            redi *= intensity;
+            greeni *= intensity;
+            bluei *= intensity;
 
             SetColorIntensity(redi, greeni, bluei);
         }
