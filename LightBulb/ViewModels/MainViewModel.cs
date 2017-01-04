@@ -1,5 +1,4 @@
-﻿using System;
-using System.Timers;
+﻿using System.Timers;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using LightBulb.Services;
@@ -48,11 +47,11 @@ namespace LightBulb.ViewModels
         {
         }
 
-        private void DisableFor(double hours)
+        private void DisableFor(double ms)
         {
             _disableTimer.Stop();
             IsEnabled = false;
-            _disableTimer.Interval = TimeSpan.FromHours(hours).TotalMilliseconds;
+            _disableTimer.Interval = ms;
             _disableTimer.Start();
         }
     }

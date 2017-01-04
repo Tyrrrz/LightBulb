@@ -107,6 +107,11 @@
                 <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             </Style>
 
+            <Style BasedOn="{StaticResource MaterialDesignSwitchToggleButton}" TargetType="{x:Type ToggleButton}">
+                <Setter Property="HorizontalAlignment" Value="Left" />
+                <Setter Property="VerticalAlignment" Value="Top" />
+            </Style>
+
             <local:Locator x:Key="Locator" />
         </ResourceDictionary>
     </Application.Resources>

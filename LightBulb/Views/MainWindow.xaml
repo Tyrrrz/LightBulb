@@ -33,14 +33,16 @@
             <!--  Header  -->
             <Border x:Name="HeaderBorder"
                     Height="50"
-                    MouseDown="HeaderBorder_OnMouseDown"
                     Margin="0,0,0,5"
                     Background="{DynamicResource PrimaryHueDarkBrush}"
                     CornerRadius="12,12,0,0"
+                    MouseDown="HeaderBorder_OnMouseDown"
                     TextElement.Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
                 <WrapPanel Margin="0,5,0,0" VerticalAlignment="Center">
                     <!--  On/Off button and logo  -->
-                    <ToggleButton Margin="5,0,0,0" IsChecked="{Binding IsEnabled}">
+                    <ToggleButton Margin="5,0,0,0"
+                                  IsChecked="{Binding IsEnabled}"
+                                  ToolTip="Enable or disable the gamma control">
                         <ToggleButton.Style>
                             <Style BasedOn="{StaticResource MaterialDesignActionAccentToggleButton}" TargetType="ToggleButton">
                                 <Setter Property="materialDesign:ToggleButtonAssist.OnContent">
@@ -53,28 +55,28 @@
                         <ToggleButton.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Command="{Binding DisableForCommand}"
-                                          CommandParameter="0.01666666"
+                                          CommandParameter="60000"
                                           Header="Disable for 1 min" />
                                 <MenuItem Command="{Binding DisableForCommand}"
-                                          CommandParameter="0.08333333"
+                                          CommandParameter="300000"
                                           Header="Disable for 5 mins" />
                                 <MenuItem Command="{Binding DisableForCommand}"
-                                          CommandParameter="0.5"
+                                          CommandParameter="1800000"
                                           Header="Disable for 30 mins" />
                                 <MenuItem Command="{Binding DisableForCommand}"
-                                          CommandParameter="1"
+                                          CommandParameter="3600000"
                                           Header="Disable for 1 hr" />
                                 <MenuItem Command="{Binding DisableForCommand}"
-                                          CommandParameter="3"
+                                          CommandParameter="5400000"
                                           Header="Disable for 3 hrs" />
                                 <MenuItem Command="{Binding DisableForCommand}"
-                                          CommandParameter="6"
+                                          CommandParameter="10800000"
                                           Header="Disable for 6 hrs" />
                                 <MenuItem Command="{Binding DisableForCommand}"
-                                          CommandParameter="12"
+                                          CommandParameter="21600000"
                                           Header="Disable for 12 hrs" />
                                 <MenuItem Command="{Binding DisableForCommand}"
-                                          CommandParameter="24"
+                                          CommandParameter="43200000"
                                           Header="Disable for 24 hrs" />
                             </ContextMenu>
                         </ToggleButton.ContextMenu>
@@ -92,12 +94,12 @@
             <!--  Content  -->
             <StackPanel Background="{DynamicResource MaterialDesignPaper}" Orientation="Vertical">
                 <!--  Day-time temperature  -->
-                <TextBlock Margin="5,5,5,5">
+                <TextBlock Margin="5">
                     <Run Text="Day-time color temperature:" />
                     <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Value, ElementName=MaxTempSlider, Mode=OneWay}" /><Run Text="K" />
                 </TextBlock>
                 <Slider x:Name="MaxTempSlider"
-                        Margin="5,0,5,10"
+                        Margin="5,0,5,5"
                         IsSnapToTickEnabled="True"
                         LargeChange="1000"
                         Maximum="6500"
@@ -108,12 +110,12 @@
                         Value="{Binding Settings.MaxTemperature}" />
 
                 <!--  Night-time temperature  -->
-                <TextBlock Margin="5,5,5,5">
+                <TextBlock Margin="5">
                     <Run Text="Night-time color temperature:" />
                     <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Value, ElementName=MinTempSlider, Mode=OneWay}" /><Run Text="K" />
                 </TextBlock>
                 <Slider x:Name="MinTempSlider"
-                        Margin="5,0,5,10"
+                        Margin="5,0,5,5"
                         IsSnapToTickEnabled="True"
                         LargeChange="1000"
                         Maximum="{Binding Value, ElementName=MaxTempSlider}"
@@ -122,6 +124,14 @@
                         TickFrequency="100"
                         TickPlacement="BottomRight"
                         Value="{Binding Settings.MinTemperature}" />
+
+                <!--  Polling enabled/disabled  -->
+                <WrapPanel Orientation="Horizontal">
+                    <TextBlock Margin="5"
+                               Text="Enable gamma polling:"
+                               ToolTip="Continuous polling makes sure the gamma settings are not overriden by Windows or other applications by refreshing it in small intervals. May have a slight impact on performance when this is enabled." />
+                    <ToggleButton VerticalAlignment="Center" IsChecked="{Binding Settings.IsPollingEnabled}" />
+                </WrapPanel>
             </StackPanel>
         </StackPanel>
     </Border>
