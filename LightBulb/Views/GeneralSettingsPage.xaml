@@ -54,7 +54,7 @@
         <WrapPanel Orientation="Horizontal">
             <TextBlock Margin="5"
                        Text="Enable gamma polling:"
-                       ToolTip="Continuous polling makes sure the gamma settings are not overriden by Windows or other applications by refreshing it in small intervals. May have a slight impact on performance when this is enabled." />
+                       ToolTip="Refreshing the gamma settings makes sure they are not overriden by Windows or other applications. May have a slight impact on performance when this is enabled." />
             <ToggleButton VerticalAlignment="Center" IsChecked="{Binding Settings.IsPollingEnabled}" />
         </WrapPanel>
     </StackPanel>

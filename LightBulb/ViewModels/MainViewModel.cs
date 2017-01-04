@@ -27,7 +27,7 @@ namespace LightBulb.ViewModels
 
         public Settings Settings => Settings.Default;
 
-        public RelayCommand<double> DisableForCommand { get; }
+        public RelayCommand<double> DisableTemporarilyCommand { get; }
         public RelayCommand RestoreOriginalCommand { get; }
         public RelayCommand RestoreDefaultCommand { get; }
 
@@ -38,7 +38,7 @@ namespace LightBulb.ViewModels
             _disableTimer = new Timer();
             _disableTimer.Elapsed += (sender, args) => IsEnabled = true;
 
-            DisableForCommand = new RelayCommand<double>(DisableFor);
+            DisableTemporarilyCommand = new RelayCommand<double>(DisableTemporarily);
             RestoreOriginalCommand = new RelayCommand(() => _winApiService.RestoreOriginal());
             RestoreDefaultCommand = new RelayCommand(() => _winApiService.RestoreDefault());
         }
@@ -47,7 +47,7 @@ namespace LightBulb.ViewModels
         {
         }
 
-        private void DisableFor(double ms)
+        private void DisableTemporarily(double ms)
         {
             _disableTimer.Stop();
             IsEnabled = false;

@@ -61,28 +61,28 @@
                         </ToggleButton.Style>
                         <ToggleButton.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Command="{Binding DisableForCommand}"
+                                <MenuItem Command="{Binding DisableTemporarilyCommand}"
                                           CommandParameter="60000"
                                           Header="Disable for 1 min" />
-                                <MenuItem Command="{Binding DisableForCommand}"
+                                <MenuItem Command="{Binding DisableTemporarilyCommand}"
                                           CommandParameter="300000"
                                           Header="Disable for 5 mins" />
-                                <MenuItem Command="{Binding DisableForCommand}"
+                                <MenuItem Command="{Binding DisableTemporarilyCommand}"
                                           CommandParameter="1800000"
                                           Header="Disable for 30 mins" />
-                                <MenuItem Command="{Binding DisableForCommand}"
+                                <MenuItem Command="{Binding DisableTemporarilyCommand}"
                                           CommandParameter="3600000"
                                           Header="Disable for 1 hr" />
-                                <MenuItem Command="{Binding DisableForCommand}"
+                                <MenuItem Command="{Binding DisableTemporarilyCommand}"
                                           CommandParameter="5400000"
                                           Header="Disable for 3 hrs" />
-                                <MenuItem Command="{Binding DisableForCommand}"
+                                <MenuItem Command="{Binding DisableTemporarilyCommand}"
                                           CommandParameter="10800000"
                                           Header="Disable for 6 hrs" />
-                                <MenuItem Command="{Binding DisableForCommand}"
+                                <MenuItem Command="{Binding DisableTemporarilyCommand}"
                                           CommandParameter="21600000"
                                           Header="Disable for 12 hrs" />
-                                <MenuItem Command="{Binding DisableForCommand}"
+                                <MenuItem Command="{Binding DisableTemporarilyCommand}"
                                           CommandParameter="43200000"
                                           Header="Disable for 24 hrs" />
                             </ContextMenu>
