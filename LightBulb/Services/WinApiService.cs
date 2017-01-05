@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using LightBulb.Models;
 using LightBulb.Models.WinApi;
 using NegativeLayer.Extensions;
 
@@ -12,12 +13,12 @@ namespace LightBulb.Services
         private static extern IntPtr GetDC(IntPtr hWnd);
 
         [DllImport("gdi32.dll", SetLastError = true)]
-        private static extern bool SetDeviceGammaRamp(IntPtr hdc, ref Ramp lpRamp);
+        private static extern bool SetDeviceGammaRamp(IntPtr hdc, ref GammaRamp lpRamp);
 
         [DllImport("gdi32.dll", SetLastError = true)]
-        private static extern bool GetDeviceGammaRamp(IntPtr hdc, ref Ramp lpRamp);
+        private static extern bool GetDeviceGammaRamp(IntPtr hdc, ref GammaRamp lpRamp);
 
-        private readonly Ramp _originalRamp;
+        private readonly GammaRamp _originalRamp;
 
         public WinApiService()
         {
@@ -37,17 +38,17 @@ namespace LightBulb.Services
             if (ex != null) throw ex;
         }
 
-        private void SetDisplayGammaRamp(Ramp ramp)
+        public void SetDisplayGammaRamp(GammaRamp ramp)
         {
             var dc = GetDC(IntPtr.Zero);
             if (!SetDeviceGammaRamp(dc, ref ramp))
                 ThrowIfWin32Error();
         }
 
-        private Ramp GetDisplayGammaRamp()
+        public GammaRamp GetDisplayGammaRamp()
         {
             var dc = GetDC(IntPtr.Zero);
-            var ramp = new Ramp();
+            var ramp = new GammaRamp();
             if (!GetDeviceGammaRamp(dc, ref ramp))
                 ThrowIfWin32Error();
             return ramp;
@@ -60,67 +61,22 @@ namespace LightBulb.Services
 
         public void RestoreDefault()
         {
-            SetColorIntensity(1);
+            SetDisplayGammaLinear(new ColorIntensity(1));
         }
 
-        public void SetColorIntensity(double red, double green, double blue)
+        public void SetDisplayGammaLinear(ColorIntensity intensity)
         {
-            var ramp = new Ramp();
+            var ramp = new GammaRamp();
             ramp.Init();
 
             for (int i = 1; i < 256; i++)
             {
-                ramp.Red[i] = (ushort) (i*255*red).RoundToInt().Clamp(ushort.MinValue, ushort.MaxValue);
-                ramp.Green[i] = (ushort) (i*255*green).RoundToInt().Clamp(ushort.MinValue, ushort.MaxValue);
-                ramp.Blue[i] = (ushort) (i*255*blue).RoundToInt().Clamp(ushort.MinValue, ushort.MaxValue);
+                ramp.Red[i] = (ushort) (i*255*intensity.Red).RoundToInt().Clamp(ushort.MinValue, ushort.MaxValue);
+                ramp.Green[i] = (ushort) (i*255*intensity.Green).RoundToInt().Clamp(ushort.MinValue, ushort.MaxValue);
+                ramp.Blue[i] = (ushort) (i*255*intensity.Blue).RoundToInt().Clamp(ushort.MinValue, ushort.MaxValue);
             }
 
             SetDisplayGammaRamp(ramp);
-        }
-
-        public void SetColorIntensity(double uniform)
-        {
-            SetColorIntensity(uniform, uniform, uniform);
-        }
-
-        public void SetTemperature(ushort temp, double intensity = 1)
-        {
-            // http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
-
-            double tempf = temp/100d;
-
-            double redi;
-            double greeni;
-            double bluei;
-
-            // Red
-            if (tempf <= 66)
-                redi = 1;
-            else
-                redi = (Math.Pow(tempf - 60, -0.1332047592)*329.698727446).Clamp(0, 255)/255d;
-
-            // Green
-            if (tempf <= 66)
-                greeni = (Math.Log(tempf)*99.4708025861 - 161.1195681661).Clamp(0, 255)/255d;
-            else
-                greeni = (Math.Pow(tempf - 60, -0.0755148492)*288.1221695283).Clamp(0, 255)/255d;
-
-            // Blue
-            if (tempf >= 66)
-                bluei = 1;
-            else
-            {
-                if (tempf <= 19)
-                    bluei = 0;
-                else
-                    bluei = (Math.Log(tempf - 10)*138.5177312231 - 305.0447927307).Clamp(0, 255)/255d;
-            }
-
-            redi *= intensity;
-            greeni *= intensity;
-            bluei *= intensity;
-
-            SetColorIntensity(redi, greeni, bluei);
         }
     }
 }

@@ -29,9 +29,12 @@
                 LargeChange="1000"
                 Maximum="6500"
                 Minimum="{Binding Value, ElementName=MinTempSlider}"
+                PreviewMouseDown="MaxTempSlider_OnPreviewMouseDown"
+                PreviewMouseUp="MaxTempSlider_OnPreviewMouseUp"
                 SmallChange="100"
                 TickFrequency="100"
                 TickPlacement="BottomRight"
+                ValueChanged="MaxTempSlider_OnValueChanged"
                 Value="{Binding Settings.MaxTemperature}" />
 
         <!--  Night-time temperature  -->
@@ -44,10 +47,13 @@
                 IsSnapToTickEnabled="True"
                 LargeChange="1000"
                 Maximum="{Binding Value, ElementName=MaxTempSlider}"
-                Minimum="2500"
+                Minimum="3400"
+                PreviewMouseDown="MinTempSlider_OnPreviewMouseDown"
+                PreviewMouseUp="MinTempSlider_OnPreviewMouseUp"
                 SmallChange="100"
                 TickFrequency="100"
                 TickPlacement="BottomRight"
+                ValueChanged="MinTempSlider_OnValueChanged"
                 Value="{Binding Settings.MinTemperature}" />
 
         <!--  Polling enabled/disabled  -->

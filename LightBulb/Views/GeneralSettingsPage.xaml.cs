@@ -1,28 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using LightBulb.ViewModels;
 
 namespace LightBulb.Views
 {
-    /// <summary>
-    /// Interaction logic for GeneralSettingsPage.xaml
-    /// </summary>
-    public partial class GeneralSettingsPage : Page
+    public partial class GeneralSettingsPage
     {
+        public MainViewModel ViewModel => (MainViewModel) DataContext;
+
+        private bool _maxTempSliderMouseDown;
+        private bool _minTempSliderMouseDown;
+
         public GeneralSettingsPage()
         {
             InitializeComponent();
+        }
+
+        private void MaxTempSlider_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _maxTempSliderMouseDown = true;
+            ViewModel.PreviewTemperature = (ushort) MaxTempSlider.Value;
+            ViewModel.IsPreviewModeEnabled = true;
+        }
+
+        private void MaxTempSlider_OnPreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _maxTempSliderMouseDown = false;
+            ViewModel.IsPreviewModeEnabled = false;
+        }
+
+        private void MaxTempSlider_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (_maxTempSliderMouseDown)
+                ViewModel.PreviewTemperature = (ushort) e.NewValue;
+        }
+
+        private void MinTempSlider_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _minTempSliderMouseDown = true;
+            ViewModel.PreviewTemperature = (ushort) MinTempSlider.Value;
+            ViewModel.IsPreviewModeEnabled = true;
+        }
+
+        private void MinTempSlider_OnPreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _minTempSliderMouseDown = false;
+            ViewModel.IsPreviewModeEnabled = false;
+        }
+
+        private void MinTempSlider_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (_minTempSliderMouseDown)
+                ViewModel.PreviewTemperature = (ushort) e.NewValue;
         }
     }
 }

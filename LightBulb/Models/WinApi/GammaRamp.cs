@@ -3,7 +3,7 @@
 namespace LightBulb.Models.WinApi
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public struct Ramp
+    public struct GammaRamp
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
         public ushort[] Red;

@@ -101,6 +101,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Locator.cs" />
+    <Compile Include="Models\ColorIntensity.cs" />
     <Compile Include="Services\WinApiService.cs" />
     <Page Include="Views\GeneralSettingsPage.xaml">
       <SubType>Designer</SubType>
@@ -125,7 +126,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\WinApi\Ramp.cs" />
+    <Compile Include="Models\WinApi\GammaRamp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
