@@ -111,8 +111,8 @@ namespace LightBulb.ViewModels
             _previewUpdateTimer.Interval = TimeSpan.FromSeconds(1/30d);
             _previewUpdateTimer.Tick += (sender, args) =>
             {
-                IsPreviewModeEnabled = true;
                 PreviewTemperature = GetTemperature(DateTime.Today.AddHours(_previewHours));
+                IsPreviewModeEnabled = true;
                 _previewHours += 0.1;
                 if (_previewHours >= 24)
                 {
