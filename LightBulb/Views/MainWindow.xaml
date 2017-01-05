@@ -103,6 +103,7 @@
                                VerticalAlignment="Center"
                                FontSize="16"
                                FontWeight="Bold"
+                               Foreground="{DynamicResource PrimaryInverseTextBrush}"
                                Text="LightBulb" />
 
                     <!--  Section navigation buttons  -->
