@@ -5,7 +5,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="LightBulb"
-        Width="350"
+        Width="250"
         Height="250"
         AllowsTransparency="True"
         Background="Transparent"

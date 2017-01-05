@@ -86,7 +86,8 @@
             <TextBlock Grid.Column="0"
                        Margin="5"
                        VerticalAlignment="Center"
-                       Text="Preview 24-hour cycle:" />
+                       Text="Preview 24-hour cycle:"
+                       ToolTip="Preview how the gamma changes during a 24 hour cycle" />
             <Button Grid.Column="1"
                     Width="24"
                     Height="24"
