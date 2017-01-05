@@ -19,7 +19,7 @@ namespace LightBulb.Views
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             Left = SystemParameters.WorkArea.Width - Width - 5;
-            Top = SystemParameters.WorkArea.Height - Height - 5;
+            Top = SystemParameters.WorkArea.Height - Height;
         }
 
         private void HeaderBorder_OnMouseDown(object sender, MouseButtonEventArgs e)

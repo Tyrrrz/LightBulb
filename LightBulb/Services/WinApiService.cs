@@ -54,16 +54,6 @@ namespace LightBulb.Services
             return ramp;
         }
 
-        public void RestoreOriginal()
-        {
-            SetDisplayGammaRamp(_originalRamp);
-        }
-
-        public void RestoreDefault()
-        {
-            SetDisplayGammaLinear(new ColorIntensity(1));
-        }
-
         public void SetDisplayGammaLinear(ColorIntensity intensity)
         {
             var ramp = new GammaRamp();
@@ -77,6 +67,16 @@ namespace LightBulb.Services
             }
 
             SetDisplayGammaRamp(ramp);
+        }
+
+        public void RestoreOriginal()
+        {
+            SetDisplayGammaRamp(_originalRamp);
+        }
+
+        public void RestoreDefault()
+        {
+            SetDisplayGammaLinear(new ColorIntensity(1));
         }
     }
 }

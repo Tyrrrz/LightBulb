@@ -21,7 +21,7 @@ namespace LightBulb
 
         public static void Cleanup()
         {
-            Resolve<WinApiService>().RestoreOriginal();
+            Resolve<WinApiService>().RestoreDefault();
         }
 
         public MainViewModel Main => Resolve<MainViewModel>();

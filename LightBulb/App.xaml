@@ -18,8 +18,8 @@
             <Color x:Key="PrimaryColor">#343838</Color>
             <Color x:Key="PrimaryDarkColor">#2B2C2C</Color>
             <Color x:Key="AccentColor">#F9A825</Color>
-            <Color x:Key="TextColor">Black</Color>
-            <Color x:Key="InverseTextColor">Snow</Color>
+            <Color x:Key="TextColor">#000000</Color>
+            <Color x:Key="InverseTextColor">#fffffa</Color>
 
             <SolidColorBrush x:Key="PrimaryHueLightBrush"
                              Opacity="0.75"
@@ -45,6 +45,7 @@
             <SolidColorBrush x:Key="SecondaryAccentForegroundBrush"
                              Opacity="0.64"
                              Color="{DynamicResource TextColor}" />
+
             <SolidColorBrush x:Key="PrimaryTextBrush"
                              Opacity="0.87"
                              Color="{DynamicResource TextColor}" />
@@ -54,6 +55,18 @@
             <SolidColorBrush x:Key="DimTextBrush"
                              Opacity="0.45"
                              Color="{DynamicResource TextColor}" />
+            <SolidColorBrush x:Key="PrimaryInverseTextBrush"
+                             Opacity="1"
+                             Color="{DynamicResource InverseTextColor}" />
+            <SolidColorBrush x:Key="SecondaryInverseTextBrush"
+                             Opacity="0.7"
+                             Color="{DynamicResource InverseTextColor}" />
+            <SolidColorBrush x:Key="DimInverseTextBrush"
+                             Opacity="0.52"
+                             Color="{DynamicResource InverseTextColor}" />
+            <SolidColorBrush x:Key="AccentTextBrush"
+                             Opacity="1"
+                             Color="{DynamicResource AccentColor}" />
             <SolidColorBrush x:Key="MiscBrush"
                              Opacity="0.18"
                              Color="{DynamicResource TextColor}" />

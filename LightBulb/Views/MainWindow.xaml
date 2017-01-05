@@ -26,21 +26,23 @@
         mc:Ignorable="d">
     <Border Background="{DynamicResource PrimaryHueDarkBrush}"
             BorderBrush="{DynamicResource MiscBrush}"
-            BorderThickness="1"
+            BorderThickness="2"
             CornerRadius="12,12,0,0">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!--  Header  -->
             <Border x:Name="HeaderBorder"
                     Grid.Row="0"
                     Height="50"
-                    Margin="0,0,0,5"
                     Padding="5,0,0,0"
                     Background="{DynamicResource PrimaryHueDarkBrush}"
+                    BorderBrush="{DynamicResource MiscBrush}"
+                    BorderThickness="0,0,0,1"
                     CornerRadius="12,12,0,0"
                     MouseDown="HeaderBorder_OnMouseDown"
                     TextElement.Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">
@@ -146,6 +148,18 @@
                    NavigationUIVisibility="Hidden"
                    Source="/LightBulb;component/Views/GeneralSettingsPage.xaml"
                    TextElement.Foreground="{DynamicResource SecondaryTextBrush}" />
+
+            <!--  Status bar  -->
+            <Border Grid.Row="2"
+                    Padding="5"
+                    BorderBrush="{DynamicResource MiscBrush}"
+                    BorderThickness="0,1,0,0">
+                <!--  Current temperature  -->
+                <TextBlock FontSize="12" Foreground="{DynamicResource SecondaryInverseTextBrush}">
+                    <Run Text="Temp:" />
+                    <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="{Binding CurrentTemperature, Mode=OneWay}" /><Run Text="K" />
+                </TextBlock>
+            </Border>
         </Grid>
     </Border>
 </Window>
