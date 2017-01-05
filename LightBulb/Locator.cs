@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Ioc;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Ioc;
 using LightBulb.Services;
 using LightBulb.ViewModels;
 using Microsoft.Practices.ServiceLocation;
@@ -12,10 +13,11 @@ namespace LightBulb
 
         static Locator()
         {
+            if (ViewModelBase.IsInDesignModeStatic) return;
+
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             SimpleIoc.Default.Register<WinApiService>();
-
             SimpleIoc.Default.Register<MainViewModel>();
         }
 

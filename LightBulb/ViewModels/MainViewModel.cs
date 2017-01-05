@@ -12,13 +12,23 @@ namespace LightBulb.ViewModels
     {
         private readonly WinApiService _winApiService;
 
-        private readonly DispatcherTimer _updateTimer;
-        private readonly DispatcherTimer _pollingTimer;
-        private readonly DispatcherTimer _disableTimer;
+        private readonly DispatcherTimer _updateTimer; // handles temperature changes
+        private readonly DispatcherTimer _previewUpdateTimer; // handles temperature changes in preview
+        private readonly DispatcherTimer _pollingTimer; // updates gamma periodically
+        private readonly DispatcherTimer _disableTimer; // "disable for xx" timer
 
         public Settings Settings => Settings.Default;
 
+        private double _previewHours; // fake hours for 24hr cycle preview
+
         private bool _isEnabled = true;
+        private bool _isPreviewModeEnabled;
+        private ushort _previewTemperature;
+        private ushort _currentTemperature;
+
+        /// <summary>
+        /// Enables or disables the program
+        /// </summary>
         public bool IsEnabled
         {
             get { return _isEnabled; }
@@ -36,7 +46,9 @@ namespace LightBulb.ViewModels
             }
         }
 
-        private bool _isPreviewModeEnabled;
+        /// <summary>
+        /// When set to true, the preview temperature controls the gamma
+        /// </summary>
         public bool IsPreviewModeEnabled
         {
             get { return _isPreviewModeEnabled; }
@@ -47,7 +59,9 @@ namespace LightBulb.ViewModels
             }
         }
 
-        private ushort _previewTemperature;
+        /// <summary>
+        /// Fake temperature used for preview
+        /// </summary>
         public ushort PreviewTemperature
         {
             get { return _previewTemperature; }
@@ -62,7 +76,9 @@ namespace LightBulb.ViewModels
             }
         }
 
-        private ushort _currentTemperature = 6500;
+        /// <summary>
+        /// Actual temperature used to control gamma
+        /// </summary>
         public ushort CurrentTemperature
         {
             get { return _currentTemperature; }
@@ -80,32 +96,58 @@ namespace LightBulb.ViewModels
         public RelayCommand<double> DisableTemporarilyCommand { get; }
         public RelayCommand RestoreOriginalCommand { get; }
         public RelayCommand RestoreDefaultCommand { get; }
+        public RelayCommand PreviewCycleCommand { get; }
 
         public MainViewModel(WinApiService winApiService)
         {
             _winApiService = winApiService;
 
+            // Update timer
             _updateTimer = new DispatcherTimer();
             _updateTimer.Tick += (sender, args) => CurrentTemperature = GetTemperature(DateTime.Now);
 
+            // Preview update timer
+            _previewUpdateTimer = new DispatcherTimer();
+            _previewUpdateTimer.Interval = TimeSpan.FromSeconds(1/30d);
+            _previewUpdateTimer.Tick += (sender, args) =>
+            {
+                IsPreviewModeEnabled = true;
+                PreviewTemperature = GetTemperature(DateTime.Today.AddHours(_previewHours));
+                _previewHours += 0.1;
+                if (_previewHours >= 24)
+                {
+                    _previewHours = 0;
+                    _previewUpdateTimer.Stop();
+                    IsPreviewModeEnabled = false;
+                    PreviewCycleCommand.RaiseCanExecuteChanged();
+                }
+            };
+
+            // Polling timer
             _pollingTimer = new DispatcherTimer();
             _pollingTimer.Tick += (sender, args) => UpdateGamma();
 
+            // Disable timer
             _disableTimer = new DispatcherTimer();
             _disableTimer.Tick += (sender, args) => IsEnabled = true;
 
+            // Update settings when they are changed
             Settings.PropertyChanged += (sender, args) => LoadSettings();
 
+            // Commands
             DisableTemporarilyCommand = new RelayCommand<double>(DisableTemporarily);
             RestoreOriginalCommand = new RelayCommand(() => _winApiService.RestoreOriginal());
             RestoreDefaultCommand = new RelayCommand(() => _winApiService.RestoreDefault());
+            PreviewCycleCommand = new RelayCommand(PreviewCycle, () => !_previewUpdateTimer.IsEnabled);
 
             // Init
-            _winApiService.RestoreDefault();
             LoadSettings();
             _updateTimer.Start();
         }
 
+        /// <summary>
+        /// Update stuff that depends on settings
+        /// </summary>
         private void LoadSettings()
         {
             _pollingTimer.IsEnabled = Settings.IsPollingEnabled;
@@ -114,17 +156,23 @@ namespace LightBulb.ViewModels
             CurrentTemperature = GetTemperature(DateTime.Now);
         }
 
+        /// <summary>
+        /// Get temperature that corresponds to the given time
+        /// </summary>
         private ushort GetTemperature(DateTime dt)
         {
             ushort minTemp = Settings.MinTemperature;
             ushort maxTemp = Settings.MaxTemperature;
             int diff = maxTemp - minTemp;
-            double timeNorm = (dt.Hour + dt.Minute/60d + dt.Second/3600d)/24d;
+            double timeNorm = dt.TimeOfDay.TotalHours/24d;
             double tempNorm = Math.Sin(-Math.PI/2 + 2*timeNorm*Math.PI);
             double temp = minTemp + diff/2 + diff*tempNorm/2;
             return (ushort) temp.RoundToInt().Clamp(ushort.MinValue, ushort.MaxValue);
         }
 
+        /// <summary>
+        /// Update the display gamma, based on temperature
+        /// </summary>
         private void UpdateGamma()
         {
             if (!IsEnabled)
@@ -139,12 +187,26 @@ namespace LightBulb.ViewModels
             }
         }
 
+        /// <summary>
+        /// Disable the program for the given amount of milliseconds
+        /// </summary>
         private void DisableTemporarily(double ms)
         {
             _disableTimer.Stop();
             IsEnabled = false;
             _disableTimer.Interval = TimeSpan.FromMilliseconds(ms);
             _disableTimer.Start();
+        }
+
+        /// <summary>
+        /// Preview the 24hr cycle in fast-motion
+        /// </summary>
+        private void PreviewCycle()
+        {
+            _previewUpdateTimer.Stop();
+            _previewHours = 0;
+            _previewUpdateTimer.Start();
+            PreviewCycleCommand.RaiseCanExecuteChanged();
         }
     }
 }

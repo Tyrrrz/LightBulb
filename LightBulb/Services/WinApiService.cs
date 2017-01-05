@@ -38,6 +38,9 @@ namespace LightBulb.Services
             if (ex != null) throw ex;
         }
 
+        /// <summary>
+        /// Change the display gamma based on given curve
+        /// </summary>
         public void SetDisplayGammaRamp(GammaRamp ramp)
         {
             var dc = GetDC(IntPtr.Zero);
@@ -45,6 +48,9 @@ namespace LightBulb.Services
                 ThrowIfWin32Error();
         }
 
+        /// <summary>
+        /// Get the curve that represents the current display gamma
+        /// </summary>
         public GammaRamp GetDisplayGammaRamp()
         {
             var dc = GetDC(IntPtr.Zero);
@@ -54,6 +60,9 @@ namespace LightBulb.Services
             return ramp;
         }
 
+        /// <summary>
+        /// Change the display gamma by multiplying each channel with a scalar
+        /// </summary>
         public void SetDisplayGammaLinear(ColorIntensity intensity)
         {
             var ramp = new GammaRamp();
@@ -69,11 +78,17 @@ namespace LightBulb.Services
             SetDisplayGammaRamp(ramp);
         }
 
+        /// <summary>
+        /// Restore gamma that was used before initializing the service
+        /// </summary>
         public void RestoreOriginal()
         {
             SetDisplayGammaRamp(_originalRamp);
         }
 
+        /// <summary>
+        /// Restore the default gamma
+        /// </summary>
         public void RestoreDefault()
         {
             SetDisplayGammaLinear(new ColorIntensity(1));
