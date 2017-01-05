@@ -155,7 +155,9 @@
                     BorderBrush="{DynamicResource MiscBrush}"
                     BorderThickness="0,1,0,0">
                 <!--  Current/preview temperature  -->
-                <TextBlock FontSize="12" Foreground="{DynamicResource SecondaryInverseTextBrush}">
+                <TextBlock FontSize="12"
+                           Foreground="{DynamicResource SecondaryInverseTextBrush}"
+                           Visibility="{Binding IsEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
                     <Run>
                         <Run.Style>
                             <Style TargetType="Run">
