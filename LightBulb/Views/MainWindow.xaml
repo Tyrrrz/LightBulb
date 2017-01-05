@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="LightBulb"
         Width="350"
-        Height="270"
+        Height="250"
         AllowsTransparency="True"
         Background="Transparent"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
