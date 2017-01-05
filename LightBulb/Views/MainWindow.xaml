@@ -156,7 +156,20 @@
                     BorderThickness="0,1,0,0">
                 <!--  Current/preview temperature  -->
                 <TextBlock FontSize="12" Foreground="{DynamicResource SecondaryInverseTextBrush}">
-                    <Run Text="Temp:" />
+                    <Run>
+                        <Run.Style>
+                            <Style TargetType="Run">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsPreviewModeEnabled}" Value="True">
+                                        <Setter Property="Text" Value="Temperature (preview):" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsPreviewModeEnabled}" Value="False">
+                                        <Setter Property="Text" Value="Temperature:" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Run.Style>
+                    </Run>
                     <Run Foreground="{DynamicResource PrimaryInverseTextBrush}">
                         <Run.Style>
                             <Style TargetType="Run">
