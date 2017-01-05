@@ -18,13 +18,6 @@ namespace LightBulb.ViewModels
 
         public Settings Settings => Settings.Default;
 
-        private Func<DateTime, ushort> _temperatureFunction;
-        public Func<DateTime, ushort> TemperatureFunction
-        {
-            get { return _temperatureFunction; }
-            private set { Set(ref _temperatureFunction, value); }
-        }
-
         private bool _isEnabled = true;
         public bool IsEnabled
         {
@@ -93,11 +86,7 @@ namespace LightBulb.ViewModels
             _winApiService = winApiService;
 
             _updateTimer = new DispatcherTimer();
-            _updateTimer.Tick += (sender, args) =>
-            {
-                if (TemperatureFunction == null) return;
-                CurrentTemperature = TemperatureFunction(DateTime.Now);
-            };
+            _updateTimer.Tick += (sender, args) => CurrentTemperature = GetTemperature(DateTime.Now);
 
             _pollingTimer = new DispatcherTimer();
             _pollingTimer.Tick += (sender, args) => UpdateGamma();
@@ -122,34 +111,30 @@ namespace LightBulb.ViewModels
             _pollingTimer.IsEnabled = Settings.IsPollingEnabled;
             _updateTimer.Interval = Settings.UpdateInterval;
             _pollingTimer.Interval = Settings.PollingInterval;
-            UpdateTemperatureFunction();
-            CurrentTemperature = TemperatureFunction(DateTime.Now);
+            CurrentTemperature = GetTemperature(DateTime.Now);
         }
 
-        private void UpdateTemperatureFunction()
+        private ushort GetTemperature(DateTime dt)
         {
-            TemperatureFunction = dt =>
-            {
-                ushort minTemp = Settings.MinTemperature;
-                ushort maxTemp = Settings.MaxTemperature;
-                int diff = maxTemp - minTemp;
-                double timeNorm = (dt.Hour + dt.Minute/60d + dt.Second/3600d)/24d;
-                double tempNorm = Math.Sin(-Math.PI/2 + 2*timeNorm*Math.PI);
-                double temp = minTemp + diff/2 + diff*tempNorm/2;
-                return (ushort) temp.RoundToInt().Clamp(ushort.MinValue, ushort.MaxValue);
-            };
+            ushort minTemp = Settings.MinTemperature;
+            ushort maxTemp = Settings.MaxTemperature;
+            int diff = maxTemp - minTemp;
+            double timeNorm = (dt.Hour + dt.Minute/60d + dt.Second/3600d)/24d;
+            double tempNorm = Math.Sin(-Math.PI/2 + 2*timeNorm*Math.PI);
+            double temp = minTemp + diff/2 + diff*tempNorm/2;
+            return (ushort) temp.RoundToInt().Clamp(ushort.MinValue, ushort.MaxValue);
         }
 
         private void UpdateGamma()
         {
-            // If disabled - set default
             if (!IsEnabled)
             {
                 _winApiService.RestoreDefault();
             }
             else
             {
-                var intensity = ColorIntensity.FromTemperature(IsPreviewModeEnabled ? PreviewTemperature : CurrentTemperature);
+                ushort temp = IsPreviewModeEnabled ? PreviewTemperature : CurrentTemperature;
+                var intensity = ColorIntensity.FromTemperature(temp);
                 _winApiService.SetDisplayGammaLinear(intensity);
             }
         }

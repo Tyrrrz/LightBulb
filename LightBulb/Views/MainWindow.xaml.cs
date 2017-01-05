@@ -13,7 +13,7 @@ namespace LightBulb.Views
 
         private void MainWindow_OnDeactivated(object sender, EventArgs e)
         {
-            Hide();
+            //Hide();
         }
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)

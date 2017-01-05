@@ -154,10 +154,23 @@
                     Padding="5"
                     BorderBrush="{DynamicResource MiscBrush}"
                     BorderThickness="0,1,0,0">
-                <!--  Current temperature  -->
+                <!--  Current/preview temperature  -->
                 <TextBlock FontSize="12" Foreground="{DynamicResource SecondaryInverseTextBrush}">
                     <Run Text="Temp:" />
-                    <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="{Binding CurrentTemperature, Mode=OneWay}" /><Run Text="K" />
+                    <Run Foreground="{DynamicResource PrimaryInverseTextBrush}">
+                        <Run.Style>
+                            <Style TargetType="Run">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsPreviewModeEnabled}" Value="True">
+                                        <Setter Property="Text" Value="{Binding PreviewTemperature}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsPreviewModeEnabled}" Value="False">
+                                        <Setter Property="Text" Value="{Binding CurrentTemperature}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Run.Style>
+                    </Run><Run Text="K" />
                 </TextBlock>
             </Border>
         </Grid>
