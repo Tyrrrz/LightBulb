@@ -17,7 +17,7 @@
       UseLayoutRounding="True"
       mc:Ignorable="d">
 
-    <StackPanel Background="{DynamicResource MaterialDesignPaper}" Orientation="Vertical">
+    <StackPanel Orientation="Vertical">
         <!--  Day-time temperature  -->
         <TextBlock Margin="5">
             <Run Text="Day-time color temperature:" />

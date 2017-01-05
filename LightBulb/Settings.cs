@@ -10,5 +10,6 @@ namespace LightBulb
         public ushort MaxTemperature { get; set; } = 6500;
         public bool IsPollingEnabled { get; set; } = true;
         public double PollingInterval { get; set; } = 5000;
+        public bool DisableWhenFullscreen { get; set; } = false;
     }
 }

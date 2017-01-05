@@ -10,8 +10,9 @@ namespace LightBulb.ViewModels
         private readonly WinApiService _winApiService;
         private readonly Timer _disableTimer;
 
-        private bool _isEnabled = true;
+        public Settings Settings => Settings.Default;
 
+        private bool _isEnabled = true;
         public bool IsEnabled
         {
             get { return _isEnabled; }
@@ -24,8 +25,6 @@ namespace LightBulb.ViewModels
                 Set(ref _isEnabled, value);
             }
         }
-
-        public Settings Settings => Settings.Default;
 
         public RelayCommand<double> DisableTemporarilyCommand { get; }
         public RelayCommand RestoreOriginalCommand { get; }

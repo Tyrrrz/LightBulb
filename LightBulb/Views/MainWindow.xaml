@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="LightBulb"
         Width="350"
+        Height="250"
         AllowsTransparency="True"
         Background="Transparent"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
@@ -13,7 +14,6 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Loaded="MainWindow_OnLoaded"
         ShowInTaskbar="False"
-        SizeToContent="Height"
         SnapsToDevicePixels="True"
         TextElement.FontSize="13"
         TextElement.FontWeight="Regular"
@@ -28,9 +28,15 @@
             BorderBrush="{DynamicResource MiscBrush}"
             BorderThickness="1"
             CornerRadius="12,12,0,0">
-        <StackPanel Orientation="Vertical">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
             <!--  Header  -->
             <Border x:Name="HeaderBorder"
+                    Grid.Row="0"
                     Height="50"
                     Margin="0,0,0,5"
                     Padding="5,0,0,0"
@@ -133,10 +139,13 @@
 
             <!--  Content  -->
             <Frame x:Name="ContentFrame"
+                   Grid.Row="1"
                    HorizontalAlignment="Stretch"
                    VerticalAlignment="Stretch"
+                   Background="{DynamicResource MaterialDesignPaper}"
                    NavigationUIVisibility="Hidden"
-                   Source="/LightBulb;component/Views/GeneralSettingsPage.xaml" />
-        </StackPanel>
+                   Source="/LightBulb;component/Views/GeneralSettingsPage.xaml"
+                   TextElement.Foreground="{DynamicResource SecondaryTextBrush}" />
+        </Grid>
     </Border>
 </Window>
