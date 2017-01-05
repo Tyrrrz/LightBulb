@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using LightBulb.Models;
 using LightBulb.Models.WinApi;
@@ -35,7 +36,8 @@ namespace LightBulb.Services
         private void ThrowIfWin32Error()
         {
             var ex = GetLastError();
-            if (ex != null) throw ex;
+            //if (ex != null) throw ex;
+            if (ex != null) Debug.WriteLine($"Win32 error: {ex.Message} ({ex.NativeErrorCode})", "WinApiService");
         }
 
         /// <summary>

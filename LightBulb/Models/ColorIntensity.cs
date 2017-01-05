@@ -3,7 +3,31 @@ using NegativeLayer.Extensions;
 
 namespace LightBulb.Models
 {
-    public struct ColorIntensity
+    public partial struct ColorIntensity
+    {
+        public double Red { get; }
+        public double Green { get; }
+        public double Blue { get; }
+
+        public ColorIntensity(double red, double green, double blue)
+        {
+            Red = red;
+            Green = green;
+            Blue = blue;
+        }
+
+        public ColorIntensity(double uniform)
+        {
+            Red = Green = Blue = uniform;
+        }
+
+        public override string ToString()
+        {
+            return $"R:{Red:n3} G:{Green:n3} B:{Blue:n3}";
+        }
+    }
+
+    public partial struct ColorIntensity
     {
         public static ColorIntensity FromTemperature(ushort temp)
         {
@@ -39,22 +63,6 @@ namespace LightBulb.Models
             }
 
             return new ColorIntensity(redi, greeni, bluei);
-        }
-
-        public double Red { get; }
-        public double Green { get; }
-        public double Blue { get; }
-
-        public ColorIntensity(double red, double green, double blue)
-        {
-            Red = red;
-            Green = green;
-            Blue = blue;
-        }
-
-        public ColorIntensity(double uniform)
-        {
-            Red = Green = Blue = uniform;
         }
     }
 }
