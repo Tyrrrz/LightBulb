@@ -114,7 +114,7 @@ namespace LightBulb.ViewModels
             CurrentTemperature = GetTemperature(DateTime.Now);
         }
 
-        private ushort GetTemperature(DateTime dt)
+        public ushort GetTemperature(DateTime dt)
         {
             ushort minTemp = Settings.MinTemperature;
             ushort maxTemp = Settings.MaxTemperature;
@@ -125,7 +125,7 @@ namespace LightBulb.ViewModels
             return (ushort) temp.RoundToInt().Clamp(ushort.MinValue, ushort.MaxValue);
         }
 
-        private void UpdateGamma()
+        public void UpdateGamma()
         {
             if (!IsEnabled)
             {
@@ -139,7 +139,7 @@ namespace LightBulb.ViewModels
             }
         }
 
-        private void DisableTemporarily(double ms)
+        public void DisableTemporarily(double ms)
         {
             _disableTimer.Stop();
             IsEnabled = false;

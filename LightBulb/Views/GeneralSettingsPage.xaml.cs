@@ -1,6 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using LightBulb.ViewModels;
+using LiveCharts;
+using NegativeLayer.Extensions;
 
 namespace LightBulb.Views
 {
@@ -14,6 +18,22 @@ namespace LightBulb.Views
         public GeneralSettingsPage()
         {
             InitializeComponent();
+        }
+
+        private void GeneralSettingsPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel.PropertyChanged += (o, args) =>
+            {
+                if (args.PropertyName == nameof(ViewModel.IsPreviewModeEnabled) && !ViewModel.IsPreviewModeEnabled)
+                    UpdatePlot();
+            };
+            ViewModel.Settings.PropertyChanged += (o, args) =>
+            {
+                if (!ViewModel.IsPreviewModeEnabled)
+                    UpdatePlot();
+            };
+
+            UpdatePlot();
         }
 
         private void MaxTempSlider_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -52,6 +72,29 @@ namespace LightBulb.Views
         {
             if (_minTempSliderMouseDown)
                 ViewModel.PreviewTemperature = (ushort) e.NewValue;
+        }
+
+        private void UpdatePlot()
+        {
+            // Brushes
+            var gradient = new LinearGradientBrush(
+                Color.FromRgb(244, 203, 66),
+                Color.FromRgb(255, 255, 255),
+                new Point(0, 1),
+                new Point(0, 0)
+            );
+            PreviewPlot.Background = gradient;
+
+            // Points
+            var step = TimeSpan.FromHours(0.25);
+            int count = (24/step.TotalHours).RoundToInt();
+            PreviewPlotSeries.Values = new ChartValues<int>();
+            for (int i = 0; i < count; i++)
+            {
+                var dt = DateTime.Today.AddHours(i*step.TotalHours);
+                int temp = ViewModel.GetTemperature(dt);
+                PreviewPlotSeries.Values.Add(temp);
+            }
         }
     }
 }
