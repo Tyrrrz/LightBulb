@@ -56,6 +56,9 @@
                 ValueChanged="MinTempSlider_OnValueChanged"
                 Value="{Binding Settings.MinTemperature}" />
 
+        <!--  24hr plot preview  -->
+
+
         <!--  Polling enabled/disabled  -->
         <WrapPanel Orientation="Horizontal">
             <TextBlock Margin="5"

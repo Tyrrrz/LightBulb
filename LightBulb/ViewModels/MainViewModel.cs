@@ -46,6 +46,10 @@ namespace LightBulb.ViewModels
             get { return _previewTemperature; }
             set
             {
+                // Discard if change is not sufficient
+                if (Math.Abs(value - PreviewTemperature) < Settings.SmallestTemperatureInterval)
+                    return;
+
                 Set(ref _previewTemperature, value);
                 UpdateGamma();
             }
@@ -57,6 +61,10 @@ namespace LightBulb.ViewModels
             get { return _currentTemperature; }
             set
             {
+                // Discard if change is not sufficient
+                if (Math.Abs(value - CurrentTemperature) < Settings.SmallestTemperatureInterval)
+                    return;
+
                 Set(ref _currentTemperature, value);
                 UpdateGamma();
             }
