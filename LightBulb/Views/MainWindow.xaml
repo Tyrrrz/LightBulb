@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        x:Name="Window"
         Title="LightBulb"
         Width="250"
         Height="250"
@@ -12,6 +14,7 @@
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Deactivated="MainWindow_OnDeactivated"
         FontFamily="{DynamicResource MaterialDesignFont}"
+        Icon="/LightBulb;component/favicon.ico"
         Loaded="MainWindow_OnLoaded"
         ShowInTaskbar="False"
         SnapsToDevicePixels="True"
@@ -34,6 +37,20 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+
+            <!--  Tray icon  -->
+            <tb:TaskbarIcon x:Name="TaskbarIcon"
+                            Grid.Row="0"
+                            DoubleClickCommand="{Binding ShowMainWindowCommand}"
+                            IconSource="/LightBulb;component/favicon.ico">
+                <tb:TaskbarIcon.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="{Binding ShowMainWindowCommand}" Header="Configure" />
+                        <MenuItem Command="{Binding ToggleEnabledCommand}" Header="Toggle On/Off" />
+                        <MenuItem Command="{Binding ExitApplicationCommand}" Header="Exit" />
+                    </ContextMenu>
+                </tb:TaskbarIcon.ContextMenu>
+            </tb:TaskbarIcon>
 
             <!--  Header  -->
             <Border x:Name="HeaderBorder"

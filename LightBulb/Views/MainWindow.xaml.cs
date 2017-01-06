@@ -11,15 +11,15 @@ namespace LightBulb.Views
             InitializeComponent();
         }
 
-        private void MainWindow_OnDeactivated(object sender, EventArgs e)
-        {
-            //Hide();
-        }
-
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             Left = SystemParameters.WorkArea.Width - Width - 5;
             Top = SystemParameters.WorkArea.Height - Height;
+        }
+
+        private void MainWindow_OnDeactivated(object sender, EventArgs e)
+        {
+            Hide();
         }
 
         private void HeaderBorder_OnMouseDown(object sender, MouseButtonEventArgs e)

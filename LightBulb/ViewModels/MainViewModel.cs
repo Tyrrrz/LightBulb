@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using LightBulb.Models;
 using LightBulb.Services;
 using NegativeLayer.Extensions;
+using NegativeLayer.WPFExtensions;
 
 namespace LightBulb.ViewModels
 {
@@ -93,6 +95,9 @@ namespace LightBulb.ViewModels
             }
         }
 
+        public RelayCommand ShowMainWindowCommand { get; }
+        public RelayCommand ExitApplicationCommand { get; }
+        public RelayCommand ToggleEnabledCommand { get; }
         public RelayCommand<double> DisableTemporarilyCommand { get; }
         public RelayCommand RestoreOriginalCommand { get; }
         public RelayCommand RestoreDefaultCommand { get; }
@@ -135,6 +140,9 @@ namespace LightBulb.ViewModels
             Settings.PropertyChanged += (sender, args) => LoadSettings();
 
             // Commands
+            ShowMainWindowCommand = new RelayCommand(() => Application.Current.MainWindow.Show());
+            ExitApplicationCommand = new RelayCommand(() => Application.Current.ShutdownSafe());
+            ToggleEnabledCommand = new RelayCommand(() => IsEnabled = !IsEnabled);
             DisableTemporarilyCommand = new RelayCommand<double>(DisableTemporarily);
             RestoreOriginalCommand = new RelayCommand(() => _winApiService.RestoreOriginal());
             RestoreDefaultCommand = new RelayCommand(() => _winApiService.RestoreDefault());
