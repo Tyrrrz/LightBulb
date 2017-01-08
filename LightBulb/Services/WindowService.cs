@@ -31,13 +31,26 @@ namespace LightBulb.Services
         [DllImport("user32.dll", EntryPoint = "UnhookWinEvent", SetLastError = true)]
         private static extern bool UnhookWinEventInternal(IntPtr hWinEventHook);
 
-        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable (prevent garbage collection)
         private readonly WinEventDelegate _winEventHandler;
         private readonly IntPtr _foregroundWindowChangedHook;
         private readonly IntPtr _windowResizeHook;
+        private bool _isFullScreen;
 
         public Settings Settings => Settings.Default;
-        public bool IsFullScreen { get; private set; }
+
+        public bool IsFullScreen
+        {
+            get { return _isFullScreen; }
+            private set
+            {
+                if (IsFullScreen != value)
+                {
+                    _isFullScreen = value;
+                    FullScreenStateChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
 
         public event EventHandler FullScreenStateChanged;
 
@@ -49,7 +62,7 @@ namespace LightBulb.Services
             _foregroundWindowChangedHook = SetWinEventHookInternal(0x0003, 0x0003, IntPtr.Zero,
                 _winEventHandler, 0, 0, 0);
             _windowResizeHook = SetWinEventHookInternal(0x800B, 0x800B, IntPtr.Zero,
-                _winEventHandler, 0, 0, 0);
+                _winEventHandler, 0, 0, 0); // HACK: this raises too many events per second, need to optimize
 
             // Init
             Update();
@@ -57,13 +70,7 @@ namespace LightBulb.Services
 
         private void Update()
         {
-            // Check if foreground window is fullscreen
-            bool fs = IsWindowFullScreen(GetForegroundWindow());
-            if (fs != IsFullScreen)
-            {
-                IsFullScreen = fs;
-                FullScreenStateChanged?.Invoke(this, EventArgs.Empty);
-            }
+            IsFullScreen = IsWindowFullScreen(GetForegroundWindow());
         }
 
         public IntPtr GetForegroundWindow()
