@@ -60,7 +60,6 @@ namespace LightBulb.ViewModels
             set
             {
                 if (!Set(ref _isPreviewModeEnabled, value)) return;
-                if (!value) _cyclePreviewTimer.Enabled = false;
                 
                 UpdateGamma();
                 UpdateStatus();
