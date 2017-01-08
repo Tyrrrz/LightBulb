@@ -13,8 +13,9 @@ namespace LightBulb.ViewModels
 {
     public class MainViewModel : ViewModelBase, IDisposable
     {
-        private readonly GammaControlService _gammaControlService;
         private readonly TemperatureService _temperatureService;
+        private readonly GammaControlService _gammaControlService;
+        private readonly WindowService _windowService;
 
         private readonly Timer _temperatureUpdateTimer;
         private readonly Timer _pollingTimer;
@@ -44,7 +45,7 @@ namespace LightBulb.ViewModels
                 if (value && !IsPreviewModeEnabled) UpdateTemperature();
 
                 _temperatureUpdateTimer.Enabled = value;
-                _pollingTimer.Enabled = value && Settings.Default.IsPollingEnabled;
+                _pollingTimer.Enabled = value && Settings.IsGammaPollingEnabled;
 
                 UpdateGamma();
                 UpdateStatus();
@@ -143,24 +144,45 @@ namespace LightBulb.ViewModels
         public RelayCommand RestoreDefaultCommand { get; }
         public RelayCommand StartCyclePreviewCommand { get; }
 
-        public MainViewModel(GammaControlService gammaControlService, TemperatureService temperatureService)
+        public MainViewModel(TemperatureService temperatureService, GammaControlService gammaControlService, WindowService windowService)
         {
-            _gammaControlService = gammaControlService;
+            // Services
             _temperatureService = temperatureService;
+            _gammaControlService = gammaControlService;
+            _windowService = windowService;
+
+            _windowService.FullScreenStateChanged += (sender, args) => UpdateGamma();
 
             // Timers
             _temperatureUpdateTimer = new Timer();
-            _temperatureUpdateTimer.Elapsed += (sender, args) => UpdateTemperature();
+            _temperatureUpdateTimer.Elapsed += (sender, args) =>
+            {
+                _temperatureUpdateTimer.Enabled = false;
+                UpdateTemperature();
+                _temperatureUpdateTimer.Enabled = true;
+            };
             _pollingTimer = new Timer();
-            _pollingTimer.Elapsed += (sender, args) => UpdateGamma();
+            _pollingTimer.Elapsed += (sender, args) =>
+            {
+                _pollingTimer.Enabled = false;
+                UpdateGamma();
+                _pollingTimer.Enabled = true;
+            };
             _cyclePreviewTimer = new Timer();
             _cyclePreviewTimer.Interval = 10;
-            _cyclePreviewTimer.Elapsed += (sender, args) => CyclePreviewUpdateTemperature();
+            _cyclePreviewTimer.Elapsed += (sender, args) =>
+            {
+                CyclePreviewUpdateTemperature();
+            };
             _disableTemporarilyTimer = new Timer();
-            _disableTemporarilyTimer.Elapsed += (sender, args) => IsEnabled = true;
+            _disableTemporarilyTimer.AutoReset = false;
+            _disableTemporarilyTimer.Elapsed += (sender, args) =>
+            {
+                IsEnabled = true;
+            };
 
             // Settings
-            Settings.Default.PropertyChanged += (sender, args) => ReloadSettings();
+            Settings.PropertyChanged += (sender, args) => ReloadSettings();
             ReloadSettings();
 
             // Commands
@@ -182,10 +204,10 @@ namespace LightBulb.ViewModels
 
         private void ReloadSettings()
         {
-            _temperatureUpdateTimer.Interval = Settings.Default.TemperatureUpdateInterval.TotalMilliseconds;
-            _pollingTimer.Interval = Settings.Default.PollingInterval.TotalMilliseconds;
+            _temperatureUpdateTimer.Interval = Settings.TemperatureUpdateInterval.TotalMilliseconds;
+            _pollingTimer.Interval = Settings.GammaPollingInterval.TotalMilliseconds;
 
-            if (!Settings.Default.IsPollingEnabled)
+            if (!Settings.IsGammaPollingEnabled)
                 _pollingTimer.Enabled = false;
         }
 
@@ -203,7 +225,9 @@ namespace LightBulb.ViewModels
 
         private void UpdateGamma()
         {
-            if (IsEnabled)
+            bool isBlockedByFullScreen = Settings.DisableWhenFullscreen && _windowService.IsFullScreen;
+
+            if (IsEnabled && !isBlockedByFullScreen)
             {
                 ushort temp = IsPreviewModeEnabled ? PreviewTemperature : Temperature;
                 var intensity = ColorIntensity.FromTemperature(temp);
@@ -223,8 +247,8 @@ namespace LightBulb.ViewModels
             int diff = Math.Abs(currentTemp - newTemp);
 
             // Don't update if difference is too small, unless it's either max or min temperature
-            if (!newTemp.IsEither(Settings.Default.MinTemperature, Settings.Default.MaxTemperature) &&
-                diff < Settings.Default.TemperatureEpsilon) return;
+            if (!newTemp.IsEither(Settings.MinTemperature, Settings.MaxTemperature) &&
+                diff < Settings.TemperatureEpsilon) return;
 
             Temperature = newTemp;
         }
@@ -237,8 +261,8 @@ namespace LightBulb.ViewModels
             int diff = Math.Abs(currentTemp - newTemp);
 
             // Don't update if difference is too small, unless it's either max or min temperature
-            if (!newTemp.IsEither(Settings.Default.MinTemperature, Settings.Default.MaxTemperature) &&
-                diff < Settings.Default.TemperatureEpsilon) return;
+            if (!newTemp.IsEither(Settings.MinTemperature, Settings.MaxTemperature) &&
+                diff < Settings.TemperatureEpsilon) return;
 
             PreviewTemperature = newTemp;
             IsPreviewModeEnabled = true;

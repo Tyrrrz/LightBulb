@@ -73,7 +73,26 @@
                           Margin="5"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Center"
-                          IsChecked="{Binding Settings.IsPollingEnabled}" />
+                          IsChecked="{Binding Settings.IsGammaPollingEnabled}" />
+        </Grid>
+
+        <!--  Full screen disable  -->
+        <Grid Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Button" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       Margin="5"
+                       VerticalAlignment="Center"
+                       Text="Disable when fullscreen:"
+                       ToolTip="Disables LightBulb when the foreground window is running in full screen (games, videos, etc)" />
+            <ToggleButton Grid.Column="1"
+                          Margin="5"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          IsChecked="{Binding Settings.DisableWhenFullscreen}" />
         </Grid>
 
         <!--  24hr preview  -->

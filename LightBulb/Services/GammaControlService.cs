@@ -1,22 +1,20 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using LightBulb.Models;
 using NegativeLayer.Extensions;
 
 namespace LightBulb.Services
 {
-    public class GammaControlService
+    public class GammaControlService : WinApiServiceBase
     {
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern IntPtr GetDC(IntPtr hWnd);
+        [DllImport("user32.dll", EntryPoint = "GetDC", SetLastError = true)]
+        private static extern IntPtr GetDCInternal(IntPtr hWnd);
 
-        [DllImport("gdi32.dll", SetLastError = true)]
-        private static extern bool SetDeviceGammaRamp(IntPtr hdc, ref GammaRamp lpRamp);
+        [DllImport("gdi32.dll", EntryPoint = "SetDeviceGammaRamp", SetLastError = true)]
+        private static extern bool SetDeviceGammaRampInternal(IntPtr hMonitor, ref GammaRamp ramp);
 
-        [DllImport("gdi32.dll", SetLastError = true)]
-        private static extern bool GetDeviceGammaRamp(IntPtr hdc, ref GammaRamp lpRamp);
+        [DllImport("gdi32.dll", EntryPoint = "GetDeviceGammaRamp", SetLastError = true)]
+        private static extern bool GetDeviceGammaRampInternal(IntPtr hMonitor, out GammaRamp ramp);
 
         private readonly GammaRamp _originalRamp;
 
@@ -25,18 +23,16 @@ namespace LightBulb.Services
             _originalRamp = GetDisplayGammaRamp();
         }
 
-        private Win32Exception GetLastError()
+        /// <summary>
+        /// Get the curve that represents the current display gamma
+        /// </summary>
+        public GammaRamp GetDisplayGammaRamp()
         {
-            int errCode = Marshal.GetLastWin32Error();
-            if (errCode == 0) return null;
-            return new Win32Exception(errCode);
-        }
-
-        private void ThrowIfWin32Error()
-        {
-            var ex = GetLastError();
-            //if (ex != null) throw ex;
-            if (ex != null) Debug.WriteLine($"Win32 error: {ex.Message} ({ex.NativeErrorCode})", nameof(GammaControlService));
+            var dc = GetDCInternal(IntPtr.Zero);
+            GammaRamp ramp;
+            if (!GetDeviceGammaRampInternal(dc, out ramp))
+                CheckThrowWin32Error();
+            return ramp;
         }
 
         /// <summary>
@@ -44,21 +40,17 @@ namespace LightBulb.Services
         /// </summary>
         public void SetDisplayGammaRamp(GammaRamp ramp)
         {
-            var dc = GetDC(IntPtr.Zero);
-            if (!SetDeviceGammaRamp(dc, ref ramp))
-                ThrowIfWin32Error();
-        }
+            // Randomize the values in ramp slightly...
+            // ... this forces the ramp to refresh every time
+            // ... because some drivers will just reject it if it doesn't change
+            ramp.Red[255] = (ushort) (ramp.Red[255] + Ext.RandomInt(-5, 5));
+            ramp.Blue[255] = (ushort) (ramp.Blue[255] + Ext.RandomInt(-5, 5));
+            ramp.Green[255] = (ushort) (ramp.Green[255] + Ext.RandomInt(-5, 5));
 
-        /// <summary>
-        /// Get the curve that represents the current display gamma
-        /// </summary>
-        public GammaRamp GetDisplayGammaRamp()
-        {
-            var dc = GetDC(IntPtr.Zero);
-            var ramp = new GammaRamp();
-            if (!GetDeviceGammaRamp(dc, ref ramp))
-                ThrowIfWin32Error();
-            return ramp;
+            // Set ramp
+            var dc = GetDCInternal(IntPtr.Zero);
+            if (!SetDeviceGammaRampInternal(dc, ref ramp))
+                CheckThrowWin32Error();
         }
 
         /// <summary>

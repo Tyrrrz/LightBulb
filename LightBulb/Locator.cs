@@ -17,14 +17,16 @@ namespace LightBulb
 
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            SimpleIoc.Default.Register<GammaControlService>();
             SimpleIoc.Default.Register<TemperatureService>();
+            SimpleIoc.Default.Register<GammaControlService>();
+            SimpleIoc.Default.Register<WindowService>();
             SimpleIoc.Default.Register<MainViewModel>();
         }
 
         public static void Cleanup()
         {
             Resolve<GammaControlService>().RestoreDefault();
+            Resolve<WindowService>().Dispose();
             Resolve<MainViewModel>().Dispose();
         }
 
