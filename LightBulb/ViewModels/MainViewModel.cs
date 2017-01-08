@@ -155,7 +155,7 @@ namespace LightBulb.ViewModels
             _pollingTimer = new Timer();
             _pollingTimer.Elapsed += (sender, args) => UpdateGamma();
             _cyclePreviewTimer = new Timer();
-            _cyclePreviewTimer.Interval = 1/15d;
+            _cyclePreviewTimer.Interval = 1/5d;
             _cyclePreviewTimer.Elapsed += (sender, args) => CyclePreviewUpdateTemperature();
             _disableTemporarilyTimer = new Timer();
             _disableTemporarilyTimer.Elapsed += (sender, args) => IsEnabled = true;
