@@ -50,6 +50,9 @@ namespace LightBulb.Services
                 _winEventHandler, 0, 0, 0);
             _windowResizeHook = SetWinEventHookInternal(0x800B, 0x800B, IntPtr.Zero,
                 _winEventHandler, 0, 0, 0);
+
+            // Init
+            Update();
         }
 
         private void Update()
