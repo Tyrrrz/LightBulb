@@ -248,6 +248,7 @@ namespace LightBulb.ViewModels
             if ((PreviewTime - Time).TotalHours >= 24)
             {
                 _cyclePreviewTimer.Enabled = false;
+                IsPreviewModeEnabled = false;
                 DispatcherHelper.CheckBeginInvokeOnUI(() => StartCyclePreviewCommand.RaiseCanExecuteChanged());
             }
         }
