@@ -172,39 +172,9 @@
                     Padding="5"
                     BorderBrush="{DynamicResource MiscBrush}"
                     BorderThickness="0,1,0,0">
-                <!--  Current/preview temperature  -->
                 <TextBlock FontSize="12"
                            Foreground="{DynamicResource SecondaryInverseTextBrush}"
-                           Visibility="{Binding IsEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <Run>
-                        <Run.Style>
-                            <Style TargetType="Run">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsPreviewModeEnabled}" Value="True">
-                                        <Setter Property="Text" Value="Temperature (preview):" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsPreviewModeEnabled}" Value="False">
-                                        <Setter Property="Text" Value="Temperature:" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Run.Style>
-                    </Run>
-                    <Run Foreground="{DynamicResource PrimaryInverseTextBrush}">
-                        <Run.Style>
-                            <Style TargetType="Run">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsPreviewModeEnabled}" Value="True">
-                                        <Setter Property="Text" Value="{Binding PreviewTemperature}" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsPreviewModeEnabled}" Value="False">
-                                        <Setter Property="Text" Value="{Binding CurrentTemperature}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Run.Style>
-                    </Run><Run Text="K" />
-                </TextBlock>
+                           Text="{Binding StatusText}" />
             </Border>
         </Grid>
     </Border>

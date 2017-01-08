@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Timers;
 using System.Windows;
-using System.Windows.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Threading;
 using LightBulb.Models;
 using LightBulb.Services;
 using NegativeLayer.Extensions;
@@ -10,23 +11,25 @@ using NegativeLayer.WPFExtensions;
 
 namespace LightBulb.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, IDisposable
     {
-        private readonly WinApiService _winApiService;
+        private readonly GammaControlService _gammaControlService;
+        private readonly TemperatureService _temperatureService;
 
-        private readonly DispatcherTimer _updateTimer; // handles temperature changes
-        private readonly DispatcherTimer _previewUpdateTimer; // handles temperature changes in preview
-        private readonly DispatcherTimer _pollingTimer; // updates gamma periodically
-        private readonly DispatcherTimer _disableTimer; // "disable for xx" timer
+        private readonly Timer _temperatureUpdateTimer;
+        private readonly Timer _pollingTimer;
+        private readonly Timer _cyclePreviewTimer;
+        private readonly Timer _disableTemporarilyTimer;
+
+        private bool _isEnabled;
+        private bool _isPreviewModeEnabled;
+        private string _statusText;
+        private DateTime _time;
+        private DateTime _previewTime;
+        private ushort _temperature;
+        private ushort _previewTemperature;
 
         public Settings Settings => Settings.Default;
-
-        private double _previewHours; // fake hours for 24hr cycle preview
-
-        private bool _isEnabled = true;
-        private bool _isPreviewModeEnabled;
-        private ushort _previewTemperature;
-        private ushort _currentTemperature;
 
         /// <summary>
         /// Enables or disables the program
@@ -36,185 +39,238 @@ namespace LightBulb.ViewModels
             get { return _isEnabled; }
             set
             {
-                // Stop the disable timer if set to true
-                if (value)
-                    _disableTimer.Stop();
+                if (!Set(ref _isEnabled, value)) return;
+                if (value) _disableTemporarilyTimer.Enabled = false;
+                if (value && !IsPreviewModeEnabled) UpdateTemperature();
 
-                // Enable/disable update timer
-                _updateTimer.IsEnabled = value;
+                _temperatureUpdateTimer.Enabled = value;
+                _pollingTimer.Enabled = value && Settings.Default.IsPollingEnabled;
 
-                Set(ref _isEnabled, value);
                 UpdateGamma();
+                UpdateStatus();
             }
         }
 
         /// <summary>
-        /// When set to true, the preview temperature controls the gamma
+        /// Enables or disables the preview mode
         /// </summary>
         public bool IsPreviewModeEnabled
         {
             get { return _isPreviewModeEnabled; }
             set
             {
-                Set(ref _isPreviewModeEnabled, value);
+                if (!Set(ref _isPreviewModeEnabled, value)) return;
+                if (!value) _cyclePreviewTimer.Enabled = false;
+                
                 UpdateGamma();
+                UpdateStatus();
             }
         }
 
         /// <summary>
-        /// Fake temperature used for preview
+        /// Status text
+        /// </summary>
+        public string StatusText
+        {
+            get { return _statusText; }
+            private set { Set(ref _statusText, value); }
+        }
+
+        /// <summary>
+        /// Time used for temperature calculations
+        /// </summary>
+        public DateTime Time
+        {
+            get { return _time; }
+            private set
+            {
+                if (!Set(ref _time, value)) return;
+
+                UpdateStatus();
+            }
+        }
+
+        /// <summary>
+        /// Time used for preview-mode temperature calculations
+        /// </summary>
+        public DateTime PreviewTime
+        {
+            get { return _previewTime; }
+            private set
+            {
+                if (!Set(ref _previewTime, value)) return;
+
+                UpdateStatus();
+            }
+        }
+
+        /// <summary>
+        /// Current light temperature
+        /// </summary>
+        public ushort Temperature
+        {
+            get { return _temperature; }
+            private set
+            {
+                if (!Set(ref _temperature, value)) return;
+
+                UpdateGamma();
+                UpdateStatus();
+            }
+        }
+
+        /// <summary>
+        /// Preview mode light temperature
         /// </summary>
         public ushort PreviewTemperature
         {
             get { return _previewTemperature; }
             set
             {
-                // Discard if change is not sufficient
-                if (Math.Abs(value - PreviewTemperature) < Settings.TemperatureEpsilon)
-                    return;
+                if (!Set(ref _previewTemperature, value)) return;
+                if (!IsPreviewModeEnabled) return;
 
-                Set(ref _previewTemperature, value);
                 UpdateGamma();
+                UpdateStatus();
             }
         }
 
-        /// <summary>
-        /// Actual temperature used to control gamma
-        /// </summary>
-        public ushort CurrentTemperature
-        {
-            get { return _currentTemperature; }
-            set
-            {
-                // Discard if change is not sufficient
-                if (Math.Abs(value - CurrentTemperature) < Settings.TemperatureEpsilon)
-                    return;
-
-                Set(ref _currentTemperature, value);
-                UpdateGamma();
-            }
-        }
-
+        // Commands
         public RelayCommand ShowMainWindowCommand { get; }
         public RelayCommand ExitApplicationCommand { get; }
         public RelayCommand ToggleEnabledCommand { get; }
         public RelayCommand<double> DisableTemporarilyCommand { get; }
         public RelayCommand RestoreOriginalCommand { get; }
         public RelayCommand RestoreDefaultCommand { get; }
-        public RelayCommand PreviewCycleCommand { get; }
+        public RelayCommand StartCyclePreviewCommand { get; }
 
-        public MainViewModel(WinApiService winApiService)
+        public MainViewModel(GammaControlService gammaControlService, TemperatureService temperatureService)
         {
-            _winApiService = winApiService;
+            _gammaControlService = gammaControlService;
+            _temperatureService = temperatureService;
 
-            // Update timer
-            _updateTimer = new DispatcherTimer();
-            _updateTimer.Tick += (sender, args) => CurrentTemperature = GetTemperature(DateTime.Now);
+            // Timers
+            _temperatureUpdateTimer = new Timer();
+            _temperatureUpdateTimer.Elapsed += (sender, args) => UpdateTemperature();
+            _pollingTimer = new Timer();
+            _pollingTimer.Elapsed += (sender, args) => UpdateGamma();
+            _cyclePreviewTimer = new Timer();
+            _cyclePreviewTimer.Interval = 1/15d;
+            _cyclePreviewTimer.Elapsed += (sender, args) => CyclePreviewUpdateTemperature();
+            _disableTemporarilyTimer = new Timer();
+            _disableTemporarilyTimer.Elapsed += (sender, args) => IsEnabled = true;
 
-            // Preview update timer
-            _previewUpdateTimer = new DispatcherTimer();
-            _previewUpdateTimer.Interval = TimeSpan.FromSeconds(1/30d);
-            _previewUpdateTimer.Tick += (sender, args) =>
-            {
-                PreviewTemperature = GetTemperature(DateTime.Today.AddHours(_previewHours));
-                IsPreviewModeEnabled = true;
-                _previewHours += 0.1;
-                if (_previewHours >= 24)
-                {
-                    _previewHours = 0;
-                    _previewUpdateTimer.Stop();
-                    IsPreviewModeEnabled = false;
-                    PreviewCycleCommand.RaiseCanExecuteChanged();
-                }
-            };
-
-            // Polling timer
-            _pollingTimer = new DispatcherTimer();
-            _pollingTimer.Tick += (sender, args) => UpdateGamma();
-
-            // Disable timer
-            _disableTimer = new DispatcherTimer();
-            _disableTimer.Tick += (sender, args) => IsEnabled = true;
-
-            // Update settings when they are changed
-            Settings.PropertyChanged += (sender, args) => LoadSettings();
+            // Settings
+            Settings.Default.PropertyChanged += (sender, args) => ReloadSettings();
+            ReloadSettings();
 
             // Commands
-            ShowMainWindowCommand = new RelayCommand(() => Application.Current.MainWindow.Show());
+            ShowMainWindowCommand = new RelayCommand(() =>
+            {
+                Application.Current.MainWindow.Show();
+                Application.Current.MainWindow.Activate();
+            });
             ExitApplicationCommand = new RelayCommand(() => Application.Current.ShutdownSafe());
             ToggleEnabledCommand = new RelayCommand(() => IsEnabled = !IsEnabled);
             DisableTemporarilyCommand = new RelayCommand<double>(DisableTemporarily);
-            RestoreOriginalCommand = new RelayCommand(() => _winApiService.RestoreOriginal());
-            RestoreDefaultCommand = new RelayCommand(() => _winApiService.RestoreDefault());
-            PreviewCycleCommand = new RelayCommand(PreviewCycle, () => !_previewUpdateTimer.IsEnabled);
+            RestoreOriginalCommand = new RelayCommand(() => _gammaControlService.RestoreOriginal());
+            RestoreDefaultCommand = new RelayCommand(() => _gammaControlService.RestoreDefault());
+            StartCyclePreviewCommand = new RelayCommand(StartCyclePreview, () => !_cyclePreviewTimer.Enabled);
 
             // Init
-            LoadSettings();
-            _updateTimer.Start();
+            IsEnabled = true;
         }
 
-        /// <summary>
-        /// Update stuff that depends on settings
-        /// </summary>
-        private void LoadSettings()
+        private void ReloadSettings()
         {
-            _pollingTimer.IsEnabled = Settings.IsPollingEnabled;
-            _updateTimer.Interval = Settings.UpdateInterval;
-            _pollingTimer.Interval = Settings.PollingInterval;
-            CurrentTemperature = GetTemperature(DateTime.Now);
+            _temperatureUpdateTimer.Interval = Settings.Default.TemperatureUpdateInterval.TotalMilliseconds;
+            _pollingTimer.Interval = Settings.Default.PollingInterval.TotalMilliseconds;
+
+            if (!Settings.Default.IsPollingEnabled)
+                _pollingTimer.Enabled = false;
         }
 
-        /// <summary>
-        /// Get temperature that corresponds to the given time
-        /// </summary>
-        private ushort GetTemperature(DateTime dt)
-        {
-            ushort minTemp = Settings.MinTemperature;
-            ushort maxTemp = Settings.MaxTemperature;
-            int diff = maxTemp - minTemp;
-            double timeNorm = dt.TimeOfDay.TotalHours/24d;
-            double tempNorm = Math.Sin(-Math.PI/2 + 2*timeNorm*Math.PI);
-            double temp = minTemp + diff/2 + diff*tempNorm/2;
-            return (ushort) temp.RoundToInt().Clamp(ushort.MinValue, ushort.MaxValue);
-        }
-
-        /// <summary>
-        /// Update the display gamma, based on temperature
-        /// </summary>
-        private void UpdateGamma()
+        private void UpdateStatus()
         {
             if (!IsEnabled)
+                StatusText = "Turned off";
+            else if (!IsPreviewModeEnabled)
+                StatusText = $"Temp: {Temperature}K   Time: {Time:t}";
+            else if (_cyclePreviewTimer.Enabled)
+                StatusText = $"Temp: {PreviewTemperature}K   Time: {PreviewTime:t}";
+            else
+                StatusText = $"Temp: {PreviewTemperature}K";
+        }
+
+        private void UpdateGamma()
+        {
+            if (IsEnabled)
             {
-                _winApiService.RestoreDefault();
+                ushort temp = IsPreviewModeEnabled ? PreviewTemperature : Temperature;
+                var intensity = ColorIntensity.FromTemperature(temp);
+                _gammaControlService.SetDisplayGammaLinear(intensity);
             }
             else
             {
-                ushort temp = IsPreviewModeEnabled ? PreviewTemperature : CurrentTemperature;
-                var intensity = ColorIntensity.FromTemperature(temp);
-                _winApiService.SetDisplayGammaLinear(intensity);
+                _gammaControlService.RestoreDefault();
             }
         }
 
-        /// <summary>
-        /// Disable the program for the given amount of milliseconds
-        /// </summary>
-        private void DisableTemporarily(double ms)
+        private void UpdateTemperature()
         {
-            _disableTimer.Stop();
-            IsEnabled = false;
-            _disableTimer.Interval = TimeSpan.FromMilliseconds(ms);
-            _disableTimer.Start();
+            Time = DateTime.Now;
+            ushort currentTemp = Temperature;
+            ushort newTemp = _temperatureService.GetTemperature(Time);
+            int diff = Math.Abs(currentTemp - newTemp);
+
+            // Don't update if difference is too small, unless it's either max or min temperature
+            if (!newTemp.IsEither(Settings.Default.MinTemperature, Settings.Default.MaxTemperature) &&
+                diff < Settings.Default.TemperatureEpsilon) return;
+
+            Temperature = newTemp;
         }
 
-        /// <summary>
-        /// Preview the 24hr cycle in fast-motion
-        /// </summary>
-        private void PreviewCycle()
+        private void CyclePreviewUpdateTemperature()
         {
-            _previewUpdateTimer.Stop();
-            _previewHours = 0;
-            _previewUpdateTimer.Start();
-            PreviewCycleCommand.RaiseCanExecuteChanged();
+            PreviewTime = PreviewTime.AddHours(0.05);
+            ushort currentTemp = PreviewTemperature;
+            ushort newTemp = _temperatureService.GetTemperature(PreviewTime);
+            int diff = Math.Abs(currentTemp - newTemp);
+
+            // Don't update if difference is too small, unless it's either max or min temperature
+            if (!newTemp.IsEither(Settings.Default.MinTemperature, Settings.Default.MaxTemperature) &&
+                diff < Settings.Default.TemperatureEpsilon) return;
+
+            PreviewTemperature = newTemp;
+            IsPreviewModeEnabled = true;
+
+            // Ending condition
+            if ((PreviewTime - Time).TotalHours >= 24)
+            {
+                _cyclePreviewTimer.Enabled = false;
+                DispatcherHelper.CheckBeginInvokeOnUI(() => StartCyclePreviewCommand.RaiseCanExecuteChanged());
+            }
+        }
+
+        private void StartCyclePreview()
+        {
+            PreviewTime = Time;
+            _cyclePreviewTimer.Enabled = true;
+        }
+
+        private void DisableTemporarily(double ms)
+        {
+            _disableTemporarilyTimer.Enabled = false;
+            _disableTemporarilyTimer.Interval = ms;
+            _disableTemporarilyTimer.Enabled = true;
+            IsEnabled = false;
+        }
+
+        public void Dispose()
+        {
+            _temperatureUpdateTimer.Dispose();
+            _cyclePreviewTimer.Dispose();
+            _disableTemporarilyTimer.Dispose();
         }
     }
 }

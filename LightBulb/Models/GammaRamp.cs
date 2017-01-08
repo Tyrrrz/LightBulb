@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace LightBulb.Models.WinApi
+namespace LightBulb.Models
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct GammaRamp

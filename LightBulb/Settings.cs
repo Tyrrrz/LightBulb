@@ -28,6 +28,20 @@ namespace LightBulb
             set { Set(ref _maxTemperature, value); }
         }
 
+        private TimeSpan _temperatureSwitchOffset = TimeSpan.FromMinutes(90);
+        public TimeSpan TemperatureSwitchOffset
+        {
+            get { return _temperatureSwitchOffset; }
+            set { Set(ref _temperatureSwitchOffset, value); }
+        }
+
+        private TimeSpan _temperatureUpdateInterval = TimeSpan.FromMinutes(1);
+        public TimeSpan TemperatureUpdateInterval
+        {
+            get { return _temperatureUpdateInterval; }
+            set { Set(ref _temperatureUpdateInterval, value); }
+        }
+
         private bool _isPollingEnabled = true;
         public bool IsPollingEnabled
         {
@@ -35,18 +49,25 @@ namespace LightBulb
             set { Set(ref _isPollingEnabled, value); }
         }
 
-        private TimeSpan _updateInterval = TimeSpan.FromMinutes(5);
-        public TimeSpan UpdateInterval
-        {
-            get { return _updateInterval; }
-            set { Set(ref _updateInterval, value); }
-        }
-
         private TimeSpan _pollingInterval = TimeSpan.FromSeconds(5);
         public TimeSpan PollingInterval
         {
             get { return _pollingInterval; }
             set { Set(ref _pollingInterval, value); }
+        }
+
+        private TimeSpan _sunriseTime = new TimeSpan(7, 20, 0);
+        public TimeSpan SunriseTime
+        {
+            get { return _sunriseTime; }
+            set { Set(ref _sunriseTime, value); }
+        }
+
+        private TimeSpan _sunsetTime = new TimeSpan(16, 30, 0);
+        public TimeSpan SunsetTime
+        {
+            get { return _sunsetTime; }
+            set { Set(ref _sunsetTime, value); }
         }
 
         private bool _disableWhenFullscreen;

@@ -3,12 +3,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using LightBulb.Models;
-using LightBulb.Models.WinApi;
 using NegativeLayer.Extensions;
 
 namespace LightBulb.Services
 {
-    public class WinApiService
+    public class GammaControlService
     {
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr GetDC(IntPtr hWnd);
@@ -21,7 +20,7 @@ namespace LightBulb.Services
 
         private readonly GammaRamp _originalRamp;
 
-        public WinApiService()
+        public GammaControlService()
         {
             _originalRamp = GetDisplayGammaRamp();
         }
@@ -37,7 +36,7 @@ namespace LightBulb.Services
         {
             var ex = GetLastError();
             //if (ex != null) throw ex;
-            if (ex != null) Debug.WriteLine($"Win32 error: {ex.Message} ({ex.NativeErrorCode})", "WinApiService");
+            if (ex != null) Debug.WriteLine($"Win32 error: {ex.Message} ({ex.NativeErrorCode})", nameof(GammaControlService));
         }
 
         /// <summary>

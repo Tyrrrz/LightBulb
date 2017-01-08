@@ -22,7 +22,7 @@
         <!--  Day-time temperature  -->
         <TextBlock Margin="5">
             <Run Text="Day-time color temperature:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Value, ElementName=MaxTempSlider, Mode=OneWay}" /><Run Text="K" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Value, ElementName=MaxTempSlider, Mode=OneWay}" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="K" />
         </TextBlock>
         <Slider x:Name="MaxTempSlider"
                 Margin="5,0,5,5"
@@ -41,7 +41,7 @@
         <!--  Night-time temperature  -->
         <TextBlock Margin="5">
             <Run Text="Night-time color temperature:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Value, ElementName=MinTempSlider, Mode=OneWay}" /><Run Text="K" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Value, ElementName=MinTempSlider, Mode=OneWay}" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="K" />
         </TextBlock>
         <Slider x:Name="MinTempSlider"
                 Margin="5,0,5,5"
@@ -95,7 +95,7 @@
                     Padding="2"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
-                    Command="{Binding PreviewCycleCommand}">
+                    Command="{Binding StartCyclePreviewCommand}">
                 <materialDesign:PackIcon Kind="WhiteBalanceSunny" />
             </Button>
         </Grid>
