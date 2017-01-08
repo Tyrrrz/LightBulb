@@ -3,8 +3,6 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using LightBulb.Models;
 
-// ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
-
 namespace LightBulb.Services
 {
     public class WindowService : WinApiServiceBase, IDisposable
@@ -33,11 +31,10 @@ namespace LightBulb.Services
         [DllImport("user32.dll", EntryPoint = "UnhookWinEvent", SetLastError = true)]
         private static extern bool UnhookWinEventInternal(IntPtr hWinEventHook);
 
-        private const uint EventSystemForeground = 3;
-        private const uint WineventOutofcontext = 0;
-
-        private readonly WinEventDelegate _foregroundWindowChangedEventHandler;
-        private readonly IntPtr _foregroundWindowHook;
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
+        private readonly WinEventDelegate _winEventHandler;
+        private readonly IntPtr _foregroundWindowChangedHook;
+        private readonly IntPtr _windowResizeHook;
 
         public Settings Settings => Settings.Default;
         public bool IsFullScreen { get; private set; }
@@ -46,13 +43,16 @@ namespace LightBulb.Services
 
         public WindowService()
         {
-            _foregroundWindowChangedEventHandler =
-                (hook, type, hwnd, idObject, child, thread, time) => ForegroundWindowChanged();
-            _foregroundWindowHook = SetWinEventHookInternal(EventSystemForeground, EventSystemForeground, IntPtr.Zero,
-                _foregroundWindowChangedEventHandler, 0, 0, WineventOutofcontext);
+            // Hooks
+            _winEventHandler =
+                (hook, type, hwnd, idObject, child, thread, time) => Update();
+            _foregroundWindowChangedHook = SetWinEventHookInternal(0x0003, 0x0003, IntPtr.Zero,
+                _winEventHandler, 0, 0, 0);
+            _windowResizeHook = SetWinEventHookInternal(0x800B, 0x800B, IntPtr.Zero,
+                _winEventHandler, 0, 0, 0);
         }
 
-        private void ForegroundWindowChanged()
+        private void Update()
         {
             // Check if foreground window is fullscreen
             bool fs = IsWindowFullScreen(GetForegroundWindow());
@@ -120,7 +120,8 @@ namespace LightBulb.Services
 
         public void Dispose()
         {
-            UnhookWinEventInternal(_foregroundWindowHook);
+            UnhookWinEventInternal(_foregroundWindowChangedHook);
+            UnhookWinEventInternal(_windowResizeHook);
         }
     }
 }
