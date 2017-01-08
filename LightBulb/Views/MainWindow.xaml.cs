@@ -13,6 +13,7 @@ namespace LightBulb.Views
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
+            Hide();
             Left = SystemParameters.WorkArea.Width - Width - 5;
             Top = SystemParameters.WorkArea.Height - Height;
         }
