@@ -41,6 +41,7 @@
             <!--  Tray icon  -->
             <tb:TaskbarIcon x:Name="TaskbarIcon"
                             Grid.Row="0"
+                            Tooltip="LightBulb"
                             DoubleClickCommand="{Binding ShowMainWindowCommand}"
                             IconSource="/LightBulb;component/favicon.ico">
                 <tb:TaskbarIcon.ContextMenu>
