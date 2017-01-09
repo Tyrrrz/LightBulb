@@ -111,7 +111,9 @@
     </ApplicationDefinition>
     <Compile Include="Locator.cs" />
     <Compile Include="Models\ColorIntensity.cs" />
+    <Compile Include="Models\GeolocationInfo.cs" />
     <Compile Include="Models\Rect.cs" />
+    <Compile Include="Services\GeolocationApiService.cs" />
     <Compile Include="Services\TemperatureService.cs" />
     <Compile Include="Services\GammaControlService.cs" />
     <Page Include="Views\GeneralSettingsPage.xaml">

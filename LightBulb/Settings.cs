@@ -17,8 +17,11 @@ namespace LightBulb
         private TimeSpan _temperatureSwitchDuration = TimeSpan.FromMinutes(90);
         private TimeSpan _temperatureUpdateInterval = TimeSpan.FromMinutes(1);
         private TimeSpan _gammaPollingInterval = TimeSpan.FromSeconds(3);
+        private TimeSpan _internetSyncInterval = TimeSpan.FromHours(6);
         private TimeSpan _sunriseTime = new TimeSpan(7, 20, 0);
         private TimeSpan _sunsetTime = new TimeSpan(16, 30, 0);
+        private string _longitude;
+        private string _latitude;
 
         public bool IsGammaPollingEnabled
         {
@@ -86,6 +89,12 @@ namespace LightBulb
             set { Set(ref _gammaPollingInterval, value); }
         }
 
+        public TimeSpan InternetSyncInterval
+        {
+            get { return _internetSyncInterval; }
+            set { Set(ref _internetSyncInterval, value); }
+        }
+
         public TimeSpan SunriseTime
         {
             get { return _sunriseTime; }
@@ -108,6 +117,18 @@ namespace LightBulb
                 if (SunsetTime < SunriseTime)
                     SunriseTime = SunsetTime;
             }
+        }
+
+        public string Latitude
+        {
+            get { return _latitude; }
+            set { Set(ref _latitude, value); }
+        }
+
+        public string Longitude
+        {
+            get { return _longitude; }
+            set { Set(ref _longitude, value); }
         }
 
         [IgnoreDataMember]

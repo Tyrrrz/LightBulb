@@ -16,11 +16,13 @@ namespace LightBulb.ViewModels
         private readonly TemperatureService _temperatureService;
         private readonly GammaControlService _gammaControlService;
         private readonly WindowService _windowService;
+        private readonly GeolocationApiService _geolocationApiService;
 
         private readonly Timer _temperatureUpdateTimer;
         private readonly Timer _pollingTimer;
         private readonly Timer _cyclePreviewTimer;
         private readonly Timer _disableTemporarilyTimer;
+        private readonly Timer _internetSyncTimer;
 
         private bool _isEnabled;
         private bool _isPreviewModeEnabled;
@@ -144,12 +146,14 @@ namespace LightBulb.ViewModels
         public RelayCommand RestoreDefaultCommand { get; }
         public RelayCommand StartCyclePreviewCommand { get; }
 
-        public MainViewModel(TemperatureService temperatureService, GammaControlService gammaControlService, WindowService windowService)
+        public MainViewModel(TemperatureService temperatureService, GammaControlService gammaControlService,
+            WindowService windowService, GeolocationApiService geolocationApiService)
         {
             // Services
             _temperatureService = temperatureService;
             _gammaControlService = gammaControlService;
             _windowService = windowService;
+            _geolocationApiService = geolocationApiService;
 
             _windowService.FullScreenStateChanged += (sender, args) => UpdateGamma();
 
@@ -159,14 +163,14 @@ namespace LightBulb.ViewModels
             {
                 _temperatureUpdateTimer.Enabled = false;
                 UpdateTemperature();
-                _temperatureUpdateTimer.Enabled = true;
+                _temperatureUpdateTimer.Enabled = IsEnabled;
             };
             _pollingTimer = new Timer();
             _pollingTimer.Elapsed += (sender, args) =>
             {
                 _pollingTimer.Enabled = false;
                 UpdateGamma();
-                _pollingTimer.Enabled = true;
+                _pollingTimer.Enabled = Settings.IsGammaPollingEnabled;
             };
             _cyclePreviewTimer = new Timer();
             _cyclePreviewTimer.Interval = 10;
@@ -180,16 +184,24 @@ namespace LightBulb.ViewModels
             {
                 IsEnabled = true;
             };
+            _internetSyncTimer = new Timer();
+            _internetSyncTimer.Elapsed += (sender, args) =>
+            {
+                _internetSyncTimer.Enabled = false;
+                InternetSyncAsync();
+                _internetSyncTimer.Enabled = Settings.IsInternetTimeSyncEnabled;
+            };
 
             // Settings
-            Settings.PropertyChanged += (sender, args) => ReloadSettings();
-            ReloadSettings();
+            Settings.PropertyChanged += (sender, args) => LoadSettings();
+            LoadSettings();
 
             // Commands
             ShowMainWindowCommand = new RelayCommand(() =>
             {
                 Application.Current.MainWindow.Show();
                 Application.Current.MainWindow.Activate();
+                Application.Current.MainWindow.Focus();
             });
             ExitApplicationCommand = new RelayCommand(() => Application.Current.ShutdownSafe());
             ToggleEnabledCommand = new RelayCommand(() => IsEnabled = !IsEnabled);
@@ -202,13 +214,21 @@ namespace LightBulb.ViewModels
             IsEnabled = true;
         }
 
-        private void ReloadSettings()
+        private void LoadSettings()
         {
+            // Timers
             _temperatureUpdateTimer.Interval = Settings.TemperatureUpdateInterval.TotalMilliseconds;
             _pollingTimer.Interval = Settings.GammaPollingInterval.TotalMilliseconds;
+            _internetSyncTimer.Interval = Settings.InternetSyncInterval.TotalMilliseconds;
 
+            _internetSyncTimer.Enabled = Settings.IsInternetTimeSyncEnabled;
             if (!Settings.IsGammaPollingEnabled)
                 _pollingTimer.Enabled = false;
+
+            // Refresh stuff
+            UpdateTemperature();
+            if (Settings.IsInternetTimeSyncEnabled)
+                InternetSyncAsync();
         }
 
         private void UpdateStatus()
@@ -290,11 +310,24 @@ namespace LightBulb.ViewModels
             IsEnabled = false;
         }
 
+        private async void InternetSyncAsync()
+        {
+            if (Settings.Latitude.IsBlank() || Settings.Longitude.IsBlank())
+            {
+                var geoInfo = await _geolocationApiService.GetGeolocationInfoAsync();
+                if (geoInfo == null) return;
+                Settings.Latitude = geoInfo.Latitude;
+                Settings.Longitude = geoInfo.Longitude;
+            }
+        }
+
         public void Dispose()
         {
             _temperatureUpdateTimer.Dispose();
+            _pollingTimer.Dispose();
             _cyclePreviewTimer.Dispose();
             _disableTemporarilyTimer.Dispose();
+            _internetSyncTimer.Dispose();
         }
     }
 }
