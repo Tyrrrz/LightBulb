@@ -14,7 +14,7 @@ namespace LightBulb.Services
             ushort maxTemp = Settings.Default.MaxTemperature;
             int tempDiff = maxTemp - minTemp;
 
-            var offset = Settings.Default.TemperatureSwitchOffset;
+            var offset = Settings.Default.TemperatureSwitchDuration;
             var riseTime = Settings.Default.SunriseTime;
             var setTime = Settings.Default.SunsetTime;
 
