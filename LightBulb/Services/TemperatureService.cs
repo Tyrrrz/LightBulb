@@ -18,31 +18,34 @@ namespace LightBulb.Services
             var riseTime = Settings.Default.SunriseTime;
             var setTime = Settings.Default.SunsetTime;
 
-            var pastRiseTime = time - riseTime;
-            var pastSetTime = time - setTime;
+            // Way before sunrise (night time)
+            if (time < riseTime - offset)
+                return minTemp;
 
-            // Before sunrise (night)
-            if (pastRiseTime <= TimeSpan.Zero)
+            // Incoming sunrise (night time -> day time)
+            if (time >= riseTime - offset && time < riseTime)
             {
-                double modifier = Math.Abs(pastRiseTime.TotalHours/offset.TotalHours).Clamp(0, 1);
+                double remaining = Math.Abs(time.TotalHours - riseTime.TotalHours);
+                double modifier = (remaining/offset.TotalHours).Clamp(0, 1);
                 double temp = minTemp + tempDiff*Math.Cos(modifier*Math.PI/2);
                 return (ushort) temp;
             }
 
-            // After sunrise but before sunset (day)
-            if (pastSetTime <= TimeSpan.Zero)
+            // Between sunrise and sunset (day time)
+            if (time > riseTime && time < setTime - offset)
                 return maxTemp;
 
-            // After sunset (night)
-            if (pastSetTime > TimeSpan.Zero)
+            // Incoming sunset (day time -> night time)
+            if (time >= setTime - offset && time < setTime)
             {
-                double modifier = Math.Abs(pastSetTime.TotalHours/offset.TotalHours).Clamp(0, 1);
-                double temp = maxTemp - tempDiff*Math.Sin(modifier*Math.PI/2);
+                double remaining = Math.Abs(time.TotalHours - setTime.TotalHours);
+                double modifier = (remaining/offset.TotalHours).Clamp(0, 1);
+                double temp = maxTemp - tempDiff*Math.Cos(modifier*Math.PI/2);
                 return (ushort) temp;
             }
 
-            // Unreachable
-            return maxTemp;
+            // After sunset (night time)
+            return minTemp;
         }
 
         /// <summary>
