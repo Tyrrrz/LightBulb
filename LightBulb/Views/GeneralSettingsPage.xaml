@@ -20,9 +20,9 @@
 
     <StackPanel Grid.IsSharedSizeScope="True" Orientation="Vertical">
         <!--  Day-time temperature  -->
-        <TextBlock Margin="5">
+        <TextBlock Margin="5" ToolTip="Color temperature during day-time">
             <Run Text="Day-time color temperature:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Value, ElementName=MaxTempSlider, Mode=OneWay}" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="K" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.MaxTemperature, Mode=OneWay}" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="K" />
         </TextBlock>
         <Slider x:Name="MaxTempSlider"
                 Margin="5,0,5,5"
@@ -39,9 +39,9 @@
                 Value="{Binding Settings.MaxTemperature}" />
 
         <!--  Night-time temperature  -->
-        <TextBlock Margin="5">
+        <TextBlock Margin="5" ToolTip="Color temperature during night-time">
             <Run Text="Night-time color temperature:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Value, ElementName=MinTempSlider, Mode=OneWay}" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="K" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.MinTemperature, Mode=OneWay}" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="K" />
         </TextBlock>
         <Slider x:Name="MinTempSlider"
                 Margin="5,0,5,5"
@@ -57,6 +57,22 @@
                 ValueChanged="MinTempSlider_OnValueChanged"
                 Value="{Binding Settings.MinTemperature}" />
 
+        <!--  Switch duration temperature  -->
+        <TextBlock Margin="5" ToolTip="How long it takes to switch between temperatures">
+            <Run Text="Transition duration:" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.TemperatureSwitchDuration, StringFormat=\{0:t\}, Mode=OneWay}" />
+        </TextBlock>
+        <Slider x:Name="SwitchDurationSlider"
+                Margin="5,0,5,5"
+                IsSnapToTickEnabled="True"
+                LargeChange="30"
+                Maximum="120"
+                Minimum="0"
+                SmallChange="10"
+                TickFrequency="10"
+                TickPlacement="BottomRight"
+                Value="{Binding Settings.TemperatureSwitchDurationMinutes}" />
+
         <!--  Polling enabled/disabled  -->
         <Grid Background="Transparent">
             <Grid.ColumnDefinitions>
@@ -68,7 +84,7 @@
                        Margin="5"
                        VerticalAlignment="Center"
                        Text="Enable gamma polling:"
-                       ToolTip="Makes sure the gamma settings are not overriden by refreshing them every few seconds" />
+                       ToolTip="Polling refreshes the gamma settings every few seconds, making sure they are not overriden" />
             <ToggleButton Grid.Column="1"
                           Margin="5"
                           HorizontalAlignment="Right"
@@ -87,7 +103,7 @@
                        Margin="5"
                        VerticalAlignment="Center"
                        Text="Disable when fullscreen:"
-                       ToolTip="Disables LightBulb when the foreground window is running in full screen (games, videos, etc)" />
+                       ToolTip="When checked LightBulb will disable itself for fullscreen applications" />
             <ToggleButton Grid.Column="1"
                           Margin="5"
                           HorizontalAlignment="Right"

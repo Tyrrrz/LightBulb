@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using NegativeLayer.Settings;
 
 namespace LightBulb
@@ -76,6 +77,13 @@ namespace LightBulb
         {
             get { return _sunsetTime; }
             set { Set(ref _sunsetTime, value); }
+        }
+
+        [IgnoreDataMember]
+        public double TemperatureSwitchDurationMinutes
+        {
+            get { return TemperatureSwitchDuration.TotalMinutes; }
+            set { TemperatureSwitchDuration = TimeSpan.FromMinutes(value); }
         }
     }
 }
