@@ -21,7 +21,7 @@
         <!--  Sunrise time temperature  -->
         <TextBlock Margin="5" ToolTip="When the sun rises">
             <Run Text="Sunrise time:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.SunriseTime, StringFormat=\{0:t\}, Mode=OneWay}" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.SunriseTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
         </TextBlock>
         <Slider Margin="5,0,5,5"
                 IsEnabled="{Binding Settings.IsInternetTimeSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
@@ -37,7 +37,7 @@
         <!--  Sunset time temperature  -->
         <TextBlock Margin="5" ToolTip="When the sun sets">
             <Run Text="Sunset time:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.SunsetTime, StringFormat=\{0:t\}, Mode=OneWay}" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.SunsetTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
         </TextBlock>
         <Slider Margin="5,0,5,5"
                 IsEnabled="{Binding Settings.IsInternetTimeSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
