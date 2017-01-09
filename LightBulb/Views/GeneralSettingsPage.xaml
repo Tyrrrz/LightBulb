@@ -60,7 +60,7 @@
         <!--  Switch duration temperature  -->
         <TextBlock Margin="5" ToolTip="How long it takes to switch between temperatures">
             <Run Text="Transition duration:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.TemperatureSwitchDuration, StringFormat=\{0:t\}, Mode=OneWay}" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.TemperatureSwitchDuration, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
         </TextBlock>
         <Slider Margin="5,0,5,5"
                 IsSnapToTickEnabled="True"
