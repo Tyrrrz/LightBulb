@@ -185,10 +185,10 @@ namespace LightBulb.ViewModels
                 IsEnabled = true;
             };
             _internetSyncTimer = new Timer();
-            _internetSyncTimer.Elapsed += (sender, args) =>
+            _internetSyncTimer.Elapsed += async (sender, args) =>
             {
                 _internetSyncTimer.Enabled = false;
-                InternetSyncAsync();
+                await InternetSyncAsync();
                 _internetSyncTimer.Enabled = Settings.IsInternetTimeSyncEnabled;
             };
 
@@ -228,7 +228,7 @@ namespace LightBulb.ViewModels
             // Refresh stuff
             UpdateTemperature();
             if (Settings.IsInternetTimeSyncEnabled)
-                InternetSyncAsync();
+                InternetSyncAsync().Forget();
         }
 
         private void UpdateStatus()
@@ -310,7 +310,7 @@ namespace LightBulb.ViewModels
             IsEnabled = false;
         }
 
-        private async void InternetSyncAsync()
+        private async Task InternetSyncAsync()
         {
             if (Settings.Latitude.IsBlank() || Settings.Longitude.IsBlank())
             {
