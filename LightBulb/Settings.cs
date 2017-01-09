@@ -10,6 +10,7 @@ namespace LightBulb
 
         private bool _isGammaPollingEnabled = true;
         private bool _disableWhenFullscreen;
+        private bool _isInternetTimeSyncEnabled;
         private ushort _temperatureEpsilon = 50;
         private ushort _maxTemperature = 6500;
         private ushort _minTemperature = 3900;
@@ -31,6 +32,12 @@ namespace LightBulb
             set { Set(ref _disableWhenFullscreen, value); }
         }
 
+        public bool IsInternetTimeSyncEnabled
+        {
+            get { return _isInternetTimeSyncEnabled; }
+            set { Set(ref _isInternetTimeSyncEnabled, value); }
+        }
+
         public ushort TemperatureEpsilon
         {
             get { return _temperatureEpsilon; }
@@ -40,13 +47,25 @@ namespace LightBulb
         public ushort MinTemperature
         {
             get { return _minTemperature; }
-            set { Set(ref _minTemperature, value); }
+            set
+            {
+                Set(ref _minTemperature, value);
+
+                if (MinTemperature > MaxTemperature)
+                    MaxTemperature = MinTemperature;
+            }
         }
 
         public ushort MaxTemperature
         {
             get { return _maxTemperature; }
-            set { Set(ref _maxTemperature, value); }
+            set
+            {
+                Set(ref _maxTemperature, value);
+
+                if (MaxTemperature < MinTemperature)
+                    MinTemperature = MaxTemperature;
+            }
         }
 
         public TimeSpan TemperatureSwitchDuration
@@ -70,13 +89,25 @@ namespace LightBulb
         public TimeSpan SunriseTime
         {
             get { return _sunriseTime; }
-            set { Set(ref _sunriseTime, value); }
+            set
+            {
+                Set(ref _sunriseTime, value);
+
+                if (SunriseTime > SunsetTime)
+                    SunsetTime = SunriseTime;
+            }
         }
 
         public TimeSpan SunsetTime
         {
             get { return _sunsetTime; }
-            set { Set(ref _sunsetTime, value); }
+            set
+            {
+                Set(ref _sunsetTime, value);
+
+                if (SunsetTime < SunriseTime)
+                    SunriseTime = SunsetTime;
+            }
         }
 
         [IgnoreDataMember]
@@ -84,6 +115,20 @@ namespace LightBulb
         {
             get { return TemperatureSwitchDuration.TotalMinutes; }
             set { TemperatureSwitchDuration = TimeSpan.FromMinutes(value); }
+        }
+
+        [IgnoreDataMember]
+        public double SunriseTimeHours
+        {
+            get { return SunriseTime.TotalHours; }
+            set { SunriseTime = TimeSpan.FromHours(value); }
+        }
+
+        [IgnoreDataMember]
+        public double SunsetTimeHours
+        {
+            get { return SunsetTime.TotalHours; }
+            set { SunsetTime = TimeSpan.FromHours(value); }
         }
     }
 }

@@ -36,7 +36,7 @@ namespace LightBulb.Views
 
         private void NavigateGeolocationSettingsButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            ContentFrame.Navigate(new GeolocationSettingsPage());
         }
 
         private void NavigateAppRulesButton_OnClick(object sender, RoutedEventArgs e)

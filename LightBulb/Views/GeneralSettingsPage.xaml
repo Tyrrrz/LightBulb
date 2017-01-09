@@ -29,7 +29,7 @@
                 IsSnapToTickEnabled="True"
                 LargeChange="1000"
                 Maximum="6500"
-                Minimum="{Binding Value, ElementName=MinTempSlider}"
+                Minimum="3400"
                 PreviewMouseDown="MaxTempSlider_OnPreviewMouseDown"
                 PreviewMouseUp="MaxTempSlider_OnPreviewMouseUp"
                 SmallChange="100"
@@ -47,7 +47,7 @@
                 Margin="5,0,5,5"
                 IsSnapToTickEnabled="True"
                 LargeChange="1000"
-                Maximum="{Binding Value, ElementName=MaxTempSlider}"
+                Maximum="6500"
                 Minimum="3400"
                 PreviewMouseDown="MinTempSlider_OnPreviewMouseDown"
                 PreviewMouseUp="MinTempSlider_OnPreviewMouseUp"
@@ -62,8 +62,7 @@
             <Run Text="Transition duration:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.TemperatureSwitchDuration, StringFormat=\{0:t\}, Mode=OneWay}" />
         </TextBlock>
-        <Slider x:Name="SwitchDurationSlider"
-                Margin="5,0,5,5"
+        <Slider Margin="5,0,5,5"
                 IsSnapToTickEnabled="True"
                 LargeChange="30"
                 Maximum="180"
