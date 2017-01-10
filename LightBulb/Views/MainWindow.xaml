@@ -177,7 +177,7 @@
                     TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
                 <WrapPanel Orientation="Horizontal">
                     <!--  Cycle state icon  -->
-                    <materialDesign:PackIcon ToolTip="{Binding CycleState}">
+                    <materialDesign:PackIcon Background="Transparent" ToolTip="{Binding CycleState}">
                         <materialDesign:PackIcon.Style>
                             <Style BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}" TargetType="{x:Type materialDesign:PackIcon}">
                                 <Style.Triggers>
