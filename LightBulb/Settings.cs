@@ -17,7 +17,7 @@ namespace LightBulb
         private ushort _minTemperature = 3900;
         private TimeSpan _temperatureSwitchDuration = TimeSpan.FromMinutes(90);
         private TimeSpan _temperatureUpdateInterval = TimeSpan.FromMinutes(1);
-        private TimeSpan _gammaPollingInterval = TimeSpan.FromSeconds(3);
+        private TimeSpan _gammaPollingInterval = TimeSpan.FromSeconds(5);
         private TimeSpan _internetSyncInterval = TimeSpan.FromHours(6);
         private TimeSpan _sunriseTime = new TimeSpan(7, 20, 0);
         private TimeSpan _sunsetTime = new TimeSpan(16, 30, 0);
