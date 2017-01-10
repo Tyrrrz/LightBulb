@@ -247,6 +247,7 @@ namespace LightBulb.ViewModels
         {
             if (!IsEnabled)
             {
+                CycleState = CycleState.Disabled;
                 StatusText = "LightBulb is off";
             }
             else

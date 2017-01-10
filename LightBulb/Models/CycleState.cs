@@ -2,6 +2,6 @@
 {
     public enum CycleState
     {
-        Transition, Day, Night
+        Disabled, Transition, Day, Night
     }
 }
