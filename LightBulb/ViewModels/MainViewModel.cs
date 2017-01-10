@@ -246,7 +246,7 @@ namespace LightBulb.ViewModels
 
         private void UpdateGamma()
         {
-            bool isBlockedByFullScreen = Settings.DisableWhenFullscreen && _windowService.IsFullScreen;
+            bool isBlockedByFullScreen = Settings.DisableWhenFullscreen && _windowService.IsForegroundFullScreen;
 
             if (IsEnabled && !isBlockedByFullScreen)
             {

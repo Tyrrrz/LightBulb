@@ -32,47 +32,84 @@ namespace LightBulb.Services
         private static extern bool UnhookWinEventInternal(IntPtr hWinEventHook);
 
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable (prevent garbage collection)
-        private readonly WinEventDelegate _winEventHandler;
-        private readonly IntPtr _foregroundWindowChangedHook;
-        private readonly IntPtr _windowResizeHook;
-        private bool _isFullScreen;
+        private WinEventDelegate _foregroundWindowChangedEventHandler;
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable (prevent garbage collection)
+        private WinEventDelegate _foregroundWindowLocationChangedEventHandler;
+        private IntPtr _foregroundWindowChangedHook;
+        private IntPtr _foregroundWindowLocationChangedHook;
+
+        private bool _isForegroundFullScreen;
+        private IntPtr _lastForegroundWindow;
+        private uint _lastEventTime; 
 
         public Settings Settings => Settings.Default;
 
-        public bool IsFullScreen
+        /// <summary>
+        /// Gets whether the foreground window is fullscreen
+        /// </summary>
+        public bool IsForegroundFullScreen
         {
-            get { return _isFullScreen; }
+            get { return _isForegroundFullScreen; }
             private set
             {
-                if (IsFullScreen != value)
+                if (IsForegroundFullScreen != value)
                 {
-                    _isFullScreen = value;
+                    _isForegroundFullScreen = value;
                     FullScreenStateChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
 
+        /// <summary>
+        /// Triggers when the foreground window has entered (or exited from) full screen mode
+        /// </summary>
         public event EventHandler FullScreenStateChanged;
 
         public WindowService()
         {
             // Hooks
-            _winEventHandler =
-                (hook, type, hwnd, idObject, child, thread, time) => Update();
-            _foregroundWindowChangedHook = SetWinEventHookInternal(0x0003, 0x0003, IntPtr.Zero,
-                _winEventHandler, 0, 0, 0);
-            _windowResizeHook = SetWinEventHookInternal(0x800B, 0x800B, IntPtr.Zero,
-                _winEventHandler, 0, 0, 0); // HACK: this raises too many events per second, need to optimize
+            InitializeHooks();
 
             // Init
-            Update();
+            IsForegroundFullScreen = IsWindowFullScreen(GetForegroundWindow());
         }
 
-        private void Update()
+        private void InitializeHooks()
         {
-            IsFullScreen = IsWindowFullScreen(GetForegroundWindow());
+            _foregroundWindowChangedEventHandler =
+                (hook, type, hwnd, idObject, child, thread, time) =>
+                {
+                    if (idObject != 0) return; // only events from windows
+                    if (_lastEventTime == time) return; // skip duplicate events
+                    _lastEventTime = time;
+
+                    _lastForegroundWindow = hwnd;
+                    IsForegroundFullScreen = IsWindowFullScreen(hwnd);
+
+                    // Hook location changed event for foreground window
+                    if (_foregroundWindowLocationChangedHook != IntPtr.Zero)
+                        UnhookWinEventInternal(_foregroundWindowLocationChangedHook);
+                    _foregroundWindowLocationChangedHook = SetWinEventHookInternal(0x800B, 0x800B, IntPtr.Zero,
+                        _foregroundWindowLocationChangedEventHandler, 0, thread, 0);
+                };
+            _foregroundWindowLocationChangedEventHandler =
+                (hook, type, hwnd, idObject, child, thread, time) =>
+                {
+                    if (idObject != 0) return; // only events from windows
+                    if (hwnd != _lastForegroundWindow) return; // skip non-foregrond windows
+                    if (_lastEventTime == time) return; // skip duplicate events
+                    _lastEventTime = time;
+
+                    IsForegroundFullScreen = IsWindowFullScreen(hwnd);
+                };
+
+            _foregroundWindowChangedHook = SetWinEventHookInternal(0x0003, 0x0003, IntPtr.Zero,
+                _foregroundWindowChangedEventHandler, 0, 0, 0);
         }
 
+        /// <summary>
+        /// Gets the window handle for the current foreground window
+        /// </summary>
         public IntPtr GetForegroundWindow()
         {
             var result = GetForegroundWindowInternal();
@@ -80,6 +117,9 @@ namespace LightBulb.Services
             return result;
         }
 
+        /// <summary>
+        /// Gets the window handle for the desktop window
+        /// </summary>
         public IntPtr GetDesktopWindow()
         {
             var result = GetDesktopWindowInternal();
@@ -87,6 +127,9 @@ namespace LightBulb.Services
             return result;
         }
 
+        /// <summary>
+        /// Gets the window handle for the shell window
+        /// </summary>
         public IntPtr GetShellWindow()
         {
             var result = GetShellWindowInternal();
@@ -94,6 +137,9 @@ namespace LightBulb.Services
             return result;
         }
 
+        /// <summary>
+        /// Gets the rectangle bounds of the given window
+        /// </summary>
         public Rect GetWindowRect(IntPtr hWindow)
         {
             Rect result;
@@ -102,6 +148,9 @@ namespace LightBulb.Services
             return result;
         }
 
+        /// <summary>
+        /// Determines if the given window is running fullscreen
+        /// </summary>
         public bool IsWindowFullScreen(IntPtr hWindow)
         {
             // Get foreground window
@@ -125,13 +174,13 @@ namespace LightBulb.Services
             // Get the screen rect and compare
             var screenRect = Screen.FromHandle(foreground).Bounds;
             return windowRect.Left <= 0 && windowRect.Top <= 0 &&
-                   windowRect.Height >= screenRect.Height && windowRect.Width >= screenRect.Width;
+                   windowRect.Right >= screenRect.Right && windowRect.Bottom >= screenRect.Bottom;
         }
 
         public void Dispose()
         {
             UnhookWinEventInternal(_foregroundWindowChangedHook);
-            UnhookWinEventInternal(_windowResizeHook);
+            UnhookWinEventInternal(_foregroundWindowLocationChangedHook);
         }
     }
 }
