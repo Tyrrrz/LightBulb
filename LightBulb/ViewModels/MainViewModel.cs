@@ -270,6 +270,7 @@ namespace LightBulb.ViewModels
                 }
                 else
                 {
+                    CycleState = CycleState.Disabled;
                     StatusText = $"Temp: {PreviewTemperature}K   (preview)";
                 }
             }
