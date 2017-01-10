@@ -111,6 +111,7 @@
     </ApplicationDefinition>
     <Compile Include="Locator.cs" />
     <Compile Include="Models\ColorIntensity.cs" />
+    <Compile Include="Models\CycleState.cs" />
     <Compile Include="Models\GeolocationInfo.cs" />
     <Compile Include="Models\Rect.cs" />
     <Compile Include="Models\SolarInfo.cs" />

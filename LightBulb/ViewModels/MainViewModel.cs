@@ -28,6 +28,7 @@ namespace LightBulb.ViewModels
         private bool _isEnabled;
         private bool _isPreviewModeEnabled;
         private string _statusText;
+        private CycleState _cycleState;
         private DateTime _time;
         private DateTime _previewTime;
         private ushort _temperature;
@@ -77,6 +78,15 @@ namespace LightBulb.ViewModels
         {
             get { return _statusText; }
             private set { Set(ref _statusText, value); }
+        }
+
+        /// <summary>
+        /// State of the current cycle
+        /// </summary>
+        public CycleState CycleState
+        {
+            get { return _cycleState; }
+            private set { Set(ref _cycleState, value); }
         }
 
         /// <summary>
@@ -236,13 +246,32 @@ namespace LightBulb.ViewModels
         private void UpdateStatus()
         {
             if (!IsEnabled)
-                StatusText = "Turned off";
-            else if (!IsPreviewModeEnabled)
-                StatusText = $"Temp: {Temperature}K   Time: {Time:t}";
-            else if (_cyclePreviewTimer.Enabled)
-                StatusText = $"Temp: {PreviewTemperature}K   Time: {PreviewTime:t}";
+            {
+                StatusText = "LightBulb is off";
+            }
             else
-                StatusText = $"Temp: {PreviewTemperature}K";
+            {
+                if (!IsPreviewModeEnabled)
+                {
+                    if (Temperature >= Settings.MaxTemperature) CycleState = CycleState.Day;
+                    else if (Temperature <= Settings.MinTemperature) CycleState = CycleState.Night;
+                    else CycleState = CycleState.Transition;
+
+                    StatusText = $"Temp: {Temperature}K   Time: {Time:t}";
+                }
+                else if (_cyclePreviewTimer.Enabled)
+                {
+                    if (PreviewTemperature >= Settings.MaxTemperature) CycleState = CycleState.Day;
+                    else if (PreviewTemperature <= Settings.MinTemperature) CycleState = CycleState.Night;
+                    else CycleState = CycleState.Transition;
+
+                    StatusText = $"Temp: {PreviewTemperature}K   Time: {PreviewTime:t}   (preview)";
+                }
+                else
+                {
+                    StatusText = $"Temp: {PreviewTemperature}K   (preview)";
+                }
+            }
         }
 
         private void UpdateGamma()

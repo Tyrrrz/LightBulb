@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:LightBulb.Models"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         x:Name="Window"
         Title="LightBulb"
@@ -77,7 +78,7 @@
                                   IsChecked="{Binding IsEnabled}"
                                   ToolTip="Enable or disable the gamma control">
                         <ToggleButton.Style>
-                            <Style BasedOn="{StaticResource MaterialDesignActionAccentToggleButton}" TargetType="ToggleButton">
+                            <Style BasedOn="{StaticResource MaterialDesignActionAccentToggleButton}" TargetType="{x:Type ToggleButton}">
                                 <Setter Property="materialDesign:ToggleButtonAssist.OnContent">
                                     <Setter.Value>
                                         <materialDesign:PackIcon Kind="LightbulbOutline" />
@@ -172,10 +173,33 @@
             <Border Grid.Row="2"
                     Padding="5"
                     BorderBrush="{DynamicResource MiscBrush}"
-                    BorderThickness="0,1,0,0">
-                <TextBlock FontSize="12"
-                           Foreground="{DynamicResource SecondaryInverseTextBrush}"
-                           Text="{Binding StatusText}" />
+                    BorderThickness="0,1,0,0"
+                    TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
+                <WrapPanel Orientation="Horizontal">
+                    <!--  Cycle state icon  -->
+                    <materialDesign:PackIcon>
+                        <materialDesign:PackIcon.Style>
+                            <Style BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}" TargetType="{x:Type materialDesign:PackIcon}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Transition}">
+                                        <Setter Property="Kind" Value="Cached" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Day}">
+                                        <Setter Property="Kind" Value="WhiteBalanceSunny" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Night}">
+                                        <Setter Property="Kind" Value="WeatherNight" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </materialDesign:PackIcon.Style>
+                    </materialDesign:PackIcon>
+                    <!--  Status text  -->
+                    <TextBlock Margin="3,0,0,0"
+                               VerticalAlignment="Center"
+                               FontSize="12"
+                               Text="{Binding StatusText}" />
+                </WrapPanel>
             </Border>
         </Grid>
     </Border>
