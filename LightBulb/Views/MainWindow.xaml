@@ -185,7 +185,7 @@
                                         <Setter Property="Kind" Value="SyncOff" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Transition}">
-                                        <Setter Property="Kind" Value="Cached" />
+                                        <Setter Property="Kind" Value="Sync" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Day}">
                                         <Setter Property="Kind" Value="WhiteBalanceSunny" />
