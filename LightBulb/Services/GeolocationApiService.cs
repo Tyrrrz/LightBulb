@@ -37,9 +37,9 @@ namespace LightBulb.Services
             return JsonConvert.DeserializeObject<GeolocationInfo>(response);
         }
 
-        public async Task<SolarInfo> GetSolarInfoAsync(double latitude, double longitude)
+        public async Task<SolarInfo> GetSolarInfoAsync(GeolocationInfo geoInfo)
         {
-            string response = await GetStringAsync($"http://api.sunrise-sunset.org/json?lat={latitude}&lng={longitude}&formatted=0");
+            string response = await GetStringAsync($"http://api.sunrise-sunset.org/json?lat={geoInfo.Latitude}&lng={geoInfo.Longitude}&formatted=0");
             if (response.IsBlank()) return null;
 
             return JObject.Parse(response).GetValue("results").ToObject<SolarInfo>();

@@ -43,5 +43,7 @@ namespace LightBulb.Models
 
         [DataMember(Name = "query")]
         public string Ip { get; set; }
+
+        public string CountryFlag => $"http://flags.fmcdn.net/data/flags/mini/{CountryCode.ToLowerInvariant()}.png";
     }
 }

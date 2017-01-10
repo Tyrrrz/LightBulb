@@ -68,5 +68,22 @@
                           VerticalAlignment="Center"
                           IsChecked="{Binding Settings.IsInternetTimeSyncEnabled}" />
         </Grid>
+
+        <!--  Current location  -->
+        <TextBlock Margin="5" Text="Location" />
+        <WrapPanel Margin="5,0,5,5"
+                   Orientation="Horizontal"
+                   Visibility="{Binding Settings.IsInternetTimeSyncEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Image Height="16" Source="{Binding Settings.GeoInfo.CountryFlag}" />
+            <TextBlock Margin="3,0,0,0" VerticalAlignment="Center">
+                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.City, Mode=OneWay, TargetNullValue=Unknown}" />
+                <Run Text="/" />
+                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.Country, Mode=OneWay, TargetNullValue=Unknown}" />
+                <Run Text="(" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.Latitude, Mode=OneWay, TargetNullValue=xx}" />
+                <Run Text="lat" />
+                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.Longitude, Mode=OneWay, TargetNullValue=xx}" />
+                <Run Text="long" /><Run Text=")" />
+            </TextBlock>
+        </WrapPanel>
     </StackPanel>
 </Page>
