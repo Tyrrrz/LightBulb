@@ -160,20 +160,21 @@ namespace LightBulb.ViewModels
 
             // Timers
             _temperatureUpdateTimer = new Timer();
+            _temperatureUpdateTimer.AutoReset = false;
             _temperatureUpdateTimer.Elapsed += (sender, args) =>
             {
-                _temperatureUpdateTimer.Enabled = false;
                 UpdateTemperature();
                 _temperatureUpdateTimer.Enabled = IsEnabled;
             };
             _pollingTimer = new Timer();
+            _pollingTimer.AutoReset = false;
             _pollingTimer.Elapsed += (sender, args) =>
             {
-                _pollingTimer.Enabled = false;
                 UpdateGamma();
                 _pollingTimer.Enabled = Settings.IsGammaPollingEnabled;
             };
             _cyclePreviewTimer = new Timer();
+            _cyclePreviewTimer.AutoReset = true;
             _cyclePreviewTimer.Interval = 10;
             _cyclePreviewTimer.Elapsed += (sender, args) =>
             {
@@ -186,9 +187,9 @@ namespace LightBulb.ViewModels
                 IsEnabled = true;
             };
             _internetSyncTimer = new Timer();
+            _internetSyncTimer.AutoReset = false;
             _internetSyncTimer.Elapsed += async (sender, args) =>
             {
-                _internetSyncTimer.Enabled = false;
                 await InternetSyncAsync();
                 _internetSyncTimer.Enabled = Settings.IsInternetTimeSyncEnabled;
             };
