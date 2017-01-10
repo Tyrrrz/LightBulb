@@ -63,9 +63,9 @@ namespace LightBulb.Services
 
             for (int i = 1; i < 256; i++)
             {
-                ramp.Red[i] = (ushort) (i*255*intensity.Red).RoundToInt().Clamp(ushort.MinValue, ushort.MaxValue);
-                ramp.Green[i] = (ushort) (i*255*intensity.Green).RoundToInt().Clamp(ushort.MinValue, ushort.MaxValue);
-                ramp.Blue[i] = (ushort) (i*255*intensity.Blue).RoundToInt().Clamp(ushort.MinValue, ushort.MaxValue);
+                ramp.Red[i] = (ushort) (i*255*intensity.Red).RoundToInt();
+                ramp.Green[i] = (ushort) (i*255*intensity.Green).RoundToInt();
+                ramp.Blue[i] = (ushort) (i*255*intensity.Blue).RoundToInt();
             }
 
             SetDisplayGammaRamp(ramp);
