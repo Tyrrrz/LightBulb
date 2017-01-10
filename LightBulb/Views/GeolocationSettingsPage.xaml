@@ -70,7 +70,7 @@
         </Grid>
 
         <!--  Current location  -->
-        <TextBlock Margin="5" Text="Location" />
+        <TextBlock Margin="5" Text="Location:" />
         <WrapPanel Margin="5,0,5,5"
                    Orientation="Horizontal"
                    Visibility="{Binding Settings.IsInternetTimeSyncEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
