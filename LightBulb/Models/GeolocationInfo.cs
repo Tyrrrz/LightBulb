@@ -5,9 +5,6 @@ namespace LightBulb.Models
     [DataContract]
     public class GeolocationInfo
     {
-        [DataMember(Name = "status")]
-        public string Status { get; set; }
-
         [DataMember(Name = "country")]
         public string Country { get; set; }
 
@@ -27,10 +24,10 @@ namespace LightBulb.Models
         public string Zip { get; set; }
 
         [DataMember(Name = "lat")]
-        public string Latitude { get; set; }
+        public double Latitude { get; set; }
 
         [DataMember(Name = "lon")]
-        public string Longitude { get; set; }
+        public double Longitude { get; set; }
 
         [DataMember(Name = "timezone")]
         public string Timezone { get; set; }

@@ -20,8 +20,8 @@ namespace LightBulb
         private TimeSpan _internetSyncInterval = TimeSpan.FromHours(6);
         private TimeSpan _sunriseTime = new TimeSpan(7, 20, 0);
         private TimeSpan _sunsetTime = new TimeSpan(16, 30, 0);
-        private string _longitude;
-        private string _latitude;
+        private double _longitude = double.NaN;
+        private double _latitude = double.NaN;
 
         public bool IsGammaPollingEnabled
         {
@@ -119,13 +119,13 @@ namespace LightBulb
             }
         }
 
-        public string Latitude
+        public double Latitude
         {
             get { return _latitude; }
             set { Set(ref _latitude, value); }
         }
 
-        public string Longitude
+        public double Longitude
         {
             get { return _longitude; }
             set { Set(ref _longitude, value); }

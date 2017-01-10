@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LightBulb.Models;
 using NegativeLayer.Extensions;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace LightBulb.Services
 {
@@ -33,10 +34,15 @@ namespace LightBulb.Services
             string response = await GetStringAsync("http://ip-api.com/json");
             if (response.IsBlank()) return null;
 
-            var result = JsonConvert.DeserializeObject<GeolocationInfo>(response);
-            if (!result.Status.EqualsInvariant("success")) return null;
+            return JsonConvert.DeserializeObject<GeolocationInfo>(response);
+        }
 
-            return result;
+        public async Task<SolarInfo> GetSolarInfoAsync(double latitude, double longitude)
+        {
+            string response = await GetStringAsync($"http://api.sunrise-sunset.org/json?lat={latitude}&lng={longitude}&formatted=0");
+            if (response.IsBlank()) return null;
+
+            return JObject.Parse(response).GetValue("results").ToObject<SolarInfo>();
         }
 
         public void Dispose()
