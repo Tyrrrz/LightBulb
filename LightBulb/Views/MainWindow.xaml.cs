@@ -16,6 +16,7 @@ namespace LightBulb.Views
             Hide();
             Left = SystemParameters.WorkArea.Width - Width - 5;
             Top = SystemParameters.WorkArea.Height - Height;
+            NavigateGeneralSettingsButton.IsEnabled = false;
         }
 
         private void MainWindow_OnDeactivated(object sender, EventArgs e)
@@ -32,16 +33,26 @@ namespace LightBulb.Views
         private void NavigateGeneralSettingsButton_OnClick(object sender, RoutedEventArgs e)
         {
             ContentFrame.Navigate(new GeneralSettingsPage());
+
+            NavigateGeneralSettingsButton.IsEnabled = false;
+            NavigateGeolocationSettingsButton.IsEnabled = true;
+            NavigateAppRulesButton.IsEnabled = true;
         }
 
         private void NavigateGeolocationSettingsButton_OnClick(object sender, RoutedEventArgs e)
         {
             ContentFrame.Navigate(new GeolocationSettingsPage());
+
+            NavigateGeneralSettingsButton.IsEnabled = true;
+            NavigateGeolocationSettingsButton.IsEnabled = false;
+            NavigateAppRulesButton.IsEnabled = true;
         }
 
         private void NavigateAppRulesButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            NavigateGeneralSettingsButton.IsEnabled = true;
+            NavigateGeolocationSettingsButton.IsEnabled = true;
+            NavigateAppRulesButton.IsEnabled = false;
         }
     }
 }
