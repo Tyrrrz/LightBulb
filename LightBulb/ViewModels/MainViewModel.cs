@@ -166,7 +166,10 @@ namespace LightBulb.ViewModels
             _windowService = windowService;
             _geolocationApiService = geolocationApiService;
 
-            _windowService.FullScreenStateChanged += (sender, args) => UpdateGamma();
+            _windowService.FullScreenStateChanged += (sender, args) =>
+            {
+                UpdateGamma();
+            };
 
             // Timers
             _temperatureUpdateTimer = new Timer();
@@ -228,6 +231,9 @@ namespace LightBulb.ViewModels
 
         private void LoadSettings()
         {
+            // Services
+            _windowService.UseEventHooks = Settings.DisableWhenFullscreen;
+
             // Timers
             _temperatureUpdateTimer.Interval = Settings.TemperatureUpdateInterval.TotalMilliseconds;
             _pollingTimer.Interval = Settings.GammaPollingInterval.TotalMilliseconds;
@@ -278,9 +284,9 @@ namespace LightBulb.ViewModels
 
         private void UpdateGamma()
         {
-            bool isBlockedByFullScreen = Settings.DisableWhenFullscreen && _windowService.IsForegroundFullScreen;
+            bool isBlocked = Settings.DisableWhenFullscreen && _windowService.IsForegroundFullScreen;
 
-            if (IsEnabled && !isBlockedByFullScreen)
+            if (IsEnabled && !isBlocked)
             {
                 ushort temp = IsPreviewModeEnabled ? PreviewTemperature : Temperature;
                 var intensity = ColorIntensity.FromTemperature(temp);

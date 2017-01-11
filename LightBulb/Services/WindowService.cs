@@ -38,11 +38,30 @@ namespace LightBulb.Services
         private IntPtr _foregroundWindowChangedHook;
         private IntPtr _foregroundWindowLocationChangedHook;
 
+        private bool _useEventHooks;
         private bool _isForegroundFullScreen;
         private IntPtr _lastForegroundWindow;
-        private uint _lastEventTime; 
+        private uint _lastEventTime;
 
         public Settings Settings => Settings.Default;
+
+        /// <summary>
+        /// Enables or disables the event hooks
+        /// </summary>
+        public bool UseEventHooks
+        {
+            get { return _useEventHooks; }
+            set
+            {
+                if (UseEventHooks == value) return;
+
+                _useEventHooks = value;
+                if (value)
+                    InstallHooks();
+                else
+                    UninstallHooks();
+            }
+        }
 
         /// <summary>
         /// Gets whether the foreground window is fullscreen
@@ -52,11 +71,10 @@ namespace LightBulb.Services
             get { return _isForegroundFullScreen; }
             private set
             {
-                if (IsForegroundFullScreen != value)
-                {
-                    _isForegroundFullScreen = value;
-                    FullScreenStateChanged?.Invoke(this, EventArgs.Empty);
-                }
+                if (IsForegroundFullScreen == value) return;
+
+                _isForegroundFullScreen = value;
+                FullScreenStateChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -67,14 +85,11 @@ namespace LightBulb.Services
 
         public WindowService()
         {
-            // Hooks
-            InitializeHooks();
-
             // Init
             IsForegroundFullScreen = IsWindowFullScreen(GetForegroundWindow());
         }
 
-        private void InitializeHooks()
+        private void InstallHooks()
         {
             _foregroundWindowChangedEventHandler =
                 (hook, type, hwnd, idObject, child, thread, time) =>
@@ -105,6 +120,12 @@ namespace LightBulb.Services
 
             _foregroundWindowChangedHook = SetWinEventHookInternal(0x0003, 0x0003, IntPtr.Zero,
                 _foregroundWindowChangedEventHandler, 0, 0, 0);
+        }
+
+        private void UninstallHooks()
+        {
+            UnhookWinEventInternal(_foregroundWindowChangedHook);
+            UnhookWinEventInternal(_foregroundWindowLocationChangedHook);
         }
 
         /// <summary>
@@ -179,8 +200,7 @@ namespace LightBulb.Services
 
         public void Dispose()
         {
-            UnhookWinEventInternal(_foregroundWindowChangedHook);
-            UnhookWinEventInternal(_foregroundWindowLocationChangedHook);
+            UninstallHooks();
         }
     }
 }
