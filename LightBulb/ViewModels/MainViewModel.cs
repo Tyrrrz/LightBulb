@@ -165,10 +165,7 @@ namespace LightBulb.ViewModels
             _windowService = windowService;
             _geolocationApiService = geolocationApiService;
 
-            _windowService.FullScreenStateChanged += (sender, args) =>
-            {
-                UpdateGamma();
-            };
+            _windowService.FullScreenStateChanged += (sender, args) => UpdateGamma();
 
             // Timers
             _temperatureUpdateTimer = new SyncedTimer();
