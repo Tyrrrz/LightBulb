@@ -20,7 +20,7 @@
 
     <StackPanel Grid.IsSharedSizeScope="True" Orientation="Vertical">
         <!--  Day-time temperature  -->
-        <TextBlock Margin="5" ToolTip="Color temperature during day-time">
+        <TextBlock Margin="5" ToolTip="Color temperature during day-time (between sunrise and sunset)">
             <Run Text="Day-time color temperature:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.MaxTemperature, Mode=OneWay}" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="K" />
         </TextBlock>
@@ -39,7 +39,7 @@
                 Value="{Binding Settings.MaxTemperature}" />
 
         <!--  Night-time temperature  -->
-        <TextBlock Margin="5" ToolTip="Color temperature during night-time">
+        <TextBlock Margin="5" ToolTip="Color temperature during night-time (before sunrise and after sunset)">
             <Run Text="Night-time color temperature:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.MinTemperature, Mode=OneWay}" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="K" />
         </TextBlock>
@@ -58,7 +58,7 @@
                 Value="{Binding Settings.MinTemperature}" />
 
         <!--  Switch duration temperature  -->
-        <TextBlock Margin="5" ToolTip="How long it takes to switch between temperatures">
+        <TextBlock Margin="5" ToolTip="How long does it take to switch between temperatures">
             <Run Text="Transition duration:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.TemperatureSwitchDuration, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
         </TextBlock>
@@ -83,7 +83,7 @@
                        Margin="5"
                        VerticalAlignment="Center"
                        Text="Enable gamma polling:"
-                       ToolTip="Polling refreshes the gamma settings every few seconds, making sure they are not overriden" />
+                       ToolTip="Refreshes the gamma settings every few seconds, making sure they are not overriden" />
             <ToggleButton Grid.Column="1"
                           Margin="5"
                           HorizontalAlignment="Right"
@@ -102,7 +102,7 @@
                        Margin="5"
                        VerticalAlignment="Center"
                        Text="Disable when fullscreen:"
-                       ToolTip="When checked LightBulb will disable itself for fullscreen applications" />
+                       ToolTip="Disable when any fullscreen window is in foreground" />
             <ToggleButton Grid.Column="1"
                           Margin="5"
                           HorizontalAlignment="Right"
