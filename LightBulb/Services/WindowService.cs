@@ -174,26 +174,24 @@ namespace LightBulb.Services
         /// </summary>
         public bool IsWindowFullScreen(IntPtr hWindow)
         {
-            // Get foreground window
-            var foreground = GetForegroundWindow();
-            if (foreground == IntPtr.Zero) return false;
+            if (hWindow == IntPtr.Zero) return false;
 
             // Get desktop and shell
             var desktop = GetDesktopWindow();
             var shell = GetShellWindow();
 
             // If foreground is desktop or shell - return
-            if (foreground == desktop || foreground == shell) return false;
+            if (hWindow == desktop || hWindow == shell) return false;
 
             // Get the window rect
-            var windowRect = GetWindowRect(foreground);
+            var windowRect = GetWindowRect(hWindow);
 
             // If window rect has retarded values, it's most likely a fullscreen game
             if (windowRect.Left <= 0 && windowRect.Top <= 0 && windowRect.Right <= 0 && windowRect.Bottom <= 0)
                 return true;
 
             // Get the screen rect and compare
-            var screenRect = Screen.FromHandle(foreground).Bounds;
+            var screenRect = Screen.FromHandle(hWindow).Bounds;
             return windowRect.Left <= 0 && windowRect.Top <= 0 &&
                    windowRect.Right >= screenRect.Right && windowRect.Bottom >= screenRect.Bottom;
         }
