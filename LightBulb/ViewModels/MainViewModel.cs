@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Timers;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -19,11 +18,11 @@ namespace LightBulb.ViewModels
         private readonly WindowService _windowService;
         private readonly GeolocationApiService _geolocationApiService;
 
-        private readonly Timer _temperatureUpdateTimer;
+        private readonly SyncedTimer _temperatureUpdateTimer;
         private readonly Timer _pollingTimer;
-        private readonly Timer _cyclePreviewTimer;
         private readonly Timer _disableTemporarilyTimer;
-        private readonly Timer _internetSyncTimer;
+        private readonly Timer _cyclePreviewTimer;
+        private readonly SyncedTimer _internetSyncTimer;
 
         private bool _isEnabled;
         private bool _isPreviewModeEnabled;
@@ -45,11 +44,11 @@ namespace LightBulb.ViewModels
             set
             {
                 if (!Set(ref _isEnabled, value)) return;
-                if (value) _disableTemporarilyTimer.Enabled = false;
+                if (value) _disableTemporarilyTimer.IsEnabled = false;
                 if (value && !IsPreviewModeEnabled) UpdateTemperature();
 
-                _temperatureUpdateTimer.Enabled = value;
-                _pollingTimer.Enabled = value && Settings.IsGammaPollingEnabled;
+                _temperatureUpdateTimer.IsEnabled = value;
+                _pollingTimer.IsEnabled = value && Settings.IsGammaPollingEnabled;
 
                 UpdateGamma();
                 UpdateStatus();
@@ -172,40 +171,19 @@ namespace LightBulb.ViewModels
             };
 
             // Timers
-            _temperatureUpdateTimer = new Timer();
-            _temperatureUpdateTimer.AutoReset = false;
-            _temperatureUpdateTimer.Elapsed += (sender, args) =>
-            {
-                UpdateTemperature();
-                _temperatureUpdateTimer.Enabled = IsEnabled;
-            };
+            _temperatureUpdateTimer = new SyncedTimer();
+            _temperatureUpdateTimer.FirstTickDateTime = DateTime.Today;
+            _temperatureUpdateTimer.Tick += (sender, args) => UpdateTemperature();
             _pollingTimer = new Timer();
-            _pollingTimer.AutoReset = false;
-            _pollingTimer.Elapsed += (sender, args) =>
-            {
-                UpdateGamma();
-                _pollingTimer.Enabled = Settings.IsGammaPollingEnabled;
-            };
+            _pollingTimer.Tick += (sender, args) => UpdateGamma();
             _cyclePreviewTimer = new Timer();
-            _cyclePreviewTimer.AutoReset = true;
-            _cyclePreviewTimer.Interval = 10;
-            _cyclePreviewTimer.Elapsed += (sender, args) =>
-            {
-                CyclePreviewUpdateTemperature();
-            };
+            _cyclePreviewTimer.Interval = TimeSpan.FromMilliseconds(10);
+            _cyclePreviewTimer.Tick += (sender, args) => CyclePreviewUpdateTemperature();
             _disableTemporarilyTimer = new Timer();
-            _disableTemporarilyTimer.AutoReset = false;
-            _disableTemporarilyTimer.Elapsed += (sender, args) =>
-            {
-                IsEnabled = true;
-            };
-            _internetSyncTimer = new Timer();
-            _internetSyncTimer.AutoReset = false;
-            _internetSyncTimer.Elapsed += async (sender, args) =>
-            {
-                await InternetSyncAsync();
-                _internetSyncTimer.Enabled = Settings.IsInternetTimeSyncEnabled;
-            };
+            _disableTemporarilyTimer.Tick += (sender, args) => IsEnabled = true;
+            _internetSyncTimer = new SyncedTimer();
+            _internetSyncTimer.FirstTickDateTime = DateTime.Today;
+            _internetSyncTimer.Tick += async (sender, args) => await InternetSyncAsync();
 
             // Settings
             Settings.PropertyChanged += (sender, args) => LoadSettings();
@@ -223,7 +201,7 @@ namespace LightBulb.ViewModels
             DisableTemporarilyCommand = new RelayCommand<double>(DisableTemporarily);
             RestoreOriginalCommand = new RelayCommand(() => _gammaControlService.RestoreOriginal());
             RestoreDefaultCommand = new RelayCommand(() => _gammaControlService.RestoreDefault());
-            StartCyclePreviewCommand = new RelayCommand(StartCyclePreview, () => !_cyclePreviewTimer.Enabled);
+            StartCyclePreviewCommand = new RelayCommand(StartCyclePreview, () => !_cyclePreviewTimer.IsEnabled);
 
             // Init
             IsEnabled = true;
@@ -235,13 +213,13 @@ namespace LightBulb.ViewModels
             _windowService.UseEventHooks = Settings.DisableWhenFullscreen;
 
             // Timers
-            _temperatureUpdateTimer.Interval = Settings.TemperatureUpdateInterval.TotalMilliseconds;
-            _pollingTimer.Interval = Settings.GammaPollingInterval.TotalMilliseconds;
-            _internetSyncTimer.Interval = Settings.InternetSyncInterval.TotalMilliseconds;
+            _temperatureUpdateTimer.Interval = Settings.TemperatureUpdateInterval;
+            _pollingTimer.Interval = Settings.GammaPollingInterval;
+            _internetSyncTimer.Interval = Settings.InternetSyncInterval;
 
-            _internetSyncTimer.Enabled = Settings.IsInternetTimeSyncEnabled;
+            _internetSyncTimer.IsEnabled = Settings.IsInternetTimeSyncEnabled;
             if (!Settings.IsGammaPollingEnabled)
-                _pollingTimer.Enabled = false;
+                _pollingTimer.IsEnabled = false;
 
             // Refresh stuff
             UpdateTemperature();
@@ -266,7 +244,7 @@ namespace LightBulb.ViewModels
 
                     StatusText = $"Temp: {Temperature}K   Time: {Time:t}";
                 }
-                else if (_cyclePreviewTimer.Enabled)
+                else if (_cyclePreviewTimer.IsEnabled)
                 {
                     if (PreviewTemperature >= Settings.MaxTemperature) CycleState = CycleState.Day;
                     else if (PreviewTemperature <= Settings.MinTemperature) CycleState = CycleState.Night;
@@ -329,7 +307,7 @@ namespace LightBulb.ViewModels
             // Ending condition
             if ((PreviewTime - Time).TotalHours >= 24)
             {
-                _cyclePreviewTimer.Enabled = false;
+                _cyclePreviewTimer.IsEnabled = false;
                 IsPreviewModeEnabled = false;
                 DispatcherHelper.CheckBeginInvokeOnUI(() => StartCyclePreviewCommand.RaiseCanExecuteChanged());
             }
@@ -338,14 +316,14 @@ namespace LightBulb.ViewModels
         private void StartCyclePreview()
         {
             PreviewTime = Time;
-            _cyclePreviewTimer.Enabled = true;
+            _cyclePreviewTimer.IsEnabled = true;
         }
 
         private void DisableTemporarily(double ms)
         {
-            _disableTemporarilyTimer.Enabled = false;
-            _disableTemporarilyTimer.Interval = ms;
-            _disableTemporarilyTimer.Enabled = true;
+            _disableTemporarilyTimer.IsEnabled = false;
+            _disableTemporarilyTimer.Interval = TimeSpan.FromMilliseconds(ms);
+            _disableTemporarilyTimer.IsEnabled = true;
             IsEnabled = false;
         }
 
