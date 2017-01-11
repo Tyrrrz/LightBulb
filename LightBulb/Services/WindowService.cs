@@ -111,7 +111,7 @@ namespace LightBulb.Services
                 (hook, type, hwnd, idObject, child, thread, time) =>
                 {
                     if (idObject != 0) return; // only events from windows
-                    if (hwnd != _lastForegroundWindow) return; // skip non-foregrond windows
+                    if (hwnd != _lastForegroundWindow) return; // skip non-foreground windows
                     if (_lastEventTime == time) return; // skip duplicate events
                     _lastEventTime = time;
 
