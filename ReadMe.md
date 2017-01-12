@@ -22,3 +22,4 @@ To download the latest realease - head to the release page
 
 ![](http://www.tyrrrz.me/projects/images/lb_1.png)
 ![](http://www.tyrrrz.me/projects/images/lb_2.png)
+![](http://www.tyrrrz.me/projects/images/lb_3.png)
