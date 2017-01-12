@@ -70,7 +70,7 @@ namespace LightBulb.Services
         protected override void Start()
         {
             SyncInterval();
-            InternalTimer.Start();
+            base.Start();
         }
 
         protected override void TimerTick()
