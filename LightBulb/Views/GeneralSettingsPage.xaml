@@ -58,7 +58,7 @@
                 Value="{Binding Settings.MinTemperature}" />
 
         <!--  Switch duration temperature  -->
-        <TextBlock Margin="5" ToolTip="How long does it take to switch between temperatures">
+        <TextBlock Margin="5" ToolTip="How long does it take to switch between day and night temperatures">
             <Run Text="Transition duration:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.TemperatureSwitchDuration, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
         </TextBlock>
