@@ -20,7 +20,7 @@ namespace LightBulb
             SimpleIoc.Default.Register<TemperatureService>();
             SimpleIoc.Default.Register<GammaControlService>();
             SimpleIoc.Default.Register<WindowService>();
-            SimpleIoc.Default.Register<GeolocationApiService>();
+            SimpleIoc.Default.Register<GeolocationService>();
 
             SimpleIoc.Default.Register<MainViewModel>();
         }

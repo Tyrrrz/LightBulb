@@ -16,7 +16,7 @@ namespace LightBulb.ViewModels
         private readonly TemperatureService _temperatureService;
         private readonly GammaControlService _gammaControlService;
         private readonly WindowService _windowService;
-        private readonly GeolocationApiService _geolocationApiService;
+        private readonly GeolocationService _geolocationService;
 
         private readonly SyncedTimer _temperatureUpdateTimer;
         private readonly Timer _pollingTimer;
@@ -157,13 +157,13 @@ namespace LightBulb.ViewModels
         public RelayCommand StartCyclePreviewCommand { get; }
 
         public MainViewModel(TemperatureService temperatureService, GammaControlService gammaControlService,
-            WindowService windowService, GeolocationApiService geolocationApiService)
+            WindowService windowService, GeolocationService geolocationService)
         {
             // Services
             _temperatureService = temperatureService;
             _gammaControlService = gammaControlService;
             _windowService = windowService;
-            _geolocationApiService = geolocationApiService;
+            _geolocationService = geolocationService;
 
             _windowService.FullScreenStateChanged += (sender, args) => UpdateGamma();
 
@@ -326,12 +326,12 @@ namespace LightBulb.ViewModels
             // Get coordinates if not done yet
             if (Settings.GeoInfo == null)
             {
-                Settings.GeoInfo = await _geolocationApiService.GetGeolocationInfoAsync();
+                Settings.GeoInfo = await _geolocationService.GetGeolocationInfoAsync();
                 if (Settings.GeoInfo == null) return; // fail
             }
 
             // Update the sunrise/sunset times
-            var solarInfo = await _geolocationApiService.GetSolarInfoAsync(Settings.GeoInfo);
+            var solarInfo = await _geolocationService.GetSolarInfoAsync(Settings.GeoInfo);
             if (solarInfo == null) return; // fail
             Settings.SunriseTime = solarInfo.Sunrise.TimeOfDay;
             Settings.SunsetTime = solarInfo.Sunset.TimeOfDay;

@@ -115,7 +115,7 @@
     <Compile Include="Models\GeolocationInfo.cs" />
     <Compile Include="Models\Rect.cs" />
     <Compile Include="Models\SolarInfo.cs" />
-    <Compile Include="Services\GeolocationApiService.cs" />
+    <Compile Include="Services\GeolocationService.cs" />
     <Compile Include="Services\SyncedTimer.cs" />
     <Compile Include="Services\TemperatureService.cs" />
     <Compile Include="Services\GammaControlService.cs" />
@@ -136,6 +136,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Timer.cs" />
+    <Compile Include="Services\WebApiServiceBase.cs" />
     <Compile Include="Services\WinApiServiceBase.cs" />
     <Compile Include="Services\WindowService.cs" />
     <Compile Include="Settings.cs" />
