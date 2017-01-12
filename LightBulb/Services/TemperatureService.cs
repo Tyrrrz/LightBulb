@@ -5,6 +5,12 @@ namespace LightBulb.Services
 {
     public class TemperatureService
     {
+        private double Ease(double from, double to, double t)
+        {
+            t = t.Clamp(0, 1);
+            return from + (to - from)*Math.Sin(t*Math.PI/2);
+        }
+
         /// <summary>
         /// Approximates the appropriate color temperature of indoor lights at the given time
         /// </summary>
@@ -12,36 +18,36 @@ namespace LightBulb.Services
         {
             ushort minTemp = Settings.Default.MinTemperature;
             ushort maxTemp = Settings.Default.MaxTemperature;
-            int tempDiff = maxTemp - minTemp;
 
             var offset = Settings.Default.TemperatureSwitchDuration;
+            var halfOffset = TimeSpan.FromHours(offset.TotalHours/2);
             var riseTime = Settings.Default.SunriseTime;
             var setTime = Settings.Default.SunsetTime;
+            var riseStartTime = riseTime - halfOffset;
+            var riseEndTime = riseTime + halfOffset;
+            var setStartTime = setTime - halfOffset;
+            var setEndTime = setTime + halfOffset;
 
-            // Way before sunrise (night time)
-            if (time < riseTime - offset)
+            // Before sunrise (night time)
+            if (time < riseStartTime)
                 return minTemp;
 
             // Incoming sunrise (night time -> day time)
-            if (time >= riseTime - offset && time < riseTime)
+            if (time >= riseStartTime && time <= riseEndTime)
             {
-                double remaining = Math.Abs(time.TotalHours - riseTime.TotalHours);
-                double modifier = (remaining/offset.TotalHours).Clamp(0, 1);
-                double temp = minTemp + tempDiff*Math.Cos(modifier*Math.PI/2);
-                return (ushort) temp;
+                double t = (time.TotalHours - riseStartTime.TotalHours)/offset.TotalHours;
+                return (ushort) Ease(minTemp, maxTemp, t);
             }
 
             // Between sunrise and sunset (day time)
-            if (time > riseTime && time < setTime - offset)
+            if (time > riseEndTime && time < setStartTime)
                 return maxTemp;
 
             // Incoming sunset (day time -> night time)
-            if (time >= setTime - offset && time < setTime)
+            if (time >= setStartTime && time <= setEndTime)
             {
-                double remaining = Math.Abs(time.TotalHours - setTime.TotalHours);
-                double modifier = (remaining/offset.TotalHours).Clamp(0, 1);
-                double temp = maxTemp - tempDiff*Math.Cos(modifier*Math.PI/2);
-                return (ushort) temp;
+                double t = (time.TotalHours - setStartTime.TotalHours)/offset.TotalHours;
+                return (ushort) Ease(maxTemp, minTemp, t);
             }
 
             // After sunset (night time)
