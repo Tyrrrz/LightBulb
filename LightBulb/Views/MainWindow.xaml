@@ -147,14 +147,6 @@
                                 ToolTip="Geolocation">
                             <materialDesign:PackIcon Kind="Earth" />
                         </Button>
-                        <Button x:Name="NavigateAppRulesButton"
-                                Padding="4"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                Click="NavigateAppRulesButton_OnClick"
-                                ToolTip="Rules">
-                            <materialDesign:PackIcon Kind="ViewDashboard" />
-                        </Button>
                     </WrapPanel>
                 </Grid>
             </Border>

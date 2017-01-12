@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Animation;
 
 namespace LightBulb.Views
 {
@@ -38,7 +36,6 @@ namespace LightBulb.Views
 
             NavigateGeneralSettingsButton.IsEnabled = false;
             NavigateGeolocationSettingsButton.IsEnabled = true;
-            NavigateAppRulesButton.IsEnabled = true;
         }
 
         private void NavigateGeolocationSettingsButton_OnClick(object sender, RoutedEventArgs e)
@@ -47,14 +44,6 @@ namespace LightBulb.Views
 
             NavigateGeneralSettingsButton.IsEnabled = true;
             NavigateGeolocationSettingsButton.IsEnabled = false;
-            NavigateAppRulesButton.IsEnabled = true;
-        }
-
-        private void NavigateAppRulesButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            NavigateGeneralSettingsButton.IsEnabled = true;
-            NavigateGeolocationSettingsButton.IsEnabled = true;
-            NavigateAppRulesButton.IsEnabled = false;
         }
     }
 }
