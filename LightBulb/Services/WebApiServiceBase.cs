@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace LightBulb.Services
 {
-    public abstract class WebApiServiceBase
+    public abstract class WebApiServiceBase : IDisposable
     {
         private static readonly TimeSpan MinRequestInterval = TimeSpan.FromSeconds(0.2);
         private static DateTime _lastRequestDateTime = DateTime.MinValue;
