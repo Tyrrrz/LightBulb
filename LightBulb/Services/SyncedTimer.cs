@@ -8,20 +8,46 @@ namespace LightBulb.Services
     /// </summary>
     public class SyncedTimer : Timer
     {
+        private DateTime _firstTickDateTime;
+        private TimeSpan _interval;
+
         /// <summary>
         /// The date/time of the first time this timer should fire an event
         /// </summary>
-        public DateTime FirstTickDateTime { get; set; }
+        public DateTime FirstTickDateTime
+        {
+            get { return _firstTickDateTime; }
+            set
+            {
+                _firstTickDateTime = value;
+                SyncInterval();
+            }
+        }
 
-        public SyncedTimer(DateTime firstTickDateTime, TimeSpan interval)
-            : base(interval)
+        /// <inheritdoc />
+        public override TimeSpan Interval
+        {
+            get { return _interval; }
+            set
+            {
+                _interval = value;
+                SyncInterval();
+            }
+        }
+
+        public SyncedTimer(DateTime firstTickDateTime, TimeSpan interval) : base(interval)
         {
             FirstTickDateTime = firstTickDateTime;
         }
 
+        public SyncedTimer(TimeSpan interval) : base(interval)
+        {
+            FirstTickDateTime = DateTime.Today;
+        }
+
         public SyncedTimer()
         {
-            
+            FirstTickDateTime = DateTime.Today;
         }
 
         private void SyncInterval()

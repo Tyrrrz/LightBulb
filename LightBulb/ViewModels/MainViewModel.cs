@@ -169,17 +169,14 @@ namespace LightBulb.ViewModels
 
             // Timers
             _temperatureUpdateTimer = new SyncedTimer();
-            _temperatureUpdateTimer.FirstTickDateTime = DateTime.Today;
             _temperatureUpdateTimer.Tick += (sender, args) => UpdateTemperature();
             _pollingTimer = new Timer();
             _pollingTimer.Tick += (sender, args) => UpdateGamma();
-            _cyclePreviewTimer = new Timer();
-            _cyclePreviewTimer.Interval = TimeSpan.FromMilliseconds(10);
+            _cyclePreviewTimer = new Timer(TimeSpan.FromMilliseconds(10));
             _cyclePreviewTimer.Tick += (sender, args) => CyclePreviewUpdateTemperature();
             _disableTemporarilyTimer = new Timer();
             _disableTemporarilyTimer.Tick += (sender, args) => IsEnabled = true;
             _internetSyncTimer = new SyncedTimer();
-            _internetSyncTimer.FirstTickDateTime = DateTime.Today;
             _internetSyncTimer.Tick += async (sender, args) => await InternetSyncAsync();
 
             // Settings
