@@ -48,7 +48,8 @@
                 <tb:TaskbarIcon.ContextMenu>
                     <ContextMenu>
                         <MenuItem Command="{Binding ShowMainWindowCommand}" Header="Configure" />
-                        <MenuItem Command="{Binding ToggleEnabledCommand}" Header="Toggle On/Off" />
+                        <MenuItem Command="{Binding ToggleEnabledCommand}" Header="Toggle" />
+                        <MenuItem Command="{Binding AboutCommand}" Header="About" />
                         <MenuItem Command="{Binding ExitApplicationCommand}" Header="Exit" />
                     </ContextMenu>
                 </tb:TaskbarIcon.ContextMenu>

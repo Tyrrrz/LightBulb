@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using GalaSoft.MvvmLight;
@@ -150,6 +151,7 @@ namespace LightBulb.ViewModels
         // Commands
         public RelayCommand ShowMainWindowCommand { get; }
         public RelayCommand ExitApplicationCommand { get; }
+        public RelayCommand AboutCommand { get; }
         public RelayCommand ToggleEnabledCommand { get; }
         public RelayCommand<double> DisableTemporarilyCommand { get; }
         public RelayCommand RestoreOriginalCommand { get; }
@@ -191,6 +193,7 @@ namespace LightBulb.ViewModels
                 Application.Current.MainWindow.Focus();
             });
             ExitApplicationCommand = new RelayCommand(() => Application.Current.ShutdownSafe());
+            AboutCommand = new RelayCommand(() => Process.Start("https://github.com/Tyrrrz/LightBulb"));
             ToggleEnabledCommand = new RelayCommand(() => IsEnabled = !IsEnabled);
             DisableTemporarilyCommand = new RelayCommand<double>(DisableTemporarily);
             RestoreOriginalCommand = new RelayCommand(() => _gammaControlService.RestoreOriginal());
