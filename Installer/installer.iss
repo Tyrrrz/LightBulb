@@ -4,6 +4,7 @@
 #define MyAppURL "http://www.tyrrrz.me/"
 
 [Setup]
+AlwaysRestart=yes
 PrivilegesRequired=admin
 AppId={{381A89B9-C46F-4FAE-976C-75398A67AF52}
 AppName={#MyAppName}
