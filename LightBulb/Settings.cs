@@ -11,7 +11,7 @@ namespace LightBulb
 
         private bool _isGammaPollingEnabled = true;
         private bool _disableWhenFullscreen;
-        private bool _isInternetTimeSyncEnabled;
+        private bool _isInternetTimeSyncEnabled = true;
         private ushort _temperatureEpsilon = 50;
         private ushort _maxTemperature = 6500;
         private ushort _minTemperature = 3900;
