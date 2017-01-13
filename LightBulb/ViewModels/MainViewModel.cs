@@ -226,34 +226,36 @@ namespace LightBulb.ViewModels
 
         private void UpdateStatus()
         {
+            // Not enabled
             if (!IsEnabled)
             {
                 CycleState = CycleState.Disabled;
                 StatusText = "LightBulb is off";
+                return;
             }
+            // Preview mode (not 24hr cycle preview)
+            if (IsPreviewModeEnabled && !_cyclePreviewTimer.IsEnabled)
+            {
+                CycleState = CycleState.Disabled;
+                StatusText = $"Temp: {PreviewTemperature}K   (preview)";
+            }
+            // Preview mode (24 hr cycle preview)
+            else if (IsPreviewModeEnabled && _cyclePreviewTimer.IsEnabled)
+            {
+                if (PreviewTemperature >= Settings.MaxTemperature) CycleState = CycleState.Day;
+                else if (PreviewTemperature <= Settings.MinTemperature) CycleState = CycleState.Night;
+                else CycleState = CycleState.Transition;
+
+                StatusText = $"Temp: {PreviewTemperature}K   Time: {PreviewTime:t}   (preview)";
+            }
+            // Realtime mode
             else
             {
-                if (!IsPreviewModeEnabled)
-                {
-                    if (Temperature >= Settings.MaxTemperature) CycleState = CycleState.Day;
-                    else if (Temperature <= Settings.MinTemperature) CycleState = CycleState.Night;
-                    else CycleState = CycleState.Transition;
+                if (Temperature >= Settings.MaxTemperature) CycleState = CycleState.Day;
+                else if (Temperature <= Settings.MinTemperature) CycleState = CycleState.Night;
+                else CycleState = CycleState.Transition;
 
-                    StatusText = $"Temp: {Temperature}K   Time: {Time:t}";
-                }
-                else if (_cyclePreviewTimer.IsEnabled)
-                {
-                    if (PreviewTemperature >= Settings.MaxTemperature) CycleState = CycleState.Day;
-                    else if (PreviewTemperature <= Settings.MinTemperature) CycleState = CycleState.Night;
-                    else CycleState = CycleState.Transition;
-
-                    StatusText = $"Temp: {PreviewTemperature}K   Time: {PreviewTime:t}   (preview)";
-                }
-                else
-                {
-                    CycleState = CycleState.Disabled;
-                    StatusText = $"Temp: {PreviewTemperature}K   (preview)";
-                }
+                StatusText = $"Temp: {Temperature}K   Time: {Time:t}";
             }
         }
 
