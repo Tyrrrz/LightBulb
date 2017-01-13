@@ -74,7 +74,11 @@ namespace LightBulb
         public TimeSpan TemperatureSwitchDuration
         {
             get { return _temperatureSwitchDuration; }
-            set { Set(ref _temperatureSwitchDuration, value); }
+            set
+            {
+                Set(ref _temperatureSwitchDuration, value);
+                RaisePropertyChanged(() => TemperatureSwitchDurationMinutes);
+            }
         }
 
         public TimeSpan TemperatureUpdateInterval
@@ -101,6 +105,7 @@ namespace LightBulb
             set
             {
                 Set(ref _sunriseTime, value);
+                RaisePropertyChanged(() => SunriseTimeHours);
 
                 if (SunriseTime > SunsetTime)
                     SunsetTime = SunriseTime;
@@ -113,6 +118,7 @@ namespace LightBulb
             set
             {
                 Set(ref _sunsetTime, value);
+                RaisePropertyChanged(() => SunsetTimeHours);
 
                 if (SunsetTime < SunriseTime)
                     SunriseTime = SunsetTime;

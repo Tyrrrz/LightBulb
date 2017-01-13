@@ -74,8 +74,8 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Settings, Version=1.0.6077.30985, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLSettings.1.0.9\lib\net45\Settings.dll</HintPath>
+    <Reference Include="Settings, Version=1.0.6222.31701, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLSettings.1.0.10\lib\net45\Settings.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
