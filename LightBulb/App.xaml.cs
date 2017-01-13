@@ -33,7 +33,6 @@ namespace LightBulb
         {
             Settings.Default.TrySave();
             Locator.Cleanup();
-            _identityMutex?.ReleaseMutex();
         }
     }
 }
