@@ -226,14 +226,8 @@ namespace LightBulb.ViewModels
 
         private void UpdateStatus()
         {
-            // Not enabled
-            if (!IsEnabled)
-            {
-                CycleState = CycleState.Disabled;
-                StatusText = "LightBulb is off";
-            }
             // Preview mode (not 24hr cycle preview)
-            else if (IsPreviewModeEnabled && !_cyclePreviewTimer.IsEnabled)
+            if (IsPreviewModeEnabled && !_cyclePreviewTimer.IsEnabled)
             {
                 CycleState = CycleState.Disabled;
                 StatusText = $"Temp: {PreviewTemperature}K   (preview)";
@@ -246,6 +240,12 @@ namespace LightBulb.ViewModels
                 else CycleState = CycleState.Transition;
 
                 StatusText = $"Temp: {PreviewTemperature}K   Time: {PreviewTime:t}   (preview)";
+            }
+            // Not enabled
+            else if (!IsEnabled)
+            {
+                CycleState = CycleState.Disabled;
+                StatusText = "LightBulb is off";
             }
             // Realtime mode
             else
