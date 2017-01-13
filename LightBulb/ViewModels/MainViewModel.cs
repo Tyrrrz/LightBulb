@@ -330,18 +330,20 @@ namespace LightBulb.ViewModels
 
         private async Task InternetSyncAsync()
         {
-            // Get coordinates if not done yet
-            if (Settings.GeoInfo == null)
-            {
-                Settings.GeoInfo = await _geolocationService.GetGeolocationInfoAsync();
-                if (Settings.GeoInfo == null) return; // fail
-            }
+            // Get coordinates
+            Settings.GeoInfo = await _geolocationService.GetGeolocationInfoAsync();
+            if (Settings.GeoInfo == null) return; // fail
 
-            // Update the sunrise/sunset times
+            // Get the sunrise/sunset times
             var solarInfo = await _geolocationService.GetSolarInfoAsync(Settings.GeoInfo);
             if (solarInfo == null) return; // fail
-            Settings.SunriseTime = solarInfo.Sunrise.TimeOfDay;
-            Settings.SunsetTime = solarInfo.Sunset.TimeOfDay;
+
+            // Update settings
+            if (Settings.IsInternetTimeSyncEnabled)
+            {
+                Settings.SunriseTime = solarInfo.Sunrise.TimeOfDay;
+                Settings.SunsetTime = solarInfo.Sunset.TimeOfDay;
+            }
         }
 
         public void Dispose()
