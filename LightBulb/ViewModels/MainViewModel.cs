@@ -231,10 +231,9 @@ namespace LightBulb.ViewModels
             {
                 CycleState = CycleState.Disabled;
                 StatusText = "LightBulb is off";
-                return;
             }
             // Preview mode (not 24hr cycle preview)
-            if (IsPreviewModeEnabled && !_cyclePreviewTimer.IsEnabled)
+            else if (IsPreviewModeEnabled && !_cyclePreviewTimer.IsEnabled)
             {
                 CycleState = CycleState.Disabled;
                 StatusText = $"Temp: {PreviewTemperature}K   (preview)";
@@ -261,14 +260,17 @@ namespace LightBulb.ViewModels
 
         private void UpdateGamma()
         {
+            // Check if gamma control is blocked by something
             bool isBlocked = Settings.DisableWhenFullscreen && _windowService.IsForegroundFullScreen;
 
-            if (IsEnabled && !isBlocked)
+            // If enabled and not blocked or is in preview mode
+            if ((IsEnabled && !isBlocked) || IsPreviewModeEnabled)
             {
                 ushort temp = IsPreviewModeEnabled ? PreviewTemperature : Temperature;
                 var intensity = ColorIntensity.FromTemperature(temp);
                 _gammaControlService.SetDisplayGammaLinear(intensity);
             }
+            // When disabled - reset gamma to default
             else
             {
                 _gammaControlService.RestoreDefault();
