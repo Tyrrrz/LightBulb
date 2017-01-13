@@ -128,7 +128,11 @@ namespace LightBulb
         public GeolocationInfo GeoInfo
         {
             get { return _geoInfo; }
-            set { Set(ref _geoInfo, value); }
+            set
+            {
+                Set(ref _geoInfo, value);
+                RaisePropertyChanged(() => GeoinfoNotNull);
+            }
         }
 
         [IgnoreDataMember]
@@ -151,5 +155,8 @@ namespace LightBulb
             get { return SunsetTime.TotalHours; }
             set { SunsetTime = TimeSpan.FromHours(value); }
         }
+
+        [IgnoreDataMember]
+        public bool GeoinfoNotNull => GeoInfo != null;
     }
 }

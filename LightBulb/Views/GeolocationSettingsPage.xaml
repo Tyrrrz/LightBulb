@@ -74,8 +74,15 @@
         <WrapPanel Margin="5,0,5,5"
                    Orientation="Horizontal"
                    Visibility="{Binding Settings.IsInternetTimeSyncEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
-            <Image Height="16" Source="{Binding Settings.GeoInfo.CountryFlag, IsAsync=True}" />
-            <TextBlock Margin="3,0,0,0" VerticalAlignment="Center">
+            <!--  Geoinfo is set  -->
+            <Image Height="16"
+                   VerticalAlignment="Center"
+                   Source="{Binding Settings.GeoInfo.CountryFlag, IsAsync=True}"
+                   Visibility="{Binding Settings.GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}" />
+            <TextBlock Margin="3,0,0,0"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"
+                       Visibility="{Binding Settings.GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}">
                 <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.City, Mode=OneWay, TargetNullValue=Unknown}" />
                 <Run Text="/" />
                 <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.Country, Mode=OneWay, TargetNullValue=Unknown}" />
@@ -84,6 +91,12 @@
                 <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.Longitude, Mode=OneWay, TargetNullValue=xx}" />
                 <Run Text="long" /><Run Text=")" />
             </TextBlock>
+            <!--  Geoinfo is not set  -->
+            <TextBlock VerticalAlignment="Center"
+                       Text="Geographical location is undetermined"
+                       TextWrapping="Wrap"
+                       ToolTip="If this message doesn't disappear after some time, it might mean that the geolocation server is down"
+                       Visibility="{Binding Settings.GeoinfoNotNull, Converter={StaticResource InvertBoolToVisibilityConverter}, ConverterParameter=Collapsed}" />
         </WrapPanel>
     </StackPanel>
 </Page>
