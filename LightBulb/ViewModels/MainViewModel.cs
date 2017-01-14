@@ -51,6 +51,7 @@ namespace LightBulb.ViewModels
                 _temperatureUpdateTimer.IsEnabled = value;
                 _pollingTimer.IsEnabled = value && Settings.IsGammaPollingEnabled;
 
+                UpdateTemperature();
                 UpdateGamma();
                 UpdateStatus();
             }
@@ -183,6 +184,23 @@ namespace LightBulb.ViewModels
 
             // Settings
             Settings.PropertyChanged += (sender, args) => UpdateConfiguration();
+            Settings.PropertyChanged += (sender, args) =>
+            {
+                // Refresh temperature
+                if (args.PropertyName.IsEither(nameof(Settings.TemperatureEpsilon), nameof(Settings.MinTemperature),
+                        nameof(Settings.MaxTemperature), nameof(Settings.TemperatureSwitchDuration),
+                        nameof(Settings.SunriseTime), nameof(Settings.SunsetTime)))
+                {
+                    UpdateTemperature();
+                }
+
+                // Refresh geo-info
+                if (args.PropertyName == nameof(Settings.IsInternetTimeSyncEnabled) &&
+                    Settings.IsInternetTimeSyncEnabled)
+                {
+                    InternetSyncAsync().Forget();
+                }
+            };
 
             // Commands
             ShowMainWindowCommand = new RelayCommand(() =>
@@ -216,12 +234,8 @@ namespace LightBulb.ViewModels
             _pollingTimer.Interval = Settings.GammaPollingInterval;
             _internetSyncTimer.Interval = Settings.InternetSyncInterval;
 
+            _pollingTimer.IsEnabled = Settings.IsGammaPollingEnabled;
             _internetSyncTimer.IsEnabled = Settings.IsInternetTimeSyncEnabled;
-            if (!Settings.IsGammaPollingEnabled)
-                _pollingTimer.IsEnabled = false;
-
-            // Refresh stuff
-            UpdateTemperature();
         }
 
         private void UpdateStatus()
