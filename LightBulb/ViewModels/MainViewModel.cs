@@ -331,8 +331,9 @@ namespace LightBulb.ViewModels
         private async Task InternetSyncAsync()
         {
             // Get coordinates
-            Settings.GeoInfo = await _geolocationService.GetGeolocationInfoAsync();
-            if (Settings.GeoInfo == null) return; // fail
+            var geoinfo = await _geolocationService.GetGeolocationInfoAsync();
+            if (geoinfo == null) return; // fail
+            Settings.GeoInfo = geoinfo;
 
             // Get the sunrise/sunset times
             var solarInfo = await _geolocationService.GetSolarInfoAsync(Settings.GeoInfo);
