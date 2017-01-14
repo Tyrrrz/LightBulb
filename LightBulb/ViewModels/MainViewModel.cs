@@ -182,8 +182,7 @@ namespace LightBulb.ViewModels
             _internetSyncTimer.Tick += async (sender, args) => await InternetSyncAsync();
 
             // Settings
-            Settings.PropertyChanged += (sender, args) => LoadSettings();
-            LoadSettings();
+            Settings.PropertyChanged += (sender, args) => UpdateConfiguration();
 
             // Commands
             ShowMainWindowCommand = new RelayCommand(() =>
@@ -201,10 +200,13 @@ namespace LightBulb.ViewModels
             StartCyclePreviewCommand = new RelayCommand(StartCyclePreview, () => !_cyclePreviewTimer.IsEnabled);
 
             // Init
+            UpdateConfiguration();
+            if (Settings.IsInternetTimeSyncEnabled)
+                InternetSyncAsync().Forget();
             IsEnabled = true;
         }
 
-        private void LoadSettings()
+        private void UpdateConfiguration()
         {
             // Services
             _windowService.UseEventHooks = Settings.DisableWhenFullscreen;
@@ -220,8 +222,6 @@ namespace LightBulb.ViewModels
 
             // Refresh stuff
             UpdateTemperature();
-            if (Settings.IsInternetTimeSyncEnabled)
-                InternetSyncAsync().Forget();
         }
 
         private void UpdateStatus()
