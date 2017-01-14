@@ -5,43 +5,34 @@ namespace LightBulb.Models
     [DataContract]
     public class GeolocationInfo
     {
-        [DataMember(Name = "country")]
+        [DataMember(Name = "country_name")]
         public string Country { get; set; }
 
-        [DataMember(Name = "countryCode")]
+        [DataMember(Name = "country_code")]
         public string CountryCode { get; set; }
 
-        [DataMember(Name = "region")]
+        [DataMember(Name = "region_code")]
         public string Region { get; set; }
 
-        [DataMember(Name = "regionName")]
+        [DataMember(Name = "region_name")]
         public string RegionName { get; set; }
 
         [DataMember(Name = "city")]
         public string City { get; set; }
 
-        [DataMember(Name = "zip")]
+        [DataMember(Name = "zip_code")]
         public string Zip { get; set; }
 
-        [DataMember(Name = "lat")]
+        [DataMember(Name = "latitude")]
         public double Latitude { get; set; }
 
-        [DataMember(Name = "lon")]
+        [DataMember(Name = "longitude")]
         public double Longitude { get; set; }
 
-        [DataMember(Name = "timezone")]
+        [DataMember(Name = "time_zone")]
         public string Timezone { get; set; }
 
-        [DataMember(Name = "isp")]
-        public string InternetServiceProvider { get; set; }
-
-        [DataMember(Name = "org")]
-        public string OrganizationName { get; set; }
-
-        [DataMember(Name = "as")]
-        public string AutonomousSystemName { get; set; }
-
-        [DataMember(Name = "query")]
+        [DataMember(Name = "ip")]
         public string Ip { get; set; }
 
         public string CountryFlag => $"http://flags.fmcdn.net/data/flags/mini/{CountryCode.ToLowerInvariant()}.png";

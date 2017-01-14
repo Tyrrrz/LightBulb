@@ -10,7 +10,7 @@ namespace LightBulb.Services
     {
         public async Task<GeolocationInfo> GetGeolocationInfoAsync()
         {
-            string response = await GetStringAsync("http://ip-api.com/json");
+            string response = await GetStringAsync("http://freegeoip.net/json");
             if (response.IsBlank()) return null;
 
             return JsonConvert.DeserializeObject<GeolocationInfo>(response);
