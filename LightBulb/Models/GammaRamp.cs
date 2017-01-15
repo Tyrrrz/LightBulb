@@ -2,7 +2,7 @@
 
 namespace LightBulb.Models
 {
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential)]
     public struct GammaRamp
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]

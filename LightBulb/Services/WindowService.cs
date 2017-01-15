@@ -41,7 +41,6 @@ namespace LightBulb.Services
         private bool _useEventHooks;
         private bool _isForegroundFullScreen;
         private IntPtr _lastForegroundWindow;
-        private uint _lastEventTime;
 
         public Settings Settings => Settings.Default;
 
@@ -95,8 +94,6 @@ namespace LightBulb.Services
                 (hook, type, hwnd, idObject, child, thread, time) =>
                 {
                     if (idObject != 0) return; // only events from windows
-                    if (_lastEventTime == time) return; // skip duplicate events
-                    _lastEventTime = time;
 
                     _lastForegroundWindow = hwnd;
                     IsForegroundFullScreen = IsWindowFullScreen(hwnd);
@@ -112,8 +109,6 @@ namespace LightBulb.Services
                 {
                     if (idObject != 0) return; // only events from windows
                     if (hwnd != _lastForegroundWindow) return; // skip non-foreground windows
-                    if (_lastEventTime == time) return; // skip duplicate events
-                    _lastEventTime = time;
 
                     IsForegroundFullScreen = IsWindowFullScreen(hwnd);
                 };
@@ -186,8 +181,12 @@ namespace LightBulb.Services
             // Get the window rect
             var windowRect = GetWindowRect(hWindow);
 
+            // If window doesn't have a rect - return
+            if (windowRect.Left == 0 && windowRect.Top == 0 && windowRect.Right == 0 && windowRect.Bottom == 0)
+                return false;
+
             // If window rect has retarded values, it's most likely a fullscreen game
-            if (windowRect.Left <= 0 && windowRect.Top <= 0 && windowRect.Right <= 0 && windowRect.Bottom <= 0)
+            if (windowRect.Left < 0 && windowRect.Top < 0 && windowRect.Right < 0 && windowRect.Bottom < 0)
                 return true;
 
             // Get the screen rect and compare
