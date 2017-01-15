@@ -26,6 +26,7 @@ namespace LightBulb.ViewModels
         private readonly SyncedTimer _internetSyncTimer;
 
         private bool _isEnabled;
+        private bool _isBlocked;
         private bool _isPreviewModeEnabled;
         private string _statusText;
         private CycleState _cycleState;
@@ -49,11 +50,28 @@ namespace LightBulb.ViewModels
                 if (value && !IsPreviewModeEnabled) UpdateTemperature();
 
                 _temperatureUpdateTimer.IsEnabled = value;
-                _pollingTimer.IsEnabled = value && Settings.IsGammaPollingEnabled;
+                _pollingTimer.IsEnabled = value && !IsBlocked && Settings.IsGammaPollingEnabled;
 
                 UpdateTemperature();
                 UpdateGamma();
                 UpdateStatus();
+            }
+        }
+
+        /// <summary>
+        /// Whether gamma control is blocked by something 
+        /// </summary>
+        public bool IsBlocked
+        {
+            get { return _isBlocked; }
+            private set
+            {
+                if (!Set(ref _isBlocked, value)) return;
+
+                _pollingTimer.IsEnabled = !value && IsEnabled && Settings.IsGammaPollingEnabled;
+
+                if (IsEnabled)
+                    UpdateGamma();
             }
         }
 
@@ -73,7 +91,7 @@ namespace LightBulb.ViewModels
         }
 
         /// <summary>
-        /// Status text
+        /// Current status text
         /// </summary>
         public string StatusText
         {
@@ -100,7 +118,8 @@ namespace LightBulb.ViewModels
             {
                 if (!Set(ref _time, value)) return;
 
-                UpdateStatus();
+                if (IsEnabled && !IsBlocked)
+                    UpdateStatus();
             }
         }
 
@@ -114,7 +133,8 @@ namespace LightBulb.ViewModels
             {
                 if (!Set(ref _previewTime, value)) return;
 
-                UpdateStatus();
+                if (IsPreviewModeEnabled)
+                    UpdateStatus();
             }
         }
 
@@ -128,8 +148,11 @@ namespace LightBulb.ViewModels
             {
                 if (!Set(ref _temperature, value)) return;
 
-                UpdateGamma();
-                UpdateStatus();
+                if (IsEnabled && !IsBlocked)
+                {
+                    UpdateGamma();
+                    UpdateStatus();
+                }
             }
         }
 
@@ -144,8 +167,11 @@ namespace LightBulb.ViewModels
                 if (!Set(ref _previewTemperature, value)) return;
                 if (!IsPreviewModeEnabled) return;
 
-                UpdateGamma();
-                UpdateStatus();
+                if (IsPreviewModeEnabled)
+                {
+                    UpdateGamma();
+                    UpdateStatus();
+                }
             }
         }
 
@@ -168,7 +194,7 @@ namespace LightBulb.ViewModels
             _windowService = windowService;
             _geolocationService = geolocationService;
 
-            _windowService.FullScreenStateChanged += (sender, args) => UpdateGamma();
+            _windowService.FullScreenStateChanged += (sender, args) => UpdateBlockStatus();
 
             // Timers
             _temperatureUpdateTimer = new SyncedTimer();
@@ -234,8 +260,13 @@ namespace LightBulb.ViewModels
             _pollingTimer.Interval = Settings.GammaPollingInterval;
             _internetSyncTimer.Interval = Settings.InternetSyncInterval;
 
-            _pollingTimer.IsEnabled = Settings.IsGammaPollingEnabled;
+            _pollingTimer.IsEnabled = IsEnabled && Settings.IsGammaPollingEnabled;
             _internetSyncTimer.IsEnabled = Settings.IsInternetTimeSyncEnabled;
+        }
+
+        private void UpdateBlockStatus()
+        {
+            IsBlocked = Settings.DisableWhenFullscreen && _windowService.IsForegroundFullScreen;
         }
 
         private void UpdateStatus()
@@ -274,20 +305,21 @@ namespace LightBulb.ViewModels
 
         private void UpdateGamma()
         {
-            // Check if gamma control is blocked by something
-            bool isBlocked = Settings.DisableWhenFullscreen && _windowService.IsForegroundFullScreen;
-
             // If enabled and not blocked or is in preview mode
-            if ((IsEnabled && !isBlocked) || IsPreviewModeEnabled)
+            if ((IsEnabled && !IsBlocked) || IsPreviewModeEnabled)
             {
                 ushort temp = IsPreviewModeEnabled ? PreviewTemperature : Temperature;
                 var intensity = ColorIntensity.FromTemperature(temp);
                 _gammaControlService.SetDisplayGammaLinear(intensity);
+
+                Debug.WriteLine("Set new gamma");
             }
             // When disabled - reset gamma to default
             else
             {
                 _gammaControlService.RestoreDefault();
+
+                Debug.WriteLine("Restored gamma");
             }
         }
 
@@ -303,6 +335,8 @@ namespace LightBulb.ViewModels
                 diff < Settings.TemperatureEpsilon) return;
 
             Temperature = newTemp;
+
+            Debug.WriteLine($"Updated temperature ({Temperature})");
         }
 
         private void CyclePreviewUpdateTemperature()
@@ -332,6 +366,8 @@ namespace LightBulb.ViewModels
         {
             PreviewTime = Time;
             _cyclePreviewTimer.IsEnabled = true;
+
+            Debug.WriteLine("Started cycle preview");
         }
 
         private void DisableTemporarily(double ms)
@@ -344,6 +380,8 @@ namespace LightBulb.ViewModels
 
         private async Task InternetSyncAsync()
         {
+            Debug.WriteLine("Start internet sync");
+
             // Get coordinates
             var geoinfo = await _geolocationService.GetGeolocationInfoAsync();
             if (geoinfo == null) return; // fail
@@ -358,7 +396,11 @@ namespace LightBulb.ViewModels
             {
                 Settings.SunriseTime = solarInfo.Sunrise.TimeOfDay;
                 Settings.SunsetTime = solarInfo.Sunset.TimeOfDay;
+
+                Debug.WriteLine("Solar info updated");
             }
+
+            Debug.WriteLine("End internet sync");
         }
 
         public void Dispose()
