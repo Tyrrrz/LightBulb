@@ -84,7 +84,7 @@ namespace LightBulb.Services
         /// </summary>
         public void RestoreDefault()
         {
-            SetDisplayGammaLinear(new ColorIntensity(1));
+            SetDisplayGammaLinear(ColorIntensity.Default);
         }
     }
 }

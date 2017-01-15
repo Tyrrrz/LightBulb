@@ -29,6 +29,8 @@ namespace LightBulb.Models
 
     public partial struct ColorIntensity
     {
+        public static ColorIntensity Default { get; } = new ColorIntensity(1);
+
         public static ColorIntensity FromTemperature(ushort temp)
         {
             // http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/

@@ -72,11 +72,9 @@ namespace LightBulb.ViewModels
 
                 _pollingTimer.IsEnabled = !value && IsEnabled && Settings.IsGammaPollingEnabled;
 
-                if (IsEnabled)
-                {
-                    UpdateGamma();
-                    UpdateStatus();
-                }
+                UpdateTemperature();
+                UpdateGamma();
+                UpdateStatus();
             }
         }
 
@@ -123,8 +121,7 @@ namespace LightBulb.ViewModels
             {
                 if (!Set(ref _time, value)) return;
 
-                if (IsEnabled && !IsBlocked)
-                    UpdateStatus();
+                UpdateStatus();
             }
         }
 
@@ -138,8 +135,7 @@ namespace LightBulb.ViewModels
             {
                 if (!Set(ref _previewTime, value)) return;
 
-                if (IsPreviewModeEnabled)
-                    UpdateStatus();
+                UpdateStatus();
             }
         }
 
@@ -153,11 +149,8 @@ namespace LightBulb.ViewModels
             {
                 if (!Set(ref _temperature, value)) return;
 
-                if (IsEnabled && !IsBlocked)
-                {
-                    UpdateGamma();
-                    UpdateStatus();
-                }
+                UpdateGamma();
+                UpdateStatus();
             }
         }
 
@@ -172,11 +165,8 @@ namespace LightBulb.ViewModels
                 if (!Set(ref _previewTemperature, value)) return;
                 if (!IsPreviewModeEnabled) return;
 
-                if (IsPreviewModeEnabled)
-                {
-                    UpdateGamma();
-                    UpdateStatus();
-                }
+                UpdateGamma();
+                UpdateStatus();
             }
         }
 
@@ -321,29 +311,18 @@ namespace LightBulb.ViewModels
 
         private void UpdateGamma()
         {
-            // If enabled and not blocked or is in preview mode
-            if ((IsEnabled && !IsBlocked) || IsPreviewModeEnabled)
-            {
-                ushort temp = IsPreviewModeEnabled ? PreviewTemperature : Temperature;
-                var intensity = ColorIntensity.FromTemperature(temp);
-                _gammaControlService.SetDisplayGammaLinear(intensity);
+            ushort temp = IsPreviewModeEnabled ? PreviewTemperature : Temperature;
+            var intensity = ColorIntensity.FromTemperature(temp);
+            _gammaControlService.SetDisplayGammaLinear(intensity);
 
-                Debug.WriteLine("Set gamma", GetType().Name);
-            }
-            // When disabled - reset gamma to default
-            else
-            {
-                _gammaControlService.RestoreDefault();
-
-                Debug.WriteLine("Restored gamma", GetType().Name);
-            }
+            Debug.WriteLine("Set gamma", GetType().Name);
         }
 
         private void UpdateTemperature()
         {
             Time = DateTime.Now;
             ushort currentTemp = Temperature;
-            ushort newTemp = _temperatureService.GetTemperature(Time);
+            ushort newTemp = IsEnabled && !IsBlocked ? _temperatureService.GetTemperature(Time) : (ushort) 6500;
             int diff = Math.Abs(currentTemp - newTemp);
 
             // Don't update if difference is too small, unless it's either max or min temperature
