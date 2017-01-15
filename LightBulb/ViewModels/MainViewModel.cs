@@ -316,7 +316,7 @@ namespace LightBulb.ViewModels
             var intensity = ColorIntensity.FromTemperature(temp);
             _gammaControlService.SetDisplayGammaLinear(intensity);
 
-            Debug.WriteLine("Set gamma", GetType().Name);
+            Debug.WriteLine($"Set gamma (intensity to {intensity})", GetType().Name);
         }
 
         private void UpdateTemperature()
