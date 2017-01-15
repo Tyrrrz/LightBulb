@@ -25,7 +25,7 @@ namespace LightBulb.Services
         }
 
         /// <inheritdoc />
-        public override TimeSpan Interval
+        public sealed override TimeSpan Interval
         {
             get { return _interval; }
             set
@@ -38,22 +38,19 @@ namespace LightBulb.Services
         public SyncedTimer(DateTime firstTickDateTime, TimeSpan interval)
         {
             FirstTickDateTime = firstTickDateTime;
-            _interval = interval;
-            SyncInterval();
+            Interval = interval;
         }
 
         public SyncedTimer(TimeSpan interval)
         {
             FirstTickDateTime = DateTime.Today;
-            _interval = interval;
-            SyncInterval();
+            Interval = interval;
         }
 
         public SyncedTimer()
         {
             FirstTickDateTime = DateTime.Today;
-            _interval = TimeSpan.FromMilliseconds(100);
-            SyncInterval();
+            Interval = TimeSpan.FromMilliseconds(100);
         }
 
         private void SyncInterval()
