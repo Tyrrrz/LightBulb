@@ -10,11 +10,15 @@ namespace LightBulb
         public static Settings Default { get; } = new Settings();
 
         private bool _isGammaPollingEnabled = true;
+        private bool _isTemperatureSmoothingEnabled = true;
         private bool _disableWhenFullscreen;
         private bool _isInternetTimeSyncEnabled = true;
         private ushort _temperatureEpsilon = 50;
+        private ushort _defaultMonitorTemperature = 6500;
+        private ushort _minimumSmoothingTemperature = 1000;
         private ushort _maxTemperature = 6500;
         private ushort _minTemperature = 3900;
+        private TimeSpan _temperatureSmoothingDuration = TimeSpan.FromSeconds(2);
         private TimeSpan _temperatureSwitchDuration = TimeSpan.FromMinutes(90);
         private TimeSpan _temperatureUpdateInterval = TimeSpan.FromMinutes(1);
         private TimeSpan _gammaPollingInterval = TimeSpan.FromSeconds(5);
@@ -27,6 +31,12 @@ namespace LightBulb
         {
             get { return _isGammaPollingEnabled; }
             set { Set(ref _isGammaPollingEnabled, value); }
+        }
+
+        public bool IsTemperatureSmoothingEnabled
+        {
+            get { return _isTemperatureSmoothingEnabled; }
+            set { Set(ref _isTemperatureSmoothingEnabled, value); }
         }
 
         public bool DisableWhenFullscreen
@@ -45,6 +55,18 @@ namespace LightBulb
         {
             get { return _temperatureEpsilon; }
             set { Set(ref _temperatureEpsilon, value); }
+        }
+
+        public ushort DefaultMonitorTemperature
+        {
+            get { return _defaultMonitorTemperature; }
+            set { Set(ref _defaultMonitorTemperature, value); }
+        }
+
+        public ushort MinimumSmoothingTemperature
+        {
+            get { return _minimumSmoothingTemperature; }
+            set { Set(ref _minimumSmoothingTemperature, value); }
         }
 
         public ushort MinTemperature
@@ -69,6 +91,12 @@ namespace LightBulb
                 if (MaxTemperature < MinTemperature)
                     MinTemperature = MaxTemperature;
             }
+        }
+
+        public TimeSpan TemperatureSmoothingDuration
+        {
+            get { return _temperatureSmoothingDuration; }
+            set { Set(ref _temperatureSmoothingDuration, value); }
         }
 
         public TimeSpan TemperatureSwitchDuration

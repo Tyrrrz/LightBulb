@@ -34,7 +34,7 @@ namespace LightBulb.ViewModels
         private CycleState _cycleState;
         private DateTime _time;
         private DateTime _previewTime;
-        private ushort _temperature = 6500;
+        private ushort _temperature;
         private ushort _previewTemperature;
 
         public Settings Settings => Settings.Default;
@@ -240,6 +240,7 @@ namespace LightBulb.ViewModels
             StartCyclePreviewCommand = new RelayCommand(StartCyclePreview, () => !_cyclePreviewTimer.IsEnabled);
 
             // Init
+            Temperature = Settings.DefaultMonitorTemperature;
             UpdateConfiguration();
             if (Settings.IsInternetTimeSyncEnabled)
                 InternetSyncAsync().Forget();
@@ -322,20 +323,23 @@ namespace LightBulb.ViewModels
         {
             Time = DateTime.Now;
             ushort currentTemp = Temperature;
-            ushort newTemp = IsEnabled && !IsBlocked ? _temperatureService.GetTemperature(Time) : (ushort) 6500;
+            ushort newTemp = IsEnabled && !IsBlocked
+                ? _temperatureService.GetTemperature(Time)
+                : Settings.DefaultMonitorTemperature;
             int diff = Math.Abs(currentTemp - newTemp);
 
             // Don't update if difference is too small, unless it's either max or min temperature
             if (!newTemp.IsEither(Settings.MinTemperature, Settings.MaxTemperature) &&
                 diff < Settings.TemperatureEpsilon) return;
 
-            // If the difference is too big - transit smoothly
-            if (diff > 1000)
+            // Smooth transition
+            if (Settings.IsTemperatureSmoothingEnabled && diff >= Settings.MinimumSmoothingTemperature)
             {
-                _smoother.Set(currentTemp, newTemp, temp => Temperature = (ushort) temp, TimeSpan.FromSeconds(3));
+                _smoother.Set(currentTemp, newTemp, temp => Temperature = (ushort) temp, Settings.TemperatureSmoothingDuration);
 
                 Debug.WriteLine($"Started smooth temperature transition (to {Temperature})", GetType().Name);
             }
+            // Instant transition
             else
             {
                 Temperature = newTemp;
