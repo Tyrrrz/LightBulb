@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using LightBulb.Models;
@@ -115,12 +116,16 @@ namespace LightBulb.Services
 
             _foregroundWindowChangedHook = SetWinEventHookInternal(0x0003, 0x0003, IntPtr.Zero,
                 _foregroundWindowChangedEventHandler, 0, 0, 0);
+
+            Debug.WriteLine("Installed WinAPI hooks", GetType().Name);
         }
 
         private void UninstallHooks()
         {
             UnhookWinEventInternal(_foregroundWindowChangedHook);
             UnhookWinEventInternal(_foregroundWindowLocationChangedHook);
+
+            Debug.WriteLine("Uninstalled WinAPI hooks", GetType().Name);
         }
 
         /// <summary>

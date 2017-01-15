@@ -262,11 +262,15 @@ namespace LightBulb.ViewModels
 
             _pollingTimer.IsEnabled = IsEnabled && Settings.IsGammaPollingEnabled;
             _internetSyncTimer.IsEnabled = Settings.IsInternetTimeSyncEnabled;
+
+            Debug.WriteLine("Updated configuration", GetType().Name);
         }
 
         private void UpdateBlockStatus()
         {
             IsBlocked = Settings.DisableWhenFullscreen && _windowService.IsForegroundFullScreen;
+
+            Debug.WriteLine($"Updated block status (to {IsBlocked})", GetType().Name);
         }
 
         private void UpdateStatus()
@@ -312,14 +316,14 @@ namespace LightBulb.ViewModels
                 var intensity = ColorIntensity.FromTemperature(temp);
                 _gammaControlService.SetDisplayGammaLinear(intensity);
 
-                Debug.WriteLine("Set new gamma");
+                Debug.WriteLine("Set gamma", GetType().Name);
             }
             // When disabled - reset gamma to default
             else
             {
                 _gammaControlService.RestoreDefault();
 
-                Debug.WriteLine("Restored gamma");
+                Debug.WriteLine("Restored gamma", GetType().Name);
             }
         }
 
@@ -336,7 +340,7 @@ namespace LightBulb.ViewModels
 
             Temperature = newTemp;
 
-            Debug.WriteLine($"Updated temperature ({Temperature})");
+            Debug.WriteLine($"Updated temperature (to {Temperature})", GetType().Name);
         }
 
         private void CyclePreviewUpdateTemperature()
@@ -367,7 +371,7 @@ namespace LightBulb.ViewModels
             PreviewTime = Time;
             _cyclePreviewTimer.IsEnabled = true;
 
-            Debug.WriteLine("Started cycle preview");
+            Debug.WriteLine("Started cycle preview", GetType().Name);
         }
 
         private void DisableTemporarily(double ms)
@@ -380,7 +384,7 @@ namespace LightBulb.ViewModels
 
         private async Task InternetSyncAsync()
         {
-            Debug.WriteLine("Start internet sync");
+            Debug.WriteLine("Start internet sync", GetType().Name);
 
             // Get coordinates
             var geoinfo = await _geolocationService.GetGeolocationInfoAsync();
@@ -397,10 +401,10 @@ namespace LightBulb.ViewModels
                 Settings.SunriseTime = solarInfo.Sunrise.TimeOfDay;
                 Settings.SunsetTime = solarInfo.Sunset.TimeOfDay;
 
-                Debug.WriteLine("Solar info updated");
+                Debug.WriteLine("Solar info updated", GetType().Name);
             }
 
-            Debug.WriteLine("End internet sync");
+            Debug.WriteLine("End internet sync", GetType().Name);
         }
 
         public void Dispose()
