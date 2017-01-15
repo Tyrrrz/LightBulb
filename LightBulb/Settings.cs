@@ -74,7 +74,7 @@ namespace LightBulb
             get { return _minTemperature; }
             set
             {
-                Set(ref _minTemperature, value);
+                if (!Set(ref _minTemperature, value)) return;
 
                 if (MinTemperature > MaxTemperature)
                     MaxTemperature = MinTemperature;
@@ -86,7 +86,7 @@ namespace LightBulb
             get { return _maxTemperature; }
             set
             {
-                Set(ref _maxTemperature, value);
+                if (Set(ref _maxTemperature, value)) return;
 
                 if (MaxTemperature < MinTemperature)
                     MinTemperature = MaxTemperature;
@@ -104,7 +104,8 @@ namespace LightBulb
             get { return _temperatureSwitchDuration; }
             set
             {
-                Set(ref _temperatureSwitchDuration, value);
+                if (Set(ref _temperatureSwitchDuration, value)) return;
+
                 RaisePropertyChanged(() => TemperatureSwitchDurationMinutes);
             }
         }
@@ -132,7 +133,8 @@ namespace LightBulb
             get { return _sunriseTime; }
             set
             {
-                Set(ref _sunriseTime, value);
+                if (Set(ref _sunriseTime, value)) return;
+
                 RaisePropertyChanged(() => SunriseTimeHours);
 
                 if (SunriseTime > SunsetTime)
@@ -145,7 +147,8 @@ namespace LightBulb
             get { return _sunsetTime; }
             set
             {
-                Set(ref _sunsetTime, value);
+                if (Set(ref _sunsetTime, value)) return;
+
                 RaisePropertyChanged(() => SunsetTimeHours);
 
                 if (SunsetTime < SunriseTime)
@@ -158,7 +161,8 @@ namespace LightBulb
             get { return _geoInfo; }
             set
             {
-                Set(ref _geoInfo, value);
+                if (Set(ref _geoInfo, value)) return;
+
                 RaisePropertyChanged(() => GeoinfoNotNull);
             }
         }
