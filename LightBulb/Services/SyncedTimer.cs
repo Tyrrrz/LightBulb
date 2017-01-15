@@ -35,19 +35,25 @@ namespace LightBulb.Services
             }
         }
 
-        public SyncedTimer(DateTime firstTickDateTime, TimeSpan interval) : base(interval)
+        public SyncedTimer(DateTime firstTickDateTime, TimeSpan interval)
         {
             FirstTickDateTime = firstTickDateTime;
+            _interval = interval;
+            SyncInterval();
         }
 
-        public SyncedTimer(TimeSpan interval) : base(interval)
+        public SyncedTimer(TimeSpan interval)
         {
             FirstTickDateTime = DateTime.Today;
+            _interval = interval;
+            SyncInterval();
         }
 
         public SyncedTimer()
         {
             FirstTickDateTime = DateTime.Today;
+            _interval = TimeSpan.FromMilliseconds(100);
+            SyncInterval();
         }
 
         private void SyncInterval()
