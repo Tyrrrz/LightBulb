@@ -14,9 +14,9 @@ namespace LightBulb
         private bool _disableWhenFullscreen;
         private bool _isInternetTimeSyncEnabled = true;
         private ushort _temperatureEpsilon = 50;
-        private ushort _defaultMonitorTemperature = 6500;
+        private ushort _defaultMonitorTemperature = 6600;
         private ushort _minimumSmoothingTemperature = 1000;
-        private ushort _maxTemperature = 6500;
+        private ushort _maxTemperature = 6600;
         private ushort _minTemperature = 3900;
         private TimeSpan _temperatureSmoothingDuration = TimeSpan.FromSeconds(2);
         private TimeSpan _temperatureSwitchDuration = TimeSpan.FromMinutes(90);
