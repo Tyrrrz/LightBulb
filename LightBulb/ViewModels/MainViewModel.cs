@@ -73,7 +73,10 @@ namespace LightBulb.ViewModels
                 _pollingTimer.IsEnabled = !value && IsEnabled && Settings.IsGammaPollingEnabled;
 
                 if (IsEnabled)
+                {
                     UpdateGamma();
+                    UpdateStatus();
+                }
             }
         }
 
@@ -298,6 +301,12 @@ namespace LightBulb.ViewModels
             {
                 CycleState = CycleState.Disabled;
                 StatusText = "LightBulb is off";
+            }
+            // Blocked
+            else if (IsBlocked)
+            {
+                CycleState = CycleState.Disabled;
+                StatusText = "LightBulb is blocked";
             }
             // Realtime mode
             else
