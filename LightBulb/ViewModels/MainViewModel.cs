@@ -19,6 +19,8 @@ namespace LightBulb.ViewModels
         private readonly WindowService _windowService;
         private readonly GeolocationService _geolocationService;
 
+        private readonly ValueSmoother _smoother;
+
         private readonly SyncedTimer _temperatureUpdateTimer;
         private readonly Timer _pollingTimer;
         private readonly Timer _disableTemporarilyTimer;
@@ -32,7 +34,7 @@ namespace LightBulb.ViewModels
         private CycleState _cycleState;
         private DateTime _time;
         private DateTime _previewTime;
-        private ushort _temperature;
+        private ushort _temperature = 6500;
         private ushort _previewTemperature;
 
         public Settings Settings => Settings.Default;
@@ -193,6 +195,7 @@ namespace LightBulb.ViewModels
             _gammaControlService = gammaControlService;
             _windowService = windowService;
             _geolocationService = geolocationService;
+            _smoother = new ValueSmoother();
 
             _windowService.FullScreenStateChanged += (sender, args) => UpdateBlockStatus();
 
@@ -338,9 +341,19 @@ namespace LightBulb.ViewModels
             if (!newTemp.IsEither(Settings.MinTemperature, Settings.MaxTemperature) &&
                 diff < Settings.TemperatureEpsilon) return;
 
-            Temperature = newTemp;
+            // If the difference is too big - transit smoothly
+            if (diff > 1000)
+            {
+                _smoother.Set(currentTemp, newTemp, temp => Temperature = (ushort) temp, TimeSpan.FromSeconds(3));
 
-            Debug.WriteLine($"Updated temperature (to {Temperature})", GetType().Name);
+                Debug.WriteLine($"Started smooth temperature transition (to {Temperature})", GetType().Name);
+            }
+            else
+            {
+                Temperature = newTemp;
+
+                Debug.WriteLine($"Updated temperature (to {Temperature})", GetType().Name);
+            }
         }
 
         private void CyclePreviewUpdateTemperature()

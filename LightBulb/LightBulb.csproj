@@ -132,6 +132,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\Timer.cs" />
+    <Compile Include="Services\ValueSmoother.cs" />
     <Compile Include="Services\WebApiServiceBase.cs" />
     <Compile Include="Services\WinApiServiceBase.cs" />
     <Compile Include="Services\WindowService.cs" />
