@@ -107,7 +107,7 @@
                           Margin="5"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Center"
-                          IsChecked="{Binding Settings.DisableWhenFullscreen}" />
+                          IsChecked="{Binding Settings.IsFullscreenBlocking}" />
         </Grid>
 
         <!--  24hr preview  -->

@@ -11,7 +11,7 @@ namespace LightBulb
 
         private bool _isGammaPollingEnabled = true;
         private bool _isTemperatureSmoothingEnabled = true;
-        private bool _disableWhenFullscreen;
+        private bool _isFullscreenBlocking;
         private bool _isInternetTimeSyncEnabled = true;
         private ushort _temperatureEpsilon = 50;
         private ushort _defaultMonitorTemperature = 6600;
@@ -39,10 +39,10 @@ namespace LightBulb
             set { Set(ref _isTemperatureSmoothingEnabled, value); }
         }
 
-        public bool DisableWhenFullscreen
+        public bool IsFullscreenBlocking
         {
-            get { return _disableWhenFullscreen; }
-            set { Set(ref _disableWhenFullscreen, value); }
+            get { return _isFullscreenBlocking; }
+            set { Set(ref _isFullscreenBlocking, value); }
         }
 
         public bool IsInternetTimeSyncEnabled

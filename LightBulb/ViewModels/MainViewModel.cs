@@ -250,7 +250,7 @@ namespace LightBulb.ViewModels
         private void UpdateConfiguration()
         {
             // Services
-            _windowService.UseEventHooks = Settings.DisableWhenFullscreen;
+            _windowService.UseEventHooks = Settings.IsFullscreenBlocking;
 
             // Timers
             _temperatureUpdateTimer.Interval = Settings.TemperatureUpdateInterval;
@@ -265,7 +265,7 @@ namespace LightBulb.ViewModels
 
         private void UpdateBlockStatus()
         {
-            IsBlocked = Settings.DisableWhenFullscreen && _windowService.IsForegroundFullScreen;
+            IsBlocked = Settings.IsFullscreenBlocking && _windowService.IsForegroundFullScreen;
 
             Debug.WriteLine($"Updated block status (to {IsBlocked})", GetType().Name);
         }
