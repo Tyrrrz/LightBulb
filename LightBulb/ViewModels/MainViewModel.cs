@@ -342,6 +342,7 @@ namespace LightBulb.ViewModels
             // Instant transition
             else
             {
+                _smoother.Stop();
                 Temperature = newTemp;
 
                 Debug.WriteLine($"Updated temperature (to {Temperature})", GetType().Name);

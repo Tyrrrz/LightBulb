@@ -19,6 +19,25 @@ namespace LightBulb.Services
             _timer.Tick += (sender, args) => Tick();
         }
 
+        private void Tick()
+        {
+            bool isIncreasing = _increment > 0;
+
+            _current += _increment;
+            _current = isIncreasing ? _current.ClampMax(_final) : _current.ClampMin(_final);
+            _setter(_current);
+
+            // Ending condition
+            if ((isIncreasing && _current >= _final) || (!isIncreasing && _current <= _final))
+            {
+                _timer.IsEnabled = false;
+                Finished?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        /// <summary>
+        /// Smoothly changes the value of a property over time
+        /// </summary>
         public void Set(double from, double to, Action<double> setter, TimeSpan duration)
         {
             if (setter == null)
@@ -39,20 +58,12 @@ namespace LightBulb.Services
             _timer.IsEnabled = true;
         }
 
-        private void Tick()
+        /// <summary>
+        /// Stops the current transition, if active
+        /// </summary>
+        public void Stop()
         {
-            bool isIncreasing = _increment > 0;
-
-            _current += _increment;
-            _current = isIncreasing ? _current.ClampMax(_final) : _current.ClampMin(_final);
-            _setter(_current);
-
-            // Ending condition
-            if ((isIncreasing && _current >= _final) || (!isIncreasing && _current <= _final))
-            {
-                _timer.IsEnabled = false;
-                Finished?.Invoke(this, EventArgs.Empty);
-            }
+            _timer.IsEnabled = false;
         }
     }
 }
