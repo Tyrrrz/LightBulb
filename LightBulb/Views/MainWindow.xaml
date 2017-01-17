@@ -47,10 +47,26 @@
                             ToolTipText="LightBulb">
                 <tb:TaskbarIcon.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Command="{Binding ShowMainWindowCommand}" Header="Configure" />
-                        <MenuItem Command="{Binding ToggleEnabledCommand}" Header="Toggle" />
-                        <MenuItem Command="{Binding AboutCommand}" Header="About" />
-                        <MenuItem Command="{Binding ExitApplicationCommand}" Header="Exit" />
+                        <MenuItem Command="{Binding ShowMainWindowCommand}" Header="Configure">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Settings" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Command="{Binding ToggleEnabledCommand}" Header="Toggle">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Power" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Command="{Binding AboutCommand}" Header="About">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Web" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Command="{Binding ExitApplicationCommand}" Header="Exit">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="ExitToApp" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </ContextMenu>
                 </tb:TaskbarIcon.ContextMenu>
             </tb:TaskbarIcon>
