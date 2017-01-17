@@ -36,8 +36,6 @@ namespace LightBulb.Services
                 _updateTimer.IsEnabled = value;
                 _pollingTimer.IsEnabled = (value || IsPreviewModeEnabled) && Settings.IsGammaPollingEnabled;
 
-                Time = DateTime.Now;
-
                 UpdateRealtimeTemperature();
                 UpdateGamma();
 
@@ -82,8 +80,6 @@ namespace LightBulb.Services
                 if (Time == value) return;
                 _time = value;
 
-                UpdateRealtimeTemperature();
-
                 Updated?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -98,8 +94,6 @@ namespace LightBulb.Services
             {
                 if (CyclePreviewTime == value) return;
                 _cyclePreviewTime = value;
-
-                CyclePreviewUpdateTemperature();
 
                 Updated?.Invoke(this, EventArgs.Empty);
             }
@@ -118,6 +112,8 @@ namespace LightBulb.Services
             get { return _realtimeTemperature; }
             private set
             {
+                if (value < Settings.MinTemperature) value = Settings.MinTemperature;
+                if (value > Settings.MaxTemperature) value = Settings.MaxTemperature;
                 if (RealtimeTemperature == value) return;
                 int diff = Math.Abs(RealtimeTemperature - value);
                 if (diff <= Settings.TemperatureEpsilon &&
@@ -138,6 +134,8 @@ namespace LightBulb.Services
             get { return _previewTemperature; }
             set
             {
+                if (value < Settings.MinTemperature) value = Settings.MinTemperature;
+                if (value > Settings.MaxTemperature) value = Settings.MaxTemperature;
                 if (PreviewTemperature == value) return;
                 int diff = Math.Abs(PreviewTemperature - value);
                 if (diff <= Settings.TemperatureEpsilon &&
@@ -169,13 +167,13 @@ namespace LightBulb.Services
             _updateTimer = new SyncedTimer();
             _updateTimer.Tick += (sender, args) =>
             {
-                Time = DateTime.Now;
+                UpdateRealtimeTemperature();
             };
 
-            _cyclePreviewTimer = new Timer(TimeSpan.FromMilliseconds(10));
+            _cyclePreviewTimer = new Timer(TimeSpan.FromMilliseconds(30));
             _cyclePreviewTimer.Tick += (sender, args) =>
             {
-                CyclePreviewTime = CyclePreviewTime.AddHours(0.05);
+                CyclePreviewUpdateTemperature();
 
                 // Ending condition
                 if ((CyclePreviewTime - Time).TotalHours >= 24)
@@ -191,7 +189,7 @@ namespace LightBulb.Services
 
             _temperatureSmoother = new ValueSmoother();
 
-            RealtimeTemperature = PreviewTemperature = Settings.DefaultMonitorTemperature;
+            RealtimeTemperature = Settings.DefaultMonitorTemperature;
 
             Settings.PropertyChanged += (sender, args) =>
             {
@@ -218,7 +216,8 @@ namespace LightBulb.Services
 
         private void UpdateGamma()
         {
-            var intens = ColorIntensity.FromTemperature(IsPreviewModeEnabled ? PreviewTemperature : RealtimeTemperature);
+            ushort temp = IsPreviewModeEnabled ? PreviewTemperature : RealtimeTemperature;
+            var intens = ColorIntensity.FromTemperature(temp);
             _gammaService.SetDisplayGammaLinear(intens);
 
             Debug.WriteLine($"Gamma updated (to {intens})", GetType().Name);
@@ -226,6 +225,7 @@ namespace LightBulb.Services
 
         private void UpdateRealtimeTemperature()
         {
+            Time = DateTime.Now;
             ushort newTemp = IsRealtimeModeEnabled ? GetTemperature(Time) : Settings.DefaultMonitorTemperature;
             int diff = Math.Abs(newTemp - RealtimeTemperature);
 
@@ -249,12 +249,14 @@ namespace LightBulb.Services
 
         private void CyclePreviewUpdateTemperature()
         {
+            CyclePreviewTime = CyclePreviewTime.Add(TimeSpan.FromHours(0.05));
             PreviewTemperature = GetTemperature(CyclePreviewTime);
         }
 
         public void CyclePreviewStart()
         {
             CyclePreviewTime = Time;
+            PreviewTemperature = GetTemperature(CyclePreviewTime);
             IsPreviewModeEnabled = true;
             _cyclePreviewTimer.IsEnabled = true;
 
