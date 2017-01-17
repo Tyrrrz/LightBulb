@@ -1,9 +1,9 @@
 ﻿using System;
 using NegativeLayer.Extensions;
 
-namespace LightBulb.Services
+namespace LightBulb.Services.Helpers
 {
-    public class ValueSmoother
+    public class ValueSmoother : IDisposable
     {
         private readonly Timer _timer;
         private Action<double> _setter;
@@ -64,6 +64,11 @@ namespace LightBulb.Services
         public void Stop()
         {
             _timer.IsEnabled = false;
+        }
+
+        public virtual void Dispose()
+        {
+            _timer.Dispose();
         }
     }
 }

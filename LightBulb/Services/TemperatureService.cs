@@ -1,26 +1,290 @@
 ﻿using System;
+using System.Diagnostics;
+using LightBulb.Models;
+using LightBulb.Services.Helpers;
 using NegativeLayer.Extensions;
 
 namespace LightBulb.Services
 {
-    public class TemperatureService
+    public partial class TemperatureService : IDisposable
     {
-        private double Ease(double from, double to, double t)
+        private readonly GammaService _gammaService;
+
+        private readonly SyncedTimer _updateTimer;
+        private readonly Timer _cyclePreviewTimer;
+        private readonly Timer _pollingTimer;
+        private readonly ValueSmoother _temperatureSmoother;
+
+        private bool _isRealtimeModeEnabled;
+        private bool _isPreviewModeEnabled;
+        private DateTime _time;
+        private DateTime _cyclePreviewTime;
+        private ushort _realtimeTemperature;
+        private ushort _previewTemperature;
+
+        /// <summary>
+        /// Whether the real time gamma control is enabled
+        /// </summary>
+        public bool IsRealtimeModeEnabled
         {
-            t = t.Clamp(0, 1);
-            return from + (to - from)*Math.Sin(t*Math.PI/2);
+            get { return _isRealtimeModeEnabled; }
+            set
+            {
+                if (IsRealtimeModeEnabled == value) return;
+                _isRealtimeModeEnabled = value;
+
+                _updateTimer.IsEnabled = value;
+                _pollingTimer.IsEnabled = (value || IsPreviewModeEnabled) && Settings.IsGammaPollingEnabled;
+
+                Time = DateTime.Now;
+
+                UpdateRealtimeTemperature();
+                UpdateGamma();
+
+                Updated?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         /// <summary>
-        /// Approximates the appropriate color temperature of indoor lights at the given time
+        /// Whether preview mode is enabled
         /// </summary>
-        public ushort GetTemperature(TimeSpan time)
+        public bool IsPreviewModeEnabled
+        {
+            get { return _isPreviewModeEnabled; }
+            set
+            {
+                if (IsPreviewModeEnabled == value) return;
+                _isPreviewModeEnabled = value;
+
+                // Stop ongoing 24hr cycle preview
+                if (!value && _cyclePreviewTimer.IsEnabled)
+                {
+                    _cyclePreviewTimer.IsEnabled = false;
+                    CyclePreviewEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+                _pollingTimer.IsEnabled = (value || IsRealtimeModeEnabled) && Settings.IsGammaPollingEnabled;
+
+                UpdateGamma();
+
+                Updated?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        /// <summary>
+        /// Last temperature update time
+        /// </summary>
+        public DateTime Time
+        {
+            get { return _time; }
+            private set
+            {
+                if (Time == value) return;
+                _time = value;
+
+                UpdateRealtimeTemperature();
+
+                Updated?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        /// <summary>
+        /// Cycle preview time
+        /// </summary>
+        public DateTime CyclePreviewTime
+        {
+            get { return _cyclePreviewTime; }
+            private set
+            {
+                if (CyclePreviewTime == value) return;
+                _cyclePreviewTime = value;
+
+                CyclePreviewUpdateTemperature();
+
+                Updated?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        /// <summary>
+        /// Whether the cycle preview is currenly running
+        /// </summary>
+        public bool IsCyclePreviewRunning => _cyclePreviewTimer.IsEnabled;
+
+        /// <summary>
+        /// Current color temperature
+        /// </summary>
+        public ushort RealtimeTemperature
+        {
+            get { return _realtimeTemperature; }
+            private set
+            {
+                if (RealtimeTemperature == value) return;
+                int diff = Math.Abs(RealtimeTemperature - value);
+                if (diff <= Settings.TemperatureEpsilon &&
+                    !value.IsEither(Settings.MaxTemperature, Settings.MinTemperature)) return;
+                _realtimeTemperature = value;
+
+                UpdateGamma();
+
+                Updated?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        /// <summary>
+        /// Current preview temperature
+        /// </summary>
+        public ushort PreviewTemperature
+        {
+            get { return _previewTemperature; }
+            set
+            {
+                if (PreviewTemperature == value) return;
+                int diff = Math.Abs(PreviewTemperature - value);
+                if (diff <= Settings.TemperatureEpsilon &&
+                    !value.IsEither(Settings.MaxTemperature, Settings.MinTemperature)) return;
+                _previewTemperature = value;
+
+                UpdateGamma();
+
+                Updated?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public Settings Settings => Settings.Default;
+
+        /// <summary>
+        /// Triggered when something changes
+        /// </summary>
+        public event EventHandler Updated;
+
+        /// <summary>
+        /// Triggered when cycle preview ends
+        /// </summary>
+        public event EventHandler CyclePreviewEnded;
+
+        public TemperatureService(GammaService gammaService)
+        {
+            _gammaService = gammaService;
+
+            _updateTimer = new SyncedTimer();
+            _updateTimer.Tick += (sender, args) =>
+            {
+                Time = DateTime.Now;
+            };
+
+            _cyclePreviewTimer = new Timer(TimeSpan.FromMilliseconds(10));
+            _cyclePreviewTimer.Tick += (sender, args) =>
+            {
+                CyclePreviewTime = CyclePreviewTime.AddHours(0.05);
+
+                // Ending condition
+                if ((CyclePreviewTime - Time).TotalHours >= 24)
+                {
+                    _cyclePreviewTimer.IsEnabled = false;
+                    Debug.WriteLine("Ended cycle preview", GetType().Name);
+                    CyclePreviewEnded?.Invoke(this, EventArgs.Empty);
+                }
+            };
+
+            _pollingTimer = new Timer();
+            _pollingTimer.Tick += (sender, args) => UpdateGamma();
+
+            _temperatureSmoother = new ValueSmoother();
+
+            RealtimeTemperature = PreviewTemperature = Settings.DefaultMonitorTemperature;
+
+            Settings.PropertyChanged += (sender, args) =>
+            {
+                UpdateConfiguration();
+
+                if (args.PropertyName.IsEither(nameof(Settings.TemperatureEpsilon), nameof(Settings.MinTemperature),
+                    nameof(Settings.MaxTemperature), nameof(Settings.TemperatureSwitchDuration),
+                    nameof(Settings.SunriseTime), nameof(Settings.SunsetTime)))
+                {
+                    UpdateRealtimeTemperature();
+                }
+            };
+
+            UpdateConfiguration();
+        }
+
+        private void UpdateConfiguration()
+        {
+            _updateTimer.Interval = Settings.TemperatureUpdateInterval;
+
+            _pollingTimer.Interval = Settings.GammaPollingInterval;
+            _pollingTimer.IsEnabled = (IsRealtimeModeEnabled || IsPreviewModeEnabled) && Settings.IsGammaPollingEnabled;
+        }
+
+        private void UpdateGamma()
+        {
+            var intens = ColorIntensity.FromTemperature(IsPreviewModeEnabled ? PreviewTemperature : RealtimeTemperature);
+            _gammaService.SetDisplayGammaLinear(intens);
+
+            Debug.WriteLine($"Gamma updated (to {intens})", GetType().Name);
+        }
+
+        private void UpdateRealtimeTemperature()
+        {
+            ushort newTemp = IsRealtimeModeEnabled ? GetTemperature(Time) : Settings.DefaultMonitorTemperature;
+            int diff = Math.Abs(newTemp - RealtimeTemperature);
+
+            // Smooth transition
+            if (Settings.IsTemperatureSmoothingEnabled && diff >= Settings.MinSmoothingDeltaTemperature)
+            {
+                _temperatureSmoother.Set(RealtimeTemperature, newTemp, temp => RealtimeTemperature = (ushort) temp,
+                    Settings.TemperatureSmoothingDuration);
+
+                Debug.WriteLine($"Started smooth temperature transition (to {newTemp})", GetType().Name);
+            }
+            // Instant transition
+            else
+            {
+                _temperatureSmoother.Stop();
+                RealtimeTemperature = newTemp;
+
+                Debug.WriteLine($"Updated temperature (to {newTemp})", GetType().Name);
+            }
+        }
+
+        private void CyclePreviewUpdateTemperature()
+        {
+            PreviewTemperature = GetTemperature(CyclePreviewTime);
+        }
+
+        public void CyclePreviewStart()
+        {
+            CyclePreviewTime = Time;
+            IsPreviewModeEnabled = true;
+            _cyclePreviewTimer.IsEnabled = true;
+
+            Debug.WriteLine("Started cycle preview", GetType().Name);
+        }
+
+        public virtual void Dispose()
+        {
+            _updateTimer.Dispose();
+            _cyclePreviewTimer.Dispose();
+            _pollingTimer.Dispose();
+            _temperatureSmoother.Dispose();
+        }
+    }
+
+    public partial class TemperatureService
+    {
+        private static double Ease(double from, double to, double t)
+        {
+            t = t.Clamp(0, 1);
+            return from + (to - from) * Math.Sin(t * Math.PI / 2);
+        }
+
+        private static ushort GetTemperature(TimeSpan time)
         {
             ushort minTemp = Settings.Default.MinTemperature;
             ushort maxTemp = Settings.Default.MaxTemperature;
 
             var offset = Settings.Default.TemperatureSwitchDuration;
-            var halfOffset = TimeSpan.FromHours(offset.TotalHours/2);
+            var halfOffset = TimeSpan.FromHours(offset.TotalHours / 2);
             var riseTime = Settings.Default.SunriseTime;
             var setTime = Settings.Default.SunsetTime;
             var riseStartTime = riseTime - halfOffset;
@@ -35,8 +299,8 @@ namespace LightBulb.Services
             // Incoming sunrise (night time -> day time)
             if (time >= riseStartTime && time <= riseEndTime)
             {
-                double t = (time.TotalHours - riseStartTime.TotalHours)/offset.TotalHours;
-                return (ushort) Ease(minTemp, maxTemp, t);
+                double t = (time.TotalHours - riseStartTime.TotalHours) / offset.TotalHours;
+                return (ushort)Ease(minTemp, maxTemp, t);
             }
 
             // Between sunrise and sunset (day time)
@@ -46,17 +310,14 @@ namespace LightBulb.Services
             // Incoming sunset (day time -> night time)
             if (time >= setStartTime && time <= setEndTime)
             {
-                double t = (time.TotalHours - setStartTime.TotalHours)/offset.TotalHours;
-                return (ushort) Ease(maxTemp, minTemp, t);
+                double t = (time.TotalHours - setStartTime.TotalHours) / offset.TotalHours;
+                return (ushort)Ease(maxTemp, minTemp, t);
             }
 
             // After sunset (night time)
             return minTemp;
         }
 
-        /// <summary>
-        /// Approximates the appropriate color temperature of indoor lights at the given date
-        /// </summary>
-        public ushort GetTemperature(DateTime dt) => GetTemperature(dt.TimeOfDay);
+        private static ushort GetTemperature(DateTime dt) => GetTemperature(dt.TimeOfDay);
     }
 }

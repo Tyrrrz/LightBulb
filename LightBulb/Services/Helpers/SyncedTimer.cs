@@ -1,7 +1,7 @@
 ﻿using System;
 using NegativeLayer.Extensions;
 
-namespace LightBulb.Services
+namespace LightBulb.Services.Helpers
 {
     /// <summary>
     /// Timer that synchronizes its interval with the system clock
@@ -10,6 +10,16 @@ namespace LightBulb.Services
     {
         private DateTime _firstTickDateTime;
         private TimeSpan _interval;
+
+        public override bool IsEnabled
+        {
+            get { return base.IsEnabled; }
+            set
+            {
+                SyncInterval();
+                base.IsEnabled = value;
+            }
+        }
 
         /// <summary>
         /// The date/time of the first time this timer should fire an event
@@ -68,12 +78,6 @@ namespace LightBulb.Services
                 double msUntilNextPeriod = (1 - periods.Fraction())*Interval.TotalMilliseconds;
                 InternalTimer.Interval = msUntilNextPeriod;
             }
-        }
-
-        protected override void Start()
-        {
-            SyncInterval();
-            base.Start();
         }
 
         protected override void TimerTick()

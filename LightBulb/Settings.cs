@@ -15,7 +15,7 @@ namespace LightBulb
         private bool _isInternetTimeSyncEnabled = true;
         private ushort _temperatureEpsilon = 50;
         private ushort _defaultMonitorTemperature = 6600;
-        private ushort _minimumSmoothingTemperature = 1000;
+        private ushort _minSmoothingDeltaTemperature = 400;
         private ushort _maxTemperature = 6600;
         private ushort _minTemperature = 3900;
         private TimeSpan _temperatureSmoothingDuration = TimeSpan.FromSeconds(2);
@@ -63,10 +63,10 @@ namespace LightBulb
             set { Set(ref _defaultMonitorTemperature, value); }
         }
 
-        public ushort MinimumSmoothingTemperature
+        public ushort MinSmoothingDeltaTemperature
         {
-            get { return _minimumSmoothingTemperature; }
-            set { Set(ref _minimumSmoothingTemperature, value); }
+            get { return _minSmoothingDeltaTemperature; }
+            set { Set(ref _minSmoothingDeltaTemperature, value); }
         }
 
         public ushort MinTemperature
@@ -166,6 +166,9 @@ namespace LightBulb
                 RaisePropertyChanged(() => GeoinfoNotNull);
             }
         }
+
+        [IgnoreDataMember]
+        public bool NeedEventHooks => IsFullscreenBlocking;
 
         [IgnoreDataMember]
         public double TemperatureSwitchDurationMinutes

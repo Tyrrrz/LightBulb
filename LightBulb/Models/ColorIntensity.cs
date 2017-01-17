@@ -8,17 +8,20 @@ namespace LightBulb.Models
         public double Red { get; }
         public double Green { get; }
         public double Blue { get; }
+        public double Magnitude { get; }
 
         public ColorIntensity(double red, double green, double blue)
         {
             Red = red;
             Green = green;
             Blue = blue;
+            Magnitude = Math.Sqrt(Red*Red + Green*Green + Blue*Blue);
         }
 
         public ColorIntensity(double uniform)
         {
             Red = Green = Blue = uniform;
+            Magnitude = Math.Sqrt(Red*Red + Green*Green + Blue*Blue);
         }
 
         public override string ToString()

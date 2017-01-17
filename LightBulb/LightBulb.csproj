@@ -111,10 +111,9 @@
     <Compile Include="Models\GeolocationInfo.cs" />
     <Compile Include="Models\Rect.cs" />
     <Compile Include="Models\SolarInfo.cs" />
-    <Compile Include="Services\GeolocationService.cs" />
-    <Compile Include="Services\SyncedTimer.cs" />
-    <Compile Include="Services\TemperatureService.cs" />
-    <Compile Include="Services\GammaControlService.cs" />
+    <Compile Include="Services\GeoSyncService.cs" />
+    <Compile Include="Services\Helpers\SyncedTimer.cs" />
+    <Compile Include="Services\GammaService.cs" />
     <Page Include="Views\GeneralSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -131,10 +130,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\Timer.cs" />
-    <Compile Include="Services\ValueSmoother.cs" />
-    <Compile Include="Services\WebApiServiceBase.cs" />
-    <Compile Include="Services\WinApiServiceBase.cs" />
+    <Compile Include="Services\Helpers\Timer.cs" />
+    <Compile Include="Services\Helpers\ValueSmoother.cs" />
+    <Compile Include="Services\Abstract\WebApiServiceBase.cs" />
+    <Compile Include="Services\Abstract\WinApiServiceBase.cs" />
+    <Compile Include="Services\TemperatureService.cs" />
     <Compile Include="Services\WindowService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

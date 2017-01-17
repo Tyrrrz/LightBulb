@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace LightBulb.Services
+namespace LightBulb.Services.Abstract
 {
     public abstract class WebApiServiceBase : IDisposable
     {
@@ -37,7 +37,7 @@ namespace LightBulb.Services
             }
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             _client.Dispose();
         }

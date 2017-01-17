@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using LightBulb.Models;
+using LightBulb.Services.Abstract;
 using NegativeLayer.Extensions;
 
 namespace LightBulb.Services
 {
-    public class GammaControlService : WinApiServiceBase
+    public class GammaService : WinApiServiceBase
     {
+        #region WinAPI
         [DllImport("user32.dll", EntryPoint = "GetDC", SetLastError = true)]
         private static extern IntPtr GetDCInternal(IntPtr hWnd);
 
@@ -15,10 +17,13 @@ namespace LightBulb.Services
 
         [DllImport("gdi32.dll", EntryPoint = "GetDeviceGammaRamp", SetLastError = true)]
         private static extern bool GetDeviceGammaRampInternal(IntPtr hMonitor, out GammaRamp ramp);
+        #endregion
 
         private readonly GammaRamp _originalRamp;
 
-        public GammaControlService()
+        public Settings Settings => Settings.Default;
+
+        public GammaService()
         {
             _originalRamp = GetDisplayGammaRamp();
         }
@@ -26,7 +31,7 @@ namespace LightBulb.Services
         /// <summary>
         /// Get the curve that represents the current display gamma
         /// </summary>
-        public GammaRamp GetDisplayGammaRamp()
+        private GammaRamp GetDisplayGammaRamp()
         {
             var dc = GetDCInternal(IntPtr.Zero);
             GammaRamp ramp;
@@ -38,7 +43,7 @@ namespace LightBulb.Services
         /// <summary>
         /// Change the display gamma based on given curve
         /// </summary>
-        public void SetDisplayGammaRamp(GammaRamp ramp)
+        private void SetDisplayGammaRamp(GammaRamp ramp)
         {
             // Randomize the values in ramp slightly...
             // ... this forces the ramp to refresh every time

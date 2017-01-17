@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LightBulb.Services
+namespace LightBulb.Services.Helpers
 {
     /// <summary>
     /// Timer that runs on a separate thread and only triggers new events if the old ones have been handled
@@ -27,10 +27,7 @@ namespace LightBulb.Services
                 if (_isBusy) return;
 
                 // Otherwise start it or stop it
-                if (value)
-                    Start();
-                else
-                    Stop();
+                InternalTimer.Enabled = value;
             }
         }
 
@@ -72,22 +69,12 @@ namespace LightBulb.Services
             _isBusy = false;
         }
 
-        protected virtual void Start()
-        {
-            InternalTimer.Start();
-        }
-
-        protected virtual void Stop()
-        {
-            InternalTimer.Stop();
-        }
-
         protected virtual void TimerTick()
         {
             Tick?.Invoke(this, EventArgs.Empty);
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             InternalTimer.Dispose();
         }
