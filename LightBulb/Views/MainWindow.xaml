@@ -43,8 +43,32 @@
             <tb:TaskbarIcon x:Name="TaskbarIcon"
                             Grid.Row="0"
                             DoubleClickCommand="{Binding ShowMainWindowCommand}"
-                            IconSource="/LightBulb;component/favicon.ico"
-                            ToolTipText="LightBulb">
+                            IconSource="/LightBulb;component/favicon.ico">
+                <tb:TaskbarIcon.TrayToolTip>
+                    <Border Background="{DynamicResource MaterialDesignPaper}"
+                            BorderBrush="{DynamicResource MiscBrush}"
+                            BorderThickness="2"
+                            CornerRadius="6"
+                            TextElement.FontSize="13"
+                            TextElement.FontWeight="Regular"
+                            TextElement.Foreground="{DynamicResource SecondaryTextBrush}"
+                            TextOptions.TextFormattingMode="Ideal"
+                            TextOptions.TextRenderingMode="Auto">
+                        <Grid Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                       Text="LightBulb" />
+                            <TextBlock Grid.Row="1" Text="{Binding StatusText}" />
+                        </Grid>
+                    </Border>
+                </tb:TaskbarIcon.TrayToolTip>
                 <tb:TaskbarIcon.ContextMenu>
                     <ContextMenu>
                         <MenuItem Command="{Binding ShowMainWindowCommand}" Header="Configure">

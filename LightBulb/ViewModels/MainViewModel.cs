@@ -210,7 +210,7 @@ namespace LightBulb.ViewModels
             else
             {
                 StatusText =
-                    $"Temp: {_temperatureService.RealtimeTemperature}K   Time: {_temperatureService.Time:t}";
+                    $"Temp: {_temperatureService.RealtimeTemperature}K";
             }
         }
 
