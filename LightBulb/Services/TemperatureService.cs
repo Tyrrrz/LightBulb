@@ -178,6 +178,7 @@ namespace LightBulb.Services
                 // Ending condition
                 if ((CyclePreviewTime - Time).TotalHours >= 24)
                 {
+                    IsPreviewModeEnabled = false;
                     _cyclePreviewTimer.IsEnabled = false;
                     Debug.WriteLine("Ended cycle preview", GetType().Name);
                     CyclePreviewEnded?.Invoke(this, EventArgs.Empty);
