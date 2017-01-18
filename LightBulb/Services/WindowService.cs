@@ -14,24 +14,24 @@ namespace LightBulb.Services
             IntPtr hwnd, int idObject, int idChild, uint dwEventThread,
             uint dwmsEventTime);
 
-        [DllImport("user32.dll", EntryPoint = "GetForegroundWindow", SetLastError = true)]
+        [DllImport("user32.dll", EntryPoint = "GetForegroundWindow", SetLastError = false)]
         private static extern IntPtr GetForegroundWindowInternal();
 
-        [DllImport("user32.dll", EntryPoint = "GetDesktopWindow", SetLastError = true)]
+        [DllImport("user32.dll", EntryPoint = "GetDesktopWindow", SetLastError = false)]
         private static extern IntPtr GetDesktopWindowInternal();
 
-        [DllImport("user32.dll", EntryPoint = "GetShellWindow", SetLastError = true)]
+        [DllImport("user32.dll", EntryPoint = "GetShellWindow", SetLastError = false)]
         private static extern IntPtr GetShellWindowInternal();
 
-        [DllImport("user32.dll", EntryPoint = "GetWindowRect", SetLastError = true)]
+        [DllImport("user32.dll", EntryPoint = "GetWindowRect", SetLastError = false)]
         private static extern int GetWindowRectInternal(IntPtr hWindow, out Rect rect);
 
-        [DllImport("user32.dll", EntryPoint = "SetWinEventHook", SetLastError = true)]
+        [DllImport("user32.dll", EntryPoint = "SetWinEventHook", SetLastError = false)]
         private static extern IntPtr SetWinEventHookInternal(uint eventMin, uint eventMax,
             IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc,
             uint idProcess, uint idThread, uint dwFlags);
 
-        [DllImport("user32.dll", EntryPoint = "UnhookWinEvent", SetLastError = true)]
+        [DllImport("user32.dll", EntryPoint = "UnhookWinEvent", SetLastError = false)]
         private static extern bool UnhookWinEventInternal(IntPtr hWinEventHook);
         #endregion
 

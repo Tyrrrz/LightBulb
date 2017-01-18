@@ -9,13 +9,13 @@ namespace LightBulb.Services
     public class GammaService : WinApiServiceBase
     {
         #region WinAPI
-        [DllImport("user32.dll", EntryPoint = "GetDC", SetLastError = true)]
+        [DllImport("user32.dll", EntryPoint = "GetDC", SetLastError = false)]
         private static extern IntPtr GetDCInternal(IntPtr hWnd);
 
-        [DllImport("gdi32.dll", EntryPoint = "SetDeviceGammaRamp", SetLastError = true)]
+        [DllImport("gdi32.dll", EntryPoint = "SetDeviceGammaRamp", SetLastError = false)]
         private static extern bool SetDeviceGammaRampInternal(IntPtr hMonitor, ref GammaRamp ramp);
 
-        [DllImport("gdi32.dll", EntryPoint = "GetDeviceGammaRamp", SetLastError = true)]
+        [DllImport("gdi32.dll", EntryPoint = "GetDeviceGammaRamp", SetLastError = false)]
         private static extern bool GetDeviceGammaRampInternal(IntPtr hMonitor, out GammaRamp ramp);
         #endregion
 
