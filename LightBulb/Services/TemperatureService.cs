@@ -174,7 +174,7 @@ namespace LightBulb.Services
                 UpdateRealtimeTemperature();
             };
 
-            _cyclePreviewTimer = new Timer(TimeSpan.FromMilliseconds(30));
+            _cyclePreviewTimer = new Timer(TimeSpan.FromMilliseconds(15));
             _cyclePreviewTimer.Tick += (sender, args) =>
             {
                 CyclePreviewUpdateTemperature();
