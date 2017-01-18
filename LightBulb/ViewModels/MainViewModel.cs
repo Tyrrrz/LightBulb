@@ -39,9 +39,6 @@ namespace LightBulb.ViewModels
                 if (value) _disableTemporarilyTimer.IsEnabled = false;
 
                 _temperatureService.IsRealtimeModeEnabled = value && !IsBlocked;
-
-                UpdateStatusText();
-                UpdateCycleState();
             }
         }
 
@@ -56,9 +53,6 @@ namespace LightBulb.ViewModels
                 if (!Set(ref _isBlocked, value)) return;
 
                 _temperatureService.IsRealtimeModeEnabled = !value && IsEnabled;
-
-                UpdateStatusText();
-                UpdateCycleState();
             }
         }
 

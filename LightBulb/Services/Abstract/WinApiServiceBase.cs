@@ -17,7 +17,7 @@ namespace LightBulb.Services.Abstract
         {
             var ex = GetLastError();
             //if (ex != null) throw ex;
-            if (ex != null) Debug.WriteLine($"Win32 error: {ex.Message} ({ex.NativeErrorCode})", GetType().Name);
+            //if (ex != null) Debug.WriteLine($"Win32 error: {ex.Message} ({ex.NativeErrorCode})", GetType().Name);
         }
     }
 }

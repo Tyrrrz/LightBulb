@@ -63,6 +63,7 @@ namespace LightBulb.Services
 
                 _pollingTimer.IsEnabled = (value || IsRealtimeModeEnabled) && Settings.IsGammaPollingEnabled;
 
+                UpdateRealtimeTemperature();
                 UpdateGamma();
 
                 Updated?.Invoke(this, EventArgs.Empty);
@@ -112,8 +113,6 @@ namespace LightBulb.Services
             get { return _realtimeTemperature; }
             private set
             {
-                if (value < Settings.MinTemperature) value = Settings.MinTemperature;
-                if (value > Settings.MaxTemperature) value = Settings.MaxTemperature;
                 if (RealtimeTemperature == value) return;
                 int diff = Math.Abs(RealtimeTemperature - value);
                 if (diff <= Settings.TemperatureEpsilon &&
@@ -136,8 +135,6 @@ namespace LightBulb.Services
             get { return _previewTemperature; }
             set
             {
-                if (value < Settings.MinTemperature) value = Settings.MinTemperature;
-                if (value > Settings.MaxTemperature) value = Settings.MaxTemperature;
                 if (PreviewTemperature == value) return;
                 int diff = Math.Abs(PreviewTemperature - value);
                 if (diff <= Settings.TemperatureEpsilon &&
