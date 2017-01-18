@@ -120,6 +120,8 @@ namespace LightBulb.Services
                     !value.IsEither(Settings.MaxTemperature, Settings.MinTemperature)) return;
                 _realtimeTemperature = value;
 
+                Debug.WriteLine($"Updated temperature (to {value})", GetType().Name);
+
                 UpdateGamma();
 
                 Updated?.Invoke(this, EventArgs.Empty);
@@ -141,6 +143,8 @@ namespace LightBulb.Services
                 if (diff <= Settings.TemperatureEpsilon &&
                     !value.IsEither(Settings.MaxTemperature, Settings.MinTemperature)) return;
                 _previewTemperature = value;
+
+                Debug.WriteLine($"Updated preview temperature (to {value})", GetType().Name);
 
                 UpdateGamma();
 
@@ -243,8 +247,6 @@ namespace LightBulb.Services
             {
                 _temperatureSmoother.Stop();
                 RealtimeTemperature = newTemp;
-
-                Debug.WriteLine($"Updated temperature (to {newTemp})", GetType().Name);
             }
         }
 
@@ -256,12 +258,12 @@ namespace LightBulb.Services
 
         public void CyclePreviewStart()
         {
+            Debug.WriteLine("Started cycle preview", GetType().Name);
+
             CyclePreviewTime = Time;
             PreviewTemperature = GetTemperature(CyclePreviewTime);
             IsPreviewModeEnabled = true;
             _cyclePreviewTimer.IsEnabled = true;
-
-            Debug.WriteLine("Started cycle preview", GetType().Name);
         }
 
         public virtual void Dispose()
