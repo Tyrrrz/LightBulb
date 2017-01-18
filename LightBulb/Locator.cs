@@ -19,9 +19,7 @@ namespace LightBulb
 
             SimpleIoc.Default.Register<GammaService>();
             SimpleIoc.Default.Register<WindowService>();
-
             SimpleIoc.Default.Register<TemperatureService>();
-
             SimpleIoc.Default.Register<GeoSyncService>();
 
             SimpleIoc.Default.Register<MainViewModel>();
@@ -31,6 +29,8 @@ namespace LightBulb
         {
             Resolve<GammaService>().RestoreDefault();
             Resolve<WindowService>().Dispose();
+            Resolve<TemperatureService>().Dispose();
+            Resolve<GeoSyncService>().Dispose();
             Resolve<MainViewModel>().Dispose();
         }
 
