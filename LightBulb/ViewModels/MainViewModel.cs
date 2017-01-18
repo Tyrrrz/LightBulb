@@ -199,12 +199,12 @@ namespace LightBulb.ViewModels
             // Not enabled
             else if (!IsEnabled)
             {
-                StatusText = "LightBulb is off";
+                StatusText = "Disabled";
             }
             // Blocked
             else if (IsBlocked)
             {
-                StatusText = "LightBulb is blocked";
+                StatusText = "Blocked";
             }
             // Realtime mode
             else
