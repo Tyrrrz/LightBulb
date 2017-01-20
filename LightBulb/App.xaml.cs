@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Windows;
 using GalaSoft.MvvmLight.Threading;
+using Microsoft.Win32;
 
 namespace LightBulb
 {
@@ -11,6 +12,8 @@ namespace LightBulb
         static App()
         {
             DispatcherHelper.Initialize();
+
+            SystemEvents.SessionEnding += (sender, args) => Settings.Default.TrySave();
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)
