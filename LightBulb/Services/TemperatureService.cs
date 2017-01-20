@@ -36,6 +36,8 @@ namespace LightBulb.Services
                 _updateTimer.IsEnabled = value;
                 _pollingTimer.IsEnabled = (value || IsPreviewModeEnabled) && Settings.IsGammaPollingEnabled;
 
+                Debug.WriteLine($"Realtime mode {(value ? "enabled" : "disabled")}", GetType().Name);
+
                 UpdateRealtimeTemperature();
                 UpdateGamma();
 
@@ -62,6 +64,8 @@ namespace LightBulb.Services
                 }
 
                 _pollingTimer.IsEnabled = (value || IsRealtimeModeEnabled) && Settings.IsGammaPollingEnabled;
+
+                Debug.WriteLine($"Preview mode {(value ? "enabled" : "disabled")}", GetType().Name);
 
                 UpdateRealtimeTemperature();
                 UpdateGamma();
