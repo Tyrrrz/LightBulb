@@ -76,7 +76,19 @@
                                 <materialDesign:PackIcon Kind="Settings" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Command="{Binding ToggleEnabledCommand}" Header="Toggle">
+                        <MenuItem Command="{Binding ToggleEnabledCommand}">
+                            <MenuItem.Style>
+                                <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="{x:Type MenuItem}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsEnabled}" Value="True">
+                                            <Setter Property="Header" Value="Disable" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsEnabled}" Value="False">
+                                            <Setter Property="Header" Value="Enable" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </MenuItem.Style>
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon Kind="Power" />
                             </MenuItem.Icon>
