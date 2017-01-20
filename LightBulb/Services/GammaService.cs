@@ -9,13 +9,16 @@ namespace LightBulb.Services
     public class GammaService : WinApiServiceBase
     {
         #region WinAPI
-        [DllImport("user32.dll", EntryPoint = "GetDC", SetLastError = false)]
+        [DllImport("user32.dll", EntryPoint = "GetDC", SetLastError = true)]
         private static extern IntPtr GetDCInternal(IntPtr hWnd);
 
-        [DllImport("gdi32.dll", EntryPoint = "SetDeviceGammaRamp", SetLastError = false)]
+        [DllImport("user32.dll", EntryPoint = "ReleaseDC", SetLastError = true)]
+        private static extern int ReleaseDCInternal(IntPtr hWnd, IntPtr hDC);
+
+        [DllImport("gdi32.dll", EntryPoint = "SetDeviceGammaRamp", SetLastError = true)]
         private static extern bool SetDeviceGammaRampInternal(IntPtr hMonitor, ref GammaRamp ramp);
 
-        [DllImport("gdi32.dll", EntryPoint = "GetDeviceGammaRamp", SetLastError = false)]
+        [DllImport("gdi32.dll", EntryPoint = "GetDeviceGammaRamp", SetLastError = true)]
         private static extern bool GetDeviceGammaRampInternal(IntPtr hMonitor, out GammaRamp ramp);
         #endregion
 
@@ -36,7 +39,8 @@ namespace LightBulb.Services
             var dc = GetDCInternal(IntPtr.Zero);
             GammaRamp ramp;
             if (!GetDeviceGammaRampInternal(dc, out ramp))
-                CheckThrowWin32Error();
+                CheckLogWin32Error();
+            ReleaseDCInternal(IntPtr.Zero, dc);
             return ramp;
         }
 
@@ -55,7 +59,8 @@ namespace LightBulb.Services
             // Set ramp
             var dc = GetDCInternal(IntPtr.Zero);
             if (!SetDeviceGammaRampInternal(dc, ref ramp))
-                CheckThrowWin32Error();
+                CheckLogWin32Error();
+            ReleaseDCInternal(IntPtr.Zero, dc);
         }
 
         /// <summary>

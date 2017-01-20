@@ -13,11 +13,10 @@ namespace LightBulb.Services.Abstract
             return new Win32Exception(errCode);
         }
 
-        protected void CheckThrowWin32Error()
+        protected void CheckLogWin32Error()
         {
             var ex = GetLastError();
-            //if (ex != null) throw ex;
-            //if (ex != null) Debug.WriteLine($"Win32 error: {ex.Message} ({ex.NativeErrorCode})", GetType().Name);
+            if (ex != null) Debug.WriteLine($"Win32 error: {ex.Message} ({ex.NativeErrorCode})", GetType().Name);
         }
     }
 }

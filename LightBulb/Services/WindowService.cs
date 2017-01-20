@@ -14,24 +14,24 @@ namespace LightBulb.Services
             IntPtr hwnd, int idObject, int idChild, uint dwEventThread,
             uint dwmsEventTime);
 
-        [DllImport("user32.dll", EntryPoint = "GetForegroundWindow", SetLastError = false)]
+        [DllImport("user32.dll", EntryPoint = "GetForegroundWindow", SetLastError = true)]
         private static extern IntPtr GetForegroundWindowInternal();
 
-        [DllImport("user32.dll", EntryPoint = "GetDesktopWindow", SetLastError = false)]
+        [DllImport("user32.dll", EntryPoint = "GetDesktopWindow", SetLastError = true)]
         private static extern IntPtr GetDesktopWindowInternal();
 
-        [DllImport("user32.dll", EntryPoint = "GetShellWindow", SetLastError = false)]
+        [DllImport("user32.dll", EntryPoint = "GetShellWindow", SetLastError = true)]
         private static extern IntPtr GetShellWindowInternal();
 
-        [DllImport("user32.dll", EntryPoint = "GetWindowRect", SetLastError = false)]
+        [DllImport("user32.dll", EntryPoint = "GetWindowRect", SetLastError = true)]
         private static extern int GetWindowRectInternal(IntPtr hWindow, out Rect rect);
 
-        [DllImport("user32.dll", EntryPoint = "SetWinEventHook", SetLastError = false)]
+        [DllImport("user32.dll", EntryPoint = "SetWinEventHook", SetLastError = true)]
         private static extern IntPtr SetWinEventHookInternal(uint eventMin, uint eventMax,
             IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc,
             uint idProcess, uint idThread, uint dwFlags);
 
-        [DllImport("user32.dll", EntryPoint = "UnhookWinEvent", SetLastError = false)]
+        [DllImport("user32.dll", EntryPoint = "UnhookWinEvent", SetLastError = true)]
         private static extern bool UnhookWinEventInternal(IntPtr hWinEventHook);
         #endregion
 
@@ -142,7 +142,7 @@ namespace LightBulb.Services
         public IntPtr GetForegroundWindow()
         {
             var result = GetForegroundWindowInternal();
-            CheckThrowWin32Error();
+            CheckLogWin32Error();
             return result;
         }
 
@@ -152,7 +152,7 @@ namespace LightBulb.Services
         public IntPtr GetDesktopWindow()
         {
             var result = GetDesktopWindowInternal();
-            CheckThrowWin32Error();
+            CheckLogWin32Error();
             return result;
         }
 
@@ -162,7 +162,7 @@ namespace LightBulb.Services
         public IntPtr GetShellWindow()
         {
             var result = GetShellWindowInternal();
-            CheckThrowWin32Error();
+            CheckLogWin32Error();
             return result;
         }
 
@@ -173,7 +173,7 @@ namespace LightBulb.Services
         {
             Rect result;
             GetWindowRectInternal(hWindow, out result);
-            CheckThrowWin32Error();
+            CheckLogWin32Error();
             return result;
         }
 
