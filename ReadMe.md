@@ -6,7 +6,7 @@ Background application that adjusts screen gamma, making the colors appear warme
 
 
 **Download:**
-To download the latest realease - head to the release page
+To download the latest realease - head to the [release](https://github.com/Tyrrrz/LightBulb/releases) page
 
 **Available Settings:**
 
