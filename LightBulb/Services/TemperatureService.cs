@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using LightBulb.Models;
 using LightBulb.Services.Helpers;
+using Microsoft.Win32;
 using NegativeLayer.Extensions;
 
 namespace LightBulb.Services
@@ -168,13 +169,16 @@ namespace LightBulb.Services
         public TemperatureService(GammaService gammaService)
         {
             _gammaService = gammaService;
+            _previewTemperature = _realtimeTemperature = Settings.DefaultMonitorTemperature;
 
+            // Temperature update timer
             _updateTimer = new SyncedTimer();
             _updateTimer.Tick += (sender, args) =>
             {
                 UpdateRealtimeTemperature();
             };
 
+            // Cycle preview timer
             _cyclePreviewTimer = new Timer(TimeSpan.FromMilliseconds(15));
             _cyclePreviewTimer.Tick += (sender, args) =>
             {
@@ -190,13 +194,18 @@ namespace LightBulb.Services
                 }
             };
 
+            // Polling timer
             _pollingTimer = new Timer();
             _pollingTimer.Tick += (sender, args) => UpdateGamma();
 
+            // Helpers
             _temperatureSmoother = new ValueSmoother();
 
-            RealtimeTemperature = Settings.DefaultMonitorTemperature;
+            // System events
+            SystemEvents.PowerModeChanged += SystemPowerModeChanged;
+            SystemEvents.DisplaySettingsChanged += SystemDisplaySettingsChanged;
 
+            // Settings
             Settings.PropertyChanged += (sender, args) =>
             {
                 UpdateConfiguration();
@@ -209,7 +218,20 @@ namespace LightBulb.Services
                 }
             };
 
+            // Init
             UpdateConfiguration();
+        }
+
+        private void SystemDisplaySettingsChanged(object sender, EventArgs e)
+        {
+            UpdateRealtimeTemperature();
+            UpdateGamma();
+        }
+
+        private void SystemPowerModeChanged(object sender, PowerModeChangedEventArgs powerModeChangedEventArgs)
+        {
+            UpdateRealtimeTemperature();
+            UpdateGamma();
         }
 
         private void UpdateConfiguration()
@@ -269,6 +291,9 @@ namespace LightBulb.Services
 
         public virtual void Dispose()
         {
+            SystemEvents.PowerModeChanged -= SystemPowerModeChanged;
+            SystemEvents.DisplaySettingsChanged -= SystemDisplaySettingsChanged;
+
             _updateTimer.Dispose();
             _cyclePreviewTimer.Dispose();
             _pollingTimer.Dispose();
