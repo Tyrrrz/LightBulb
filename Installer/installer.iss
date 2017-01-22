@@ -1,7 +1,7 @@
 #define MyAppName "LightBulb"
-#define MyAppVersion "1.0"
-#define MyAppPublisher "Tyrrrz"
-#define MyAppURL "http://www.tyrrrz.me/"
+#define MyAppVersion "1.4.1"
+#define MyAppPublisher "Alexey 'Tyrrrz' Golub"
+#define MyAppURL "http://www.tyrrrz.me/projects/?id=lb"
 
 [Setup]
 AlwaysRestart=yes

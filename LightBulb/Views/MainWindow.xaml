@@ -170,14 +170,21 @@
                         </ToggleButton.Style>
                     </ToggleButton>
 
-                    <!--  Application Name  -->
+                    <!--  Application name and version  -->
                     <TextBlock Grid.Column="1"
                                Margin="5,0,0,0"
                                VerticalAlignment="Center"
                                FontSize="16"
                                FontWeight="Bold"
                                Foreground="{DynamicResource PrimaryInverseTextBrush}"
-                               Text="LightBulb" />
+                               Text="LightBulb">
+                        <TextBlock.ToolTip>
+                            <TextBlock>
+                                <Run Text="version" />
+                                <Run Text="{Binding Version, Mode=OneWay}" />
+                            </TextBlock>
+                        </TextBlock.ToolTip>
+                    </TextBlock>
 
                     <!--  Section navigation buttons  -->
                     <WrapPanel Grid.Column="2"

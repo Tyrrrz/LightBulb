@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -26,6 +27,7 @@ namespace LightBulb.ViewModels
         private CycleState _cycleState;
 
         public Settings Settings => Settings.Default;
+        public Version Version => Assembly.GetExecutingAssembly().GetName().Version;
 
         /// <summary>
         /// Enables or disables the program
