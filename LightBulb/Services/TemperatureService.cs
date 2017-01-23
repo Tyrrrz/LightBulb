@@ -3,7 +3,7 @@ using System.Diagnostics;
 using LightBulb.Models;
 using LightBulb.Services.Helpers;
 using Microsoft.Win32;
-using NegativeLayer.Extensions;
+using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {

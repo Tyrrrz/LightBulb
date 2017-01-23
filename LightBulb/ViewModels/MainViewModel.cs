@@ -8,7 +8,7 @@ using GalaSoft.MvvmLight.Threading;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.Services.Helpers;
-using NegativeLayer.WPFExtensions;
+using Tyrrrz.WpfExtensions;
 
 namespace LightBulb.ViewModels
 {

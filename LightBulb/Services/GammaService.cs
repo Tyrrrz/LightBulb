@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using LightBulb.Models;
 using LightBulb.Services.Abstract;
-using NegativeLayer.Extensions;
+using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {

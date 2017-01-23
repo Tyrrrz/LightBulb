@@ -1,5 +1,5 @@
 ﻿using System;
-using NegativeLayer.Extensions;
+using Tyrrrz.Extensions;
 
 namespace LightBulb.Models
 {

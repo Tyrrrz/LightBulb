@@ -31,13 +31,13 @@ To download the latest realease - head to the [release](https://github.com/Tyrrr
 
 **Dependencies:**
 
- - [GalaSoft.MVVMLight](http://www.mvvmlight.net/) - MVVM rapid development
+ - [GalaSoft.MVVMLight](http://www.mvvmlight.net) - MVVM rapid development
  - [Json.NET](http://www.newtonsoft.com/json) - for deserialization of API responses
  - [MaterialDesignXAML](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit) - MaterialDesign UI
  - [TaskbarNotification](http://www.hardcodet.net/wpf-notifyicon) - tray icon in WPF
- - [NLExtensions](https://www.nuget.org/packages/NLExtensions/) - my set of various extensions for rapid development
- - [NLWPFExtensions](https://www.nuget.org/packages/NLWPFExtensions) - my set of various WPF extensions for rapid development
- - [NLSettings](https://www.nuget.org/packages/NLSettings) - my settings manager
+ - [Tyrrrz.Extensions](https://github.com/Tyrrrz/Extensions) - my set of various extensions for rapid development
+ - [Tyrrrz.WPFExtensions](https://github.com/Tyrrrz/WpfExtensions) - my set of various WPF extensions for rapid development
+ - [Tyrrrz.Settings](https://github.com/Tyrrrz/Settings) - my settings manager
 
 **Screenshots:**
 

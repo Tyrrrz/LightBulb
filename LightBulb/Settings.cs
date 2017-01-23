@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using LightBulb.Models;
-using NegativeLayer.Settings;
+using Tyrrrz.Settings;
 
 namespace LightBulb
 {

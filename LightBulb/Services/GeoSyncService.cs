@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using LightBulb.Models;
 using LightBulb.Services.Abstract;
 using LightBulb.Services.Helpers;
-using NegativeLayer.Extensions;
+using Tyrrrz.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

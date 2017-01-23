@@ -38,10 +38,6 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Extensions, Version=1.0.6156.26738, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLExtensions.1.1.2\lib\net45\Extensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
       <Private>True</Private>
@@ -74,10 +70,6 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Settings, Version=1.0.6224.40993, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLSettings.1.0.13\lib\net45\Settings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
@@ -92,13 +84,21 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Tyrrrz.Extensions, Version=1.0.6232.40380, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tyrrrz.Extensions.1.0.0\lib\net45\Tyrrrz.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Tyrrrz.Settings, Version=1.0.6232.40585, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tyrrrz.Settings.1.0.0\lib\net45\Tyrrrz.Settings.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Tyrrrz.WpfExtensions, Version=1.0.6232.40740, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tyrrrz.WpfExtensions.1.0.0\lib\net45\Tyrrrz.WpfExtensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WPFExtensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLWPFExtensions.1.1.10\lib\net45\WPFExtensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
