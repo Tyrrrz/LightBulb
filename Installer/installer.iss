@@ -4,18 +4,18 @@
 #define MyAppURL "http://www.tyrrrz.me/projects/?id=lb"
 
 [Setup]
-AlwaysRestart=yes
-PrivilegesRequired=admin
 AppId={{381A89B9-C46F-4FAE-976C-75398A67AF52}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-;AppVerName={#MyAppName} {#MyAppVersion}
+AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
+AlwaysRestart=yes
+PrivilegesRequired=admin
 AllowNoIcons=yes
 DisableWelcomePage=yes
 DisableProgramGroupPage=no
@@ -23,6 +23,7 @@ DisableReadyPage=yes
 Compression=lzma
 SolidCompression=yes
 SetupIconFile=favicon.ico
+LicenseFile=..\License.txt
 OutputDir=Output\
 OutputBaseFilename=LightBulb_Install
 
