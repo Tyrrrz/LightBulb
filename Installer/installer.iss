@@ -31,6 +31,7 @@ OutputBaseFilename=LightBulb_Install
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
+Source: "..\License.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\LightBulb\bin\Release\LightBulb.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\LightBulb\bin\Release\LightBulb.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\LightBulb\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -38,6 +39,7 @@ Source: "..\LightBulb\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\LightBulb.exe"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
+Name: "{group}\{#MyAppName} on Github"; Filename: "https://github.com/Tyrrrz/LightBulb"
 Name: "{commonstartup}\{#MyAppName}"; Filename: "{app}\LightBulb.exe"
 
 [Registry]
