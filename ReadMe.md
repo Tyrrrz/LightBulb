@@ -32,7 +32,7 @@ To download the last version - head to the [releases](https://github.com/Tyrrrz/
 **Dependencies:**
 
  - [GalaSoft.MVVMLight](http://www.mvvmlight.net) - MVVM rapid development
- - [Json.NET](http://www.newtonsoft.com/json) - for deserialization of API responses
+ - [Newtonsoft.Json](http://www.newtonsoft.com/json) - for deserialization of API responses
  - [MaterialDesignXAML](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit) - MaterialDesign UI
  - [TaskbarNotification](http://www.hardcodet.net/wpf-notifyicon) - tray icon in WPF
  - [Tyrrrz.Extensions](https://github.com/Tyrrrz/Extensions) - my set of various extensions for rapid development
