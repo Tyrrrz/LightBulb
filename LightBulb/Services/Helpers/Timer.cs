@@ -13,7 +13,7 @@ namespace LightBulb.Services.Helpers
         protected System.Timers.Timer InternalTimer { get; }
 
         /// <summary>
-        /// Gets or sets whether the timer should fire events
+        /// Whether the timer should fire events
         /// </summary>
         public virtual bool IsEnabled
         {
@@ -41,7 +41,7 @@ namespace LightBulb.Services.Helpers
         }
 
         /// <summary>
-        /// Timer tick event
+        /// Triggered when the timer ticks
         /// </summary>
         public event EventHandler Tick;
 
@@ -55,9 +55,9 @@ namespace LightBulb.Services.Helpers
             InternalTimer.Elapsed += (sender, args) => TimerTickInternal();
         }
 
-        public Timer() : this(TimeSpan.FromMilliseconds(100))
-        {
-            
+        public Timer()
+            : this(TimeSpan.FromMilliseconds(100))
+        {            
         }
 
         private void TimerTickInternal()

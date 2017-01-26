@@ -4,7 +4,7 @@ using Tyrrrz.Extensions;
 namespace LightBulb.Services.Helpers
 {
     /// <summary>
-    /// Timer that synchronizes its interval with the system clock
+    /// Timer that synchronizes its interval with the day time
     /// </summary>
     public class SyncedTimer : Timer
     {
@@ -22,7 +22,7 @@ namespace LightBulb.Services.Helpers
         }
 
         /// <summary>
-        /// The date/time of the first time this timer should fire an event
+        /// The first time the timer should fire an event
         /// </summary>
         public DateTime FirstTickDateTime
         {
@@ -52,15 +52,13 @@ namespace LightBulb.Services.Helpers
         }
 
         public SyncedTimer(TimeSpan interval)
+            : this(DateTime.Today, interval)
         {
-            FirstTickDateTime = DateTime.Today;
-            Interval = interval;
         }
 
         public SyncedTimer()
+            : this(DateTime.Today, TimeSpan.FromMilliseconds(100))
         {
-            FirstTickDateTime = DateTime.Today;
-            Interval = TimeSpan.FromMilliseconds(100);
         }
 
         private void SyncInterval()
@@ -74,9 +72,9 @@ namespace LightBulb.Services.Helpers
             else
             {
                 var timePassed = now - FirstTickDateTime;
-                double periods = timePassed.TotalMilliseconds/Interval.TotalMilliseconds;
-                double msUntilNextPeriod = (1 - periods.Fraction())*Interval.TotalMilliseconds;
-                InternalTimer.Interval = msUntilNextPeriod;
+                double totalTicks = timePassed.TotalMilliseconds/Interval.TotalMilliseconds;
+                double msUntilNextTick = (1 - totalTicks.Fraction())*Interval.TotalMilliseconds;
+                InternalTimer.Interval = msUntilNextTick;
             }
         }
 
