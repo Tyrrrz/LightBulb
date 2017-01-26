@@ -81,7 +81,6 @@
             <Image Grid.Column="0"
                    Height="16"
                    Margin="5,0,5,5"
-                   VerticalAlignment="Top"
                    Source="{Binding Settings.GeoInfo.CountryFlag, IsAsync=True}"
                    Visibility="{Binding Settings.GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}" />
 
@@ -91,16 +90,12 @@
                        Orientation="Horizontal"
                        Visibility="{Binding Settings.IsInternetTimeSyncEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
                 <!--  Geoinfo is set  -->
-                <TextBlock VerticalAlignment="Center"
-                           TextWrapping="Wrap"
-                           Visibility="{Binding Settings.GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}">
+                <TextBlock TextWrapping="Wrap" Visibility="{Binding Settings.GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}">
                     <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.City, Mode=OneWay, TargetNullValue=???}" />
                     <Run Text="/" />
                     <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.Country, Mode=OneWay, TargetNullValue=???}" />
                 </TextBlock>
-                <TextBlock VerticalAlignment="Center"
-                           TextWrapping="Wrap"
-                           Visibility="{Binding Settings.GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}">
+                <TextBlock TextWrapping="Wrap" Visibility="{Binding Settings.GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}">
                     <Run Text="(" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.Latitude, Mode=OneWay, TargetNullValue=xx}" />
                     <Run Text="lat" />
                     <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.Longitude, Mode=OneWay, TargetNullValue=xx}" />

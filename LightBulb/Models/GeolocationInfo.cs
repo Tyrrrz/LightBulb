@@ -20,6 +20,6 @@ namespace LightBulb.Models
         [DataMember(Name = "longitude")]
         public double Longitude { get; set; }
 
-        public string CountryFlag => $"http://flags.fmcdn.net/data/flags/mini/{CountryCode.ToLowerInvariant()}.png";
+        public string CountryFlag => $"https://cdn2.f-cdn.com/img/flags/png/{CountryCode.ToLowerInvariant()}.png";
     }
 }
