@@ -118,6 +118,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AdvancedSettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\GeolocationSettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -140,6 +144,9 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\GeneralSettingsPage.xaml.cs">
       <DependentUpon>GeneralSettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AdvancedSettingsPage.xaml.cs">
+      <DependentUpon>AdvancedSettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GeolocationSettingsPage.xaml.cs">
       <DependentUpon>GeolocationSettingsPage.xaml</DependentUpon>

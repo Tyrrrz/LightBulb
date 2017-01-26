@@ -23,7 +23,7 @@ To download the last version - head to the [releases](https://github.com/Tyrrrz/
 - \* Internet sync interval (how often are the sunrise/sunset times synchronized) [6 hours]
 - \* Default monitor temperature (monitor's color temperature when LightBulb is disabled) [6600]
 - \* Temperature epsilon (by how much should color temperature change to warrant gamma refresh) [50]
-- \* Temperature smoothing (temperature changes are smoothed out to give time for eyes to adjust) [enabled]
+- Temperature smoothing (temperature changes are smoothed out to give time for eyes to adjust) [enabled]
 - \* Minimum smoothing delta temperature (by how much should color temperature change to warrant smoothing) [400]
 - \* Temperature smoothing duration (when smoothing, how long does it take to finish) [2 seconds]
 

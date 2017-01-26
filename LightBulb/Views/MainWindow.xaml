@@ -8,8 +8,8 @@
         xmlns:tb="http://www.hardcodet.net/taskbar"
         x:Name="Window"
         Title="LightBulb"
-        Width="300"
-        Height="340"
+        Width="280"
+        Height="280"
         AllowsTransparency="True"
         Background="Transparent"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
@@ -198,7 +198,7 @@
                                 BorderThickness="0"
                                 Click="NavigateGeneralSettingsButton_OnClick"
                                 ToolTip="General">
-                            <materialDesign:PackIcon Kind="Settings" />
+                            <materialDesign:PackIcon Kind="WeatherSunset" />
                         </Button>
                         <Button x:Name="NavigateGeolocationSettingsButton"
                                 Padding="4"
@@ -207,6 +207,14 @@
                                 Click="NavigateGeolocationSettingsButton_OnClick"
                                 ToolTip="Geolocation">
                             <materialDesign:PackIcon Kind="Earth" />
+                        </Button>
+                        <Button x:Name="NavigateAdvancedSettingsButton"
+                                Padding="4"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Click="NavigateAdvancedSettingsButton_OnClick"
+                                ToolTip="Advanced">
+                            <materialDesign:PackIcon Kind="Wrench" />
                         </Button>
                     </WrapPanel>
                 </Grid>

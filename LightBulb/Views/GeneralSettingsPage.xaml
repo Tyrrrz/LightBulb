@@ -72,44 +72,6 @@
                 TickPlacement="BottomRight"
                 Value="{Binding Settings.TemperatureSwitchDurationMinutes}" />
 
-        <!--  Polling enabled/disabled  -->
-        <Grid Background="Transparent">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" SharedSizeGroup="Button" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Grid.Column="0"
-                       Margin="5"
-                       VerticalAlignment="Center"
-                       Text="Enable gamma polling:"
-                       ToolTip="Refreshes the gamma settings every few seconds, making sure they are not overriden" />
-            <ToggleButton Grid.Column="1"
-                          Margin="5"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Center"
-                          IsChecked="{Binding Settings.IsGammaPollingEnabled}" />
-        </Grid>
-
-        <!--  Full screen disable  -->
-        <Grid Background="Transparent">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" SharedSizeGroup="Button" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Grid.Column="0"
-                       Margin="5"
-                       VerticalAlignment="Center"
-                       Text="Disable when fullscreen:"
-                       ToolTip="Disable when any fullscreen window is in foreground" />
-            <ToggleButton Grid.Column="1"
-                          Margin="5"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Center"
-                          IsChecked="{Binding Settings.IsFullscreenBlocking}" />
-        </Grid>
-
         <!--  24hr preview  -->
         <Grid Background="Transparent">
             <Grid.ColumnDefinitions>
