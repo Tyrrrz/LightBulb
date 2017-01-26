@@ -4,7 +4,7 @@
 #define MyAppURL "http://www.tyrrrz.me/projects/?id=lb"
 
 [Setup]
-AppId={{381A89B9-C46F-4FAE-976C-75398A67AF52}
+AppId={{892F745F-A497-42ED-B503-8D74936D0BEB}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppVerName={#MyAppName} {#MyAppVersion}
@@ -14,7 +14,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
-AlwaysRestart=yes
+ChangesEnvironment=yes
 PrivilegesRequired=admin
 AllowNoIcons=yes
 DisableWelcomePage=yes
