@@ -1,5 +1,5 @@
 #define MyAppName "LightBulb"
-#define MyAppVersion "1.4.2"
+#define MyAppVersion "1.5"
 #define MyAppPublisher "Alexey 'Tyrrrz' Golub"
 #define MyAppURL "http://www.tyrrrz.me/projects/?id=lb"
 
@@ -25,7 +25,7 @@ SolidCompression=yes
 SetupIconFile=..\favicon.ico
 LicenseFile=..\License.txt
 OutputDir=Output\
-OutputBaseFilename=LightBulb_Install
+OutputBaseFilename=LightBulb_Install_{#MyAppVersion}
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
