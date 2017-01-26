@@ -28,7 +28,7 @@
             <TextBlock Grid.Column="0"
                        Margin="5"
                        VerticalAlignment="Center"
-                       Text="Enable gamma polling:"
+                       Text="Gamma polling:"
                        ToolTip="Refresh gamma settings every few seconds, making sure they are not overriden" />
             <ToggleButton Grid.Column="1"
                           Margin="5"
@@ -47,7 +47,7 @@
             <TextBlock Grid.Column="0"
                        Margin="5"
                        VerticalAlignment="Center"
-                       Text="Enable temperature smoothing:"
+                       Text="Temperature smoothing:"
                        ToolTip="Switch temperatures slowly, giving time for eyes to adjust" />
             <ToggleButton Grid.Column="1"
                           Margin="5"
