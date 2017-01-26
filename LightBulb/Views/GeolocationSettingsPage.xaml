@@ -81,33 +81,28 @@
             <Image Grid.Column="0"
                    Height="16"
                    Margin="5,0,5,5"
+                   VerticalAlignment="Top"
                    Source="{Binding Settings.GeoInfo.CountryFlag, IsAsync=True}"
                    Visibility="{Binding Settings.GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}" />
 
-            <!--  Location info  -->
-            <WrapPanel Grid.Column="1"
-                       Margin="0,0,5,5"
-                       Orientation="Horizontal"
-                       Visibility="{Binding Settings.IsInternetTimeSyncEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
-                <!--  Geoinfo is set  -->
-                <TextBlock TextWrapping="Wrap" Visibility="{Binding Settings.GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}">
-                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.City, Mode=OneWay, TargetNullValue=???}" />
-                    <Run Text="/" />
-                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.Country, Mode=OneWay, TargetNullValue=???}" />
-                </TextBlock>
-                <TextBlock TextWrapping="Wrap" Visibility="{Binding Settings.GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}">
-                    <Run Text="(" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.Latitude, Mode=OneWay, TargetNullValue=xx}" />
-                    <Run Text="lat" />
-                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.Longitude, Mode=OneWay, TargetNullValue=xx}" />
-                    <Run Text="lng" /><Run Text=")" />
-                </TextBlock>
-                <!--  Geoinfo is not set  -->
-                <TextBlock VerticalAlignment="Center"
-                           Text="Geographical location is undetermined"
-                           TextWrapping="Wrap"
-                           ToolTip="If this message doesn't disappear after some time, it might mean that the geolocation server is down"
-                           Visibility="{Binding Settings.GeoinfoNotNull, Converter={StaticResource InvertBoolToVisibilityConverter}, ConverterParameter=Collapsed}" />
-            </WrapPanel>
+            <!--  Geoinfo is set  -->
+            <TextBlock Grid.Column="1"
+                       TextWrapping="Wrap"
+                       Visibility="{Binding Settings.GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}">
+                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.City, Mode=OneWay, TargetNullValue=???}" />
+                <Run Text="/" />
+                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.Country, Mode=OneWay, TargetNullValue=???}" />
+                <Run Text="(" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.Latitude, Mode=OneWay, TargetNullValue=xx}" />
+                <Run Text="lat" />
+                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.Longitude, Mode=OneWay, TargetNullValue=xx}" />
+                <Run Text="lng" /><Run Text=")" />
+            </TextBlock>
+            <!--  Geoinfo is not set  -->
+            <TextBlock Grid.Column="1"
+                       Text="Geographical location is undetermined"
+                       TextWrapping="Wrap"
+                       ToolTip="If this message doesn't disappear after some time, it might mean that the geolocation server is down"
+                       Visibility="{Binding Settings.GeoinfoNotNull, Converter={StaticResource InvertBoolToVisibilityConverter}, ConverterParameter=Collapsed}" />
         </Grid>
     </StackPanel>
 </Page>
