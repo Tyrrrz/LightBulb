@@ -37,7 +37,13 @@ namespace LightBulb.Services
             string response = await GetStringAsync("http://freegeoip.net/json");
             if (response.IsBlank()) return null;
 
-            return JsonConvert.DeserializeObject<GeolocationInfo>(response);
+            var result = JsonConvert.DeserializeObject<GeolocationInfo>(response);
+            if (result.Country.IsBlank())
+                result.Country = null;
+            if (result.City.IsBlank())
+                result.City = null;
+
+            return result;
         }
 
         private async Task<SolarInfo> GetSolarInfoAsync(GeolocationInfo geoInfo)
