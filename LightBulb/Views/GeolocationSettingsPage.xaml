@@ -81,12 +81,13 @@
             <Image Grid.Column="0"
                    Height="16"
                    Margin="5,0,5,5"
-                   VerticalAlignment="Top"
+                   VerticalAlignment="Center"
                    Source="{Binding Settings.GeoInfo.CountryFlag, IsAsync=True}"
                    Visibility="{Binding Settings.GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}" />
 
             <!--  Geoinfo is set  -->
             <TextBlock Grid.Column="1"
+                       VerticalAlignment="Top"
                        TextWrapping="Wrap"
                        Visibility="{Binding Settings.GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}">
                 <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.City, Mode=OneWay, TargetNullValue=???}" />
@@ -99,6 +100,7 @@
             </TextBlock>
             <!--  Geoinfo is not set  -->
             <TextBlock Grid.Column="1"
+                       VerticalAlignment="Top"
                        Text="Geographical location is undetermined"
                        TextWrapping="Wrap"
                        ToolTip="If this message doesn't disappear after some time, it might mean that the geolocation server is down"
