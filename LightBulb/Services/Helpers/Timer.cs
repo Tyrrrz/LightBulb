@@ -15,7 +15,7 @@ namespace LightBulb.Services.Helpers
         /// <summary>
         /// Whether the timer should fire events
         /// </summary>
-        public virtual bool IsEnabled
+        public bool IsEnabled
         {
             get { return _isEnabled; }
             set
@@ -34,7 +34,7 @@ namespace LightBulb.Services.Helpers
         /// <summary>
         /// The amount of time between each timer tick
         /// </summary>
-        public virtual TimeSpan Interval
+        public TimeSpan Interval
         {
             get { return TimeSpan.FromMilliseconds(InternalTimer.Interval); }
             set { InternalTimer.Interval = value.TotalMilliseconds; }

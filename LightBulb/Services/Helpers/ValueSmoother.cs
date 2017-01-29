@@ -42,7 +42,7 @@ namespace LightBulb.Services.Helpers
         {
             if (setter == null)
                 throw new ArgumentNullException(nameof(setter));
-            if (duration == TimeSpan.Zero)
+            if (duration <= TimeSpan.Zero)
             {
                 setter(to);
                 return;
