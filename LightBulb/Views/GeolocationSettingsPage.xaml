@@ -60,7 +60,7 @@
             <TextBlock Grid.Column="0"
                        Margin="5"
                        VerticalAlignment="Center"
-                       Text="Enable internet synchronization:"
+                       Text="Internet synchronization:"
                        ToolTip="Pull sunrise and sunset times for your location from the Internet" />
             <ToggleButton Grid.Column="1"
                           Margin="5"
