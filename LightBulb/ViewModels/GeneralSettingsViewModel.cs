@@ -10,7 +10,7 @@ namespace LightBulb.ViewModels
     {
         private readonly TemperatureService _temperatureService;
 
-        private bool _canMakeChanges;
+        private bool _canMakeChanges = true;
 
         public bool CanMakeChanges
         {
@@ -48,6 +48,7 @@ namespace LightBulb.ViewModels
 
             _temperatureService.CyclePreviewEnded += (sender, args) =>
             {
+                CanMakeChanges = true;
                 DispatcherHelper.CheckBeginInvokeOnUI(() => StartCyclePreviewCommand.RaiseCanExecuteChanged());
             };
 
@@ -71,6 +72,7 @@ namespace LightBulb.ViewModels
 
         private void StartCyclePreview()
         {
+            CanMakeChanges = false;
             _temperatureService.CyclePreviewStart();
         }
     }

@@ -26,6 +26,7 @@
         </TextBlock>
         <Slider x:Name="MaxTempSlider"
                 Margin="5,0,5,5"
+                IsEnabled="{Binding CanMakeChanges}"
                 IsSnapToTickEnabled="True"
                 LargeChange="1000"
                 Maximum="6600"
@@ -45,6 +46,7 @@
         </TextBlock>
         <Slider x:Name="MinTempSlider"
                 Margin="5,0,5,5"
+                IsEnabled="{Binding CanMakeChanges}"
                 IsSnapToTickEnabled="True"
                 LargeChange="1000"
                 Maximum="6600"
@@ -57,12 +59,13 @@
                 ValueChanged="MinTempSlider_OnValueChanged"
                 Value="{Binding Settings.MinTemperature}" />
 
-        <!--  Switch duration temperature  -->
+        <!--  Temperature switch duration  -->
         <TextBlock Margin="5" ToolTip="How long does it take to switch between day and night temperatures">
             <Run Text="Transition duration:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.TemperatureSwitchDuration, Mode=OneWay}" />
         </TextBlock>
         <Slider Margin="5,0,5,5"
+                IsEnabled="{Binding CanMakeChanges}"
                 IsSnapToTickEnabled="True"
                 LargeChange="30"
                 Maximum="180"
