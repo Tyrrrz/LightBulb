@@ -26,7 +26,6 @@
         </TextBlock>
         <Slider x:Name="MaxTempSlider"
                 Margin="5,0,5,5"
-                IsEnabled="{Binding CanMakeChanges}"
                 IsSnapToTickEnabled="True"
                 LargeChange="1000"
                 Maximum="6600"
@@ -46,7 +45,6 @@
         </TextBlock>
         <Slider x:Name="MinTempSlider"
                 Margin="5,0,5,5"
-                IsEnabled="{Binding CanMakeChanges}"
                 IsSnapToTickEnabled="True"
                 LargeChange="1000"
                 Maximum="6600"
@@ -65,7 +63,6 @@
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.TemperatureSwitchDuration, Mode=OneWay}" />
         </TextBlock>
         <Slider Margin="5,0,5,5"
-                IsEnabled="{Binding CanMakeChanges}"
                 IsSnapToTickEnabled="True"
                 LargeChange="30"
                 Maximum="180"

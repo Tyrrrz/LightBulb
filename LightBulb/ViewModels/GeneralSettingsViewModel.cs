@@ -10,14 +10,6 @@ namespace LightBulb.ViewModels
     {
         private readonly TemperatureService _temperatureService;
 
-        private bool _canMakeChanges = true;
-
-        public bool CanMakeChanges
-        {
-            get { return _canMakeChanges; }
-            private set { Set(ref _canMakeChanges, value); }
-        }
-
         /// <summary>
         /// Enables or disables the preview mode
         /// </summary>
@@ -48,7 +40,6 @@ namespace LightBulb.ViewModels
 
             _temperatureService.CyclePreviewEnded += (sender, args) =>
             {
-                CanMakeChanges = true;
                 DispatcherHelper.CheckBeginInvokeOnUI(() => StartCyclePreviewCommand.RaiseCanExecuteChanged());
             };
 
@@ -72,7 +63,6 @@ namespace LightBulb.ViewModels
 
         private void StartCyclePreview()
         {
-            CanMakeChanges = false;
             _temperatureService.CyclePreviewStart();
         }
     }
