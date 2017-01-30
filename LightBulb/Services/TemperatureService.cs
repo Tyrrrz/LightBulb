@@ -33,7 +33,7 @@ namespace LightBulb.Services
                 if (Temperature == value) return;
                 _temperature = value;
 
-                Debug.WriteLine($"Updated temperature (to {value})", GetType().Name);
+                Debug.WriteLine($"Updated temperature ({Temperature} -> {value})", GetType().Name);
 
                 UpdateGamma();
 
@@ -201,7 +201,7 @@ namespace LightBulb.Services
         {
             var intens = ColorIntensity.FromTemperature(Temperature);
             _gammaService.SetDisplayGammaLinear(intens);
-            Debug.WriteLine($"Gamma updated (to {intens})", GetType().Name);
+            Debug.WriteLine($"Gamma updated (-> {intens})", GetType().Name);
         }
 
         private void UpdateTemperature(bool forceInstantSwitch = false)
@@ -248,7 +248,7 @@ namespace LightBulb.Services
                     duration);
 
                 Debug.WriteLine(
-                    $"Started temperature transition (to {newTemp}; over {duration.TotalSeconds:0.##}s)",
+                    $"Started temperature transition ({Temperature} -> {newTemp}; over {duration.TotalSeconds:0.##}s)",
                     GetType().Name);
             }
             // Otherwise - instant transition
