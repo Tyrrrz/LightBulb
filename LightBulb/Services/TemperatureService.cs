@@ -236,7 +236,7 @@ namespace LightBulb.Services
             }
 
             // If allowed - start smooth transition
-            if (!forceInstantSwitch && Settings.IsTemperatureSmoothingEnabled)
+            if (!forceInstantSwitch && Settings.IsTemperatureSmoothingEnabled && delta > Settings.TemperatureEpsilon)
             {
                 var duration =
                     TimeSpan.FromMilliseconds(Settings.MaximumTemperatureSmoothingDuration.TotalMilliseconds*delta/
@@ -248,7 +248,7 @@ namespace LightBulb.Services
                     duration);
 
                 Debug.WriteLine(
-                    $"Started smooth temperature transition (to {newTemp}; over {duration.TotalSeconds:0.##}s)",
+                    $"Started temperature transition (to {newTemp}; over {duration.TotalSeconds:0.##}s)",
                     GetType().Name);
             }
             // Otherwise - instant transition
