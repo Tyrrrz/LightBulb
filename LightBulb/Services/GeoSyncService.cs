@@ -29,7 +29,8 @@ namespace LightBulb.Services
                 }
             };
 
-            SynchronizeAsync().Forget();
+            if (Settings.IsInternetTimeSyncEnabled)
+                SynchronizeAsync().Forget();
         }
 
         private async Task<GeolocationInfo> GetGeolocationInfoAsync()
