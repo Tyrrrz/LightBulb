@@ -173,7 +173,7 @@ namespace LightBulb.ViewModels
             // Realtime mode
             else
             {
-                StatusText = $"Temp: {_temperatureService.RealtimeTemperature}K";
+                StatusText = $"Temp: {_temperatureService.ActualTemperature}K";
             }
         }
 
@@ -187,7 +187,7 @@ namespace LightBulb.ViewModels
             {
                 ushort temp = _temperatureService.IsPreviewModeEnabled
                     ? _temperatureService.PreviewTemperature
-                    : _temperatureService.RealtimeTemperature;
+                    : _temperatureService.ActualTemperature;
                 if (temp >= Settings.MaxTemperature)
                 {
                     CycleState = CycleState.Day;

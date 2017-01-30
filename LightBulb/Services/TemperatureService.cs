@@ -23,13 +23,13 @@ namespace LightBulb.Services
         public TemperatureService(GammaService gammaService)
         {
             _gammaService = gammaService;
-            _previewTemperature = _realtimeTemperature = Settings.DefaultMonitorTemperature;
+            _previewTemperature = _actualTemperature = Settings.DefaultMonitorTemperature;
 
             // Temperature update timer
             _updateTimer = new SyncedTimer();
             _updateTimer.Tick += (sender, args) =>
             {
-                UpdateRealtimeTemperature();
+                UpdateActualTemperature();
             };
 
             // Cycle preview timer
@@ -68,7 +68,7 @@ namespace LightBulb.Services
                     nameof(Settings.MaxTemperature), nameof(Settings.TemperatureSwitchDuration),
                     nameof(Settings.SunriseTime), nameof(Settings.SunsetTime)))
                 {
-                    UpdateRealtimeTemperature();
+                    UpdateActualTemperature();
                 }
             };
 
@@ -86,13 +86,13 @@ namespace LightBulb.Services
 
         private void SystemDisplaySettingsChanged(object sender, EventArgs e)
         {
-            UpdateRealtimeTemperature();
+            UpdateActualTemperature();
             UpdateGamma();
         }
 
         private void SystemPowerModeChanged(object sender, PowerModeChangedEventArgs powerModeChangedEventArgs)
         {
-            UpdateRealtimeTemperature();
+            UpdateActualTemperature();
             UpdateGamma();
         }
 
@@ -106,7 +106,7 @@ namespace LightBulb.Services
             }
             else
             {
-                var intens = ColorIntensity.FromTemperature(RealtimeTemperature);
+                var intens = ColorIntensity.FromTemperature(ActualTemperature);
                 _gammaService.SetDisplayGammaLinear(intens);
                 Debug.WriteLine($"Gamma updated (to {intens}) (realtime)", GetType().Name);
             }
@@ -130,7 +130,7 @@ namespace LightBulb.Services
         private readonly SyncedTimer _updateTimer;
 
         private bool _isRealtimeModeEnabled;
-        private ushort _realtimeTemperature;
+        private ushort _actualTemperature;
 
         /// <summary>
         /// Whether the real time gamma control is enabled
@@ -148,7 +148,7 @@ namespace LightBulb.Services
 
                 Debug.WriteLine($"Realtime mode {(value ? "enabled" : "disabled")}", GetType().Name);
 
-                UpdateRealtimeTemperature();
+                UpdateActualTemperature();
                 UpdateGamma();
 
                 Updated?.Invoke(this, EventArgs.Empty);
@@ -158,18 +158,18 @@ namespace LightBulb.Services
         /// <summary>
         /// Current color temperature
         /// </summary>
-        public ushort RealtimeTemperature
+        public ushort ActualTemperature
         {
-            get { return _realtimeTemperature; }
+            get { return _actualTemperature; }
             private set
             {
-                if (RealtimeTemperature == value) return;
-                int diff = Math.Abs(RealtimeTemperature - value);
+                if (ActualTemperature == value) return;
+                int diff = Math.Abs(ActualTemperature - value);
                 if (diff <= Settings.TemperatureEpsilon &&
                     !value.IsEither(Settings.MaxTemperature, Settings.MinTemperature)) return;
-                _realtimeTemperature = value;
+                _actualTemperature = value;
 
-                Debug.WriteLine($"Updated temperature (to {value})", GetType().Name);
+                Debug.WriteLine($"Updated actual temperature (to {value})", GetType().Name);
 
                 UpdateGamma();
 
@@ -177,19 +177,19 @@ namespace LightBulb.Services
             }
         }
 
-        private void UpdateRealtimeTemperature()
+        private void UpdateActualTemperature()
         {
             ushort newTemp = IsRealtimeModeEnabled
                 ? GetTemperature(DateTime.Now) // on
                 : Settings.DefaultMonitorTemperature; // off
-            int diff = Math.Abs(newTemp - RealtimeTemperature);
+            int diff = Math.Abs(newTemp - ActualTemperature);
 
             // Smooth transition
             if (Settings.IsTemperatureSmoothingEnabled && diff >= Settings.MinSmoothingDeltaTemperature)
             {
                 _temperatureSmoother.Set(
-                    RealtimeTemperature, newTemp,
-                    temp => RealtimeTemperature = (ushort) temp,
+                    ActualTemperature, newTemp,
+                    temp => ActualTemperature = (ushort) temp,
                     Settings.TemperatureSmoothingDuration);
 
                 Debug.WriteLine($"Started smooth temperature transition (to {newTemp})", GetType().Name);
@@ -198,7 +198,7 @@ namespace LightBulb.Services
             else
             {
                 _temperatureSmoother.Stop(); // stop existing smooth transition
-                RealtimeTemperature = newTemp;
+                ActualTemperature = newTemp;
             }
         }
     }
@@ -234,7 +234,7 @@ namespace LightBulb.Services
 
                 Debug.WriteLine($"Preview mode {(value ? "enabled" : "disabled")}", GetType().Name);
 
-                UpdateRealtimeTemperature();
+                UpdateActualTemperature();
                 UpdateGamma();
 
                 Updated?.Invoke(this, EventArgs.Empty);
