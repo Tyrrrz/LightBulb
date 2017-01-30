@@ -23,10 +23,11 @@ namespace LightBulb.Services
         #endregion
 
         private readonly GammaRamp _originalRamp;
+        private GammaRamp _lastRamp;
 
         public GammaService()
         {
-            _originalRamp = GetDisplayGammaRamp();
+            _lastRamp = _originalRamp = GetDisplayGammaRamp();
         }
 
         /// <summary>
@@ -59,6 +60,7 @@ namespace LightBulb.Services
             if (!SetDeviceGammaRampInternal(dc, ref ramp))
                 CheckLogWin32Error();
             ReleaseDCInternal(IntPtr.Zero, dc);
+            _lastRamp = ramp;
         }
 
         /// <summary>
@@ -77,6 +79,31 @@ namespace LightBulb.Services
             }
 
             SetDisplayGammaRamp(ramp);
+        }
+
+        /// <summary>
+        /// Resets the gamma if current gamma ramp is different from the last uploaded one
+        /// </summary>
+        public void RefreshGammaRamp()
+        {
+            var ramp = GetDisplayGammaRamp();
+
+            // Compare ramps
+            bool needRefresh = false;
+            for (int i = 0; i < 255; i++) // skip 255 because we have magic there
+            {
+                if (ramp.Red[i] != _lastRamp.Red[i] ||
+                    ramp.Green[i] != _lastRamp.Green[i] ||
+                    ramp.Blue[i] != _lastRamp.Blue[i])
+                {
+                    needRefresh = true;
+                    break;
+                }
+            }
+
+            // Reupload ramp if necessary
+            if (needRefresh)
+                SetDisplayGammaRamp(_lastRamp);
         }
 
         /// <summary>
