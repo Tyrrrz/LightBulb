@@ -1,5 +1,5 @@
 #define MyAppName "LightBulb"
-#define MyAppVersion "1.5"
+#define MyAppVersion "1.5.1"
 #define MyAppPublisher "Alexey 'Tyrrrz' Golub"
 #define MyAppURL "http://www.tyrrrz.me/projects/?id=lb"
 
@@ -14,6 +14,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
+ArchitecturesInstallIn64BitMode=x64
 ChangesEnvironment=yes
 PrivilegesRequired=admin
 AllowNoIcons=yes
@@ -43,9 +44,8 @@ Name: "{group}\{#MyAppName} on Github"; Filename: "https://github.com/Tyrrrz/Lig
 Name: "{commonstartup}\{#MyAppName}"; Filename: "{app}\LightBulb.exe"
 
 [Registry]
-;Available colors hack
-Root: HKLM32; Subkey: "Software\Microsoft\Windows NT\CurrentVersion\ICM"; ValueType: dword; ValueName: "GdiICMGammaRange"; ValueData: "256"; Flags: uninsdeletekey
-Root: HKLM64; Subkey: "Software\Microsoft\Windows NT\CurrentVersion\ICM"; ValueType: dword; ValueName: "GdiICMGammaRange"; ValueData: "256"; Flags: uninsdeletekey
+; Change valid gamma range
+Root: HKLM; Subkey: "Software\Microsoft\Windows NT\CurrentVersion\ICM"; ValueType: dword; ValueName: "GdiICMGammaRange"; ValueData: "256"; Flags: uninsdeletekey
 
 [Run]
 Filename: "{app}\LightBulb.exe"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
