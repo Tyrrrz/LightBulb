@@ -43,7 +43,7 @@ namespace LightBulb.Views
 
         private void NavigateGeolocationSettingsButton_OnClick(object sender, RoutedEventArgs e)
         {
-            ContentFrame.Navigate(new GeolocationSettingsPage());
+            ContentFrame.Navigate(new GeoSettingsPage());
 
             NavigateGeneralSettingsButton.IsEnabled = true;
             NavigateGeolocationSettingsButton.IsEnabled = false;

@@ -16,8 +16,6 @@ namespace LightBulb.ViewModels
     {
         private readonly TemperatureService _temperatureService;
         private readonly WindowService _windowService;
-        // ReSharper disable once NotAccessedField.Local
-        private readonly GeoSyncService _geoSyncService;
 
         private readonly Timer _disableTemporarilyTimer;
 
@@ -59,24 +57,6 @@ namespace LightBulb.ViewModels
         }
 
         /// <summary>
-        /// Enables or disables the preview mode
-        /// </summary>
-        public bool IsInPreviewMode
-        {
-            get { return _temperatureService.IsPreviewModeEnabled; }
-            set { _temperatureService.IsPreviewModeEnabled = value; }
-        }
-
-        /// <summary>
-        /// Temperature for preview mode
-        /// </summary>
-        public ushort PreviewTemperature
-        {
-            get { return _temperatureService.PreviewTemperature; }
-            set { _temperatureService.PreviewTemperature = value; }
-        }
-
-        /// <summary>
         /// Current status text
         /// </summary>
         public string StatusText
@@ -100,26 +80,19 @@ namespace LightBulb.ViewModels
         public RelayCommand AboutCommand { get; }
         public RelayCommand ToggleEnabledCommand { get; }
         public RelayCommand<double> DisableTemporarilyCommand { get; }
-        public RelayCommand StartCyclePreviewCommand { get; }
 
         public MainViewModel(
             TemperatureService temperatureService,
-            WindowService windowService,
-            GeoSyncService geoSyncService)
+            WindowService windowService)
         {
             // Services
             _temperatureService = temperatureService;
             _windowService = windowService;
-            _geoSyncService = geoSyncService;
 
             _temperatureService.Updated += (sender, args) =>
             {
                 UpdateStatusText();
                 UpdateCycleState();
-            };
-            _temperatureService.CyclePreviewEnded += (sender, args) =>
-            {
-                DispatcherHelper.CheckBeginInvokeOnUI(() => StartCyclePreviewCommand.RaiseCanExecuteChanged());
             };
             _windowService.FullScreenStateChanged += (sender, args) =>
             {
@@ -159,14 +132,9 @@ namespace LightBulb.ViewModels
             {
                 _disableTemporarilyTimer.IsEnabled = false;
                 _disableTemporarilyTimer.Interval = TimeSpan.FromMilliseconds(ms);
-                _disableTemporarilyTimer.IsEnabled = true;
                 IsEnabled = false;
+                _disableTemporarilyTimer.IsEnabled = true;
             });
-            StartCyclePreviewCommand = new RelayCommand(() =>
-                {
-                    _temperatureService.CyclePreviewStart();
-                },
-                () => !_temperatureService.IsCyclePreviewRunning);
 
             // Init
             IsEnabled = true;
@@ -182,12 +150,12 @@ namespace LightBulb.ViewModels
         private void UpdateStatusText()
         {
             // Preview mode (not 24hr cycle preview)
-            if (IsInPreviewMode && !_temperatureService.IsCyclePreviewRunning)
+            if (_temperatureService.IsPreviewModeEnabled && !_temperatureService.IsCyclePreviewRunning)
             {
                 StatusText = $"Temp: {_temperatureService.PreviewTemperature}K   (preview)";
             }
             // Preview mode (24 hr cycle preview)
-            else if (IsInPreviewMode && _temperatureService.IsCyclePreviewRunning)
+            else if (_temperatureService.IsPreviewModeEnabled && _temperatureService.IsCyclePreviewRunning)
             {
                 StatusText =
                     $"Temp: {_temperatureService.PreviewTemperature}K   Time: {_temperatureService.CyclePreviewTime:t}   (preview)";
@@ -205,8 +173,7 @@ namespace LightBulb.ViewModels
             // Realtime mode
             else
             {
-                StatusText =
-                    $"Temp: {_temperatureService.RealtimeTemperature}K";
+                StatusText = $"Temp: {_temperatureService.RealtimeTemperature}K";
             }
         }
 

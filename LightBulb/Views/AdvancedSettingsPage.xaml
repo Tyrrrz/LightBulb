@@ -6,7 +6,7 @@
       Title="AdvancedSettingsPage"
       d:DesignHeight="300"
       d:DesignWidth="300"
-      DataContext="{Binding Main, Source={StaticResource Locator}}"
+      DataContext="{Binding AdvancedSettings, Source={StaticResource Locator}}"
       FontFamily="{DynamicResource MaterialDesignFont}"
       SnapsToDevicePixels="True"
       TextElement.FontSize="13"

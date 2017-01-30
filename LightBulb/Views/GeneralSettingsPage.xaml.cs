@@ -6,7 +6,7 @@ namespace LightBulb.Views
 {
     public partial class GeneralSettingsPage
     {
-        public MainViewModel ViewModel => (MainViewModel) DataContext;
+        public GeneralSettingsViewModel ViewModel => (GeneralSettingsViewModel) DataContext;
 
         private bool _maxTempSliderMouseDown;
         private bool _minTempSliderMouseDown;

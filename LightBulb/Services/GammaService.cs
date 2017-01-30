@@ -24,8 +24,6 @@ namespace LightBulb.Services
 
         private readonly GammaRamp _originalRamp;
 
-        public Settings Settings => Settings.Default;
-
         public GammaService()
         {
             _originalRamp = GetDisplayGammaRamp();

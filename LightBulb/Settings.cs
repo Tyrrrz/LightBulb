@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using LightBulb.Models;
 using Tyrrrz.Settings;
 
@@ -25,7 +24,7 @@ namespace LightBulb
         private TimeSpan _internetSyncInterval = TimeSpan.FromHours(6);
         private TimeSpan _sunriseTime = new TimeSpan(7, 20, 0);
         private TimeSpan _sunsetTime = new TimeSpan(16, 30, 0);
-        private GeolocationInfo _geoInfo;
+        private GeoInfo _geoInfo;
 
         public bool IsGammaPollingEnabled
         {
@@ -102,12 +101,7 @@ namespace LightBulb
         public TimeSpan TemperatureSwitchDuration
         {
             get { return _temperatureSwitchDuration; }
-            set
-            {
-                if (Set(ref _temperatureSwitchDuration, value)) return;
-
-                RaisePropertyChanged(() => TemperatureSwitchDurationMinutes);
-            }
+            set { Set(ref _temperatureSwitchDuration, value); }
         }
 
         public TimeSpan TemperatureUpdateInterval
@@ -135,8 +129,6 @@ namespace LightBulb
             {
                 if (Set(ref _sunriseTime, value)) return;
 
-                RaisePropertyChanged(() => SunriseTimeHours);
-
                 if (SunriseTime > SunsetTime)
                     SunsetTime = SunriseTime;
             }
@@ -149,49 +141,15 @@ namespace LightBulb
             {
                 if (Set(ref _sunsetTime, value)) return;
 
-                RaisePropertyChanged(() => SunsetTimeHours);
-
                 if (SunsetTime < SunriseTime)
                     SunriseTime = SunsetTime;
             }
         }
 
-        public GeolocationInfo GeoInfo
+        public GeoInfo GeoInfo
         {
             get { return _geoInfo; }
-            set
-            {
-                if (Set(ref _geoInfo, value)) return;
-
-                RaisePropertyChanged(() => GeoinfoNotNull);
-            }
+            set { Set(ref _geoInfo, value); }
         }
-
-        [IgnoreDataMember]
-        public bool NeedEventHooks => IsFullscreenBlocking;
-
-        [IgnoreDataMember]
-        public double TemperatureSwitchDurationMinutes
-        {
-            get { return TemperatureSwitchDuration.TotalMinutes; }
-            set { TemperatureSwitchDuration = TimeSpan.FromMinutes(value); }
-        }
-
-        [IgnoreDataMember]
-        public double SunriseTimeHours
-        {
-            get { return SunriseTime.TotalHours; }
-            set { SunriseTime = TimeSpan.FromHours(value); }
-        }
-
-        [IgnoreDataMember]
-        public double SunsetTimeHours
-        {
-            get { return SunsetTime.TotalHours; }
-            set { SunsetTime = TimeSpan.FromHours(value); }
-        }
-
-        [IgnoreDataMember]
-        public bool GeoinfoNotNull => GeoInfo != null;
     }
 }

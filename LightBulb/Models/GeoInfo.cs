@@ -3,7 +3,7 @@
 namespace LightBulb.Models
 {
     [DataContract]
-    public class GeolocationInfo
+    public class GeoInfo
     {
         [DataMember(Name = "country_name")]
         public string Country { get; set; }

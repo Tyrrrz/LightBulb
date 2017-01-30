@@ -35,8 +35,6 @@ namespace LightBulb.Services
         private static extern bool UnhookWinEventInternal(IntPtr hWinEventHook);
         #endregion
 
-        private bool _areHooksSet;
-
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable (prevent garbage collection)
         private WinEventDelegate _foregroundWindowChangedEventHandler;
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable (prevent garbage collection)
@@ -47,7 +45,22 @@ namespace LightBulb.Services
         private bool _isForegroundFullScreen;
         private IntPtr _lastForegroundWindow;
 
-        public Settings Settings => Settings.Default;
+        private bool AreEventHooksEnabled
+        {
+            get
+            {
+                return
+                    _foregroundWindowChangedHook != IntPtr.Zero ||
+                    _foregroundWindowLocationChangedHook != IntPtr.Zero;
+            }
+            set
+            {
+                if (value)
+                    InstallHooks();
+                else
+                    UninstallHooks();
+            }
+        }
 
         /// <summary>
         /// Gets whether the foreground window is fullscreen
@@ -64,6 +77,8 @@ namespace LightBulb.Services
             }
         }
 
+        public Settings Settings => Settings.Default;
+
         /// <summary>
         /// Triggers when the foreground window has entered (or exited from) full screen mode
         /// </summary>
@@ -71,28 +86,25 @@ namespace LightBulb.Services
 
         public WindowService()
         {
-            // Init
-            IsForegroundFullScreen = IsWindowFullScreen(GetForegroundWindow());
-
+            // Settings
             Settings.PropertyChanged += (sender, args) =>
             {
                 UpdateConfiguration();
             };
-
             UpdateConfiguration();
+
+            // Init
+            IsForegroundFullScreen = IsWindowFullScreen(GetForegroundWindow());
         }
 
         private void UpdateConfiguration()
         {
-            if (Settings.NeedEventHooks)
-                InstallHooks();
-            else
-                UninstallHooks();
+            AreEventHooksEnabled = Settings.IsFullscreenBlocking;
         }
 
         private void InstallHooks()
         {
-            if (_areHooksSet) return;
+            if (AreEventHooksEnabled) return;
 
             _foregroundWindowChangedEventHandler =
                 (hook, type, hwnd, idObject, child, thread, time) =>
@@ -120,18 +132,15 @@ namespace LightBulb.Services
             _foregroundWindowChangedHook = SetWinEventHookInternal(0x0003, 0x0003, IntPtr.Zero,
                 _foregroundWindowChangedEventHandler, 0, 0, 0);
 
-            _areHooksSet = true;
             Debug.WriteLine("Installed WinAPI hooks", GetType().Name);
         }
 
         private void UninstallHooks()
         {
-            if (!_areHooksSet) return;
+            if (!AreEventHooksEnabled) return;
 
             UnhookWinEventInternal(_foregroundWindowChangedHook);
             UnhookWinEventInternal(_foregroundWindowLocationChangedHook);
-
-            _areHooksSet = false;
 
             Debug.WriteLine("Uninstalled WinAPI hooks", GetType().Name);
         }

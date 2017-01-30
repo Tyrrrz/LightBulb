@@ -1,8 +1,8 @@
 ﻿namespace LightBulb.Views
 {
-    public partial class GeolocationSettingsPage
+    public partial class GeoSettingsPage
     {
-        public GeolocationSettingsPage()
+        public GeoSettingsPage()
         {
             InitializeComponent();
         }

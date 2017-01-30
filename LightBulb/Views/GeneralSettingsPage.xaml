@@ -7,7 +7,7 @@
       Title="GeneralSettingsPage"
       d:DesignHeight="300"
       d:DesignWidth="300"
-      DataContext="{Binding Main, Source={StaticResource Locator}}"
+      DataContext="{Binding GeneralSettings, Source={StaticResource Locator}}"
       FontFamily="{DynamicResource MaterialDesignFont}"
       SnapsToDevicePixels="True"
       TextElement.FontSize="13"
@@ -70,7 +70,7 @@
                 SmallChange="5"
                 TickFrequency="5"
                 TickPlacement="BottomRight"
-                Value="{Binding Settings.TemperatureSwitchDurationMinutes}" />
+                Value="{Binding TemperatureSwitchDurationMinutes}" />
 
         <!--  24hr preview  -->
         <Grid Background="Transparent">

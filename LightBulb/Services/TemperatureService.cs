@@ -104,7 +104,7 @@ namespace LightBulb.Services
                 _gammaService.SetDisplayGammaLinear(intens);
                 Debug.WriteLine($"Gamma updated (to {intens}) (preview)", GetType().Name);
             }
-            else if (IsRealtimeModeEnabled)
+            else
             {
                 var intens = ColorIntensity.FromTemperature(RealtimeTemperature);
                 _gammaService.SetDisplayGammaLinear(intens);
