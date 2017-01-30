@@ -124,7 +124,7 @@ namespace LightBulb.Services
 
             // Polling timer
             _pollingTimer = new Timer();
-            _pollingTimer.Tick += (sender, args) => _gammaService.RefreshGammaRamp();
+            _pollingTimer.Tick += (sender, args) => UpdateGamma();
 
             // Temperature update timer
             _temperatureUpdateTimer = new SyncedTimer();
