@@ -14,10 +14,9 @@ namespace LightBulb
         private bool _isInternetTimeSyncEnabled = true;
         private ushort _temperatureEpsilon = 50;
         private ushort _defaultMonitorTemperature = 6600;
-        private ushort _minSmoothingDeltaTemperature = 400;
         private ushort _maxTemperature = 6600;
         private ushort _minTemperature = 3900;
-        private TimeSpan _maximumTemperatureSmoothingDuration = TimeSpan.FromSeconds(2);
+        private TimeSpan _maximumTemperatureSmoothingDuration = TimeSpan.FromSeconds(3);
         private TimeSpan _temperatureSwitchDuration = TimeSpan.FromMinutes(90);
         private TimeSpan _temperatureUpdateInterval = TimeSpan.FromMinutes(1);
         private TimeSpan _gammaPollingInterval = TimeSpan.FromSeconds(5);
@@ -60,12 +59,6 @@ namespace LightBulb
         {
             get { return _defaultMonitorTemperature; }
             set { Set(ref _defaultMonitorTemperature, value); }
-        }
-
-        public ushort MinSmoothingDeltaTemperature
-        {
-            get { return _minSmoothingDeltaTemperature; }
-            set { Set(ref _minSmoothingDeltaTemperature, value); }
         }
 
         public ushort MinTemperature

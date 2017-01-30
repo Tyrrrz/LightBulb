@@ -235,10 +235,8 @@ namespace LightBulb.Services
                 return;
             }
 
-            // If allowed to smooth and delta is big enough - start smooth transition
-            if (!forceInstantSwitch &&
-                Settings.IsTemperatureSmoothingEnabled &&
-                delta >= Settings.MinSmoothingDeltaTemperature)
+            // If allowed - start smooth transition
+            if (!forceInstantSwitch && Settings.IsTemperatureSmoothingEnabled)
             {
                 var duration =
                     TimeSpan.FromMilliseconds(Settings.MaximumTemperatureSmoothingDuration.TotalMilliseconds*delta/
@@ -249,7 +247,9 @@ namespace LightBulb.Services
                     temp => Temperature = (ushort) temp,
                     duration);
 
-                Debug.WriteLine($"Started smooth temperature transition (to {newTemp}; over {duration.TotalSeconds:0.##}s)", GetType().Name);
+                Debug.WriteLine(
+                    $"Started smooth temperature transition (to {newTemp}; over {duration.TotalSeconds:0.##}s)",
+                    GetType().Name);
             }
             // Otherwise - instant transition
             else

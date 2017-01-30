@@ -24,8 +24,7 @@ To download the last version - head to the [releases](https://github.com/Tyrrrz/
 - \* Default monitor temperature (monitor's color temperature when LightBulb is disabled) [6600]
 - \* Temperature epsilon (by how much should color temperature change to warrant gamma refresh) [50]
 - Temperature smoothing (temperature changes are smoothed out to give time for eyes to adjust) [enabled]
-- \* Minimum smoothing delta temperature (by how much should color temperature change to warrant smoothing) [400]
-- \* Temperature smoothing duration (when smoothing, how long does it take to finish) [2 seconds]
+- \* Maximum temperature smoothing duration (when smoothing, up to how long does it take to finish) [3 seconds]
 
 \* - cannot be changed via UI
 
