@@ -268,6 +268,8 @@ namespace LightBulb.Services
         public void RequestPreviewTemperature(ushort temp)
         {
             _requestedPreviewTemperature = temp;
+            if (IsPreviewModeEnabled)
+                UpdateTemperature(true);
         }
 
         /// <summary>
