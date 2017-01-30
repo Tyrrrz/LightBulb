@@ -8,7 +8,7 @@ namespace LightBulb
     {
         public static Settings Default { get; } = new Settings();
 
-        private bool _isGammaPollingEnabled = true;
+        private bool _isGammaPollingEnabled;
         private bool _isTemperatureSmoothingEnabled = true;
         private bool _isFullscreenBlocking;
         private bool _isInternetTimeSyncEnabled = true;
