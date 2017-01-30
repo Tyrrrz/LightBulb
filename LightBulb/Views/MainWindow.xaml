@@ -198,7 +198,7 @@
                                 BorderThickness="0"
                                 Click="NavigateGeneralSettingsButton_OnClick"
                                 ToolTip="General">
-                            <materialDesign:PackIcon Kind="WeatherSunset" />
+                            <materialDesign:PackIcon Kind="Tune" />
                         </Button>
                         <Button x:Name="NavigateGeolocationSettingsButton"
                                 Padding="4"
@@ -214,7 +214,7 @@
                                 BorderThickness="0"
                                 Click="NavigateAdvancedSettingsButton_OnClick"
                                 ToolTip="Advanced">
-                            <materialDesign:PackIcon Kind="Wrench" />
+                            <materialDesign:PackIcon Kind="CheckboxMultipleMarkedOutline" />
                         </Button>
                     </WrapPanel>
                 </Grid>
