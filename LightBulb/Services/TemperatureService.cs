@@ -31,9 +31,6 @@ namespace LightBulb.Services
             private set
             {
                 if (Temperature == value) return;
-                int diff = Math.Abs(Temperature - value);
-                if (diff <= Settings.TemperatureEpsilon &&
-                    !value.IsEither(Settings.MaxTemperature, Settings.MinTemperature)) return;
                 _temperature = value;
 
                 Debug.WriteLine($"Updated temperature (to {value})", GetType().Name);
@@ -55,13 +52,12 @@ namespace LightBulb.Services
                 if (IsRealtimeModeEnabled == value) return;
                 _isRealtimeModeEnabled = value;
 
-                _temperatureUpdateTimer.IsEnabled = value;
+                _temperatureUpdateTimer.IsEnabled = value && !IsPreviewModeEnabled;
                 _pollingTimer.IsEnabled = (value || IsPreviewModeEnabled) && Settings.IsGammaPollingEnabled;
 
                 Debug.WriteLine($"Realtime mode {(value ? "enabled" : "disabled")}", GetType().Name);
 
                 UpdateTemperature();
-                UpdateGamma();
 
                 Updated?.Invoke(this, EventArgs.Empty);
             }
@@ -78,12 +74,12 @@ namespace LightBulb.Services
                 if (IsPreviewModeEnabled == value) return;
                 _isPreviewModeEnabled = value;
 
+                _temperatureUpdateTimer.IsEnabled = !value && IsRealtimeModeEnabled;
                 _pollingTimer.IsEnabled = (value || IsRealtimeModeEnabled) && Settings.IsGammaPollingEnabled;
 
                 Debug.WriteLine($"Preview mode {(value ? "enabled" : "disabled")}", GetType().Name);
 
                 UpdateTemperature(true);
-                UpdateGamma();
 
                 Updated?.Invoke(this, EventArgs.Empty);
             }
@@ -143,7 +139,7 @@ namespace LightBulb.Services
             {
                 CyclePreviewTime = CyclePreviewTime.Add(TimeSpan.FromHours(0.05));
                 IsPreviewModeEnabled = true;
-                UpdateTemperature();
+                UpdateTemperature(true);
 
                 // Ending condition
                 if ((CyclePreviewTime - DateTime.Now).TotalHours >= 24)
@@ -157,6 +153,7 @@ namespace LightBulb.Services
 
             // Helpers
             _temperatureSmoother = new ValueSmoother();
+            _temperatureSmoother.Finished += (sender, args) => UpdateTemperature(true); // snap
 
             // Settings
             Settings.PropertyChanged += (sender, args) =>
@@ -167,7 +164,7 @@ namespace LightBulb.Services
                     nameof(Settings.MaxTemperature), nameof(Settings.TemperatureSwitchDuration),
                     nameof(Settings.SunriseTime), nameof(Settings.SunsetTime)))
                 {
-                    UpdateTemperature();
+                    UpdateTemperature(true);
                 }
             };
 
@@ -207,46 +204,57 @@ namespace LightBulb.Services
             Debug.WriteLine($"Gamma updated (to {intens})", GetType().Name);
         }
 
-        private void UpdateTemperature(bool forceInstant = false)
+        private void UpdateTemperature(bool forceInstantSwitch = false)
         {
+            ushort newTemp;
+
             // 24 hr cycle preview mode
             if (IsPreviewModeEnabled && IsCyclePreviewRunning)
             {
-                _temperatureSmoother.Stop(); // stop existing smooth transition
-                Temperature = GetTemperature(CyclePreviewTime);
+                newTemp = GetTemperature(CyclePreviewTime);
             }
             // Preview mode
             else if (IsPreviewModeEnabled)
             {
-                _temperatureSmoother.Stop(); // stop existing smooth transition
-                Temperature = _requestedPreviewTemperature;
+                newTemp = _requestedPreviewTemperature;
             }
             // Realtime mode
             else
             {
-                ushort newTemp = IsRealtimeModeEnabled
-                    ? GetTemperature(DateTime.Now) // on
-                    : Settings.DefaultMonitorTemperature; // off
-                int diff = Math.Abs(newTemp - Temperature);
+                newTemp = IsRealtimeModeEnabled ? GetTemperature(DateTime.Now) : Settings.DefaultMonitorTemperature;
+            }
 
-                // Smooth transition
-                if (!forceInstant &&
-                    Settings.IsTemperatureSmoothingEnabled &&
-                    diff >= Settings.MinSmoothingDeltaTemperature)
-                {
-                    _temperatureSmoother.Set(
-                        Temperature, newTemp,
-                        temp => Temperature = (ushort) temp,
-                        Settings.TemperatureSmoothingDuration);
+            // Delta
+            int delta = Math.Abs(newTemp - Temperature);
 
-                    Debug.WriteLine($"Started smooth temperature transition (to {newTemp})", GetType().Name);
-                }
-                // Instant transition
-                else
-                {
-                    _temperatureSmoother.Stop(); // stop existing smooth transition
-                    Temperature = newTemp;
-                }
+            // Don't update if delta is too small
+            if (delta < Settings.TemperatureEpsilon &&
+                !newTemp.IsEither(Settings.MinTemperature, Settings.MaxTemperature))
+            {
+                Debug.WriteLine($"Temperature delta too small to update ({delta})", GetType().Name);
+                return;
+            }
+
+            // If allowed to smooth and delta is big enough - start smooth transition
+            if (!forceInstantSwitch &&
+                Settings.IsTemperatureSmoothingEnabled &&
+                delta >= Settings.MinSmoothingDeltaTemperature)
+            {
+                _temperatureSmoother.Set(
+                    Temperature, newTemp,
+                    temp => Temperature = (ushort) temp,
+                    Settings.TemperatureSmoothingDuration);
+
+                Debug.WriteLine($"Started smooth temperature transition (to {newTemp})", GetType().Name);
+            }
+            // Otherwise - instant transition
+            else
+            {
+                // Stop existing smooth transition
+                _temperatureSmoother.Stop();
+
+                // Set temperature
+                Temperature = newTemp;
             }
         }
 
