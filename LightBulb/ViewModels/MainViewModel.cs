@@ -23,6 +23,7 @@ namespace LightBulb.ViewModels
         private bool _isBlocked;
         private string _statusText;
         private CycleState _cycleState;
+        private double _cyclePosition;
 
         public Settings Settings => Settings.Default;
         public Version Version => Assembly.GetExecutingAssembly().GetName().Version;
@@ -66,12 +67,21 @@ namespace LightBulb.ViewModels
         }
 
         /// <summary>
-        /// State of the current cycle
+        /// Current state in the day cycle
         /// </summary>
         public CycleState CycleState
         {
             get { return _cycleState; }
             private set { Set(ref _cycleState, value); }
+        }
+
+        /// <summary>
+        /// Current position in the day cycle
+        /// </summary>
+        public double CyclePosition
+        {
+            get { return _cyclePosition; }
+            private set { Set(ref _cyclePosition, value); }
         }
 
         // Commands
@@ -93,6 +103,7 @@ namespace LightBulb.ViewModels
             {
                 UpdateStatusText();
                 UpdateCycleState();
+                UpdateCyclePosition();
             };
             _windowService.FullScreenStateChanged += (sender, args) =>
             {
@@ -179,6 +190,7 @@ namespace LightBulb.ViewModels
 
         private void UpdateCycleState()
         {
+            // Not enabled or blocked
             if (!IsEnabled || IsBlocked)
             {
                 CycleState = CycleState.Disabled;
@@ -197,6 +209,30 @@ namespace LightBulb.ViewModels
                 {
                     CycleState = CycleState.Transition;
                 }
+            }
+        }
+
+        private void UpdateCyclePosition()
+        {
+            // Preview mode (24 hr cycle preview)
+            if (_temperatureService.IsPreviewModeEnabled && _temperatureService.IsCyclePreviewRunning)
+            {
+                CyclePosition = _temperatureService.CyclePreviewTime.TimeOfDay.TotalHours/24;
+            }
+            // Preview mode
+            else if (_temperatureService.IsPreviewModeEnabled)
+            {
+                CyclePosition = 0;
+            }
+            // Not enabled or blocked
+            else if (!IsEnabled || IsBlocked)
+            {
+                CyclePosition = 0;
+            }
+            // Realtime mode
+            else
+            {
+                CyclePosition = DateTime.Now.TimeOfDay.TotalHours/24;
             }
         }
 

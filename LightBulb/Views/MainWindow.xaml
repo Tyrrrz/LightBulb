@@ -232,38 +232,54 @@
 
             <!--  Status bar  -->
             <Border Grid.Row="2"
-                    Padding="5"
                     BorderBrush="{DynamicResource MiscBrush}"
-                    BorderThickness="0,1,0,0"
                     TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
-                <WrapPanel Orientation="Horizontal">
-                    <!--  Cycle state icon  -->
-                    <materialDesign:PackIcon Background="Transparent" ToolTip="{Binding CycleState}">
-                        <materialDesign:PackIcon.Style>
-                            <Style BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}" TargetType="{x:Type materialDesign:PackIcon}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Disabled}">
-                                        <Setter Property="Kind" Value="SyncOff" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Transition}">
-                                        <Setter Property="Kind" Value="Sync" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Day}">
-                                        <Setter Property="Kind" Value="WhiteBalanceSunny" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Night}">
-                                        <Setter Property="Kind" Value="WeatherNight" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </materialDesign:PackIcon.Style>
-                    </materialDesign:PackIcon>
-                    <!--  Status text  -->
-                    <TextBlock Margin="3,0,0,0"
-                               VerticalAlignment="Center"
-                               FontSize="12"
-                               Text="{Binding StatusText}" />
-                </WrapPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!--  Cycle position  -->
+                    <ProgressBar Grid.Row="0"
+                                 Height="2"
+                                 Foreground="{DynamicResource SecondaryAccentBrush}"
+                                 Maximum="1"
+                                 Minimum="0"
+                                 Value="{Binding CyclePosition, Mode=OneWay}" />
+
+                    <!--  Cycle state and status text  -->
+                    <WrapPanel Grid.Row="1"
+                               Margin="5"
+                               Orientation="Horizontal">
+                        <!--  Cycle state icon  -->
+                        <materialDesign:PackIcon Background="Transparent" ToolTip="{Binding CycleState}">
+                            <materialDesign:PackIcon.Style>
+                                <Style BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}" TargetType="{x:Type materialDesign:PackIcon}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Disabled}">
+                                            <Setter Property="Kind" Value="SyncOff" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Transition}">
+                                            <Setter Property="Kind" Value="Sync" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Day}">
+                                            <Setter Property="Kind" Value="WhiteBalanceSunny" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Night}">
+                                            <Setter Property="Kind" Value="WeatherNight" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </materialDesign:PackIcon.Style>
+                        </materialDesign:PackIcon>
+                        <!--  Status text  -->
+                        <TextBlock Margin="3,0,0,0"
+                                   VerticalAlignment="Center"
+                                   FontSize="12"
+                                   Text="{Binding StatusText}" />
+                    </WrapPanel>
+                </Grid>
             </Border>
         </Grid>
     </Border>
