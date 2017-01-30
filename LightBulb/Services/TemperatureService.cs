@@ -188,13 +188,11 @@ namespace LightBulb.Services
         private void SystemDisplaySettingsChanged(object sender, EventArgs e)
         {
             UpdateTemperature();
-            UpdateGamma();
         }
 
         private void SystemPowerModeChanged(object sender, PowerModeChangedEventArgs powerModeChangedEventArgs)
         {
             UpdateTemperature();
-            UpdateGamma();
         }
 
         private void UpdateGamma()
@@ -226,6 +224,13 @@ namespace LightBulb.Services
 
             // Delta
             int delta = Math.Abs(newTemp - Temperature);
+
+            // No change - nothing to do
+            if (delta <= 0)
+            {
+                Debug.WriteLine("Temperature delta is zero", GetType().Name);
+                return;
+            }
 
             // Don't update if delta is too small
             if (delta < Settings.TemperatureEpsilon &&
