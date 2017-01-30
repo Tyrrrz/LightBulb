@@ -10,127 +10,39 @@ namespace LightBulb.Services
     public partial class TemperatureService : IDisposable
     {
         private readonly GammaService _gammaService;
+
         private readonly Timer _pollingTimer;
+        private readonly SyncedTimer _temperatureUpdateTimer;
+        private readonly Timer _cyclePreviewTimer;
         private readonly ValueSmoother _temperatureSmoother;
 
-        public Settings Settings => Settings.Default;
+        private ushort _temperature;
+        private bool _isRealtimeModeEnabled;
+        private bool _isPreviewModeEnabled;
+        private DateTime _cyclePreviewTime;
+        private ushort _requestedPreviewTemperature;
 
         /// <summary>
-        /// Triggered when something changes
+        /// Current display color temperature
         /// </summary>
-        public event EventHandler Updated;
-
-        public TemperatureService(GammaService gammaService)
+        public ushort Temperature
         {
-            _gammaService = gammaService;
-            _previewTemperature = _actualTemperature = Settings.DefaultMonitorTemperature;
-
-            // Temperature update timer
-            _updateTimer = new SyncedTimer();
-            _updateTimer.Tick += (sender, args) =>
+            get { return _temperature; }
+            private set
             {
-                UpdateActualTemperature();
-            };
+                if (Temperature == value) return;
+                int diff = Math.Abs(Temperature - value);
+                if (diff <= Settings.TemperatureEpsilon &&
+                    !value.IsEither(Settings.MaxTemperature, Settings.MinTemperature)) return;
+                _temperature = value;
 
-            // Cycle preview timer
-            _cyclePreviewTimer = new Timer(TimeSpan.FromMilliseconds(15));
-            _cyclePreviewTimer.Tick += (sender, args) =>
-            {
-                CyclePreviewUpdateTemperature();
+                Debug.WriteLine($"Updated temperature (to {value})", GetType().Name);
 
-                // Ending condition
-                if ((CyclePreviewTime - DateTime.Now).TotalHours >= 24)
-                {
-                    IsPreviewModeEnabled = false;
-                    _cyclePreviewTimer.IsEnabled = false;
-                    Debug.WriteLine("Ended cycle preview", GetType().Name);
-                    CyclePreviewEnded?.Invoke(this, EventArgs.Empty);
-                }
-            };
+                UpdateGamma();
 
-            // Polling timer
-            _pollingTimer = new Timer();
-            _pollingTimer.Tick += (sender, args) => UpdateGamma();
-
-            // Helpers
-            _temperatureSmoother = new ValueSmoother();
-
-            // System events
-            SystemEvents.PowerModeChanged += SystemPowerModeChanged;
-            SystemEvents.DisplaySettingsChanged += SystemDisplaySettingsChanged;
-
-            // Settings
-            Settings.PropertyChanged += (sender, args) =>
-            {
-                UpdateConfiguration();
-
-                if (args.PropertyName.IsEither(nameof(Settings.TemperatureEpsilon), nameof(Settings.MinTemperature),
-                    nameof(Settings.MaxTemperature), nameof(Settings.TemperatureSwitchDuration),
-                    nameof(Settings.SunriseTime), nameof(Settings.SunsetTime)))
-                {
-                    UpdateActualTemperature();
-                }
-            };
-
-            // Init
-            UpdateConfiguration();
-        }
-
-        private void UpdateConfiguration()
-        {
-            _updateTimer.Interval = Settings.TemperatureUpdateInterval;
-
-            _pollingTimer.Interval = Settings.GammaPollingInterval;
-            _pollingTimer.IsEnabled = (IsRealtimeModeEnabled || IsPreviewModeEnabled) && Settings.IsGammaPollingEnabled;
-        }
-
-        private void SystemDisplaySettingsChanged(object sender, EventArgs e)
-        {
-            UpdateActualTemperature();
-            UpdateGamma();
-        }
-
-        private void SystemPowerModeChanged(object sender, PowerModeChangedEventArgs powerModeChangedEventArgs)
-        {
-            UpdateActualTemperature();
-            UpdateGamma();
-        }
-
-        private void UpdateGamma()
-        {
-            if (IsPreviewModeEnabled)
-            {
-                var intens = ColorIntensity.FromTemperature(PreviewTemperature);
-                _gammaService.SetDisplayGammaLinear(intens);
-                Debug.WriteLine($"Gamma updated (to {intens}) (preview)", GetType().Name);
-            }
-            else
-            {
-                var intens = ColorIntensity.FromTemperature(ActualTemperature);
-                _gammaService.SetDisplayGammaLinear(intens);
-                Debug.WriteLine($"Gamma updated (to {intens}) (realtime)", GetType().Name);
+                Updated?.Invoke(this, EventArgs.Empty);
             }
         }
-
-        public virtual void Dispose()
-        {
-            SystemEvents.PowerModeChanged -= SystemPowerModeChanged;
-            SystemEvents.DisplaySettingsChanged -= SystemDisplaySettingsChanged;
-
-            _updateTimer.Dispose();
-            _cyclePreviewTimer.Dispose();
-            _pollingTimer.Dispose();
-            _temperatureSmoother.Dispose();
-        }
-    }
-
-    // Realtime mode
-    public partial class TemperatureService
-    {
-        private readonly SyncedTimer _updateTimer;
-
-        private bool _isRealtimeModeEnabled;
-        private ushort _actualTemperature;
 
         /// <summary>
         /// Whether the real time gamma control is enabled
@@ -143,74 +55,17 @@ namespace LightBulb.Services
                 if (IsRealtimeModeEnabled == value) return;
                 _isRealtimeModeEnabled = value;
 
-                _updateTimer.IsEnabled = value;
+                _temperatureUpdateTimer.IsEnabled = value;
                 _pollingTimer.IsEnabled = (value || IsPreviewModeEnabled) && Settings.IsGammaPollingEnabled;
 
                 Debug.WriteLine($"Realtime mode {(value ? "enabled" : "disabled")}", GetType().Name);
 
-                UpdateActualTemperature();
+                UpdateTemperature(TemperatureChangeMode.Smooth);
                 UpdateGamma();
 
                 Updated?.Invoke(this, EventArgs.Empty);
             }
         }
-
-        /// <summary>
-        /// Current color temperature
-        /// </summary>
-        public ushort ActualTemperature
-        {
-            get { return _actualTemperature; }
-            private set
-            {
-                if (ActualTemperature == value) return;
-                int diff = Math.Abs(ActualTemperature - value);
-                if (diff <= Settings.TemperatureEpsilon &&
-                    !value.IsEither(Settings.MaxTemperature, Settings.MinTemperature)) return;
-                _actualTemperature = value;
-
-                Debug.WriteLine($"Updated actual temperature (to {value})", GetType().Name);
-
-                UpdateGamma();
-
-                Updated?.Invoke(this, EventArgs.Empty);
-            }
-        }
-
-        private void UpdateActualTemperature()
-        {
-            ushort newTemp = IsRealtimeModeEnabled
-                ? GetTemperature(DateTime.Now) // on
-                : Settings.DefaultMonitorTemperature; // off
-            int diff = Math.Abs(newTemp - ActualTemperature);
-
-            // Smooth transition
-            if (Settings.IsTemperatureSmoothingEnabled && diff >= Settings.MinSmoothingDeltaTemperature)
-            {
-                _temperatureSmoother.Set(
-                    ActualTemperature, newTemp,
-                    temp => ActualTemperature = (ushort) temp,
-                    Settings.TemperatureSmoothingDuration);
-
-                Debug.WriteLine($"Started smooth temperature transition (to {newTemp})", GetType().Name);
-            }
-            // Instant transition
-            else
-            {
-                _temperatureSmoother.Stop(); // stop existing smooth transition
-                ActualTemperature = newTemp;
-            }
-        }
-    }
-
-    // Preview mode
-    public partial class TemperatureService
-    {
-        private readonly Timer _cyclePreviewTimer;
-
-        private bool _isPreviewModeEnabled;
-        private DateTime _cyclePreviewTime;
-        private ushort _previewTemperature;
 
         /// <summary>
         /// Whether preview mode is enabled
@@ -223,18 +78,11 @@ namespace LightBulb.Services
                 if (IsPreviewModeEnabled == value) return;
                 _isPreviewModeEnabled = value;
 
-                // Stop ongoing 24hr cycle preview
-                if (!value && _cyclePreviewTimer.IsEnabled)
-                {
-                    _cyclePreviewTimer.IsEnabled = false;
-                    CyclePreviewEnded?.Invoke(this, EventArgs.Empty);
-                }
-
                 _pollingTimer.IsEnabled = (value || IsRealtimeModeEnabled) && Settings.IsGammaPollingEnabled;
 
                 Debug.WriteLine($"Preview mode {(value ? "enabled" : "disabled")}", GetType().Name);
 
-                UpdateActualTemperature();
+                UpdateTemperature(TemperatureChangeMode.Instant);
                 UpdateGamma();
 
                 Updated?.Invoke(this, EventArgs.Empty);
@@ -261,51 +109,174 @@ namespace LightBulb.Services
         /// </summary>
         public bool IsCyclePreviewRunning => _cyclePreviewTimer.IsEnabled;
 
+        public Settings Settings => Settings.Default;
+
         /// <summary>
-        /// Current preview temperature
+        /// Triggered when something changes
         /// </summary>
-        public ushort PreviewTemperature
-        {
-            get { return _previewTemperature; }
-            set
-            {
-                if (PreviewTemperature == value) return;
-                int diff = Math.Abs(PreviewTemperature - value);
-                if (diff <= Settings.TemperatureEpsilon &&
-                    !value.IsEither(Settings.MaxTemperature, Settings.MinTemperature)) return;
-                _previewTemperature = value;
-
-                Debug.WriteLine($"Updated preview temperature (to {value})", GetType().Name);
-
-                UpdateGamma();
-
-                Updated?.Invoke(this, EventArgs.Empty);
-            }
-        }
+        public event EventHandler Updated;
 
         /// <summary>
         /// Triggered when cycle preview ends
         /// </summary>
         public event EventHandler CyclePreviewEnded;
 
-        private void CyclePreviewUpdateTemperature()
+        public TemperatureService(GammaService gammaService)
         {
-            CyclePreviewTime = CyclePreviewTime.Add(TimeSpan.FromHours(0.05));
-            PreviewTemperature = GetTemperature(CyclePreviewTime);
+            _gammaService = gammaService;
+
+            // Polling timer
+            _pollingTimer = new Timer();
+            _pollingTimer.Tick += (sender, args) => UpdateGamma();
+
+            // Temperature update timer
+            _temperatureUpdateTimer = new SyncedTimer();
+            _temperatureUpdateTimer.Tick += (sender, args) => UpdateTemperature(TemperatureChangeMode.Instant);
+
+            // Cycle preview timer
+            _cyclePreviewTimer = new Timer(TimeSpan.FromMilliseconds(15));
+            _cyclePreviewTimer.Tick += (sender, args) =>
+            {
+                CyclePreviewTime = CyclePreviewTime.Add(TimeSpan.FromHours(0.05));
+                IsPreviewModeEnabled = true;
+                UpdateTemperature(TemperatureChangeMode.Instant);
+
+                // Ending condition
+                if ((CyclePreviewTime - DateTime.Now).TotalHours >= 24)
+                {
+                    IsPreviewModeEnabled = false;
+                    _cyclePreviewTimer.IsEnabled = false;
+                    Debug.WriteLine("Ended cycle preview", GetType().Name);
+                    CyclePreviewEnded?.Invoke(this, EventArgs.Empty);
+                }
+            };
+
+            // Helpers
+            _temperatureSmoother = new ValueSmoother();
+
+            // Settings
+            Settings.PropertyChanged += (sender, args) =>
+            {
+                UpdateConfiguration();
+
+                if (args.PropertyName.IsEither(nameof(Settings.TemperatureEpsilon), nameof(Settings.MinTemperature),
+                    nameof(Settings.MaxTemperature), nameof(Settings.TemperatureSwitchDuration),
+                    nameof(Settings.SunriseTime), nameof(Settings.SunsetTime)))
+                {
+                    UpdateTemperature(TemperatureChangeMode.Instant);
+                }
+            };
+
+            // System events
+            SystemEvents.PowerModeChanged += SystemPowerModeChanged;
+            SystemEvents.DisplaySettingsChanged += SystemDisplaySettingsChanged;
+
+            // Init
+            _temperature = Settings.DefaultMonitorTemperature;
+            UpdateConfiguration();
         }
 
+        private void UpdateConfiguration()
+        {
+            _temperatureUpdateTimer.Interval = Settings.TemperatureUpdateInterval;
+
+            _pollingTimer.Interval = Settings.GammaPollingInterval;
+            _pollingTimer.IsEnabled = (IsRealtimeModeEnabled || IsPreviewModeEnabled) && Settings.IsGammaPollingEnabled;
+        }
+
+        private void SystemDisplaySettingsChanged(object sender, EventArgs e)
+        {
+            UpdateTemperature(TemperatureChangeMode.Smooth);
+            UpdateGamma();
+        }
+
+        private void SystemPowerModeChanged(object sender, PowerModeChangedEventArgs powerModeChangedEventArgs)
+        {
+            UpdateTemperature(TemperatureChangeMode.Smooth);
+            UpdateGamma();
+        }
+
+        private void UpdateGamma()
+        {
+            var intens = ColorIntensity.FromTemperature(Temperature);
+            _gammaService.SetDisplayGammaLinear(intens);
+            Debug.WriteLine($"Gamma updated (to {intens})", GetType().Name);
+        }
+
+        private void UpdateTemperature(TemperatureChangeMode mode)
+        {
+            // 24 hr cycle preview mode
+            if (IsPreviewModeEnabled && IsCyclePreviewRunning)
+            {
+                _temperatureSmoother.Stop(); // stop existing smooth transition
+                Temperature = GetTemperature(CyclePreviewTime);
+            }
+            // Preview mode
+            else if (IsPreviewModeEnabled)
+            {
+                _temperatureSmoother.Stop(); // stop existing smooth transition
+                Temperature = _requestedPreviewTemperature;
+            }
+            // Realtime mode
+            else
+            {
+                ushort newTemp = IsRealtimeModeEnabled
+                    ? GetTemperature(DateTime.Now) // on
+                    : Settings.DefaultMonitorTemperature; // off
+                int diff = Math.Abs(newTemp - Temperature);
+
+                // Smooth transition
+                if (mode == TemperatureChangeMode.Smooth &&
+                    Settings.IsTemperatureSmoothingEnabled &&
+                    diff >= Settings.MinSmoothingDeltaTemperature)
+                {
+                    _temperatureSmoother.Set(
+                        Temperature, newTemp,
+                        temp => Temperature = (ushort) temp,
+                        Settings.TemperatureSmoothingDuration);
+
+                    Debug.WriteLine($"Started smooth temperature transition (to {newTemp})", GetType().Name);
+                }
+                // Instant transition
+                else
+                {
+                    _temperatureSmoother.Stop(); // stop existing smooth transition
+                    Temperature = newTemp;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Request to change temperature to given for preview purposes
+        /// </summary>
+        public void RequestPreviewTemperature(ushort temp)
+        {
+            _requestedPreviewTemperature = temp;
+        }
+
+        /// <summary>
+        /// Starts 24hr cycle preview
+        /// </summary>
         public void CyclePreviewStart()
         {
             Debug.WriteLine("Started cycle preview", GetType().Name);
 
             CyclePreviewTime = DateTime.Now;
-            PreviewTemperature = GetTemperature(CyclePreviewTime);
-            IsPreviewModeEnabled = true;
             _cyclePreviewTimer.IsEnabled = true;
+        }
+
+        public virtual void Dispose()
+        {
+            SystemEvents.PowerModeChanged -= SystemPowerModeChanged;
+            SystemEvents.DisplaySettingsChanged -= SystemDisplaySettingsChanged;
+
+            _temperatureUpdateTimer.Dispose();
+            _cyclePreviewTimer.Dispose();
+            _pollingTimer.Dispose();
+            _temperatureSmoother.Dispose();
         }
     }
 
-    // Static
     public partial class TemperatureService
     {
         private static double Ease(double from, double to, double t)

@@ -28,15 +28,6 @@ namespace LightBulb.ViewModels
         }
 
         /// <summary>
-        /// Temperature for preview mode
-        /// </summary>
-        public ushort PreviewTemperature
-        {
-            get { return _temperatureService.PreviewTemperature; }
-            set { _temperatureService.PreviewTemperature = value; }
-        }
-
-        /// <summary>
         /// Temperature switch duration in minutes
         /// </summary>
         public double TemperatureSwitchDurationMinutes
@@ -48,6 +39,7 @@ namespace LightBulb.ViewModels
         public Settings Settings => Settings.Default;
 
         public RelayCommand StartCyclePreviewCommand { get; }
+        public RelayCommand<ushort> RequestPreviewTemperatureCommand { get; }
 
         public GeneralSettingsViewModel(TemperatureService temperatureService)
         {
@@ -60,6 +52,7 @@ namespace LightBulb.ViewModels
             };
 
             // Commands
+            RequestPreviewTemperatureCommand = new RelayCommand<ushort>(RequestPreviewTemperature);
             StartCyclePreviewCommand = new RelayCommand(StartCyclePreview,
                 () => !_temperatureService.IsCyclePreviewRunning);
 
@@ -69,6 +62,11 @@ namespace LightBulb.ViewModels
                 if (args.PropertyName == nameof(Settings.TemperatureSwitchDuration))
                     RaisePropertyChanged(() => TemperatureSwitchDurationMinutes);
             };
+        }
+
+        private void RequestPreviewTemperature(ushort temp)
+        {
+            _temperatureService.RequestPreviewTemperature(temp);
         }
 
         private void StartCyclePreview()

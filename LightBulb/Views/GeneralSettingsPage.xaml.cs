@@ -19,7 +19,7 @@ namespace LightBulb.Views
         private void MaxTempSlider_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             _maxTempSliderMouseDown = true;
-            ViewModel.PreviewTemperature = (ushort) MaxTempSlider.Value;
+            ViewModel.RequestPreviewTemperatureCommand.Execute((ushort) MaxTempSlider.Value);
             ViewModel.IsInPreviewMode = true;
         }
 
@@ -32,13 +32,13 @@ namespace LightBulb.Views
         private void MaxTempSlider_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (_maxTempSliderMouseDown)
-                ViewModel.PreviewTemperature = (ushort) e.NewValue;
+                ViewModel.RequestPreviewTemperatureCommand.Execute((ushort) e.NewValue);
         }
 
         private void MinTempSlider_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             _minTempSliderMouseDown = true;
-            ViewModel.PreviewTemperature = (ushort) MinTempSlider.Value;
+            ViewModel.RequestPreviewTemperatureCommand.Execute((ushort) MinTempSlider.Value);
             ViewModel.IsInPreviewMode = true;
         }
 
@@ -51,7 +51,7 @@ namespace LightBulb.Views
         private void MinTempSlider_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (_minTempSliderMouseDown)
-                ViewModel.PreviewTemperature = (ushort) e.NewValue;
+                ViewModel.RequestPreviewTemperatureCommand.Execute((ushort) e.NewValue);
         }
     }
 }

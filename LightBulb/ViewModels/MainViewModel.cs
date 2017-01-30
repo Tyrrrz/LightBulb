@@ -149,16 +149,16 @@ namespace LightBulb.ViewModels
 
         private void UpdateStatusText()
         {
-            // Preview mode (not 24hr cycle preview)
-            if (_temperatureService.IsPreviewModeEnabled && !_temperatureService.IsCyclePreviewRunning)
-            {
-                StatusText = $"Temp: {_temperatureService.PreviewTemperature}K   (preview)";
-            }
             // Preview mode (24 hr cycle preview)
-            else if (_temperatureService.IsPreviewModeEnabled && _temperatureService.IsCyclePreviewRunning)
+            if (_temperatureService.IsPreviewModeEnabled && _temperatureService.IsCyclePreviewRunning)
             {
                 StatusText =
-                    $"Temp: {_temperatureService.PreviewTemperature}K   Time: {_temperatureService.CyclePreviewTime:t}   (preview)";
+                    $"Temp: {_temperatureService.Temperature}K   Time: {_temperatureService.CyclePreviewTime:t}   (preview)";
+            }
+            // Preview mode
+            else if (_temperatureService.IsPreviewModeEnabled)
+            {
+                StatusText = $"Temp: {_temperatureService.Temperature}K   (preview)";
             }
             // Not enabled
             else if (!IsEnabled)
@@ -173,7 +173,7 @@ namespace LightBulb.ViewModels
             // Realtime mode
             else
             {
-                StatusText = $"Temp: {_temperatureService.ActualTemperature}K";
+                StatusText = $"Temp: {_temperatureService.Temperature}K";
             }
         }
 
@@ -185,14 +185,11 @@ namespace LightBulb.ViewModels
             }
             else
             {
-                ushort temp = _temperatureService.IsPreviewModeEnabled
-                    ? _temperatureService.PreviewTemperature
-                    : _temperatureService.ActualTemperature;
-                if (temp >= Settings.MaxTemperature)
+                if (_temperatureService.Temperature >= Settings.MaxTemperature)
                 {
                     CycleState = CycleState.Day;
                 }
-                else if (temp <= Settings.MinTemperature)
+                else if (_temperatureService.Temperature <= Settings.MinTemperature)
                 {
                     CycleState = CycleState.Night;
                 }
