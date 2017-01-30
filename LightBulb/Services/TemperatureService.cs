@@ -3,6 +3,7 @@ using System.Diagnostics;
 using LightBulb.Models;
 using LightBulb.Services.Helpers;
 using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.ApplicationServices;
 using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
@@ -171,6 +172,7 @@ namespace LightBulb.Services
             // System events
             SystemEvents.PowerModeChanged += SystemPowerModeChanged;
             SystemEvents.DisplaySettingsChanged += SystemDisplaySettingsChanged;
+            PowerManager.IsMonitorOnChanged += IsMonitorOnChanged;
 
             // Init
             _temperature = Settings.DefaultMonitorTemperature;
@@ -192,6 +194,12 @@ namespace LightBulb.Services
         }
 
         private void SystemPowerModeChanged(object sender, PowerModeChangedEventArgs powerModeChangedEventArgs)
+        {
+            UpdateTemperature();
+            UpdateGamma();
+        }
+
+        private void IsMonitorOnChanged(object sender, EventArgs eventArgs)
         {
             UpdateTemperature();
             UpdateGamma();
@@ -287,6 +295,7 @@ namespace LightBulb.Services
         {
             SystemEvents.PowerModeChanged -= SystemPowerModeChanged;
             SystemEvents.DisplaySettingsChanged -= SystemDisplaySettingsChanged;
+            PowerManager.IsMonitorOnChanged -= IsMonitorOnChanged;
 
             _temperatureUpdateTimer.Dispose();
             _cyclePreviewTimer.Dispose();

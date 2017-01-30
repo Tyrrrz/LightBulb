@@ -52,8 +52,8 @@ namespace LightBulb.Services
             // ... this forces the ramp to refresh every time
             // ... because some drivers will just reject it if it doesn't change
             ramp.Red[255] = (ushort) (ramp.Red[255] + Ext.RandomInt(-5, 5));
-            ramp.Blue[255] = (ushort) (ramp.Blue[255] + Ext.RandomInt(-5, 5));
             ramp.Green[255] = (ushort) (ramp.Green[255] + Ext.RandomInt(-5, 5));
+            ramp.Blue[255] = (ushort) (ramp.Blue[255] + Ext.RandomInt(-5, 5));
 
             // Set ramp
             var dc = GetDCInternal(IntPtr.Zero);
