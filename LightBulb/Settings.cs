@@ -17,7 +17,7 @@ namespace LightBulb
         private ushort _minSmoothingDeltaTemperature = 400;
         private ushort _maxTemperature = 6600;
         private ushort _minTemperature = 3900;
-        private TimeSpan _temperatureSmoothingDuration = TimeSpan.FromSeconds(2);
+        private TimeSpan _maximumTemperatureSmoothingDuration = TimeSpan.FromSeconds(2);
         private TimeSpan _temperatureSwitchDuration = TimeSpan.FromMinutes(90);
         private TimeSpan _temperatureUpdateInterval = TimeSpan.FromMinutes(1);
         private TimeSpan _gammaPollingInterval = TimeSpan.FromSeconds(5);
@@ -92,10 +92,10 @@ namespace LightBulb
             }
         }
 
-        public TimeSpan TemperatureSmoothingDuration
+        public TimeSpan MaximumTemperatureSmoothingDuration
         {
-            get { return _temperatureSmoothingDuration; }
-            set { Set(ref _temperatureSmoothingDuration, value); }
+            get { return _maximumTemperatureSmoothingDuration; }
+            set { Set(ref _maximumTemperatureSmoothingDuration, value); }
         }
 
         public TimeSpan TemperatureSwitchDuration

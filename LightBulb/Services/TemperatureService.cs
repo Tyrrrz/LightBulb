@@ -240,12 +240,16 @@ namespace LightBulb.Services
                 Settings.IsTemperatureSmoothingEnabled &&
                 delta >= Settings.MinSmoothingDeltaTemperature)
             {
+                var duration =
+                    TimeSpan.FromMilliseconds(Settings.MaximumTemperatureSmoothingDuration.TotalMilliseconds*delta/
+                                              (Settings.MaxTemperature - Settings.MinTemperature));
+
                 _temperatureSmoother.Set(
                     Temperature, newTemp,
                     temp => Temperature = (ushort) temp,
-                    Settings.TemperatureSmoothingDuration);
+                    duration);
 
-                Debug.WriteLine($"Started smooth temperature transition (to {newTemp})", GetType().Name);
+                Debug.WriteLine($"Started smooth temperature transition (to {newTemp}; over {duration.TotalSeconds:0.##}s)", GetType().Name);
             }
             // Otherwise - instant transition
             else
