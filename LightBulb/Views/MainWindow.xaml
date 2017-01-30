@@ -95,7 +95,7 @@
                         </MenuItem>
                         <MenuItem Header="Disable for...">
                             <MenuItem.Icon>
-                                <materialDesign:PackIcon Kind="Timer" />
+                                <materialDesign:PackIcon Kind="PowerSettings" />
                             </MenuItem.Icon>
                             <MenuItem Command="{Binding DisableTemporarilyCommand}"
                                       CommandParameter="60000"
