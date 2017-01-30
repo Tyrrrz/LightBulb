@@ -13,7 +13,7 @@ To download the last version - head to the [releases](https://github.com/Tyrrrz/
 - Maximum color temperature (day-time temperature) [6600]
 - Minimum color temperature (night-time temperature) [3900]
 - Transition duration (how long it takes to transition from day to night temperature) [90 mins]
-- Gamma polling (regularly refresh gamma) [disabled]
+- Gamma polling (regularly refresh gamma) [enabled]
 - Disable when fullscreen (pause gamma control when a fullscreen application is in foreground) [disabled]
 - Sunrise time (when night turns to day) [07:20]
 - Sunset time (when day turns to night) [16:30]
