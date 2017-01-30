@@ -60,7 +60,7 @@ namespace LightBulb.Services
 
                 Debug.WriteLine($"Realtime mode {(value ? "enabled" : "disabled")}", GetType().Name);
 
-                UpdateTemperature(TemperatureChangeMode.Smooth);
+                UpdateTemperature();
                 UpdateGamma();
 
                 Updated?.Invoke(this, EventArgs.Empty);
@@ -82,7 +82,7 @@ namespace LightBulb.Services
 
                 Debug.WriteLine($"Preview mode {(value ? "enabled" : "disabled")}", GetType().Name);
 
-                UpdateTemperature(TemperatureChangeMode.Instant);
+                UpdateTemperature(true);
                 UpdateGamma();
 
                 Updated?.Invoke(this, EventArgs.Empty);
@@ -131,7 +131,11 @@ namespace LightBulb.Services
 
             // Temperature update timer
             _temperatureUpdateTimer = new SyncedTimer();
-            _temperatureUpdateTimer.Tick += (sender, args) => UpdateTemperature(TemperatureChangeMode.Instant);
+            _temperatureUpdateTimer.Tick += (sender, args) =>
+            {
+                if (!_temperatureSmoother.IsActive)
+                    UpdateTemperature(true);
+            };
 
             // Cycle preview timer
             _cyclePreviewTimer = new Timer(TimeSpan.FromMilliseconds(15));
@@ -139,7 +143,7 @@ namespace LightBulb.Services
             {
                 CyclePreviewTime = CyclePreviewTime.Add(TimeSpan.FromHours(0.05));
                 IsPreviewModeEnabled = true;
-                UpdateTemperature(TemperatureChangeMode.Instant);
+                UpdateTemperature();
 
                 // Ending condition
                 if ((CyclePreviewTime - DateTime.Now).TotalHours >= 24)
@@ -163,7 +167,7 @@ namespace LightBulb.Services
                     nameof(Settings.MaxTemperature), nameof(Settings.TemperatureSwitchDuration),
                     nameof(Settings.SunriseTime), nameof(Settings.SunsetTime)))
                 {
-                    UpdateTemperature(TemperatureChangeMode.Instant);
+                    UpdateTemperature();
                 }
             };
 
@@ -186,13 +190,13 @@ namespace LightBulb.Services
 
         private void SystemDisplaySettingsChanged(object sender, EventArgs e)
         {
-            UpdateTemperature(TemperatureChangeMode.Smooth);
+            UpdateTemperature();
             UpdateGamma();
         }
 
         private void SystemPowerModeChanged(object sender, PowerModeChangedEventArgs powerModeChangedEventArgs)
         {
-            UpdateTemperature(TemperatureChangeMode.Smooth);
+            UpdateTemperature();
             UpdateGamma();
         }
 
@@ -203,7 +207,7 @@ namespace LightBulb.Services
             Debug.WriteLine($"Gamma updated (to {intens})", GetType().Name);
         }
 
-        private void UpdateTemperature(TemperatureChangeMode mode)
+        private void UpdateTemperature(bool forceInstant = false)
         {
             // 24 hr cycle preview mode
             if (IsPreviewModeEnabled && IsCyclePreviewRunning)
@@ -226,7 +230,7 @@ namespace LightBulb.Services
                 int diff = Math.Abs(newTemp - Temperature);
 
                 // Smooth transition
-                if (mode == TemperatureChangeMode.Smooth &&
+                if (!forceInstant &&
                     Settings.IsTemperatureSmoothingEnabled &&
                     diff >= Settings.MinSmoothingDeltaTemperature)
                 {

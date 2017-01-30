@@ -111,7 +111,6 @@
     <Compile Include="Models\GeoInfo.cs" />
     <Compile Include="Models\Rect.cs" />
     <Compile Include="Models\SolarInfo.cs" />
-    <Compile Include="Models\TemperatureChangeMode.cs" />
     <Compile Include="Services\GeoSyncService.cs" />
     <Compile Include="Services\Helpers\SyncedTimer.cs" />
     <Compile Include="Services\GammaService.cs" />

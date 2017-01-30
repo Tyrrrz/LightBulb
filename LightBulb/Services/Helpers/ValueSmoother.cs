@@ -7,9 +7,18 @@ namespace LightBulb.Services.Helpers
     {
         private readonly Timer _timer;
         private Action<double> _setter;
-        private double _current;
         private double _increment;
         private double _final;
+
+        /// <summary>
+        /// Whether a valus is being smoothed right now
+        /// </summary>
+        public bool IsActive => _timer.IsEnabled;
+
+        /// <summary>
+        /// Current value
+        /// </summary>
+        public double Current { get; private set; }
 
         public event EventHandler Finished;
 
@@ -23,12 +32,12 @@ namespace LightBulb.Services.Helpers
         {
             bool isIncreasing = _increment > 0;
 
-            _current += _increment;
-            _current = isIncreasing ? _current.ClampMax(_final) : _current.ClampMin(_final);
-            _setter(_current);
+            Current += _increment;
+            Current = isIncreasing ? Current.ClampMax(_final) : Current.ClampMin(_final);
+            _setter(Current);
 
             // Ending condition
-            if ((isIncreasing && _current >= _final) || (!isIncreasing && _current <= _final))
+            if ((isIncreasing && Current >= _final) || (!isIncreasing && Current <= _final))
             {
                 _timer.IsEnabled = false;
                 Finished?.Invoke(this, EventArgs.Empty);
@@ -50,7 +59,7 @@ namespace LightBulb.Services.Helpers
 
             _timer.IsEnabled = false;
 
-            _current = from;
+            Current = from;
             _final = to;
             _setter = setter;
 
