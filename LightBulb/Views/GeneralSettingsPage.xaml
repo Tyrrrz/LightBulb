@@ -67,8 +67,8 @@
                 LargeChange="30"
                 Maximum="180"
                 Minimum="0"
-                SmallChange="10"
-                TickFrequency="10"
+                SmallChange="5"
+                TickFrequency="5"
                 TickPlacement="BottomRight"
                 Value="{Binding Settings.TemperatureSwitchDurationMinutes}" />
 
