@@ -17,6 +17,8 @@ namespace LightBulb.ViewModels
         private readonly TemperatureService _temperatureService;
         private readonly WindowService _windowService;
 
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable (GC)
+        private readonly SyncedTimer _statusUpdateTimer;
         private readonly Timer _disableTemporarilyTimer;
 
         private bool _isEnabled;
@@ -111,6 +113,13 @@ namespace LightBulb.ViewModels
             };
 
             // Timers
+            _statusUpdateTimer = new SyncedTimer(TimeSpan.FromMinutes(1));
+            _statusUpdateTimer.Tick += (sender, args) =>
+            {
+                UpdateStatusText();
+                UpdateCycleState();
+                UpdateCyclePosition();
+            };
             _disableTemporarilyTimer = new Timer();
             _disableTemporarilyTimer.Tick += (sender, args) =>
             {
@@ -148,6 +157,7 @@ namespace LightBulb.ViewModels
             });
 
             // Init
+            _statusUpdateTimer.IsEnabled = true;
             IsEnabled = true;
         }
 
