@@ -16,13 +16,12 @@ namespace LightBulb
 
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            // OS-specific
-            SimpleIoc.Default.Register<IGammaService, WindowsGammaService>(true);
-            SimpleIoc.Default.Register<IWindowService, WindowsWindowService>(true);
-
-            // Neutral
-            SimpleIoc.Default.Register<TemperatureService>(true);
-            SimpleIoc.Default.Register<GeoSyncService>(true);
+            // Services
+            SimpleIoc.Default.Register<ISettingsService, FileSettingsService>();
+            SimpleIoc.Default.Register<IGammaService, WindowsGammaService>();
+            SimpleIoc.Default.Register<IWindowService, WindowsWindowService>();
+            SimpleIoc.Default.Register<ITemperatureService, DefaultTemperatureService>();
+            SimpleIoc.Default.Register<IGeoService, WebGeoService>();
 
             // View models
             SimpleIoc.Default.Register<MainViewModel>();
@@ -36,10 +35,12 @@ namespace LightBulb
 
         public static void Cleanup()
         {
+            (Resolve<ISettingsService>() as IDisposable)?.Dispose();
             (Resolve<IGammaService>() as IDisposable)?.Dispose();
             (Resolve<IWindowService>() as IDisposable)?.Dispose();
-            Resolve<TemperatureService>().Dispose();
-            Resolve<GeoSyncService>().Dispose();
+            (Resolve<ITemperatureService>() as IDisposable)?.Dispose();
+            (Resolve<IGeoService>() as IDisposable)?.Dispose();
+
             Resolve<MainViewModel>().Dispose();
         }
 

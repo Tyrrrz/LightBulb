@@ -1,25 +1,27 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Threading;
 using LightBulb.Models;
-using LightBulb.Services;
 using LightBulb.Services.Helpers;
 using LightBulb.Services.Interfaces;
+using Tyrrrz.Extensions;
 using Tyrrrz.WpfExtensions;
 
 namespace LightBulb.ViewModels
 {
     public class MainViewModel : ViewModelBase, IDisposable
     {
-        private readonly TemperatureService _temperatureService;
+        private readonly ITemperatureService _temperatureService;
         private readonly IWindowService _windowService;
+        private readonly IGeoService _geoService;
 
-        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable (GC)
         private readonly SyncedTimer _statusUpdateTimer;
+        private readonly SyncedTimer _geoSyncTimer;
         private readonly Timer _disableTemporarilyTimer;
 
         private bool _isEnabled;
@@ -28,7 +30,7 @@ namespace LightBulb.ViewModels
         private CycleState _cycleState;
         private double _cyclePosition;
 
-        public Settings Settings => Settings.Default;
+        public ISettingsService SettingsService { get; }
         public Version Version => Assembly.GetExecutingAssembly().GetName().Version;
 
         /// <summary>
@@ -95,12 +97,16 @@ namespace LightBulb.ViewModels
         public RelayCommand<double> DisableTemporarilyCommand { get; }
 
         public MainViewModel(
-            TemperatureService temperatureService,
-            IWindowService windowService)
+            ISettingsService settingsService,
+            ITemperatureService temperatureService,
+            IWindowService windowService,
+            IGeoService geoService)
         {
             // Services
+            SettingsService = settingsService;
             _temperatureService = temperatureService;
             _windowService = windowService;
+            _geoService = geoService;
 
             _temperatureService.Updated += (sender, args) =>
             {
@@ -121,6 +127,10 @@ namespace LightBulb.ViewModels
                 UpdateCycleState();
                 UpdateCyclePosition();
             };
+
+            _geoSyncTimer = new SyncedTimer();
+            _geoSyncTimer.Tick += async (sender, args) => await SynchronizeSolarSettingsAsync();
+
             _disableTemporarilyTimer = new Timer();
             _disableTemporarilyTimer.Tick += (sender, args) =>
             {
@@ -157,14 +167,31 @@ namespace LightBulb.ViewModels
                 _disableTemporarilyTimer.IsEnabled = true;
             });
 
+            // Settings
+            SettingsService.PropertyChanged += (sender, args) =>
+            {
+                UpdateConfiguration();
+
+                if (args.PropertyName == nameof(SettingsService.IsInternetTimeSyncEnabled))
+                    SynchronizeSolarSettingsAsync().Forget();
+            };
+            UpdateConfiguration();
+
             // Init
+            SynchronizeSolarSettingsAsync().Forget();
             _statusUpdateTimer.IsEnabled = true;
             IsEnabled = true;
         }
 
+        private void UpdateConfiguration()
+        {
+            _geoSyncTimer.Interval = SettingsService.InternetSyncInterval;
+            _geoSyncTimer.IsEnabled = SettingsService.IsInternetTimeSyncEnabled;
+        }
+
         private void UpdateBlock()
         {
-            IsBlocked = Settings.IsFullscreenBlocking && _windowService.IsForegroundFullScreen;
+            IsBlocked = SettingsService.IsFullscreenBlocking && _windowService.IsForegroundFullScreen;
 
             Debug.WriteLine($"Updated block status (to {IsBlocked})", GetType().Name);
         }
@@ -208,11 +235,11 @@ namespace LightBulb.ViewModels
             }
             else
             {
-                if (_temperatureService.Temperature >= Settings.MaxTemperature)
+                if (_temperatureService.Temperature >= SettingsService.MaxTemperature)
                 {
                     CycleState = CycleState.Day;
                 }
-                else if (_temperatureService.Temperature <= Settings.MinTemperature)
+                else if (_temperatureService.Temperature <= SettingsService.MinTemperature)
                 {
                     CycleState = CycleState.Night;
                 }
@@ -247,9 +274,32 @@ namespace LightBulb.ViewModels
             }
         }
 
+        private async Task SynchronizeSolarSettingsAsync()
+        {
+            if (!SettingsService.IsInternetTimeSyncEnabled) return;
+
+            Debug.WriteLine("Geosync start", GetType().Name);
+
+            var geoInfo = await _geoService.GetGeoInfoAsync();
+            if (geoInfo == null) return;
+            SettingsService.GeoInfo = geoInfo;
+
+            var solarInfo = await _geoService.GetSolarInfoAsync(geoInfo);
+            if (solarInfo == null) return;
+
+            if (SettingsService.IsInternetTimeSyncEnabled)
+            {
+                SettingsService.SunriseTime = solarInfo.Sunrise.TimeOfDay;
+                SettingsService.SunsetTime = solarInfo.Sunset.TimeOfDay;
+            }
+
+            Debug.WriteLine("Geosync end", GetType().Name);
+        }
+
         public void Dispose()
         {
             _statusUpdateTimer.Dispose();
+            _geoSyncTimer.Dispose();
             _disableTemporarilyTimer.Dispose();
         }
     }

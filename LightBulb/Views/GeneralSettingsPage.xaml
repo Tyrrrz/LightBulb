@@ -22,7 +22,7 @@
         <!--  Day-time temperature  -->
         <TextBlock Margin="5" ToolTip="Color temperature during day-time (between sunrise and sunset)">
             <Run Text="Day-time color temperature:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.MaxTemperature, Mode=OneWay}" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="K" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.MaxTemperature, Mode=OneWay}" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="K" />
         </TextBlock>
         <Slider x:Name="MaxTempSlider"
                 Margin="5,0,5,5"
@@ -36,12 +36,12 @@
                 TickFrequency="100"
                 TickPlacement="BottomRight"
                 ValueChanged="MaxTempSlider_OnValueChanged"
-                Value="{Binding Settings.MaxTemperature}" />
+                Value="{Binding SettingsService.MaxTemperature}" />
 
         <!--  Night-time temperature  -->
         <TextBlock Margin="5" ToolTip="Color temperature during night-time (before sunrise and after sunset)">
             <Run Text="Night-time color temperature:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.MinTemperature, Mode=OneWay}" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="K" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.MinTemperature, Mode=OneWay}" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="K" />
         </TextBlock>
         <Slider x:Name="MinTempSlider"
                 Margin="5,0,5,5"
@@ -55,12 +55,12 @@
                 TickFrequency="100"
                 TickPlacement="BottomRight"
                 ValueChanged="MinTempSlider_OnValueChanged"
-                Value="{Binding Settings.MinTemperature}" />
+                Value="{Binding SettingsService.MinTemperature}" />
 
         <!--  Temperature switch duration  -->
         <TextBlock Margin="5" ToolTip="How long does it take to switch between day and night temperatures">
             <Run Text="Transition duration:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.TemperatureSwitchDuration, Mode=OneWay}" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.TemperatureTransitionDuration, Mode=OneWay}" />
         </TextBlock>
         <Slider Margin="5,0,5,5"
                 IsSnapToTickEnabled="True"

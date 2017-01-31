@@ -1,14 +1,15 @@
 ﻿using System;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Threading;
-using LightBulb.Services;
+using LightBulb.Services.Interfaces;
 
 namespace LightBulb.ViewModels
 {
     public class GeneralSettingsViewModel : ViewModelBase
     {
-        private readonly TemperatureService _temperatureService;
+        private readonly ITemperatureService _temperatureService;
+
+        public ISettingsService SettingsService { get; }
 
         /// <summary>
         /// Enables or disables the preview mode
@@ -24,24 +25,18 @@ namespace LightBulb.ViewModels
         /// </summary>
         public double TemperatureSwitchDurationMinutes
         {
-            get { return Settings.TemperatureSwitchDuration.TotalMinutes; }
-            set { Settings.TemperatureSwitchDuration = TimeSpan.FromMinutes(value); }
+            get { return SettingsService.TemperatureTransitionDuration.TotalMinutes; }
+            set { SettingsService.TemperatureTransitionDuration = TimeSpan.FromMinutes(value); }
         }
-
-        public Settings Settings => Settings.Default;
 
         public RelayCommand StartCyclePreviewCommand { get; }
         public RelayCommand<ushort> RequestPreviewTemperatureCommand { get; }
 
-        public GeneralSettingsViewModel(TemperatureService temperatureService)
+        public GeneralSettingsViewModel(ITemperatureService temperatureService, ISettingsService settingsService)
         {
             // Services
+            SettingsService = settingsService;
             _temperatureService = temperatureService;
-
-            _temperatureService.CyclePreviewEnded += (sender, args) =>
-            {
-                DispatcherHelper.CheckBeginInvokeOnUI(() => StartCyclePreviewCommand.RaiseCanExecuteChanged());
-            };
 
             // Commands
             RequestPreviewTemperatureCommand = new RelayCommand<ushort>(RequestPreviewTemperature);
@@ -49,9 +44,9 @@ namespace LightBulb.ViewModels
                 () => !_temperatureService.IsCyclePreviewRunning);
 
             // Settings
-            Settings.PropertyChanged += (sender, args) =>
+            SettingsService.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == nameof(Settings.TemperatureSwitchDuration))
+                if (args.PropertyName == nameof(SettingsService.TemperatureTransitionDuration))
                     RaisePropertyChanged(() => TemperatureSwitchDurationMinutes);
             };
         }
@@ -63,7 +58,7 @@ namespace LightBulb.ViewModels
 
         private void StartCyclePreview()
         {
-            _temperatureService.CyclePreviewStart();
+            _temperatureService.StartCyclePreview();
         }
     }
 }

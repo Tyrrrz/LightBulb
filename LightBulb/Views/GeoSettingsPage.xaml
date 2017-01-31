@@ -21,10 +21,10 @@
         <!--  Sunrise time temperature  -->
         <TextBlock Margin="5" ToolTip="When the sun rises">
             <Run Text="Sunrise time:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.SunriseTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.SunriseTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
         </TextBlock>
         <Slider Margin="5,0,5,5"
-                IsEnabled="{Binding Settings.IsInternetTimeSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
+                IsEnabled="{Binding SettingsService.IsInternetTimeSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
                 IsSnapToTickEnabled="True"
                 LargeChange="0.5"
                 Maximum="11"
@@ -37,10 +37,10 @@
         <!--  Sunset time temperature  -->
         <TextBlock Margin="5" ToolTip="When the sun sets">
             <Run Text="Sunset time:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.SunsetTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.SunsetTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
         </TextBlock>
         <Slider Margin="5,0,5,5"
-                IsEnabled="{Binding Settings.IsInternetTimeSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
+                IsEnabled="{Binding SettingsService.IsInternetTimeSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
                 IsSnapToTickEnabled="True"
                 LargeChange="0.5"
                 Maximum="22"
@@ -66,7 +66,7 @@
                           Margin="5"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Center"
-                          IsChecked="{Binding Settings.IsInternetTimeSyncEnabled}" />
+                          IsChecked="{Binding SettingsService.IsInternetTimeSyncEnabled}" />
         </Grid>
 
         <!--  Current location  -->
@@ -82,7 +82,7 @@
                    Height="16"
                    Margin="5,0,5,5"
                    VerticalAlignment="Center"
-                   Source="{Binding Settings.GeoInfo.CountryFlag, IsAsync=True}"
+                   Source="{Binding SettingsService.GeoInfo.CountryFlag, IsAsync=True}"
                    Visibility="{Binding GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}" />
 
             <!--  Geoinfo is set  -->
@@ -90,12 +90,12 @@
                        VerticalAlignment="Top"
                        TextWrapping="Wrap"
                        Visibility="{Binding GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}">
-                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.City, Mode=OneWay, TargetNullValue=???}" />
+                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.GeoInfo.City, Mode=OneWay, TargetNullValue=???}" />
                 <Run Text="/" />
-                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.Country, Mode=OneWay, TargetNullValue=???}" />
-                <Run Text="(" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.Latitude, Mode=OneWay, TargetNullValue=xx}" />
+                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.GeoInfo.Country, Mode=OneWay, TargetNullValue=???}" />
+                <Run Text="(" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.GeoInfo.Latitude, Mode=OneWay, TargetNullValue=xx}" />
                 <Run Text="lat" />
-                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Settings.GeoInfo.Longitude, Mode=OneWay, TargetNullValue=xx}" />
+                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.GeoInfo.Longitude, Mode=OneWay, TargetNullValue=xx}" />
                 <Run Text="lng" /><Run Text=")" />
             </TextBlock>
             <!--  Geoinfo is not set  -->

@@ -61,7 +61,7 @@ namespace LightBulb.Services.Abstract
             else
             {
                 _hookHandlerDic.Add(handle, handler);
-                Debug.WriteLine($"Registered WinEventHook for {eventId}", GetType().Name);
+                //Debug.WriteLine($"Registered WinEventHook for {eventId}", GetType().Name);
             }
             return handle;
         }
@@ -74,7 +74,7 @@ namespace LightBulb.Services.Abstract
             }
             else
             {
-                Debug.WriteLine("Unregistered some WinEventHook", GetType().Name);
+                //Debug.WriteLine("Unregistered some WinEventHook", GetType().Name);
             }
             _hookHandlerDic.Remove(handle);
         }

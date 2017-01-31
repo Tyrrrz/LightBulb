@@ -34,7 +34,7 @@
                           Margin="5"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Center"
-                          IsChecked="{Binding Settings.IsGammaPollingEnabled}" />
+                          IsChecked="{Binding SettingsService.IsGammaPollingEnabled}" />
         </Grid>
 
         <!--  Smoothing enabled/disabled  -->
@@ -53,7 +53,7 @@
                           Margin="5"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Center"
-                          IsChecked="{Binding Settings.IsTemperatureSmoothingEnabled}" />
+                          IsChecked="{Binding SettingsService.IsTemperatureSmoothingEnabled}" />
         </Grid>
 
         <!--  Full screen block enabled/disabled  -->
@@ -72,7 +72,7 @@
                           Margin="5"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Center"
-                          IsChecked="{Binding Settings.IsFullscreenBlocking}" />
+                          IsChecked="{Binding SettingsService.IsFullscreenBlocking}" />
         </Grid>
     </StackPanel>
 </Page>

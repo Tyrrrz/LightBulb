@@ -2,6 +2,7 @@
 using System.Windows;
 using GalaSoft.MvvmLight.Threading;
 using Microsoft.Win32;
+using Tyrrrz.WpfExtensions;
 
 namespace LightBulb
 {
@@ -13,7 +14,8 @@ namespace LightBulb
         {
             DispatcherHelper.Initialize();
 
-            SystemEvents.SessionEnding += (sender, args) => Settings.Default.TrySave();
+            // When windows session is ending - close application to execute cleanups and dumps
+            SystemEvents.SessionEnding += (o, args) => Current.ShutdownSafe();
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)
@@ -28,13 +30,10 @@ namespace LightBulb
                 return;
             }
             _identityMutex = new Mutex(true, mutexName);
-
-            Settings.Default.TryLoad();
         }
 
         private void App_OnExit(object sender, ExitEventArgs exitEventArgs)
         {
-            Settings.Default.TrySave();
             Locator.Cleanup();
         }
     }

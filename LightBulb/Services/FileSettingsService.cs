@@ -1,13 +1,12 @@
 ﻿using System;
 using LightBulb.Models;
+using LightBulb.Services.Interfaces;
 using Tyrrrz.Settings;
 
-namespace LightBulb
+namespace LightBulb.Services
 {
-    public class Settings : SettingsManager
+    public sealed class FileSettingsService : SettingsManager, ISettingsService, IDisposable
     {
-        public static Settings Default { get; } = new Settings();
-
         private bool _isGammaPollingEnabled = true;
         private bool _isTemperatureSmoothingEnabled = true;
         private bool _isFullscreenBlocking;
@@ -17,7 +16,7 @@ namespace LightBulb
         private ushort _maxTemperature = 6600;
         private ushort _minTemperature = 3900;
         private TimeSpan _maximumTemperatureSmoothingDuration = TimeSpan.FromSeconds(3);
-        private TimeSpan _temperatureSwitchDuration = TimeSpan.FromMinutes(90);
+        private TimeSpan _temperatureTransitionDuration = TimeSpan.FromMinutes(90);
         private TimeSpan _temperatureUpdateInterval = TimeSpan.FromMinutes(1);
         private TimeSpan _gammaPollingInterval = TimeSpan.FromSeconds(5);
         private TimeSpan _internetSyncInterval = TimeSpan.FromHours(6);
@@ -91,10 +90,10 @@ namespace LightBulb
             set { Set(ref _maximumTemperatureSmoothingDuration, value); }
         }
 
-        public TimeSpan TemperatureSwitchDuration
+        public TimeSpan TemperatureTransitionDuration
         {
-            get { return _temperatureSwitchDuration; }
-            set { Set(ref _temperatureSwitchDuration, value); }
+            get { return _temperatureTransitionDuration; }
+            set { Set(ref _temperatureTransitionDuration, value); }
         }
 
         public TimeSpan TemperatureUpdateInterval
@@ -143,6 +142,17 @@ namespace LightBulb
         {
             get { return _geoInfo; }
             set { Set(ref _geoInfo, value); }
+        }
+
+        public FileSettingsService()
+            : base(new Configuration {SubDirectoryPath = "LightBulb", FileName = "Configuration.dat"})
+        {
+            TryLoad();
+        }
+
+        public void Dispose()
+        {
+            TrySave();
         }
     }
 }

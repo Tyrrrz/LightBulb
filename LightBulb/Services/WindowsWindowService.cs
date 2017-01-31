@@ -30,7 +30,7 @@ namespace LightBulb.Services
         private bool _isForegroundFullScreen;
         private IntPtr _lastForegroundWindow;
 
-        private bool AreEventHooksEnabled
+        public bool AreEventHooksEnabled
         {
             get
             {
@@ -60,27 +60,14 @@ namespace LightBulb.Services
             }
         }
 
-        public Settings Settings => Settings.Default;
-
         /// <inheritdoc />
         public event EventHandler FullScreenStateChanged;
 
         public WindowsWindowService()
         {
-            // Settings
-            Settings.PropertyChanged += (sender, args) =>
-            {
-                UpdateConfiguration();
-            };
-            UpdateConfiguration();
-
             // Init
+            InstallHooks();
             IsForegroundFullScreen = IsWindowFullScreen(GetForegroundWindow());
-        }
-
-        private void UpdateConfiguration()
-        {
-            AreEventHooksEnabled = Settings.IsFullscreenBlocking;
         }
 
         private void InstallHooks()

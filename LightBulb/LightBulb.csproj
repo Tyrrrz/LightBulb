@@ -88,8 +88,8 @@
       <HintPath>..\packages\Tyrrrz.Extensions.1.0.0\lib\net45\Tyrrrz.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Tyrrrz.Settings, Version=1.0.6233.40854, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tyrrrz.Settings.1.0.1\lib\net45\Tyrrrz.Settings.dll</HintPath>
+    <Reference Include="Tyrrrz.Settings, Version=1.0.6240.37234, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tyrrrz.Settings.1.0.2\lib\net45\Tyrrrz.Settings.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Tyrrrz.WpfExtensions, Version=1.0.6232.40740, Culture=neutral, processorArchitecture=MSIL">
@@ -111,8 +111,11 @@
     <Compile Include="Models\GeoInfo.cs" />
     <Compile Include="Models\Rect.cs" />
     <Compile Include="Models\SolarInfo.cs" />
-    <Compile Include="Services\GeoSyncService.cs" />
+    <Compile Include="Services\WebGeoService.cs" />
     <Compile Include="Services\Helpers\SyncedTimer.cs" />
+    <Compile Include="Services\Interfaces\IGeoService.cs" />
+    <Compile Include="Services\Interfaces\ISettingsService.cs" />
+    <Compile Include="Services\Interfaces\ITemperatureService.cs" />
     <Compile Include="Services\Interfaces\IWindowService.cs" />
     <Compile Include="Services\WindowsGammaService.cs" />
     <Page Include="Views\GeneralSettingsPage.xaml">
@@ -140,9 +143,9 @@
     <Compile Include="Services\Abstract\WebApiServiceBase.cs" />
     <Compile Include="Services\Abstract\WinApiServiceBase.cs" />
     <Compile Include="Services\Interfaces\IGammaService.cs" />
-    <Compile Include="Services\TemperatureService.cs" />
+    <Compile Include="Services\DefaultTemperatureService.cs" />
     <Compile Include="Services\WindowsWindowService.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="Services\FileSettingsService.cs" />
     <Compile Include="ViewModels\AdvancedSettingsViewModel.cs" />
     <Compile Include="ViewModels\GeneralSettingsViewModel.cs" />
     <Compile Include="ViewModels\GeoSettingsViewModel.cs" />
