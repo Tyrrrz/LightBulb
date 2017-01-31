@@ -4,10 +4,11 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using LightBulb.Models;
 using LightBulb.Services.Abstract;
+using LightBulb.Services.Interfaces;
 
 namespace LightBulb.Services
 {
-    public class WindowService : WinApiServiceBase, IDisposable
+    public class WindowsWindowService : WinApiServiceBase, IWindowService, IDisposable
     {
         #region WinAPI
         private delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType,
@@ -62,9 +63,7 @@ namespace LightBulb.Services
             }
         }
 
-        /// <summary>
-        /// Gets whether the foreground window is fullscreen
-        /// </summary>
+        /// <inheritdoc />
         public bool IsForegroundFullScreen
         {
             get { return _isForegroundFullScreen; }
@@ -79,12 +78,10 @@ namespace LightBulb.Services
 
         public Settings Settings => Settings.Default;
 
-        /// <summary>
-        /// Triggers when the foreground window has entered (or exited from) full screen mode
-        /// </summary>
+        /// <inheritdoc />
         public event EventHandler FullScreenStateChanged;
 
-        public WindowService()
+        public WindowsWindowService()
         {
             // Settings
             Settings.PropertyChanged += (sender, args) =>

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using LightBulb.Models;
 using LightBulb.Services.Helpers;
+using LightBulb.Services.Interfaces;
 using Microsoft.Win32;
 using Tyrrrz.Extensions;
 
@@ -9,7 +10,7 @@ namespace LightBulb.Services
 {
     public partial class TemperatureService : IDisposable
     {
-        private readonly GammaService _gammaService;
+        private readonly IGammaService _gammaService;
 
         private readonly Timer _pollingTimer;
         private readonly SyncedTimer _temperatureUpdateTimer;
@@ -117,7 +118,7 @@ namespace LightBulb.Services
         /// </summary>
         public event EventHandler CyclePreviewEnded;
 
-        public TemperatureService(GammaService gammaService)
+        public TemperatureService(IGammaService gammaService)
         {
             _gammaService = gammaService;
 

@@ -1,6 +1,8 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using LightBulb.Services;
+using LightBulb.Services.Interfaces;
 using LightBulb.ViewModels;
 using Microsoft.Practices.ServiceLocation;
 
@@ -14,11 +16,15 @@ namespace LightBulb
 
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            SimpleIoc.Default.Register<GammaService>(true);
-            SimpleIoc.Default.Register<WindowService>(true);
+            // OS-specific
+            SimpleIoc.Default.Register<IGammaService, WindowsGammaService>(true);
+            SimpleIoc.Default.Register<IWindowService, WindowsWindowService>(true);
+
+            // Neutral
             SimpleIoc.Default.Register<TemperatureService>(true);
             SimpleIoc.Default.Register<GeoSyncService>(true);
 
+            // View models
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<GeneralSettingsViewModel>();
             SimpleIoc.Default.Register<GeoSettingsViewModel>();
@@ -30,8 +36,8 @@ namespace LightBulb
 
         public static void Cleanup()
         {
-            Resolve<GammaService>().RestoreDefault();
-            Resolve<WindowService>().Dispose();
+            (Resolve<IGammaService>() as IDisposable)?.Dispose();
+            (Resolve<IWindowService>() as IDisposable)?.Dispose();
             Resolve<TemperatureService>().Dispose();
             Resolve<GeoSyncService>().Dispose();
             Resolve<MainViewModel>().Dispose();

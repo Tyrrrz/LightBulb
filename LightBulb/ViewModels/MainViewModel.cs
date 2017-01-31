@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight.Threading;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.Services.Helpers;
+using LightBulb.Services.Interfaces;
 using Tyrrrz.WpfExtensions;
 
 namespace LightBulb.ViewModels
@@ -15,7 +16,7 @@ namespace LightBulb.ViewModels
     public class MainViewModel : ViewModelBase, IDisposable
     {
         private readonly TemperatureService _temperatureService;
-        private readonly WindowService _windowService;
+        private readonly IWindowService _windowService;
 
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable (GC)
         private readonly SyncedTimer _statusUpdateTimer;
@@ -95,7 +96,7 @@ namespace LightBulb.ViewModels
 
         public MainViewModel(
             TemperatureService temperatureService,
-            WindowService windowService)
+            IWindowService windowService)
         {
             // Services
             _temperatureService = temperatureService;
@@ -248,6 +249,7 @@ namespace LightBulb.ViewModels
 
         public void Dispose()
         {
+            _statusUpdateTimer.Dispose();
             _disableTemporarilyTimer.Dispose();
         }
     }
