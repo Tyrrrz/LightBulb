@@ -11,10 +11,6 @@ namespace LightBulb.Services
     public class WindowsWindowService : WinApiServiceBase, IWindowService, IDisposable
     {
         #region WinAPI
-        private delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType,
-            IntPtr hwnd, int idObject, int idChild, uint dwEventThread,
-            uint dwmsEventTime);
-
         [DllImport("user32.dll", EntryPoint = "GetForegroundWindow", SetLastError = true)]
         private static extern IntPtr GetForegroundWindowInternal();
 
@@ -26,20 +22,8 @@ namespace LightBulb.Services
 
         [DllImport("user32.dll", EntryPoint = "GetWindowRect", SetLastError = true)]
         private static extern int GetWindowRectInternal(IntPtr hWindow, out Rect rect);
-
-        [DllImport("user32.dll", EntryPoint = "SetWinEventHook", SetLastError = true)]
-        private static extern IntPtr SetWinEventHookInternal(uint eventMin, uint eventMax,
-            IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc,
-            uint idProcess, uint idThread, uint dwFlags);
-
-        [DllImport("user32.dll", EntryPoint = "UnhookWinEvent", SetLastError = true)]
-        private static extern bool UnhookWinEventInternal(IntPtr hWinEventHook);
         #endregion
 
-        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable (prevent garbage collection)
-        private WinEventDelegate _foregroundWindowChangedEventHandler;
-        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable (prevent garbage collection)
-        private WinEventDelegate _foregroundWindowLocationChangedEventHandler;
         private IntPtr _foregroundWindowChangedHook;
         private IntPtr _foregroundWindowLocationChangedHook;
 
@@ -103,7 +87,15 @@ namespace LightBulb.Services
         {
             if (AreEventHooksEnabled) return;
 
-            _foregroundWindowChangedEventHandler =
+            var foregroundWindowLocationChangedEventHandler = new WinEventDelegate(
+                (hook, type, hwnd, idObject, child, thread, time) =>
+                {
+                    if (idObject != 0) return; // only events from windows
+                    if (hwnd != _lastForegroundWindow) return; // skip non-foreground windows
+
+                    IsForegroundFullScreen = IsWindowFullScreen(hwnd);
+                });
+            var foregroundWindowChangedEventHandler = new WinEventDelegate(
                 (hook, type, hwnd, idObject, child, thread, time) =>
                 {
                     if (idObject != 0) return; // only events from windows
@@ -113,21 +105,12 @@ namespace LightBulb.Services
 
                     // Hook location changed event for foreground window
                     if (_foregroundWindowLocationChangedHook != IntPtr.Zero)
-                        UnhookWinEventInternal(_foregroundWindowLocationChangedHook);
-                    _foregroundWindowLocationChangedHook = SetWinEventHookInternal(0x800B, 0x800B, IntPtr.Zero,
-                        _foregroundWindowLocationChangedEventHandler, 0, thread, 0);
-                };
-            _foregroundWindowLocationChangedEventHandler =
-                (hook, type, hwnd, idObject, child, thread, time) =>
-                {
-                    if (idObject != 0) return; // only events from windows
-                    if (hwnd != _lastForegroundWindow) return; // skip non-foreground windows
+                        UnregisterWinEvent(_foregroundWindowLocationChangedHook);
+                    _foregroundWindowLocationChangedHook = RegisterWinEvent(0x800B,
+                        foregroundWindowLocationChangedEventHandler, 0, thread);
+                });
 
-                    IsForegroundFullScreen = IsWindowFullScreen(hwnd);
-                };
-
-            _foregroundWindowChangedHook = SetWinEventHookInternal(0x0003, 0x0003, IntPtr.Zero,
-                _foregroundWindowChangedEventHandler, 0, 0, 0);
+            _foregroundWindowChangedHook = RegisterWinEvent(0x0003, foregroundWindowChangedEventHandler);
 
             Debug.WriteLine("Installed WinAPI hooks", GetType().Name);
         }
@@ -136,8 +119,8 @@ namespace LightBulb.Services
         {
             if (!AreEventHooksEnabled) return;
 
-            UnhookWinEventInternal(_foregroundWindowChangedHook);
-            UnhookWinEventInternal(_foregroundWindowLocationChangedHook);
+            UnregisterWinEvent(_foregroundWindowChangedHook);
+            UnregisterWinEvent(_foregroundWindowLocationChangedHook);
 
             Debug.WriteLine("Uninstalled WinAPI hooks", GetType().Name);
         }
