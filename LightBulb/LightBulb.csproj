@@ -118,15 +118,15 @@
     <Compile Include="Services\Interfaces\ITemperatureService.cs" />
     <Compile Include="Services\Interfaces\IWindowService.cs" />
     <Compile Include="Services\WindowsGammaService.cs" />
-    <Page Include="Views\GeneralSettingsPage.xaml">
+    <Page Include="Views\GeneralSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AdvancedSettingsPage.xaml">
+    <Page Include="Views\AdvancedSettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\GeoSettingsPage.xaml">
+    <Page Include="Views\GeoSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -150,14 +150,14 @@
     <Compile Include="ViewModels\GeneralSettingsViewModel.cs" />
     <Compile Include="ViewModels\GeoSettingsViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="Views\GeneralSettingsPage.xaml.cs">
-      <DependentUpon>GeneralSettingsPage.xaml</DependentUpon>
+    <Compile Include="Views\GeneralSettingsView.xaml.cs">
+      <DependentUpon>GeneralSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AdvancedSettingsPage.xaml.cs">
-      <DependentUpon>AdvancedSettingsPage.xaml</DependentUpon>
+    <Compile Include="Views\AdvancedSettingsView.xaml.cs">
+      <DependentUpon>AdvancedSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GeoSettingsPage.xaml.cs">
-      <DependentUpon>GeoSettingsPage.xaml</DependentUpon>
+    <Compile Include="Views\GeoSettingsView.xaml.cs">
+      <DependentUpon>GeoSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

@@ -6,9 +6,17 @@ namespace LightBulb.Views
 {
     public partial class MainWindow
     {
+        private readonly GeneralSettingsView _generalSettingsView;
+        private readonly GeoSettingsView _geoSettingsView;
+        private readonly AdvancedSettingsView _advancedSettingsView;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            _generalSettingsView = new GeneralSettingsView();
+            _geoSettingsView = new GeoSettingsView();
+            _advancedSettingsView = new AdvancedSettingsView();
         }
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -19,6 +27,7 @@ namespace LightBulb.Views
             Top = SystemParameters.WorkArea.Height - Height;
 
             NavigateGeneralSettingsButton.IsEnabled = false;
+            ViewPresenter.Content = _generalSettingsView;
         }
 
         private void MainWindow_OnDeactivated(object sender, EventArgs e)
@@ -34,16 +43,16 @@ namespace LightBulb.Views
 
         private void NavigateGeneralSettingsButton_OnClick(object sender, RoutedEventArgs e)
         {
-            ContentFrame.Navigate(new GeneralSettingsPage());
+            ViewPresenter.Content = _generalSettingsView;
 
             NavigateGeneralSettingsButton.IsEnabled = false;
             NavigateGeolocationSettingsButton.IsEnabled = true;
             NavigateAdvancedSettingsButton.IsEnabled = true;
         }
 
-        private void NavigateGeolocationSettingsButton_OnClick(object sender, RoutedEventArgs e)
+        private void NavigateGeoSettingsButton_OnClick(object sender, RoutedEventArgs e)
         {
-            ContentFrame.Navigate(new GeoSettingsPage());
+            ViewPresenter.Content = _geoSettingsView;
 
             NavigateGeneralSettingsButton.IsEnabled = true;
             NavigateGeolocationSettingsButton.IsEnabled = false;
@@ -52,7 +61,7 @@ namespace LightBulb.Views
 
         private void NavigateAdvancedSettingsButton_OnClick(object sender, RoutedEventArgs e)
         {
-            ContentFrame.Navigate(new AdvancedSettingsPage());
+            ViewPresenter.Content = _advancedSettingsView;
 
             NavigateGeneralSettingsButton.IsEnabled = true;
             NavigateGeolocationSettingsButton.IsEnabled = true;

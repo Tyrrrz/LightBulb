@@ -4,14 +4,14 @@ using LightBulb.ViewModels;
 
 namespace LightBulb.Views
 {
-    public partial class GeneralSettingsPage
+    public partial class GeneralSettingsView
     {
         public GeneralSettingsViewModel ViewModel => (GeneralSettingsViewModel) DataContext;
 
         private bool _maxTempSliderMouseDown;
         private bool _minTempSliderMouseDown;
 
-        public GeneralSettingsPage()
+        public GeneralSettingsView()
         {
             InitializeComponent();
         }

@@ -204,7 +204,7 @@
                                 Padding="4"
                                 Background="Transparent"
                                 BorderThickness="0"
-                                Click="NavigateGeolocationSettingsButton_OnClick"
+                                Click="NavigateGeoSettingsButton_OnClick"
                                 ToolTip="Geolocation">
                             <materialDesign:PackIcon Kind="Earth" />
                         </Button>
@@ -221,14 +221,13 @@
             </Border>
 
             <!--  Content  -->
-            <Frame x:Name="ContentFrame"
-                   Grid.Row="1"
-                   HorizontalAlignment="Stretch"
-                   VerticalAlignment="Stretch"
-                   Background="{DynamicResource MaterialDesignPaper}"
-                   NavigationUIVisibility="Hidden"
-                   Source="/LightBulb;component/Views/GeneralSettingsPage.xaml"
-                   TextElement.Foreground="{DynamicResource SecondaryTextBrush}" />
+            <Border Grid.Row="1"
+                    Background="{DynamicResource MaterialDesignPaper}"
+                    TextElement.Foreground="{DynamicResource SecondaryTextBrush}">
+                <ContentPresenter x:Name="ViewPresenter"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch" />
+            </Border>
 
             <!--  Status bar  -->
             <Border Grid.Row="2"

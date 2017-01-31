@@ -1,8 +1,8 @@
 ﻿namespace LightBulb.Views
 {
-    public partial class AdvancedSettingsPage
+    public partial class GeoSettingsView
     {
-        public AdvancedSettingsPage()
+        public GeoSettingsView()
         {
             InitializeComponent();
         }
