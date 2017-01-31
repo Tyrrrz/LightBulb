@@ -30,17 +30,20 @@ namespace LightBulb.Services.Helpers
 
         private void Tick()
         {
-            bool isIncreasing = _increment > 0;
-
-            Current += _increment;
-            Current = isIncreasing ? Current.ClampMax(_final) : Current.ClampMin(_final);
-            _setter(Current);
-
-            // Ending condition
-            if ((isIncreasing && Current >= _final) || (!isIncreasing && Current <= _final))
+            lock (_timer)
             {
-                _timer.IsEnabled = false;
-                Finished?.Invoke(this, EventArgs.Empty);
+                bool isIncreasing = _increment > 0;
+
+                Current += _increment;
+                Current = isIncreasing ? Current.ClampMax(_final) : Current.ClampMin(_final);
+                _setter(Current);
+
+                // Ending condition
+                if ((isIncreasing && Current >= _final) || (!isIncreasing && Current <= _final))
+                {
+                    _timer.IsEnabled = false;
+                    Finished?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
 
@@ -49,22 +52,22 @@ namespace LightBulb.Services.Helpers
         /// </summary>
         public void Set(double from, double to, Action<double> setter, TimeSpan duration)
         {
-            if (setter == null)
-                throw new ArgumentNullException(nameof(setter));
-            if (duration <= TimeSpan.Zero)
-            {
-                setter(to);
-                return;
-            }
-
             _timer.IsEnabled = false;
 
-            Current = from;
-            _final = to;
-            _setter = setter;
+            if (setter == null)
+                throw new ArgumentNullException(nameof(setter));
+            if (duration.TotalMilliseconds < _timer.Interval.TotalMilliseconds)
+                duration = _timer.Interval;
 
-            _increment = (to - from)*_timer.Interval.TotalMilliseconds/duration.TotalMilliseconds;
-            _timer.IsEnabled = true;
+            lock (_timer)
+            {
+                Current = from;
+                _final = to;
+                _setter = setter;
+
+                _increment = (to - from)*_timer.Interval.TotalMilliseconds/duration.TotalMilliseconds;
+                _timer.IsEnabled = true;
+            }
         }
 
         /// <summary>

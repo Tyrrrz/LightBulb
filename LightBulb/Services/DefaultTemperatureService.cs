@@ -31,9 +31,10 @@ namespace LightBulb.Services
             private set
             {
                 if (Temperature == value) return;
+                ushort oldTemp = _temperature;
                 _temperature = value;
 
-                Debug.WriteLine($"Updated temperature ({Temperature} -> {value})", GetType().Name);
+                Debug.WriteLine($"Updated temperature ({oldTemp} -> {value})", GetType().Name);
                 UpdateGamma();
 
                 Updated?.Invoke(this, EventArgs.Empty);
