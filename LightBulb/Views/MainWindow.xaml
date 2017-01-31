@@ -151,6 +151,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
@@ -181,8 +182,19 @@
                         <Run Text="v" /><Run Text="{Binding Version, Mode=OneWay}" />
                     </TextBlock>
 
+                    <!--  Version updates  -->
+                    <Button Grid.Column="2"
+                            Padding="4"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Command="{Binding DownloadNewVersionCommand}"
+                            ToolTip="New version available for download"
+                            Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <materialDesign:PackIcon Kind="AlertCircleOutline" />
+                    </Button>
+
                     <!--  Section navigation buttons  -->
-                    <WrapPanel Grid.Column="2"
+                    <WrapPanel Grid.Column="3"
                                Margin="5,0,5,0"
                                HorizontalAlignment="Right"
                                VerticalAlignment="Center"

@@ -19,11 +19,13 @@ namespace LightBulb.ViewModels
         private readonly ITemperatureService _temperatureService;
         private readonly IWindowService _windowService;
         private readonly IGeoService _geoService;
+        private readonly IVersionCheckService _versionCheckService;
 
         private readonly SyncedTimer _statusUpdateTimer;
         private readonly SyncedTimer _geoSyncTimer;
         private readonly Timer _disableTemporarilyTimer;
 
+        private bool _isUpdateAvailable;
         private bool _isEnabled;
         private bool _isBlocked;
         private string _statusText;
@@ -32,6 +34,15 @@ namespace LightBulb.ViewModels
 
         public ISettingsService SettingsService { get; }
         public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+
+        /// <summary>
+        /// Whether a new version of this program is available
+        /// </summary>
+        public bool IsUpdateAvailable
+        {
+            get { return _isUpdateAvailable; }
+            private set { Set(ref _isUpdateAvailable, value); }
+        }
 
         /// <summary>
         /// Enables or disables the program
@@ -95,18 +106,21 @@ namespace LightBulb.ViewModels
         public RelayCommand AboutCommand { get; }
         public RelayCommand ToggleEnabledCommand { get; }
         public RelayCommand<double> DisableTemporarilyCommand { get; }
+        public RelayCommand DownloadNewVersionCommand { get; }
 
         public MainViewModel(
             ISettingsService settingsService,
             ITemperatureService temperatureService,
             IWindowService windowService,
-            IGeoService geoService)
+            IGeoService geoService,
+            IVersionCheckService versionCheckService)
         {
             // Services
             SettingsService = settingsService;
             _temperatureService = temperatureService;
             _windowService = windowService;
             _geoService = geoService;
+            _versionCheckService = versionCheckService;
 
             _temperatureService.Updated += (sender, args) =>
             {
@@ -166,6 +180,10 @@ namespace LightBulb.ViewModels
                 IsEnabled = false;
                 _disableTemporarilyTimer.IsEnabled = true;
             });
+            DownloadNewVersionCommand = new RelayCommand(() =>
+            {
+                Process.Start("https://github.com/Tyrrrz/LightBulb/releases");
+            });
 
             // Settings
             SettingsService.PropertyChanged += (sender, args) =>
@@ -178,6 +196,7 @@ namespace LightBulb.ViewModels
             UpdateConfiguration();
 
             // Init
+            CheckForUpdates().Forget();
             SynchronizeSolarSettingsAsync().Forget();
             _statusUpdateTimer.IsEnabled = true;
             IsEnabled = true;
@@ -272,6 +291,11 @@ namespace LightBulb.ViewModels
             {
                 CyclePosition = DateTime.Now.TimeOfDay.TotalHours/24;
             }
+        }
+
+        private async Task CheckForUpdates()
+        {
+            IsUpdateAvailable = await _versionCheckService.GetUpdateStatusAsync();
         }
 
         private async Task SynchronizeSolarSettingsAsync()

@@ -111,6 +111,8 @@
     <Compile Include="Models\GeoInfo.cs" />
     <Compile Include="Models\Rect.cs" />
     <Compile Include="Models\SolarInfo.cs" />
+    <Compile Include="Services\GithubVersionCheckService.cs" />
+    <Compile Include="Services\Interfaces\IVersionCheckService.cs" />
     <Compile Include="Services\WebGeoService.cs" />
     <Compile Include="Services\Helpers\SyncedTimer.cs" />
     <Compile Include="Services\Interfaces\IGeoService.cs" />

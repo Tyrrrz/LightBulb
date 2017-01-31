@@ -22,6 +22,7 @@ namespace LightBulb
             SimpleIoc.Default.Register<IWindowService, WindowsWindowService>();
             SimpleIoc.Default.Register<ITemperatureService, DefaultTemperatureService>();
             SimpleIoc.Default.Register<IGeoService, WebGeoService>();
+            SimpleIoc.Default.Register<IVersionCheckService, GithubVersionCheckService>();
 
             // View models
             SimpleIoc.Default.Register<MainViewModel>();
@@ -40,6 +41,7 @@ namespace LightBulb
             (Resolve<IWindowService>() as IDisposable)?.Dispose();
             (Resolve<ITemperatureService>() as IDisposable)?.Dispose();
             (Resolve<IGeoService>() as IDisposable)?.Dispose();
+            (Resolve<IVersionCheckService>() as IDisposable)?.Dispose();
 
             Resolve<MainViewModel>().Dispose();
         }

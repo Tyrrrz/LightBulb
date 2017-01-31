@@ -10,6 +10,7 @@ namespace LightBulb.Services
 {
     public class WebGeoService : WebApiServiceBase, IGeoService
     {
+        /// <inheritdoc />
         public async Task<GeoInfo> GetGeoInfoAsync()
         {
             string response = await GetStringAsync("http://freegeoip.net/json");
@@ -24,6 +25,7 @@ namespace LightBulb.Services
             return result;
         }
 
+        /// <inheritdoc />
         public async Task<SolarInfo> GetSolarInfoAsync(GeoInfo geoInfo)
         {
             string response = await GetStringAsync($"http://api.sunrise-sunset.org/json?lat={geoInfo.Latitude}&lng={geoInfo.Longitude}&formatted=0");
