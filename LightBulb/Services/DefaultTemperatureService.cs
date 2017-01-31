@@ -95,6 +95,12 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public event EventHandler Updated;
 
+        /// <inheritdoc />
+        public event EventHandler CyclePreviewStarted;
+
+        /// <inheritdoc />
+        public event EventHandler CyclePreviewEnded;
+
         public DefaultTemperatureService(ISettingsService settingsService, IGammaService gammaService)
         {
             _settingsService = settingsService;
@@ -123,15 +129,20 @@ namespace LightBulb.Services
                 // Ending condition
                 if ((CyclePreviewTime - DateTime.Now).TotalHours >= 24)
                 {
-                    IsPreviewModeEnabled = false;
                     _cyclePreviewTimer.IsEnabled = false;
+                    IsPreviewModeEnabled = false;
                     Debug.WriteLine("Ended cycle preview", GetType().Name);
+                    CyclePreviewEnded?.Invoke(this, EventArgs.Empty);
                 }
             };
 
             // Helpers
             _temperatureSmoother = new ValueSmoother();
             _temperatureSmoother.Finished += (sender, args) => UpdateTemperature(true); // snap
+
+            // System events
+            SystemEvents.PowerModeChanged += SystemPowerModeChanged;
+            SystemEvents.DisplaySettingsChanged += SystemDisplaySettingsChanged;
 
             // Settings
             _settingsService.PropertyChanged += (sender, args) =>
@@ -147,23 +158,10 @@ namespace LightBulb.Services
                         UpdateTemperature(true);
                 }
             };
-
-            // System events
-            SystemEvents.PowerModeChanged += SystemPowerModeChanged;
-            SystemEvents.DisplaySettingsChanged += SystemDisplaySettingsChanged;
+            UpdateConfiguration();
 
             // Init
             _temperature = _settingsService.DefaultMonitorTemperature;
-            UpdateConfiguration();
-        }
-
-        private void UpdateConfiguration()
-        {
-            _temperatureUpdateTimer.Interval = _settingsService.TemperatureUpdateInterval;
-
-            _pollingTimer.Interval = _settingsService.GammaPollingInterval;
-            _pollingTimer.IsEnabled = (IsRealtimeModeEnabled || IsPreviewModeEnabled) &&
-                                      _settingsService.IsGammaPollingEnabled;
         }
 
         private void SystemDisplaySettingsChanged(object sender, EventArgs e)
@@ -174,6 +172,15 @@ namespace LightBulb.Services
         private void SystemPowerModeChanged(object sender, PowerModeChangedEventArgs powerModeChangedEventArgs)
         {
             UpdateTemperature();
+        }
+
+        private void UpdateConfiguration()
+        {
+            _temperatureUpdateTimer.Interval = _settingsService.TemperatureUpdateInterval;
+
+            _pollingTimer.Interval = _settingsService.GammaPollingInterval;
+            _pollingTimer.IsEnabled = (IsRealtimeModeEnabled || IsPreviewModeEnabled) &&
+                                      _settingsService.IsGammaPollingEnabled;
         }
 
         private void UpdateGamma()
@@ -306,10 +313,21 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public void StartCyclePreview()
         {
-            Debug.WriteLine("Started cycle preview", GetType().Name);
-
             CyclePreviewTime = DateTime.Now;
             _cyclePreviewTimer.IsEnabled = true;
+
+            Debug.WriteLine("Started cycle preview", GetType().Name);
+            CyclePreviewStarted?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <inheritdoc />
+        public void StopCyclePreview()
+        {
+            _cyclePreviewTimer.IsEnabled = false;
+            IsPreviewModeEnabled = false;
+
+            Debug.WriteLine("Canceled cycle preview", GetType().Name);
+            CyclePreviewEnded?.Invoke(this, EventArgs.Empty);
         }
 
         public virtual void Dispose()

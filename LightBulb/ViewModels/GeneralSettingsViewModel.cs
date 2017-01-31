@@ -21,6 +21,21 @@ namespace LightBulb.ViewModels
         }
 
         /// <summary>
+        /// Enables or disables cycle preview mode
+        /// </summary>
+        public bool IsInCyclePreviewMode
+        {
+            get { return _temperatureService.IsCyclePreviewRunning; }
+            set
+            {
+                if (value)
+                    _temperatureService.StartCyclePreview();
+                else
+                    _temperatureService.StopCyclePreview();
+            }
+        }
+
+        /// <summary>
         /// Temperature switch duration in minutes
         /// </summary>
         public double TemperatureSwitchDurationMinutes
@@ -29,7 +44,7 @@ namespace LightBulb.ViewModels
             set { SettingsService.TemperatureTransitionDuration = TimeSpan.FromMinutes(value); }
         }
 
-        public RelayCommand StartCyclePreviewCommand { get; }
+        public RelayCommand StartStopCyclePreviewCommand { get; }
         public RelayCommand<ushort> RequestPreviewTemperatureCommand { get; }
 
         public GeneralSettingsViewModel(ITemperatureService temperatureService, ISettingsService settingsService)
@@ -38,10 +53,14 @@ namespace LightBulb.ViewModels
             SettingsService = settingsService;
             _temperatureService = temperatureService;
 
+            _temperatureService.CyclePreviewStarted +=
+                (sender, args) => RaisePropertyChanged(() => IsInCyclePreviewMode);
+            _temperatureService.CyclePreviewEnded +=
+                (sender, args) => RaisePropertyChanged(() => IsInCyclePreviewMode);
+
             // Commands
             RequestPreviewTemperatureCommand = new RelayCommand<ushort>(RequestPreviewTemperature);
-            StartCyclePreviewCommand = new RelayCommand(StartCyclePreview,
-                () => !_temperatureService.IsCyclePreviewRunning);
+            StartStopCyclePreviewCommand = new RelayCommand(StartStopCyclePreview);
 
             // Settings
             SettingsService.PropertyChanged += (sender, args) =>
@@ -56,9 +75,9 @@ namespace LightBulb.ViewModels
             _temperatureService.RequestPreviewTemperature(temp);
         }
 
-        private void StartCyclePreview()
+        private void StartStopCyclePreview()
         {
-            _temperatureService.StartCyclePreview();
+            IsInCyclePreviewMode = !IsInCyclePreviewMode;
         }
     }
 }

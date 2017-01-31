@@ -38,6 +38,16 @@ namespace LightBulb.Services.Interfaces
         event EventHandler Updated;
 
         /// <summary>
+        /// Triggered when 24hr cycle preview starts
+        /// </summary>
+        event EventHandler CyclePreviewStarted;
+
+        /// <summary>
+        /// Triggered when 24hr cycle preview ends
+        /// </summary>
+        event EventHandler CyclePreviewEnded;
+
+        /// <summary>
         /// Request temperature for preview mode
         /// </summary>
         void RequestPreviewTemperature(ushort temp);
@@ -46,5 +56,10 @@ namespace LightBulb.Services.Interfaces
         /// Start 24hr cycle preview
         /// </summary>
         void StartCyclePreview();
+
+        /// <summary>
+        /// Stops ongoing 24hr cycle preview
+        /// </summary>
+        void StopCyclePreview();
     }
 }
