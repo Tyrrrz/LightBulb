@@ -26,8 +26,8 @@ namespace LightBulb.Views
             Left = SystemParameters.WorkArea.Width - Width - 5;
             Top = SystemParameters.WorkArea.Height - Height;
 
-            NavigateGeneralSettingsButton.IsEnabled = false;
             ViewPresenter.Content = _generalSettingsView;
+            UpdateNavigationButtons();
         }
 
         private void MainWindow_OnDeactivated(object sender, EventArgs e)
@@ -41,31 +41,40 @@ namespace LightBulb.Views
                 DragMove();
         }
 
+        private void UpdateNavigationButtons()
+        {
+            if (ReferenceEquals(ViewPresenter.Content, _generalSettingsView))
+                NavigateGeneralSettingsButton.SetResourceReference(ForegroundProperty, "SecondaryAccentBrush");
+            else
+                NavigateGeneralSettingsButton.ClearValue(ForegroundProperty);
+
+            if (ReferenceEquals(ViewPresenter.Content, _geoSettingsView))
+                NavigateGeolocationSettingsButton.SetResourceReference(ForegroundProperty, "SecondaryAccentBrush");
+            else
+                NavigateGeolocationSettingsButton.ClearValue(ForegroundProperty);
+
+            if (ReferenceEquals(ViewPresenter.Content, _advancedSettingsView))
+                NavigateAdvancedSettingsButton.SetResourceReference(ForegroundProperty, "SecondaryAccentBrush");
+            else
+                NavigateAdvancedSettingsButton.ClearValue(ForegroundProperty);
+        }
+
         private void NavigateGeneralSettingsButton_OnClick(object sender, RoutedEventArgs e)
         {
             ViewPresenter.Content = _generalSettingsView;
-
-            NavigateGeneralSettingsButton.IsEnabled = false;
-            NavigateGeolocationSettingsButton.IsEnabled = true;
-            NavigateAdvancedSettingsButton.IsEnabled = true;
+            UpdateNavigationButtons();
         }
 
         private void NavigateGeoSettingsButton_OnClick(object sender, RoutedEventArgs e)
         {
             ViewPresenter.Content = _geoSettingsView;
-
-            NavigateGeneralSettingsButton.IsEnabled = true;
-            NavigateGeolocationSettingsButton.IsEnabled = false;
-            NavigateAdvancedSettingsButton.IsEnabled = true;
+            UpdateNavigationButtons();
         }
 
         private void NavigateAdvancedSettingsButton_OnClick(object sender, RoutedEventArgs e)
         {
             ViewPresenter.Content = _advancedSettingsView;
-
-            NavigateGeneralSettingsButton.IsEnabled = true;
-            NavigateGeolocationSettingsButton.IsEnabled = true;
-            NavigateAdvancedSettingsButton.IsEnabled = false;
+            UpdateNavigationButtons();
         }
     }
 }
