@@ -97,10 +97,10 @@
                         <Style BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}" TargetType="{x:Type materialDesign:PackIcon}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsInCyclePreviewMode}" Value="false">
-                                    <Setter Property="Kind" Value="Sync" />
+                                    <Setter Property="Kind" Value="Play" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsInCyclePreviewMode}" Value="true">
-                                    <Setter Property="Kind" Value="SyncOff" />
+                                    <Setter Property="Kind" Value="Stop" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
