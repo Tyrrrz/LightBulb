@@ -7,7 +7,7 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
-    public class WindowsGammaService : WinApiServiceBase, IGammaService, IDisposable
+    public class WindowsGammaService : WinApiServiceBase, IGammaService
     {
         #region WinAPI
         [DllImport("user32.dll", EntryPoint = "GetDC", SetLastError = true)]
@@ -77,9 +77,10 @@ namespace LightBulb.Services
             SetDisplayGammaLinear(ColorIntensity.Default);
         }
 
-        public virtual void Dispose()
+        public override void Dispose()
         {
             RestoreDefault();
+            base.Dispose();
         }
     }
 }

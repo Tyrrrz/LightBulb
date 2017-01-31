@@ -197,9 +197,10 @@ namespace LightBulb.Services
                    windowRect.Right >= screenRect.Right && windowRect.Bottom >= screenRect.Bottom;
         }
 
-        public virtual void Dispose()
+        public override void Dispose()
         {
             UninstallHooks();
+            base.Dispose();
         }
     }
 }

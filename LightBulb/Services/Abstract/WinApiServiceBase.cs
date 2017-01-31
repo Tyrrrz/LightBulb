@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace LightBulb.Services.Abstract
 {
-    public abstract class WinApiServiceBase
+    public abstract class WinApiServiceBase : IDisposable
     {
         #region WinAPI
         protected delegate void WinEventDelegate(
@@ -77,6 +77,12 @@ namespace LightBulb.Services.Abstract
                 Debug.WriteLine("Unregistered some WinEventHook", GetType().Name);
             }
             _hookHandlerDic.Remove(handle);
+        }
+
+        public virtual void Dispose()
+        {
+            foreach (var hook in _hookHandlerDic)
+                UnregisterWinEvent(hook.Key);
         }
     }
 }
