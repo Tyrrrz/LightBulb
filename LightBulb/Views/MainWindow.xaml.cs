@@ -44,19 +44,19 @@ namespace LightBulb.Views
         private void UpdateNavigationButtons()
         {
             if (ReferenceEquals(ViewPresenter.Content, _generalSettingsView))
-                NavigateGeneralSettingsButton.SetResourceReference(ForegroundProperty, "SecondaryAccentBrush");
+                NavigateGeneralSettingsButton.SetResourceReference(BorderBrushProperty, "SecondaryAccentBrush");
             else
-                NavigateGeneralSettingsButton.ClearValue(ForegroundProperty);
+                NavigateGeneralSettingsButton.ClearValue(BorderBrushProperty);
 
             if (ReferenceEquals(ViewPresenter.Content, _geoSettingsView))
-                NavigateGeolocationSettingsButton.SetResourceReference(ForegroundProperty, "SecondaryAccentBrush");
+                NavigateGeolocationSettingsButton.SetResourceReference(BorderBrushProperty, "SecondaryAccentBrush");
             else
-                NavigateGeolocationSettingsButton.ClearValue(ForegroundProperty);
+                NavigateGeolocationSettingsButton.ClearValue(BorderBrushProperty);
 
             if (ReferenceEquals(ViewPresenter.Content, _advancedSettingsView))
-                NavigateAdvancedSettingsButton.SetResourceReference(ForegroundProperty, "SecondaryAccentBrush");
+                NavigateAdvancedSettingsButton.SetResourceReference(BorderBrushProperty, "SecondaryAccentBrush");
             else
-                NavigateAdvancedSettingsButton.ClearValue(ForegroundProperty);
+                NavigateAdvancedSettingsButton.ClearValue(BorderBrushProperty);
         }
 
         private void NavigateGeneralSettingsButton_OnClick(object sender, RoutedEventArgs e)

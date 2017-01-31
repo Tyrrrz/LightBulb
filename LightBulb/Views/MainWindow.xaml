@@ -202,7 +202,8 @@
                         <Button x:Name="NavigateGeneralSettingsButton"
                                 Padding="4"
                                 Background="Transparent"
-                                BorderThickness="0"
+                                BorderBrush="Transparent"
+                                BorderThickness="0,0,0,2"
                                 Click="NavigateGeneralSettingsButton_OnClick"
                                 ToolTip="General">
                             <materialDesign:PackIcon Kind="Tune" />
@@ -210,7 +211,8 @@
                         <Button x:Name="NavigateGeolocationSettingsButton"
                                 Padding="4"
                                 Background="Transparent"
-                                BorderThickness="0"
+                                BorderBrush="Transparent"
+                                BorderThickness="0,0,0,2"
                                 Click="NavigateGeoSettingsButton_OnClick"
                                 ToolTip="Geolocation">
                             <materialDesign:PackIcon Kind="Earth" />
@@ -218,7 +220,8 @@
                         <Button x:Name="NavigateAdvancedSettingsButton"
                                 Padding="4"
                                 Background="Transparent"
-                                BorderThickness="0"
+                                BorderBrush="Transparent"
+                                BorderThickness="0,0,0,2"
                                 Click="NavigateAdvancedSettingsButton_OnClick"
                                 ToolTip="Advanced">
                             <materialDesign:PackIcon Kind="CheckboxMultipleMarkedOutline" />
