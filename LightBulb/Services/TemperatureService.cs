@@ -244,9 +244,8 @@ namespace LightBulb.Services
             // If allowed - start smooth transition
             if (!forceInstantSwitch && Settings.IsTemperatureSmoothingEnabled && delta > Settings.TemperatureEpsilon)
             {
-                var duration =
-                    TimeSpan.FromMilliseconds(Settings.MaximumTemperatureSmoothingDuration.TotalMilliseconds*delta/
-                                              (Settings.MaxTemperature - Settings.MinTemperature));
+                double deltaNorm = ((double) delta/(Settings.MaxTemperature - Settings.MinTemperature)).Clamp(0, 1);
+                var duration = TimeSpan.FromMilliseconds(Settings.MaximumTemperatureSmoothingDuration.TotalMilliseconds*deltaNorm);
 
                 _temperatureSmoother.Set(
                     Temperature, newTemp,
