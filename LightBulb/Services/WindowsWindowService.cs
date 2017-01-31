@@ -8,7 +8,7 @@ using LightBulb.Services.Interfaces;
 
 namespace LightBulb.Services
 {
-    public class WindowsWindowService : WinApiServiceBase, IWindowService, IDisposable
+    public class WindowsWindowService : WinApiServiceBase, IWindowService
     {
         #region WinAPI
         [DllImport("user32.dll", EntryPoint = "GetForegroundWindow", SetLastError = true)]
