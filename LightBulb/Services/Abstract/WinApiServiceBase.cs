@@ -33,7 +33,8 @@ namespace LightBulb.Services.Abstract
 
         private static readonly SpongeWindow Sponge;
         protected static readonly IntPtr SpongeHandle;
-        protected static event EventHandler<Message> WndProced;
+
+        private static event EventHandler<Message> WndProced;
 
         static WinApiServiceBase()
         {
@@ -70,6 +71,9 @@ namespace LightBulb.Services.Abstract
             WndProc(message);
         }
 
+        /// <summary>
+        /// Get the last WinApi error wrapped in <see cref="Win32Exception"/>
+        /// </summary>
         protected Win32Exception GetLastError()
         {
             int errCode = Marshal.GetLastWin32Error();
@@ -77,6 +81,9 @@ namespace LightBulb.Services.Abstract
             return new Win32Exception(errCode);
         }
 
+        /// <summary>
+        /// Check if last action raised an error and log it if so
+        /// </summary>
         protected void CheckLogWin32Error()
         {
 #if !IgnoreWinAPIErrors
@@ -85,11 +92,15 @@ namespace LightBulb.Services.Abstract
 #endif
         }
 
+        /// <summary>
+        /// Override to process windows messages
+        /// </summary>
         protected virtual void WndProc(Message message)
-        {
-            
-        }
+        { }
 
+        /// <summary>
+        /// Register a windows event hook
+        /// </summary>
         protected IntPtr RegisterWinEvent(
             uint eventId, WinEventHandler handler,
             uint processId = 0, uint threadId = 0, uint flags = 0)
@@ -106,6 +117,9 @@ namespace LightBulb.Services.Abstract
             return handle;
         }
 
+        /// <summary>
+        /// Unregister a windows event hook
+        /// </summary>
         protected void UnregisterWinEvent(IntPtr handle)
         {
             if (!UnhookWinEventInternal(handle))
