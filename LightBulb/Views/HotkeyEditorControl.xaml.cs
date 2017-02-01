@@ -56,12 +56,13 @@ namespace LightBulb.Views
 
             var modifiers = Keyboard.Modifiers;
             var key = e.Key;
+            if (key == Key.System) key = e.SystemKey; // wtf
 
             // If no actual key was pressed - return
             if (key.IsEither(
                 Key.LeftCtrl, Key.RightCtrl, Key.LeftAlt, Key.RightAlt,
                 Key.LeftShift, Key.RightShift, Key.LWin, Key.RWin,
-                Key.Clear, Key.OemClear, Key.Apps, Key.System))
+                Key.Clear, Key.OemClear, Key.Apps))
             {
                 return;
             }
