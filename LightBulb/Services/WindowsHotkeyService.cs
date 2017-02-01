@@ -14,11 +14,13 @@ namespace LightBulb.Services
     public class WindowsHotkeyService : WinApiServiceBase, IHotkeyService
     {
         #region WinAPI
+
         [DllImport("user32.dll", EntryPoint = "RegisterHotKey", SetLastError = true)]
         private static extern bool RegisterHotKeyInternal(IntPtr hWnd, int id, int fsModifiers, int vk);
 
         [DllImport("user32.dll", EntryPoint = "UnregisterHotKey", SetLastError = true)]
         private static extern bool UnregisterHotKeyInternal(IntPtr hWnd, int id);
+
         #endregion
 
         private readonly Dictionary<int, HotkeyHandler> _hotkeyHandlerDic;
@@ -62,7 +64,7 @@ namespace LightBulb.Services
         public void Unregister(Key key, ModifierKeys modifiers)
         {
             int vk = KeyInterop.VirtualKeyFromKey(key);
-            int mods = (int)modifiers;
+            int mods = (int) modifiers;
             int id = (vk << 8) | mods;
 
             if (!UnregisterHotKeyInternal(_host.Handle, id))

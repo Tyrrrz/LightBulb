@@ -3,7 +3,6 @@ using System.Windows;
 using GalaSoft.MvvmLight.Threading;
 using LightBulb.Views;
 using Microsoft.Win32;
-using Tyrrrz.WpfExtensions;
 
 namespace LightBulb
 {
@@ -15,8 +14,8 @@ namespace LightBulb
         {
             DispatcherHelper.Initialize();
 
-            // When windows session is ending - close application to execute cleanups and dumps
-            SystemEvents.SessionEnding += (o, args) => Current.ShutdownSafe();
+            // When windows session is ending - execute cleanups and dumps
+            SystemEvents.SessionEnding += (o, args) => Locator.Cleanup();
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)
