@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -14,6 +15,7 @@ namespace LightBulb.Services.Abstract
         protected WebApiServiceBase()
         {
             _client = new HttpClient();
+            _client.DefaultRequestHeaders.Add("User-Agent", "LightBulb (github.com/Tyrrrz/LightBulb)");
         }
 
         private async Task RequestThrottlingAsync()
@@ -33,6 +35,7 @@ namespace LightBulb.Services.Abstract
             }
             catch
             {
+                Debug.WriteLine($"Get request failed ({url})", GetType().Name);
                 return null;
             }
         }

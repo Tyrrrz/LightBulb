@@ -296,13 +296,14 @@ namespace LightBulb.ViewModels
         private async Task CheckForUpdates()
         {
             IsUpdateAvailable = await _versionCheckService.GetUpdateStatusAsync();
+
+            Debug.WriteLine($"Checked for updates ({(IsUpdateAvailable ? "available" : "up to date")})",
+                GetType().Name);
         }
 
         private async Task SynchronizeSolarSettingsAsync()
         {
             if (!SettingsService.IsInternetTimeSyncEnabled) return;
-
-            Debug.WriteLine("Geosync start", GetType().Name);
 
             var geoInfo = await _geoService.GetGeoInfoAsync();
             if (geoInfo == null) return;
@@ -317,7 +318,7 @@ namespace LightBulb.ViewModels
                 SettingsService.SunsetTime = solarInfo.Sunset.TimeOfDay;
             }
 
-            Debug.WriteLine("Geosync end", GetType().Name);
+            Debug.WriteLine("Geosync done", GetType().Name);
         }
 
         public void Dispose()

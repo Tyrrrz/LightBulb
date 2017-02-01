@@ -56,7 +56,7 @@ namespace LightBulb.Services.Helpers
 
             if (setter == null)
                 throw new ArgumentNullException(nameof(setter));
-            if (duration.TotalMilliseconds < _timer.Interval.TotalMilliseconds)
+            if (duration < _timer.Interval)
                 duration = _timer.Interval;
 
             lock (_timer)
