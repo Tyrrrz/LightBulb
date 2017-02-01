@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Input;
 using LightBulb.Models;
 using LightBulb.Services.Interfaces;
 using Tyrrrz.Settings;
@@ -24,7 +23,7 @@ namespace LightBulb.Services
         private TimeSpan _sunriseTime = new TimeSpan(7, 20, 0);
         private TimeSpan _sunsetTime = new TimeSpan(16, 30, 0);
         private GeoInfo _geoInfo;
-        private Hotkey _toggleHotkey = new Hotkey(Key.L, ModifierKeys.Control | ModifierKeys.Alt);
+        private Hotkey _toggleHotkey;
         private Hotkey _togglePollingHotkey;
         private Hotkey _refreshGammaHotkey;
 
