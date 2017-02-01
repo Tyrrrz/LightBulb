@@ -5,11 +5,42 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace LightBulb.Services.Abstract
 {
     public abstract class WinApiServiceBase : IDisposable
     {
+        /// <summary>
+        /// Sponge window absorbs messages and lets other services use them
+        /// </summary>
+        private sealed class SpongeWindow : NativeWindow
+        {
+            private readonly Action<Message> _messageHandler;
+
+            public SpongeWindow(Action<Message> messageHandler)
+            {
+                _messageHandler = messageHandler;
+                CreateHandle(new CreateParams());
+            }
+
+            protected override void WndProc(ref Message m)
+            {
+                _messageHandler(m);
+                base.WndProc(ref m);
+            }
+        }
+
+        private static readonly SpongeWindow Sponge;
+        protected static readonly IntPtr SpongeHandle;
+        protected static event EventHandler<Message> WndProced;
+
+        static WinApiServiceBase()
+        {
+            Sponge = new SpongeWindow(m => WndProced?.Invoke(Sponge, m));
+            SpongeHandle = Sponge.Handle;
+        }
+
         protected delegate void WinEventHandler(
             IntPtr hWinEventHook, uint eventType, IntPtr hWnd,
             int idObject, int idChild, uint dwEventThread,
@@ -30,7 +61,13 @@ namespace LightBulb.Services.Abstract
 
         protected WinApiServiceBase()
         {
+            WndProced += LocalWndProced;
             _hookHandlerDic = new Dictionary<IntPtr, WinEventHandler>();
+        }
+
+        private void LocalWndProced(object sender, Message message)
+        {
+            WndProc(message);
         }
 
         protected Win32Exception GetLastError()
@@ -46,6 +83,11 @@ namespace LightBulb.Services.Abstract
             var ex = GetLastError();
             if (ex != null) Debug.WriteLine($"Win32 error: {ex.Message} ({ex.NativeErrorCode})", GetType().Name);
 #endif
+        }
+
+        protected virtual void WndProc(Message message)
+        {
+            
         }
 
         protected IntPtr RegisterWinEvent(
@@ -75,6 +117,7 @@ namespace LightBulb.Services.Abstract
 
         public virtual void Dispose()
         {
+            WndProced -= LocalWndProced;
             foreach (var hook in _hookHandlerDic)
                 UnregisterWinEvent(hook.Key);
         }

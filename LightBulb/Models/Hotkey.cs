@@ -12,7 +12,7 @@ namespace LightBulb.Models
 
         public ModifierKeys Modifiers { get; }
 
-        [JsonConstructor]
+        [JsonConstructor] // for Tyrrrz.Settings' Json.Net deserializer
         public Hotkey(Key key, ModifierKeys modifiers = ModifierKeys.None)
         {
             Key = key;

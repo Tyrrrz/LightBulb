@@ -151,19 +151,49 @@ namespace LightBulb.Services
         public Hotkey ToggleHotkey
         {
             get { return _toggleHotkey; }
-            set { Set(ref _toggleHotkey, value); }
+            set
+            {
+                // Make sure other hotkeys don't use the same keys
+                if (value != Hotkey.Unset)
+                {
+                    if (TogglePollingHotkey == value) TogglePollingHotkey = Hotkey.Unset;
+                    if (RefreshGammaHotkey == value) RefreshGammaHotkey = Hotkey.Unset;
+                }
+
+                Set(ref _toggleHotkey, value);
+            }
         }
 
         public Hotkey TogglePollingHotkey
         {
             get { return _togglePollingHotkey; }
-            set { Set(ref _togglePollingHotkey, value); }
+            set
+            {
+                // Make sure other hotkeys don't use the same keys
+                if (value != Hotkey.Unset)
+                {
+                    if (ToggleHotkey == value) ToggleHotkey = Hotkey.Unset;
+                    if (RefreshGammaHotkey == value) RefreshGammaHotkey = Hotkey.Unset;
+                }
+
+                Set(ref _togglePollingHotkey, value);
+            }
         }
 
         public Hotkey RefreshGammaHotkey
         {
             get { return _refreshGammaHotkey; }
-            set { Set(ref _refreshGammaHotkey, value); }
+            set
+            {
+                // Make sure other hotkeys don't use the same keys
+                if (value != Hotkey.Unset)
+                {
+                    if (ToggleHotkey == value) ToggleHotkey = Hotkey.Unset;
+                    if (TogglePollingHotkey == value) TogglePollingHotkey = Hotkey.Unset;
+                }
+
+                Set(ref _refreshGammaHotkey, value);
+            }
         }
 
         public FileSettingsService()
