@@ -44,7 +44,7 @@ namespace LightBulb.Services
             }
             catch
             {
-                Debug.WriteLine("Could not deserialize", GetType().Name);
+                Debug.WriteLine("Could not deserialize github releases", GetType().Name);
                 return false;
             }
         }

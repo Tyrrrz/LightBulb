@@ -68,7 +68,7 @@
                    Height="16"
                    Margin="5,0,5,5"
                    VerticalAlignment="Center"
-                   Source="{Binding SettingsService.GeoInfo.CountryFlag, IsAsync=True}"
+                   Source="{Binding SettingsService.GeoInfo.CountryFlagUrl, IsAsync=True}"
                    Visibility="{Binding GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}" />
 
             <!--  Geoinfo is set  -->
