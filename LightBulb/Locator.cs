@@ -10,7 +10,12 @@ namespace LightBulb
 {
     public sealed class Locator
     {
-        static Locator()
+        private static bool _isInit;
+
+        public static T Resolve<T>() => ServiceLocator.Current.GetInstance<T>();
+        public static T Resolve<T>(string id) => ServiceLocator.Current.GetInstance<T>(id);
+
+        public static void Init()
         {
             if (ViewModelBase.IsInDesignModeStatic) return;
 
@@ -29,13 +34,14 @@ namespace LightBulb
             SimpleIoc.Default.Register<GeneralSettingsViewModel>();
             SimpleIoc.Default.Register<GeoSettingsViewModel>();
             SimpleIoc.Default.Register<AdvancedSettingsViewModel>();
-        }
 
-        public static T Resolve<T>() => ServiceLocator.Current.GetInstance<T>();
-        public static T Resolve<T>(string id) => ServiceLocator.Current.GetInstance<T>(id);
+            _isInit = true;
+        }
 
         public static void Cleanup()
         {
+            if (!_isInit) return;
+
             (Resolve<ISettingsService>() as IDisposable)?.Dispose();
             (Resolve<IGammaService>() as IDisposable)?.Dispose();
             (Resolve<IWindowService>() as IDisposable)?.Dispose();

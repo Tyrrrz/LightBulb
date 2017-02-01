@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Windows;
 using GalaSoft.MvvmLight.Threading;
+using LightBulb.Views;
 using Microsoft.Win32;
 using Tyrrrz.WpfExtensions;
 
@@ -21,8 +22,6 @@ namespace LightBulb
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
             // Make sure only one process is running at a time
-            // HACK: this waits until the app is fully started before closing it
-            // ... would be better if we could prevent it starting entirely
             const string mutexName = "LightBulb_Identity";
             if (Mutex.TryOpenExisting(mutexName, out _identityMutex))
             {
@@ -30,6 +29,12 @@ namespace LightBulb
                 return;
             }
             _identityMutex = new Mutex(true, mutexName);
+
+            // Init locator
+            Locator.Init();
+
+            // Launch main window
+            new MainWindow().Show();
         }
 
         private void App_OnExit(object sender, ExitEventArgs exitEventArgs)
