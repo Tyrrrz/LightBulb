@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Input;
 using LightBulb.Models;
 using LightBulb.Services.Interfaces;
 using Tyrrrz.Settings;
@@ -23,6 +24,9 @@ namespace LightBulb.Services
         private TimeSpan _sunriseTime = new TimeSpan(7, 20, 0);
         private TimeSpan _sunsetTime = new TimeSpan(16, 30, 0);
         private GeoInfo _geoInfo;
+        private Hotkey _toggleHotkey = new Hotkey(Key.L, ModifierKeys.Control | ModifierKeys.Alt);
+        private Hotkey _togglePollingHotkey;
+        private Hotkey _refreshGammaHotkey;
 
         public bool IsGammaPollingEnabled
         {
@@ -142,6 +146,24 @@ namespace LightBulb.Services
         {
             get { return _geoInfo; }
             set { Set(ref _geoInfo, value); }
+        }
+
+        public Hotkey ToggleHotkey
+        {
+            get { return _toggleHotkey; }
+            set { Set(ref _toggleHotkey, value); }
+        }
+
+        public Hotkey TogglePollingHotkey
+        {
+            get { return _togglePollingHotkey; }
+            set { Set(ref _togglePollingHotkey, value); }
+        }
+
+        public Hotkey RefreshGammaHotkey
+        {
+            get { return _refreshGammaHotkey; }
+            set { Set(ref _refreshGammaHotkey, value); }
         }
 
         public FileSettingsService()

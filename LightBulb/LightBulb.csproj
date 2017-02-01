@@ -108,6 +108,7 @@
     <Compile Include="Models\ColorIntensity.cs" />
     <Compile Include="Models\CycleState.cs" />
     <Compile Include="Models\GeoInfo.cs" />
+    <Compile Include="Models\Hotkey.cs" />
     <Compile Include="Models\Rect.cs" />
     <Compile Include="Models\SolarInfo.cs" />
     <Compile Include="Services\GithubVersionCheckService.cs" />
@@ -129,6 +130,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\GeoSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HotkeyEditorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -161,6 +166,9 @@
     </Compile>
     <Compile Include="Views\GeoSettingsView.xaml.cs">
       <DependentUpon>GeoSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HotkeyEditorControl.xaml.cs">
+      <DependentUpon>HotkeyEditorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

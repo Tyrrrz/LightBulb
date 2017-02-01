@@ -25,5 +25,8 @@ namespace LightBulb.Services.Interfaces
         TimeSpan SunriseTime { get; set; }
         TimeSpan SunsetTime { get; set; }
         GeoInfo GeoInfo { get; set; }
+        Hotkey ToggleHotkey { get; set; }
+        Hotkey TogglePollingHotkey { get; set; }
+        Hotkey RefreshGammaHotkey { get; set; }
     }
 }
