@@ -18,6 +18,11 @@ namespace LightBulb.Services.Interfaces
         void Register(Key key, ModifierKeys modifiers, HotkeyHandler handler);
 
         /// <summary>
+        /// Unregister a hotkey
+        /// </summary>
+        void Unregister(Key key, ModifierKeys modifiers);
+
+        /// <summary>
         /// Unregisters all hotkeys
         /// </summary>
         void UnregisterAll();

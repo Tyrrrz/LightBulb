@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
@@ -42,29 +41,12 @@ namespace LightBulb.Services
             handler?.Invoke();
         }
 
-        private bool TryGetFreeId(out int id)
-        {
-            id = int.MinValue;
-            if (!_hotkeyHandlerDic.Any()) return true;
-            foreach (int usedKey in _hotkeyHandlerDic.Keys)
-            {
-                if (usedKey > id) return true;
-                id++;
-            }
-            return false;
-        }
-
+        /// <inheritdoc />
         public void Register(Key key, ModifierKeys modifiers, HotkeyHandler handler)
         {
             int vk = KeyInterop.VirtualKeyFromKey(key);
             int mods = (int) modifiers;
-            int id;
-
-            if (!TryGetFreeId(out id))
-            {
-                Debug.WriteLine("Could not find a free id for a hotkey", GetType().Name);
-                return;
-            }
+            int id = (vk << 8) | mods;
 
             if (!RegisterHotKeyInternal(_host.Handle, id, mods, vk))
             {
@@ -76,6 +58,19 @@ namespace LightBulb.Services
             _hotkeyHandlerDic.Add(id, handler);
         }
 
+        /// <inheritdoc />
+        public void Unregister(Key key, ModifierKeys modifiers)
+        {
+            int vk = KeyInterop.VirtualKeyFromKey(key);
+            int mods = (int)modifiers;
+            int id = (vk << 8) | mods;
+
+            if (!UnregisterHotKeyInternal(_host.Handle, id))
+                Debug.WriteLine("Could not unregister a hotkey", GetType().Name);
+            _hotkeyHandlerDic.Remove(id);
+        }
+
+        /// <inheritdoc />
         public void UnregisterAll()
         {
             foreach (int key in _hotkeyHandlerDic.Keys)
