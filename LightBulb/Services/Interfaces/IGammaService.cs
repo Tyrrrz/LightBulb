@@ -3,7 +3,7 @@
 namespace LightBulb.Services.Interfaces
 {
     /// <summary>
-    /// Implemented by wrappers that allow control over the display gamma
+    /// Implemented by class that allow control over the display gamma
     /// </summary>
     public interface IGammaService
     {

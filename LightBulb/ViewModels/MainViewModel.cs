@@ -18,6 +18,7 @@ namespace LightBulb.ViewModels
     {
         private readonly ITemperatureService _temperatureService;
         private readonly IWindowService _windowService;
+        private readonly IHotkeyService _hotkeyService;
         private readonly IGeoService _geoService;
         private readonly IVersionCheckService _versionCheckService;
 
@@ -112,6 +113,7 @@ namespace LightBulb.ViewModels
             ISettingsService settingsService,
             ITemperatureService temperatureService,
             IWindowService windowService,
+            IHotkeyService hotkeyService,
             IGeoService geoService,
             IVersionCheckService versionCheckService)
         {
@@ -119,6 +121,7 @@ namespace LightBulb.ViewModels
             SettingsService = settingsService;
             _temperatureService = temperatureService;
             _windowService = windowService;
+            _hotkeyService = hotkeyService;
             _geoService = geoService;
             _versionCheckService = versionCheckService;
 

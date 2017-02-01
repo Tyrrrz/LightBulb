@@ -2,6 +2,9 @@
 
 namespace LightBulb.Services.Interfaces
 {
+    /// <summary>
+    /// Implemented by classes that can check whether the program's version is up to date
+    /// </summary>
     public interface IVersionCheckService
     {
         /// <summary>

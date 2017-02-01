@@ -3,7 +3,7 @@
 namespace LightBulb.Services.Interfaces
 {
     /// <summary>
-    /// Manages display gamma via time-based color temperature profile
+    /// Implemented by classes that manage display gamma via time-based color temperature profile
     /// </summary>
     public interface ITemperatureService
     {

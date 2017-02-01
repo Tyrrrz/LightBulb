@@ -25,6 +25,7 @@ namespace LightBulb
             SimpleIoc.Default.Register<ISettingsService, FileSettingsService>();
             SimpleIoc.Default.Register<IGammaService, WindowsGammaService>();
             SimpleIoc.Default.Register<IWindowService, WindowsWindowService>();
+            SimpleIoc.Default.Register<IHotkeyService, WindowsHotkeyService>();
             SimpleIoc.Default.Register<ITemperatureService, DefaultTemperatureService>();
             SimpleIoc.Default.Register<IGeoService, WebGeoService>();
             SimpleIoc.Default.Register<IVersionCheckService, GithubVersionCheckService>();
@@ -45,6 +46,7 @@ namespace LightBulb
             (Resolve<ISettingsService>() as IDisposable)?.Dispose();
             (Resolve<IGammaService>() as IDisposable)?.Dispose();
             (Resolve<IWindowService>() as IDisposable)?.Dispose();
+            (Resolve<IHotkeyService>() as IDisposable)?.Dispose();
             (Resolve<ITemperatureService>() as IDisposable)?.Dispose();
             (Resolve<IGeoService>() as IDisposable)?.Dispose();
             (Resolve<IVersionCheckService>() as IDisposable)?.Dispose();

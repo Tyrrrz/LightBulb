@@ -4,7 +4,7 @@ using LightBulb.Models;
 namespace LightBulb.Services.Interfaces
 {
     /// <summary>
-    /// Implemented by wrappers that can query geolocational information
+    /// Implemented by classes that can query geolocational information
     /// </summary>
     public interface IGeoService
     {

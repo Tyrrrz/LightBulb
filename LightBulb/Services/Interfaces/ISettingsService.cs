@@ -4,6 +4,9 @@ using LightBulb.Models;
 
 namespace LightBulb.Services.Interfaces
 {
+    /// <summary>
+    /// Implemented by classes that provide access to user settings
+    /// </summary>
     public interface ISettingsService : INotifyPropertyChanged
     {
         bool IsGammaPollingEnabled { get; set; }

@@ -74,7 +74,7 @@ namespace LightBulb.Services
         {
             if (AreEventHooksEnabled) return;
 
-            var foregroundWindowLocationChangedEventHandler = new WinEventDelegate(
+            var foregroundWindowLocationChangedEventHandler = new WinEventHandler(
                 (hook, type, hwnd, idObject, child, thread, time) =>
                 {
                     if (idObject != 0) return; // only events from windows
@@ -82,7 +82,7 @@ namespace LightBulb.Services
 
                     IsForegroundFullScreen = IsWindowFullScreen(hwnd);
                 });
-            var foregroundWindowChangedEventHandler = new WinEventDelegate(
+            var foregroundWindowChangedEventHandler = new WinEventHandler(
                 (hook, type, hwnd, idObject, child, thread, time) =>
                 {
                     if (idObject != 0) return; // only events from windows

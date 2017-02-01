@@ -34,7 +34,7 @@ namespace LightBulb
             Locator.Init();
 
             // Launch main window
-            new MainWindow().Show();
+            (MainWindow = new MainWindow()).Show();
         }
 
         private void App_OnExit(object sender, ExitEventArgs exitEventArgs)

@@ -3,7 +3,7 @@
 namespace LightBulb.Services.Interfaces
 {
     /// <summary>
-    /// Implemented by wrappers that can query the state of specifci windows
+    /// Implemented by classes that can query the state of specific windows
     /// </summary>
     public interface IWindowService
     {
