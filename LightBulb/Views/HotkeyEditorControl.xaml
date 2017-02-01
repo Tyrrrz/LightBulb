@@ -9,13 +9,6 @@
     <TextBox x:Name="HotkeyTextBox"
              HorizontalContentAlignment="Center"
              VerticalContentAlignment="Center"
-             Background="{Binding Background, RelativeSource={RelativeSource AncestorType=UserControl}}"
-             FontFamily="{Binding FontFamily, RelativeSource={RelativeSource AncestorType=UserControl}}"
-             FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType=UserControl}}"
-             FontStretch="{Binding FontStretch, RelativeSource={RelativeSource AncestorType=UserControl}}"
-             FontStyle="{Binding FontStyle, RelativeSource={RelativeSource AncestorType=UserControl}}"
-             FontWeight="{Binding FontWeight, RelativeSource={RelativeSource AncestorType=UserControl}}"
-             Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=UserControl}}"
              IsReadOnly="True"
              IsReadOnlyCaretVisible="False"
              PreviewKeyDown="HotkeyTextBox_PreviewKeyDown">

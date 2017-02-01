@@ -1,4 +1,4 @@
-﻿using System.Windows.Input;
+﻿using LightBulb.Models;
 
 namespace LightBulb.Services.Interfaces
 {
@@ -15,12 +15,12 @@ namespace LightBulb.Services.Interfaces
         /// <summary>
         /// Register a hotkey to be handled by the given delegate
         /// </summary>
-        void Register(Key key, ModifierKeys modifiers, HotkeyHandler handler);
+        void Register(Hotkey hotkey, HotkeyHandler handler);
 
         /// <summary>
         /// Unregister a hotkey
         /// </summary>
-        void Unregister(Key key, ModifierKeys modifiers);
+        void Unregister(Hotkey hotkey);
 
         /// <summary>
         /// Unregisters all hotkeys

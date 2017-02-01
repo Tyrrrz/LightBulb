@@ -165,14 +165,16 @@ namespace LightBulb.Services
             _temperature = _settingsService.DefaultMonitorTemperature;
         }
 
-        private void SystemDisplaySettingsChanged(object sender, EventArgs e)
+        private void SystemDisplaySettingsChanged(object sender, EventArgs args)
         {
             UpdateTemperature();
+            UpdateGamma();
         }
 
-        private void SystemPowerModeChanged(object sender, PowerModeChangedEventArgs powerModeChangedEventArgs)
+        private void SystemPowerModeChanged(object sender, PowerModeChangedEventArgs args)
         {
             UpdateTemperature();
+            UpdateGamma();
         }
 
         private void UpdateConfiguration()
@@ -301,6 +303,13 @@ namespace LightBulb.Services
                 // Set temperature
                 Temperature = newTemp;
             }
+        }
+
+        /// <inheritdoc />
+        public void RefreshGamma()
+        {
+            UpdateTemperature(true);
+            UpdateGamma();
         }
 
         /// <inheritdoc />

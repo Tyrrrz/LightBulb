@@ -79,7 +79,7 @@
                                        Margin="5"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
-                                       FontSize="10"
+                                       FontSize="11"
                                        Hotkey="{Binding SettingsService.ToggleHotkey}" />
         </Grid>
 
@@ -100,7 +100,7 @@
                                        Margin="5"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
-                                       FontSize="10"
+                                       FontSize="11"
                                        Hotkey="{Binding SettingsService.TogglePollingHotkey}" />
         </Grid>
 
@@ -121,7 +121,7 @@
                                        Margin="5"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
-                                       FontSize="10"
+                                       FontSize="11"
                                        Hotkey="{Binding SettingsService.RefreshGammaHotkey}" />
         </Grid>
     </StackPanel>

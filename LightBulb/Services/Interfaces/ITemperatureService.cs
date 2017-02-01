@@ -48,6 +48,11 @@ namespace LightBulb.Services.Interfaces
         event EventHandler CyclePreviewEnded;
 
         /// <summary>
+        /// Refresh gamma
+        /// </summary>
+        void RefreshGamma();
+        
+        /// <summary>
         /// Request temperature for preview mode
         /// </summary>
         void RequestPreviewTemperature(ushort temp);

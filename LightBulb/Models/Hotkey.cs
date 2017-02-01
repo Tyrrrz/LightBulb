@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Windows.Input;
+using Newtonsoft.Json;
 
 namespace LightBulb.Models
 {
@@ -7,10 +8,11 @@ namespace LightBulb.Models
     {
         public static readonly Hotkey Unset = new Hotkey(Key.None);
 
-        public Key Key { get; set; }
+        public Key Key { get; }
 
-        public ModifierKeys Modifiers { get; set; }
+        public ModifierKeys Modifiers { get; }
 
+        [JsonConstructor]
         public Hotkey(Key key, ModifierKeys modifiers = ModifierKeys.None)
         {
             Key = key;
@@ -35,5 +37,27 @@ namespace LightBulb.Models
             str.Append(Key);
             return str.ToString();
         }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public bool Equals(Hotkey other)
+        {
+            return Key == other.Key && Modifiers == other.Modifiers;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((int) Key*397) ^ (int) Modifiers;
+            }
+        }
+
+        public static bool operator ==(Hotkey a, Hotkey b) => a.Equals(b);
+
+        public static bool operator !=(Hotkey a, Hotkey b) => !(a == b);
     }
 }

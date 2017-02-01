@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using LightBulb.Models;
 using LightBulb.Services.Abstract;
 using LightBulb.Services.Interfaces;
 using Tyrrrz.Extensions;
@@ -44,10 +45,10 @@ namespace LightBulb.Services
         }
 
         /// <inheritdoc />
-        public void Register(Key key, ModifierKeys modifiers, HotkeyHandler handler)
+        public void Register(Hotkey hotkey, HotkeyHandler handler)
         {
-            int vk = KeyInterop.VirtualKeyFromKey(key);
-            int mods = (int) modifiers;
+            int vk = KeyInterop.VirtualKeyFromKey(hotkey.Key);
+            int mods = (int) hotkey.Modifiers;
             int id = (vk << 8) | mods;
 
             if (!RegisterHotKeyInternal(_host.Handle, id, mods, vk))
@@ -61,10 +62,10 @@ namespace LightBulb.Services
         }
 
         /// <inheritdoc />
-        public void Unregister(Key key, ModifierKeys modifiers)
+        public void Unregister(Hotkey hotkey)
         {
-            int vk = KeyInterop.VirtualKeyFromKey(key);
-            int mods = (int) modifiers;
+            int vk = KeyInterop.VirtualKeyFromKey(hotkey.Key);
+            int mods = (int) hotkey.Modifiers;
             int id = (vk << 8) | mods;
 
             if (!UnregisterHotKeyInternal(_host.Handle, id))

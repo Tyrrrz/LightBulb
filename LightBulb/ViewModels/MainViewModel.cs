@@ -193,10 +193,17 @@ namespace LightBulb.ViewModels
             {
                 UpdateConfiguration();
 
+                if (args.PropertyName.IsEither(
+                    nameof(SettingsService.ToggleHotkey),
+                    nameof(SettingsService.TogglePollingHotkey),
+                    nameof(SettingsService.RefreshGammaHotkey)))
+                    UpdateHotkeys();
+
                 if (args.PropertyName == nameof(SettingsService.IsInternetTimeSyncEnabled))
                     SynchronizeSolarSettingsAsync().Forget();
             };
             UpdateConfiguration();
+            UpdateHotkeys();
 
             // Init
             CheckForUpdates().Forget();
@@ -209,6 +216,23 @@ namespace LightBulb.ViewModels
         {
             _geoSyncTimer.Interval = SettingsService.InternetSyncInterval;
             _geoSyncTimer.IsEnabled = SettingsService.IsInternetTimeSyncEnabled;
+        }
+
+        private void UpdateHotkeys()
+        {
+            _hotkeyService.UnregisterAll();
+
+            if (SettingsService.ToggleHotkey != Hotkey.Unset)
+                _hotkeyService.Register(SettingsService.ToggleHotkey,
+                    () => IsEnabled = !IsEnabled);
+
+            if (SettingsService.TogglePollingHotkey != Hotkey.Unset)
+                _hotkeyService.Register(SettingsService.TogglePollingHotkey,
+                    () => SettingsService.IsGammaPollingEnabled = !SettingsService.IsGammaPollingEnabled);
+
+            if (SettingsService.RefreshGammaHotkey != Hotkey.Unset)
+                _hotkeyService.Register(SettingsService.RefreshGammaHotkey,
+                    () => _temperatureService.RefreshGamma());
         }
 
         private void UpdateBlock()
