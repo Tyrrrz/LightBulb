@@ -16,17 +16,16 @@ namespace LightBulb.Services.Abstract
         /// </summary>
         private sealed class SpongeWindow : NativeWindow
         {
-            private readonly Action<Message> _messageHandler;
+            public event EventHandler<Message> WndProced;
 
-            public SpongeWindow(Action<Message> messageHandler)
+            public SpongeWindow()
             {
-                _messageHandler = messageHandler;
                 CreateHandle(new CreateParams());
             }
 
             protected override void WndProc(ref Message m)
             {
-                _messageHandler(m);
+                WndProced?.Invoke(this, m);
                 base.WndProc(ref m);
             }
         }
@@ -34,11 +33,9 @@ namespace LightBulb.Services.Abstract
         private static readonly SpongeWindow Sponge;
         protected static readonly IntPtr SpongeHandle;
 
-        private static event EventHandler<Message> WndProced;
-
         static WinApiServiceBase()
         {
-            Sponge = new SpongeWindow(m => WndProced?.Invoke(Sponge, m));
+            Sponge = new SpongeWindow();
             SpongeHandle = Sponge.Handle;
         }
 
@@ -62,7 +59,7 @@ namespace LightBulb.Services.Abstract
 
         protected WinApiServiceBase()
         {
-            WndProced += LocalWndProced;
+            Sponge.WndProced += LocalWndProced;
             _hookHandlerDic = new Dictionary<IntPtr, WinEventHandler>();
         }
 
@@ -131,7 +128,7 @@ namespace LightBulb.Services.Abstract
 
         public virtual void Dispose()
         {
-            WndProced -= LocalWndProced;
+            Sponge.WndProced -= LocalWndProced;
             foreach (var hook in _hookHandlerDic)
                 UnregisterWinEvent(hook.Key);
         }
