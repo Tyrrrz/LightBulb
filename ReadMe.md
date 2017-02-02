@@ -46,4 +46,3 @@ To download the last version - head to the [releases](https://github.com/Tyrrrz/
 ![](http://www.tyrrrz.me/projects/images/lb_1.png)
 ![](http://www.tyrrrz.me/projects/images/lb_2.png)
 ![](http://www.tyrrrz.me/projects/images/lb_3.png)
-![](http://www.tyrrrz.me/projects/images/lb_4.png)
