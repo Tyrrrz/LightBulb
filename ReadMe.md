@@ -25,6 +25,9 @@ To download the last version - head to the [releases](https://github.com/Tyrrrz/
 - \* Temperature epsilon (by how much should color temperature change to warrant gamma refresh) [50]
 - Temperature smoothing (temperature changes are smoothed out to give time for eyes to adjust) [enabled]
 - \* Maximum temperature smoothing duration (when smoothing, up to how long does it take to finish) [3 seconds]
+- Enable/disable hotkey [none]
+- Polling enable/disable hotkey [none]
+- Gamma force refresh hotkey [none]
 
 \* - cannot be changed via UI
 
