@@ -8,7 +8,7 @@ namespace LightBulb.Views
     public partial class HotkeyEditorControl
     {
         public static readonly DependencyProperty HotkeyProperty =
-            DependencyProperty.Register(nameof(Models.Hotkey), typeof(Hotkey), typeof(HotkeyEditorControl),
+            DependencyProperty.Register(nameof(Hotkey), typeof(Hotkey), typeof(HotkeyEditorControl),
                 new FrameworkPropertyMetadata(default(Hotkey), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         private static bool HasKeyChar(Key key)

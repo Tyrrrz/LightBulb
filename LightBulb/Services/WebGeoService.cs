@@ -72,13 +72,13 @@ namespace LightBulb.Services
                     sunrise = DateTime.MinValue,
                     sunset = DateTime.MaxValue
                 };
-                var parsed = JsonConvert.DeserializeAnonymousType(response, new {results = expectedJson});
+                var parsed = JsonConvert.DeserializeAnonymousType(response, new {results = expectedJson}).results;
 
                 // Extract data
                 var result = new SolarInfo
                 {
-                    Sunrise = parsed.results.sunrise,
-                    Sunset = parsed.results.sunset
+                    Sunrise = parsed.sunrise,
+                    Sunset = parsed.sunset
                 };
                 return result;
             }

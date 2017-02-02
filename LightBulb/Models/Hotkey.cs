@@ -6,7 +6,7 @@ namespace LightBulb.Models
 {
     public struct Hotkey
     {
-        public static readonly Hotkey Unset = new Hotkey(Key.None);
+        public static Hotkey Unset { get; } = new Hotkey(Key.None);
 
         public Key Key { get; }
 

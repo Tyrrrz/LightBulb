@@ -31,12 +31,11 @@ namespace LightBulb.Services.Abstract
         }
 
         private static readonly SpongeWindow Sponge;
-        protected static readonly IntPtr SpongeHandle;
+        protected static IntPtr SpongeHandle => Sponge.Handle;
 
         static WinApiServiceBase()
         {
             Sponge = new SpongeWindow();
-            SpongeHandle = Sponge.Handle;
         }
 
         protected delegate void WinEventHandler(

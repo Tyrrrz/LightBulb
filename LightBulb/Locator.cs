@@ -17,6 +17,7 @@ namespace LightBulb
 
         public static void Init()
         {
+            if (_isInit) return;
             if (ViewModelBase.IsInDesignModeStatic) return;
 
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);

@@ -7,10 +7,10 @@ namespace LightBulb.Services.Abstract
 {
     public abstract class WebApiServiceBase : IDisposable
     {
-        private static readonly TimeSpan MinRequestInterval = TimeSpan.FromSeconds(0.35);
-        private static DateTime _lastRequestDateTime = DateTime.MinValue;
-
         private readonly HttpClient _client;
+
+        private readonly TimeSpan _minRequestInterval = TimeSpan.FromSeconds(0.35);
+        private DateTime _lastRequestDateTime = DateTime.MinValue;
 
         protected WebApiServiceBase()
         {
@@ -21,8 +21,13 @@ namespace LightBulb.Services.Abstract
         private async Task RequestThrottlingAsync()
         {
             var diff = DateTime.Now - _lastRequestDateTime;
-            if (diff < MinRequestInterval)
-                await Task.Delay(MinRequestInterval - diff);
+            if (diff < _minRequestInterval)
+            {
+                var timeLeft = _minRequestInterval - diff;
+                if (timeLeft < TimeSpan.Zero || timeLeft > _minRequestInterval) // sanity check in case system time fucks up
+                    timeLeft = _minRequestInterval;
+                await Task.Delay(timeLeft);
+            }
             _lastRequestDateTime = DateTime.Now;
         }
 
