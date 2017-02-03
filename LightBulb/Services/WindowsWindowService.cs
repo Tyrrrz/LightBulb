@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
 using LightBulb.Models;
 using LightBulb.Services.Abstract;
 using LightBulb.Services.Interfaces;
+using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
@@ -22,6 +24,12 @@ namespace LightBulb.Services
 
         [DllImport("user32.dll", EntryPoint = "GetWindowRect", SetLastError = true)]
         private static extern int GetWindowRectInternal(IntPtr hWindow, out Rect rect);
+
+        [DllImport("user32.dll", EntryPoint = "IsWindowVisible", SetLastError = true)]
+        private static extern bool IsWindowVisibleInternal(IntPtr hWindow);
+
+        [DllImport("user32.dll", EntryPoint = "GetClassName", SetLastError = true)]
+        static extern int GetClassNameInternal(IntPtr hWindow, StringBuilder lpClassName, int nMaxCount);
         #endregion
 
         private IntPtr _foregroundWindowChangedHook;
@@ -154,6 +162,27 @@ namespace LightBulb.Services
         }
 
         /// <summary>
+        /// Gets whether the window is visible
+        /// </summary>
+        public bool IsWindowVisible(IntPtr hWindow)
+        {
+            bool result = IsWindowVisibleInternal(hWindow);
+            CheckLogWin32Error();
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the window class name
+        /// </summary>
+        public string GetClassName(IntPtr hWindow)
+        {
+            var sb = new StringBuilder(256);
+            GetClassNameInternal(hWindow, sb, sb.Capacity);
+            CheckLogWin32Error();
+            return sb.ToString();
+        }
+
+        /// <summary>
         /// Determines if the given window is running fullscreen
         /// </summary>
         public bool IsWindowFullScreen(IntPtr hWindow)
@@ -164,8 +193,18 @@ namespace LightBulb.Services
             var desktop = GetDesktopWindow();
             var shell = GetShellWindow();
 
-            // If foreground is desktop or shell - return
-            if (hWindow == desktop || hWindow == shell) return false;
+            // If window is desktop or shell - return
+            if (hWindow == desktop || hWindow == shell)
+                return false;
+
+            // If window is wallpaper - return
+            string className = GetClassName(hWindow);
+            if (className.EqualsInvariant("Progman") || className.EqualsInvariant("WorkerW"))
+                return false;
+
+            // Check if visible
+            if (!IsWindowVisible(hWindow))
+                return false;
 
             // Get the window rect
             var windowRect = GetWindowRect(hWindow);
@@ -174,14 +213,14 @@ namespace LightBulb.Services
             if (windowRect.Left == 0 && windowRect.Top == 0 && windowRect.Right == 0 && windowRect.Bottom == 0)
                 return false;
 
-            // If window rect has retarded values, it's most likely a fullscreen game
-            if (windowRect.Left < 0 && windowRect.Top < 0 && windowRect.Right < 0 && windowRect.Bottom < 0)
-                return true;
-
             // Get the screen rect and compare
             var screenRect = Screen.FromHandle(hWindow).Bounds;
-            return windowRect.Left <= 0 && windowRect.Top <= 0 &&
+            bool result = windowRect.Left <= 0 && windowRect.Top <= 0 &&
                    windowRect.Right >= screenRect.Right && windowRect.Bottom >= screenRect.Bottom;
+            
+            if (result)
+                Debug.WriteLine("fuck");
+            return result;
         }
 
         public override void Dispose()
