@@ -215,12 +215,10 @@ namespace LightBulb.Services
 
             // Get the screen rect and compare
             var screenRect = Screen.FromHandle(hWindow).Bounds;
-            bool result = windowRect.Left <= 0 && windowRect.Top <= 0 &&
-                   windowRect.Right >= screenRect.Right && windowRect.Bottom >= screenRect.Bottom;
+            bool boundCheck = windowRect.Left <= 0 && windowRect.Top <= 0 &&
+                              windowRect.Right >= screenRect.Right && windowRect.Bottom >= screenRect.Bottom;
             
-            if (result)
-                Debug.WriteLine("fuck");
-            return result;
+            return boundCheck;
         }
 
         public override void Dispose()
