@@ -24,6 +24,7 @@
         TextElement.Foreground="{DynamicResource SecondaryTextBrush}"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
+        Topmost="True"
         UseLayoutRounding="True"
         WindowStartupLocation="Manual"
         WindowStyle="None"
