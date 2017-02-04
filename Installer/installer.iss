@@ -22,6 +22,7 @@ DisableWelcomePage=yes
 DisableProgramGroupPage=no
 DisableReadyPage=yes
 SetupIconFile=..\favicon.ico
+UninstallDisplayIcon=..\favicon.ico
 LicenseFile=..\License.txt
 OutputDir=Output\
 OutputBaseFilename=LightBulb_Install_{#MyAppVersion}
