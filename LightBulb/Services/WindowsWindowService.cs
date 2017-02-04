@@ -23,13 +23,16 @@ namespace LightBulb.Services
         private static extern IntPtr GetShellWindowInternal();
 
         [DllImport("user32.dll", EntryPoint = "GetWindowRect", SetLastError = true)]
-        private static extern int GetWindowRectInternal(IntPtr hWindow, out Rect rect);
+        private static extern bool GetWindowRectInternal(IntPtr hWindow, out Rect rect);
+
+        [DllImport("user32.dll", EntryPoint = "GetClientRect", SetLastError = true)]
+        private static extern bool GetWindowClientRectInternal(IntPtr hWindow, out Rect rect);
 
         [DllImport("user32.dll", EntryPoint = "IsWindowVisible", SetLastError = true)]
         private static extern bool IsWindowVisibleInternal(IntPtr hWindow);
 
         [DllImport("user32.dll", EntryPoint = "GetClassName", SetLastError = true)]
-        static extern int GetClassNameInternal(IntPtr hWindow, StringBuilder lpClassName, int nMaxCount);
+        private static extern int GetClassNameInternal(IntPtr hWindow, StringBuilder lpClassName, int nMaxCount);
         #endregion
 
         private IntPtr _foregroundWindowChangedHook;
@@ -156,8 +159,19 @@ namespace LightBulb.Services
         public Rect GetWindowRect(IntPtr hWindow)
         {
             Rect result;
-            GetWindowRectInternal(hWindow, out result);
-            CheckLogWin32Error();
+            if (!GetWindowRectInternal(hWindow, out result))
+                CheckLogWin32Error();
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the client rectangle bounds of the given window
+        /// </summary>
+        public Rect GetWindowClientRect(IntPtr hWindow)
+        {
+            Rect result;
+            if (!GetWindowClientRectInternal(hWindow, out result))
+                CheckLogWin32Error();
             return result;
         }
 
@@ -177,8 +191,8 @@ namespace LightBulb.Services
         public string GetClassName(IntPtr hWindow)
         {
             var sb = new StringBuilder(256);
-            GetClassNameInternal(hWindow, sb, sb.Capacity);
-            CheckLogWin32Error();
+            if (GetClassNameInternal(hWindow, sb, sb.Capacity) == 0)
+                CheckLogWin32Error();
             return sb.ToString();
         }
 
@@ -210,13 +224,23 @@ namespace LightBulb.Services
             var windowRect = GetWindowRect(hWindow);
 
             // If window doesn't have a rect - return
-            if (windowRect.Left == 0 && windowRect.Top == 0 && windowRect.Right == 0 && windowRect.Bottom == 0)
+            if (windowRect.Left <= 0 && windowRect.Top <= 0 && windowRect.Right <= 0 && windowRect.Bottom <= 0)
                 return false;
+
+            // Get client rect and actual rect
+            var clientRect = GetWindowClientRect(hWindow);
+            var actualRect = new Rect
+            {
+                Left = windowRect.Left + clientRect.Left,
+                Right = windowRect.Left + clientRect.Right,
+                Top = windowRect.Top + clientRect.Top,
+                Bottom = windowRect.Top + clientRect.Bottom
+            };
 
             // Get the screen rect and compare
             var screenRect = Screen.FromHandle(hWindow).Bounds;
-            bool boundCheck = windowRect.Left <= 0 && windowRect.Top <= 0 &&
-                              windowRect.Right >= screenRect.Right && windowRect.Bottom >= screenRect.Bottom;
+            bool boundCheck = actualRect.Left <= 0 && actualRect.Top <= 0 &&
+                              actualRect.Right >= screenRect.Right && actualRect.Bottom >= screenRect.Bottom;
             
             return boundCheck;
         }
