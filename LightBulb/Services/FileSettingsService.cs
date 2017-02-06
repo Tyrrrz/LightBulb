@@ -87,7 +87,7 @@ namespace LightBulb.Services
             get { return _maxTemperature; }
             set
             {
-                if (Set(ref _maxTemperature, value)) return;
+                if (!Set(ref _maxTemperature, value)) return;
 
                 if (MaxTemperature < MinTemperature)
                     MinTemperature = MaxTemperature;
@@ -129,7 +129,7 @@ namespace LightBulb.Services
             get { return _sunriseTime; }
             set
             {
-                if (Set(ref _sunriseTime, value)) return;
+                if (!Set(ref _sunriseTime, value)) return;
 
                 if (SunriseTime > SunsetTime)
                     SunsetTime = SunriseTime;
@@ -141,7 +141,7 @@ namespace LightBulb.Services
             get { return _sunsetTime; }
             set
             {
-                if (Set(ref _sunsetTime, value)) return;
+                if (!Set(ref _sunsetTime, value)) return;
 
                 if (SunsetTime < SunriseTime)
                     SunriseTime = SunsetTime;
