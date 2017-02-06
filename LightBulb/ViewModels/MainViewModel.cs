@@ -34,7 +34,7 @@ namespace LightBulb.ViewModels
         private double _cyclePosition;
 
         public ISettingsService SettingsService { get; }
-        public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+        public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         /// <summary>
         /// Whether a new version of this program is available
@@ -222,15 +222,15 @@ namespace LightBulb.ViewModels
         {
             _hotkeyService.UnregisterAll();
 
-            if (SettingsService.ToggleHotkey != Hotkey.Unset)
+            if (SettingsService.ToggleHotkey != null)
                 _hotkeyService.Register(SettingsService.ToggleHotkey,
                     () => IsEnabled = !IsEnabled);
 
-            if (SettingsService.TogglePollingHotkey != Hotkey.Unset)
+            if (SettingsService.TogglePollingHotkey != null)
                 _hotkeyService.Register(SettingsService.TogglePollingHotkey,
                     () => SettingsService.IsGammaPollingEnabled = !SettingsService.IsGammaPollingEnabled);
 
-            if (SettingsService.RefreshGammaHotkey != Hotkey.Unset)
+            if (SettingsService.RefreshGammaHotkey != null)
                 _hotkeyService.Register(SettingsService.RefreshGammaHotkey,
                     () => _temperatureService.RefreshGamma());
         }

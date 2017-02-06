@@ -50,13 +50,19 @@ namespace LightBulb.Views
             var modifiers = Keyboard.Modifiers;
             var key = e.Key;
 
+            // Nothing pressed - return
+            if (key == Key.None)
+            {
+                return;
+            }
+
             // When Alt is pressed, SystemKey is used instead
             if (key == Key.System) key = e.SystemKey;
 
             // Pressing delete, backspace or escape without modifiers clears the current value
             if (modifiers == ModifierKeys.None && key.IsEither(Key.Delete, Key.Back, Key.Escape))
             {
-                Hotkey = Hotkey.Unset;
+                Hotkey = null;
                 return;
             }
 

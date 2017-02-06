@@ -153,10 +153,10 @@ namespace LightBulb.Services
             set
             {
                 // Make sure other hotkeys don't use the same keys
-                if (value != Hotkey.Unset)
+                if (value != null)
                 {
-                    if (TogglePollingHotkey == value) TogglePollingHotkey = Hotkey.Unset;
-                    if (RefreshGammaHotkey == value) RefreshGammaHotkey = Hotkey.Unset;
+                    if (TogglePollingHotkey == value) TogglePollingHotkey = null;
+                    if (RefreshGammaHotkey == value) RefreshGammaHotkey = null;
                 }
 
                 Set(ref _toggleHotkey, value);
@@ -169,10 +169,10 @@ namespace LightBulb.Services
             set
             {
                 // Make sure other hotkeys don't use the same keys
-                if (value != Hotkey.Unset)
+                if (value != null)
                 {
-                    if (ToggleHotkey == value) ToggleHotkey = Hotkey.Unset;
-                    if (RefreshGammaHotkey == value) RefreshGammaHotkey = Hotkey.Unset;
+                    if (ToggleHotkey == value) ToggleHotkey = null;
+                    if (RefreshGammaHotkey == value) RefreshGammaHotkey = null;
                 }
 
                 Set(ref _togglePollingHotkey, value);
@@ -185,10 +185,10 @@ namespace LightBulb.Services
             set
             {
                 // Make sure other hotkeys don't use the same keys
-                if (value != Hotkey.Unset)
+                if (value != null)
                 {
-                    if (ToggleHotkey == value) ToggleHotkey = Hotkey.Unset;
-                    if (TogglePollingHotkey == value) TogglePollingHotkey = Hotkey.Unset;
+                    if (ToggleHotkey == value) ToggleHotkey = null;
+                    if (TogglePollingHotkey == value) TogglePollingHotkey = null;
                 }
 
                 Set(ref _refreshGammaHotkey, value);

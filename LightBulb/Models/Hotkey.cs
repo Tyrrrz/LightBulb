@@ -1,18 +1,14 @@
 ﻿using System.Text;
 using System.Windows.Input;
-using Newtonsoft.Json;
 
 namespace LightBulb.Models
 {
-    public struct Hotkey
+    public class Hotkey
     {
-        public static Hotkey Unset { get; } = new Hotkey(Key.None);
-
         public Key Key { get; }
 
         public ModifierKeys Modifiers { get; }
 
-        [JsonConstructor] // for Tyrrrz.Settings' Json.Net deserializer
         public Hotkey(Key key, ModifierKeys modifiers = ModifierKeys.None)
         {
             Key = key;
@@ -22,7 +18,7 @@ namespace LightBulb.Models
         public override string ToString()
         {
             // Unset
-            if (Key == Key.None && Modifiers == ModifierKeys.None) return "< not set >";
+            if (Key == Key.None && Modifiers == ModifierKeys.None) return string.Empty;
 
             // Set
             var str = new StringBuilder();
@@ -40,12 +36,12 @@ namespace LightBulb.Models
 
         public override bool Equals(object obj)
         {
-            return base.Equals(obj);
+            return Equals(this, obj as Hotkey);
         }
 
-        public bool Equals(Hotkey other)
+        protected bool Equals(Hotkey other)
         {
-            return Key == other.Key && Modifiers == other.Modifiers;
+            return this == other;
         }
 
         public override int GetHashCode()
@@ -56,7 +52,13 @@ namespace LightBulb.Models
             }
         }
 
-        public static bool operator ==(Hotkey a, Hotkey b) => a.Equals(b);
+        public static bool operator ==(Hotkey a, Hotkey b)
+        {
+            if (ReferenceEquals(a, b)) return true;
+            if (ReferenceEquals(a, null)) return false;
+            if (ReferenceEquals(b, null)) return false;
+            return a.Key == b.Key && a.Modifiers == b.Modifiers;
+        }
 
         public static bool operator !=(Hotkey a, Hotkey b) => !(a == b);
     }
