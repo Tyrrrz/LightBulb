@@ -1,11 +1,11 @@
 💡 LightBulb
 ===================
 
-Background application that automatically adjusts display gamma reducing eye strain at night.
+Background application that reduces eye strain at night by automatically adjusting display gamma based on current time. Color temperature profiles are used to determine channel output levels for day and night with smooth transitions between them occuring at sunrise and sunset.
 
 **Download:**
 
-To download the latest stable version - navigate to the [releases](https://github.com/Tyrrrz/LightBulb/releases)
+To download the latest stable version - navigate to the [releases](https://github.com/Tyrrrz/LightBulb/releases).
 
 **Customization:**
 
