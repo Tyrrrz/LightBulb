@@ -123,6 +123,18 @@
                 <Setter Property="VerticalAlignment" Value="Top" />
             </Style>
 
+            <Style x:Key="FlatButtonStyle"
+                   BasedOn="{StaticResource {x:Type Button}}"
+                   TargetType="{x:Type Button}">
+                <Setter Property="Padding" Value="4" />
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="materialDesign:ShadowAssist.ShadowDepth" Value="Depth0" />
+                <Setter Property="BorderThickness" Value="0" />
+            </Style>
+
+            <!--  Data binding  -->
             <local:Locator x:Key="Locator" />
         </ResourceDictionary>
     </Application.Resources>

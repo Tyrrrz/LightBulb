@@ -201,29 +201,26 @@
                                VerticalAlignment="Center"
                                Orientation="Horizontal">
                         <Button x:Name="NavigateGeneralSettingsButton"
-                                Padding="4"
-                                Background="Transparent"
-                                BorderBrush="Transparent"
                                 BorderThickness="0,0,0,2"
                                 Click="NavigateGeneralSettingsButton_OnClick"
+                                Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                                Style="{StaticResource FlatButtonStyle}"
                                 ToolTip="General">
                             <materialDesign:PackIcon Kind="Tune" />
                         </Button>
                         <Button x:Name="NavigateGeolocationSettingsButton"
-                                Padding="4"
-                                Background="Transparent"
-                                BorderBrush="Transparent"
                                 BorderThickness="0,0,0,2"
                                 Click="NavigateGeoSettingsButton_OnClick"
+                                Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                                Style="{StaticResource FlatButtonStyle}"
                                 ToolTip="Geolocation">
                             <materialDesign:PackIcon Kind="Earth" />
                         </Button>
                         <Button x:Name="NavigateAdvancedSettingsButton"
-                                Padding="4"
-                                Background="Transparent"
-                                BorderBrush="Transparent"
                                 BorderThickness="0,0,0,2"
                                 Click="NavigateAdvancedSettingsButton_OnClick"
+                                Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                                Style="{StaticResource FlatButtonStyle}"
                                 ToolTip="Advanced">
                             <materialDesign:PackIcon Kind="CheckboxMultipleMarkedOutline" />
                         </Button>
