@@ -68,14 +68,14 @@
                    Height="16"
                    Margin="5,0,5,5"
                    VerticalAlignment="Center"
-                   Source="{Binding SettingsService.GeoInfo.CountryFlagUrl, IsAsync=True}"
-                   Visibility="{Binding GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}" />
+                   Source="{Binding GeoInfoCountryFlagUrl, IsAsync=True}"
+                   Visibility="{Binding GeoInfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}" />
 
             <!--  Geoinfo is set  -->
             <TextBlock Grid.Column="1"
                        VerticalAlignment="Top"
                        TextWrapping="Wrap"
-                       Visibility="{Binding GeoinfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}">
+                       Visibility="{Binding GeoInfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Collapsed}">
                 <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.GeoInfo.City, Mode=OneWay, TargetNullValue=???}" />
                 <Run Text="/" />
                 <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.GeoInfo.Country, Mode=OneWay, TargetNullValue=???}" />
@@ -90,7 +90,7 @@
                        Text="Geographical location is undetermined"
                        TextWrapping="Wrap"
                        ToolTip="If this message doesn't disappear after some time, it might mean that the geolocation server is down"
-                       Visibility="{Binding GeoinfoNotNull, Converter={StaticResource InvertBoolToVisibilityConverter}, ConverterParameter=Collapsed}" />
+                       Visibility="{Binding GeoInfoNotNull, Converter={StaticResource InvertBoolToVisibilityConverter}, ConverterParameter=Collapsed}" />
         </Grid>
     </StackPanel>
 </UserControl>

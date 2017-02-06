@@ -1,11 +1,15 @@
 ﻿using System;
 using GalaSoft.MvvmLight;
 using LightBulb.Services.Interfaces;
+using Tyrrrz.Extensions;
 
 namespace LightBulb.ViewModels
 {
     public class GeoSettingsViewModel : ViewModelBase
     {
+        private bool _geoInfoNotNull;
+        private string _geoInfoCountryFlagUrl;
+
         public ISettingsService SettingsService { get; }
 
         /// <summary>
@@ -29,7 +33,20 @@ namespace LightBulb.ViewModels
         /// <summary>
         /// Whether geoinfo is set
         /// </summary>
-        public bool GeoinfoNotNull => SettingsService.GeoInfo != null;
+        public bool GeoInfoNotNull
+        {
+            get { return _geoInfoNotNull; }
+            private set { Set(ref _geoInfoNotNull, value); }
+        }
+
+        /// <summary>
+        /// Flag image url for current country
+        /// </summary>
+        public string GeoInfoCountryFlagUrl
+        {
+            get { return _geoInfoCountryFlagUrl; }
+            private set { Set(ref _geoInfoCountryFlagUrl, value); }
+        }
 
         public GeoSettingsViewModel(ISettingsService settingsService)
         {
@@ -43,7 +60,13 @@ namespace LightBulb.ViewModels
                 else if (args.PropertyName == nameof(SettingsService.SunsetTime))
                     RaisePropertyChanged(() => SunsetTimeHours);
                 else if (args.PropertyName == nameof(SettingsService.GeoInfo))
-                    RaisePropertyChanged(() => GeoinfoNotNull);
+                {
+                    GeoInfoNotNull = SettingsService.GeoInfo != null;
+                    GeoInfoCountryFlagUrl = SettingsService.GeoInfo == null ||
+                                            SettingsService.GeoInfo.CountryCode.IsBlank()
+                        ? "https://cdn2.f-cdn.com/img/flags/png/unknown.png"
+                        : $"https://cdn2.f-cdn.com/img/flags/png/{SettingsService.GeoInfo.CountryCode.ToLowerInvariant()}.png";
+                }
             };
         }
     }
