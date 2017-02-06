@@ -34,7 +34,7 @@ namespace LightBulb.ViewModels
         private double _cyclePosition;
 
         public ISettingsService SettingsService { get; }
-        public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public string Version => Assembly.GetExecutingAssembly().GetName().Version.TrimToString();
 
         /// <summary>
         /// Whether a new version of this program is available
