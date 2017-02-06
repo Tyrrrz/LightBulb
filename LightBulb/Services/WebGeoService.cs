@@ -77,8 +77,8 @@ namespace LightBulb.Services
                 // Extract data
                 var result = new SolarInfo
                 {
-                    Sunrise = parsed.sunrise,
-                    Sunset = parsed.sunset
+                    SunriseTime = parsed.sunrise.TimeOfDay,
+                    SunsetTime = parsed.sunset.TimeOfDay
                 };
                 return result;
             }

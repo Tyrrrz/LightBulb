@@ -4,8 +4,8 @@ namespace LightBulb.Models
 {
     public class SolarInfo
     {
-        public DateTime Sunrise { get; set; }
+        public TimeSpan SunriseTime { get; set; }
 
-        public DateTime Sunset { get; set; }
+        public TimeSpan SunsetTime { get; set; }
     }
 }

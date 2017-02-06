@@ -346,8 +346,8 @@ namespace LightBulb.ViewModels
 
             if (SettingsService.IsInternetTimeSyncEnabled)
             {
-                SettingsService.SunriseTime = solarInfo.Sunrise.TimeOfDay;
-                SettingsService.SunsetTime = solarInfo.Sunset.TimeOfDay;
+                SettingsService.SunriseTime = solarInfo.SunriseTime;
+                SettingsService.SunsetTime = solarInfo.SunsetTime;
             }
 
             Debug.WriteLine("Geosync done", GetType().Name);
