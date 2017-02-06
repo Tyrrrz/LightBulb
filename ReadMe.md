@@ -1,9 +1,7 @@
 💡 LightBulb
 ===================
 
-
-Background application that adjusts screen gamma, making the colors appear warmer at night, reducing eye strain.
-
+Background application that automatically adjusts display gamma reducing eye strain at night.
 
 **Download:**
 
@@ -11,7 +9,7 @@ To download the latest stable version - navigate to the [releases](https://githu
 
 **Customization:**
 
-LightBulb aims to be very customizable. Refer to [this guide](https://github.com/Tyrrrz/LightBulb/wiki/Settings-explanation) to understand what they do. You can also manually fine-tune every detail using the [configuration file](https://github.com/Tyrrrz/LightBulb/wiki/Config-file).
+LightBulb aims to be very customizable. Refer to [this guide](https://github.com/Tyrrrz/LightBulb/wiki/Settings-explanation) to understand what each setting does. You can also manually fine-tune every detail using the [configuration file](https://github.com/Tyrrrz/LightBulb/wiki/Config-file).
 
 **Dependencies:**
 
