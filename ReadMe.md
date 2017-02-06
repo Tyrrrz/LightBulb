@@ -1,35 +1,17 @@
-LightBulb
+💡 LightBulb
 ===================
 
 
-Background application that adjusts screen gamma, making the colors appear warmer at night, reducing strain on your eyes.
+Background application that adjusts screen gamma, making the colors appear warmer at night, reducing eye strain.
 
 
 **Download:**
-To download the last version - head to the [releases](https://github.com/Tyrrrz/LightBulb/releases) page
 
-**Available Settings:**
+To download the latest stable version - navigate to the [releases](https://github.com/Tyrrrz/LightBulb/releases)
 
-- Maximum color temperature (day-time temperature) [6600]
-- Minimum color temperature (night-time temperature) [3900]
-- Transition duration (how long it takes to transition from day to night temperature) [90 mins]
-- Gamma polling (regularly refresh gamma) [enabled]
-- Disable when fullscreen (pause gamma control when a fullscreen application is in foreground) [disabled]
-- Sunrise time (when night turns to day) [07:20]
-- Sunset time (when day turns to night) [16:30]
-- Internet geo sync (updates sunrise/sunset from internet for current location) [enabled]
-- \* Temperature update interval (how often is the temperature updated) [1 minute]
-- \* Gamma polling interval (when polling is enabled, how often does it happen) [5 seconds]
-- \* Internet sync interval (how often are the sunrise/sunset times synchronized) [6 hours]
-- \* Default monitor temperature (monitor's color temperature when LightBulb is disabled) [6600]
-- \* Temperature epsilon (by how much should color temperature change to warrant gamma refresh) [50]
-- Temperature smoothing (temperature changes are smoothed out to give time for eyes to adjust) [enabled]
-- \* Maximum temperature smoothing duration (when smoothing, up to how long does it take to finish) [3 seconds]
-- Enable/disable hotkey [none]
-- Polling enable/disable hotkey [none]
-- Gamma force refresh hotkey [none]
+**Customization:**
 
-\* - cannot be changed via UI
+LightBulb aims to be very customizable. Refer to [this guide](https://github.com/Tyrrrz/LightBulb/wiki/Settings-explanation) to understand what they do. You can also manually fine-tune every detail using the [configuration file](https://github.com/Tyrrrz/LightBulb/wiki/Config-file).
 
 **Dependencies:**
 
