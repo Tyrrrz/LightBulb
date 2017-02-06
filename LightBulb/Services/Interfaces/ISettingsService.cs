@@ -13,6 +13,7 @@ namespace LightBulb.Services.Interfaces
         bool IsTemperatureSmoothingEnabled { get; set; }
         bool IsFullscreenBlocking { get; set; }
         bool IsInternetTimeSyncEnabled { get; set; }
+        bool ShouldUpdateGeoInfo { get; set; }
         ushort TemperatureEpsilon { get; set; }
         ushort DefaultMonitorTemperature { get; set; }
         ushort MinTemperature { get; set; }

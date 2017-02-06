@@ -332,11 +332,20 @@ namespace LightBulb.ViewModels
         {
             if (!SettingsService.IsInternetTimeSyncEnabled) return;
 
-            var geoInfo = await _geoService.GetGeoInfoAsync();
-            if (geoInfo == null) return;
-            SettingsService.GeoInfo = geoInfo;
+            // Geo info
+            if (SettingsService.ShouldUpdateGeoInfo)
+            {
+                var geoInfo = await _geoService.GetGeoInfoAsync();
+                if (geoInfo == null) return;
+                SettingsService.GeoInfo = geoInfo;
+            }
+            else
+            {
+                if (SettingsService.GeoInfo == null) return;
+            }
 
-            var solarInfo = await _geoService.GetSolarInfoAsync(geoInfo);
+            // Solar info
+            var solarInfo = await _geoService.GetSolarInfoAsync(SettingsService.GeoInfo);
             if (solarInfo == null) return;
 
             if (SettingsService.IsInternetTimeSyncEnabled)

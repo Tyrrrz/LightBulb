@@ -11,6 +11,7 @@ namespace LightBulb.Services
         private bool _isTemperatureSmoothingEnabled = true;
         private bool _isFullscreenBlocking;
         private bool _isInternetTimeSyncEnabled = true;
+        private bool _shouldUpdateGeoInfo = true;
         private ushort _temperatureEpsilon = 50;
         private ushort _defaultMonitorTemperature = 6600;
         private ushort _maxTemperature = 6600;
@@ -49,6 +50,12 @@ namespace LightBulb.Services
         {
             get { return _isInternetTimeSyncEnabled; }
             set { Set(ref _isInternetTimeSyncEnabled, value); }
+        }
+
+        public bool ShouldUpdateGeoInfo
+        {
+            get { return _shouldUpdateGeoInfo; }
+            set { Set(ref _shouldUpdateGeoInfo, value); }
         }
 
         public ushort TemperatureEpsilon
