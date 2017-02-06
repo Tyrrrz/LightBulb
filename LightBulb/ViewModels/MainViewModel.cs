@@ -333,15 +333,11 @@ namespace LightBulb.ViewModels
             if (!SettingsService.IsInternetTimeSyncEnabled) return;
 
             // Geo info
-            if (SettingsService.ShouldUpdateGeoInfo)
+            if (SettingsService.GeoInfo == null || SettingsService.ShouldUpdateGeoInfo)
             {
                 var geoInfo = await _geoService.GetGeoInfoAsync();
                 if (geoInfo == null) return;
                 SettingsService.GeoInfo = geoInfo;
-            }
-            else
-            {
-                if (SettingsService.GeoInfo == null) return;
             }
 
             // Solar info
