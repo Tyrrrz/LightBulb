@@ -11,7 +11,7 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
-    public class WindowsHotkeyService : WinApiServiceBase, IHotkeyService
+    public sealed class WindowsHotkeyService : WinApiServiceBase, IHotkeyService
     {
         #region WinAPI
         [DllImport("user32.dll", EntryPoint = "RegisterHotKey", SetLastError = true)]

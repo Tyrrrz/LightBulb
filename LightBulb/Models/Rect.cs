@@ -2,6 +2,10 @@
 
 namespace LightBulb.Models
 {
+    /// <summary>
+    /// Rectangle object
+    /// <remarks>WinAPI struct</remarks>
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct Rect
     {

@@ -5,11 +5,8 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.ViewModels
 {
-    public class GeoSettingsViewModel : ViewModelBase
+    public sealed class GeoSettingsViewModel : ViewModelBase
     {
-        private bool _geoInfoNotNull;
-        private string _geoInfoCountryFlagUrl;
-
         public ISettingsService SettingsService { get; }
 
         /// <summary>
@@ -33,20 +30,14 @@ namespace LightBulb.ViewModels
         /// <summary>
         /// Whether geoinfo is set
         /// </summary>
-        public bool GeoInfoNotNull
-        {
-            get { return _geoInfoNotNull; }
-            private set { Set(ref _geoInfoNotNull, value); }
-        }
+        public bool GeoInfoNotNull => SettingsService.GeoInfo != null;
 
         /// <summary>
         /// Flag image url for current country
         /// </summary>
-        public string GeoInfoCountryFlagUrl
-        {
-            get { return _geoInfoCountryFlagUrl; }
-            private set { Set(ref _geoInfoCountryFlagUrl, value); }
-        }
+        public string GeoInfoCountryFlagUrl => GeoInfoNotNull && SettingsService.GeoInfo.CountryCode.IsNotBlank()
+            ? $"https://cdn2.f-cdn.com/img/flags/png/{SettingsService.GeoInfo.CountryCode.ToLowerInvariant()}.png"
+            : "https://cdn2.f-cdn.com/img/flags/png/unknown.png";
 
         public GeoSettingsViewModel(ISettingsService settingsService)
         {
@@ -61,11 +52,8 @@ namespace LightBulb.ViewModels
                     RaisePropertyChanged(() => SunsetTimeHours);
                 else if (args.PropertyName == nameof(SettingsService.GeoInfo))
                 {
-                    GeoInfoNotNull = SettingsService.GeoInfo != null;
-                    GeoInfoCountryFlagUrl = SettingsService.GeoInfo == null ||
-                                            SettingsService.GeoInfo.CountryCode.IsBlank()
-                        ? "https://cdn2.f-cdn.com/img/flags/png/unknown.png"
-                        : $"https://cdn2.f-cdn.com/img/flags/png/{SettingsService.GeoInfo.CountryCode.ToLowerInvariant()}.png";
+                    RaisePropertyChanged(() => GeoInfoNotNull);
+                    RaisePropertyChanged(() => GeoInfoCountryFlagUrl);
                 }
             };
         }

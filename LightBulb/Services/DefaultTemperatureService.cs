@@ -8,7 +8,7 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
-    public class DefaultTemperatureService : ITemperatureService, IDisposable
+    public sealed class DefaultTemperatureService : ITemperatureService, IDisposable
     {
         private readonly ISettingsService _settingsService;
         private readonly IGammaService _gammaService;
@@ -235,6 +235,10 @@ namespace LightBulb.Services
 
         private ushort GetTemperature(DateTime dt) => GetTemperature(dt.TimeOfDay);
 
+        /// <summary>
+        /// Update temperature based on the current mode and time
+        /// </summary>
+        /// <param name="forceInstantSwitch">When set to true, will always change temperature instantly instead of occasionally using smooth transitions</param>
         private void UpdateTemperature(bool forceInstantSwitch = false)
         {
             ushort newTemp;
@@ -340,7 +344,7 @@ namespace LightBulb.Services
             CyclePreviewEnded?.Invoke(this, EventArgs.Empty);
         }
 
-        public virtual void Dispose()
+        public void Dispose()
         {
             SystemEvents.PowerModeChanged -= SystemPowerModeChanged;
             SystemEvents.DisplaySettingsChanged -= SystemDisplaySettingsChanged;

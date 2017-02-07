@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace LightBulb.Services
 {
-    public class WebGeoService : WebApiServiceBase, IGeoService
+    public sealed class WebGeoService : WebApiServiceBase, IGeoService
     {
         /// <inheritdoc />
         public async Task<GeoInfo> GetGeoInfoAsync()

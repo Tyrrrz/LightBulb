@@ -3,7 +3,7 @@ using LightBulb.Services.Interfaces;
 
 namespace LightBulb.ViewModels
 {
-    public class AdvancedSettingsViewModel : ViewModelBase
+    public sealed class AdvancedSettingsViewModel : ViewModelBase
     {
         public ISettingsService SettingsService { get; }
 

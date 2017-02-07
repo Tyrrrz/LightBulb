@@ -7,7 +7,7 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
-    public class WindowsGammaService : WinApiServiceBase, IGammaService
+    public sealed class WindowsGammaService : WinApiServiceBase, IGammaService
     {
         #region WinAPI
         [DllImport("user32.dll", EntryPoint = "GetDC", SetLastError = true)]

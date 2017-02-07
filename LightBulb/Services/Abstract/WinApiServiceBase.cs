@@ -9,6 +9,9 @@ using System.Windows.Forms;
 
 namespace LightBulb.Services.Abstract
 {
+    /// <summary>
+    /// Implements basic functionality for interacting with Windows API
+    /// </summary>
     public abstract class WinApiServiceBase : IDisposable
     {
         /// <summary>
@@ -31,6 +34,11 @@ namespace LightBulb.Services.Abstract
         }
 
         private static readonly SpongeWindow Sponge;
+
+        /// <summary>
+        /// Handle for the WndProc sponge window.
+        /// Use this to register for WndProc messages.
+        /// </summary>
         protected static IntPtr SpongeHandle => Sponge.Handle;
 
         static WinApiServiceBase()

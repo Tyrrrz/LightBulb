@@ -1,11 +1,22 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Windows.Input;
 
 namespace LightBulb.Models
 {
-    public class Hotkey
+    /// <summary>
+    /// Combination of a key and modifiers
+    /// </summary>
+    public class Hotkey : IEquatable<Hotkey>
     {
+        /// <summary>
+        /// Key
+        /// </summary>
         public Key Key { get; }
+
+        /// <summary>
+        /// Modifiers
+        /// </summary>
         public ModifierKeys Modifiers { get; }
 
         public Hotkey(Key key, ModifierKeys modifiers = ModifierKeys.None)
@@ -34,7 +45,7 @@ namespace LightBulb.Models
             return Equals(this, obj as Hotkey);
         }
 
-        protected bool Equals(Hotkey other)
+        public bool Equals(Hotkey other)
         {
             return this == other;
         }

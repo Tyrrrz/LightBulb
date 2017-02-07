@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace LightBulb.Services.Abstract
 {
+    /// <summary>
+    /// Implements basic functionality for interacting with a web API
+    /// </summary>
     public abstract class WebApiServiceBase : IDisposable
     {
         private readonly HttpClient _client;
@@ -18,6 +21,9 @@ namespace LightBulb.Services.Abstract
             _client.DefaultRequestHeaders.Add("User-Agent", "LightBulb (github.com/Tyrrrz/LightBulb)");
         }
 
+        /// <summary>
+        /// If necessary, wait before executing the next request
+        /// </summary>
         private async Task RequestThrottlingAsync()
         {
             var diff = DateTime.Now - _lastRequestDateTime;
@@ -31,6 +37,10 @@ namespace LightBulb.Services.Abstract
             _lastRequestDateTime = DateTime.Now;
         }
 
+        /// <summary>
+        /// Send a GET request and return response body as string
+        /// </summary>
+        /// <returns>Response body if request was successful, null otherwise</returns>
         protected async Task<string> GetStringAsync(string url)
         {
             try

@@ -9,9 +9,9 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
-    public class GithubVersionCheckService : WebApiServiceBase, IVersionCheckService
+    public sealed class GithubVersionCheckService : WebApiServiceBase, IVersionCheckService
     {
-        public static Version CurrentVersion => Assembly.GetExecutingAssembly().GetName().Version;
+        private static Version CurrentVersion => Assembly.GetExecutingAssembly().GetName().Version;
 
         /// <inheritdoc />
         public async Task<bool> GetUpdateStatusAsync()

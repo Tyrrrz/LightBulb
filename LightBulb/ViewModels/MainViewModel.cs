@@ -14,7 +14,7 @@ using Tyrrrz.WpfExtensions;
 
 namespace LightBulb.ViewModels
 {
-    public class MainViewModel : ViewModelBase, IDisposable
+    public sealed class MainViewModel : ViewModelBase, IDisposable
     {
         private readonly ITemperatureService _temperatureService;
         private readonly IWindowService _windowService;
@@ -152,6 +152,7 @@ namespace LightBulb.ViewModels
             _disableTemporarilyTimer.Tick += (sender, args) =>
             {
                 IsEnabled = true;
+                _disableTemporarilyTimer.IsEnabled = false;
             };
 
             // Commands
@@ -320,6 +321,9 @@ namespace LightBulb.ViewModels
             }
         }
 
+        /// <summary>
+        /// Check for program updates
+        /// </summary>
         private async Task CheckForUpdates()
         {
             IsUpdateAvailable = await _versionCheckService.GetUpdateStatusAsync();
@@ -328,6 +332,9 @@ namespace LightBulb.ViewModels
                 GetType().Name);
         }
 
+        /// <summary>
+        /// Get updated solar info and overwrite respective settings with new data
+        /// </summary>
         private async Task SynchronizeSolarSettingsAsync()
         {
             if (!SettingsService.IsInternetTimeSyncEnabled) return;

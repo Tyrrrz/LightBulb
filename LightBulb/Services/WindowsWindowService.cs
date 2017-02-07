@@ -10,7 +10,7 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
-    public class WindowsWindowService : WinApiServiceBase, IWindowService
+    public sealed class WindowsWindowService : WinApiServiceBase, IWindowService
     {
         #region WinAPI
         [DllImport("user32.dll", EntryPoint = "GetForegroundWindow", SetLastError = true)]
@@ -216,7 +216,7 @@ namespace LightBulb.Services
             if (className.EqualsInvariant("Progman") || className.EqualsInvariant("WorkerW"))
                 return false;
 
-            // Check if visible
+            // If not visible - return
             if (!IsWindowVisible(hWindow))
                 return false;
 
@@ -236,7 +236,7 @@ namespace LightBulb.Services
                 windowRect.Top + clientRect.Bottom
             );
 
-            // Get the screen rect and compare
+            // Get the screen rect and do a bounding box check
             var screenRect = Screen.FromHandle(hWindow).Bounds;
             bool boundCheck = actualRect.Left <= 0 && actualRect.Top <= 0 &&
                               actualRect.Right >= screenRect.Right && actualRect.Bottom >= screenRect.Bottom;

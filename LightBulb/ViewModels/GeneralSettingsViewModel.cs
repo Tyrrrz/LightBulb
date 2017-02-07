@@ -5,7 +5,7 @@ using LightBulb.Services.Interfaces;
 
 namespace LightBulb.ViewModels
 {
-    public class GeneralSettingsViewModel : ViewModelBase
+    public sealed class GeneralSettingsViewModel : ViewModelBase
     {
         private readonly ITemperatureService _temperatureService;
 

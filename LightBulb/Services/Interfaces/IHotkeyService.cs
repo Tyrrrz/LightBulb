@@ -3,7 +3,7 @@
 namespace LightBulb.Services.Interfaces
 {
     /// <summary>
-    /// Handles hotkeys
+    /// Performs an action when a specific key sequence has been entered
     /// </summary>
     public delegate void HotkeyHandler();
 

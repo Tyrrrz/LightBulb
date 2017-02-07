@@ -15,6 +15,9 @@ namespace LightBulb
         public static T Resolve<T>() => ServiceLocator.Current.GetInstance<T>();
         public static T Resolve<T>(string id) => ServiceLocator.Current.GetInstance<T>(id);
 
+        /// <summary>
+        /// Initialize service locator
+        /// </summary>
         public static void Init()
         {
             if (_isInit) return;
@@ -40,6 +43,9 @@ namespace LightBulb
             _isInit = true;
         }
 
+        /// <summary>
+        /// Cleanup resources used by service locator
+        /// </summary>
         public static void Cleanup()
         {
             if (!_isInit) return;
