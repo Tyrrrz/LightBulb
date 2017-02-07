@@ -229,13 +229,12 @@ namespace LightBulb.Services
 
             // Get client rect and actual rect
             var clientRect = GetWindowClientRect(hWindow);
-            var actualRect = new Rect
-            {
-                Left = windowRect.Left + clientRect.Left,
-                Right = windowRect.Left + clientRect.Right,
-                Top = windowRect.Top + clientRect.Top,
-                Bottom = windowRect.Top + clientRect.Bottom
-            };
+            var actualRect = new Rect(
+                windowRect.Left + clientRect.Left,
+                windowRect.Top + clientRect.Top,
+                windowRect.Left + clientRect.Right,
+                windowRect.Top + clientRect.Bottom
+            );
 
             // Get the screen rect and compare
             var screenRect = Screen.FromHandle(hWindow).Bounds;

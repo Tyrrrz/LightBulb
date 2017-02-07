@@ -6,17 +6,17 @@ namespace LightBulb.Models
     public struct GammaRamp
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
-        public ushort[] Red;
+        public readonly ushort[] Red;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
-        public ushort[] Green;
+        public readonly ushort[] Green;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
-        public ushort[] Blue;
+        public readonly ushort[] Blue;
 
-        public void Init()
+        public GammaRamp(int size = 256)
         {
-            Red = new ushort[256];
-            Green = new ushort[256];
-            Blue = new ushort[256];
+            Red = new ushort[size];
+            Green = new ushort[size];
+            Blue = new ushort[size];
         }
     }
 }

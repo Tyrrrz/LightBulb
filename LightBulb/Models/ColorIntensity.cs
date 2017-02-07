@@ -3,7 +3,7 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Models
 {
-    public partial struct ColorIntensity
+    public partial class ColorIntensity
     {
         public double Red { get; }
         public double Green { get; }
@@ -30,9 +30,9 @@ namespace LightBulb.Models
         }
     }
 
-    public partial struct ColorIntensity
+    public partial class ColorIntensity
     {
-        public static ColorIntensity Default { get; } = new ColorIntensity(1);
+        public static ColorIntensity Identity { get; } = new ColorIntensity(1);
 
         public static ColorIntensity FromTemperature(ushort temp)
         {

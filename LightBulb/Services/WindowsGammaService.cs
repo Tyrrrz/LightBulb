@@ -58,8 +58,7 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public void SetDisplayGammaLinear(ColorIntensity intensity)
         {
-            var ramp = new GammaRamp();
-            ramp.Init();
+            var ramp = new GammaRamp(256);
 
             for (int i = 1; i < 256; i++)
             {
@@ -74,7 +73,7 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public void RestoreDefault()
         {
-            SetDisplayGammaLinear(ColorIntensity.Default);
+            SetDisplayGammaLinear(ColorIntensity.Identity);
         }
 
         public override void Dispose()

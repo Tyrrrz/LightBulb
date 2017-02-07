@@ -6,7 +6,6 @@ namespace LightBulb.Models
     public class Hotkey
     {
         public Key Key { get; }
-
         public ModifierKeys Modifiers { get; }
 
         public Hotkey(Key key, ModifierKeys modifiers = ModifierKeys.None)
@@ -17,10 +16,6 @@ namespace LightBulb.Models
 
         public override string ToString()
         {
-            // Unset
-            if (Key == Key.None && Modifiers == ModifierKeys.None) return string.Empty;
-
-            // Set
             var str = new StringBuilder();
             if (Modifiers.HasFlag(ModifierKeys.Control))
                 str.Append("Ctrl + ");

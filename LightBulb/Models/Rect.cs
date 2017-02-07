@@ -5,17 +5,20 @@ namespace LightBulb.Models
     [StructLayout(LayoutKind.Sequential)]
     public struct Rect
     {
-        public int Left;
-        public int Top;
-        public int Right;
-        public int Bottom;
+        public readonly int Left;
+        public readonly int Top;
+        public readonly int Right;
+        public readonly int Bottom;
 
         public int Height => Bottom - Top;
         public int Width => Right - Left;
 
-        public void Init()
+        public Rect(int left, int top, int right, int bottom)
         {
-            
+            Left = left;
+            Top = top;
+            Right = right;
+            Bottom = bottom;
         }
 
         public override string ToString()
