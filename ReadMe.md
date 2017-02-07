@@ -7,6 +7,8 @@ Background application that reduces eye strain at night by automatically adjusti
 
 To download the latest stable version - navigate to the [releases](https://github.com/Tyrrrz/LightBulb/releases).
 
+You can also get this application using [Chocolatey](https://chocolatey.org): `choco install lightbulb`
+
 **Customization:**
 
 LightBulb aims to be very customizable. Refer to [this guide](https://github.com/Tyrrrz/LightBulb/wiki/Settings-explanation) to understand what each setting does. You can also manually fine-tune every detail using the [configuration file](https://github.com/Tyrrrz/LightBulb/wiki/Config-file).

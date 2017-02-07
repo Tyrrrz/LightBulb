@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>lightbulb</id>
+    <version>1.6.2</version>
+    <packageSourceUrl>https://github.com/Tyrrrz/LightBulb</packageSourceUrl>
+    <owners>Tyrrrz</owners>
+    <title>LightBulb</title>
+    <authors>Alexey 'Tyrrrz' Golub</authors>
+    <projectUrl>https://github.com/Tyrrrz/LightBulb</projectUrl>
+    <iconUrl>https://github.com/Tyrrrz/LightBulb/blob/master/favicon.png</iconUrl>
+    <copyright>Alexey Golub</copyright>
+    <licenseUrl>https://github.com/Tyrrrz/LightBulb/blob/master/License.txt</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <projectSourceUrl>https://github.com/Tyrrrz/LightBulb</projectSourceUrl>
+    <docsUrl>https://github.com/Tyrrrz/LightBulb/wiki</docsUrl>
+    <bugTrackerUrl>https://github.com/Tyrrrz/LightBulb/issues</bugTrackerUrl>
+    <tags>lightbulb screen gamma correction utility eye-strain sunrise sunset</tags>
+    <summary>Application that adjusts screen gamma as the day goes, reducing blue light when it gets late</summary>
+    <description>Background application that reduces eye strain at night by automatically adjusting display gamma based on current time. Color temperature profiles are used to determine channel output levels for day and night with smooth transitions between them occuring at sunrise and sunset.</description>    
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
