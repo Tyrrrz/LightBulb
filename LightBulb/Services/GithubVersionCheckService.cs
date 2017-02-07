@@ -9,7 +9,7 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
-    public sealed class GithubVersionCheckService : WebApiServiceBase, IVersionCheckService
+    public class GithubVersionCheckService : WebApiServiceBase, IVersionCheckService
     {
         private static Version CurrentVersion => Assembly.GetExecutingAssembly().GetName().Version;
 

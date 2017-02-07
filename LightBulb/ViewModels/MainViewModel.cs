@@ -9,12 +9,13 @@ using GalaSoft.MvvmLight.Threading;
 using LightBulb.Models;
 using LightBulb.Services.Helpers;
 using LightBulb.Services.Interfaces;
+using Microsoft.Win32;
 using Tyrrrz.Extensions;
 using Tyrrrz.WpfExtensions;
 
 namespace LightBulb.ViewModels
 {
-    public sealed class MainViewModel : ViewModelBase, IDisposable
+    public class MainViewModel : ViewModelBase, IDisposable
     {
         private readonly ITemperatureService _temperatureService;
         private readonly IWindowService _windowService;
@@ -189,7 +190,11 @@ namespace LightBulb.ViewModels
                 Process.Start("https://github.com/Tyrrrz/LightBulb/releases");
             });
 
+            // System
+            SystemEvents.SessionEnding += SystemSessionEnding;
+
             // Settings
+            SettingsService.TryLoad();
             SettingsService.PropertyChanged += (sender, args) =>
             {
                 UpdateConfiguration();
@@ -211,6 +216,11 @@ namespace LightBulb.ViewModels
             SynchronizeSolarSettingsAsync().Forget();
             _statusUpdateTimer.IsEnabled = true;
             IsEnabled = true;
+        }
+
+        private void SystemSessionEnding(object sender, SessionEndingEventArgs args)
+        {
+            SettingsService.TrySave();
         }
 
         private void UpdateConfiguration()
@@ -360,8 +370,11 @@ namespace LightBulb.ViewModels
             Debug.WriteLine("Geosync done", GetType().Name);
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
+            SystemEvents.SessionEnding -= SystemSessionEnding;
+
+            SettingsService.TrySave();
             _statusUpdateTimer.Dispose();
             _geoSyncTimer.Dispose();
             _disableTemporarilyTimer.Dispose();

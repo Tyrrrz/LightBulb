@@ -29,5 +29,25 @@ namespace LightBulb.Services.Interfaces
         Hotkey ToggleHotkey { get; set; }
         Hotkey TogglePollingHotkey { get; set; }
         Hotkey RefreshGammaHotkey { get; set; }
+
+        /// <summary>
+        /// Load settings
+        /// </summary>
+        void Load();
+
+        /// <summary>
+        /// Save settings
+        /// </summary>
+        void Save();
+
+        /// <summary>
+        /// Try load settings
+        /// </summary>
+        bool TryLoad();
+
+        /// <summary>
+        /// Try save settings
+        /// </summary>
+        bool TrySave();
     }
 }

@@ -10,7 +10,7 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
-    public sealed class WindowsWindowService : WinApiServiceBase, IWindowService
+    public class WindowsWindowService : WinApiServiceBase, IWindowService
     {
         #region WinAPI
         [DllImport("user32.dll", EntryPoint = "GetForegroundWindow", SetLastError = true)]

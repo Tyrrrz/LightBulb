@@ -5,7 +5,7 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.ViewModels
 {
-    public sealed class GeoSettingsViewModel : ViewModelBase
+    public class GeoSettingsViewModel : ViewModelBase
     {
         public ISettingsService SettingsService { get; }
 

@@ -5,7 +5,7 @@ using Tyrrrz.Settings;
 
 namespace LightBulb.Services
 {
-    public sealed class FileSettingsService : SettingsManager, ISettingsService, IDisposable
+    public class FileSettingsService : SettingsManager, ISettingsService
     {
         private bool _isGammaPollingEnabled = true;
         private bool _isTemperatureSmoothingEnabled = true;
@@ -204,13 +204,6 @@ namespace LightBulb.Services
 
         public FileSettingsService()
             : base(new Configuration {SubDirectoryPath = "LightBulb", FileName = "Configuration.dat"})
-        {
-            TryLoad();
-        }
-
-        public void Dispose()
-        {
-            TrySave();
-        }
+        { }
     }
 }

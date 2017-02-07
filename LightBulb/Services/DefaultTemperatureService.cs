@@ -8,7 +8,7 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
-    public sealed class DefaultTemperatureService : ITemperatureService, IDisposable
+    public class DefaultTemperatureService : ITemperatureService, IDisposable
     {
         private readonly ISettingsService _settingsService;
         private readonly IGammaService _gammaService;
@@ -344,7 +344,7 @@ namespace LightBulb.Services
             CyclePreviewEnded?.Invoke(this, EventArgs.Empty);
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             SystemEvents.PowerModeChanged -= SystemPowerModeChanged;
             SystemEvents.DisplaySettingsChanged -= SystemDisplaySettingsChanged;
