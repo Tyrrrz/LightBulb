@@ -7,7 +7,7 @@
     <owners>Tyrrrz</owners>
     <title>LightBulb</title>
     <authors>Alexey 'Tyrrrz' Golub</authors>
-    <projectUrl>https://github.com/Tyrrrz/LightBulb</projectUrl>
+    <projectUrl>http://www.tyrrrz.me/projects/?id=lb</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/Tyrrrz/LightBulb/master/favicon.png</iconUrl>
     <copyright>Alexey Golub</copyright>
     <licenseUrl>https://raw.githubusercontent.com/Tyrrrz/LightBulb/master/License.txt</licenseUrl>
@@ -15,9 +15,10 @@
     <projectSourceUrl>https://github.com/Tyrrrz/LightBulb</projectSourceUrl>
     <docsUrl>https://github.com/Tyrrrz/LightBulb/wiki</docsUrl>
     <bugTrackerUrl>https://github.com/Tyrrrz/LightBulb/issues</bugTrackerUrl>
-    <tags>lightbulb screen gamma correction utility eye-strain sunrise sunset</tags>
+    <tags>lightbulb admin screen gamma correction utility eye-strain sunrise sunset</tags>
     <summary>Application that adjusts screen gamma as the day goes, reducing blue light when it gets late</summary>
     <description>Background application that reduces eye strain at night by automatically adjusting display gamma based on current time. Color temperature profiles are used to determine channel output levels for day and night with smooth transitions between them occuring at sunrise and sunset.</description>    
+    <releaseNotes>https://github.com/Tyrrrz/LightBulb/releases</releaseNotes>
   </metadata>
   <files>
     <file src="tools\**" target="tools" />
