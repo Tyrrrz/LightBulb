@@ -26,12 +26,10 @@ namespace LightBulb.Services.Abstract
         /// </summary>
         private async Task RequestThrottlingAsync()
         {
-            var diff = DateTime.Now - _lastRequestDateTime;
-            if (diff < _minRequestInterval)
+            var timeSinceLastRequest = DateTime.Now - _lastRequestDateTime;
+            if (timeSinceLastRequest > TimeSpan.Zero && timeSinceLastRequest < _minRequestInterval)
             {
-                var timeLeft = _minRequestInterval - diff;
-                if (timeLeft < TimeSpan.Zero || timeLeft > _minRequestInterval) // sanity check in case system time fucks up
-                    timeLeft = _minRequestInterval;
+                var timeLeft = _minRequestInterval - timeSinceLastRequest;
                 await Task.Delay(timeLeft);
             }
             _lastRequestDateTime = DateTime.Now;

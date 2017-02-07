@@ -39,6 +39,9 @@ namespace LightBulb.Models
 
         public ColorIntensity(double uniform)
         {
+            if (uniform < 0)
+                throw new ArgumentOutOfRangeException(nameof(uniform));
+
             Red = Green = Blue = uniform;
         }
 
