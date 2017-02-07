@@ -1,11 +1,11 @@
-💡 LightBulb
+<img src="https://raw.githubusercontent.com/Tyrrrz/LightBulb/master/favicon.png" style="vertical-align: middle" /> <span style="vertical-align: middle">LightBulb</span>
 ===================
 
 Background application that reduces eye strain at night by automatically adjusting display gamma based on current time. Color temperature profiles are used to determine channel output levels for day and night with smooth transitions between them occuring at sunrise and sunset.
 
 **Download:**
 
-To download the latest stable version - navigate to the [releases](https://github.com/Tyrrrz/LightBulb/releases).
+To download the latest stable version - navigate to the [releases](https://github.com/Tyrrrz/LightBulb/releases)
 
 You can also get this application using [Chocolatey](https://chocolatey.org): `choco install lightbulb`
 
