@@ -8,9 +8,9 @@
     <title>LightBulb</title>
     <authors>Alexey 'Tyrrrz' Golub</authors>
     <projectUrl>https://github.com/Tyrrrz/LightBulb</projectUrl>
-    <iconUrl>https://github.com/Tyrrrz/LightBulb/blob/master/favicon.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/Tyrrrz/LightBulb/master/favicon.png</iconUrl>
     <copyright>Alexey Golub</copyright>
-    <licenseUrl>https://github.com/Tyrrrz/LightBulb/blob/master/License.txt</licenseUrl>
+    <licenseUrl>https://raw.githubusercontent.com/Tyrrrz/LightBulb/master/License.txt</licenseUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <projectSourceUrl>https://github.com/Tyrrrz/LightBulb</projectSourceUrl>
     <docsUrl>https://github.com/Tyrrrz/LightBulb/wiki</docsUrl>
