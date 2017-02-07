@@ -32,19 +32,13 @@ namespace LightBulb.Services
 
                 // Extract data
                 var result = new GeoInfo
-                {
-                    Country = parsed.country_name,
-                    CountryCode = parsed.country_code,
-                    City = parsed.city,
-                    Latitude = parsed.latitude,
-                    Longitude = parsed.longitude
-                };
-
-                // Turn empty string to null (so bindings can use fallbacks)
-                if (result.Country.IsBlank())
-                    result.Country = null;
-                if (result.City.IsBlank())
-                    result.City = null;
+                (
+                    parsed.country_name,
+                    parsed.country_code,
+                    parsed.city,
+                    parsed.latitude,
+                    parsed.longitude
+                );
 
                 return result;
             }
@@ -76,10 +70,10 @@ namespace LightBulb.Services
 
                 // Extract data
                 var result = new SolarInfo
-                {
-                    SunriseTime = parsed.sunrise.TimeOfDay,
-                    SunsetTime = parsed.sunset.TimeOfDay
-                };
+                (
+                    parsed.sunrise.TimeOfDay,
+                    parsed.sunset.TimeOfDay
+                );
                 return result;
             }
             catch
