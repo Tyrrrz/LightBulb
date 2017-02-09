@@ -203,7 +203,10 @@ namespace LightBulb.Services
         }
 
         public FileSettingsService()
-            : base(new Configuration {SubDirectoryPath = "LightBulb", FileName = "Configuration.dat"})
-        { }
+        {
+            Configuration.FileStorageSpace = StorageSpace.RoamingAppData;
+            Configuration.SubDirectoryPath = "LightBulb";
+            Configuration.FileName = "Configuration.dat";
+        }
     }
 }
