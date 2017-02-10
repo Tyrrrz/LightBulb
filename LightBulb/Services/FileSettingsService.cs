@@ -204,7 +204,7 @@ namespace LightBulb.Services
 
         public FileSettingsService()
         {
-            Configuration.FileStorageSpace = StorageSpace.RoamingAppData;
+            Configuration.StorageSpace = StorageSpace.SyncedUserDomain;
             Configuration.SubDirectoryPath = "LightBulb";
             Configuration.FileName = "Configuration.dat";
         }
