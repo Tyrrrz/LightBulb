@@ -29,6 +29,7 @@ namespace LightBulb.Services.Interfaces
         Hotkey ToggleHotkey { get; set; }
         Hotkey TogglePollingHotkey { get; set; }
         Hotkey RefreshGammaHotkey { get; set; }
+        Proxy Proxy { get; set; }
 
         /// <summary>
         /// Load settings

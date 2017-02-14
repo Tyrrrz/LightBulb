@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Net;
 using LightBulb.Models;
 using LightBulb.Services.Interfaces;
+using Tyrrrz.Extensions;
 using Tyrrrz.Settings;
 
 namespace LightBulb.Services
@@ -27,6 +29,7 @@ namespace LightBulb.Services
         private Hotkey _toggleHotkey;
         private Hotkey _togglePollingHotkey;
         private Hotkey _refreshGammaHotkey;
+        private Proxy _proxy;
 
         public bool IsGammaPollingEnabled
         {
@@ -202,11 +205,48 @@ namespace LightBulb.Services
             }
         }
 
+        public Proxy Proxy
+        {
+            get { return _proxy; }
+            set { Set(ref _proxy, value); }
+        }
+
         public FileSettingsService()
         {
             Configuration.StorageSpace = StorageSpace.SyncedUserDomain;
             Configuration.SubDirectoryPath = "LightBulb";
             Configuration.FileName = "Configuration.dat";
+
+            PropertyChanged += (sender, args) => UpdateEnvironment();
+        }
+
+        private void UpdateEnvironment()
+        {
+            // Proxy
+            if (Proxy == null)
+            {
+                WebRequest.DefaultWebProxy = WebRequest.GetSystemWebProxy();
+            }
+            else if (Proxy.Host.IsBlank())
+            {
+                WebRequest.DefaultWebProxy = null;
+            }
+            else
+            {
+                var proxy = new WebProxy(Proxy.Host, Proxy.Port);
+
+                if (Proxy.Username.IsBlank())
+                {
+                    proxy.UseDefaultCredentials = true;
+                }
+                else
+                {
+                    proxy.UseDefaultCredentials = false;
+                    proxy.Credentials = new NetworkCredential(Proxy.Username, Proxy.Password);
+                }
+
+                WebRequest.DefaultWebProxy = proxy;
+            }
         }
     }
 }

@@ -109,6 +109,7 @@
     <Compile Include="Models\CycleState.cs" />
     <Compile Include="Models\GeoInfo.cs" />
     <Compile Include="Models\Hotkey.cs" />
+    <Compile Include="Models\Proxy.cs" />
     <Compile Include="Models\Rect.cs" />
     <Compile Include="Models\SolarInfo.cs" />
     <Compile Include="Services\GithubVersionCheckService.cs" />
