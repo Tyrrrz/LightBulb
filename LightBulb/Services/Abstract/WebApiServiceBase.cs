@@ -24,11 +24,11 @@ namespace LightBulb.Services.Abstract
             }
             catch (Exception exc)
             {
-                Debug.WriteLine("Error during proxy parsing. " + exc.Message);                
-            }            
+                Debug.WriteLine("Error during proxy parsing. " + exc.Message);
+            }
 
             _client = new HttpClient();
-            _client.DefaultRequestHeaders.Add("User-Agent", "LightBulb (github.com/Tyrrrz/LightBulb)");            
+            _client.DefaultRequestHeaders.Add("User-Agent", "LightBulb (github.com/Tyrrrz/LightBulb)");
         }
 
         /// <summary>
