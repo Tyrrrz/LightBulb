@@ -226,6 +226,9 @@ namespace LightBulb.Services
             if (Proxy == null)
             {
                 WebRequest.DefaultWebProxy = WebRequest.GetSystemWebProxy();
+                var asWebProxy = WebRequest.DefaultWebProxy as WebProxy;
+                if (asWebProxy != null)
+                    asWebProxy.UseDefaultCredentials = true;
             }
             else if (Proxy.Host.IsBlank())
             {
