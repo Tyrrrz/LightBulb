@@ -18,18 +18,16 @@ namespace LightBulb.Services.Abstract
 
         protected WebApiServiceBase()
         {
-            HttpClientHandler httpClientHandler = new HttpClientHandler();
-
             try
             {
-                httpClientHandler.Proxy = GetEnvironmentProxy();                
+                WebRequest.DefaultWebProxy = GetEnvironmentProxy();
             }
             catch (Exception exc)
             {
                 Debug.WriteLine("Error during proxy parsing. " + exc.Message);                
             }            
 
-            _client = new HttpClient(httpClientHandler, true);
+            _client = new HttpClient();
             _client.DefaultRequestHeaders.Add("User-Agent", "LightBulb (github.com/Tyrrrz/LightBulb)");            
         }
 
