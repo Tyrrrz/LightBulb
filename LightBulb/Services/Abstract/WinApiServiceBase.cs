@@ -19,7 +19,7 @@ namespace LightBulb.Services.Abstract
         /// </summary>
         private sealed class SpongeWindow : NativeWindow
         {
-            public event EventHandler<Message> WndProced;
+            public event EventHandler<Message> LocalWndProced;
 
             public SpongeWindow()
             {
@@ -28,7 +28,7 @@ namespace LightBulb.Services.Abstract
 
             protected override void WndProc(ref Message m)
             {
-                WndProced?.Invoke(this, m);
+                LocalWndProced?.Invoke(this, m);
                 base.WndProc(ref m);
             }
         }
@@ -40,6 +40,15 @@ namespace LightBulb.Services.Abstract
         /// Use this to register for WndProc messages.
         /// </summary>
         protected static IntPtr SpongeHandle => Sponge.Handle;
+
+        /// <summary>
+        /// Triggers when there's a new Window message to be processed
+        /// </summary>
+        protected static event EventHandler<Message> WndProced
+        {
+            add { Sponge.LocalWndProced += value; }
+            remove { Sponge.LocalWndProced -= value; }
+        }
 
         static WinApiServiceBase()
         {
@@ -66,13 +75,7 @@ namespace LightBulb.Services.Abstract
 
         protected WinApiServiceBase()
         {
-            Sponge.WndProced += LocalWndProced;
             _hookHandlerDic = new Dictionary<IntPtr, WinEventHandler>();
-        }
-
-        private void LocalWndProced(object sender, Message message)
-        {
-            WndProc(message);
         }
 
         /// <summary>
@@ -95,12 +98,6 @@ namespace LightBulb.Services.Abstract
             if (ex != null) Debug.WriteLine($"Win32 error: {ex.Message} ({ex.NativeErrorCode})", GetType().Name);
 #endif
         }
-
-        /// <summary>
-        /// Override to process windows messages
-        /// </summary>
-        protected virtual void WndProc(Message message)
-        { }
 
         /// <summary>
         /// Register a windows event hook
@@ -135,7 +132,6 @@ namespace LightBulb.Services.Abstract
 
         public virtual void Dispose()
         {
-            Sponge.WndProced -= LocalWndProced;
             foreach (var hook in _hookHandlerDic)
                 UnregisterWinEvent(hook.Key);
         }

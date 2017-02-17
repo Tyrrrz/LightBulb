@@ -217,10 +217,14 @@ namespace LightBulb.Services
             Configuration.SubDirectoryPath = "LightBulb";
             Configuration.FileName = "Configuration.dat";
 
-            PropertyChanged += (sender, args) => UpdateEnvironment();
+            PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName.IsEither(nameof(Proxy)))
+                    UpdateConfiguration();
+            };
         }
 
-        private void UpdateEnvironment()
+        private void UpdateConfiguration()
         {
             // Proxy
             if (Proxy == null)

@@ -26,9 +26,10 @@ namespace LightBulb.Services
         public WindowsHotkeyService()
         {
             _hotkeyHandlerDic = new Dictionary<int, HotkeyHandler>();
+            WndProced += ProcessMessage;
         }
 
-        protected override void WndProc(Message message)
+        private void ProcessMessage(object sender, Message message)
         {
             if (message.Msg != 0x0312) return;
 
@@ -80,6 +81,7 @@ namespace LightBulb.Services
 
         public override void Dispose()
         {
+            WndProced -= ProcessMessage;
             UnregisterAll();
             base.Dispose();
         }
