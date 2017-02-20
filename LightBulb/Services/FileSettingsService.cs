@@ -213,10 +213,21 @@ namespace LightBulb.Services
 
         public FileSettingsService()
         {
-            Configuration.StorageSpace = StorageSpace.SyncedUserDomain;
-            Configuration.SubDirectoryPath = "LightBulb";
-            Configuration.FileName = "Configuration.dat";
+            // Portable
+            if (Environment.GetCommandLineArgs().ContainsInvariant("-portable"))
+            {
+                Configuration.StorageSpace = StorageSpace.Instance;
+                Configuration.SubDirectoryPath = "";
+                Configuration.FileName = "Configuration.dat";
+            }
+            else
+            {
+                Configuration.StorageSpace = StorageSpace.SyncedUserDomain;
+                Configuration.SubDirectoryPath = "LightBulb";
+                Configuration.FileName = "Configuration.dat";
+            }
 
+            // Update global configuration when important settings change
             PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName.IsEither(nameof(Proxy)))
