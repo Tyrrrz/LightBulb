@@ -220,6 +220,7 @@ namespace LightBulb.Services
                 Configuration.SubDirectoryPath = "";
                 Configuration.FileName = "Configuration.dat";
             }
+            // Not portable
             else
             {
                 Configuration.StorageSpace = StorageSpace.SyncedUserDomain;

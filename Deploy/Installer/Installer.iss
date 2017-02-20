@@ -21,9 +21,9 @@ AllowNoIcons=yes
 DisableWelcomePage=yes
 DisableProgramGroupPage=no
 DisableReadyPage=yes
-SetupIconFile=..\favicon.ico
-UninstallDisplayIcon=..\favicon.ico
-LicenseFile=..\License.txt
+SetupIconFile=..\..\favicon.ico
+UninstallDisplayIcon=..\..\favicon.ico
+LicenseFile=..\..\License.txt
 OutputDir=bin\
 OutputBaseFilename=LightBulb_Install_{#MyAppVersion}
 
@@ -31,10 +31,10 @@ OutputBaseFilename=LightBulb_Install_{#MyAppVersion}
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: "..\License.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\LightBulb\bin\Release\LightBulb.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\LightBulb\bin\Release\LightBulb.exe.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\LightBulb\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\License.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\LightBulb\bin\Release\LightBulb.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\LightBulb\bin\Release\LightBulb.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\LightBulb\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\LightBulb.exe"
