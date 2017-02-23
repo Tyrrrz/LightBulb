@@ -73,7 +73,8 @@
             <!--  Styles  -->
             <Style TargetType="{x:Type materialDesign:Card}">
                 <Setter Property="VerticalAlignment" Value="Stretch" />
-                <Setter Property="Margin" Value="2" />
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="Padding" Value="0" />
             </Style>
 
             <Style TargetType="{x:Type Image}">
@@ -84,6 +85,11 @@
                         <Setter Property="Opacity" Value="0.5" />
                     </Trigger>
                 </Style.Triggers>
+            </Style>
+
+            <Style TargetType="{x:Type ProgressBar}">
+                <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
+                <Setter Property="BorderThickness" Value="0" />
             </Style>
 
             <Style TargetType="{x:Type Hyperlink}">
@@ -129,6 +135,7 @@
                 <Setter Property="Padding" Value="4" />
                 <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidBrush}" />
                 <Setter Property="Background" Value="Transparent" />
+                <Setter Property="materialDesign:RippleAssist.Feedback" Value="{DynamicResource MaterialDesignFlatButtonRipple}" />
                 <Setter Property="BorderBrush" Value="Transparent" />
                 <Setter Property="materialDesign:ShadowAssist.ShadowDepth" Value="Depth0" />
                 <Setter Property="BorderThickness" Value="0" />
