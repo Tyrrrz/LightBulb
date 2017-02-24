@@ -1,1 +1,2 @@
-LightBulb.exe -portable
+start LightBulb.exe -portable
+exit

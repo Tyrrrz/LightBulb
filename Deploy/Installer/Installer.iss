@@ -1,5 +1,5 @@
 #define MyAppName "LightBulb"
-#define MyAppVersion "1.6.2"
+#define MyAppVersion "1.6.3"
 #define MyAppPublisher "Alexey 'Tyrrrz' Golub"
 #define MyAppURL "http://www.tyrrrz.me/projects/?id=lb"
 

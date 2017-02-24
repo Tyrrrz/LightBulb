@@ -1,7 +1,7 @@
 ﻿$ErrorActionPreference = 'Stop';
 $packageName= 'lightbulb'
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-$url        = 'https://github.com/Tyrrrz/LightBulb/releases/download/1.6.2/LightBulb_Install_1.6.2.exe'
+$url        = 'https://github.com/Tyrrrz/LightBulb/releases/download/1.6.3/LightBulb_Install_1.6.3.exe'
 $packageArgs = @{
   packageName   = $packageName
   unzipLocation = $toolsDir
@@ -10,7 +10,7 @@ $packageArgs = @{
 
   softwareName  = 'lightbulb*'
 
-  checksum      = '6ef46c593a496564a960250aa6cd2d14a1d09e65a7978e06365ed57c30c848c6'
+  checksum      = '847973f8cada2533c3c5314393a03c03fc1a694dcfa13a9c94e0d5fe7a706823'
   checksumType  = 'sha256'
   
   silentArgs   = '/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP-'
