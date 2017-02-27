@@ -12,7 +12,7 @@
         Height="280"
         AllowsTransparency="True"
         Background="Transparent"
-        DataContext="{Binding Main, Source={StaticResource Locator}}"
+        DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
         Deactivated="MainWindow_OnDeactivated"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Icon="/LightBulb;component/favicon.ico"

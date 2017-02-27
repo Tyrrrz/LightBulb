@@ -67,9 +67,9 @@ namespace LightBulb
             // ReSharper restore SuspiciousTypeConversion.Global
         }
 
-        public IMainViewModel Main => Resolve<IMainViewModel>();
-        public IGeneralSettingsViewModel GeneralSettings => Resolve<IGeneralSettingsViewModel>();
-        public IGeoSettingsViewModel GeoSettings => Resolve<IGeoSettingsViewModel>();
-        public IAdvancedSettingsViewModel AdvancedSettings => Resolve<IAdvancedSettingsViewModel>();
+        public IMainViewModel MainViewModel => Resolve<IMainViewModel>();
+        public IGeneralSettingsViewModel GeneralSettingsViewModel => Resolve<IGeneralSettingsViewModel>();
+        public IGeoSettingsViewModel GeoSettingsViewModel => Resolve<IGeoSettingsViewModel>();
+        public IAdvancedSettingsViewModel AdvancedSettingsViewModel => Resolve<IAdvancedSettingsViewModel>();
     }
 }
