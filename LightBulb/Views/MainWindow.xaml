@@ -250,7 +250,7 @@
                     <!--  Cycle position  -->
                     <ProgressBar Grid.Row="0"
                                  Height="2"
-                                 Foreground="{DynamicResource SecondaryAccentBrush}"
+                                 Background="{DynamicResource PrimaryHueDarkBrush}"
                                  Maximum="1"
                                  Minimum="0"
                                  Value="{Binding CyclePosition, Mode=OneWay}" />
