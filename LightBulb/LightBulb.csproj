@@ -83,16 +83,16 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="Tyrrrz.Extensions, Version=1.0.6267.21466, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tyrrrz.Extensions.1.0.4\lib\net45\Tyrrrz.Extensions.dll</HintPath>
+    <Reference Include="Tyrrrz.Extensions, Version=1.0.6267.35225, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tyrrrz.Extensions.1.0.5\lib\net45\Tyrrrz.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Tyrrrz.Settings, Version=1.2.6250.36208, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Tyrrrz.Settings.1.2.0\lib\net45\Tyrrrz.Settings.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Tyrrrz.WpfExtensions, Version=1.0.6265.29814, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tyrrrz.WpfExtensions.1.0.3\lib\net45\Tyrrrz.WpfExtensions.dll</HintPath>
+    <Reference Include="Tyrrrz.WpfExtensions, Version=1.0.6267.35018, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tyrrrz.WpfExtensions.1.0.4\lib\net45\Tyrrrz.WpfExtensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
@@ -156,8 +156,6 @@
     <Compile Include="Services\WindowsWindowService.cs" />
     <Compile Include="Services\FileSettingsService.cs" />
     <Compile Include="ViewModels\AdvancedSettingsViewModel.cs" />
-    <Compile Include="ViewModels\Converters\TimeSpanToHoursConverter.cs" />
-    <Compile Include="ViewModels\Converters\TimeSpanToMinutesConverter.cs" />
     <Compile Include="ViewModels\GeneralSettingsViewModel.cs" />
     <Compile Include="ViewModels\GeoSettingsViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IAdvancedSettingsViewModel.cs" />
@@ -196,7 +194,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
