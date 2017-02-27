@@ -231,12 +231,12 @@ namespace LightBulb.Services
             // Update global configuration when important settings change
             PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName.IsEither(nameof(Proxy)))
-                    UpdateConfiguration();
+                if (args.PropertyName == nameof(Proxy))
+                    UpdateProxy();
             };
         }
 
-        private void UpdateConfiguration()
+        private void UpdateProxy()
         {
             // Proxy
             if (Proxy == null)

@@ -338,7 +338,7 @@ namespace LightBulb.ViewModels
         {
             IsUpdateAvailable = await _versionCheckService.GetUpdateStatusAsync();
 
-            Debug.WriteLine($"Checked for updates ({(IsUpdateAvailable ? "available" : "up to date")})",
+            Debug.WriteLine($"Checked for updates ({(IsUpdateAvailable ? "update found" : "update not found")})",
                 GetType().Name);
         }
 

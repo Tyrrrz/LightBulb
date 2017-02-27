@@ -83,16 +83,16 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="Tyrrrz.Extensions, Version=1.0.6257.35058, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tyrrrz.Extensions.1.0.3\lib\net45\Tyrrrz.Extensions.dll</HintPath>
+    <Reference Include="Tyrrrz.Extensions, Version=1.0.6267.21466, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tyrrrz.Extensions.1.0.4\lib\net45\Tyrrrz.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Tyrrrz.Settings, Version=1.2.6250.36208, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Tyrrrz.Settings.1.2.0\lib\net45\Tyrrrz.Settings.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Tyrrrz.WpfExtensions, Version=1.0.6259.35322, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tyrrrz.WpfExtensions.1.0.2\lib\net45\Tyrrrz.WpfExtensions.dll</HintPath>
+    <Reference Include="Tyrrrz.WpfExtensions, Version=1.0.6265.29814, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tyrrrz.WpfExtensions.1.0.3\lib\net45\Tyrrrz.WpfExtensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
