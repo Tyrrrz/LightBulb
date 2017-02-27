@@ -9,12 +9,13 @@ using GalaSoft.MvvmLight.Threading;
 using LightBulb.Models;
 using LightBulb.Services.Helpers;
 using LightBulb.Services.Interfaces;
+using LightBulb.ViewModels.Interfaces;
 using Tyrrrz.Extensions;
 using Tyrrrz.WpfExtensions;
 
 namespace LightBulb.ViewModels
 {
-    public class MainViewModel : ViewModelBase, IDisposable
+    public class MainViewModel : ViewModelBase, IMainViewModel, IDisposable
     {
         private readonly ITemperatureService _temperatureService;
         private readonly IWindowService _windowService;
@@ -33,21 +34,20 @@ namespace LightBulb.ViewModels
         private CycleState _cycleState;
         private double _cyclePosition;
 
+        /// <inheritdoc />
         public ISettingsService SettingsService { get; }
+
+        /// <inheritdoc />
         public string Version => Assembly.GetExecutingAssembly().GetName().Version.TrimToString();
 
-        /// <summary>
-        /// Whether a new version of this program is available
-        /// </summary>
+        /// <inheritdoc />
         public bool IsUpdateAvailable
         {
             get { return _isUpdateAvailable; }
             private set { Set(ref _isUpdateAvailable, value); }
         }
 
-        /// <summary>
-        /// Enables or disables the program
-        /// </summary>
+        /// <inheritdoc />
         public bool IsEnabled
         {
             get { return _isEnabled; }
@@ -60,9 +60,7 @@ namespace LightBulb.ViewModels
             }
         }
 
-        /// <summary>
-        /// Whether gamma control is blocked by something 
-        /// </summary>
+        /// <inheritdoc />
         public bool IsBlocked
         {
             get { return _isBlocked; }
@@ -74,27 +72,21 @@ namespace LightBulb.ViewModels
             }
         }
 
-        /// <summary>
-        /// Current status text
-        /// </summary>
+        /// <inheritdoc />
         public string StatusText
         {
             get { return _statusText; }
             private set { Set(ref _statusText, value); }
         }
 
-        /// <summary>
-        /// Current state in the day cycle
-        /// </summary>
+        /// <inheritdoc />
         public CycleState CycleState
         {
             get { return _cycleState; }
             private set { Set(ref _cycleState, value); }
         }
 
-        /// <summary>
-        /// Current position in the day cycle
-        /// </summary>
+        /// <inheritdoc />
         public double CyclePosition
         {
             get { return _cyclePosition; }

@@ -156,8 +156,14 @@
     <Compile Include="Services\WindowsWindowService.cs" />
     <Compile Include="Services\FileSettingsService.cs" />
     <Compile Include="ViewModels\AdvancedSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Converters\TimeSpanToHoursConverter.cs" />
+    <Compile Include="ViewModels\Converters\TimeSpanToMinutesConverter.cs" />
     <Compile Include="ViewModels\GeneralSettingsViewModel.cs" />
     <Compile Include="ViewModels\GeoSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IAdvancedSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IGeneralSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IGeoSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IMainViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\GeneralSettingsView.xaml.cs">
       <DependentUpon>GeneralSettingsView.xaml</DependentUpon>

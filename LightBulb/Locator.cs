@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.Ioc;
 using LightBulb.Services;
 using LightBulb.Services.Interfaces;
 using LightBulb.ViewModels;
+using LightBulb.ViewModels.Interfaces;
 using Microsoft.Practices.ServiceLocation;
 
 namespace LightBulb
@@ -35,10 +36,10 @@ namespace LightBulb
             SimpleIoc.Default.Register<IVersionCheckService, GithubVersionCheckService>();
 
             // View models
-            SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<GeneralSettingsViewModel>();
-            SimpleIoc.Default.Register<GeoSettingsViewModel>();
-            SimpleIoc.Default.Register<AdvancedSettingsViewModel>();
+            SimpleIoc.Default.Register<IMainViewModel, MainViewModel>();
+            SimpleIoc.Default.Register<IGeneralSettingsViewModel, GeneralSettingsViewModel>();
+            SimpleIoc.Default.Register<IGeoSettingsViewModel, GeoSettingsViewModel>();
+            SimpleIoc.Default.Register<IAdvancedSettingsViewModel, AdvancedSettingsViewModel>();
 
             _isInit = true;
         }
@@ -50,6 +51,7 @@ namespace LightBulb
         {
             if (!_isInit) return;
 
+            // ReSharper disable SuspiciousTypeConversion.Global
             (Resolve<ISettingsService>() as IDisposable)?.Dispose();
             (Resolve<IGammaService>() as IDisposable)?.Dispose();
             (Resolve<IWindowService>() as IDisposable)?.Dispose();
@@ -58,12 +60,16 @@ namespace LightBulb
             (Resolve<IGeoService>() as IDisposable)?.Dispose();
             (Resolve<IVersionCheckService>() as IDisposable)?.Dispose();
 
-            Resolve<MainViewModel>().Dispose();
+            (Resolve<IMainViewModel>() as IDisposable)?.Dispose();
+            (Resolve<IGeneralSettingsViewModel>() as IDisposable)?.Dispose();
+            (Resolve<IGeoSettingsViewModel>() as IDisposable)?.Dispose();
+            (Resolve<IAdvancedSettingsViewModel>() as IDisposable)?.Dispose();
+            // ReSharper restore SuspiciousTypeConversion.Global
         }
 
-        public MainViewModel Main => Resolve<MainViewModel>();
-        public GeneralSettingsViewModel GeneralSettings => Resolve<GeneralSettingsViewModel>();
-        public GeoSettingsViewModel GeoSettings => Resolve<GeoSettingsViewModel>();
-        public AdvancedSettingsViewModel AdvancedSettings => Resolve<AdvancedSettingsViewModel>();
+        public IMainViewModel Main => Resolve<IMainViewModel>();
+        public IGeneralSettingsViewModel GeneralSettings => Resolve<IGeneralSettingsViewModel>();
+        public IGeoSettingsViewModel GeoSettings => Resolve<IGeoSettingsViewModel>();
+        public IAdvancedSettingsViewModel AdvancedSettings => Resolve<IAdvancedSettingsViewModel>();
     }
 }

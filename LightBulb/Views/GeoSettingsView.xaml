@@ -18,7 +18,7 @@
                 SmallChange="0.25"
                 TickFrequency="0.25"
                 TickPlacement="BottomRight"
-                Value="{Binding SunriseTimeHours}" />
+                Value="{Binding SettingsService.SunriseTime, Converter={StaticResource TimeSpanToHoursConverter}}" />
 
         <!--  Sunset time temperature  -->
         <TextBlock Margin="5" ToolTip="When the sun sets">
@@ -34,7 +34,7 @@
                 SmallChange="0.25"
                 TickFrequency="0.25"
                 TickPlacement="BottomRight"
-                Value="{Binding SunsetTimeHours}" />
+                Value="{Binding SettingsService.SunsetTime, Converter={StaticResource TimeSpanToHoursConverter}}" />
 
         <!--  Internet sync on/off  -->
         <Grid Background="Transparent">
@@ -57,7 +57,7 @@
 
         <!--  Geoinfo (when set)  -->
         <TextBlock Margin="5" Text="Location:" />
-        <Grid Margin="5,0,5,5" Visibility="{Binding GeoInfoNotNull, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Collapsed}}">
+        <Grid Margin="5,0,5,5" Visibility="{Binding IsGeoInfoSet, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Collapsed}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -90,6 +90,6 @@
                    Text="Geographical location is undetermined"
                    TextWrapping="Wrap"
                    ToolTip="If this message doesn't disappear after some time, it might mean that the geolocation server is down"
-                   Visibility="{Binding GeoInfoNotNull, Converter={StaticResource InvertBoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Collapsed}}" />
+                   Visibility="{Binding IsGeoInfoSet, Converter={StaticResource InvertBoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Collapsed}}" />
     </StackPanel>
 </UserControl>

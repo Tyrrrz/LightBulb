@@ -1,29 +1,26 @@
-﻿using System;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using LightBulb.Services.Interfaces;
+using LightBulb.ViewModels.Interfaces;
 
 namespace LightBulb.ViewModels
 {
-    public class GeneralSettingsViewModel : ViewModelBase
+    public class GeneralSettingsViewModel : ViewModelBase, IGeneralSettingsViewModel
     {
         private readonly ITemperatureService _temperatureService;
 
+        /// <inheritdoc />
         public ISettingsService SettingsService { get; }
 
-        /// <summary>
-        /// Enables or disables the preview mode
-        /// </summary>
-        public bool IsInPreviewMode
+        /// <inheritdoc />
+        public bool IsPreviewModeEnabled
         {
             get { return _temperatureService.IsPreviewModeEnabled; }
             set { _temperatureService.IsPreviewModeEnabled = value; }
         }
 
-        /// <summary>
-        /// Enables or disables cycle preview mode
-        /// </summary>
-        public bool IsInCyclePreviewMode
+        /// <inheritdoc />
+        public bool IsCyclePreviewModeEnabled
         {
             get { return _temperatureService.IsCyclePreviewRunning; }
             set
@@ -33,15 +30,6 @@ namespace LightBulb.ViewModels
                 else
                     _temperatureService.StopCyclePreview();
             }
-        }
-
-        /// <summary>
-        /// Temperature switch duration in minutes
-        /// </summary>
-        public double TemperatureSwitchDurationMinutes
-        {
-            get { return SettingsService.TemperatureTransitionDuration.TotalMinutes; }
-            set { SettingsService.TemperatureTransitionDuration = TimeSpan.FromMinutes(value); }
         }
 
         public RelayCommand StartStopCyclePreviewCommand { get; }
@@ -54,20 +42,13 @@ namespace LightBulb.ViewModels
             _temperatureService = temperatureService;
 
             _temperatureService.CyclePreviewStarted +=
-                (sender, args) => RaisePropertyChanged(() => IsInCyclePreviewMode);
+                (sender, args) => RaisePropertyChanged(() => IsCyclePreviewModeEnabled);
             _temperatureService.CyclePreviewEnded +=
-                (sender, args) => RaisePropertyChanged(() => IsInCyclePreviewMode);
+                (sender, args) => RaisePropertyChanged(() => IsCyclePreviewModeEnabled);
 
             // Commands
             RequestPreviewTemperatureCommand = new RelayCommand<ushort>(RequestPreviewTemperature);
             StartStopCyclePreviewCommand = new RelayCommand(StartStopCyclePreview);
-
-            // Settings
-            SettingsService.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(SettingsService.TemperatureTransitionDuration))
-                    RaisePropertyChanged(() => TemperatureSwitchDurationMinutes);
-            };
         }
 
         private void RequestPreviewTemperature(ushort temp)
@@ -77,7 +58,7 @@ namespace LightBulb.ViewModels
 
         private void StartStopCyclePreview()
         {
-            IsInCyclePreviewMode = !IsInCyclePreviewMode;
+            IsCyclePreviewModeEnabled = !IsCyclePreviewModeEnabled;
         }
     }
 }

@@ -56,7 +56,7 @@
                 SmallChange="5"
                 TickFrequency="5"
                 TickPlacement="BottomRight"
-                Value="{Binding TemperatureSwitchDurationMinutes}" />
+                Value="{Binding SettingsService.TemperatureTransitionDuration, Converter={StaticResource TimeSpanToMinutesConverter}}" />
 
         <!--  24hr preview  -->
         <Grid Background="Transparent">
@@ -82,10 +82,10 @@
                     <materialDesign:PackIcon.Style>
                         <Style BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}" TargetType="{x:Type materialDesign:PackIcon}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsInCyclePreviewMode}" Value="false">
+                                <DataTrigger Binding="{Binding IsCyclePreviewModeEnabled}" Value="false">
                                     <Setter Property="Kind" Value="Play" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding IsInCyclePreviewMode}" Value="true">
+                                <DataTrigger Binding="{Binding IsCyclePreviewModeEnabled}" Value="true">
                                     <Setter Property="Kind" Value="Stop" />
                                 </DataTrigger>
                             </Style.Triggers>
