@@ -151,7 +151,7 @@
     <Compile Include="Services\Abstract\WebApiServiceBase.cs" />
     <Compile Include="Services\Abstract\WinApiServiceBase.cs" />
     <Compile Include="Services\Interfaces\IGammaService.cs" />
-    <Compile Include="Services\DefaultTemperatureService.cs" />
+    <Compile Include="Services\TemperatureService.cs" />
     <Compile Include="Services\WindowsHotkeyService.cs" />
     <Compile Include="Services\WindowsWindowService.cs" />
     <Compile Include="Services\FileSettingsService.cs" />

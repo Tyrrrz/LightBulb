@@ -31,7 +31,7 @@ namespace LightBulb
             SimpleIoc.Default.Register<IGammaService, WindowsGammaService>();
             SimpleIoc.Default.Register<IWindowService, WindowsWindowService>();
             SimpleIoc.Default.Register<IHotkeyService, WindowsHotkeyService>();
-            SimpleIoc.Default.Register<ITemperatureService, DefaultTemperatureService>();
+            SimpleIoc.Default.Register<ITemperatureService, TemperatureService>();
             SimpleIoc.Default.Register<IGeoService, WebGeoService>();
             SimpleIoc.Default.Register<IVersionCheckService, GithubVersionCheckService>();
 

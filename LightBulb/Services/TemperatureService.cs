@@ -8,7 +8,7 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
-    public class DefaultTemperatureService : ITemperatureService, IDisposable
+    public class TemperatureService : ITemperatureService, IDisposable
     {
         private readonly ISettingsService _settingsService;
         private readonly IGammaService _gammaService;
@@ -102,7 +102,7 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public event EventHandler CyclePreviewEnded;
 
-        public DefaultTemperatureService(ISettingsService settingsService, IGammaService gammaService)
+        public TemperatureService(ISettingsService settingsService, IGammaService gammaService)
         {
             _settingsService = settingsService;
             _gammaService = gammaService;
