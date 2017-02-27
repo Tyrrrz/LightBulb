@@ -2,6 +2,7 @@
 using System.Windows;
 using GalaSoft.MvvmLight.Threading;
 using LightBulb.Views;
+using Microsoft.Win32;
 
 namespace LightBulb
 {
@@ -12,6 +13,7 @@ namespace LightBulb
         static App()
         {
             DispatcherHelper.Initialize();
+            SystemEvents.SessionEnding += (sender, args) => Locator.Cleanup();
         }
 
         private void App_OnStartup(object sender, StartupEventArgs e)
