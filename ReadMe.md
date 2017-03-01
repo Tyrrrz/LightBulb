@@ -13,7 +13,7 @@ You can also get this application using [Chocolatey](https://chocolatey.org): `c
 
 LightBulb aims to be very customizable. Refer to [this guide](https://github.com/Tyrrrz/LightBulb/wiki/Settings-explanation) to understand what each setting does. You can also manually fine-tune every detail using the [configuration file](https://github.com/Tyrrrz/LightBulb/wiki/Config-file).
 
-**Dependencies:**
+**Libraries used:**
 
  - [GalaSoft.MVVMLight](http://www.mvvmlight.net) - MVVM rapid development
  - [Newtonsoft.Json](http://www.newtonsoft.com/json) - for deserialization of API responses
