@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              DataContext="{Binding GeneralSettingsViewModel, Source={StaticResource Locator}}">
-
     <StackPanel Grid.IsSharedSizeScope="True" Orientation="Vertical">
         <!--  Day-time temperature  -->
         <TextBlock Margin="5" ToolTip="Color temperature during day-time (between sunrise and sunset)">
@@ -74,7 +73,7 @@
                     Width="24"
                     Height="24"
                     Margin="5"
-                    Padding="2"
+                    Padding="4"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Command="{Binding StartStopCyclePreviewCommand}">

@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:views="clr-namespace:LightBulb.Views"
              DataContext="{Binding AdvancedSettingsViewModel, Source={StaticResource Locator}}">
-
     <StackPanel Grid.IsSharedSizeScope="True" Orientation="Vertical">
         <!--  Polling enabled/disabled  -->
         <Grid Background="Transparent">
