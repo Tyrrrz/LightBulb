@@ -122,6 +122,8 @@
     <Compile Include="Services\Interfaces\ITemperatureService.cs" />
     <Compile Include="Services\Interfaces\IWindowService.cs" />
     <Compile Include="Services\WindowsGammaService.cs" />
+    <Compile Include="Views\SlideLeftWipe.cs" />
+    <Compile Include="Views\SlideRightWipe.cs" />
     <Page Include="Views\GeneralSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

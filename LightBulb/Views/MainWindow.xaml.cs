@@ -6,17 +6,9 @@ namespace LightBulb.Views
 {
     public partial class MainWindow
     {
-        private readonly GeneralSettingsView _generalSettingsView;
-        private readonly GeoSettingsView _geoSettingsView;
-        private readonly AdvancedSettingsView _advancedSettingsView;
-
         public MainWindow()
         {
             InitializeComponent();
-
-            _generalSettingsView = new GeneralSettingsView();
-            _geoSettingsView = new GeoSettingsView();
-            _advancedSettingsView = new AdvancedSettingsView();
         }
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -26,7 +18,6 @@ namespace LightBulb.Views
             Left = SystemParameters.WorkArea.Width - Width - 5;
             Top = SystemParameters.WorkArea.Height - Height;
 
-            ViewPresenter.Content = _generalSettingsView;
             UpdateNavigationButtons();
         }
 
@@ -43,17 +34,17 @@ namespace LightBulb.Views
 
         private void UpdateNavigationButtons()
         {
-            if (ReferenceEquals(ViewPresenter.Content, _generalSettingsView))
+            if (ContentTransitioner.SelectedIndex == 0)
                 NavigateGeneralSettingsButton.SetResourceReference(BorderBrushProperty, "SecondaryAccentBrush");
             else
                 NavigateGeneralSettingsButton.ClearValue(BorderBrushProperty);
 
-            if (ReferenceEquals(ViewPresenter.Content, _geoSettingsView))
+            if (ContentTransitioner.SelectedIndex == 1)
                 NavigateGeolocationSettingsButton.SetResourceReference(BorderBrushProperty, "SecondaryAccentBrush");
             else
                 NavigateGeolocationSettingsButton.ClearValue(BorderBrushProperty);
 
-            if (ReferenceEquals(ViewPresenter.Content, _advancedSettingsView))
+            if (ContentTransitioner.SelectedIndex == 2)
                 NavigateAdvancedSettingsButton.SetResourceReference(BorderBrushProperty, "SecondaryAccentBrush");
             else
                 NavigateAdvancedSettingsButton.ClearValue(BorderBrushProperty);
@@ -61,19 +52,19 @@ namespace LightBulb.Views
 
         private void NavigateGeneralSettingsButton_OnClick(object sender, RoutedEventArgs e)
         {
-            ViewPresenter.Content = _generalSettingsView;
+            ContentTransitioner.SelectedIndex = 0;
             UpdateNavigationButtons();
         }
 
         private void NavigateGeoSettingsButton_OnClick(object sender, RoutedEventArgs e)
         {
-            ViewPresenter.Content = _geoSettingsView;
+            ContentTransitioner.SelectedIndex = 1;
             UpdateNavigationButtons();
         }
 
         private void NavigateAdvancedSettingsButton_OnClick(object sender, RoutedEventArgs e)
         {
-            ViewPresenter.Content = _advancedSettingsView;
+            ContentTransitioner.SelectedIndex = 2;
             UpdateNavigationButtons();
         }
     }

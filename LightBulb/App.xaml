@@ -74,7 +74,6 @@
             <Style TargetType="{x:Type materialDesign:Card}">
                 <Setter Property="VerticalAlignment" Value="Stretch" />
                 <Setter Property="Margin" Value="5" />
-                <Setter Property="Padding" Value="0" />
             </Style>
 
             <Style TargetType="{x:Type Image}">
