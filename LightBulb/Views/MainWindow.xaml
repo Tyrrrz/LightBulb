@@ -222,18 +222,19 @@
             </materialDesign:ColorZone>
 
             <!--  Content  -->
-            <Border Grid.Row="1" Background="{DynamicResource MaterialDesignCardBackground}">
+            <Border Grid.Row="1">
                 <materialDesign:Transitioner x:Name="ContentTransitioner" SelectedIndex="0">
                     <materialDesign:Transitioner.Resources>
                         <Style TargetType="{x:Type materialDesign:TransitionerSlide}">
+                            <Setter Property="Background" Value="{DynamicResource MaterialDesignCardBackground}" />
                             <Setter Property="BackwardWipe">
                                 <Setter.Value>
-                                    <views:SlideRightWipe />
+                                    <views:SlideWipe Direction="Right" />
                                 </Setter.Value>
                             </Setter>
                             <Setter Property="ForwardWipe">
                                 <Setter.Value>
-                                    <views:SlideLeftWipe />
+                                    <views:SlideWipe Direction="Left" />
                                 </Setter.Value>
                             </Setter>
                         </Style>
@@ -246,7 +247,7 @@
             </Border>
 
             <!--  Status bar  -->
-            <materialDesign:ColorZone Grid.Row="2" Mode="PrimaryMid">
+            <materialDesign:ColorZone Grid.Row="2" Mode="PrimaryDark">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
