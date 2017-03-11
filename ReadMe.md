@@ -25,6 +25,6 @@ LightBulb aims to be very customizable. Refer to [this guide](https://github.com
 
 **Screenshots:**
 
-![](http://www.tyrrrz.me/projects/images/lb_1.png)
-![](http://www.tyrrrz.me/projects/images/lb_2.png)
-![](http://www.tyrrrz.me/projects/images/lb_3.png)
+![](http://www.tyrrrz.me/projects/images/lightbulb_1.png)
+![](http://www.tyrrrz.me/projects/images/lightbulb_2.png)
+![](http://www.tyrrrz.me/projects/images/lightbulb_3.png)
