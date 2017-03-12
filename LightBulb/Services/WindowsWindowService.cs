@@ -31,8 +31,8 @@ namespace LightBulb.Services
         [DllImport("user32.dll", EntryPoint = "IsWindowVisible", SetLastError = true)]
         private static extern bool IsWindowVisibleInternal(IntPtr hWindow);
 
-        [DllImport("user32.dll", EntryPoint = "GetClassName", SetLastError = true)]
-        private static extern int GetClassNameInternal(IntPtr hWindow, StringBuilder lpClassName, int nMaxCount);
+        [DllImport("user32.dll", EntryPoint = "GetClassName", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern int GetClassNameInternal(IntPtr hWindow, StringBuilder className, int maxCount);
         #endregion
 
         private IntPtr _foregroundWindowChangedHook;
@@ -244,10 +244,10 @@ namespace LightBulb.Services
             return boundCheck;
         }
 
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
             UninstallHooks();
-            base.Dispose();
         }
     }
 }

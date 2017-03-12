@@ -130,10 +130,21 @@ namespace LightBulb.Services.Abstract
             _hookHandlerDic.Remove(handle);
         }
 
-        public virtual void Dispose()
+        protected virtual void Dispose(bool disposing)
         {
+            if (disposing)
+            {
+            }
+
             foreach (var hook in _hookHandlerDic)
                 UnregisterWinEvent(hook.Key);
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

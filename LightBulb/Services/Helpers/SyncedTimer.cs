@@ -102,9 +102,19 @@ namespace LightBulb.Services.Helpers
             }
         }
 
-        public virtual void Dispose()
+        protected virtual void Dispose(bool disposing)
         {
-            _timer.Dispose();
+            if (disposing)
+            {
+                _timer.Dispose();
+            }
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

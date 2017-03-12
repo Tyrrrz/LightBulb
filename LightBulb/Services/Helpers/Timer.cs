@@ -74,9 +74,19 @@ namespace LightBulb.Services.Helpers
             Tick?.Invoke(this, EventArgs.Empty);
         }
 
-        public virtual void Dispose()
+        protected virtual void Dispose(bool disposing)
         {
-            InternalTimer.Dispose();
+            if (disposing)
+            {
+                InternalTimer.Dispose();
+            }
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

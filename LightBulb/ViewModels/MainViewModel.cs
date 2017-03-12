@@ -352,11 +352,21 @@ namespace LightBulb.ViewModels
             Debug.WriteLine("Geosync done", GetType().Name);
         }
 
-        public virtual void Dispose()
+        protected virtual void Dispose(bool disposing)
         {
-            _statusUpdateTimer.Dispose();
-            _geoSyncTimer.Dispose();
-            _disableTemporarilyTimer.Dispose();
+            if (disposing)
+            {
+                _statusUpdateTimer.Dispose();
+                _geoSyncTimer.Dispose();
+                _disableTemporarilyTimer.Dispose();
+            }
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

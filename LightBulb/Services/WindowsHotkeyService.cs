@@ -79,11 +79,14 @@ namespace LightBulb.Services
             _hotkeyHandlerDic.Clear();
         }
 
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            WndProced -= ProcessMessage;
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                WndProced -= ProcessMessage;
+            }
             UnregisterAll();
-            base.Dispose();
         }
     }
 }

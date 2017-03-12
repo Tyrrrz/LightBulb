@@ -53,9 +53,19 @@ namespace LightBulb.Services.Abstract
             }
         }
 
-        public virtual void Dispose()
+        protected virtual void Dispose(bool disposing)
         {
-            _client.Dispose();
+            if (disposing)
+            {
+                _client.Dispose();
+            }
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

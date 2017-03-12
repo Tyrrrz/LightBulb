@@ -76,10 +76,10 @@ namespace LightBulb.Services
             SetDisplayGammaLinear(ColorIntensity.Identity);
         }
 
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
             RestoreDefault();
-            base.Dispose();
         }
     }
 }
