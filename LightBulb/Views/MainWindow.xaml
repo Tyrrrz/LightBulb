@@ -169,12 +169,13 @@
                     <!--  Application name and version  -->
                     <TextBlock Grid.Column="1"
                                Margin="5,0,0,0"
-                               VerticalAlignment="Center">
+                               VerticalAlignment="Center"
+                               ToolTip="{Binding Version}">
                         <Run FontSize="16"
                              FontWeight="Bold"
                              Foreground="{DynamicResource PrimaryInverseTextBrush}"
                              Text="LightBulb" />
-                        <Run Text="v" /><Run Text="{Binding Version, Mode=OneWay}" />
+                        <Run Text="v" /><Run Text="{Binding Version.Major, Mode=OneWay}" /><Run Text="." /><Run Text="{Binding Version.Minor, Mode=OneWay}" />
                     </TextBlock>
 
                     <!--  Version updates  -->

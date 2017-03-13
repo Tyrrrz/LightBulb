@@ -38,7 +38,7 @@ namespace LightBulb.ViewModels
         public ISettingsService SettingsService { get; }
 
         /// <inheritdoc />
-        public string Version => Assembly.GetExecutingAssembly().GetName().Version.TrimToString();
+        public Version Version => Assembly.GetExecutingAssembly().GetName().Version;
 
         /// <inheritdoc />
         public bool IsUpdateAvailable
@@ -213,18 +213,18 @@ namespace LightBulb.ViewModels
 
         private void UpdateHotkeys()
         {
-            _hotkeyService.UnregisterAll();
+            _hotkeyService.UnregisterAllHotkeys();
 
             if (SettingsService.ToggleHotkey != null)
-                _hotkeyService.Register(SettingsService.ToggleHotkey,
+                _hotkeyService.RegisterHotkey(SettingsService.ToggleHotkey,
                     () => IsEnabled = !IsEnabled);
 
             if (SettingsService.TogglePollingHotkey != null)
-                _hotkeyService.Register(SettingsService.TogglePollingHotkey,
+                _hotkeyService.RegisterHotkey(SettingsService.TogglePollingHotkey,
                     () => SettingsService.IsGammaPollingEnabled = !SettingsService.IsGammaPollingEnabled);
 
             if (SettingsService.RefreshGammaHotkey != null)
-                _hotkeyService.Register(SettingsService.RefreshGammaHotkey,
+                _hotkeyService.RegisterHotkey(SettingsService.RefreshGammaHotkey,
                     () => _temperatureService.RefreshGamma());
         }
 

@@ -40,7 +40,7 @@ namespace LightBulb.Services
         }
 
         /// <inheritdoc />
-        public void Register(Hotkey hotkey, HotkeyHandler handler)
+        public void RegisterHotkey(Hotkey hotkey, HotkeyHandler handler)
         {
             int vk = KeyInterop.VirtualKeyFromKey(hotkey.Key);
             int mods = (int) hotkey.Modifiers;
@@ -57,24 +57,30 @@ namespace LightBulb.Services
         }
 
         /// <inheritdoc />
-        public void Unregister(Hotkey hotkey)
+        public void UnregisterHotkey(Hotkey hotkey)
         {
             int vk = KeyInterop.VirtualKeyFromKey(hotkey.Key);
             int mods = (int) hotkey.Modifiers;
             int id = (vk << 8) | mods;
 
             if (!UnregisterHotKeyInternal(SpongeHandle, id))
+            {
+                CheckLogWin32Error();
                 Debug.WriteLine("Could not unregister a hotkey", GetType().Name);
+            }
             _hotkeyHandlerDic.Remove(id);
         }
 
         /// <inheritdoc />
-        public void UnregisterAll()
+        public void UnregisterAllHotkeys()
         {
-            foreach (int key in _hotkeyHandlerDic.Keys)
+            foreach (var hotkey in _hotkeyHandlerDic)
             {
-                if (!UnregisterHotKeyInternal(SpongeHandle, key))
+                if (!UnregisterHotKeyInternal(SpongeHandle, hotkey.Key))
+                {
+                    CheckLogWin32Error();
                     Debug.WriteLine("Could not unregister a hotkey", GetType().Name);
+                }
             }
             _hotkeyHandlerDic.Clear();
         }
@@ -86,7 +92,7 @@ namespace LightBulb.Services
             {
                 WndProced -= ProcessMessage;
             }
-            UnregisterAll();
+            UnregisterAllHotkeys();
         }
     }
 }

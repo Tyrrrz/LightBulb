@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.CommandWpf;
+﻿using System;
+using GalaSoft.MvvmLight.CommandWpf;
 using LightBulb.Models;
 using LightBulb.Services.Interfaces;
 
@@ -14,7 +15,7 @@ namespace LightBulb.ViewModels.Interfaces
         /// <summary>
         /// Program version
         /// </summary>
-        string Version { get; }
+        Version Version { get; }
 
         /// <summary>
         /// Whether a new version of this program is available

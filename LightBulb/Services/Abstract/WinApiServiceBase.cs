@@ -78,6 +78,11 @@ namespace LightBulb.Services.Abstract
             _hookHandlerDic = new Dictionary<IntPtr, WinEventHandler>();
         }
 
+        ~WinApiServiceBase()
+        {
+            Dispose(false);
+        }
+
         /// <summary>
         /// Get the last WinApi error wrapped in <see cref="Win32Exception"/>
         /// </summary>
@@ -126,18 +131,30 @@ namespace LightBulb.Services.Abstract
             if (!UnhookWinEventInternal(handle))
             {
                 CheckLogWin32Error();
+                Debug.WriteLine("Could not unregister WinEventHook", GetType().Name);
             }
             _hookHandlerDic.Remove(handle);
         }
 
+        /// <summary>
+        /// Unregister all windows event hooks
+        /// </summary>
+        protected void UnregisterAllWinEvents()
+        {
+            foreach (var hook in _hookHandlerDic)
+            {
+                if (!UnhookWinEventInternal(hook.Key))
+                {
+                    CheckLogWin32Error();
+                    Debug.WriteLine("Could not unregister WinEventHook", GetType().Name);
+                }
+            }
+            _hookHandlerDic.Clear();
+        }
+
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-            }
-
-            foreach (var hook in _hookHandlerDic)
-                UnregisterWinEvent(hook.Key);
+            UnregisterAllWinEvents();
         }
 
         /// <inheritdoc />

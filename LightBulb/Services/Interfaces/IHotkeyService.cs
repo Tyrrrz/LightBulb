@@ -15,16 +15,16 @@ namespace LightBulb.Services.Interfaces
         /// <summary>
         /// Register a hotkey to be handled by the given delegate
         /// </summary>
-        void Register(Hotkey hotkey, HotkeyHandler handler);
+        void RegisterHotkey(Hotkey hotkey, HotkeyHandler handler);
 
         /// <summary>
         /// Unregister a hotkey
         /// </summary>
-        void Unregister(Hotkey hotkey);
+        void UnregisterHotkey(Hotkey hotkey);
 
         /// <summary>
         /// Unregisters all hotkeys
         /// </summary>
-        void UnregisterAll();
+        void UnregisterAllHotkeys();
     }
 }
