@@ -6,7 +6,7 @@ namespace LightBulb.Models
     /// <summary>
     /// Specifies color channel output level multipliers
     /// </summary>
-    public partial class ColorIntensity
+    public partial struct ColorIntensity
     {
         /// <summary>
         /// Red multiplier
@@ -51,7 +51,7 @@ namespace LightBulb.Models
         }
     }
 
-    public partial class ColorIntensity
+    public partial struct ColorIntensity
     {
         /// <summary>
         /// Color intensity with all multipliers equal to 1
@@ -63,7 +63,7 @@ namespace LightBulb.Models
         /// </summary>
         public static ColorIntensity FromTemperature(ushort temp)
         {
-            // http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
+            // Original code credit: http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
 
             double tempf = temp/100d;
 

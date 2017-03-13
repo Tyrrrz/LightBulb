@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -13,6 +12,7 @@ namespace LightBulb.Services
     public class WindowsWindowService : WinApiServiceBase, IWindowService
     {
         #region WinAPI
+
         [DllImport("user32.dll", EntryPoint = "GetForegroundWindow", SetLastError = true)]
         private static extern IntPtr GetForegroundWindowInternal();
 
@@ -33,30 +33,13 @@ namespace LightBulb.Services
 
         [DllImport("user32.dll", EntryPoint = "GetClassName", SetLastError = true, CharSet = CharSet.Unicode)]
         private static extern int GetClassNameInternal(IntPtr hWindow, StringBuilder className, int maxCount);
+
         #endregion
 
-        private IntPtr _foregroundWindowChangedHook;
         private IntPtr _foregroundWindowLocationChangedHook;
 
-        private bool _isForegroundFullScreen;
         private IntPtr _lastForegroundWindow;
-
-        public bool AreEventHooksEnabled
-        {
-            get
-            {
-                return
-                    _foregroundWindowChangedHook != IntPtr.Zero ||
-                    _foregroundWindowLocationChangedHook != IntPtr.Zero;
-            }
-            set
-            {
-                if (value)
-                    InstallHooks();
-                else
-                    UninstallHooks();
-            }
-        }
+        private bool _isForegroundFullScreen;
 
         /// <inheritdoc />
         public bool IsForegroundFullScreen
@@ -76,15 +59,6 @@ namespace LightBulb.Services
 
         public WindowsWindowService()
         {
-            // Init
-            InstallHooks();
-            IsForegroundFullScreen = IsWindowFullScreen(GetForegroundWindow());
-        }
-
-        private void InstallHooks()
-        {
-            if (AreEventHooksEnabled) return;
-
             var foregroundWindowLocationChangedEventHandler = new WinEventHandler(
                 (hook, type, hwnd, idObject, child, thread, time) =>
                 {
@@ -108,19 +82,10 @@ namespace LightBulb.Services
                         foregroundWindowLocationChangedEventHandler, 0, thread);
                 });
 
-            _foregroundWindowChangedHook = RegisterWinEvent(0x0003, foregroundWindowChangedEventHandler);
+            RegisterWinEvent(0x0003, foregroundWindowChangedEventHandler);
 
-            Debug.WriteLine("Installed WinAPI hooks", GetType().Name);
-        }
-
-        private void UninstallHooks()
-        {
-            if (!AreEventHooksEnabled) return;
-
-            UnregisterWinEvent(_foregroundWindowChangedHook);
-            UnregisterWinEvent(_foregroundWindowLocationChangedHook);
-
-            Debug.WriteLine("Uninstalled WinAPI hooks", GetType().Name);
+            // Init
+            IsForegroundFullScreen = IsWindowFullScreen(GetForegroundWindow());
         }
 
         /// <summary>
@@ -240,14 +205,8 @@ namespace LightBulb.Services
             var screenRect = Screen.FromHandle(hWindow).Bounds;
             bool boundCheck = actualRect.Left <= 0 && actualRect.Top <= 0 &&
                               actualRect.Right >= screenRect.Right && actualRect.Bottom >= screenRect.Bottom;
-            
-            return boundCheck;
-        }
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            UninstallHooks();
+            return boundCheck;
         }
     }
 }
