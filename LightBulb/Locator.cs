@@ -41,6 +41,9 @@ namespace LightBulb
             SimpleIoc.Default.Register<IGeoSettingsViewModel, GeoSettingsViewModel>();
             SimpleIoc.Default.Register<IAdvancedSettingsViewModel, AdvancedSettingsViewModel>();
 
+            // Load settings
+            (Resolve<ISettingsService>() as FileSettingsService)?.TryLoad();
+
             _isInit = true;
         }
 
@@ -50,6 +53,9 @@ namespace LightBulb
         public static void Cleanup()
         {
             if (!_isInit) return;
+
+            // Save settings
+            (Resolve<ISettingsService>() as FileSettingsService)?.TrySave();
 
             // ReSharper disable SuspiciousTypeConversion.Global
             (Resolve<ISettingsService>() as IDisposable)?.Dispose();

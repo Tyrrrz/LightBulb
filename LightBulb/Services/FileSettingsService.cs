@@ -7,7 +7,7 @@ using Tyrrrz.Settings;
 
 namespace LightBulb.Services
 {
-    public sealed class FileSettingsService : SettingsManager, ISettingsService, IDisposable
+    public class FileSettingsService : SettingsManager, ISettingsService
     {
         private bool _isGammaPollingEnabled = true;
         private bool _isTemperatureSmoothingEnabled = true;
@@ -234,9 +234,6 @@ namespace LightBulb.Services
                 if (args.PropertyName == nameof(Proxy))
                     UpdateProxy();
             };
-
-            // Load
-            TryLoad();
         }
 
         private void UpdateProxy()
@@ -269,11 +266,6 @@ namespace LightBulb.Services
 
                 WebRequest.DefaultWebProxy = proxy;
             }
-        }
-
-        public void Dispose()
-        {
-            TrySave();
         }
     }
 }
