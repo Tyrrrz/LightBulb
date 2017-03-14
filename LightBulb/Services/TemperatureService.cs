@@ -86,13 +86,14 @@ namespace LightBulb.Services
             {
                 if (CyclePreviewTime == value) return;
                 _cyclePreviewTime = value;
-
-                Updated?.Invoke(this, EventArgs.Empty);
             }
         }
 
         /// <inheritdoc />
         public bool IsCyclePreviewRunning => _cyclePreviewTimer.IsEnabled;
+
+        /// <inheritdoc />
+        public event EventHandler Tick;
 
         /// <inheritdoc />
         public event EventHandler Updated;
@@ -116,6 +117,7 @@ namespace LightBulb.Services
             _temperatureUpdateTimer = new SyncedTimer();
             _temperatureUpdateTimer.Tick += (sender, args) =>
             {
+                Tick?.Invoke(this, EventArgs.Empty);
                 if (!_temperatureSmoother.IsActive)
                     UpdateTemperature(true);
             };
@@ -125,6 +127,7 @@ namespace LightBulb.Services
             _cyclePreviewTimer.Tick += (sender, args) =>
             {
                 CyclePreviewTime = CyclePreviewTime.Add(TimeSpan.FromHours(0.05));
+                Tick?.Invoke(this, EventArgs.Empty);
                 IsPreviewModeEnabled = true;
                 UpdateTemperature(true);
 

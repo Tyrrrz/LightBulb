@@ -24,7 +24,6 @@ namespace LightBulb.ViewModels
         private readonly IGeoService _geoService;
         private readonly IVersionCheckService _versionCheckService;
 
-        private readonly SyncedTimer _statusUpdateTimer;
         private readonly SyncedTimer _geoSyncTimer;
         private readonly Timer _disableTemporarilyTimer;
 
@@ -118,18 +117,11 @@ namespace LightBulb.ViewModels
             _geoService = geoService;
             _versionCheckService = versionCheckService;
 
+            _temperatureService.Tick += TemperatureServiceTick;
             _temperatureService.Updated += TemperatureServiceUpdated;
             _windowService.FullScreenStateChanged += WindowServiceFullScreenStateChanged;
 
             // Timers
-            _statusUpdateTimer = new SyncedTimer(TimeSpan.FromMinutes(1));
-            _statusUpdateTimer.Tick += (sender, args) =>
-            {
-                UpdateStatusText();
-                UpdateCycleState();
-                UpdateCyclePosition();
-            };
-
             _geoSyncTimer = new SyncedTimer();
             _geoSyncTimer.Tick += async (sender, args) => await SynchronizeSolarSettingsAsync();
 
@@ -182,7 +174,6 @@ namespace LightBulb.ViewModels
             // Init
             CheckForUpdates().Forget();
             SynchronizeSolarSettingsAsync().Forget();
-            _statusUpdateTimer.IsEnabled = true;
             IsEnabled = true;
         }
 
@@ -191,9 +182,11 @@ namespace LightBulb.ViewModels
             Dispose(false);
         }
 
-        private void WindowServiceFullScreenStateChanged(object sender, EventArgs args)
+        private void TemperatureServiceTick(object sender, EventArgs e)
         {
-            UpdateBlock();
+            UpdateStatusText();
+            UpdateCycleState();
+            UpdateCyclePosition();
         }
 
         private void TemperatureServiceUpdated(object sender, EventArgs args)
@@ -201,6 +194,11 @@ namespace LightBulb.ViewModels
             UpdateStatusText();
             UpdateCycleState();
             UpdateCyclePosition();
+        }
+
+        private void WindowServiceFullScreenStateChanged(object sender, EventArgs args)
+        {
+            UpdateBlock();
         }
 
         private void SettingsServicePropertyChanged(object sender, PropertyChangedEventArgs args)
@@ -365,11 +363,11 @@ namespace LightBulb.ViewModels
         {
             if (disposing)
             {
-                _statusUpdateTimer.Dispose();
                 _geoSyncTimer.Dispose();
                 _disableTemporarilyTimer.Dispose();
 
                 _temperatureService.Updated -= TemperatureServiceUpdated;
+                _temperatureService.Tick -= TemperatureServiceTick;
                 _windowService.FullScreenStateChanged -= WindowServiceFullScreenStateChanged;
                 SettingsService.PropertyChanged -= SettingsServicePropertyChanged;
             }

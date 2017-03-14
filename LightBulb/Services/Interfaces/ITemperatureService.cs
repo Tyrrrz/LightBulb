@@ -33,6 +33,11 @@ namespace LightBulb.Services.Interfaces
         bool IsCyclePreviewRunning { get; }
 
         /// <summary>
+        /// Triggered when an update was issued
+        /// </summary>
+        event EventHandler Tick;
+
+        /// <summary>
         /// Triggered when something updates
         /// </summary>
         event EventHandler Updated;
