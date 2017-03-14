@@ -9,7 +9,7 @@
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.SunriseTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
         </TextBlock>
         <Slider Margin="5,0,5,5"
-                IsEnabled="{Binding SettingsService.IsInternetTimeSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
+                IsEnabled="{Binding SettingsService.IsInternetSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
                 IsSnapToTickEnabled="True"
                 LargeChange="0.5"
                 Maximum="11"
@@ -25,7 +25,7 @@
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.SunsetTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
         </TextBlock>
         <Slider Margin="5,0,5,5"
-                IsEnabled="{Binding SettingsService.IsInternetTimeSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
+                IsEnabled="{Binding SettingsService.IsInternetSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
                 IsSnapToTickEnabled="True"
                 LargeChange="0.5"
                 Maximum="22"
@@ -51,7 +51,7 @@
                           Margin="5"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Center"
-                          IsChecked="{Binding SettingsService.IsInternetTimeSyncEnabled}" />
+                          IsChecked="{Binding SettingsService.IsInternetSyncEnabled}" />
         </Grid>
 
         <!--  Geoinfo (when set)  -->
@@ -86,9 +86,8 @@
         <!--  Geoinfo (when not set)  -->
         <TextBlock Margin="5,0,5,5"
                    Foreground="{DynamicResource PrimaryTextBrush}"
-                   Text="Geographical location is undetermined"
+                   Text="&lt; not set &gt;"
                    TextWrapping="Wrap"
-                   ToolTip="If this message doesn't disappear after some time, it might mean that the geolocation server is down"
                    Visibility="{Binding IsGeoInfoSet, Converter={StaticResource InvertBoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Collapsed}}" />
     </StackPanel>
 </UserControl>

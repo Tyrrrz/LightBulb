@@ -12,8 +12,9 @@ namespace LightBulb.Services.Interfaces
         bool IsGammaPollingEnabled { get; set; }
         bool IsTemperatureSmoothingEnabled { get; set; }
         bool IsFullscreenBlocking { get; set; }
-        bool IsInternetTimeSyncEnabled { get; set; }
-        bool ShouldUpdateGeoInfo { get; set; }
+        bool IsCheckForUpdatedEnabled { get; set; }
+        bool IsInternetSyncEnabled { get; set; }
+        bool IsGeoInfoLocked { get; set; }
         ushort TemperatureEpsilon { get; set; }
         ushort DefaultMonitorTemperature { get; set; }
         ushort MinTemperature { get; set; }
@@ -22,6 +23,7 @@ namespace LightBulb.Services.Interfaces
         TimeSpan TemperatureTransitionDuration { get; set; }
         TimeSpan TemperatureUpdateInterval { get; set; }
         TimeSpan GammaPollingInterval { get; set; }
+        TimeSpan CheckForUpdatesInterval { get; set; }
         TimeSpan InternetSyncInterval { get; set; }
         TimeSpan SunriseTime { get; set; }
         TimeSpan SunsetTime { get; set; }

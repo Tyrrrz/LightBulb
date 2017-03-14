@@ -24,7 +24,8 @@ namespace LightBulb.ViewModels
         private readonly IGeoService _geoService;
         private readonly IVersionCheckService _versionCheckService;
 
-        private readonly SyncedTimer _geoSyncTimer;
+        private readonly Timer _checkForUpdatesTimer;
+        private readonly SyncedTimer _internetSyncTimer;
         private readonly Timer _disableTemporarilyTimer;
 
         private bool _isUpdateAvailable;
@@ -122,8 +123,11 @@ namespace LightBulb.ViewModels
             _windowService.FullScreenStateChanged += WindowServiceFullScreenStateChanged;
 
             // Timers
-            _geoSyncTimer = new SyncedTimer();
-            _geoSyncTimer.Tick += async (sender, args) => await SynchronizeSolarSettingsAsync();
+            _checkForUpdatesTimer = new Timer();
+            _checkForUpdatesTimer.Tick += async (sender, args) => await CheckForUpdatesAsync();
+
+            _internetSyncTimer = new SyncedTimer();
+            _internetSyncTimer.Tick += async (sender, args) => await SynchronizeWithInternetAsync();
 
             _disableTemporarilyTimer = new Timer();
             _disableTemporarilyTimer.Tick += (sender, args) =>
@@ -172,8 +176,8 @@ namespace LightBulb.ViewModels
             UpdateHotkeys();
 
             // Init
-            CheckForUpdates().Forget();
-            SynchronizeSolarSettingsAsync().Forget();
+            CheckForUpdatesAsync().Forget();
+            SynchronizeWithInternetAsync().Forget();
             IsEnabled = true;
         }
 
@@ -208,14 +212,16 @@ namespace LightBulb.ViewModels
             if (args.PropertyName.IsEither(nameof(SettingsService.ToggleHotkey), nameof(SettingsService.TogglePollingHotkey), nameof(SettingsService.RefreshGammaHotkey)))
                 UpdateHotkeys();
 
-            if (args.PropertyName == nameof(SettingsService.IsInternetTimeSyncEnabled))
-                SynchronizeSolarSettingsAsync().Forget();
+            if (args.PropertyName == nameof(SettingsService.IsInternetSyncEnabled))
+                SynchronizeWithInternetAsync().Forget();
         }
 
         private void UpdateConfiguration()
         {
-            _geoSyncTimer.Interval = SettingsService.InternetSyncInterval;
-            _geoSyncTimer.IsEnabled = SettingsService.IsInternetTimeSyncEnabled;
+            _checkForUpdatesTimer.Interval = SettingsService.CheckForUpdatesInterval;
+            _checkForUpdatesTimer.IsEnabled = SettingsService.IsCheckForUpdatedEnabled;
+            _internetSyncTimer.Interval = SettingsService.InternetSyncInterval;
+            _internetSyncTimer.IsEnabled = SettingsService.IsInternetSyncEnabled;
         }
 
         private void UpdateHotkeys()
@@ -323,8 +329,10 @@ namespace LightBulb.ViewModels
         /// <summary>
         /// Check for program updates
         /// </summary>
-        private async Task CheckForUpdates()
+        private async Task CheckForUpdatesAsync()
         {
+            if (!SettingsService.IsCheckForUpdatedEnabled) return;
+
             IsUpdateAvailable = await _versionCheckService.GetUpdateStatusAsync();
 
             Debug.WriteLine($"Checked for updates ({(IsUpdateAvailable ? "update found" : "update not found")})",
@@ -334,12 +342,12 @@ namespace LightBulb.ViewModels
         /// <summary>
         /// Get updated solar info and overwrite respective settings with new data
         /// </summary>
-        private async Task SynchronizeSolarSettingsAsync()
+        private async Task SynchronizeWithInternetAsync()
         {
-            if (!SettingsService.IsInternetTimeSyncEnabled) return;
+            if (!SettingsService.IsInternetSyncEnabled) return;
 
             // Geo info
-            if (SettingsService.GeoInfo == null || SettingsService.ShouldUpdateGeoInfo)
+            if (SettingsService.GeoInfo == null || !SettingsService.IsGeoInfoLocked)
             {
                 var geoInfo = await _geoService.GetGeoInfoAsync();
                 if (geoInfo == null) return;
@@ -350,20 +358,21 @@ namespace LightBulb.ViewModels
             var solarInfo = await _geoService.GetSolarInfoAsync(SettingsService.GeoInfo);
             if (solarInfo == null) return;
 
-            if (SettingsService.IsInternetTimeSyncEnabled)
+            if (SettingsService.IsInternetSyncEnabled)
             {
                 SettingsService.SunriseTime = solarInfo.SunriseTime;
                 SettingsService.SunsetTime = solarInfo.SunsetTime;
             }
 
-            Debug.WriteLine("Geosync done", GetType().Name);
+            Debug.WriteLine("Internet sync done", GetType().Name);
         }
 
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
             {
-                _geoSyncTimer.Dispose();
+                _checkForUpdatesTimer.Dispose();
+                _internetSyncTimer.Dispose();
                 _disableTemporarilyTimer.Dispose();
 
                 _temperatureService.Updated -= TemperatureServiceUpdated;

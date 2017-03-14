@@ -169,8 +169,7 @@
                     <!--  Application name and version  -->
                     <TextBlock Grid.Column="1"
                                Margin="5,0,0,0"
-                               VerticalAlignment="Center"
-                               ToolTip="{Binding Version}">
+                               VerticalAlignment="Center">
                         <Run FontSize="16"
                              FontWeight="Bold"
                              Foreground="{DynamicResource PrimaryInverseTextBrush}"

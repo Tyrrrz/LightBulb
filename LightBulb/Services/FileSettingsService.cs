@@ -12,8 +12,9 @@ namespace LightBulb.Services
         private bool _isGammaPollingEnabled = true;
         private bool _isTemperatureSmoothingEnabled = true;
         private bool _isFullscreenBlocking;
-        private bool _isInternetTimeSyncEnabled = true;
-        private bool _shouldUpdateGeoInfo = true;
+        private bool _isCheckForUpdatedEnabled = true;
+        private bool _isInternetSyncEnabled = true;
+        private bool _isGeoInfoLocked;
         private ushort _temperatureEpsilon = 50;
         private ushort _defaultMonitorTemperature = 6600;
         private ushort _maxTemperature = 6600;
@@ -22,6 +23,7 @@ namespace LightBulb.Services
         private TimeSpan _temperatureTransitionDuration = TimeSpan.FromMinutes(90);
         private TimeSpan _temperatureUpdateInterval = TimeSpan.FromMinutes(1);
         private TimeSpan _gammaPollingInterval = TimeSpan.FromSeconds(5);
+        private TimeSpan _checkForUpdatesInterval = TimeSpan.FromHours(6);
         private TimeSpan _internetSyncInterval = TimeSpan.FromHours(6);
         private TimeSpan _sunriseTime = new TimeSpan(7, 20, 0);
         private TimeSpan _sunsetTime = new TimeSpan(16, 30, 0);
@@ -49,16 +51,22 @@ namespace LightBulb.Services
             set { Set(ref _isFullscreenBlocking, value); }
         }
 
-        public bool IsInternetTimeSyncEnabled
+        public bool IsCheckForUpdatedEnabled
         {
-            get { return _isInternetTimeSyncEnabled; }
-            set { Set(ref _isInternetTimeSyncEnabled, value); }
+            get { return _isCheckForUpdatedEnabled; }
+            set { Set(ref _isCheckForUpdatedEnabled, value); }
         }
 
-        public bool ShouldUpdateGeoInfo
+        public bool IsInternetSyncEnabled
         {
-            get { return _shouldUpdateGeoInfo; }
-            set { Set(ref _shouldUpdateGeoInfo, value); }
+            get { return _isInternetSyncEnabled; }
+            set { Set(ref _isInternetSyncEnabled, value); }
+        }
+
+        public bool IsGeoInfoLocked
+        {
+            get { return _isGeoInfoLocked; }
+            set { Set(ref _isGeoInfoLocked, value); }
         }
 
         public ushort TemperatureEpsilon
@@ -119,6 +127,12 @@ namespace LightBulb.Services
         {
             get { return _gammaPollingInterval; }
             set { Set(ref _gammaPollingInterval, value); }
+        }
+
+        public TimeSpan CheckForUpdatesInterval
+        {
+            get { return _checkForUpdatesInterval; }
+            set { Set(ref _checkForUpdatesInterval, value); }
         }
 
         public TimeSpan InternetSyncInterval
