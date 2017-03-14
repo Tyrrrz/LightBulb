@@ -85,6 +85,11 @@ namespace LightBulb.Services.Helpers
         {
         }
 
+        ~SyncedTimer()
+        {
+            Dispose(false);
+        }
+
         private void SyncInterval()
         {
             var now = DateTime.Now;

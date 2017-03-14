@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -117,16 +118,8 @@ namespace LightBulb.ViewModels
             _geoService = geoService;
             _versionCheckService = versionCheckService;
 
-            _temperatureService.Updated += (sender, args) =>
-            {
-                UpdateStatusText();
-                UpdateCycleState();
-                UpdateCyclePosition();
-            };
-            _windowService.FullScreenStateChanged += (sender, args) =>
-            {
-                UpdateBlock();
-            };
+            _temperatureService.Updated += TemperatureServiceUpdated;
+            _windowService.FullScreenStateChanged += WindowServiceFullScreenStateChanged;
 
             // Timers
             _statusUpdateTimer = new SyncedTimer(TimeSpan.FromMinutes(1));
@@ -182,19 +175,7 @@ namespace LightBulb.ViewModels
             });
 
             // Settings
-            SettingsService.PropertyChanged += (sender, args) =>
-            {
-                UpdateConfiguration();
-
-                if (args.PropertyName.IsEither(
-                    nameof(SettingsService.ToggleHotkey),
-                    nameof(SettingsService.TogglePollingHotkey),
-                    nameof(SettingsService.RefreshGammaHotkey)))
-                    UpdateHotkeys();
-
-                if (args.PropertyName == nameof(SettingsService.IsInternetTimeSyncEnabled))
-                    SynchronizeSolarSettingsAsync().Forget();
-            };
+            SettingsService.PropertyChanged += SettingsServicePropertyChanged;
             UpdateConfiguration();
             UpdateHotkeys();
 
@@ -203,6 +184,34 @@ namespace LightBulb.ViewModels
             SynchronizeSolarSettingsAsync().Forget();
             _statusUpdateTimer.IsEnabled = true;
             IsEnabled = true;
+        }
+
+        ~MainViewModel()
+        {
+            Dispose(false);
+        }
+
+        private void WindowServiceFullScreenStateChanged(object sender, EventArgs args)
+        {
+            UpdateBlock();
+        }
+
+        private void TemperatureServiceUpdated(object sender, EventArgs args)
+        {
+            UpdateStatusText();
+            UpdateCycleState();
+            UpdateCyclePosition();
+        }
+
+        private void SettingsServicePropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            UpdateConfiguration();
+
+            if (args.PropertyName.IsEither(nameof(SettingsService.ToggleHotkey), nameof(SettingsService.TogglePollingHotkey), nameof(SettingsService.RefreshGammaHotkey)))
+                UpdateHotkeys();
+
+            if (args.PropertyName == nameof(SettingsService.IsInternetTimeSyncEnabled))
+                SynchronizeSolarSettingsAsync().Forget();
         }
 
         private void UpdateConfiguration()
@@ -359,6 +368,10 @@ namespace LightBulb.ViewModels
                 _statusUpdateTimer.Dispose();
                 _geoSyncTimer.Dispose();
                 _disableTemporarilyTimer.Dispose();
+
+                _temperatureService.Updated -= TemperatureServiceUpdated;
+                _windowService.FullScreenStateChanged -= WindowServiceFullScreenStateChanged;
+                SettingsService.PropertyChanged -= SettingsServicePropertyChanged;
             }
         }
 

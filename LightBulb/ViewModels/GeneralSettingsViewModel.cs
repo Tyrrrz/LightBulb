@@ -1,11 +1,12 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using LightBulb.Services.Interfaces;
 using LightBulb.ViewModels.Interfaces;
 
 namespace LightBulb.ViewModels
 {
-    public class GeneralSettingsViewModel : ViewModelBase, IGeneralSettingsViewModel
+    public class GeneralSettingsViewModel : ViewModelBase, IGeneralSettingsViewModel, IDisposable
     {
         private readonly ITemperatureService _temperatureService;
 
@@ -41,14 +42,27 @@ namespace LightBulb.ViewModels
             SettingsService = settingsService;
             _temperatureService = temperatureService;
 
-            _temperatureService.CyclePreviewStarted +=
-                (sender, args) => RaisePropertyChanged(() => IsCyclePreviewModeEnabled);
-            _temperatureService.CyclePreviewEnded +=
-                (sender, args) => RaisePropertyChanged(() => IsCyclePreviewModeEnabled);
+            _temperatureService.CyclePreviewStarted += TemperatureServiceCyclePreviewStarted;
+            _temperatureService.CyclePreviewEnded += TemperatureServiceCyclePreviewEnded;
 
             // Commands
             RequestPreviewTemperatureCommand = new RelayCommand<ushort>(RequestPreviewTemperature);
             StartStopCyclePreviewCommand = new RelayCommand(StartStopCyclePreview);
+        }
+
+        ~GeneralSettingsViewModel()
+        {
+            Dispose(false);
+        }
+
+        private void TemperatureServiceCyclePreviewStarted(object sender, EventArgs args)
+        {
+            RaisePropertyChanged(() => IsCyclePreviewModeEnabled);
+        }
+
+        private void TemperatureServiceCyclePreviewEnded(object sender, EventArgs args)
+        {
+            RaisePropertyChanged(() => IsCyclePreviewModeEnabled);
         }
 
         private void RequestPreviewTemperature(ushort temp)
@@ -59,6 +73,21 @@ namespace LightBulb.ViewModels
         private void StartStopCyclePreview()
         {
             IsCyclePreviewModeEnabled = !IsCyclePreviewModeEnabled;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _temperatureService.CyclePreviewStarted -= TemperatureServiceCyclePreviewStarted;
+                _temperatureService.CyclePreviewEnded -= TemperatureServiceCyclePreviewEnded;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

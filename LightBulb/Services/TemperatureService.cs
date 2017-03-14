@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using LightBulb.Models;
 using LightBulb.Services.Helpers;
@@ -146,23 +147,16 @@ namespace LightBulb.Services
             SystemEvents.DisplaySettingsChanged += SystemDisplaySettingsChanged;
 
             // Settings
-            _settingsService.PropertyChanged += (sender, args) =>
-            {
-                UpdateConfiguration();
-
-                if (args.PropertyName.IsEither(nameof(_settingsService.TemperatureEpsilon),
-                    nameof(_settingsService.MinTemperature),
-                    nameof(_settingsService.MaxTemperature), nameof(_settingsService.TemperatureTransitionDuration),
-                    nameof(_settingsService.SunriseTime), nameof(_settingsService.SunsetTime)))
-                {
-                    if (!_temperatureSmoother.IsActive)
-                        UpdateTemperature(true);
-                }
-            };
+            _settingsService.PropertyChanged += SettingsServicePropertyChanged;
             UpdateConfiguration();
 
             // Init
             _temperature = _settingsService.DefaultMonitorTemperature;
+        }
+
+        ~TemperatureService()
+        {
+            Dispose(false);
         }
 
         private void SystemDisplaySettingsChanged(object sender, EventArgs args)
@@ -175,6 +169,20 @@ namespace LightBulb.Services
         {
             UpdateTemperature();
             UpdateGamma();
+        }
+
+        private void SettingsServicePropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            UpdateConfiguration();
+
+            if (args.PropertyName.IsEither(nameof(_settingsService.TemperatureEpsilon),
+                nameof(_settingsService.MinTemperature), nameof(_settingsService.MaxTemperature),
+                nameof(_settingsService.TemperatureTransitionDuration), nameof(_settingsService.SunriseTime),
+                nameof(_settingsService.SunsetTime)))
+            {
+                if (!_temperatureSmoother.IsActive)
+                    UpdateTemperature(true);
+            }
         }
 
         private void UpdateConfiguration()
@@ -348,13 +356,14 @@ namespace LightBulb.Services
         {
             if (disposing)
             {
-                SystemEvents.PowerModeChanged -= SystemPowerModeChanged;
-                SystemEvents.DisplaySettingsChanged -= SystemDisplaySettingsChanged;
-
                 _temperatureUpdateTimer.Dispose();
                 _cyclePreviewTimer.Dispose();
                 _pollingTimer.Dispose();
                 _temperatureSmoother.Dispose();
+
+                SystemEvents.PowerModeChanged -= SystemPowerModeChanged;
+                SystemEvents.DisplaySettingsChanged -= SystemDisplaySettingsChanged;
+                _settingsService.PropertyChanged -= SettingsServicePropertyChanged;
             }
         }
 

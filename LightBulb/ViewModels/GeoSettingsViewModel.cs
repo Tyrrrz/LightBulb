@@ -1,11 +1,13 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System;
+using System.ComponentModel;
+using GalaSoft.MvvmLight;
 using LightBulb.Services.Interfaces;
 using LightBulb.ViewModels.Interfaces;
 using Tyrrrz.Extensions;
 
 namespace LightBulb.ViewModels
 {
-    public class GeoSettingsViewModel : ViewModelBase, IGeoSettingsViewModel
+    public class GeoSettingsViewModel : ViewModelBase, IGeoSettingsViewModel, IDisposable
     {
         /// <inheritdoc />
         public ISettingsService SettingsService { get; }
@@ -23,14 +25,35 @@ namespace LightBulb.ViewModels
             SettingsService = settingsService;
 
             // Settings
-            SettingsService.PropertyChanged += (sender, args) =>
+            SettingsService.PropertyChanged += SettingsServicePropertyChanged;
+        }
+
+        ~GeoSettingsViewModel()
+        {
+            Dispose(false);
+        }
+
+        private void SettingsServicePropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName == nameof(SettingsService.GeoInfo))
             {
-                if (args.PropertyName == nameof(SettingsService.GeoInfo))
-                {
-                    RaisePropertyChanged(() => IsGeoInfoSet);
-                    RaisePropertyChanged(() => GeoInfoCountryFlagUrl);
-                }
-            };
+                RaisePropertyChanged(() => IsGeoInfoSet);
+                RaisePropertyChanged(() => GeoInfoCountryFlagUrl);
+            }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                SettingsService.PropertyChanged -= SettingsServicePropertyChanged;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

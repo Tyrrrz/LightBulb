@@ -21,6 +21,11 @@ namespace LightBulb.Services.Abstract
             _client.DefaultRequestHeaders.Add("User-Agent", "LightBulb (github.com/Tyrrrz/LightBulb)");
         }
 
+        ~WebApiServiceBase()
+        {
+            Dispose(false);
+        }
+
         /// <summary>
         /// If necessary, wait before executing the next request
         /// </summary>

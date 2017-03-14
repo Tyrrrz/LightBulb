@@ -28,6 +28,11 @@ namespace LightBulb.Services
 
         private int _gammaChannelOffset;
 
+        ~WindowsGammaService()
+        {
+            Dispose(false);
+        }
+
         /// <summary>
         /// Get the curve that represents the current display gamma
         /// </summary>
@@ -88,8 +93,8 @@ namespace LightBulb.Services
 
         protected override void Dispose(bool disposing)
         {
-            base.Dispose(disposing);
             RestoreDefault();
+            base.Dispose(disposing);
         }
     }
 }

@@ -28,6 +28,11 @@ namespace LightBulb.Services.Helpers
             _timer.Tick += (sender, args) => Tick();
         }
 
+        ~ValueSmoother()
+        {
+            Dispose(false);
+        }
+
         private void Tick()
         {
             lock (_timer)

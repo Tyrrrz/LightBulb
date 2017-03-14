@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using System.Windows.Input;
 using LightBulb.Models;
 using LightBulb.Services.Abstract;
@@ -31,11 +30,16 @@ namespace LightBulb.Services
             WndProced += ProcessMessage;
         }
 
-        private void ProcessMessage(object sender, Message message)
+        ~WindowsHotkeyService()
         {
-            if (message.Msg != 0x0312) return;
+            Dispose(false);
+        }
 
-            int id = message.WParam.ToInt32();
+        private void ProcessMessage(object sender, WndProcEventArgs args)
+        {
+            if (args.Message.Msg != 0x0312) return;
+
+            int id = args.Message.WParam.ToInt32();
             var handler = _hotkeyHandlerDic.GetOrDefault(id);
 
             handler?.Invoke();
@@ -89,12 +93,12 @@ namespace LightBulb.Services
 
         protected override void Dispose(bool disposing)
         {
-            base.Dispose(disposing);
             if (disposing)
             {
                 WndProced -= ProcessMessage;
             }
             UnregisterAllHotkeys();
+            base.Dispose(disposing);
         }
     }
 }

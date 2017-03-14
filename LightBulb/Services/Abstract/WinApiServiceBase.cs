@@ -15,11 +15,24 @@ namespace LightBulb.Services.Abstract
     public abstract class WinApiServiceBase : IDisposable
     {
         /// <summary>
+        /// Event arguments associated with a windows procedure
+        /// </summary>
+        protected sealed class WndProcEventArgs : EventArgs
+        {
+            public Message Message { get; }
+
+            public WndProcEventArgs(Message message)
+            {
+                Message = message;
+            }
+        }
+
+        /// <summary>
         /// Sponge window absorbs messages and lets other services use them
         /// </summary>
-        private sealed class SpongeWindow : NativeWindow
+        protected sealed class SpongeWindow : NativeWindow
         {
-            public event EventHandler<Message> LocalWndProced;
+            public event EventHandler<WndProcEventArgs> LocalWndProced;
 
             public SpongeWindow()
             {
@@ -28,7 +41,7 @@ namespace LightBulb.Services.Abstract
 
             protected override void WndProc(ref Message m)
             {
-                LocalWndProced?.Invoke(this, m);
+                LocalWndProced?.Invoke(this, new WndProcEventArgs(m));
                 base.WndProc(ref m);
             }
         }
@@ -44,7 +57,7 @@ namespace LightBulb.Services.Abstract
         /// <summary>
         /// Triggers when there's a new Window message to be processed
         /// </summary>
-        protected static event EventHandler<Message> WndProced
+        protected static event EventHandler<WndProcEventArgs> WndProced
         {
             add { Sponge.LocalWndProced += value; }
             remove { Sponge.LocalWndProced -= value; }
@@ -61,6 +74,7 @@ namespace LightBulb.Services.Abstract
             uint dwmsEventTime);
 
         #region WinAPI
+
         [DllImport("user32.dll", EntryPoint = "SetWinEventHook", SetLastError = true)]
         private static extern IntPtr SetWinEventHookInternal(
             uint eventMin, uint eventMax,
@@ -69,6 +83,7 @@ namespace LightBulb.Services.Abstract
 
         [DllImport("user32.dll", EntryPoint = "UnhookWinEvent", SetLastError = true)]
         private static extern bool UnhookWinEventInternal(IntPtr hWinEventHook);
+
         #endregion
 
         private readonly Dictionary<IntPtr, WinEventHandler> _hookHandlerDic;

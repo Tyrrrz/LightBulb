@@ -60,6 +60,11 @@ namespace LightBulb.Services.Helpers
         {            
         }
 
+        ~Timer()
+        {
+            Dispose(false);
+        }
+
         private void TimerTickInternal()
         {
             _isBusy = true;
