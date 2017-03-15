@@ -100,29 +100,29 @@
                                 <materialDesign:PackIcon Kind="PowerSettings" />
                             </MenuItem.Icon>
                             <MenuItem Command="{Binding DisableTemporarilyCommand}"
-                                      CommandParameter="60000"
-                                      Header="1 minute" />
-                            <MenuItem Command="{Binding DisableTemporarilyCommand}"
-                                      CommandParameter="300000"
-                                      Header="5 minutes" />
-                            <MenuItem Command="{Binding DisableTemporarilyCommand}"
-                                      CommandParameter="1800000"
-                                      Header="30 minutes" />
-                            <MenuItem Command="{Binding DisableTemporarilyCommand}"
-                                      CommandParameter="3600000"
-                                      Header="1 hour" />
-                            <MenuItem Command="{Binding DisableTemporarilyCommand}"
-                                      CommandParameter="5400000"
-                                      Header="3 hours" />
-                            <MenuItem Command="{Binding DisableTemporarilyCommand}"
-                                      CommandParameter="10800000"
-                                      Header="6 hours" />
+                                      CommandParameter="43200000"
+                                      Header="1 day" />
                             <MenuItem Command="{Binding DisableTemporarilyCommand}"
                                       CommandParameter="21600000"
                                       Header="12 hours" />
                             <MenuItem Command="{Binding DisableTemporarilyCommand}"
-                                      CommandParameter="43200000"
-                                      Header="1 day" />
+                                      CommandParameter="10800000"
+                                      Header="6 hours" />
+                            <MenuItem Command="{Binding DisableTemporarilyCommand}"
+                                      CommandParameter="5400000"
+                                      Header="3 hours" />
+                            <MenuItem Command="{Binding DisableTemporarilyCommand}"
+                                      CommandParameter="3600000"
+                                      Header="1 hour" />
+                            <MenuItem Command="{Binding DisableTemporarilyCommand}"
+                                      CommandParameter="1800000"
+                                      Header="30 minutes" />
+                            <MenuItem Command="{Binding DisableTemporarilyCommand}"
+                                      CommandParameter="300000"
+                                      Header="5 minutes" />
+                            <MenuItem Command="{Binding DisableTemporarilyCommand}"
+                                      CommandParameter="60000"
+                                      Header="1 minute" />
                         </MenuItem>
                         <MenuItem Command="{Binding AboutCommand}" Header="About">
                             <MenuItem.Icon>
