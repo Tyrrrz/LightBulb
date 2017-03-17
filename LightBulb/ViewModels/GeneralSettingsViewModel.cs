@@ -21,7 +21,7 @@ namespace LightBulb.ViewModels
         }
 
         /// <inheritdoc />
-        public bool IsCyclePreviewModeEnabled
+        public bool IsCyclePreviewRunning
         {
             get { return _temperatureService.IsCyclePreviewRunning; }
             set
@@ -57,12 +57,12 @@ namespace LightBulb.ViewModels
 
         private void TemperatureServiceCyclePreviewStarted(object sender, EventArgs args)
         {
-            RaisePropertyChanged(() => IsCyclePreviewModeEnabled);
+            RaisePropertyChanged(() => IsCyclePreviewRunning);
         }
 
         private void TemperatureServiceCyclePreviewEnded(object sender, EventArgs args)
         {
-            RaisePropertyChanged(() => IsCyclePreviewModeEnabled);
+            RaisePropertyChanged(() => IsCyclePreviewRunning);
         }
 
         private void RequestPreviewTemperature(ushort temp)
@@ -72,7 +72,7 @@ namespace LightBulb.ViewModels
 
         private void StartStopCyclePreview()
         {
-            IsCyclePreviewModeEnabled = !IsCyclePreviewModeEnabled;
+            IsCyclePreviewRunning = !IsCyclePreviewRunning;
         }
 
         protected virtual void Dispose(bool disposing)

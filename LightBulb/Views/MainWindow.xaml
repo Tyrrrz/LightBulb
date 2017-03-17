@@ -188,11 +188,11 @@
                     </Button>
 
                     <!--  Section navigation buttons  -->
-                    <WrapPanel Grid.Column="3"
-                               Margin="5,0,5,0"
-                               HorizontalAlignment="Right"
-                               VerticalAlignment="Center"
-                               Orientation="Horizontal">
+                    <StackPanel Grid.Column="3"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
                         <Button x:Name="NavigateGeneralSettingsButton"
                                 BorderThickness="0,0,0,2"
                                 Click="NavigateGeneralSettingsButton_OnClick"
@@ -217,7 +217,7 @@
                                 ToolTip="Advanced">
                             <materialDesign:PackIcon Kind="CheckboxMultipleMarkedOutline" />
                         </Button>
-                    </WrapPanel>
+                    </StackPanel>
                 </Grid>
             </materialDesign:ColorZone>
 
@@ -263,9 +263,9 @@
                                  Value="{Binding CyclePosition, Mode=OneWay}" />
 
                     <!--  Cycle state and status text  -->
-                    <WrapPanel Grid.Row="1"
-                               Margin="5"
-                               Orientation="Horizontal">
+                    <StackPanel Grid.Row="1"
+                                Margin="5"
+                                Orientation="Horizontal">
                         <!--  Cycle state icon  -->
                         <materialDesign:PackIcon Background="Transparent" ToolTip="{Binding CycleState}">
                             <materialDesign:PackIcon.Style>
@@ -292,7 +292,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="12"
                                    Text="{Binding StatusText}" />
-                    </WrapPanel>
+                    </StackPanel>
                 </Grid>
             </materialDesign:ColorZone>
         </Grid>

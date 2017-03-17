@@ -18,7 +18,7 @@ namespace LightBulb.ViewModels.Interfaces
         /// <summary>
         /// Enables or disables cycle preview mode
         /// </summary>
-        bool IsCyclePreviewModeEnabled { get; set; }
+        bool IsCyclePreviewRunning { get; set; }
 
         RelayCommand StartStopCyclePreviewCommand { get; }
     }
