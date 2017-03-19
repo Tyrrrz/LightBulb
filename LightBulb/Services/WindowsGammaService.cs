@@ -24,9 +24,14 @@ namespace LightBulb.Services
 
         #endregion
 
-        private static readonly object Lock = new object();
-
+        private readonly IntPtr _dc;
         private int _gammaChannelOffset;
+
+        public WindowsGammaService()
+        {
+            _dc = GetDCInternal(IntPtr.Zero);
+            CheckLogWin32Error();
+        }
 
         ~WindowsGammaService()
         {
@@ -38,11 +43,9 @@ namespace LightBulb.Services
         /// </summary>
         public GammaRamp GetDisplayGammaRamp()
         {
-            var dc = GetDCInternal(IntPtr.Zero);
             GammaRamp ramp;
-            if (!GetDeviceGammaRampInternal(dc, out ramp))
+            if (!GetDeviceGammaRampInternal(_dc, out ramp))
                 CheckLogWin32Error();
-            ReleaseDCInternal(IntPtr.Zero, dc);
             return ramp;
         }
 
@@ -51,23 +54,18 @@ namespace LightBulb.Services
         /// </summary>
         public void SetDisplayGammaRamp(GammaRamp ramp)
         {
-            lock (Lock)
-            {
-                // Offset the values in ramp slightly...
-                // ... this forces the ramp to refresh every time
-                // ... because some drivers will ignore stale ramps
-                // ... while the gamma itself might have been changed
-                _gammaChannelOffset = ++_gammaChannelOffset%5;
-                ramp.Red[255] = (ushort) (ramp.Red[255] + _gammaChannelOffset);
-                ramp.Green[255] = (ushort) (ramp.Green[255] + _gammaChannelOffset);
-                ramp.Blue[255] = (ushort) (ramp.Blue[255] + _gammaChannelOffset);
+            // Offset the values in ramp slightly...
+            // ... this forces the ramp to refresh every time
+            // ... because some drivers will ignore stale ramps
+            // ... while the gamma itself might have been changed
+            _gammaChannelOffset = ++_gammaChannelOffset%5;
+            ramp.Red[255] = (ushort) (ramp.Red[255] + _gammaChannelOffset);
+            ramp.Green[255] = (ushort) (ramp.Green[255] + _gammaChannelOffset);
+            ramp.Blue[255] = (ushort) (ramp.Blue[255] + _gammaChannelOffset);
 
-                // Set ramp
-                var dc = GetDCInternal(IntPtr.Zero);
-                if (!SetDeviceGammaRampInternal(dc, ref ramp))
-                    CheckLogWin32Error();
-                ReleaseDCInternal(IntPtr.Zero, dc);
-            }
+            // Set ramp
+            if (!SetDeviceGammaRampInternal(_dc, ref ramp))
+                CheckLogWin32Error();
         }
 
         /// <inheritdoc />
@@ -94,6 +92,8 @@ namespace LightBulb.Services
         protected override void Dispose(bool disposing)
         {
             RestoreDefault();
+            ReleaseDCInternal(IntPtr.Zero, _dc);
+            CheckLogWin32Error();
             base.Dispose(disposing);
         }
     }
