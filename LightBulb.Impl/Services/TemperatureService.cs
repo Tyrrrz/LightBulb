@@ -24,6 +24,16 @@ namespace LightBulb.Services
         private DateTime _cyclePreviewTime;
         private ushort _requestedPreviewTemperature;
 
+        public double Brightness
+        {
+            get
+            {
+                if (IsRealtimeModeEnabled)
+                    return _settingsService.Brightness;
+                return 1;
+            }
+        }
+
         /// <inheritdoc />
         public ushort Temperature
         {
@@ -201,7 +211,7 @@ namespace LightBulb.Services
 
         private void UpdateGamma()
         {
-            var intens = ColorIntensity.FromTemperature(Temperature, _settingsService.Brightness);
+            var intens = ColorIntensity.FromTemperature(Temperature, Brightness);
             _gammaService.SetDisplayGammaLinear(intens);
             Debug.WriteLine($"Gamma updated (-> {intens})", GetType().Name);
         }

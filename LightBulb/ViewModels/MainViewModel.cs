@@ -38,7 +38,7 @@ namespace LightBulb.ViewModels
         public ISettingsService SettingsService { get; }
 
         /// <inheritdoc />
-        public Version Version => Assembly.GetExecutingAssembly().GetName().Version;
+        public Version Version => Assembly.GetEntryAssembly().GetName().Version;
 
         /// <inheritdoc />
         public bool IsUpdateAvailable
