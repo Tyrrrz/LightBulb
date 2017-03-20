@@ -209,13 +209,10 @@ namespace LightBulb.Services
             ushort maxTemp = _settingsService.MaxTemperature;
 
             var offset = _settingsService.TemperatureTransitionDuration;
-            var halfOffset = TimeSpan.FromHours(offset.TotalHours/2);
-            var riseTime = _settingsService.SunriseTime;
-            var setTime = _settingsService.SunsetTime;
-            var riseStartTime = riseTime - halfOffset;
-            var riseEndTime = riseTime + halfOffset;
-            var setStartTime = setTime - halfOffset;
-            var setEndTime = setTime + halfOffset;
+            var riseStartTime = _settingsService.SunriseTime - offset;
+            var riseEndTime = _settingsService.SunriseTime;
+            var setStartTime = _settingsService.SunsetTime - offset;
+            var setEndTime = _settingsService.SunsetTime;
 
             // Before sunrise (night time)
             if (time < riseStartTime)

@@ -34,10 +34,11 @@ namespace LightBulb.Helpers
         {
             InternalTimer = new System.Timers.Timer
             {
-                AutoReset = false,
+                AutoReset = true,
                 Interval = interval.TotalMilliseconds
             };
             InternalTimer.Elapsed += (sender, args) => TimerTickInternal();
+            InternalTimer.Start();
         }
 
         public Timer()
