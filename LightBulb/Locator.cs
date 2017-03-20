@@ -2,9 +2,7 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using LightBulb.Services;
-using LightBulb.Services.Interfaces;
 using LightBulb.ViewModels;
-using LightBulb.ViewModels.Interfaces;
 using Microsoft.Practices.ServiceLocation;
 
 namespace LightBulb
@@ -33,7 +31,7 @@ namespace LightBulb
             SimpleIoc.Default.Register<IHotkeyService, WindowsHotkeyService>();
             SimpleIoc.Default.Register<ITemperatureService, TemperatureService>();
             SimpleIoc.Default.Register<IGeoService, WebGeoService>();
-            SimpleIoc.Default.Register<IVersionCheckService, GithubVersionCheckService>();
+            SimpleIoc.Default.Register<IVersionCheckService, WebVersionCheckService>();
 
             // View models
             SimpleIoc.Default.Register<IMainViewModel, MainViewModel>();
@@ -42,7 +40,7 @@ namespace LightBulb
             SimpleIoc.Default.Register<IAdvancedSettingsViewModel, AdvancedSettingsViewModel>();
 
             // Load settings
-            (Resolve<ISettingsService>() as FileSettingsService)?.TryLoad();
+            Resolve<ISettingsService>().Load();
 
             _isInit = true;
         }
@@ -55,7 +53,7 @@ namespace LightBulb
             if (!_isInit) return;
 
             // Save settings
-            (Resolve<ISettingsService>() as FileSettingsService)?.TrySave();
+            Resolve<ISettingsService>().Save();
 
             // ReSharper disable SuspiciousTypeConversion.Global
             (Resolve<ISettingsService>() as IDisposable)?.Dispose();

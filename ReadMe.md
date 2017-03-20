@@ -3,11 +3,12 @@
 
 Background application that reduces eye strain at night by automatically adjusting display gamma based on current time. Color temperature profiles are used to determine channel output levels for day and night with smooth transitions between them occuring at sunrise and sunset.
 
+_Currently only compatible with Windows 7 and higher._
+
 **Download:**
 
-To download the latest stable version - navigate to the [releases](https://github.com/Tyrrrz/LightBulb/releases)
-
-You can also get this application using [Chocolatey](https://chocolatey.org/packages/lightbulb): `choco install lightbulb`
+- Installer and portable distribution: [go to release page](https://github.com/Tyrrrz/LightBulb/releases)
+- Chocolatey: `choco install lightbulb` or [go to package page](https://chocolatey.org/packages/lightbulb)
 
 **Customization:**
 
@@ -16,7 +17,7 @@ LightBulb aims to be very customizable. Refer to [this guide](https://github.com
 **Libraries used:**
 
  - [GalaSoft.MVVMLight](http://www.mvvmlight.net) - MVVM rapid development
- - [Newtonsoft.Json](http://www.newtonsoft.com/json) - for deserialization of API responses
+ - [Newtonsoft.Json](http://www.newtonsoft.com/json) - JSON parsing
  - [MaterialDesignXAML](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit) - MaterialDesign UI
  - [Hardcodet.NotifyIcon.Wpf](http://www.hardcodet.net/wpf-notifyicon) - tray icon in WPF
  - [Tyrrrz.Extensions](https://github.com/Tyrrrz/Extensions) - my set of various extensions for rapid development

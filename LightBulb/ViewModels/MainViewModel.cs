@@ -7,10 +7,9 @@ using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Threading;
+using LightBulb.Helpers;
 using LightBulb.Models;
-using LightBulb.Services.Helpers;
-using LightBulb.Services.Interfaces;
-using LightBulb.ViewModels.Interfaces;
+using LightBulb.Services;
 using Tyrrrz.Extensions;
 using Tyrrrz.WpfExtensions;
 

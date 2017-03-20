@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
-using LightBulb.Services.Interfaces;
-using LightBulb.ViewModels.Interfaces;
+using LightBulb.Services;
 
 namespace LightBulb.ViewModels
 {

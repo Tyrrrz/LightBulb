@@ -82,7 +82,7 @@ namespace LightBulb.Views
             }
 
             // Set values
-            Hotkey = new Hotkey(key, modifiers);
+            Hotkey = new Hotkey((int) key, (int) modifiers);
         }
     }
 }

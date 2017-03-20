@@ -1,8 +1,7 @@
 ﻿using System;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using LightBulb.Services.Interfaces;
-using LightBulb.ViewModels.Interfaces;
+using LightBulb.Services;
 
 namespace LightBulb.ViewModels
 {
