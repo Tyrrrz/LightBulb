@@ -15,11 +15,6 @@ namespace LightBulb.Services
             CheckLogWin32Error();
         }
 
-        ~WindowsGammaService()
-        {
-            Dispose(false);
-        }
-
         /// <summary>
         /// Get the curve that represents the current display gamma
         /// </summary>

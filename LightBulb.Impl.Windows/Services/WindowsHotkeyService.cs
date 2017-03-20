@@ -17,11 +17,6 @@ namespace LightBulb.Services
             WndProced += ProcessMessage;
         }
 
-        ~WindowsHotkeyService()
-        {
-            Dispose(false);
-        }
-
         private void ProcessMessage(object sender, WndProcEventArgs args)
         {
             if (args.Message.Msg != 0x0312) return;
