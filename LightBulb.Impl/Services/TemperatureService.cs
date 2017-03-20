@@ -177,14 +177,17 @@ namespace LightBulb.Services
         {
             UpdateConfiguration();
 
-            if (args.PropertyName.IsEither(nameof(_settingsService.TemperatureEpsilon),
-                nameof(_settingsService.MinTemperature), nameof(_settingsService.MaxTemperature),
-                nameof(_settingsService.TemperatureTransitionDuration), nameof(_settingsService.SunriseTime),
-                nameof(_settingsService.SunsetTime)))
+            if (args.PropertyName.IsEither(nameof(ISettingsService.TemperatureEpsilon),
+                nameof(ISettingsService.MinTemperature), nameof(ISettingsService.MaxTemperature),
+                nameof(ISettingsService.TemperatureTransitionDuration), nameof(ISettingsService.SunriseTime),
+                nameof(ISettingsService.SunsetTime)))
             {
                 if (!_temperatureSmoother.IsActive)
                     UpdateTemperature(true);
             }
+
+            if (args.PropertyName == nameof(ISettingsService.Brightness))
+                UpdateGamma();
         }
 
         private void UpdateConfiguration()
@@ -198,7 +201,7 @@ namespace LightBulb.Services
 
         private void UpdateGamma()
         {
-            var intens = ColorIntensity.FromTemperature(Temperature);
+            var intens = ColorIntensity.FromTemperature(Temperature, _settingsService.Brightness);
             _gammaService.SetDisplayGammaLinear(intens);
             Debug.WriteLine($"Gamma updated (-> {intens})", GetType().Name);
         }

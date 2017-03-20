@@ -71,7 +71,7 @@
             <TextBlock Grid.Column="0"
                        Margin="5"
                        VerticalAlignment="Center"
-                       Text="LightBulb toggle hotkey:"
+                       Text="Toggle LightBulb:"
                        ToolTip="Hotkey to switch LightBulb on/off" />
             <views:HotkeyEditorControl Grid.Column="1"
                                        Width="100"
@@ -92,15 +92,15 @@
             <TextBlock Grid.Column="0"
                        Margin="5"
                        VerticalAlignment="Center"
-                       Text="Polling toggle hotkey:"
-                       ToolTip="Hotkey to switch gamma polling on/off" />
+                       Text="Brightness up:"
+                       ToolTip="Hotkey to increase screen brightness" />
             <views:HotkeyEditorControl Grid.Column="1"
                                        Width="100"
                                        Margin="5"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
                                        FontSize="11"
-                                       Hotkey="{Binding SettingsService.TogglePollingHotkey}" />
+                                       Hotkey="{Binding SettingsService.BrightnessIncreaseHotkey}" />
         </Grid>
 
         <!--  Refresh gamma hotkey  -->
@@ -113,15 +113,15 @@
             <TextBlock Grid.Column="0"
                        Margin="5"
                        VerticalAlignment="Center"
-                       Text="Refresh gamma hotkey:"
-                       ToolTip="Hotkey to force update gamma on demand" />
+                       Text="Brightness down:"
+                       ToolTip="Hotkey to decrease screen brightness" />
             <views:HotkeyEditorControl Grid.Column="1"
                                        Width="100"
                                        Margin="5"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
                                        FontSize="11"
-                                       Hotkey="{Binding SettingsService.RefreshGammaHotkey}" />
+                                       Hotkey="{Binding SettingsService.BrightnessDecreaseHotkey}" />
         </Grid>
     </StackPanel>
 </UserControl>

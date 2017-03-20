@@ -208,10 +208,11 @@ namespace LightBulb.ViewModels
         {
             UpdateConfiguration();
 
-            if (args.PropertyName.IsEither(nameof(SettingsService.ToggleHotkey), nameof(SettingsService.TogglePollingHotkey), nameof(SettingsService.RefreshGammaHotkey)))
+            if (args.PropertyName.IsEither(nameof(ISettingsService.ToggleHotkey),
+                nameof(ISettingsService.BrightnessIncreaseHotkey), nameof(ISettingsService.BrightnessDecreaseHotkey)))
                 UpdateHotkeys();
 
-            if (args.PropertyName == nameof(SettingsService.IsInternetSyncEnabled))
+            if (args.PropertyName == nameof(ISettingsService.IsInternetSyncEnabled))
                 SynchronizeWithInternetAsync().Forget();
         }
 
@@ -231,13 +232,13 @@ namespace LightBulb.ViewModels
                 _hotkeyService.RegisterHotkey(SettingsService.ToggleHotkey,
                     () => IsEnabled = !IsEnabled);
 
-            if (SettingsService.TogglePollingHotkey != null)
-                _hotkeyService.RegisterHotkey(SettingsService.TogglePollingHotkey,
-                    () => SettingsService.IsGammaPollingEnabled = !SettingsService.IsGammaPollingEnabled);
+            if (SettingsService.BrightnessIncreaseHotkey != null)
+                _hotkeyService.RegisterHotkey(SettingsService.BrightnessIncreaseHotkey,
+                    () => SettingsService.Brightness = (SettingsService.Brightness + 0.05).Clamp(0.2, 1));
 
-            if (SettingsService.RefreshGammaHotkey != null)
-                _hotkeyService.RegisterHotkey(SettingsService.RefreshGammaHotkey,
-                    () => _temperatureService.RefreshGamma());
+            if (SettingsService.BrightnessDecreaseHotkey != null)
+                _hotkeyService.RegisterHotkey(SettingsService.BrightnessDecreaseHotkey,
+                    () => SettingsService.Brightness = (SettingsService.Brightness - 0.05).Clamp(0.2, 1));
         }
 
         private void UpdateBlock()

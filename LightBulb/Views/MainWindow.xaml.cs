@@ -34,6 +34,8 @@ namespace LightBulb.Views
 
         private void UpdateNavigationButtons()
         {
+            if (ContentTransitioner == null) return;
+
             if (ContentTransitioner.SelectedIndex == 0)
                 NavigateGeneralSettingsButton.SetResourceReference(BorderBrushProperty, "SecondaryAccentBrush");
             else

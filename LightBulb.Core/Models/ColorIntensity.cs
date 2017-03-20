@@ -60,7 +60,7 @@ namespace LightBulb.Models
         /// <summary>
         /// Convert color temperature to color intensity
         /// </summary>
-        public static ColorIntensity FromTemperature(ushort temp)
+        public static ColorIntensity FromTemperature(ushort temp, double scale = 1)
         {
             // Original code credit: http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
 
@@ -93,7 +93,7 @@ namespace LightBulb.Models
                     bluei = (Math.Log(tempf - 10)*138.5177312231 - 305.0447927307)/255d;
             }
 
-            return new ColorIntensity(redi, greeni, bluei);
+            return new ColorIntensity(redi*scale, greeni*scale, bluei*scale);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace LightBulb.ViewModels
 
         private void SettingsServicePropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            if (args.PropertyName == nameof(SettingsService.GeoInfo))
+            if (args.PropertyName == nameof(ISettingsService.GeoInfo))
             {
                 RaisePropertyChanged(() => IsGeoInfoSet);
                 RaisePropertyChanged(() => GeoInfoCountryFlagUrl);
