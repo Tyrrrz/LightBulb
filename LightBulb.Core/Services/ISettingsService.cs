@@ -15,7 +15,6 @@ namespace LightBulb.Services
         bool IsCheckForUpdatedEnabled { get; set; }
         bool IsInternetSyncEnabled { get; set; }
         bool IsGeoInfoLocked { get; set; }
-        double Brightness { get; set; }
         ushort TemperatureEpsilon { get; set; }
         ushort DefaultMonitorTemperature { get; set; }
         ushort MinTemperature { get; set; }
@@ -30,8 +29,7 @@ namespace LightBulb.Services
         TimeSpan SunsetTime { get; set; }
         GeoInfo GeoInfo { get; set; }
         Hotkey ToggleHotkey { get; set; }
-        Hotkey BrightnessIncreaseHotkey { get; set; }
-        Hotkey BrightnessDecreaseHotkey { get; set; }
+        Hotkey TogglePollingHotkey { get; set; }
         Proxy Proxy { get; set; }
 
         /// <summary>

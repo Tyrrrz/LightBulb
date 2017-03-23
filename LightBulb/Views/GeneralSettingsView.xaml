@@ -76,6 +76,7 @@
                     Padding="4"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth0"
                     Command="{Binding StartStopCyclePreviewCommand}">
                 <materialDesign:PackIcon>
                     <materialDesign:PackIcon.Style>

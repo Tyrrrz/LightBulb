@@ -13,8 +13,8 @@ _Currently only compatible with Windows 7 and higher._
 
 **Download:**
 
-- Installer and portable distribution: [go to release page](https://github.com/Tyrrrz/LightBulb/releases)
-- Chocolatey: `choco install lightbulb` or [go to package page](https://chocolatey.org/packages/lightbulb)
+- Installer and portable distribution: [releases](https://github.com/Tyrrrz/LightBulb/releases)
+- Using chocolatey: `choco install lightbulb`
 
 **Customization:**
 

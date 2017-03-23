@@ -92,36 +92,15 @@
             <TextBlock Grid.Column="0"
                        Margin="5"
                        VerticalAlignment="Center"
-                       Text="Brightness up:"
-                       ToolTip="Hotkey to increase screen brightness" />
+                       Text="Toggle gamma polling:"
+                       ToolTip="Hotkey to switch gamma polling on/off" />
             <views:HotkeyEditorControl Grid.Column="1"
                                        Width="100"
                                        Margin="5"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
                                        FontSize="11"
-                                       Hotkey="{Binding SettingsService.BrightnessIncreaseHotkey}" />
-        </Grid>
-
-        <!--  Refresh gamma hotkey  -->
-        <Grid Background="Transparent">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Grid.Column="0"
-                       Margin="5"
-                       VerticalAlignment="Center"
-                       Text="Brightness down:"
-                       ToolTip="Hotkey to decrease screen brightness" />
-            <views:HotkeyEditorControl Grid.Column="1"
-                                       Width="100"
-                                       Margin="5"
-                                       HorizontalAlignment="Right"
-                                       VerticalAlignment="Center"
-                                       FontSize="11"
-                                       Hotkey="{Binding SettingsService.BrightnessDecreaseHotkey}" />
+                                       Hotkey="{Binding SettingsService.TogglePollingHotkey}" />
         </Grid>
     </StackPanel>
 </UserControl>

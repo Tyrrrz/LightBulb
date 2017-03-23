@@ -35,7 +35,7 @@ namespace LightBulb.Services
             // ... this forces the ramp to refresh every time
             // ... because some drivers will ignore stale ramps
             // ... while the gamma itself might have been changed
-            _gammaChannelOffset = _gammaChannelOffset++%5;
+            _gammaChannelOffset = ++_gammaChannelOffset%5;
             ramp.Red[255] = (ushort) (ramp.Red[255] + _gammaChannelOffset);
             ramp.Green[255] = (ushort) (ramp.Green[255] + _gammaChannelOffset);
             ramp.Blue[255] = (ushort) (ramp.Blue[255] + _gammaChannelOffset);

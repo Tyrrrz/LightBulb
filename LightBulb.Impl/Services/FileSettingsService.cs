@@ -14,7 +14,6 @@ namespace LightBulb.Services
         private bool _isCheckForUpdatedEnabled = true;
         private bool _isInternetSyncEnabled = true;
         private bool _isGeoInfoLocked;
-        private double _brightness = 1;
         private ushort _temperatureEpsilon = 50;
         private ushort _defaultMonitorTemperature = 6600;
         private ushort _maxTemperature = 6600;
@@ -29,8 +28,7 @@ namespace LightBulb.Services
         private TimeSpan _sunsetTime = new TimeSpan(16, 30, 0);
         private GeoInfo _geoInfo;
         private Hotkey _toggleHotkey;
-        private Hotkey _brightnessIncreaseHotkey;
-        private Hotkey _brightnessDecreaseHotkey;
+        private Hotkey _togglePollingHotkey;
         private Proxy _proxy;
 
         public bool IsGammaPollingEnabled
@@ -67,12 +65,6 @@ namespace LightBulb.Services
         {
             get { return _isGeoInfoLocked; }
             set { Set(ref _isGeoInfoLocked, value); }
-        }
-
-        public double Brightness
-        {
-            get { return _brightness; }
-            set { Set(ref _brightness, value); }
         }
 
         public ushort TemperatureEpsilon
@@ -185,43 +177,25 @@ namespace LightBulb.Services
                 // Make sure other hotkeys don't use the same keys
                 if (value != null)
                 {
-                    if (BrightnessIncreaseHotkey == value) BrightnessIncreaseHotkey = null;
-                    if (BrightnessDecreaseHotkey == value) BrightnessDecreaseHotkey = null;
+                    if (TogglePollingHotkey == value) TogglePollingHotkey = null;
                 }
 
                 Set(ref _toggleHotkey, value);
             }
         }
 
-        public Hotkey BrightnessIncreaseHotkey
+        public Hotkey TogglePollingHotkey
         {
-            get { return _brightnessIncreaseHotkey; }
+            get { return _togglePollingHotkey; }
             set
             {
                 // Make sure other hotkeys don't use the same keys
                 if (value != null)
                 {
                     if (ToggleHotkey == value) ToggleHotkey = null;
-                    if (BrightnessDecreaseHotkey == value) BrightnessDecreaseHotkey = null;
                 }
 
-                Set(ref _brightnessIncreaseHotkey, value);
-            }
-        }
-
-        public Hotkey BrightnessDecreaseHotkey
-        {
-            get { return _brightnessDecreaseHotkey; }
-            set
-            {
-                // Make sure other hotkeys don't use the same keys
-                if (value != null)
-                {
-                    if (ToggleHotkey == value) ToggleHotkey = null;
-                    if (BrightnessIncreaseHotkey == value) BrightnessIncreaseHotkey = null;
-                }
-
-                Set(ref _brightnessDecreaseHotkey, value);
+                Set(ref _togglePollingHotkey, value);
             }
         }
 
