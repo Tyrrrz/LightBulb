@@ -30,9 +30,8 @@
         WindowStartupLocation="Manual"
         WindowStyle="None"
         mc:Ignorable="d">
-    <Border Background="{DynamicResource PrimaryHueDarkBrush}"
-            BorderBrush="{DynamicResource MiscBrush}"
-            BorderThickness="2"
+    <Border BorderBrush="{DynamicResource MiscBrush}"
+            BorderThickness="1"
             CornerRadius="12,12,0,0">
         <Grid>
             <Grid.RowDefinitions>

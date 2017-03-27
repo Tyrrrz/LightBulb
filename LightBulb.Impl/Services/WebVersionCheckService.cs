@@ -20,7 +20,7 @@ namespace LightBulb.Services
             try
             {
                 // Parse
-                var parsed = JArray.Parse(response);
+                var parsed = JToken.Parse(response);
 
                 // Check versions of all releases, see if any one of them is newer than the current
                 foreach (var jRelease in parsed)

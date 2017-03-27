@@ -18,7 +18,7 @@ namespace LightBulb.Services
             try
             {
                 // Parse
-                var parsed = JObject.Parse(response);
+                var parsed = JToken.Parse(response);
 
                 // Extract data
                 string countryName = parsed["country_name"].Value<string>().NullIfBlank();
@@ -51,7 +51,7 @@ namespace LightBulb.Services
             try
             {
                 // Parse
-                var parsed = JObject.Parse(response);
+                var parsed = JToken.Parse(response);
 
                 // Extract data
                 var sunrise = parsed["results"]["sunrise"].Value<DateTime>();
