@@ -5,77 +5,69 @@
              DataContext="{Binding AdvancedSettingsViewModel, Source={StaticResource Locator}}">
     <StackPanel Grid.IsSharedSizeScope="True" Orientation="Vertical">
         <!--  Polling enabled/disabled  -->
-        <Grid Background="Transparent">
+        <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" SharedSizeGroup="Button" />
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0"
-                       Margin="5"
                        VerticalAlignment="Center"
                        Text="Gamma polling:"
                        ToolTip="Refresh gamma settings every few seconds, making sure they are not overriden" />
             <ToggleButton Grid.Column="1"
-                          Margin="5"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Center"
                           IsChecked="{Binding SettingsService.IsGammaPollingEnabled}" />
         </Grid>
 
         <!--  Smoothing enabled/disabled  -->
-        <Grid Background="Transparent">
+        <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0"
-                       Margin="5"
                        VerticalAlignment="Center"
                        Text="Temperature smoothing:"
                        ToolTip="Switch temperatures slowly, giving time for eyes to adjust" />
             <ToggleButton Grid.Column="1"
-                          Margin="5"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Center"
                           IsChecked="{Binding SettingsService.IsTemperatureSmoothingEnabled}" />
         </Grid>
 
         <!--  Full screen block enabled/disabled  -->
-        <Grid Background="Transparent">
+        <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0"
-                       Margin="5"
                        VerticalAlignment="Center"
                        Text="Pause when fullscreen:"
                        ToolTip="Reset gamma when any fullscreen window is in foreground" />
             <ToggleButton Grid.Column="1"
-                          Margin="5"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Center"
                           IsChecked="{Binding SettingsService.IsFullscreenBlocking}" />
         </Grid>
 
         <!--  Toggle hotkey  -->
-        <Grid Background="Transparent">
+        <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0"
-                       Margin="5"
                        VerticalAlignment="Center"
                        Text="Toggle LightBulb:"
                        ToolTip="Hotkey to switch LightBulb on/off" />
             <views:HotkeyEditorControl Grid.Column="1"
                                        Width="100"
-                                       Margin="5"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
                                        FontSize="11"
@@ -83,20 +75,18 @@
         </Grid>
 
         <!--  Toggle polling hotkey  -->
-        <Grid Background="Transparent">
+        <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0"
-                       Margin="5"
                        VerticalAlignment="Center"
                        Text="Toggle gamma polling:"
                        ToolTip="Hotkey to switch gamma polling on/off" />
             <views:HotkeyEditorControl Grid.Column="1"
                                        Width="100"
-                                       Margin="5"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
                                        FontSize="11"

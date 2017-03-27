@@ -8,7 +8,7 @@
             <Run Text="Sunrise time:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.SunriseTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
         </TextBlock>
-        <Slider Margin="5,0,5,5"
+        <Slider Margin="7,0,7,5"
                 IsEnabled="{Binding SettingsService.IsInternetSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
                 IsSnapToTickEnabled="True"
                 LargeChange="0.5"
@@ -24,7 +24,7 @@
             <Run Text="Sunset time:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.SunsetTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
         </TextBlock>
-        <Slider Margin="5,0,5,5"
+        <Slider Margin="7,0,7,5"
                 IsEnabled="{Binding SettingsService.IsInternetSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
                 IsSnapToTickEnabled="True"
                 LargeChange="0.5"
@@ -36,19 +36,17 @@
                 Value="{Binding SettingsService.SunsetTime, Converter={StaticResource TimeSpanToHoursConverter}}" />
 
         <!--  Internet sync on/off  -->
-        <Grid Background="Transparent">
+        <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0"
-                       Margin="5"
                        VerticalAlignment="Center"
                        Text="Internet synchronization:"
                        ToolTip="Pull sunrise and sunset times for your location from the Internet" />
             <ToggleButton Grid.Column="1"
-                          Margin="5"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Center"
                           IsChecked="{Binding SettingsService.IsInternetSyncEnabled}" />
@@ -64,6 +62,7 @@
 
             <!--  Country flag  -->
             <Image Grid.Column="0"
+                   Width="16"
                    Height="16"
                    VerticalAlignment="Center"
                    Source="{Binding GeoInfoCountryFlagUrl, IsAsync=True}" />

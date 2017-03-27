@@ -222,11 +222,10 @@
             </materialDesign:ColorZone>
 
             <!--  Content  -->
-            <Border Grid.Row="1">
+            <Border Grid.Row="1" Background="{DynamicResource MaterialDesignCardBackground}">
                 <materialDesign:Transitioner x:Name="ContentTransitioner" SelectedIndex="0">
                     <materialDesign:Transitioner.Resources>
                         <Style TargetType="{x:Type materialDesign:TransitionerSlide}">
-                            <Setter Property="Background" Value="{DynamicResource MaterialDesignCardBackground}" />
                             <Setter Property="BackwardWipe">
                                 <Setter.Value>
                                     <views:SlideWipe Direction="Right" />

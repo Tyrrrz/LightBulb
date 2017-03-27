@@ -10,7 +10,7 @@
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.MaxTemperature, Mode=OneWay}" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="K" />
         </TextBlock>
         <Slider x:Name="MaxTempSlider"
-                Margin="5,0,5,5"
+                Margin="7,0,7,5"
                 IsSnapToTickEnabled="True"
                 LargeChange="500"
                 Maximum="6600"
@@ -29,7 +29,7 @@
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.MinTemperature, Mode=OneWay}" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="K" />
         </TextBlock>
         <Slider x:Name="MinTempSlider"
-                Margin="5,0,5,5"
+                Margin="7,0,7,5"
                 IsSnapToTickEnabled="True"
                 LargeChange="500"
                 Maximum="6600"
@@ -47,7 +47,7 @@
             <Run Text="Transition duration:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.TemperatureTransitionDuration, Mode=OneWay}" />
         </TextBlock>
-        <Slider Margin="5,0,5,5"
+        <Slider Margin="7,0,7,5"
                 IsSnapToTickEnabled="True"
                 LargeChange="30"
                 Maximum="180"
@@ -58,21 +58,19 @@
                 Value="{Binding SettingsService.TemperatureTransitionDuration, Converter={StaticResource TimeSpanToMinutesConverter}}" />
 
         <!--  24hr preview  -->
-        <Grid Background="Transparent">
+        <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0"
-                       Margin="5"
                        VerticalAlignment="Center"
                        Text="Preview 24-hour cycle:"
                        ToolTip="Preview how the gamma changes during a 24 hour cycle" />
             <Button Grid.Column="1"
                     Width="24"
                     Height="24"
-                    Margin="5"
                     Padding="4"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
