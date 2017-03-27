@@ -25,12 +25,15 @@ namespace LightBulb.Models
 
         public override bool Equals(object obj)
         {
-            return Equals(this, obj as Hotkey);
+            if (ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(obj, null)) return false;
+            return Equals(obj as Hotkey);
         }
 
         public bool Equals(Hotkey other)
         {
-            return this == other;
+            if (ReferenceEquals(other, null)) return false;
+            return Key == other.Key && Modifiers == other.Modifiers;
         }
 
         public override int GetHashCode()
@@ -45,8 +48,7 @@ namespace LightBulb.Models
         {
             if (ReferenceEquals(a, b)) return true;
             if (ReferenceEquals(a, null)) return false;
-            if (ReferenceEquals(b, null)) return false;
-            return a.Key == b.Key && a.Modifiers == b.Modifiers;
+            return a.Equals(b);
         }
 
         public static bool operator !=(Hotkey a, Hotkey b) => !(a == b);
