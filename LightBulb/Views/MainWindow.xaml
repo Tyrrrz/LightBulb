@@ -143,6 +143,8 @@
                                       Grid.Row="0"
                                       Height="50"
                                       Padding="5,0,0,0"
+                                      Panel.ZIndex="1"
+                                      materialDesign:ShadowAssist.ShadowDepth="Depth1"
                                       BorderThickness="0,0,0,1"
                                       CornerRadius="12,12,0,0"
                                       Mode="PrimaryMid"
@@ -222,7 +224,9 @@
             </materialDesign:ColorZone>
 
             <!--  Content  -->
-            <Border Grid.Row="1" Background="{DynamicResource MaterialDesignCardBackground}">
+            <Border Grid.Row="1"
+                    Panel.ZIndex="0"
+                    Background="{DynamicResource MaterialDesignCardBackground}">
                 <materialDesign:Transitioner x:Name="ContentTransitioner" SelectedIndex="0">
                     <materialDesign:Transitioner.Resources>
                         <Style TargetType="{x:Type materialDesign:TransitionerSlide}">
@@ -246,7 +250,10 @@
             </Border>
 
             <!--  Status bar  -->
-            <materialDesign:ColorZone Grid.Row="2" Mode="PrimaryDark">
+            <materialDesign:ColorZone Grid.Row="2"
+                                      Panel.ZIndex="1"
+                                      materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                      Mode="PrimaryDark">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
