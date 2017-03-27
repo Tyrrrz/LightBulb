@@ -1,6 +1,4 @@
-﻿using Tyrrrz.Extensions;
-
-namespace LightBulb.Models
+﻿namespace LightBulb.Models
 {
     /// <summary>
     /// Information about geographical location
@@ -39,14 +37,6 @@ namespace LightBulb.Models
             City = city;
             Latitude = latitude;
             Longitude = longitude;
-
-            // HACK: nullify blank strings so WPF bindings can use fallbacks
-            if (Country.IsBlank())
-                Country = null;
-            if (CountryCode.IsBlank())
-                CountryCode = null;
-            if (City.IsBlank())
-                City = null;
         }
     }
 }

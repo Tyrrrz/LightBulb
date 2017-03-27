@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using LightBulb.Models;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
@@ -18,25 +18,17 @@ namespace LightBulb.Services
             try
             {
                 // Parse
-                var json = new
-                {
-                    country_name = "",
-                    country_code = "",
-                    city = "",
-                    latitude = 0d,
-                    longitude = 0d
-                };
-                var parsed = JsonConvert.DeserializeAnonymousType(response, json);
+                var parsed = JObject.Parse(response);
 
                 // Extract data
-                var result = new GeoInfo
-                (
-                    parsed.country_name,
-                    parsed.country_code,
-                    parsed.city,
-                    parsed.latitude,
-                    parsed.longitude
-                );
+                string countryName = parsed["country_name"].Value<string>().NullIfBlank();
+                string countryCode = parsed["country_code"].Value<string>().NullIfBlank();
+                string city = parsed["city"].Value<string>().NullIfBlank();
+                double lat = parsed["latitude"].Value<double>();
+                double lng = parsed["longitude"].Value<double>();
+
+                // Populate
+                var result = new GeoInfo(countryName, countryCode, city, lat, lng);
 
                 return result;
             }
@@ -59,19 +51,15 @@ namespace LightBulb.Services
             try
             {
                 // Parse
-                var expectedJson = new
-                {
-                    sunrise = DateTime.MinValue,
-                    sunset = DateTime.MaxValue
-                };
-                var parsed = JsonConvert.DeserializeAnonymousType(response, new {results = expectedJson}).results;
+                var parsed = JObject.Parse(response);
 
                 // Extract data
-                var result = new SolarInfo
-                (
-                    parsed.sunrise.TimeOfDay,
-                    parsed.sunset.TimeOfDay
-                );
+                var sunrise = parsed["results"]["sunrise"].Value<DateTime>();
+                var sunset = parsed["results"]["sunset"].Value<DateTime>();
+
+                // Populate
+                var result = new SolarInfo(sunrise.TimeOfDay, sunset.TimeOfDay);
+
                 return result;
             }
             catch

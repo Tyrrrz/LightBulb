@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
@@ -20,16 +20,12 @@ namespace LightBulb.Services
             try
             {
                 // Parse
-                var expectedJson = new
-                {
-                    tag_name = ""
-                };
-                var parsed = JsonConvert.DeserializeAnonymousType(response, new[] {expectedJson});
+                var parsed = JArray.Parse(response);
 
                 // Check versions of all releases, see if any one of them is newer than the current
-                foreach (var release in parsed)
+                foreach (var jRelease in parsed)
                 {
-                    string tagName = release.tag_name;
+                    string tagName = jRelease["tag_name"].Value<string>();
                     if (tagName.IsBlank()) continue;
 
                     Version version;
