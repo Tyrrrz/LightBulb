@@ -7,14 +7,21 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
-    public class WebVersionCheckService : WebApiServiceBase, IVersionCheckService
+    public class WebVersionCheckService : IVersionCheckService
     {
         private static Version CurrentVersion => Assembly.GetEntryAssembly().GetName().Version;
+
+        private readonly IHttpService _httpService;
+
+        public WebVersionCheckService(IHttpService httpService)
+        {
+            _httpService = httpService;
+        }
 
         /// <inheritdoc />
         public async Task<bool> GetUpdateStatusAsync()
         {
-            string response = await GetStringAsync("https://api.github.com/repos/Tyrrrz/LightBulb/releases");
+            string response = await _httpService.GetStringAsync("https://api.github.com/repos/Tyrrrz/LightBulb/releases");
             if (response.IsBlank()) return false;
 
             try

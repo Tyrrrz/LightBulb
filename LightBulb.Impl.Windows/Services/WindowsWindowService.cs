@@ -7,8 +7,10 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
-    public class WindowsWindowService : WinApiServiceBase, IWindowService
+    public class WindowsWindowService : IWindowService, IDisposable
     {
+        private readonly HookManager _hookManager;
+
         private IntPtr _foregroundWindowLocationChangedHook;
 
         private IntPtr _lastForegroundWindow;
@@ -32,6 +34,8 @@ namespace LightBulb.Services
 
         public WindowsWindowService()
         {
+            _hookManager = new HookManager();
+
             var foregroundWindowLocationChangedEventHandler = new WinEventHandler(
                 (hook, type, hwnd, idObject, child, thread, time) =>
                 {
@@ -50,15 +54,20 @@ namespace LightBulb.Services
 
                     // Hook location changed event for foreground window
                     if (_foregroundWindowLocationChangedHook != IntPtr.Zero)
-                        UnregisterWinEvent(_foregroundWindowLocationChangedHook);
-                    _foregroundWindowLocationChangedHook = RegisterWinEvent(0x800B,
+                        _hookManager.UnregisterWinEvent(_foregroundWindowLocationChangedHook);
+                    _foregroundWindowLocationChangedHook = _hookManager.RegisterWinEvent(0x800B,
                         foregroundWindowLocationChangedEventHandler, 0, thread);
                 });
 
-            RegisterWinEvent(0x0003, foregroundWindowChangedEventHandler);
+            _hookManager.RegisterWinEvent(0x0003, foregroundWindowChangedEventHandler);
 
             // Init
             IsForegroundFullScreen = IsWindowFullScreen(GetForegroundWindow());
+        }
+
+        ~WindowsWindowService()
+        {
+            Dispose(false);
         }
 
         /// <summary>
@@ -66,8 +75,7 @@ namespace LightBulb.Services
         /// </summary>
         public IntPtr GetForegroundWindow()
         {
-            var result = NativeMethods.GetForegroundWindowInternal();
-            CheckLogWin32Error();
+            var result = NativeMethods.GetForegroundWindow();
             return result;
         }
 
@@ -76,8 +84,7 @@ namespace LightBulb.Services
         /// </summary>
         public IntPtr GetDesktopWindow()
         {
-            var result = NativeMethods.GetDesktopWindowInternal();
-            CheckLogWin32Error();
+            var result = NativeMethods.GetDesktopWindow();
             return result;
         }
 
@@ -86,8 +93,7 @@ namespace LightBulb.Services
         /// </summary>
         public IntPtr GetShellWindow()
         {
-            var result = NativeMethods.GetShellWindowInternal();
-            CheckLogWin32Error();
+            var result = NativeMethods.GetShellWindow();
             return result;
         }
 
@@ -97,8 +103,7 @@ namespace LightBulb.Services
         public Rect GetWindowRect(IntPtr hWindow)
         {
             Rect result;
-            if (!NativeMethods.GetWindowRectInternal(hWindow, out result))
-                CheckLogWin32Error();
+            NativeMethods.GetWindowRect(hWindow, out result);
             return result;
         }
 
@@ -108,8 +113,7 @@ namespace LightBulb.Services
         public Rect GetWindowClientRect(IntPtr hWindow)
         {
             Rect result;
-            if (!NativeMethods.GetWindowClientRectInternal(hWindow, out result))
-                CheckLogWin32Error();
+            NativeMethods.GetWindowClientRect(hWindow, out result);
             return result;
         }
 
@@ -118,8 +122,7 @@ namespace LightBulb.Services
         /// </summary>
         public bool IsWindowVisible(IntPtr hWindow)
         {
-            bool result = NativeMethods.IsWindowVisibleInternal(hWindow);
-            CheckLogWin32Error();
+            bool result = NativeMethods.IsWindowVisible(hWindow);
             return result;
         }
 
@@ -129,8 +132,7 @@ namespace LightBulb.Services
         public string GetClassName(IntPtr hWindow)
         {
             var sb = new StringBuilder(256);
-            if (NativeMethods.GetClassNameInternal(hWindow, sb, sb.Capacity) == 0)
-                CheckLogWin32Error();
+            NativeMethods.GetClassName(hWindow, sb, sb.Capacity);
             return sb.ToString();
         }
 
@@ -180,6 +182,20 @@ namespace LightBulb.Services
                               actualRect.Right >= screenRect.Right && actualRect.Bottom >= screenRect.Bottom;
 
             return boundCheck;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _hookManager.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

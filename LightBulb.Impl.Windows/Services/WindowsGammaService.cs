@@ -4,15 +4,19 @@ using LightBulb.Models;
 
 namespace LightBulb.Services
 {
-    public class WindowsGammaService : WinApiServiceBase, IGammaService
+    public class WindowsGammaService : IGammaService, IDisposable
     {
         private readonly IntPtr _dc;
         private int _gammaChannelOffset;
 
         public WindowsGammaService()
         {
-            _dc = NativeMethods.GetDCInternal(IntPtr.Zero);
-            CheckLogWin32Error();
+            _dc = NativeMethods.GetDC(IntPtr.Zero);
+        }
+
+        ~WindowsGammaService()
+        {
+            Dispose(false);
         }
 
         /// <summary>
@@ -21,8 +25,7 @@ namespace LightBulb.Services
         public GammaRamp GetDisplayGammaRamp()
         {
             GammaRamp ramp;
-            if (!NativeMethods.GetDeviceGammaRampInternal(_dc, out ramp))
-                CheckLogWin32Error();
+            NativeMethods.GetDeviceGammaRamp(_dc, out ramp);
             return ramp;
         }
 
@@ -41,8 +44,7 @@ namespace LightBulb.Services
             ramp.Blue[255] = (ushort) (ramp.Blue[255] + _gammaChannelOffset);
 
             // Set ramp
-            if (!NativeMethods.SetDeviceGammaRampInternal(_dc, ref ramp))
-                CheckLogWin32Error();
+            NativeMethods.SetDeviceGammaRamp(_dc, ref ramp);
         }
 
         /// <inheritdoc />
@@ -66,12 +68,16 @@ namespace LightBulb.Services
             SetDisplayGammaLinear(ColorIntensity.Identity);
         }
 
-        protected override void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             RestoreDefault();
-            NativeMethods.ReleaseDCInternal(IntPtr.Zero, _dc);
-            CheckLogWin32Error();
-            base.Dispose(disposing);
+            NativeMethods.ReleaseDC(IntPtr.Zero, _dc);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

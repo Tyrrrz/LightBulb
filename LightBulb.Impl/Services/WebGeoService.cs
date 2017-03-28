@@ -7,12 +7,19 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
-    public class WebGeoService : WebApiServiceBase, IGeoService
+    public class WebGeoService : IGeoService
     {
+        private readonly IHttpService _httpService;
+
+        public WebGeoService(IHttpService httpService)
+        {
+            _httpService = httpService;
+        }
+
         /// <inheritdoc />
         public async Task<GeoInfo> GetGeoInfoAsync()
         {
-            string response = await GetStringAsync("http://freegeoip.net/json");
+            string response = await _httpService.GetStringAsync("http://freegeoip.net/json");
             if (response.IsBlank()) return null;
 
             try
@@ -45,7 +52,7 @@ namespace LightBulb.Services
             double lat = geoInfo.Latitude;
             double lng = geoInfo.Longitude;
             string response =
-                await GetStringAsync($"http://api.sunrise-sunset.org/json?lat={lat}&lng={lng}&formatted=0");
+                await _httpService.GetStringAsync($"http://api.sunrise-sunset.org/json?lat={lat}&lng={lng}&formatted=0");
             if (response.IsBlank()) return null;
 
             try

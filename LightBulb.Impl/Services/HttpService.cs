@@ -1,27 +1,32 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace LightBulb.Services
 {
     /// <summary>
-    /// Implements basic functionality for interacting with a web API
+    /// Implements basic HTTP handler with throttling
     /// </summary>
-    public abstract class WebApiServiceBase : IDisposable
+    public class HttpService : IHttpService, IDisposable
     {
         private readonly HttpClient _client;
 
         private readonly TimeSpan _minRequestInterval = TimeSpan.FromSeconds(0.35);
         private DateTime _lastRequestDateTime = DateTime.MinValue;
 
-        protected WebApiServiceBase()
+        public HttpService()
         {
-            _client = new HttpClient();
+            var handler = new HttpClientHandler();
+            if (handler.SupportsAutomaticDecompression)
+                handler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+            _client = new HttpClient(handler);
             _client.DefaultRequestHeaders.Add("User-Agent", "LightBulb (github.com/Tyrrrz/LightBulb)");
         }
 
-        ~WebApiServiceBase()
+        ~HttpService()
         {
             Dispose(false);
         }
@@ -40,11 +45,8 @@ namespace LightBulb.Services
             _lastRequestDateTime = DateTime.Now;
         }
 
-        /// <summary>
-        /// Send a GET request and return response body as string
-        /// </summary>
-        /// <returns>Response body if request was successful, null otherwise</returns>
-        protected async Task<string> GetStringAsync(string url)
+        /// <inheritdoc />
+        public async Task<string> GetStringAsync(string url)
         {
             try
             {

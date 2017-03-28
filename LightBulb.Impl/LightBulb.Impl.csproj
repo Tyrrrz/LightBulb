@@ -53,7 +53,7 @@
     <Compile Include="Services\FileSettingsService.cs" />
     <Compile Include="Services\WebVersionCheckService.cs" />
     <Compile Include="Services\TemperatureService.cs" />
-    <Compile Include="Services\WebApiServiceBase.cs" />
+    <Compile Include="Services\HttpService.cs" />
     <Compile Include="Services\WebGeoService.cs" />
   </ItemGroup>
   <ItemGroup>

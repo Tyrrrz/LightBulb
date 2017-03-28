@@ -25,19 +25,20 @@ namespace LightBulb
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             // Services
-            SimpleIoc.Default.Register<ISettingsService, FileSettingsService>();
             SimpleIoc.Default.Register<IGammaService, WindowsGammaService>();
-            SimpleIoc.Default.Register<IWindowService, WindowsWindowService>();
-            SimpleIoc.Default.Register<IHotkeyService, WindowsHotkeyService>();
-            SimpleIoc.Default.Register<ITemperatureService, TemperatureService>();
             SimpleIoc.Default.Register<IGeoService, WebGeoService>();
+            SimpleIoc.Default.Register<IHotkeyService, WindowsHotkeyService>();
+            SimpleIoc.Default.Register<IHttpService, HttpService>();
+            SimpleIoc.Default.Register<ISettingsService, FileSettingsService>();
+            SimpleIoc.Default.Register<ITemperatureService, TemperatureService>();
             SimpleIoc.Default.Register<IVersionCheckService, WebVersionCheckService>();
+            SimpleIoc.Default.Register<IWindowService, WindowsWindowService>();
 
             // View models
-            SimpleIoc.Default.Register<IMainViewModel, MainViewModel>();
+            SimpleIoc.Default.Register<IAdvancedSettingsViewModel, AdvancedSettingsViewModel>();
             SimpleIoc.Default.Register<IGeneralSettingsViewModel, GeneralSettingsViewModel>();
             SimpleIoc.Default.Register<IGeoSettingsViewModel, GeoSettingsViewModel>();
-            SimpleIoc.Default.Register<IAdvancedSettingsViewModel, AdvancedSettingsViewModel>();
+            SimpleIoc.Default.Register<IMainViewModel, MainViewModel>();
 
             // Load settings
             Resolve<ISettingsService>().Load();
@@ -56,24 +57,25 @@ namespace LightBulb
             Resolve<ISettingsService>().Save();
 
             // ReSharper disable SuspiciousTypeConversion.Global
-            (Resolve<ISettingsService>() as IDisposable)?.Dispose();
             (Resolve<IGammaService>() as IDisposable)?.Dispose();
-            (Resolve<IWindowService>() as IDisposable)?.Dispose();
-            (Resolve<IHotkeyService>() as IDisposable)?.Dispose();
-            (Resolve<ITemperatureService>() as IDisposable)?.Dispose();
             (Resolve<IGeoService>() as IDisposable)?.Dispose();
+            (Resolve<IHotkeyService>() as IDisposable)?.Dispose();
+            (Resolve<IHttpService>() as IDisposable)?.Dispose();
+            (Resolve<ISettingsService>() as IDisposable)?.Dispose();
+            (Resolve<ITemperatureService>() as IDisposable)?.Dispose();
             (Resolve<IVersionCheckService>() as IDisposable)?.Dispose();
+            (Resolve<IWindowService>() as IDisposable)?.Dispose();
 
-            (Resolve<IMainViewModel>() as IDisposable)?.Dispose();
+            (Resolve<IAdvancedSettingsViewModel>() as IDisposable)?.Dispose();
             (Resolve<IGeneralSettingsViewModel>() as IDisposable)?.Dispose();
             (Resolve<IGeoSettingsViewModel>() as IDisposable)?.Dispose();
-            (Resolve<IAdvancedSettingsViewModel>() as IDisposable)?.Dispose();
+            (Resolve<IMainViewModel>() as IDisposable)?.Dispose();
             // ReSharper restore SuspiciousTypeConversion.Global
         }
 
-        public IMainViewModel MainViewModel => Resolve<IMainViewModel>();
+        public IAdvancedSettingsViewModel AdvancedSettingsViewModel => Resolve<IAdvancedSettingsViewModel>();
         public IGeneralSettingsViewModel GeneralSettingsViewModel => Resolve<IGeneralSettingsViewModel>();
         public IGeoSettingsViewModel GeoSettingsViewModel => Resolve<IGeoSettingsViewModel>();
-        public IAdvancedSettingsViewModel AdvancedSettingsViewModel => Resolve<IAdvancedSettingsViewModel>();
+        public IMainViewModel MainViewModel => Resolve<IMainViewModel>();
     }
 }

@@ -51,6 +51,7 @@
     <Compile Include="Services\IGammaService.cs" />
     <Compile Include="Services\IGeoService.cs" />
     <Compile Include="Services\IHotkeyService.cs" />
+    <Compile Include="Services\IHttpService.cs" />
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\ITemperatureService.cs" />
     <Compile Include="Services\IVersionCheckService.cs" />

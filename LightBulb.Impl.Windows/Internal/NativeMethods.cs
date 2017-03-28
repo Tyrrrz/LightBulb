@@ -8,51 +8,51 @@ namespace LightBulb.Internal
     internal static class NativeMethods
     {
         [DllImport("user32.dll", EntryPoint = "SetWinEventHook", SetLastError = true)]
-        public static extern IntPtr SetWinEventHookInternal(
+        public static extern IntPtr SetWinEventHook(
             uint eventMin, uint eventMax,
             IntPtr hmodWinEventProc, WinEventHandler lpfnWinEventProc,
             uint idProcess, uint idThread, uint dwFlags);
 
         [DllImport("user32.dll", EntryPoint = "UnhookWinEvent", SetLastError = true)]
-        public static extern bool UnhookWinEventInternal(IntPtr hWinEventHook);
+        public static extern bool UnhookWinEvent(IntPtr hWinEventHook);
 
         [DllImport("user32.dll", EntryPoint = "GetDC", SetLastError = true)]
-        public static extern IntPtr GetDCInternal(IntPtr hWnd);
+        public static extern IntPtr GetDC(IntPtr hWnd);
 
         [DllImport("user32.dll", EntryPoint = "ReleaseDC", SetLastError = true)]
-        public static extern int ReleaseDCInternal(IntPtr hWnd, IntPtr hDC);
+        public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
         [DllImport("gdi32.dll", EntryPoint = "SetDeviceGammaRamp", SetLastError = true)]
-        public static extern bool SetDeviceGammaRampInternal(IntPtr hMonitor, ref GammaRamp ramp);
+        public static extern bool SetDeviceGammaRamp(IntPtr hMonitor, ref GammaRamp ramp);
 
         [DllImport("gdi32.dll", EntryPoint = "GetDeviceGammaRamp", SetLastError = true)]
-        public static extern bool GetDeviceGammaRampInternal(IntPtr hMonitor, out GammaRamp ramp);
+        public static extern bool GetDeviceGammaRamp(IntPtr hMonitor, out GammaRamp ramp);
 
         [DllImport("user32.dll", EntryPoint = "RegisterHotKey", SetLastError = true)]
-        public static extern bool RegisterHotKeyInternal(IntPtr hWnd, int id, int fsModifiers, int vk);
+        public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
 
         [DllImport("user32.dll", EntryPoint = "UnregisterHotKey", SetLastError = true)]
-        public static extern bool UnregisterHotKeyInternal(IntPtr hWnd, int id);
+        public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         [DllImport("user32.dll", EntryPoint = "GetForegroundWindow", SetLastError = true)]
-        public static extern IntPtr GetForegroundWindowInternal();
+        public static extern IntPtr GetForegroundWindow();
 
         [DllImport("user32.dll", EntryPoint = "GetDesktopWindow", SetLastError = true)]
-        public static extern IntPtr GetDesktopWindowInternal();
+        public static extern IntPtr GetDesktopWindow();
 
         [DllImport("user32.dll", EntryPoint = "GetShellWindow", SetLastError = true)]
-        public static extern IntPtr GetShellWindowInternal();
+        public static extern IntPtr GetShellWindow();
 
         [DllImport("user32.dll", EntryPoint = "GetWindowRect", SetLastError = true)]
-        public static extern bool GetWindowRectInternal(IntPtr hWindow, out Rect rect);
+        public static extern bool GetWindowRect(IntPtr hWindow, out Rect rect);
 
         [DllImport("user32.dll", EntryPoint = "GetClientRect", SetLastError = true)]
-        public static extern bool GetWindowClientRectInternal(IntPtr hWindow, out Rect rect);
+        public static extern bool GetWindowClientRect(IntPtr hWindow, out Rect rect);
 
         [DllImport("user32.dll", EntryPoint = "IsWindowVisible", SetLastError = true)]
-        public static extern bool IsWindowVisibleInternal(IntPtr hWindow);
+        public static extern bool IsWindowVisible(IntPtr hWindow);
 
         [DllImport("user32.dll", EntryPoint = "GetClassName", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern int GetClassNameInternal(IntPtr hWindow, StringBuilder className, int maxCount);
+        public static extern int GetClassName(IntPtr hWindow, StringBuilder className, int maxCount);
     }
 }
