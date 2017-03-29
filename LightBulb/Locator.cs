@@ -9,17 +9,11 @@ namespace LightBulb
 {
     public sealed class Locator
     {
-        private static bool _isInit;
-
-        public static T Resolve<T>() => ServiceLocator.Current.GetInstance<T>();
-        public static T Resolve<T>(string id) => ServiceLocator.Current.GetInstance<T>(id);
-
         /// <summary>
         /// Initialize service locator
         /// </summary>
         public static void Init()
         {
-            if (_isInit) return;
             if (ViewModelBase.IsInDesignModeStatic) return;
 
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
@@ -41,9 +35,7 @@ namespace LightBulb
             SimpleIoc.Default.Register<IMainViewModel, MainViewModel>();
 
             // Load settings
-            Resolve<ISettingsService>().Load();
-
-            _isInit = true;
+            ServiceLocator.Current.GetInstance<ISettingsService>().Load();
         }
 
         /// <summary>
@@ -51,31 +43,29 @@ namespace LightBulb
         /// </summary>
         public static void Cleanup()
         {
-            if (!_isInit) return;
-
             // Save settings
-            Resolve<ISettingsService>().Save();
+            ServiceLocator.Current.GetInstance<ISettingsService>().Save();
 
             // ReSharper disable SuspiciousTypeConversion.Global
-            (Resolve<IGammaService>() as IDisposable)?.Dispose();
-            (Resolve<IGeoService>() as IDisposable)?.Dispose();
-            (Resolve<IHotkeyService>() as IDisposable)?.Dispose();
-            (Resolve<IHttpService>() as IDisposable)?.Dispose();
-            (Resolve<ISettingsService>() as IDisposable)?.Dispose();
-            (Resolve<ITemperatureService>() as IDisposable)?.Dispose();
-            (Resolve<IVersionCheckService>() as IDisposable)?.Dispose();
-            (Resolve<IWindowService>() as IDisposable)?.Dispose();
+            (ServiceLocator.Current.GetInstance<IGammaService>() as IDisposable)?.Dispose();
+            (ServiceLocator.Current.GetInstance<IGeoService>() as IDisposable)?.Dispose();
+            (ServiceLocator.Current.GetInstance<IHotkeyService>() as IDisposable)?.Dispose();
+            (ServiceLocator.Current.GetInstance<IHttpService>() as IDisposable)?.Dispose();
+            (ServiceLocator.Current.GetInstance<ISettingsService>() as IDisposable)?.Dispose();
+            (ServiceLocator.Current.GetInstance<ITemperatureService>() as IDisposable)?.Dispose();
+            (ServiceLocator.Current.GetInstance<IVersionCheckService>() as IDisposable)?.Dispose();
+            (ServiceLocator.Current.GetInstance<IWindowService>() as IDisposable)?.Dispose();
 
-            (Resolve<IAdvancedSettingsViewModel>() as IDisposable)?.Dispose();
-            (Resolve<IGeneralSettingsViewModel>() as IDisposable)?.Dispose();
-            (Resolve<IGeoSettingsViewModel>() as IDisposable)?.Dispose();
-            (Resolve<IMainViewModel>() as IDisposable)?.Dispose();
+            (ServiceLocator.Current.GetInstance<IAdvancedSettingsViewModel>() as IDisposable)?.Dispose();
+            (ServiceLocator.Current.GetInstance<IGeneralSettingsViewModel>() as IDisposable)?.Dispose();
+            (ServiceLocator.Current.GetInstance<IGeoSettingsViewModel>() as IDisposable)?.Dispose();
+            (ServiceLocator.Current.GetInstance<IMainViewModel>() as IDisposable)?.Dispose();
             // ReSharper restore SuspiciousTypeConversion.Global
         }
 
-        public IAdvancedSettingsViewModel AdvancedSettingsViewModel => Resolve<IAdvancedSettingsViewModel>();
-        public IGeneralSettingsViewModel GeneralSettingsViewModel => Resolve<IGeneralSettingsViewModel>();
-        public IGeoSettingsViewModel GeoSettingsViewModel => Resolve<IGeoSettingsViewModel>();
-        public IMainViewModel MainViewModel => Resolve<IMainViewModel>();
+        public IAdvancedSettingsViewModel AdvancedSettingsViewModel => ServiceLocator.Current.GetInstance<IAdvancedSettingsViewModel>();
+        public IGeneralSettingsViewModel GeneralSettingsViewModel => ServiceLocator.Current.GetInstance<IGeneralSettingsViewModel>();
+        public IGeoSettingsViewModel GeoSettingsViewModel => ServiceLocator.Current.GetInstance<IGeoSettingsViewModel>();
+        public IMainViewModel MainViewModel => ServiceLocator.Current.GetInstance<IMainViewModel>();
     }
 }

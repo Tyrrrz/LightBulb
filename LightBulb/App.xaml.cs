@@ -8,6 +8,7 @@ namespace LightBulb
 {
     public partial class App
     {
+        private const string MutexName = "LightBulb_Identity";
         private static Mutex _identityMutex;
 
         static App()
@@ -16,27 +17,34 @@ namespace LightBulb
             SystemEvents.SessionEnding += (sender, args) => Locator.Cleanup();
         }
 
-        private void App_OnStartup(object sender, StartupEventArgs e)
+        private bool _isInit;
+
+        private void App_OnStartup(object sender, StartupEventArgs args)
         {
-            // Make sure only one process is running at a time
-            const string mutexName = "LightBulb_Identity";
-            if (Mutex.TryOpenExisting(mutexName, out _identityMutex))
+            // If already running - shutdown
+            if (Mutex.TryOpenExisting(MutexName, out _identityMutex))
             {
                 Shutdown();
-                return;
             }
-            _identityMutex = new Mutex(true, mutexName);
+            // If not - proceed
+            else
+            {
+                _identityMutex = new Mutex(true, MutexName);
 
-            // Init locator
-            Locator.Init();
+                // Init locator
+                Locator.Init();
 
-            // Launch main window
-            (MainWindow = new MainWindow()).Show();
+                // Launch main window
+                (MainWindow = new MainWindow()).Show();
+
+                _isInit = true;
+            }
         }
 
-        private void App_OnExit(object sender, ExitEventArgs exitEventArgs)
+        private void App_OnExit(object sender, ExitEventArgs args)
         {
-            Locator.Cleanup();
+            if (_isInit)
+                Locator.Cleanup();
         }
     }
 }

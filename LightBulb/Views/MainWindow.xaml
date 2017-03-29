@@ -160,7 +160,7 @@
                     <ToggleButton Grid.Column="0"
                                   VerticalAlignment="Center"
                                   IsChecked="{Binding IsEnabled}"
-                                  Style="{StaticResource MaterialDesignActionAccentToggleButton}"
+                                  Style="{DynamicResource MaterialDesignActionAccentToggleButton}"
                                   ToolTip="Enable or disable the gamma control">
                         <materialDesign:ToggleButtonAssist.OnContent>
                             <materialDesign:PackIcon Kind="LightbulbOutline" />
@@ -182,7 +182,7 @@
                     <Button Grid.Column="2"
                             Command="{Binding DownloadNewVersionCommand}"
                             Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                            Style="{StaticResource FlatButtonStyle}"
+                            Style="{DynamicResource FlatButtonStyle}"
                             ToolTip="New version available for download"
                             Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BoolToVisibilityConverter}}">
                         <materialDesign:PackIcon Kind="AlertCircleOutline" />
@@ -198,7 +198,7 @@
                                 BorderThickness="0,0,0,2"
                                 Click="NavigateGeneralSettingsButton_OnClick"
                                 Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                                Style="{StaticResource FlatButtonStyle}"
+                                Style="{DynamicResource FlatButtonStyle}"
                                 ToolTip="General">
                             <materialDesign:PackIcon Kind="Tune" />
                         </Button>
@@ -206,7 +206,7 @@
                                 BorderThickness="0,0,0,2"
                                 Click="NavigateGeoSettingsButton_OnClick"
                                 Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                                Style="{StaticResource FlatButtonStyle}"
+                                Style="{DynamicResource FlatButtonStyle}"
                                 ToolTip="Geolocation">
                             <materialDesign:PackIcon Kind="Earth" />
                         </Button>
@@ -214,7 +214,7 @@
                                 BorderThickness="0,0,0,2"
                                 Click="NavigateAdvancedSettingsButton_OnClick"
                                 Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                                Style="{StaticResource FlatButtonStyle}"
+                                Style="{DynamicResource FlatButtonStyle}"
                                 ToolTip="Advanced">
                             <materialDesign:PackIcon Kind="CheckboxMultipleMarkedOutline" />
                         </Button>

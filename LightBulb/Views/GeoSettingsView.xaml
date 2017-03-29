@@ -86,7 +86,6 @@
         <TextBlock Margin="5,0,5,5"
                    Foreground="{DynamicResource PrimaryTextBrush}"
                    Text="&lt; not set &gt;"
-                   TextWrapping="Wrap"
                    Visibility="{Binding IsGeoInfoSet, Converter={StaticResource InvertBoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Collapsed}}" />
     </StackPanel>
 </UserControl>
