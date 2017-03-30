@@ -67,10 +67,10 @@
                        Text="Toggle LightBulb:"
                        ToolTip="Hotkey to switch LightBulb on/off" />
             <views:HotkeyEditorControl Grid.Column="1"
-                                       Width="100"
+                                       Width="120"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
-                                       FontSize="11"
+                                       FontSize="12"
                                        Hotkey="{Binding SettingsService.ToggleHotkey}" />
         </Grid>
 
@@ -86,10 +86,10 @@
                        Text="Toggle gamma polling:"
                        ToolTip="Hotkey to switch gamma polling on/off" />
             <views:HotkeyEditorControl Grid.Column="1"
-                                       Width="100"
+                                       Width="120"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Center"
-                                       FontSize="11"
+                                       FontSize="12"
                                        Hotkey="{Binding SettingsService.TogglePollingHotkey}" />
         </Grid>
     </StackPanel>

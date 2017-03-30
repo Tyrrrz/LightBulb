@@ -30,7 +30,7 @@
         WindowStartupLocation="Manual"
         WindowStyle="None"
         mc:Ignorable="d">
-    <Border BorderBrush="{DynamicResource MiscBrush}"
+    <Border BorderBrush="{DynamicResource MaterialDesignDivider}"
             BorderThickness="1"
             CornerRadius="12,12,0,0">
         <Grid>
@@ -47,9 +47,9 @@
                             IconSource="/LightBulb;component/favicon.ico">
                 <tb:TaskbarIcon.TrayToolTip>
                     <Border Background="{DynamicResource MaterialDesignPaper}"
-                            BorderBrush="{DynamicResource MiscBrush}"
-                            BorderThickness="2"
-                            CornerRadius="6"
+                            BorderBrush="{DynamicResource MaterialDesignDivider}"
+                            BorderThickness="1"
+                            CornerRadius="3"
                             TextElement.FontSize="13"
                             TextElement.FontWeight="Regular"
                             TextElement.Foreground="{DynamicResource SecondaryTextBrush}"
@@ -62,8 +62,8 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Row="0"
-                                       FontSize="14"
-                                       FontWeight="Bold"
+                                       FontSize="15"
+                                       FontWeight="Medium"
                                        Foreground="{DynamicResource PrimaryTextBrush}"
                                        Text="LightBulb" />
                             <TextBlock Grid.Row="1" Text="{Binding StatusText}" />
@@ -171,8 +171,8 @@
                     <TextBlock Grid.Column="1"
                                Margin="5,0,0,0"
                                VerticalAlignment="Center">
-                        <Run FontSize="16"
-                             FontWeight="Bold"
+                        <Run FontSize="15"
+                             FontWeight="Medium"
                              Foreground="{DynamicResource PrimaryInverseTextBrush}"
                              Text="LightBulb" />
                         <Run Text="v" /><Run Text="{Binding Version.Major, Mode=OneWay}" /><Run Text="." /><Run Text="{Binding Version.Minor, Mode=OneWay}" />
@@ -182,7 +182,7 @@
                     <Button Grid.Column="2"
                             Command="{Binding DownloadNewVersionCommand}"
                             Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                            Style="{DynamicResource FlatButtonStyle}"
+                            Style="{DynamicResource MaterialDesignFlatDarkButton}"
                             ToolTip="New version available for download"
                             Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BoolToVisibilityConverter}}">
                         <materialDesign:PackIcon Kind="AlertCircleOutline" />
@@ -198,7 +198,7 @@
                                 BorderThickness="0,0,0,2"
                                 Click="NavigateGeneralSettingsButton_OnClick"
                                 Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                                Style="{DynamicResource FlatButtonStyle}"
+                                Style="{DynamicResource MaterialDesignFlatDarkButton}"
                                 ToolTip="General">
                             <materialDesign:PackIcon Kind="Tune" />
                         </Button>
@@ -206,7 +206,7 @@
                                 BorderThickness="0,0,0,2"
                                 Click="NavigateGeoSettingsButton_OnClick"
                                 Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                                Style="{DynamicResource FlatButtonStyle}"
+                                Style="{DynamicResource MaterialDesignFlatDarkButton}"
                                 ToolTip="Geolocation">
                             <materialDesign:PackIcon Kind="Earth" />
                         </Button>
@@ -214,7 +214,7 @@
                                 BorderThickness="0,0,0,2"
                                 Click="NavigateAdvancedSettingsButton_OnClick"
                                 Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                                Style="{DynamicResource FlatButtonStyle}"
+                                Style="{DynamicResource MaterialDesignFlatDarkButton}"
                                 ToolTip="Advanced">
                             <materialDesign:PackIcon Kind="CheckboxMultipleMarkedOutline" />
                         </Button>
@@ -252,7 +252,7 @@
             <materialDesign:ColorZone Grid.Row="2"
                                       Panel.ZIndex="1"
                                       materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                                      Mode="PrimaryDark">
+                                      Mode="PrimaryMid">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -292,7 +292,6 @@
                         <!--  Status text  -->
                         <TextBlock Margin="3,0,0,0"
                                    VerticalAlignment="Center"
-                                   FontSize="12"
                                    Text="{Binding StatusText}" />
                     </StackPanel>
                 </Grid>
