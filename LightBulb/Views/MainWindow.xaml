@@ -30,7 +30,7 @@
         WindowStartupLocation="Manual"
         WindowStyle="None"
         mc:Ignorable="d">
-    <Border BorderBrush="{DynamicResource MaterialDesignDivider}"
+    <Border BorderBrush="{DynamicResource PrimaryHueLightBrush}"
             BorderThickness="1"
             CornerRadius="12,12,0,0">
         <Grid>
