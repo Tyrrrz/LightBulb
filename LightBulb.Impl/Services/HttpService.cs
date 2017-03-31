@@ -13,9 +13,6 @@ namespace LightBulb.Services
     {
         private readonly HttpClient _client;
 
-        private readonly TimeSpan _minRequestInterval = TimeSpan.FromSeconds(0.35);
-        private DateTime _lastRequestDateTime = DateTime.MinValue;
-
         public HttpService()
         {
             var handler = new HttpClientHandler();
@@ -31,26 +28,11 @@ namespace LightBulb.Services
             Dispose(false);
         }
 
-        /// <summary>
-        /// If necessary, wait before executing the next request
-        /// </summary>
-        private async Task RequestThrottlingAsync()
-        {
-            var timeSinceLastRequest = DateTime.Now - _lastRequestDateTime;
-            if (timeSinceLastRequest > TimeSpan.Zero && timeSinceLastRequest < _minRequestInterval)
-            {
-                var timeLeft = _minRequestInterval - timeSinceLastRequest;
-                await Task.Delay(timeLeft);
-            }
-            _lastRequestDateTime = DateTime.Now;
-        }
-
         /// <inheritdoc />
         public async Task<string> GetStringAsync(string url)
         {
             try
             {
-                await RequestThrottlingAsync();
                 return await _client.GetStringAsync(url);
             }
             catch
