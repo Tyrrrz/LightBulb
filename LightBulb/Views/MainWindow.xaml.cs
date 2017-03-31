@@ -26,7 +26,7 @@ namespace LightBulb.Views
             Hide();
         }
 
-        private void HeaderBorder_OnMouseDown(object sender, MouseButtonEventArgs e)
+        private void Header_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
                 DragMove();

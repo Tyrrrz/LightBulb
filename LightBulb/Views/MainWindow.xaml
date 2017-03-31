@@ -138,16 +138,13 @@
             </tb:TaskbarIcon>
 
             <!--  Header  -->
-            <materialDesign:ColorZone x:Name="HeaderBorder"
-                                      Grid.Row="0"
-                                      Height="50"
-                                      Padding="5,0,0,0"
-                                      Panel.ZIndex="1"
-                                      materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                                      BorderThickness="0,0,0,1"
-                                      CornerRadius="12,12,0,0"
-                                      Mode="PrimaryMid"
-                                      MouseDown="HeaderBorder_OnMouseDown">
+            <Border x:Name="Header"
+                    Grid.Row="0"
+                    Padding="5"
+                    Background="{DynamicResource PrimaryHueMidBrush}"
+                    CornerRadius="12,12,0,0"
+                    MouseDown="Header_OnMouseDown"
+                    TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
                 <Grid Margin="0,5,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -171,7 +168,7 @@
                     <TextBlock Grid.Column="1"
                                Margin="5,0,0,0"
                                VerticalAlignment="Center">
-                        <Run FontSize="15"
+                        <Run FontSize="16"
                              FontWeight="Medium"
                              Foreground="{DynamicResource PrimaryInverseTextBrush}"
                              Text="LightBulb" />
@@ -181,7 +178,6 @@
                     <!--  Version updates  -->
                     <Button Grid.Column="2"
                             Command="{Binding DownloadNewVersionCommand}"
-                            Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                             Style="{DynamicResource MaterialDesignFlatDarkButton}"
                             ToolTip="New version available for download"
                             Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -190,14 +186,13 @@
 
                     <!--  Section navigation buttons  -->
                     <StackPanel Grid.Column="3"
-                                Margin="5,0,5,0"
+                                Margin="5,0,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Orientation="Horizontal">
                         <Button x:Name="NavigateGeneralSettingsButton"
                                 BorderThickness="0,0,0,2"
                                 Click="NavigateGeneralSettingsButton_OnClick"
-                                Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                 Style="{DynamicResource MaterialDesignFlatDarkButton}"
                                 ToolTip="General">
                             <materialDesign:PackIcon Kind="Tune" />
@@ -205,7 +200,6 @@
                         <Button x:Name="NavigateGeolocationSettingsButton"
                                 BorderThickness="0,0,0,2"
                                 Click="NavigateGeoSettingsButton_OnClick"
-                                Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                 Style="{DynamicResource MaterialDesignFlatDarkButton}"
                                 ToolTip="Geolocation">
                             <materialDesign:PackIcon Kind="Earth" />
@@ -213,19 +207,16 @@
                         <Button x:Name="NavigateAdvancedSettingsButton"
                                 BorderThickness="0,0,0,2"
                                 Click="NavigateAdvancedSettingsButton_OnClick"
-                                Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
                                 Style="{DynamicResource MaterialDesignFlatDarkButton}"
                                 ToolTip="Advanced">
                             <materialDesign:PackIcon Kind="CheckboxMultipleMarkedOutline" />
                         </Button>
                     </StackPanel>
                 </Grid>
-            </materialDesign:ColorZone>
+            </Border>
 
             <!--  Content  -->
-            <Border Grid.Row="1"
-                    Panel.ZIndex="0"
-                    Background="{DynamicResource MaterialDesignCardBackground}">
+            <Border Grid.Row="1" Background="{DynamicResource MaterialDesignCardBackground}">
                 <materialDesign:Transitioner x:Name="ContentTransitioner" SelectedIndex="0">
                     <materialDesign:Transitioner.Resources>
                         <Style TargetType="{x:Type materialDesign:TransitionerSlide}">
@@ -249,53 +240,44 @@
             </Border>
 
             <!--  Status bar  -->
-            <materialDesign:ColorZone Grid.Row="2"
-                                      Panel.ZIndex="1"
-                                      materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                                      Mode="PrimaryMid">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+            <StackPanel Grid.Row="2"
+                        Background="{DynamicResource PrimaryHueDarkBrush}"
+                        Orientation="Vertical"
+                        TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
+                <!--  Cycle position  -->
+                <ProgressBar Background="Transparent" Value="{Binding CyclePosition, Mode=OneWay}" />
 
-                    <!--  Cycle position  -->
-                    <ProgressBar Grid.Row="0"
-                                 Background="Transparent"
-                                 Value="{Binding CyclePosition, Mode=OneWay}" />
-
-                    <!--  Cycle state and status text  -->
-                    <StackPanel Grid.Row="1"
-                                Margin="5"
-                                Orientation="Horizontal">
-                        <!--  Cycle state icon  -->
-                        <materialDesign:PackIcon Background="Transparent" ToolTip="{Binding CycleState}">
-                            <materialDesign:PackIcon.Style>
-                                <Style BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}" TargetType="{x:Type materialDesign:PackIcon}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Disabled}">
-                                            <Setter Property="Kind" Value="SyncOff" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Transition}">
-                                            <Setter Property="Kind" Value="Sync" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Day}">
-                                            <Setter Property="Kind" Value="WhiteBalanceSunny" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Night}">
-                                            <Setter Property="Kind" Value="WeatherNight" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </materialDesign:PackIcon.Style>
-                        </materialDesign:PackIcon>
-                        <!--  Status text  -->
-                        <TextBlock Margin="3,0,0,0"
-                                   VerticalAlignment="Center"
-                                   Text="{Binding StatusText}" />
-                    </StackPanel>
-                </Grid>
-            </materialDesign:ColorZone>
+                <!--  Cycle state and status text  -->
+                <StackPanel Margin="5"
+                            VerticalAlignment="Bottom"
+                            Orientation="Horizontal">
+                    <!--  Cycle state icon  -->
+                    <materialDesign:PackIcon Background="Transparent" ToolTip="{Binding CycleState}">
+                        <materialDesign:PackIcon.Style>
+                            <Style BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}" TargetType="{x:Type materialDesign:PackIcon}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Disabled}">
+                                        <Setter Property="Kind" Value="SyncOff" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Transition}">
+                                        <Setter Property="Kind" Value="Sync" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Day}">
+                                        <Setter Property="Kind" Value="WhiteBalanceSunny" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Night}">
+                                        <Setter Property="Kind" Value="WeatherNight" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </materialDesign:PackIcon.Style>
+                    </materialDesign:PackIcon>
+                    <!--  Status text  -->
+                    <TextBlock Margin="3,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="{Binding StatusText}" />
+                </StackPanel>
+            </StackPanel>
         </Grid>
     </Border>
 </Window>
