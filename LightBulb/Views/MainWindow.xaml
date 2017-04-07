@@ -18,6 +18,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Icon="/LightBulb;component/favicon.ico"
         Loaded="MainWindow_OnLoaded"
+        ResizeMode="NoResize"
         ShowInTaskbar="False"
         SnapsToDevicePixels="True"
         TextElement.FontSize="13"
