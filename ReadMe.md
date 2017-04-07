@@ -20,12 +20,18 @@ _Currently only compatible with Windows 7 and higher._
 
 LightBulb aims to be very customizable. Refer to [this guide](https://github.com/Tyrrrz/LightBulb/wiki/Settings-explanation) to understand what each setting does. You can also manually fine-tune every detail using the [configuration file](https://github.com/Tyrrrz/LightBulb/wiki/Config-file).
 
+**Web APIs used:**
+
+- [FreeGeoIp](http://freegeoip.net)
+- [SunriseSunset](https://sunrise-sunset.org)
+- [Github](https://developer.github.com)
+
 **Libraries used:**
 
- - [GalaSoft.MVVMLight](http://www.mvvmlight.net) - MVVM rapid development
- - [Newtonsoft.Json](http://www.newtonsoft.com/json) - JSON parsing
- - [MaterialDesignXAML](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit) - MaterialDesign UI
- - [Hardcodet.NotifyIcon.Wpf](http://www.hardcodet.net/wpf-notifyicon) - tray icon in WPF
- - [Tyrrrz.Extensions](https://github.com/Tyrrrz/Extensions) - my set of various extensions for rapid development
- - [Tyrrrz.WpfExtensions](https://github.com/Tyrrrz/WpfExtensions) - my set of various WPF extensions for rapid development
- - [Tyrrrz.Settings](https://github.com/Tyrrrz/Settings) - my settings manager
+ - [GalaSoft.MVVMLight](http://www.mvvmlight.net)
+ - [Newtonsoft.Json](http://www.newtonsoft.com/json)
+ - [MaterialDesignInXamlToolkit](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit)
+ - [Hardcodet.NotifyIcon.Wpf](http://www.hardcodet.net/wpf-notifyicon)
+ - [Tyrrrz.Extensions](https://github.com/Tyrrrz/Extensions)
+ - [Tyrrrz.WpfExtensions](https://github.com/Tyrrrz/WpfExtensions)
+ - [Tyrrrz.Settings](https://github.com/Tyrrrz/Settings)
