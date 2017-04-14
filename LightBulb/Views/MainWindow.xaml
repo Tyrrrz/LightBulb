@@ -173,7 +173,7 @@
                              FontWeight="Medium"
                              Foreground="{DynamicResource PrimaryInverseTextBrush}"
                              Text="LightBulb" />
-                        <Run Text="v" /><Run Text="{Binding Version.Major, Mode=OneWay}" /><Run Text="." /><Run Text="{Binding Version.Minor, Mode=OneWay}" />
+                        <Run Text="v" /><Run Text="{Binding Version, Mode=OneWay}" />
                     </TextBlock>
 
                     <!--  Version updates  -->
@@ -242,7 +242,7 @@
 
             <!--  Status bar  -->
             <StackPanel Grid.Row="2"
-                        Background="{DynamicResource PrimaryHueDarkBrush}"
+                        Background="{DynamicResource PrimaryHueMidBrush}"
                         Orientation="Vertical"
                         TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
                 <!--  Cycle position  -->
