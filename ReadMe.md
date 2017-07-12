@@ -4,28 +4,28 @@ Background application that reduces eye strain at night by automatically adjusti
 
 _Currently only compatible with Windows 7 and higher._
 
-## Screenshots:
+## Screenshots
 
 ![](http://www.tyrrrz.me/projects/images/lightbulb_1.png)
 ![](http://www.tyrrrz.me/projects/images/lightbulb_2.png)
 ![](http://www.tyrrrz.me/projects/images/lightbulb_3.png)
 
-## Download:
+## Download
 
 - Installer and portable distribution: [releases](https://github.com/Tyrrrz/LightBulb/releases)
 - Using chocolatey: `choco install lightbulb`
 
-## Customization:
+## Customization
 
 LightBulb aims to be very customizable. Refer to [this guide](https://github.com/Tyrrrz/LightBulb/wiki/Settings-explanation) to understand what each setting does. You can also manually fine-tune every detail using the [configuration file](https://github.com/Tyrrrz/LightBulb/wiki/Config-file).
 
-## Web APIs used:
+## Web APIs used
 
 - [FreeGeoIp](http://freegeoip.net)
 - [SunriseSunset](https://sunrise-sunset.org)
 - [Github](https://developer.github.com)
 
-## Libraries used:
+## Libraries used
 
  - [GalaSoft.MVVMLight](http://www.mvvmlight.net)
  - [Newtonsoft.Json](http://www.newtonsoft.com/json)
