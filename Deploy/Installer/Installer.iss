@@ -44,7 +44,7 @@ Name: "{commonstartup}\{#MyAppName}"; Filename: "{app}\LightBulb.exe"
 
 [Registry]
 ; Change valid gamma range
-Root: HKLM; Subkey: "Software\Microsoft\Windows NT\CurrentVersion\ICM"; ValueType: dword; ValueName: "GdiICMGammaRange"; ValueData: "256"; Flags: uninsdeletekey
+Root: HKLM; Subkey: "Software\Microsoft\Windows NT\CurrentVersion\ICM"; ValueType: dword; ValueName: "GdiICMGammaRange"; ValueData: "256"
 
 [Run]
 Filename: "{app}\LightBulb.exe"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
