@@ -170,6 +170,7 @@
                     <ToggleButton
                         Grid.Column="0"
                         VerticalAlignment="Center"
+                        Foreground="{DynamicResource SecondaryTextBrush}"
                         IsChecked="{Binding IsEnabled}"
                         Style="{DynamicResource MaterialDesignActionAccentToggleButton}"
                         ToolTip="Enable or disable the gamma control">
