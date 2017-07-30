@@ -153,12 +153,12 @@
             <Border
                 x:Name="Header"
                 Grid.Row="0"
-                Padding="5"
+                Padding="5,10,5,10"
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 CornerRadius="12,12,0,0"
                 MouseDown="Header_OnMouseDown"
                 TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
-                <Grid Margin="0,5,0,0">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
