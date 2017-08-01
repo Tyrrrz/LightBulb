@@ -104,19 +104,19 @@
                             </MenuItem.Icon>
                             <MenuItem
                                 Command="{Binding DisableTemporarilyCommand}"
-                                CommandParameter="43200000"
+                                CommandParameter="86400000"
                                 Header="1 day" />
                             <MenuItem
                                 Command="{Binding DisableTemporarilyCommand}"
-                                CommandParameter="21600000"
+                                CommandParameter="43200000"
                                 Header="12 hours" />
                             <MenuItem
                                 Command="{Binding DisableTemporarilyCommand}"
-                                CommandParameter="10800000"
+                                CommandParameter="21600000"
                                 Header="6 hours" />
                             <MenuItem
                                 Command="{Binding DisableTemporarilyCommand}"
-                                CommandParameter="5400000"
+                                CommandParameter="10800000"
                                 Header="3 hours" />
                             <MenuItem
                                 Command="{Binding DisableTemporarilyCommand}"
