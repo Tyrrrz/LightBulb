@@ -34,55 +34,55 @@ namespace LightBulb.Services
 
         public bool IsGammaPollingEnabled
         {
-            get { return _isGammaPollingEnabled; }
-            set { Set(ref _isGammaPollingEnabled, value); }
+            get => _isGammaPollingEnabled;
+            set => Set(ref _isGammaPollingEnabled, value);
         }
 
         public bool IsTemperatureSmoothingEnabled
         {
-            get { return _isTemperatureSmoothingEnabled; }
-            set { Set(ref _isTemperatureSmoothingEnabled, value); }
+            get => _isTemperatureSmoothingEnabled;
+            set => Set(ref _isTemperatureSmoothingEnabled, value);
         }
 
         public bool IsFullscreenBlocking
         {
-            get { return _isFullscreenBlocking; }
-            set { Set(ref _isFullscreenBlocking, value); }
+            get => _isFullscreenBlocking;
+            set => Set(ref _isFullscreenBlocking, value);
         }
 
         public bool IsCheckForUpdatedEnabled
         {
-            get { return _isCheckForUpdatedEnabled; }
-            set { Set(ref _isCheckForUpdatedEnabled, value); }
+            get => _isCheckForUpdatedEnabled;
+            set => Set(ref _isCheckForUpdatedEnabled, value);
         }
 
         public bool IsInternetSyncEnabled
         {
-            get { return _isInternetSyncEnabled; }
-            set { Set(ref _isInternetSyncEnabled, value); }
+            get => _isInternetSyncEnabled;
+            set => Set(ref _isInternetSyncEnabled, value);
         }
 
         public bool IsGeoInfoLocked
         {
-            get { return _isGeoInfoLocked; }
-            set { Set(ref _isGeoInfoLocked, value); }
+            get => _isGeoInfoLocked;
+            set => Set(ref _isGeoInfoLocked, value);
         }
 
         public ushort TemperatureEpsilon
         {
-            get { return _temperatureEpsilon; }
-            set { Set(ref _temperatureEpsilon, value); }
+            get => _temperatureEpsilon;
+            set => Set(ref _temperatureEpsilon, value);
         }
 
         public ushort DefaultMonitorTemperature
         {
-            get { return _defaultMonitorTemperature; }
-            set { Set(ref _defaultMonitorTemperature, value); }
+            get => _defaultMonitorTemperature;
+            set => Set(ref _defaultMonitorTemperature, value);
         }
 
         public ushort MinTemperature
         {
-            get { return _minTemperature; }
+            get => _minTemperature;
             set
             {
                 if (!Set(ref _minTemperature, value)) return;
@@ -94,7 +94,7 @@ namespace LightBulb.Services
 
         public ushort MaxTemperature
         {
-            get { return _maxTemperature; }
+            get => _maxTemperature;
             set
             {
                 if (!Set(ref _maxTemperature, value)) return;
@@ -106,43 +106,43 @@ namespace LightBulb.Services
 
         public TimeSpan MaximumTemperatureSmoothingDuration
         {
-            get { return _maximumTemperatureSmoothingDuration; }
-            set { Set(ref _maximumTemperatureSmoothingDuration, value); }
+            get => _maximumTemperatureSmoothingDuration;
+            set => Set(ref _maximumTemperatureSmoothingDuration, value);
         }
 
         public TimeSpan TemperatureTransitionDuration
         {
-            get { return _temperatureTransitionDuration; }
-            set { Set(ref _temperatureTransitionDuration, value); }
+            get => _temperatureTransitionDuration;
+            set => Set(ref _temperatureTransitionDuration, value);
         }
 
         public TimeSpan TemperatureUpdateInterval
         {
-            get { return _temperatureUpdateInterval; }
-            set { Set(ref _temperatureUpdateInterval, value); }
+            get => _temperatureUpdateInterval;
+            set => Set(ref _temperatureUpdateInterval, value);
         }
 
         public TimeSpan GammaPollingInterval
         {
-            get { return _gammaPollingInterval; }
-            set { Set(ref _gammaPollingInterval, value); }
+            get => _gammaPollingInterval;
+            set => Set(ref _gammaPollingInterval, value);
         }
 
         public TimeSpan CheckForUpdatesInterval
         {
-            get { return _checkForUpdatesInterval; }
-            set { Set(ref _checkForUpdatesInterval, value); }
+            get => _checkForUpdatesInterval;
+            set => Set(ref _checkForUpdatesInterval, value);
         }
 
         public TimeSpan InternetSyncInterval
         {
-            get { return _internetSyncInterval; }
-            set { Set(ref _internetSyncInterval, value); }
+            get => _internetSyncInterval;
+            set => Set(ref _internetSyncInterval, value);
         }
 
         public TimeSpan SunriseTime
         {
-            get { return _sunriseTime; }
+            get => _sunriseTime;
             set
             {
                 if (!Set(ref _sunriseTime, value)) return;
@@ -154,7 +154,7 @@ namespace LightBulb.Services
 
         public TimeSpan SunsetTime
         {
-            get { return _sunsetTime; }
+            get => _sunsetTime;
             set
             {
                 if (!Set(ref _sunsetTime, value)) return;
@@ -166,13 +166,13 @@ namespace LightBulb.Services
 
         public GeoInfo GeoInfo
         {
-            get { return _geoInfo; }
-            set { Set(ref _geoInfo, value); }
+            get => _geoInfo;
+            set => Set(ref _geoInfo, value);
         }
 
         public Hotkey ToggleHotkey
         {
-            get { return _toggleHotkey; }
+            get => _toggleHotkey;
             set
             {
                 // Make sure other hotkeys don't use the same keys
@@ -187,7 +187,7 @@ namespace LightBulb.Services
 
         public Hotkey TogglePollingHotkey
         {
-            get { return _togglePollingHotkey; }
+            get => _togglePollingHotkey;
             set
             {
                 // Make sure other hotkeys don't use the same keys
@@ -202,8 +202,8 @@ namespace LightBulb.Services
 
         public Proxy Proxy
         {
-            get { return _proxy; }
-            set { Set(ref _proxy, value); }
+            get => _proxy;
+            set => Set(ref _proxy, value);
         }
 
         public FileSettingsService()

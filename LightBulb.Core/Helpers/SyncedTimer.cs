@@ -17,7 +17,7 @@ namespace LightBulb.Helpers
         /// </summary>
         public bool IsEnabled
         {
-            get { return _timer.IsEnabled; }
+            get => _timer.IsEnabled;
             set
             {
                 if (value)
@@ -31,7 +31,7 @@ namespace LightBulb.Helpers
         /// </summary>
         public TimeSpan Interval
         {
-            get { return _interval; }
+            get => _interval;
             set
             {
                 if (value <= TimeSpan.Zero)
@@ -47,7 +47,7 @@ namespace LightBulb.Helpers
         /// </summary>
         public DateTime FirstTickDateTime
         {
-            get { return _firstTickDateTime; }
+            get => _firstTickDateTime;
             set
             {
                 _firstTickDateTime = value;
@@ -101,8 +101,8 @@ namespace LightBulb.Helpers
             else
             {
                 var timePassed = now - FirstTickDateTime;
-                double totalTicks = timePassed.TotalMilliseconds/Interval.TotalMilliseconds;
-                double msUntilNextTick = (Math.Ceiling(totalTicks) - totalTicks)*Interval.TotalMilliseconds;
+                double totalTicks = timePassed.TotalMilliseconds / Interval.TotalMilliseconds;
+                double msUntilNextTick = (Math.Ceiling(totalTicks) - totalTicks) * Interval.TotalMilliseconds;
                 msUntilNextTick = msUntilNextTick.ClampMin(1);
                 _timer.Interval = TimeSpan.FromMilliseconds(msUntilNextTick);
             }

@@ -15,14 +15,14 @@ namespace LightBulb.ViewModels
         /// <inheritdoc />
         public bool IsPreviewModeEnabled
         {
-            get { return _temperatureService.IsPreviewModeEnabled; }
-            set { _temperatureService.IsPreviewModeEnabled = value; }
+            get => _temperatureService.IsPreviewModeEnabled;
+            set => _temperatureService.IsPreviewModeEnabled = value;
         }
 
         /// <inheritdoc />
         public bool IsCyclePreviewRunning
         {
-            get { return _temperatureService.IsCyclePreviewRunning; }
+            get => _temperatureService.IsCyclePreviewRunning;
             set
             {
                 if (value)

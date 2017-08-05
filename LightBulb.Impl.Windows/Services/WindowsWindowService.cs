@@ -18,7 +18,7 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public bool IsForegroundFullScreen
         {
-            get { return _isForegroundFullScreen; }
+            get => _isForegroundFullScreen;
             private set
             {
                 if (IsForegroundFullScreen == value) return;

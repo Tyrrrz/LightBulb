@@ -32,8 +32,8 @@ namespace LightBulb.Views
         /// </summary>
         public Hotkey Hotkey
         {
-            get { return (Hotkey) GetValue(HotkeyProperty); }
-            set { SetValue(HotkeyProperty, value); }
+            get => (Hotkey) GetValue(HotkeyProperty);
+            set => SetValue(HotkeyProperty, value);
         }
 
         public HotkeyEditorControl()

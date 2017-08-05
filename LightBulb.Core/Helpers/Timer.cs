@@ -21,8 +21,8 @@ namespace LightBulb.Helpers
         /// </summary>
         public TimeSpan Interval
         {
-            get { return TimeSpan.FromMilliseconds(InternalTimer.Interval); }
-            set { InternalTimer.Interval = value.TotalMilliseconds; }
+            get => TimeSpan.FromMilliseconds(InternalTimer.Interval);
+            set => InternalTimer.Interval = value.TotalMilliseconds;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace LightBulb.Helpers
 
         public Timer()
             : this(TimeSpan.FromMilliseconds(100))
-        {            
+        {
         }
 
         ~Timer()

@@ -27,8 +27,7 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public ushort Temperature
         {
-            get { return _temperature; }
-            private set
+            get => _temperature; private set
             {
                 if (Temperature == value) return;
                 ushort oldTemp = _temperature;
@@ -44,8 +43,7 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public bool IsRealtimeModeEnabled
         {
-            get { return _isRealtimeModeEnabled; }
-            set
+            get => _isRealtimeModeEnabled; set
             {
                 if (IsRealtimeModeEnabled == value) return;
                 _isRealtimeModeEnabled = value;
@@ -62,8 +60,7 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public bool IsPreviewModeEnabled
         {
-            get { return _isPreviewModeEnabled; }
-            set
+            get => _isPreviewModeEnabled; set
             {
                 if (IsPreviewModeEnabled == value) return;
                 _isPreviewModeEnabled = value;
@@ -80,8 +77,7 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public DateTime CyclePreviewTime
         {
-            get { return _cyclePreviewTime; }
-            private set
+            get => _cyclePreviewTime; private set
             {
                 if (CyclePreviewTime == value) return;
                 _cyclePreviewTime = value;

@@ -43,14 +43,14 @@ namespace LightBulb.ViewModels
         /// <inheritdoc />
         public bool IsUpdateAvailable
         {
-            get { return _isUpdateAvailable; }
-            private set { Set(ref _isUpdateAvailable, value); }
+            get => _isUpdateAvailable;
+            private set => Set(ref _isUpdateAvailable, value);
         }
 
         /// <inheritdoc />
         public bool IsEnabled
         {
-            get { return _isEnabled; }
+            get => _isEnabled;
             set
             {
                 if (!Set(ref _isEnabled, value)) return;
@@ -63,7 +63,7 @@ namespace LightBulb.ViewModels
         /// <inheritdoc />
         public bool IsBlocked
         {
-            get { return _isBlocked; }
+            get => _isBlocked;
             private set
             {
                 if (!Set(ref _isBlocked, value)) return;
@@ -75,26 +75,27 @@ namespace LightBulb.ViewModels
         /// <inheritdoc />
         public string StatusText
         {
-            get { return _statusText; }
-            private set { Set(ref _statusText, value); }
+            get => _statusText;
+            private set => Set(ref _statusText, value);
         }
 
         /// <inheritdoc />
         public CycleState CycleState
         {
-            get { return _cycleState; }
-            private set { Set(ref _cycleState, value); }
+            get => _cycleState;
+            private set => Set(ref _cycleState, value);
         }
 
         /// <inheritdoc />
         public double CyclePosition
         {
-            get { return _cyclePosition; }
-            private set { Set(ref _cyclePosition, value); }
+            get => _cyclePosition;
+            private set => Set(ref _cyclePosition, value);
         }
 
         // Commands
         public RelayCommand ShowMainWindowCommand { get; }
+
         public RelayCommand ExitApplicationCommand { get; }
         public RelayCommand AboutCommand { get; }
         public RelayCommand ToggleEnabledCommand { get; }
@@ -303,7 +304,7 @@ namespace LightBulb.ViewModels
             // Preview mode (24 hr cycle preview)
             if (_temperatureService.IsPreviewModeEnabled && _temperatureService.IsCyclePreviewRunning)
             {
-                CyclePosition = _temperatureService.CyclePreviewTime.TimeOfDay.TotalHours/24;
+                CyclePosition = _temperatureService.CyclePreviewTime.TimeOfDay.TotalHours / 24;
             }
             // Preview mode
             else if (_temperatureService.IsPreviewModeEnabled)
@@ -318,7 +319,7 @@ namespace LightBulb.ViewModels
             // Realtime mode
             else
             {
-                CyclePosition = DateTime.Now.TimeOfDay.TotalHours/24;
+                CyclePosition = DateTime.Now.TimeOfDay.TotalHours / 24;
             }
         }
 
