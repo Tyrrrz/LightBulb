@@ -3,7 +3,6 @@ using System.Text;
 using System.Windows.Forms;
 using LightBulb.Internal;
 using LightBulb.Models;
-using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
@@ -153,7 +152,8 @@ namespace LightBulb.Services
 
             // If window is wallpaper - return
             string className = GetClassName(hWindow);
-            if (className.EqualsInvariant("Progman") || className.EqualsInvariant("WorkerW"))
+            if (className.Equals("Progman", StringComparison.OrdinalIgnoreCase) ||
+                className.Equals("WorkerW", StringComparison.OrdinalIgnoreCase))
                 return false;
 
             // If not visible - return

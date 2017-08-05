@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using LightBulb.Models;
 using Tyrrrz.Extensions;
@@ -208,7 +209,7 @@ namespace LightBulb.Services
         public FileSettingsService()
         {
             // Portable
-            if (Environment.GetCommandLineArgs().ContainsInvariant("-portable"))
+            if (Environment.GetCommandLineArgs().Contains("-portable"))
             {
                 Configuration.StorageSpace = StorageSpace.Instance;
                 Configuration.SubDirectoryPath = "";
@@ -221,6 +222,9 @@ namespace LightBulb.Services
                 Configuration.SubDirectoryPath = "LightBulb";
                 Configuration.FileName = "Configuration.dat";
             }
+
+            Configuration.ThrowIfCannotLoad = false;
+            Configuration.ThrowIfCannotSave = false;
 
             // Update global configuration when important settings change
             PropertyChanged += (sender, args) =>
@@ -261,9 +265,5 @@ namespace LightBulb.Services
                 WebRequest.DefaultWebProxy = proxy;
             }
         }
-
-        public new void Load() => TryLoad();
-
-        public new void Save() => TrySave();
     }
 }
