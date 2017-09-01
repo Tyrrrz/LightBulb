@@ -64,7 +64,7 @@ namespace LightBulb.Models
         {
             // Original code credit: http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
 
-            double tempf = temp/100d;
+            var tempf = temp/100d;
 
             double redi;
             double greeni;

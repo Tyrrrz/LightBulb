@@ -19,7 +19,7 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public async Task<GeoInfo> GetGeoInfoAsync()
         {
-            string response = await _httpService.GetStringAsync("http://freegeoip.net/json");
+            var response = await _httpService.GetStringAsync("http://freegeoip.net/json");
             if (response.IsBlank()) return null;
 
             try
@@ -49,9 +49,9 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public async Task<SolarInfo> GetSolarInfoAsync(GeoInfo geoInfo)
         {
-            double lat = geoInfo.Latitude;
-            double lng = geoInfo.Longitude;
-            string response =
+            var lat = geoInfo.Latitude;
+            var lng = geoInfo.Longitude;
+            var response =
                 await _httpService.GetStringAsync($"http://api.sunrise-sunset.org/json?lat={lat}&lng={lng}&formatted=0");
             if (response.IsBlank()) return null;
 

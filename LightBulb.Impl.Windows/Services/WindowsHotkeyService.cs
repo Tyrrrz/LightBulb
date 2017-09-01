@@ -30,7 +30,7 @@ namespace LightBulb.Services
         {
             if (args.Message.Msg != 0x0312) return;
 
-            int id = args.Message.WParam.ToInt32();
+            var id = args.Message.WParam.ToInt32();
             var handler = _hotkeyHandlerDic.GetOrDefault(id);
 
             handler?.Invoke();
@@ -39,9 +39,9 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public void RegisterHotkey(Hotkey hotkey, HotkeyHandler handler)
         {
-            int vk = KeyInterop.VirtualKeyFromKey((Key) hotkey.Key);
-            int mods = hotkey.Modifiers;
-            int id = (vk << 8) | mods;
+            var vk = KeyInterop.VirtualKeyFromKey((Key) hotkey.Key);
+            var mods = hotkey.Modifiers;
+            var id = (vk << 8) | mods;
 
             if (!NativeMethods.RegisterHotKey(_sponge.Handle, id, mods, vk))
             {
@@ -55,9 +55,9 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public void UnregisterHotkey(Hotkey hotkey)
         {
-            int vk = KeyInterop.VirtualKeyFromKey((Key) hotkey.Key);
-            int mods = hotkey.Modifiers;
-            int id = (vk << 8) | mods;
+            var vk = KeyInterop.VirtualKeyFromKey((Key) hotkey.Key);
+            var mods = hotkey.Modifiers;
+            var id = (vk << 8) | mods;
 
             if (!NativeMethods.UnregisterHotKey(_sponge.Handle, id))
             {

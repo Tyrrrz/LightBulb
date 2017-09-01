@@ -30,7 +30,7 @@ namespace LightBulb.Services
             get => _temperature; private set
             {
                 if (Temperature == value) return;
-                ushort oldTemp = _temperature;
+                var oldTemp = _temperature;
                 _temperature = value;
 
                 Debug.WriteLine($"Updated temperature ({oldTemp} -> {value})", GetType().Name);
@@ -201,8 +201,8 @@ namespace LightBulb.Services
 
         private ushort GetTemperature(TimeSpan time)
         {
-            ushort minTemp = _settingsService.MinTemperature;
-            ushort maxTemp = _settingsService.MaxTemperature;
+            var minTemp = _settingsService.MinTemperature;
+            var maxTemp = _settingsService.MaxTemperature;
 
             var offset = _settingsService.TemperatureTransitionDuration;
             var riseStartTime = _settingsService.SunriseTime - offset;
@@ -217,7 +217,7 @@ namespace LightBulb.Services
             // Incoming sunrise (night time -> day time)
             if (time >= riseStartTime && time <= riseEndTime)
             {
-                double t = (time.TotalHours - riseStartTime.TotalHours)/offset.TotalHours;
+                var t = (time.TotalHours - riseStartTime.TotalHours)/offset.TotalHours;
                 return (ushort) (minTemp + (maxTemp - minTemp)*Math.Sin(t*Math.PI/2));
             }
 
@@ -228,7 +228,7 @@ namespace LightBulb.Services
             // Incoming sunset (day time -> night time)
             if (time >= setStartTime && time <= setEndTime)
             {
-                double t = (time.TotalHours - setStartTime.TotalHours)/offset.TotalHours;
+                var t = (time.TotalHours - setStartTime.TotalHours)/offset.TotalHours;
                 return (ushort) (maxTemp + (minTemp - maxTemp)*Math.Sin(t*Math.PI/2));
             }
 
@@ -265,7 +265,7 @@ namespace LightBulb.Services
             }
 
             // Delta
-            int delta = Math.Abs(newTemp - Temperature);
+            var delta = Math.Abs(newTemp - Temperature);
 
             // No change - nothing to do
             if (delta <= 0)

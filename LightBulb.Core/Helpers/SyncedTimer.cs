@@ -101,8 +101,8 @@ namespace LightBulb.Helpers
             else
             {
                 var timePassed = now - FirstTickDateTime;
-                double totalTicks = timePassed.TotalMilliseconds / Interval.TotalMilliseconds;
-                double msUntilNextTick = (Math.Ceiling(totalTicks) - totalTicks) * Interval.TotalMilliseconds;
+                var totalTicks = timePassed.TotalMilliseconds / Interval.TotalMilliseconds;
+                var msUntilNextTick = (Math.Ceiling(totalTicks) - totalTicks) * Interval.TotalMilliseconds;
                 msUntilNextTick = msUntilNextTick.ClampMin(1);
                 _timer.Interval = TimeSpan.FromMilliseconds(msUntilNextTick);
             }

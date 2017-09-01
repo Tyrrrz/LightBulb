@@ -37,7 +37,7 @@ namespace LightBulb.Helpers
         {
             lock (_timer)
             {
-                bool isIncreasing = _increment > 0;
+                var isIncreasing = _increment > 0;
 
                 Current += _increment;
                 Current = isIncreasing ? Current.ClampMax(_final) : Current.ClampMin(_final);

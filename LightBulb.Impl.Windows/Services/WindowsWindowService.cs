@@ -121,7 +121,7 @@ namespace LightBulb.Services
         /// </summary>
         public bool IsWindowVisible(IntPtr hWindow)
         {
-            bool result = NativeMethods.IsWindowVisible(hWindow);
+            var result = NativeMethods.IsWindowVisible(hWindow);
             return result;
         }
 
@@ -151,7 +151,7 @@ namespace LightBulb.Services
                 return false;
 
             // If window is wallpaper - return
-            string className = GetClassName(hWindow);
+            var className = GetClassName(hWindow);
             if (className.Equals("Progman", StringComparison.OrdinalIgnoreCase) ||
                 className.Equals("WorkerW", StringComparison.OrdinalIgnoreCase))
                 return false;
@@ -178,7 +178,7 @@ namespace LightBulb.Services
 
             // Get the screen rect and do a bounding box check
             var screenRect = Screen.FromHandle(hWindow).Bounds;
-            bool boundCheck = actualRect.Left <= 0 && actualRect.Top <= 0 &&
+            var boundCheck = actualRect.Left <= 0 && actualRect.Top <= 0 &&
                               actualRect.Right >= screenRect.Right && actualRect.Bottom >= screenRect.Bottom;
 
             return boundCheck;

@@ -21,7 +21,7 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public async Task<bool> GetUpdateStatusAsync()
         {
-            string response = await _httpService.GetStringAsync("https://api.github.com/repos/Tyrrrz/LightBulb/releases");
+            var response = await _httpService.GetStringAsync("https://api.github.com/repos/Tyrrrz/LightBulb/releases");
             if (response.IsBlank()) return false;
 
             try

@@ -52,7 +52,7 @@ namespace LightBulb.Services
         {
             var ramp = new GammaRamp(256);
 
-            for (int i = 1; i < 256; i++)
+            for (var i = 1; i < 256; i++)
             {
                 ramp.Red[i] = (ushort) (i*255*intensity.Red);
                 ramp.Green[i] = (ushort) (i*255*intensity.Green);
