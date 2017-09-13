@@ -1,14 +1,14 @@
 # LightBulb 💡
 
-Background application that reduces eye strain at night by automatically adjusting display gamma based on current time. Color temperature profiles are used to determine channel output levels for day and night with smooth transitions between them occuring at sunrise and sunset.
+LightBulb is an application that reduces eyestrain produced by staring at a computer screen when working late hours. As the day goes on, it continuously adjusts gamma, transitioning the display color temperature from cold blue in the afternoon to warm yellow during the night. Its primary objective is to match the color of the screen to the light sources of your surrounding environment - typically, sunlight during the day and artificial light during the night. LightBulb has minimal impact on performance and offers many customization options.
 
 _Currently only compatible with Windows 7 and higher._
 
 ## Screenshots
 
-![](http://www.tyrrrz.me/projects/images/lightbulb_1.png)
-![](http://www.tyrrrz.me/projects/images/lightbulb_2.png)
-![](http://www.tyrrrz.me/projects/images/lightbulb_3.png)
+![](http://www.tyrrrz.me/Projects/LightBulb/Images/1.png)
+![](http://www.tyrrrz.me/Projects/LightBulb/Images/2.png)
+![](http://www.tyrrrz.me/Projects/LightBulb/Images/3.png)
 
 ## Download
 
