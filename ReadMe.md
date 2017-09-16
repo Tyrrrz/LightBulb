@@ -15,9 +15,20 @@ _Currently only compatible with Windows 7 and higher._
 - Installer and portable distribution: [releases](https://github.com/Tyrrrz/LightBulb/releases)
 - Using chocolatey: `choco install lightbulb`
 
+## Features
+
+- Extensive customization options
+- Pull sunrise and sunset times from the internet or set them manually
+- Smooth temperature transition for large changes
+- Pause when a fullscreen app or game is in foreground
+- Configurable global hotkeys
+- Minimal impact on performance
+
 ## Customization
 
-LightBulb aims to be very customizable. Refer to [this guide](https://github.com/Tyrrrz/LightBulb/wiki/Settings-explanation) to understand what each setting does. You can also manually fine-tune every detail using the [configuration file](https://github.com/Tyrrrz/LightBulb/wiki/Config-file).
+LightBulb aims to be very customizable. Refer to [this guide](https://github.com/Tyrrrz/LightBulb/wiki/Settings-explanation) to understand what each setting does.
+
+You can also manually fine-tune every detail using the [configuration file](https://github.com/Tyrrrz/LightBulb/wiki/Config-file).
 
 ## Web APIs used
 
