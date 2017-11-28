@@ -172,6 +172,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="..\favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\LightBulb.Core\LightBulb.Core.csproj">
       <Project>{0e8269c6-fdba-436d-a8da-0cb8ff4cd804}</Project>
       <Name>LightBulb.Core</Name>
