@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using LightBulb.Helpers;
 using LightBulb.Models;
 using Tyrrrz.Extensions;
 using Tyrrrz.Settings;
 
 namespace LightBulb.Services
 {
-    public class FileSettingsService : SettingsManager, ISettingsService
+    public class FileSettingsService : SettingsManager, ISettingsService, IDisposable
     {
+        private readonly Timer _autosaveTimer;
+
         private bool _isGammaPollingEnabled = true;
         private bool _isTemperatureSmoothingEnabled = true;
         private bool _isFullscreenBlocking;
@@ -226,6 +229,16 @@ namespace LightBulb.Services
             Configuration.ThrowIfCannotLoad = false;
             Configuration.ThrowIfCannotSave = false;
 
+            // Set up timer
+            _autosaveTimer = new Timer(TimeSpan.FromSeconds(5));
+            _autosaveTimer.Tick += (sender, args) =>
+            {
+                // Save settings if needed
+                if (!IsSaved)
+                    Save();
+            };
+            _autosaveTimer.IsEnabled = true;
+
             // Update global configuration when important settings change
             PropertyChanged += (sender, args) =>
             {
@@ -240,9 +253,8 @@ namespace LightBulb.Services
             if (Proxy == null)
             {
                 WebRequest.DefaultWebProxy = WebRequest.GetSystemWebProxy();
-                var asWebProxy = WebRequest.DefaultWebProxy as WebProxy;
-                if (asWebProxy != null)
-                    asWebProxy.UseDefaultCredentials = true;
+                if (WebRequest.DefaultWebProxy is WebProxy webProxy)
+                    webProxy.UseDefaultCredentials = true;
             }
             else if (Proxy.Host.IsBlank())
             {
@@ -264,6 +276,20 @@ namespace LightBulb.Services
 
                 WebRequest.DefaultWebProxy = proxy;
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _autosaveTimer.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
