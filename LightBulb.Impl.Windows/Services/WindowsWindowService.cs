@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using LightBulb.Internal;
@@ -8,6 +9,11 @@ namespace LightBulb.Services
 {
     public class WindowsWindowService : IWindowService, IDisposable
     {
+        private static readonly string[] SystemClassNames =
+        {
+            "Progman", "WorkerW", "ImmersiveLauncher", "ImmersiveSwitchList"
+        };
+
         private readonly HookManager _hookManager;
 
         private IntPtr _foregroundWindowLocationChangedHook;
@@ -150,10 +156,9 @@ namespace LightBulb.Services
             if (hWindow == desktop || hWindow == shell)
                 return false;
 
-            // If window is wallpaper - return
+            // If system window - return
             var className = GetClassName(hWindow);
-            if (className.Equals("Progman", StringComparison.OrdinalIgnoreCase) ||
-                className.Equals("WorkerW", StringComparison.OrdinalIgnoreCase))
+            if (SystemClassNames.Contains(className, StringComparer.OrdinalIgnoreCase))
                 return false;
 
             // If not visible - return
