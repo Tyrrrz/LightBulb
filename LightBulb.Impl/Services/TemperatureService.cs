@@ -205,8 +205,8 @@ namespace LightBulb.Services
             var maxTemp = _settingsService.MaxTemperature;
 
             var offset = _settingsService.TemperatureTransitionDuration;
-            var riseStartTime = _settingsService.SunriseTime - offset;
-            var riseEndTime = _settingsService.SunriseTime;
+            var riseStartTime = _settingsService.SunriseTime;
+            var riseEndTime = _settingsService.SunriseTime + offset;
             var setStartTime = _settingsService.SunsetTime - offset;
             var setEndTime = _settingsService.SunsetTime;
 
