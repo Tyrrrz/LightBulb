@@ -1,0 +1,35 @@
+# This config ensures the following:
+# - When Alexey Golub commits "Update version", deploys to GitHub releases from master
+
+version: '{build}'
+
+image: Visual Studio 2017
+configuration: Release
+
+before_build:
+- ps: nuget restore
+
+build:
+  verbosity: minimal
+
+after_build:
+- ps: Deploy\Prepare.ps1
+
+artifacts:
+- path: Deploy\Installer\bin\LightBulb-Installer.exe
+  name: LightBulb-Installer.exe
+- path: Deploy\Portable\bin\LightBulb-Portable.zip
+  name: LightBulb-Portable.zip
+
+deploy:
+- provider: GitHub
+  tag: APPVEYOR
+  release: APPVEYOR
+  auth_token:
+    secure: sjQHWRw29AMiVMn3MtidtWnAzAf1mJ+mkJ/7h1B9TIAHhkFrqwMK7LtXV+uNJ9AO
+  artifact: LightBulb-Installer.exe,LightBulb-Portable.zip
+  draft: true
+  on:
+    branch: master
+    APPVEYOR_REPO_COMMIT_MESSAGE: Update version
+    APPVEYOR_REPO_COMMIT_AUTHOR: Alexey Golub
