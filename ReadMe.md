@@ -1,5 +1,6 @@
 # LightBulb 💡
 
+[![Build](https://img.shields.io/appveyor/ci/Tyrrrz/LightBulb/master.svg)](https://ci.appveyor.com/project/Tyrrrz/LightBulb)
 [![Release](https://img.shields.io/github/release/Tyrrrz/LightBulb.svg)](https://github.com/Tyrrrz/LightBulb/releases)
 [![Downloads](https://img.shields.io/github/downloads/Tyrrrz/LightBulb/total.svg)](https://github.com/Tyrrrz/LightBulb/releases)
 
@@ -15,15 +16,16 @@ _Currently only compatible with Windows 7 and higher._
 
 ## Download
 
-- Installer and portable distribution: [releases](https://github.com/Tyrrrz/LightBulb/releases)
-- Using chocolatey: `choco install lightbulb`
+- [Stable releases](https://github.com/Tyrrrz/LightBulb/releases)
+- Using Chocolatey: `choco install lightbulb`
+- [Continuous integration](https://ci.appveyor.com/project/Tyrrrz/LightBulb)
 
 ## Features
 
 - Extensive customization options
-- Pull sunrise and sunset times from the internet or set them manually
+- Pull sunrise and sunset times from the Internet or set them manually
 - Smooth temperature transition for large changes
-- Pause when a fullscreen app or game is in foreground
+- Pause when a fullscreen application or game is in foreground
 - Configurable global hotkeys
 - Minimal impact on performance
 
@@ -37,7 +39,7 @@ You can also manually fine-tune every detail using the [configuration file](http
 
 - [FreeGeoIp](http://freegeoip.net)
 - [SunriseSunset](https://sunrise-sunset.org)
-- [Github](https://developer.github.com)
+- [GitHub](https://developer.github.com)
 
 ## Libraries used
 
