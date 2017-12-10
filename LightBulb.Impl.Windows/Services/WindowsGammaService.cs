@@ -24,8 +24,7 @@ namespace LightBulb.Services
         /// </summary>
         public GammaRamp GetDisplayGammaRamp()
         {
-            GammaRamp ramp;
-            NativeMethods.GetDeviceGammaRamp(_dc, out ramp);
+            NativeMethods.GetDeviceGammaRamp(_dc, out var ramp);
             return ramp;
         }
 

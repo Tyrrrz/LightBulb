@@ -286,7 +286,7 @@ namespace LightBulb.Services
             if (!forceInstantSwitch && _settingsService.IsTemperatureSmoothingEnabled &&
                 delta > _settingsService.TemperatureEpsilon)
             {
-                double deltaNorm =
+                var deltaNorm =
                     ((double) delta/(_settingsService.MaxTemperature - _settingsService.MinTemperature)).Clamp(0, 1);
                 var duration =
                     TimeSpan.FromMilliseconds(_settingsService.MaximumTemperatureSmoothingDuration.TotalMilliseconds*

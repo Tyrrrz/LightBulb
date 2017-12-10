@@ -107,8 +107,7 @@ namespace LightBulb.Services
         /// </summary>
         public Rect GetWindowRect(IntPtr hWindow)
         {
-            Rect result;
-            NativeMethods.GetWindowRect(hWindow, out result);
+            NativeMethods.GetWindowRect(hWindow, out var result);
             return result;
         }
 
@@ -117,8 +116,7 @@ namespace LightBulb.Services
         /// </summary>
         public Rect GetWindowClientRect(IntPtr hWindow)
         {
-            Rect result;
-            NativeMethods.GetWindowClientRect(hWindow, out result);
+            NativeMethods.GetWindowClientRect(hWindow, out var result);
             return result;
         }
 

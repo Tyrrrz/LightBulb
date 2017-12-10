@@ -28,11 +28,11 @@ namespace LightBulb.Services
                 var parsed = JToken.Parse(response);
 
                 // Extract data
-                string countryName = parsed["country_name"].Value<string>().NullIfBlank();
-                string countryCode = parsed["country_code"].Value<string>().NullIfBlank();
-                string city = parsed["city"].Value<string>().NullIfBlank();
-                double lat = parsed["latitude"].Value<double>();
-                double lng = parsed["longitude"].Value<double>();
+                var countryName = parsed["country_name"].Value<string>().NullIfBlank();
+                var countryCode = parsed["country_code"].Value<string>().NullIfBlank();
+                var city = parsed["city"].Value<string>().NullIfBlank();
+                var lat = parsed["latitude"].Value<double>();
+                var lng = parsed["longitude"].Value<double>();
 
                 // Populate
                 var result = new GeoInfo(countryName, countryCode, city, lat, lng);

@@ -32,11 +32,10 @@ namespace LightBulb.Services
                 // Check versions of all releases, see if any one of them is newer than the current
                 foreach (var jRelease in parsed)
                 {
-                    string tagName = jRelease["tag_name"].Value<string>();
+                    var tagName = jRelease["tag_name"].Value<string>();
                     if (tagName.IsBlank()) continue;
 
-                    Version version;
-                    if (!Version.TryParse(tagName, out version)) continue;
+                    if (!Version.TryParse(tagName, out var version)) continue;
 
                     if (CurrentVersion < version) return true;
                 }
