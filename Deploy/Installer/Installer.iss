@@ -1,7 +1,7 @@
 #define MyAppName "LightBulb"
 #define MyAppVersion "1.6.3.4"
 #define MyAppPublisher "Alexey 'Tyrrrz' Golub"
-#define MyAppURL "http://www.tyrrrz.me/projects/?id=lb"
+#define MyAppURL "http://tyrrrz.me/Projects/LightBulb"
 
 [Setup]
 AppId={{892F745F-A497-42ED-B503-8D74936D0BEB}
@@ -25,7 +25,7 @@ SetupIconFile=..\..\favicon.ico
 UninstallDisplayIcon=..\..\favicon.ico
 LicenseFile=..\..\License.txt
 OutputDir=bin\
-OutputBaseFilename=LightBulb_Install_{#MyAppVersion}
+OutputBaseFilename=LightBulb-Installer
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
