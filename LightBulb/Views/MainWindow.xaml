@@ -242,14 +242,15 @@
                 <materialDesign:Transitioner x:Name="ContentTransitioner" SelectedIndex="0">
                     <materialDesign:Transitioner.Resources>
                         <Style TargetType="{x:Type materialDesign:TransitionerSlide}">
+                            <Setter Property="Background" Value="{DynamicResource MaterialDesignCardBackground}" />
                             <Setter Property="BackwardWipe">
                                 <Setter.Value>
-                                    <views:SlideWipe Direction="Right" />
+                                    <materialDesign:SlideWipe Direction="Right" Duration="0:0:0.3" />
                                 </Setter.Value>
                             </Setter>
                             <Setter Property="ForwardWipe">
                                 <Setter.Value>
-                                    <views:SlideWipe Direction="Left" />
+                                    <materialDesign:SlideWipe Direction="Left" Duration="0:0:0.3" />
                                 </Setter.Value>
                             </Setter>
                         </Style>
