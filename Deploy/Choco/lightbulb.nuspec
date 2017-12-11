@@ -2,12 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>lightbulb</id>
-    <version>1.6.3.2</version>
+    <version>1.6.3.5</version>
     <packageSourceUrl>https://github.com/Tyrrrz/LightBulb</packageSourceUrl>
     <owners>Tyrrrz</owners>
     <title>LightBulb</title>
     <authors>Alexey 'Tyrrrz' Golub</authors>
-    <projectUrl>http://www.tyrrrz.me/projects/?id=lb</projectUrl>
+    <projectUrl>http://tyrrrz.me/Projects/LightBulb</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/Tyrrrz/LightBulb/master/favicon.png</iconUrl>
     <copyright>Alexey Golub</copyright>
     <licenseUrl>https://raw.githubusercontent.com/Tyrrrz/LightBulb/master/License.txt</licenseUrl>
