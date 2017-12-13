@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading.Tasks;
 using LightBulb.Models;
 using Newtonsoft.Json.Linq;
@@ -49,8 +50,8 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public async Task<SolarInfo> GetSolarInfoAsync(GeoInfo geoInfo)
         {
-            var lat = geoInfo.Latitude;
-            var lng = geoInfo.Longitude;
+            var lat = geoInfo.Latitude.ToString(CultureInfo.InvariantCulture);
+            var lng = geoInfo.Longitude.ToString(CultureInfo.InvariantCulture);
             var response =
                 await _httpService.GetStringAsync($"http://api.sunrise-sunset.org/json?lat={lat}&lng={lng}&formatted=0");
             if (response.IsBlank()) return null;
