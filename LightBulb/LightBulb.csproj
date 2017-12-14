@@ -81,8 +81,8 @@
     <Reference Include="Tyrrrz.Extensions, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Tyrrrz.Extensions.1.4.1\lib\net45\Tyrrrz.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Tyrrrz.Settings, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tyrrrz.Settings.1.3.0\lib\net45\Tyrrrz.Settings.dll</HintPath>
+    <Reference Include="Tyrrrz.Settings, Version=1.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tyrrrz.Settings.1.3.2\lib\net45\Tyrrrz.Settings.dll</HintPath>
     </Reference>
     <Reference Include="Tyrrrz.WpfExtensions, Version=1.0.6269.37170, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Tyrrrz.WpfExtensions.1.0.5\lib\net45\Tyrrrz.WpfExtensions.dll</HintPath>
