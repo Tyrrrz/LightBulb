@@ -15,7 +15,7 @@ namespace LightBulb.Services
         private bool _isGammaPollingEnabled = true;
         private bool _isTemperatureSmoothingEnabled = true;
         private bool _isFullscreenBlocking;
-        private bool _isCheckForUpdatedEnabled = true;
+        private bool _isCheckForUpdatesEnabled = true;
         private bool _isInternetSyncEnabled = true;
         private bool _isGeoInfoLocked;
         private ushort _temperatureEpsilon = 50;
@@ -53,10 +53,10 @@ namespace LightBulb.Services
             set => Set(ref _isFullscreenBlocking, value);
         }
 
-        public bool IsCheckForUpdatedEnabled
+        public bool IsCheckForUpdatesEnabled
         {
-            get => _isCheckForUpdatedEnabled;
-            set => Set(ref _isCheckForUpdatedEnabled, value);
+            get => _isCheckForUpdatesEnabled;
+            set => Set(ref _isCheckForUpdatesEnabled, value);
         }
 
         public bool IsInternetSyncEnabled

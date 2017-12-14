@@ -12,7 +12,7 @@ namespace LightBulb.Services
         bool IsGammaPollingEnabled { get; set; }
         bool IsTemperatureSmoothingEnabled { get; set; }
         bool IsFullscreenBlocking { get; set; }
-        bool IsCheckForUpdatedEnabled { get; set; }
+        bool IsCheckForUpdatesEnabled { get; set; }
         bool IsInternetSyncEnabled { get; set; }
         bool IsGeoInfoLocked { get; set; }
         ushort TemperatureEpsilon { get; set; }

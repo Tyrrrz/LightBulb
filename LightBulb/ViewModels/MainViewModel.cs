@@ -124,10 +124,10 @@ namespace LightBulb.ViewModels
 
             // Timers
             _checkForUpdatesTimer = new Timer();
-            _checkForUpdatesTimer.Tick += async (sender, args) => await CheckForUpdatesAsync();
+            _checkForUpdatesTimer.Tick += (sender, args) => CheckForUpdatesAsync().Forget();
 
             _internetSyncTimer = new SyncedTimer();
-            _internetSyncTimer.Tick += async (sender, args) => await SynchronizeWithInternetAsync();
+            _internetSyncTimer.Tick += (sender, args) => SynchronizeWithInternetAsync().Forget();
 
             _disableTemporarilyTimer = new Timer();
             _disableTemporarilyTimer.Tick += (sender, args) =>
@@ -220,7 +220,7 @@ namespace LightBulb.ViewModels
         private void UpdateConfiguration()
         {
             _checkForUpdatesTimer.Interval = SettingsService.CheckForUpdatesInterval;
-            _checkForUpdatesTimer.IsEnabled = SettingsService.IsCheckForUpdatedEnabled;
+            _checkForUpdatesTimer.IsEnabled = SettingsService.IsCheckForUpdatesEnabled;
             _internetSyncTimer.Interval = SettingsService.InternetSyncInterval;
             _internetSyncTimer.IsEnabled = SettingsService.IsInternetSyncEnabled;
         }
@@ -328,7 +328,7 @@ namespace LightBulb.ViewModels
         /// </summary>
         private async Task CheckForUpdatesAsync()
         {
-            if (!SettingsService.IsCheckForUpdatedEnabled) return;
+            if (!SettingsService.IsCheckForUpdatesEnabled) return;
 
             IsUpdateAvailable = await _versionCheckService.GetUpdateStatusAsync();
 
