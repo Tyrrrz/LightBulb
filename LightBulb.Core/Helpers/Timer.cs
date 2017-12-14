@@ -8,6 +8,7 @@ namespace LightBulb.Helpers
     public class Timer : IDisposable
     {
         private bool _isBusy;
+        private TimeSpan _interval;
 
         protected System.Timers.Timer InternalTimer { get; }
 
@@ -21,8 +22,15 @@ namespace LightBulb.Helpers
         /// </summary>
         public TimeSpan Interval
         {
-            get => TimeSpan.FromMilliseconds(InternalTimer.Interval);
-            set => InternalTimer.Interval = value.TotalMilliseconds;
+            get => _interval;
+            set
+            {
+                if (_interval == value)
+                    return;
+
+                _interval = value;
+                InternalTimer.Interval = value.TotalMilliseconds;
+            }
         }
 
         /// <summary>
