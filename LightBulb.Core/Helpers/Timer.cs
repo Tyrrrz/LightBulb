@@ -40,11 +40,8 @@ namespace LightBulb.Helpers
 
         public Timer(TimeSpan interval)
         {
-            InternalTimer = new System.Timers.Timer
-            {
-                AutoReset = true,
-                Interval = interval.TotalMilliseconds
-            };
+            InternalTimer = new System.Timers.Timer();
+            Interval = interval;
             InternalTimer.Elapsed += (sender, args) => TimerTickInternal();
             InternalTimer.Start();
         }
