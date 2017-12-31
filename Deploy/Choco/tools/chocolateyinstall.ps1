@@ -10,7 +10,7 @@ $packageArgs = @{
 
   softwareName  = 'lightbulb*'
 
-  checksum      = '4ae5c09e730368b93249053d711b1c76a84d9d9d8e0be3ee72b7b3b415c1bc5e'
+  checksum      = '2b6d6411494f972c8302b42a5b8c75838a8d94c54f06cc4585c3432740a953cd'
   checksumType  = 'sha256'
   
   silentArgs   = '/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP-'
