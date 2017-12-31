@@ -30,9 +30,9 @@ deploy:
     branch: master
     appveyor_repo_tag: true
 - provider: NuGet
-  server: https://chocolatey.org/
+  server: https://push.chocolatey.org/
   api_key:
-    secure: f9mIs7girEeCzz+Il/rVM7H9i9N0D8pez22hLRMx24C91P76Hi7JiB0T8RxsJ2TJ
+    secure: aQVQ50i8GcwxMXTHf2ck5PijnOeVZY8Z9MEROQTvT49/7/az9w8ru8NCyEsV6H5I
   artifact: LightBulb-Choco.nupkg
   skip_symbols: true
   on:
