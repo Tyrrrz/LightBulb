@@ -17,6 +17,8 @@ artifacts:
   name: LightBulb-Installer.exe
 - path: Deploy\Portable\bin\LightBulb-Portable.zip
   name: LightBulb-Portable.zip
+- path: Deploy\Choco\bin\LightBulb*.nupkg
+  name: LightBulb-Choco.nupkg
 
 deploy:
 - provider: GitHub
@@ -24,6 +26,15 @@ deploy:
     secure: sjQHWRw29AMiVMn3MtidtWnAzAf1mJ+mkJ/7h1B9TIAHhkFrqwMK7LtXV+uNJ9AO
   artifact: LightBulb-Installer.exe,LightBulb-Portable.zip
   draft: true
+  on:
+    branch: master
+    appveyor_repo_tag: true
+- provider: NuGet
+  server: https://chocolatey.org/
+  api_key:
+    secure: f9mIs7girEeCzz+Il/rVM7H9i9N0D8pez22hLRMx24C91P76Hi7JiB0T8RxsJ2TJ
+  artifact: LightBulb-Choco.nupkg
+  skip_symbols: true
   on:
     branch: master
     appveyor_repo_tag: true
