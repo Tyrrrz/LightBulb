@@ -6,7 +6,8 @@
 # --- PORTABLE ---
 
 # Get files
-$files = Get-ChildItem -Path "$PSScriptRoot\..\LightBulb\bin\Release\*" -Include "*.exe", "*.dll", "*.config"
+$files = @()
+$files += Get-ChildItem -Path "$PSScriptRoot\..\LightBulb\bin\Release\*" -Include "*.exe", "*.dll", "*.config"
 $files += Get-ChildItem -Path "$PSScriptRoot\Portable\*";
 
 # Pack into archive
