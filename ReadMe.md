@@ -47,7 +47,6 @@ You can also manually fine-tune every detail using the [configuration file](http
  - [Newtonsoft.Json](http://www.newtonsoft.com/json)
  - [MaterialDesignInXamlToolkit](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit)
  - [Hardcodet.NotifyIcon.Wpf](http://www.hardcodet.net/wpf-notifyicon)
- - [Costura.Fody](https://github.com/Fody/Costura)
  - [Tyrrrz.Extensions](https://github.com/Tyrrrz/Extensions)
  - [Tyrrrz.WpfExtensions](https://github.com/Tyrrrz/WpfExtensions)
  - [Tyrrrz.Settings](https://github.com/Tyrrrz/Settings)

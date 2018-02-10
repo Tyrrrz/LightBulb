@@ -34,6 +34,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Source: "..\..\License.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\..\LightBulb\bin\Release\LightBulb.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\..\LightBulb\bin\Release\*.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\LightBulb\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\LightBulb.exe"
