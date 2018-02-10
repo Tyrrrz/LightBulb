@@ -75,6 +75,9 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -103,6 +106,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\SyncedTimer.cs" />
+    <Compile Include="Helpers\Timer.cs" />
+    <Compile Include="Helpers\ValueSmoother.cs" />
+    <Compile Include="Internal\HookManager.cs" />
+    <Compile Include="Internal\NativeMethods.cs" />
+    <Compile Include="Internal\SpongeWindow.cs" />
+    <Compile Include="Internal\WndProcEventArgs.cs" />
     <Compile Include="Locator.cs" />
     <Compile Include="Converters\HotkeyToStringConverter.cs" />
     <Page Include="Views\GeneralSettingsView.xaml">
@@ -129,6 +139,30 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\ColorIntensity.cs" />
+    <Compile Include="Models\CycleState.cs" />
+    <Compile Include="Models\GammaRamp.cs" />
+    <Compile Include="Models\GeoInfo.cs" />
+    <Compile Include="Models\Hotkey.cs" />
+    <Compile Include="Models\Proxy.cs" />
+    <Compile Include="Models\Rect.cs" />
+    <Compile Include="Models\SolarInfo.cs" />
+    <Compile Include="Services\FileSettingsService.cs" />
+    <Compile Include="Services\HttpService.cs" />
+    <Compile Include="Services\IGammaService.cs" />
+    <Compile Include="Services\IGeoService.cs" />
+    <Compile Include="Services\IHotkeyService.cs" />
+    <Compile Include="Services\IHttpService.cs" />
+    <Compile Include="Services\ISettingsService.cs" />
+    <Compile Include="Services\ITemperatureService.cs" />
+    <Compile Include="Services\IVersionCheckService.cs" />
+    <Compile Include="Services\IWindowService.cs" />
+    <Compile Include="Services\TemperatureService.cs" />
+    <Compile Include="Services\WebGeoService.cs" />
+    <Compile Include="Services\WebVersionCheckService.cs" />
+    <Compile Include="Services\WindowsGammaService.cs" />
+    <Compile Include="Services\WindowsHotkeyService.cs" />
+    <Compile Include="Services\WindowsWindowService.cs" />
     <Compile Include="ViewModels\AdvancedSettingsViewModel.cs" />
     <Compile Include="ViewModels\GeneralSettingsViewModel.cs" />
     <Compile Include="ViewModels\GeoSettingsViewModel.cs" />
@@ -177,20 +211,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="..\favicon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LightBulb.Core\LightBulb.Core.csproj">
-      <Project>{0e8269c6-fdba-436d-a8da-0cb8ff4cd804}</Project>
-      <Name>LightBulb.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LightBulb.Impl.Windows\LightBulb.Impl.Windows.csproj">
-      <Project>{5bae5bc9-1435-43e5-89cd-2721743b2707}</Project>
-      <Name>LightBulb.Impl.Windows</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LightBulb.Impl\LightBulb.Impl.csproj">
-      <Project>{a773ca87-3c0a-4cdb-87e1-90a56da858f1}</Project>
-      <Name>LightBulb.Impl</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="FodyWeavers.xml" />
