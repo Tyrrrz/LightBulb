@@ -3,6 +3,7 @@
 [![Build](https://img.shields.io/appveyor/ci/Tyrrrz/LightBulb/master.svg)](https://ci.appveyor.com/project/Tyrrrz/LightBulb)
 [![Release](https://img.shields.io/github/release/Tyrrrz/LightBulb.svg)](https://github.com/Tyrrrz/LightBulb/releases)
 [![Downloads](https://img.shields.io/github/downloads/Tyrrrz/LightBulb/total.svg)](https://github.com/Tyrrrz/LightBulb/releases)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FTyrrrz%2FLightBulb.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FTyrrrz%2FLightBulb?ref=badge_shield)
 
 LightBulb is an application that reduces eyestrain produced by staring at a computer screen when working late hours. As the day goes on, it continuously adjusts gamma, transitioning the display color temperature from cold blue in the afternoon to warm yellow during the night. Its primary objective is to match the color of the screen to the light sources of your surrounding environment - typically, sunlight during the day and artificial light during the night. LightBulb has minimal impact on performance and offers many customization options.
 
@@ -51,3 +52,7 @@ You can also manually fine-tune every detail using the [configuration file](http
  - [Tyrrrz.Extensions](https://github.com/Tyrrrz/Extensions)
  - [Tyrrrz.WpfExtensions](https://github.com/Tyrrrz/WpfExtensions)
  - [Tyrrrz.Settings](https://github.com/Tyrrrz/Settings)
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FTyrrrz%2FLightBulb.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FTyrrrz%2FLightBulb?ref=badge_large)
