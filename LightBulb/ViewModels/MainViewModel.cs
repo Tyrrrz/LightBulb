@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Threading;
 using LightBulb.Helpers;
 using LightBulb.Models;
 using LightBulb.Services;
@@ -94,8 +93,6 @@ namespace LightBulb.ViewModels
         }
 
         // Commands
-        public RelayCommand ShowMainWindowCommand { get; }
-
         public RelayCommand ExitApplicationCommand { get; }
         public RelayCommand AboutCommand { get; }
         public RelayCommand ToggleEnabledCommand { get; }
@@ -137,15 +134,6 @@ namespace LightBulb.ViewModels
             };
 
             // Commands
-            ShowMainWindowCommand = new RelayCommand(() =>
-            {
-                DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                {
-                    Application.Current.MainWindow.Show();
-                    Application.Current.MainWindow.Activate();
-                    Application.Current.MainWindow.Focus();
-                });
-            });
             ExitApplicationCommand = new RelayCommand(() =>
             {
                 Application.Current.ShutdownSafe();

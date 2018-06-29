@@ -47,7 +47,6 @@ namespace LightBulb.ViewModels
         /// </summary>
         double CyclePosition { get; }
 
-        RelayCommand ShowMainWindowCommand { get; }
         RelayCommand ExitApplicationCommand { get; }
         RelayCommand AboutCommand { get; }
         RelayCommand ToggleEnabledCommand { get; }

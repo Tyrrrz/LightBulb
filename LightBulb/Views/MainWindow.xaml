@@ -44,9 +44,10 @@
             <tb:TaskbarIcon
                 x:Name="TaskbarIcon"
                 Grid.Row="0"
-                DoubleClickCommand="{Binding ShowMainWindowCommand}"
                 IconSource="/LightBulb;component/favicon.ico"
-                ToolTipText="LightBulb">
+                NoLeftClickDelay="True"
+                ToolTipText="LightBulb"
+                TrayLeftMouseUp="TaskbarIcon_OnTrayLeftMouseUp">
                 <tb:TaskbarIcon.TrayToolTip>
                     <Border
                         Background="{DynamicResource MaterialDesignPaper}"
