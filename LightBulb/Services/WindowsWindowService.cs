@@ -9,9 +9,11 @@ namespace LightBulb.Services
 {
     public class WindowsWindowService : IWindowService, IDisposable
     {
+        // Class names that belong to system windows which should be ignored for fullscreen checks
         private static readonly string[] SystemClassNames =
         {
-            "Progman", "WorkerW", "ImmersiveLauncher", "ImmersiveSwitchList"
+            "Progman", "WorkerW", "ImmersiveLauncher", "ImmersiveSwitchList", "MultitaskingViewFrame",
+            "ForegroundStaging", "ApplicationManager_DesktopShellWindow"
         };
 
         private readonly HookManager _hookManager;
