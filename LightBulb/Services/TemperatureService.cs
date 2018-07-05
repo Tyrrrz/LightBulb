@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using LightBulb.Helpers;
+using LightBulb.Internal;
 using LightBulb.Models;
 using Microsoft.Win32;
 using Tyrrrz.Extensions;
@@ -199,44 +200,40 @@ namespace LightBulb.Services
             Debug.WriteLine($"Gamma updated (-> {intens})", GetType().Name);
         }
 
-        private ushort GetTemperature(TimeSpan time)
+        private ushort GetTemperature(DateTime instant)
         {
+            // Get settings
             var minTemp = _settingsService.MinTemperature;
             var maxTemp = _settingsService.MaxTemperature;
-
             var offset = _settingsService.TemperatureTransitionDuration;
-            var riseStartTime = _settingsService.SunriseTime;
-            var riseEndTime = _settingsService.SunriseTime + offset;
-            var setStartTime = _settingsService.SunsetTime - offset;
-            var setEndTime = _settingsService.SunsetTime;
+            var sunriseTime = _settingsService.SunriseTime;
+            var sunsetTime = _settingsService.SunsetTime;
 
-            // Before sunrise (night time)
-            if (time < riseStartTime)
-                return minTemp;
+            // Determine next sunrise
+            var sunriseStart = instant.NextTimeOfDay(sunriseTime);
+            var sunriseEnd = instant.NextTimeOfDay(sunriseStart.Add(offset).TimeOfDay);
 
-            // Incoming sunrise (night time -> day time)
-            if (time >= riseStartTime && time <= riseEndTime)
+            // Determine next sunset
+            var sunsetEnd = instant.NextTimeOfDay(sunsetTime);
+            var sunsetStart = instant.NextTimeOfDay(sunsetEnd.Add(offset.Negate()).TimeOfDay);
+
+            // Determine the next event
+            var toSunriseStart = sunriseStart - instant;
+            var toSunsetStart = sunsetStart - instant;
+            var timeLeft = toSunriseStart < toSunsetStart ? toSunriseStart : toSunsetStart;
+            var baseTemp = toSunriseStart < toSunsetStart ? minTemp : maxTemp;
+            var targetTemp = toSunriseStart < toSunsetStart ? maxTemp : minTemp;
+
+            // Transition
+            if (timeLeft <= offset)
             {
-                var t = (time.TotalHours - riseStartTime.TotalHours)/offset.TotalHours;
-                return (ushort) (minTemp + (maxTemp - minTemp)*Math.Sin(t*Math.PI/2));
+                var t = 1 - timeLeft.TotalHours / offset.TotalHours;
+                return (ushort) (baseTemp + (targetTemp - baseTemp) * Math.Sin(t * Math.PI / 2));
             }
 
-            // Between sunrise and sunset (day time)
-            if (time > riseEndTime && time < setStartTime)
-                return maxTemp;
-
-            // Incoming sunset (day time -> night time)
-            if (time >= setStartTime && time <= setEndTime)
-            {
-                var t = (time.TotalHours - setStartTime.TotalHours)/offset.TotalHours;
-                return (ushort) (maxTemp + (minTemp - maxTemp)*Math.Sin(t*Math.PI/2));
-            }
-
-            // After sunset (night time)
-            return minTemp;
+            // No transition
+            return toSunriseStart < toSunsetStart ? minTemp : maxTemp;
         }
-
-        private ushort GetTemperature(DateTime dt) => GetTemperature(dt.TimeOfDay);
 
         /// <summary>
         /// Update temperature based on the current mode and time

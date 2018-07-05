@@ -105,6 +105,7 @@
     <Compile Include="Helpers\SyncedTimer.cs" />
     <Compile Include="Helpers\Timer.cs" />
     <Compile Include="Helpers\ValueSmoother.cs" />
+    <Compile Include="Internal\Extensions.cs" />
     <Compile Include="Internal\HookManager.cs" />
     <Compile Include="Internal\NativeMethods.cs" />
     <Compile Include="Internal\SpongeWindow.cs" />
