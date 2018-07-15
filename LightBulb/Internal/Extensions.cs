@@ -10,5 +10,10 @@ namespace LightBulb.Internal
             dateTime.TimeOfDay <= timeOfDay
                 ? dateTime.AtTimeOfDay(timeOfDay)
                 : dateTime.AddDays(1).AtTimeOfDay(timeOfDay);
+
+        public static DateTime PreviousTimeOfDay(this DateTime dateTime, TimeSpan timeOfDay) =>
+            dateTime.TimeOfDay > timeOfDay
+                ? dateTime.AtTimeOfDay(timeOfDay)
+                : dateTime.AddDays(-1).AtTimeOfDay(timeOfDay);
     }
 }

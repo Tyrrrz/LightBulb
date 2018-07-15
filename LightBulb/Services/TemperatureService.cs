@@ -209,30 +209,44 @@ namespace LightBulb.Services
             var sunriseTime = _settingsService.SunriseTime;
             var sunsetTime = _settingsService.SunsetTime;
 
-            // Determine next sunrise
-            var sunriseStart = instant.NextTimeOfDay(sunriseTime);
-            var sunriseEnd = instant.NextTimeOfDay(sunriseStart.Add(offset).TimeOfDay);
+            //
+            var nextSunrise = instant.NextTimeOfDay(sunriseTime);
+            var prevSunrise = instant.PreviousTimeOfDay(sunriseTime);
+            var nextSunset = instant.NextTimeOfDay(sunsetTime);
+            var prevSunset = instant.PreviousTimeOfDay(sunsetTime);
 
-            // Determine next sunset
-            var sunsetEnd = instant.NextTimeOfDay(sunsetTime);
-            var sunsetStart = instant.NextTimeOfDay(sunsetEnd.Add(offset.Negate()).TimeOfDay);
+            //
+            var untilNextSunrise = nextSunrise - instant;
+            var untilNextSunset = nextSunset - instant;
 
-            // Determine the next event
-            var toSunriseStart = sunriseStart - instant;
-            var toSunsetStart = sunsetStart - instant;
-            var timeLeft = toSunriseStart < toSunsetStart ? toSunriseStart : toSunsetStart;
-            var baseTemp = toSunriseStart < toSunsetStart ? minTemp : maxTemp;
-            var targetTemp = toSunriseStart < toSunsetStart ? maxTemp : minTemp;
-
-            // Transition
-            if (timeLeft <= offset)
+            // Next event is sunrise
+            if (untilNextSunrise <= untilNextSunset)
             {
-                var t = 1 - timeLeft.TotalHours / offset.TotalHours;
-                return (ushort) (baseTemp + (targetTemp - baseTemp) * Math.Sin(t * Math.PI / 2));
-            }
+                // Check if in transition period to night
+                if (instant <= prevSunset.Add(offset))
+                {
+                    // Smooth transition
+                    var t = (instant - prevSunset).TotalHours / offset.TotalHours;
+                    return (ushort) (minTemp + (maxTemp - minTemp) * Math.Cos(t * Math.PI / 2));
+                }
 
-            // No transition
-            return toSunriseStart < toSunsetStart ? minTemp : maxTemp;
+                // Night time
+                return minTemp;
+            }
+            // Next event is sunset
+            else
+            {
+                // Check if in transition period to day
+                if (instant <= prevSunrise.Add(offset))
+                {
+                    // Smooth transition
+                    var t = (instant - prevSunrise).TotalHours / offset.TotalHours;
+                    return (ushort) (maxTemp + (minTemp - maxTemp) * Math.Cos(t * Math.PI / 2));
+                }
+
+                // Day time
+                return maxTemp;
+            }
         }
 
         /// <summary>
