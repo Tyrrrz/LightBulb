@@ -50,7 +50,7 @@ namespace LightBulb.ViewModels
         RelayCommand ExitApplicationCommand { get; }
         RelayCommand AboutCommand { get; }
         RelayCommand ToggleEnabledCommand { get; }
-        RelayCommand<double> DisableTemporarilyCommand { get; }
+        RelayCommand<TimeSpan> DisableTemporarilyCommand { get; }
         RelayCommand DownloadNewVersionCommand { get; }
     }
 }

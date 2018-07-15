@@ -96,7 +96,7 @@ namespace LightBulb.ViewModels
         public RelayCommand ExitApplicationCommand { get; }
         public RelayCommand AboutCommand { get; }
         public RelayCommand ToggleEnabledCommand { get; }
-        public RelayCommand<double> DisableTemporarilyCommand { get; }
+        public RelayCommand<TimeSpan> DisableTemporarilyCommand { get; }
         public RelayCommand DownloadNewVersionCommand { get; }
 
         public MainViewModel(
@@ -146,10 +146,10 @@ namespace LightBulb.ViewModels
             {
                 IsEnabled = !IsEnabled;
             });
-            DisableTemporarilyCommand = new RelayCommand<double>(ms =>
+            DisableTemporarilyCommand = new RelayCommand<TimeSpan>(dur =>
             {
                 _disableTemporarilyTimer.IsEnabled = false;
-                _disableTemporarilyTimer.Interval = TimeSpan.FromMilliseconds(ms);
+                _disableTemporarilyTimer.Interval = dur;
                 IsEnabled = false;
                 _disableTemporarilyTimer.IsEnabled = true;
             });
