@@ -209,13 +209,13 @@ namespace LightBulb.Services
             var sunriseTime = _settingsService.SunriseTime;
             var sunsetTime = _settingsService.SunsetTime;
 
-            //
+            // Get next and previous sunrise and sunset
             var nextSunrise = instant.NextTimeOfDay(sunriseTime);
             var prevSunrise = instant.PreviousTimeOfDay(sunriseTime);
             var nextSunset = instant.NextTimeOfDay(sunsetTime);
             var prevSunset = instant.PreviousTimeOfDay(sunsetTime);
 
-            //
+            // Calculate time until next sunrise and sunset
             var untilNextSunrise = nextSunrise - instant;
             var untilNextSunset = nextSunset - instant;
 
@@ -226,8 +226,8 @@ namespace LightBulb.Services
                 if (instant <= prevSunset.Add(offset))
                 {
                     // Smooth transition
-                    var t = (instant - prevSunset).TotalHours / offset.TotalHours;
-                    return (ushort) (minTemp + (maxTemp - minTemp) * Math.Cos(t * Math.PI / 2));
+                    var norm = (instant - prevSunset).TotalHours / offset.TotalHours;
+                    return (ushort) (minTemp + (maxTemp - minTemp) * Math.Cos(norm * Math.PI / 2));
                 }
 
                 // Night time
@@ -240,8 +240,8 @@ namespace LightBulb.Services
                 if (instant <= prevSunrise.Add(offset))
                 {
                     // Smooth transition
-                    var t = (instant - prevSunrise).TotalHours / offset.TotalHours;
-                    return (ushort) (maxTemp + (minTemp - maxTemp) * Math.Cos(t * Math.PI / 2));
+                    var norm = (instant - prevSunrise).TotalHours / offset.TotalHours;
+                    return (ushort) (maxTemp + (minTemp - maxTemp) * Math.Cos(norm * Math.PI / 2));
                 }
 
                 // Day time
