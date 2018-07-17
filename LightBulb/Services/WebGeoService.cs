@@ -20,7 +20,7 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public async Task<GeoInfo> GetGeoInfoAsync()
         {
-            var response = await _httpService.GetStringAsync("http://freegeoip.net/json");
+            var response = await _httpService.GetStringAsync("https://geoip.nekudo.com/api");
             if (response.IsBlank()) return null;
 
             try
@@ -29,11 +29,11 @@ namespace LightBulb.Services
                 var parsed = JToken.Parse(response);
 
                 // Extract data
-                var countryName = parsed["country_name"].Value<string>().NullIfBlank();
-                var countryCode = parsed["country_code"].Value<string>().NullIfBlank();
+                var countryName = parsed["country"]["name"].Value<string>().NullIfBlank();
+                var countryCode = parsed["country"]["code"].Value<string>().NullIfBlank();
                 var city = parsed["city"].Value<string>().NullIfBlank();
-                var lat = parsed["latitude"].Value<double>();
-                var lng = parsed["longitude"].Value<double>();
+                var lat = parsed["location"]["latitude"].Value<double>();
+                var lng = parsed["location"]["longitude"].Value<double>();
 
                 // Populate
                 var result = new GeoInfo(countryName, countryCode, city, lat, lng);
@@ -53,7 +53,7 @@ namespace LightBulb.Services
             var lat = geoInfo.Latitude.ToString(CultureInfo.InvariantCulture);
             var lng = geoInfo.Longitude.ToString(CultureInfo.InvariantCulture);
             var response =
-                await _httpService.GetStringAsync($"http://api.sunrise-sunset.org/json?lat={lat}&lng={lng}&formatted=0");
+                await _httpService.GetStringAsync($"https://api.sunrise-sunset.org/json?lat={lat}&lng={lng}&formatted=0");
             if (response.IsBlank()) return null;
 
             try
