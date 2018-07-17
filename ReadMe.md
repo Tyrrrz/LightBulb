@@ -37,7 +37,7 @@ You can also manually fine-tune every detail using the [configuration file](http
 
 ## Web APIs used
 
-- [FreeGeoIp](http://freegeoip.net)
+- [Nekudo GeoIP](https://geoip.nekudo.com)
 - [SunriseSunset](https://sunrise-sunset.org)
 - [GitHub](https://developer.github.com)
 
