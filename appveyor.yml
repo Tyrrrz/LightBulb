@@ -25,7 +25,7 @@ deploy:
   auth_token:
     secure: sjQHWRw29AMiVMn3MtidtWnAzAf1mJ+mkJ/7h1B9TIAHhkFrqwMK7LtXV+uNJ9AO
   artifact: LightBulb-Installer.exe,LightBulb-Portable.zip
-  draft: true
+  description: '[Changelog](https://github.com/Tyrrrz/LightBulb/blob/master/Changelog.md)'
   on:
     branch: master
     appveyor_repo_tag: true
