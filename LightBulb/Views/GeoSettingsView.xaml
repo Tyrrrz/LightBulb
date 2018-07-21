@@ -12,12 +12,11 @@
         <Slider
             Margin="7,0,7,5"
             IsEnabled="{Binding SettingsService.IsInternetSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
-            IsSnapToTickEnabled="True"
             LargeChange="0.5"
-            Maximum="23.999"
+            Maximum="24"
             Minimum="0"
             SmallChange="0.25"
-            TickFrequency="0.25"
+            TickFrequency="1"
             TickPlacement="BottomRight"
             Value="{Binding SettingsService.SunriseTime, Converter={StaticResource TimeSpanToHoursConverter}}" />
 
@@ -29,12 +28,11 @@
         <Slider
             Margin="7,0,7,5"
             IsEnabled="{Binding SettingsService.IsInternetSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
-            IsSnapToTickEnabled="True"
             LargeChange="0.5"
-            Maximum="23.999"
+            Maximum="24"
             Minimum="0"
             SmallChange="0.25"
-            TickFrequency="0.25"
+            TickFrequency="1"
             TickPlacement="BottomRight"
             Value="{Binding SettingsService.SunsetTime, Converter={StaticResource TimeSpanToHoursConverter}}" />
 
