@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>lightbulb</id>
-    <version>1.6.3.6</version>
+    <version>1.6.4</version>
     <packageSourceUrl>https://github.com/Tyrrrz/LightBulb</packageSourceUrl>
     <owners>Tyrrrz</owners>
     <title>LightBulb</title>
