@@ -1,39 +1,40 @@
-﻿<UserControl x:Class="LightBulb.Views.GeoSettingsView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             DataContext="{Binding GeoSettingsViewModel, Source={StaticResource Locator}}">
+﻿<UserControl
+    x:Class="LightBulb.Views.GeoSettingsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    DataContext="{Binding GeoSettingsViewModel, Source={StaticResource Locator}}">
     <StackPanel Grid.IsSharedSizeScope="True" Orientation="Vertical">
         <!--  Sunrise time temperature  -->
         <TextBlock Margin="5" ToolTip="When the sun rises">
             <Run Text="Sunrise time:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.SunriseTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
         </TextBlock>
-        <Slider Margin="7,0,7,5"
-                IsEnabled="{Binding SettingsService.IsInternetSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
-                IsSnapToTickEnabled="True"
-                LargeChange="0.5"
-                Maximum="11"
-                Minimum="4"
-                SmallChange="0.25"
-                TickFrequency="0.25"
-                TickPlacement="BottomRight"
-                Value="{Binding SettingsService.SunriseTime, Converter={StaticResource TimeSpanToHoursConverter}}" />
+        <Slider
+            Margin="7,0,7,5"
+            IsEnabled="{Binding SettingsService.IsInternetSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
+            LargeChange="0.5"
+            Maximum="24"
+            Minimum="0"
+            SmallChange="0.25"
+            TickFrequency="1"
+            TickPlacement="BottomRight"
+            Value="{Binding SettingsService.SunriseTime, Converter={StaticResource TimeSpanToHoursConverter}}" />
 
         <!--  Sunset time temperature  -->
         <TextBlock Margin="5" ToolTip="When the sun sets">
             <Run Text="Sunset time:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.SunsetTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
         </TextBlock>
-        <Slider Margin="7,0,7,5"
-                IsEnabled="{Binding SettingsService.IsInternetSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
-                IsSnapToTickEnabled="True"
-                LargeChange="0.5"
-                Maximum="22"
-                Minimum="15"
-                SmallChange="0.25"
-                TickFrequency="0.25"
-                TickPlacement="BottomRight"
-                Value="{Binding SettingsService.SunsetTime, Converter={StaticResource TimeSpanToHoursConverter}}" />
+        <Slider
+            Margin="7,0,7,5"
+            IsEnabled="{Binding SettingsService.IsInternetSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
+            LargeChange="0.5"
+            Maximum="24"
+            Minimum="0"
+            SmallChange="0.25"
+            TickFrequency="1"
+            TickPlacement="BottomRight"
+            Value="{Binding SettingsService.SunsetTime, Converter={StaticResource TimeSpanToHoursConverter}}" />
 
         <!--  Internet sync on/off  -->
         <Grid Margin="5">
@@ -42,14 +43,16 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0"
-                       VerticalAlignment="Center"
-                       Text="Internet synchronization:"
-                       ToolTip="Pull sunrise and sunset times for your location from the Internet" />
-            <ToggleButton Grid.Column="1"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Center"
-                          IsChecked="{Binding SettingsService.IsInternetSyncEnabled}" />
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="Internet synchronization:"
+                ToolTip="Pull sunrise and sunset times for your location from the Internet" />
+            <ToggleButton
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                IsChecked="{Binding SettingsService.IsInternetSyncEnabled}" />
         </Grid>
 
         <!--  Geoinfo (when set)  -->
@@ -61,17 +64,19 @@
             </Grid.ColumnDefinitions>
 
             <!--  Country flag  -->
-            <Image Grid.Column="0"
-                   Width="16"
-                   Height="16"
-                   VerticalAlignment="Center"
-                   Source="{Binding GeoInfoCountryFlagUrl, IsAsync=True}" />
+            <Image
+                Grid.Column="0"
+                Width="16"
+                Height="16"
+                VerticalAlignment="Center"
+                Source="{Binding GeoInfoCountryFlagUrl, IsAsync=True}" />
 
             <!--  Geoinfo is set  -->
-            <TextBlock Grid.Column="1"
-                       Margin="3,0,0,0"
-                       VerticalAlignment="Top"
-                       TextWrapping="Wrap">
+            <TextBlock
+                Grid.Column="1"
+                Margin="3,0,0,0"
+                VerticalAlignment="Top"
+                TextWrapping="Wrap">
                 <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.GeoInfo.City, Mode=OneWay, TargetNullValue=???}" />
                 <Run Text="/" />
                 <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.GeoInfo.Country, Mode=OneWay, TargetNullValue=???}" />
@@ -83,9 +88,10 @@
         </Grid>
 
         <!--  Geoinfo (when not set)  -->
-        <TextBlock Margin="5,0,5,5"
-                   Foreground="{DynamicResource PrimaryTextBrush}"
-                   Text="&lt; not set &gt;"
-                   Visibility="{Binding IsGeoInfoSet, Converter={StaticResource InvertBoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Collapsed}}" />
+        <TextBlock
+            Margin="5,0,5,5"
+            Foreground="{DynamicResource PrimaryTextBrush}"
+            Text="&lt; not set &gt;"
+            Visibility="{Binding IsGeoInfoSet, Converter={StaticResource InvertBoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Collapsed}}" />
     </StackPanel>
 </UserControl>

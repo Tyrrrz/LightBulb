@@ -146,25 +146,13 @@ namespace LightBulb.Services
         public TimeSpan SunriseTime
         {
             get => _sunriseTime;
-            set
-            {
-                if (!Set(ref _sunriseTime, value)) return;
-
-                if (SunriseTime > SunsetTime)
-                    SunsetTime = SunriseTime;
-            }
+            set => Set(ref _sunriseTime, value);
         }
 
         public TimeSpan SunsetTime
         {
             get => _sunsetTime;
-            set
-            {
-                if (!Set(ref _sunsetTime, value)) return;
-
-                if (SunsetTime < SunriseTime)
-                    SunriseTime = SunsetTime;
-            }
+            set => Set(ref _sunsetTime, value);
         }
 
         public GeoInfo GeoInfo
