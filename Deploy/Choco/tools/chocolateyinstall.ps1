@@ -1,7 +1,7 @@
 ﻿$ErrorActionPreference = 'Stop';
 $packageName= 'lightbulb'
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-$url        = 'https://github.com/Tyrrrz/LightBulb/releases/download/1.6.3.6/LightBulb-Installer.exe'
+$url        = 'https://github.com/Tyrrrz/LightBulb/releases/download/1.6.4/LightBulb-Installer.exe'
 $packageArgs = @{
   packageName   = $packageName
   unzipLocation = $toolsDir
