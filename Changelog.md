@@ -1,3 +1,8 @@
+### v1.6.4.1 (15-Oct-2018)
+
+- Changed to a different geoip provider, again. This fixes issues with LightBulb not being able to acquire location and sunrise/sunset times automatically since Oct 8th.
+- Fixed "Configure" tray menu item not doing anything.
+
 ### v1.6.4 (23-Jul-2018)
 
 - Improved the temperature calculation algorithm so that it works for those cases when sunset happens at night.
