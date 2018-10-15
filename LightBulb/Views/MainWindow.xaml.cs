@@ -46,6 +46,14 @@ namespace LightBulb.Views
             Focus();
         }
 
+        private void ConfigureMenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            // Show and activate window
+            Show();
+            Activate();
+            Focus();
+        }
+
         private void Header_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)

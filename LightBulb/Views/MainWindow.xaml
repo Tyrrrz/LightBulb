@@ -78,7 +78,10 @@
                 </tb:TaskbarIcon.TrayToolTip>
                 <tb:TaskbarIcon.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Command="{Binding ShowMainWindowCommand}" Header="Configure">
+                        <MenuItem
+                            x:Name="ConfigureMenuItem"
+                            Click="ConfigureMenuItem_OnClick"
+                            Header="Configure">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon Kind="Settings" />
                             </MenuItem.Icon>
