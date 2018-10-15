@@ -20,7 +20,7 @@ namespace LightBulb.Services
         /// <inheritdoc />
         public async Task<GeoInfo> GetGeoInfoAsync()
         {
-            var response = await _httpService.GetStringAsync("https://geoip.nekudo.com/api");
+            var response = await _httpService.GetStringAsync("http://ip-api.com/json");
             if (response.IsBlank()) return null;
 
             try
@@ -29,11 +29,11 @@ namespace LightBulb.Services
                 var parsed = JToken.Parse(response);
 
                 // Extract data
-                var countryName = parsed["country"]["name"].Value<string>().NullIfBlank();
-                var countryCode = parsed["country"]["code"].Value<string>().NullIfBlank();
+                var countryName = parsed["country"].Value<string>().NullIfBlank();
+                var countryCode = parsed["countryCode"].Value<string>().NullIfBlank();
                 var city = parsed["city"].Value<string>().NullIfBlank();
-                var lat = parsed["location"]["latitude"].Value<double>();
-                var lng = parsed["location"]["longitude"].Value<double>();
+                var lat = parsed["lat"].Value<double>();
+                var lng = parsed["lon"].Value<double>();
 
                 // Populate
                 var result = new GeoInfo(countryName, countryCode, city, lat, lng);
