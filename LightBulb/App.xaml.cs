@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Net;
+using System.Threading;
 using System.Windows;
 using GalaSoft.MvvmLight.Threading;
 using LightBulb.Views;
@@ -12,6 +13,10 @@ namespace LightBulb
 
         static App()
         {
+            // Set security protocol to TLS1.2
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+            // Initialize dispatcher
             DispatcherHelper.Initialize();
         }
 
