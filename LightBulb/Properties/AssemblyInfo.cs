@@ -7,7 +7,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Tyrrrz")]
 [assembly: AssemblyProduct("LightBulb")]
-[assembly: AssemblyCopyright("Copyright © 2017-2018 Alexey Golub")]
+[assembly: AssemblyCopyright("Copyright © Alexey Golub")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
