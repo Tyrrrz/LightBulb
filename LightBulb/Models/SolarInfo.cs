@@ -2,25 +2,16 @@
 
 namespace LightBulb.Models
 {
-    /// <summary>
-    /// Information about the sun
-    /// </summary>
     public class SolarInfo
     {
-        /// <summary>
-        /// Time of sunrise
-        /// </summary>
-        public TimeSpan SunriseTime { get; }
+        public DateTimeOffset Sunrise { get; }
 
-        /// <summary>
-        /// Time of sunset
-        /// </summary>
-        public TimeSpan SunsetTime { get; }
+        public DateTimeOffset Sunset { get; }
 
-        public SolarInfo(TimeSpan sunriseTime, TimeSpan sunsetTime)
+        public SolarInfo(DateTimeOffset sunrise, DateTimeOffset sunset)
         {
-            SunriseTime = sunriseTime;
-            SunsetTime = sunsetTime;
+            Sunrise = sunrise;
+            Sunset = sunset;
         }
     }
 }

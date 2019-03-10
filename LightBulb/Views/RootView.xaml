@@ -1,0 +1,297 @@
+﻿<Window
+    x:Class="LightBulb.Views.RootView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:LightBulb.Models"
+    xmlns:s="https://github.com/canton7/Stylet"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:tb="http://www.hardcodet.net/taskbar"
+    xmlns:viewModels="clr-namespace:LightBulb.ViewModels"
+    Width="600"
+    Height="450"
+    d:DataContext="{d:DesignInstance Type=viewModels:RootViewModel}"
+    AllowsTransparency="True"
+    Background="{DynamicResource MaterialDesignBackground}"
+    Icon="/LightBulb;component/favicon.ico"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False"
+    Style="{DynamicResource MaterialDesignRoot}"
+    Topmost="True"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
+    mc:Ignorable="d">
+    <Border
+        BorderBrush="{DynamicResource PrimaryHueLightBrush}"
+        BorderThickness="1"
+        CornerRadius="12,12,0,0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!--  Tray icon  -->
+            <tb:TaskbarIcon
+                Grid.Row="0"
+                IconSource="/LightBulb;component/favicon.ico"
+                NoLeftClickDelay="True"
+                ToolTipText="LightBulb">
+                <tb:TaskbarIcon.TrayToolTip>
+                    <Border
+                        BorderBrush="{DynamicResource MaterialDesignDivider}"
+                        BorderThickness="1"
+                        CornerRadius="3"
+                        Style="{DynamicResource MaterialDesignRoot}">
+                        <Grid Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock
+                                Grid.Row="0"
+                                FontSize="15"
+                                FontWeight="Medium"
+                                Foreground="{DynamicResource PrimaryTextBrush}"
+                                Text="LightBulb" />
+                            <TextBlock Grid.Row="1" Text="{Binding StatusText}" />
+                        </Grid>
+                    </Border>
+                </tb:TaskbarIcon.TrayToolTip>
+                <tb:TaskbarIcon.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Configure">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Settings" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Command="{s:Action ToggleIsEnabled}">
+                            <MenuItem.Style>
+                                <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="{x:Type MenuItem}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsEnabled}" Value="True">
+                                            <Setter Property="Header" Value="Disable" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsEnabled}" Value="False">
+                                            <Setter Property="Header" Value="Enable" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </MenuItem.Style>
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Power" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Disable for...">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="PowerSettings" />
+                            </MenuItem.Icon>
+                            <MenuItem Command="{s:Action DisableTemporarily}" Header="1 day">
+                                <MenuItem.CommandParameter>
+                                    <system:TimeSpan>24:0:0</system:TimeSpan>
+                                </MenuItem.CommandParameter>
+                            </MenuItem>
+                            <MenuItem Command="{s:Action DisableTemporarily}" Header="12 hours">
+                                <MenuItem.CommandParameter>
+                                    <system:TimeSpan>12:0:0</system:TimeSpan>
+                                </MenuItem.CommandParameter>
+                            </MenuItem>
+                            <MenuItem Command="{s:Action DisableTemporarily}" Header="6 hours">
+                                <MenuItem.CommandParameter>
+                                    <system:TimeSpan>6:0:0</system:TimeSpan>
+                                </MenuItem.CommandParameter>
+                            </MenuItem>
+                            <MenuItem Command="{s:Action DisableTemporarily}" Header="3 hours">
+                                <MenuItem.CommandParameter>
+                                    <system:TimeSpan>3:0:0</system:TimeSpan>
+                                </MenuItem.CommandParameter>
+                            </MenuItem>
+                            <MenuItem Command="{s:Action DisableTemporarily}" Header="1 hour">
+                                <MenuItem.CommandParameter>
+                                    <system:TimeSpan>1:0:0</system:TimeSpan>
+                                </MenuItem.CommandParameter>
+                            </MenuItem>
+                            <MenuItem Command="{s:Action DisableTemporarily}" Header="30 minutes">
+                                <MenuItem.CommandParameter>
+                                    <system:TimeSpan>0:30:0</system:TimeSpan>
+                                </MenuItem.CommandParameter>
+                            </MenuItem>
+                            <MenuItem Command="{s:Action DisableTemporarily}" Header="5 minutes">
+                                <MenuItem.CommandParameter>
+                                    <system:TimeSpan>0:5:0</system:TimeSpan>
+                                </MenuItem.CommandParameter>
+                            </MenuItem>
+                            <MenuItem Command="{s:Action DisableTemporarily}" Header="1 minute">
+                                <MenuItem.CommandParameter>
+                                    <system:TimeSpan>0:1:0</system:TimeSpan>
+                                </MenuItem.CommandParameter>
+                            </MenuItem>
+                        </MenuItem>
+                        <MenuItem Command="{s:Action ShowAbout}" Header="About">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Web" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Command="{s:Action Exit}" Header="Exit">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="ExitToApp" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </tb:TaskbarIcon.ContextMenu>
+            </tb:TaskbarIcon>
+
+            <!--  Header  -->
+            <Border
+                x:Name="Header"
+                Grid.Row="0"
+                Padding="5,10"
+                Background="{DynamicResource PrimaryHueMidBrush}"
+                CornerRadius="12,12,0,0"
+                TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  On/Off button and logo  -->
+                    <ToggleButton
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Foreground="{DynamicResource SecondaryTextBrush}"
+                        IsChecked="{Binding IsEnabled}"
+                        Style="{DynamicResource MaterialDesignActionAccentToggleButton}"
+                        ToolTip="Toggle LightBulb">
+                        <materialDesign:ToggleButtonAssist.OnContent>
+                            <materialDesign:PackIcon Kind="LightbulbOutline" />
+                        </materialDesign:ToggleButtonAssist.OnContent>
+                    </ToggleButton>
+
+                    <!--  Application name and version  -->
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center">
+                        <Run
+                            FontSize="16"
+                            FontWeight="Medium"
+                            Foreground="{DynamicResource PrimaryInverseTextBrush}"
+                            Text="LightBulb" />
+                        <Run Text="v" /><Run Text="{Binding ApplicationVersion, Mode=OneWay}" />
+                    </TextBlock>
+
+                    <!--  Version updates  -->
+                    <Button
+                        Grid.Column="2"
+                        Command="{Binding DownloadNewVersionCommand}"
+                        Style="{DynamicResource MaterialDesignFlatDarkButton}"
+                        ToolTip="New version available for download"
+                        Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <materialDesign:PackIcon Kind="AlertCircleOutline" />
+                    </Button>
+
+                    <!--  Section navigation buttons  -->
+                    <StackPanel
+                        Grid.Column="3"
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Button
+                            x:Name="NavigateGeneralSettingsButton"
+                            BorderThickness="0,0,0,2"
+                            Style="{DynamicResource MaterialDesignFlatDarkButton}"
+                            ToolTip="General">
+                            <materialDesign:PackIcon Kind="Tune" />
+                        </Button>
+                        <Button
+                            x:Name="NavigateGeolocationSettingsButton"
+                            BorderThickness="0,0,0,2"
+                            Style="{DynamicResource MaterialDesignFlatDarkButton}"
+                            ToolTip="Geolocation">
+                            <materialDesign:PackIcon Kind="Earth" />
+                        </Button>
+                        <Button
+                            x:Name="NavigateAdvancedSettingsButton"
+                            BorderThickness="0,0,0,2"
+                            Style="{DynamicResource MaterialDesignFlatDarkButton}"
+                            ToolTip="Advanced">
+                            <materialDesign:PackIcon Kind="CheckboxMultipleMarkedOutline" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!--  Content  -->
+            <Border Grid.Row="1" Background="{DynamicResource MaterialDesignCardBackground}">
+                <materialDesign:Transitioner x:Name="ContentTransitioner" SelectedIndex="0">
+                    <materialDesign:Transitioner.Resources>
+                        <Style TargetType="{x:Type materialDesign:TransitionerSlide}">
+                            <Setter Property="Background" Value="{DynamicResource MaterialDesignCardBackground}" />
+                            <Setter Property="BackwardWipe">
+                                <Setter.Value>
+                                    <materialDesign:SlideWipe Direction="Right" Duration="0:0:0.3" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="ForwardWipe">
+                                <Setter.Value>
+                                    <materialDesign:SlideWipe Direction="Left" Duration="0:0:0.3" />
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </materialDesign:Transitioner.Resources>
+                </materialDesign:Transitioner>
+            </Border>
+
+            <!--  Status bar  -->
+            <StackPanel
+                Grid.Row="2"
+                Background="{DynamicResource PrimaryHueMidBrush}"
+                Orientation="Vertical"
+                TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
+                <!--  Cycle position  -->
+                <ProgressBar Background="Transparent" Value="{Binding CyclePosition, Mode=OneWay}" />
+
+                <!--  Cycle state and status text  -->
+                <StackPanel
+                    Margin="5"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+                    <!--  Cycle state icon  -->
+                    <materialDesign:PackIcon Background="Transparent" ToolTip="{Binding CycleState}">
+                        <materialDesign:PackIcon.Style>
+                            <Style BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}" TargetType="{x:Type materialDesign:PackIcon}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:SolarCycleState.Disabled}">
+                                        <Setter Property="Kind" Value="SyncOff" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:SolarCycleState.Transition}">
+                                        <Setter Property="Kind" Value="Sync" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:SolarCycleState.Day}">
+                                        <Setter Property="Kind" Value="WhiteBalanceSunny" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:SolarCycleState.Night}">
+                                        <Setter Property="Kind" Value="WeatherNight" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </materialDesign:PackIcon.Style>
+                    </materialDesign:PackIcon>
+                    <!--  Status text  -->
+                    <TextBlock
+                        Margin="3,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="{Binding StatusText}" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
