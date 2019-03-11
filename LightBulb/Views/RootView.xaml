@@ -190,7 +190,7 @@
                     <!--  Version updates  -->
                     <Button
                         Grid.Column="2"
-                        Command="{Binding DownloadNewVersionCommand}"
+                        Command="{s:Action ShowReleases}"
                         Style="{DynamicResource MaterialDesignFlatDarkButton}"
                         ToolTip="New version available for download"
                         Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -257,7 +257,7 @@
                 Orientation="Vertical"
                 TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
                 <!--  Cycle position  -->
-                <ProgressBar Background="Transparent" Value="{Binding CyclePosition, Mode=OneWay}" />
+                <ProgressBar Background="Transparent" Value="{Binding CurrentCyclePosition, Mode=OneWay}" />
 
                 <!--  Cycle state and status text  -->
                 <StackPanel
@@ -265,31 +265,42 @@
                     VerticalAlignment="Bottom"
                     Orientation="Horizontal">
                     <!--  Cycle state icon  -->
-                    <materialDesign:PackIcon Background="Transparent" ToolTip="{Binding CycleState}">
+                    <materialDesign:PackIcon Background="Transparent" ToolTip="{Binding CurrentSolarCycleState}">
                         <materialDesign:PackIcon.Style>
                             <Style BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}" TargetType="{x:Type materialDesign:PackIcon}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:SolarCycleState.Disabled}">
+                                    <DataTrigger Binding="{Binding CurrentSolarCycleState}" Value="{x:Static models:SolarCycleState.Disabled}">
                                         <Setter Property="Kind" Value="SyncOff" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:SolarCycleState.Transition}">
+                                    <DataTrigger Binding="{Binding CurrentSolarCycleState}" Value="{x:Static models:SolarCycleState.Transition}">
                                         <Setter Property="Kind" Value="Sync" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:SolarCycleState.Day}">
+                                    <DataTrigger Binding="{Binding CurrentSolarCycleState}" Value="{x:Static models:SolarCycleState.Day}">
                                         <Setter Property="Kind" Value="WhiteBalanceSunny" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:SolarCycleState.Night}">
+                                    <DataTrigger Binding="{Binding CurrentSolarCycleState}" Value="{x:Static models:SolarCycleState.Night}">
                                         <Setter Property="Kind" Value="WeatherNight" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </materialDesign:PackIcon.Style>
                     </materialDesign:PackIcon>
+
                     <!--  Status text  -->
-                    <TextBlock
-                        Margin="3,0,0,0"
-                        VerticalAlignment="Center"
-                        Text="{Binding StatusText}" />
+                    <TextBlock Margin="3,0,0,0" VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsEnabled}" Value="False">
+                                        <Setter Property="Text" Value="Disabled" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsEnabled}" Value="True">
+                                        <Setter Property="Text" Value="{Binding CurrentColorTemperature}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                 </StackPanel>
             </StackPanel>
         </Grid>

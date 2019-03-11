@@ -55,6 +55,10 @@ namespace LightBulb.WindowsApi
                 NativeMethods.UnregisterHotKey(_wndProcSponge.Handle, id);
         }
 
-        public void Dispose() => UnregisterAllHotKeys();
+        public void Dispose()
+        {
+            UnregisterAllHotKeys();
+            GC.SuppressFinalize(this);
+        }
     }
 }

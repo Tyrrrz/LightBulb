@@ -9,16 +9,17 @@ namespace LightBulb.Services
 
         private double RadiansToDegrees(double radians) => radians * 180 / Math.PI;
 
-        private DateTimeOffset GetEventTime(GeographicCoordinates location, DateTimeOffset after,
+        private DateTimeOffset GetEventTime(GeographicCoordinates location, DateTimeOffset day,
             bool isSunrise)
         {
-            // Get day of year
-            var day = after.DayOfYear;
+            // Original code credit:
+            // https://github.com/ceeK/Solar/blob/9d8ed80a3977c97d7a2014ef28b129ec80c52a70/Solar/Solar.swift
+            // Copyright (c) 2016 Chris Howell (MIT License)
 
             // Convert longitude to hour value and calculate an approximate time
             var lngHours = location.Longitude / 15;
             var timeApproxHours = isSunrise ? 6 : 18;
-            var timeApproxDays = day + (timeApproxHours - lngHours) / 24;
+            var timeApproxDays = day.DayOfYear + (timeApproxHours - lngHours) / 24;
 
             // Calculate the Sun's mean anomaly
             var sunMeanAnomaly = 0.9856 * timeApproxDays - 3.289;
@@ -56,13 +57,13 @@ namespace LightBulb.Services
             // Calculate local mean time
             var meanTime = sunLocalHours + sunRightAscHours - 0.06571 * timeApproxDays - 6.622;
 
-            return after.Date.AddHours(meanTime);
+            return day.Date.AddHours(meanTime);
         }
 
-        public SolarInfo GetSolarInfo(GeographicCoordinates location, DateTimeOffset after)
+        public SolarInfo GetSolarInfo(GeographicCoordinates location, DateTimeOffset day)
         {
-            var sunrise = GetEventTime(location, after, true);
-            var sunset = GetEventTime(location, after, false);
+            var sunrise = GetEventTime(location, day, true);
+            var sunset = GetEventTime(location, day, false);
 
             return new SolarInfo(sunrise, sunset);
         }

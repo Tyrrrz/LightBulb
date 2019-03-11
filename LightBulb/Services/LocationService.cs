@@ -43,9 +43,8 @@ namespace LightBulb.Services
 
             // TODO: handle errors
 
-            var firstResultJson = responseJson.First;
-            var latitude = firstResultJson["lat"].Value<double>();
-            var longitude = firstResultJson["lon"].Value<double>();
+            var latitude = responseJson.First["lat"].Value<double>();
+            var longitude = responseJson.First["lon"].Value<double>();
 
             return new GeographicCoordinates(latitude, longitude);
         }

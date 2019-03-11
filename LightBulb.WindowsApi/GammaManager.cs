@@ -36,7 +36,7 @@ namespace LightBulb.WindowsApi
             };
 
             // Create linear ramps for each color
-            for (var i = 1; i < 256; i++)
+            for (var i = 0; i < 256; i++)
             {
                 ramp.Red[i] = (ushort) (i * 255 * redMultiplier);
                 ramp.Green[i] = (ushort) (i * 255 * greenMultiplier);
@@ -44,7 +44,8 @@ namespace LightBulb.WindowsApi
             }
 
             // Some drivers will ignore request to change gamma if the ramp is the same as last time
-            // so we randomize it a bit
+            // so we randomize it a bit. Even though our ramp may not have changed, other applications
+            // could have affected the gamma and we need to "force-refresh" it to ensure it's valid.
             _gammaChannelOffset = ++_gammaChannelOffset % 5;
             ramp.Red[255] = (ushort) (ramp.Red[255] + _gammaChannelOffset);
             ramp.Green[255] = (ushort) (ramp.Green[255] + _gammaChannelOffset);
@@ -56,8 +57,8 @@ namespace LightBulb.WindowsApi
 
         public void Dispose()
         {
-            // Release DC
             NativeMethods.ReleaseDC(_window, _deviceContext);
+            GC.SuppressFinalize(this);
         }
     }
 }

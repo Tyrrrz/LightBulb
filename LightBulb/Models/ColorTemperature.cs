@@ -58,6 +58,8 @@ namespace LightBulb.Models
         public bool Equals(ColorTemperature other) => Value.Equals(other.Value);
 
         public int CompareTo(ColorTemperature other) => Value.CompareTo(other.Value);
+
+        public override string ToString() => $"{Value}K";
     }
 
     public partial struct ColorTemperature
