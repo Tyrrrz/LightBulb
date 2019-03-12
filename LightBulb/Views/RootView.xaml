@@ -14,7 +14,7 @@
     Height="450"
     d:DataContext="{d:DesignInstance Type=viewModels:RootViewModel}"
     AllowsTransparency="True"
-    Background="{DynamicResource MaterialDesignBackground}"
+    Background="Transparent"
     Icon="/LightBulb;component/favicon.ico"
     ResizeMode="NoResize"
     ShowInTaskbar="False"
@@ -42,6 +42,7 @@
                 ToolTipText="LightBulb">
                 <tb:TaskbarIcon.TrayToolTip>
                     <Border
+                        Background="{DynamicResource MaterialDesignBackground}"
                         BorderBrush="{DynamicResource MaterialDesignDivider}"
                         BorderThickness="1"
                         CornerRadius="3"
@@ -58,7 +59,20 @@
                                 FontWeight="Medium"
                                 Foreground="{DynamicResource PrimaryTextBrush}"
                                 Text="LightBulb" />
-                            <TextBlock Grid.Row="1" Text="{Binding StatusText}" />
+                            <TextBlock Grid.Row="1">
+                                <TextBlock.Style>
+                                    <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="{x:Type TextBlock}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsEnabled}" Value="False">
+                                                <Setter Property="Text" Value="Disabled" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsEnabled}" Value="True">
+                                                <Setter Property="Text" Value="{Binding CurrentColorTemperature}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                         </Grid>
                     </Border>
                 </tb:TaskbarIcon.TrayToolTip>
@@ -192,8 +206,7 @@
                         Grid.Column="2"
                         Command="{s:Action ShowReleases}"
                         Style="{DynamicResource MaterialDesignFlatDarkButton}"
-                        ToolTip="New version available for download"
-                        Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BoolToVisibilityConverter}}">
+                        ToolTip="New version available for download">
                         <materialDesign:PackIcon Kind="AlertCircleOutline" />
                     </Button>
 
@@ -257,7 +270,7 @@
                 Orientation="Vertical"
                 TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
                 <!--  Cycle position  -->
-                <ProgressBar Background="Transparent" Value="{Binding CurrentCyclePosition, Mode=OneWay}" />
+                <ProgressBar Background="Transparent" Value="{Binding CurrentSolarCyclePosition, Mode=OneWay}" />
 
                 <!--  Cycle state and status text  -->
                 <StackPanel
@@ -301,6 +314,9 @@
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>
+
+                    <!--  Test button  -->
+                    <Button Command="{s:Action Preview}" Content="Test" />
                 </StackPanel>
             </StackPanel>
         </Grid>

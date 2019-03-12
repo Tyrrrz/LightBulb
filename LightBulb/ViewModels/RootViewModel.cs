@@ -16,18 +16,24 @@ namespace LightBulb.ViewModels
         private readonly ColorTemperatureService _colorTemperatureService;
         private readonly GammaService _gammaService;
 
-        private readonly Timer _updateTimer;
-        private readonly DelayedActionController _delayedEnableController = new DelayedActionController();
+        private readonly Timer _instantTimer;
+        private readonly DelayedActionScheduler _disableTemporarilyScheduler = new DelayedActionScheduler();
+        private readonly Sequence _previewSequence;
 
         public string ApplicationVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
 
-        public bool IsEnabled { get; set; }
+        public bool IsEnabled { get; set; } = true;
 
-        public ColorTemperature CurrentColorTemperature { get; private set; }
+        public DateTimeOffset CurrentInstant { get; private set; } = DateTimeOffset.Now;
 
-        public double CurrentCyclePosition { get; private set; }
+        public ColorTemperature CurrentColorTemperature => _colorTemperatureService.GetTemperature(CurrentInstant);
 
-        public SolarCycleState CurrentSolarCycleState { get; private set; }
+        public double CurrentSolarCyclePosition => IsEnabled ? CurrentInstant.TimeOfDay.TotalDays : 0;
+
+        public SolarCycleState CurrentSolarCycleState => !IsEnabled ? SolarCycleState.Disabled :
+            CurrentColorTemperature == _settingsService.MaxTemperature ? SolarCycleState.Day :
+            CurrentColorTemperature == _settingsService.MinTemperature ? SolarCycleState.Night :
+            SolarCycleState.Transition;
 
         public RootViewModel(IViewModelFactory viewModelFactory, SettingsService settingsService,
             ColorTemperatureService colorTemperatureService, GammaService gammaService)
@@ -38,13 +44,22 @@ namespace LightBulb.ViewModels
             _gammaService = gammaService;
 
             // Initialize update timer
-            _updateTimer = new Timer(TimeSpan.FromSeconds(1), UpdateTick);
+            _instantTimer = new Timer(TimeSpan.FromSeconds(5), UpdateInstant);
+
+            _previewSequence = new Sequence(TimeSpan.FromMilliseconds(50), (int) Math.Ceiling(24 / 0.05),
+                () =>
+                {
+                    var oldTemperature = CurrentColorTemperature;
+                    CurrentInstant = CurrentInstant.AddHours(0.05);
+                    if (oldTemperature != CurrentColorTemperature)
+                        _gammaService.SetGamma(CurrentColorTemperature);
+                });
 
             // When enabled - reset 'disable temporarily'
             this.Bind(o => o.IsEnabled, (sender, args) =>
             {
                 if (args.NewValue)
-                    _delayedEnableController.Unschedule();
+                    _disableTemporarilyScheduler.Unschedule();
             });
 
             // When disabled - reset gamma
@@ -63,33 +78,17 @@ namespace LightBulb.ViewModels
             _settingsService.Load();
         }
 
-        private void UpdateTick()
+        private void UpdateInstant()
         {
             // Don't do anything if disabled
             if (!IsEnabled)
                 return;
 
-            // Get instant
-            var instant = DateTimeOffset.Now;
+            // Set new instant
+            //CurrentInstant = DateTimeOffset.Now;
 
-            // Get new color temperature
-            var newColorTemperature = _colorTemperatureService.GetTemperature(instant);
-
-            // If the temperature changed, update gamma
-            if (CurrentColorTemperature != newColorTemperature)
-            {
-                CurrentColorTemperature = newColorTemperature;
-                _gammaService.SetGamma(CurrentColorTemperature);
-            }
-
-            // Update cycle position
-            CurrentCyclePosition = instant.TimeOfDay.TotalDays;
-
-            // Update cycle state
-            CurrentSolarCycleState = !IsEnabled ? SolarCycleState.Disabled :
-                CurrentColorTemperature == _settingsService.MaxTemperature ? SolarCycleState.Day :
-                CurrentColorTemperature == _settingsService.MinTemperature ? SolarCycleState.Night :
-                SolarCycleState.Transition;
+            // Update gamma
+            _gammaService.SetGamma(CurrentColorTemperature);
         }
 
         public void ToggleIsEnabled() => IsEnabled = !IsEnabled;
@@ -97,10 +96,15 @@ namespace LightBulb.ViewModels
         public void DisableTemporarily(TimeSpan duration)
         {
             // Schedule to enable after delay
-            _delayedEnableController.Schedule(duration, () => IsEnabled = true);
+            _disableTemporarilyScheduler.Schedule(duration, () => IsEnabled = true);
 
             // Disable
             IsEnabled = false;
+        }
+
+        public void Preview()
+        {
+            _previewSequence.Start();
         }
 
         public void ShowAbout() => Process.Start("https://github.com/Tyrrrz/LightBulb");
@@ -115,9 +119,8 @@ namespace LightBulb.ViewModels
             _gammaService.ResetGamma();
 
             // Dispose stuff
-            _gammaService.Dispose();
-            _updateTimer.Dispose();
-            _delayedEnableController.Dispose();
+            _instantTimer.Dispose();
+            _disableTemporarilyScheduler.Dispose();
         }
     }
 }

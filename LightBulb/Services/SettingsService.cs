@@ -23,7 +23,11 @@ namespace LightBulb.Services
 
         public SettingsService()
         {
-            // TODO: handle portable
+            // TODO: handle non-portable
+
+            Configuration.FileName = "Config.dat";
+            Configuration.SubDirectoryPath = "";
+            Configuration.StorageSpace = StorageSpace.Instance;
 
             // Ignore failures when loading/saving settings
             // TODO: logging?
@@ -31,12 +35,7 @@ namespace LightBulb.Services
             Configuration.ThrowIfCannotSave = false;
 
             // Set up a timer to automatically save settings to persistent storage every X seconds
-            _autoSaveTimer = new Timer(TimeSpan.FromSeconds(5), () =>
-            {
-                // Only save if there's anything to save
-                if (!IsSaved)
-                    Save();
-            });
+            _autoSaveTimer = new Timer(TimeSpan.FromSeconds(5), Save);
         }
     }
 }

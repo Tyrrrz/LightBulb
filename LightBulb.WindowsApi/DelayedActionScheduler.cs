@@ -3,19 +3,16 @@ using System.Threading;
 
 namespace LightBulb.WindowsApi
 {
-    public class DelayedActionController : IDisposable
+    public class DelayedActionScheduler : IDisposable
     {
         private readonly System.Threading.Timer _internalTimer;
         private Action _action;
 
-        public DelayedActionController()
+        public DelayedActionScheduler()
         {
-            _internalTimer = new System.Threading.Timer(_ => Tick(), null, 
-                Timeout.InfiniteTimeSpan,
-                Timeout.InfiniteTimeSpan);
+            _internalTimer = new System.Threading.Timer(_ => _action?.Invoke(), null,
+                Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
         }
-
-        private void Tick() => _action?.Invoke();
 
         public void Unschedule()
         {

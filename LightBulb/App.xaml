@@ -77,10 +77,10 @@
                 Color="{DynamicResource InverseTextColor}" />
 
             <!--  Styles  -->
-            <Style x:Key="MaterialDesignRoot" TargetType="{x:Type Control}">
-                <Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}" />
+            <Style x:Key="MaterialDesignRoot" TargetType="{x:Type FrameworkElement}">
                 <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
                 <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="TextElement.FontFamily" Value="{DynamicResource MaterialDesignFont}" />
                 <Setter Property="TextElement.FontSize" Value="13" />
                 <Setter Property="TextElement.FontWeight" Value="Regular" />
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource SecondaryTextBrush}" />

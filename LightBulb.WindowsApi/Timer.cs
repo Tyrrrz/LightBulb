@@ -6,13 +6,13 @@ namespace LightBulb.WindowsApi
     {
         private readonly System.Threading.Timer _internalTimer;
 
-        public Timer(TimeSpan initialDelay, TimeSpan interval, Action handler)
+        public Timer(TimeSpan initialDelay, TimeSpan interval, Action tick)
         {
-            _internalTimer = new System.Threading.Timer(_ => handler(), null, initialDelay, interval);
+            _internalTimer = new System.Threading.Timer(_ => tick(), null, initialDelay, interval);
         }
 
-        public Timer(TimeSpan interval, Action handler)
-            : this(TimeSpan.Zero, interval, handler)
+        public Timer(TimeSpan interval, Action tick)
+            : this(TimeSpan.Zero, interval, tick)
         {
         }
 
