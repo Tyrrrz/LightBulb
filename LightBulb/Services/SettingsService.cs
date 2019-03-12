@@ -5,9 +5,9 @@ using Tyrrrz.Settings;
 
 namespace LightBulb.Services
 {
-    public class SettingsService : SettingsManager
+    public class SettingsService : SettingsManager, IDisposable
     {
-        private readonly Timer _autoSaveTimer;
+        private readonly AutoResetTimer _autoSaveTimer;
 
         public ColorTemperature MaxTemperature { get; set; } = new ColorTemperature(6600);
 
@@ -35,7 +35,9 @@ namespace LightBulb.Services
             Configuration.ThrowIfCannotSave = false;
 
             // Set up a timer to automatically save settings to persistent storage every X seconds
-            _autoSaveTimer = new Timer(TimeSpan.FromSeconds(5), Save);
+            _autoSaveTimer = new AutoResetTimer(Save).Start(TimeSpan.FromSeconds(5));
         }
+
+        public void Dispose() => _autoSaveTimer.Dispose();
     }
 }

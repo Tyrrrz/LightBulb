@@ -16,9 +16,9 @@ namespace LightBulb.ViewModels
         private readonly ColorTemperatureService _colorTemperatureService;
         private readonly GammaService _gammaService;
 
-        private readonly Timer _instantTimer;
-        private readonly DelayedActionScheduler _disableTemporarilyScheduler = new DelayedActionScheduler();
-        private readonly Sequence _previewSequence;
+        private readonly AutoResetTimer _instantTimer;
+        private readonly ManualResetTimer _enableAfterDelayTimer;
+        private readonly FixedDurationAutoResetTimer _cyclePreviewTimer;
 
         public string ApplicationVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
 
@@ -43,23 +43,22 @@ namespace LightBulb.ViewModels
             _colorTemperatureService = colorTemperatureService;
             _gammaService = gammaService;
 
-            // Initialize update timer
-            _instantTimer = new Timer(TimeSpan.FromSeconds(5), UpdateInstant);
-
-            _previewSequence = new Sequence(TimeSpan.FromMilliseconds(50), (int) Math.Ceiling(24 / 0.05),
-                () =>
-                {
-                    var oldTemperature = CurrentColorTemperature;
-                    CurrentInstant = CurrentInstant.AddHours(0.05);
-                    if (oldTemperature != CurrentColorTemperature)
-                        _gammaService.SetGamma(CurrentColorTemperature);
-                });
+            // Initialize stuff
+            _instantTimer = new AutoResetTimer(UpdateInstant);
+            _enableAfterDelayTimer = new ManualResetTimer(() => IsEnabled = true);
+            _cyclePreviewTimer = new FixedDurationAutoResetTimer(TimeSpan.FromSeconds(6), () =>
+            {
+                var oldTemperature = CurrentColorTemperature;
+                CurrentInstant = CurrentInstant.AddHours(0.05);
+                if (oldTemperature != CurrentColorTemperature)
+                    _gammaService.SetGamma(CurrentColorTemperature);
+            });
 
             // When enabled - reset 'disable temporarily'
             this.Bind(o => o.IsEnabled, (sender, args) =>
             {
                 if (args.NewValue)
-                    _disableTemporarilyScheduler.Unschedule();
+                    _enableAfterDelayTimer.Stop();
             });
 
             // When disabled - reset gamma
@@ -68,6 +67,9 @@ namespace LightBulb.ViewModels
                 if (!args.NewValue)
                     _gammaService.ResetGamma();
             });
+            
+            // Start instant timer
+            _instantTimer.Start(TimeSpan.FromTicks(5));
         }
 
         protected override void OnViewLoaded()
@@ -96,15 +98,15 @@ namespace LightBulb.ViewModels
         public void DisableTemporarily(TimeSpan duration)
         {
             // Schedule to enable after delay
-            _disableTemporarilyScheduler.Schedule(duration, () => IsEnabled = true);
+            _enableAfterDelayTimer.Start(duration);
 
             // Disable
             IsEnabled = false;
         }
 
-        public void Preview()
+        public void PreviewCycle()
         {
-            _previewSequence.Start();
+            _cyclePreviewTimer.Start();
         }
 
         public void ShowAbout() => Process.Start("https://github.com/Tyrrrz/LightBulb");
@@ -120,7 +122,8 @@ namespace LightBulb.ViewModels
 
             // Dispose stuff
             _instantTimer.Dispose();
-            _disableTemporarilyScheduler.Dispose();
+            _enableAfterDelayTimer.Dispose();
+            _cyclePreviewTimer.Dispose();
         }
     }
 }
