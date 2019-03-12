@@ -1,6 +1,6 @@
 ﻿using System;
 using LightBulb.Models;
-using LightBulb.WindowsApi;
+using LightBulb.Timers;
 using Tyrrrz.Settings;
 
 namespace LightBulb.Services

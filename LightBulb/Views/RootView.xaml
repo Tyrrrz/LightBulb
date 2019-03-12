@@ -316,7 +316,7 @@
                     </TextBlock>
 
                     <!--  Test button  -->
-                    <Button Command="{s:Action PreviewCycle}" Content="Test" />
+                    <Button Command="{s:Action StartCyclePreview}" Content="Test" />
                 </StackPanel>
             </StackPanel>
         </Grid>

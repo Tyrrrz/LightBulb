@@ -4,7 +4,7 @@ using System.Reflection;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.ViewModels.Framework;
-using LightBulb.WindowsApi;
+using LightBulb.Timers;
 using Stylet;
 
 namespace LightBulb.ViewModels
@@ -16,19 +16,21 @@ namespace LightBulb.ViewModels
         private readonly ColorTemperatureService _colorTemperatureService;
         private readonly GammaService _gammaService;
 
-        private readonly AutoResetTimer _instantTimer;
+        private readonly AutoResetTimer _updateTimer;
+        private readonly AutoResetTimer _cyclePreviewUpdateTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
-        private readonly FixedDurationAutoResetTimer _cyclePreviewTimer;
 
         public string ApplicationVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
 
         public bool IsEnabled { get; set; } = true;
 
+        public bool IsCyclePreviewEnabled { get; private set; }
+
         public DateTimeOffset CurrentInstant { get; private set; } = DateTimeOffset.Now;
 
         public ColorTemperature CurrentColorTemperature => _colorTemperatureService.GetTemperature(CurrentInstant);
 
-        public double CurrentSolarCyclePosition => IsEnabled ? CurrentInstant.TimeOfDay.TotalDays : 0;
+        public double CurrentSolarCyclePosition => CurrentInstant.TimeOfDay.TotalDays;
 
         public SolarCycleState CurrentSolarCycleState => !IsEnabled ? SolarCycleState.Disabled :
             CurrentColorTemperature == _settingsService.MaxTemperature ? SolarCycleState.Day :
@@ -43,33 +45,24 @@ namespace LightBulb.ViewModels
             _colorTemperatureService = colorTemperatureService;
             _gammaService = gammaService;
 
-            // Initialize stuff
-            _instantTimer = new AutoResetTimer(UpdateInstant);
+            // Initialize timers
+            _updateTimer = new AutoResetTimer(UpdateTick);
+            _cyclePreviewUpdateTimer = new AutoResetTimer(CyclePreviewUpdateTick);
             _enableAfterDelayTimer = new ManualResetTimer(() => IsEnabled = true);
-            _cyclePreviewTimer = new FixedDurationAutoResetTimer(TimeSpan.FromSeconds(6), () =>
-            {
-                var oldTemperature = CurrentColorTemperature;
-                CurrentInstant = CurrentInstant.AddHours(0.05);
-                if (oldTemperature != CurrentColorTemperature)
-                    _gammaService.SetGamma(CurrentColorTemperature);
-            });
 
-            // When enabled - reset 'disable temporarily'
+            // Bind on IsEnabled changes
             this.Bind(o => o.IsEnabled, (sender, args) =>
             {
-                if (args.NewValue)
+                if (IsEnabled)
+                {
                     _enableAfterDelayTimer.Stop();
-            });
-
-            // When disabled - reset gamma
-            this.Bind(o => o.IsEnabled, (sender, args) =>
-            {
-                if (!args.NewValue)
+                    _gammaService.SetGamma(CurrentColorTemperature);
+                }
+                else
+                {
                     _gammaService.ResetGamma();
+                }
             });
-            
-            // Start instant timer
-            _instantTimer.Start(TimeSpan.FromTicks(5));
         }
 
         protected override void OnViewLoaded()
@@ -78,16 +71,43 @@ namespace LightBulb.ViewModels
 
             // Load settings
             _settingsService.Load();
+
+            // Start update timer
+            _updateTimer.Start(TimeSpan.FromSeconds(5));
         }
 
-        private void UpdateInstant()
+        private void UpdateTick()
         {
-            // Don't do anything if disabled
+            // If disabled - return
             if (!IsEnabled)
                 return;
 
+            // If cycle preview is currently running - return
+            if (IsCyclePreviewEnabled)
+                return;
+
             // Set new instant
-            //CurrentInstant = DateTimeOffset.Now;
+            CurrentInstant = DateTimeOffset.Now;
+
+            // Update gamma
+            _gammaService.SetGamma(CurrentColorTemperature);
+        }
+
+        private void CyclePreviewUpdateTick()
+        {
+            // Advance current instant by this much on every tick
+            var delta = TimeSpan.FromMinutes(3);
+
+            // If current instant is 1 day (full cycle) past real current instant - stop
+            if (CurrentInstant >= DateTimeOffset.Now + TimeSpan.FromDays(1) - delta)
+            {
+                StopCyclePreview();
+            }
+            // Otherwise - shift current instant by delta
+            else
+            {
+                CurrentInstant += delta;
+            }
 
             // Update gamma
             _gammaService.SetGamma(CurrentColorTemperature);
@@ -104,9 +124,17 @@ namespace LightBulb.ViewModels
             IsEnabled = false;
         }
 
-        public void PreviewCycle()
+        public void StartCyclePreview()
         {
-            _cyclePreviewTimer.Start();
+            _cyclePreviewUpdateTimer.Start(TimeSpan.FromMilliseconds(17));
+            IsCyclePreviewEnabled = true;
+        }
+
+        public void StopCyclePreview()
+        {
+            _cyclePreviewUpdateTimer.Stop();
+            IsCyclePreviewEnabled = false;
+            CurrentInstant = DateTimeOffset.Now;
         }
 
         public void ShowAbout() => Process.Start("https://github.com/Tyrrrz/LightBulb");
@@ -121,9 +149,9 @@ namespace LightBulb.ViewModels
             _gammaService.ResetGamma();
 
             // Dispose stuff
-            _instantTimer.Dispose();
+            _updateTimer.Dispose();
             _enableAfterDelayTimer.Dispose();
-            _cyclePreviewTimer.Dispose();
+            _cyclePreviewUpdateTimer.Dispose();
         }
     }
 }

@@ -143,6 +143,10 @@
     <Folder Include="Views\Components\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LightBulb.Timers\LightBulb.Timers.csproj">
+      <Project>{ad032031-20fe-43c7-8531-92c9ab99f318}</Project>
+      <Name>LightBulb.Timers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LightBulb.WindowsApi\LightBulb.WindowsApi.csproj">
       <Project>{966ee539-7568-40be-85d7-362d8922dea8}</Project>
       <Name>LightBulb.WindowsApi</Name>

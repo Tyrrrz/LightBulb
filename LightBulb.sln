@@ -1,10 +1,12 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBulb", "LightBulb\LightBulb.csproj", "{0A32502C-95DD-4CDA-B98F-36891AD566C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBulb.WindowsApi", "LightBulb.WindowsApi\LightBulb.WindowsApi.csproj", "{966EE539-7568-40BE-85D7-362D8922DEA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBulb.WindowsApi", "LightBulb.WindowsApi\LightBulb.WindowsApi.csproj", "{966EE539-7568-40BE-85D7-362D8922DEA8}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BE19AEAD-02BC-4F40-AC14-D30082A5E78B}"
 	ProjectSection(SolutionItems) = preProject
 		Changelog.md = Changelog.md
@@ -12,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		ReadMe.md = ReadMe.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBulb.Timers", "LightBulb.Timers\LightBulb.Timers.csproj", "{AD032031-20FE-43C7-8531-92C9AB99F318}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +30,10 @@ Global
 		{966EE539-7568-40BE-85D7-362D8922DEA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{966EE539-7568-40BE-85D7-362D8922DEA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{966EE539-7568-40BE-85D7-362D8922DEA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD032031-20FE-43C7-8531-92C9AB99F318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD032031-20FE-43C7-8531-92C9AB99F318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD032031-20FE-43C7-8531-92C9AB99F318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD032031-20FE-43C7-8531-92C9AB99F318}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
