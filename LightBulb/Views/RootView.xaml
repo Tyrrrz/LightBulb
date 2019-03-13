@@ -15,6 +15,7 @@
     d:DataContext="{d:DesignInstance Type=viewModels:RootViewModel}"
     AllowsTransparency="True"
     Background="Transparent"
+    Deactivated="{s:Action HideWindow}"
     Icon="/LightBulb;component/favicon.ico"
     ResizeMode="NoResize"
     ShowInTaskbar="False"
@@ -32,12 +33,14 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!--  Tray icon  -->
             <tb:TaskbarIcon
                 Grid.Row="0"
                 IconSource="/LightBulb;component/favicon.ico"
+                LeftClickCommand="{s:Action RestoreWindow}"
                 NoLeftClickDelay="True"
                 ToolTipText="LightBulb">
                 <tb:TaskbarIcon.TrayToolTip>
@@ -47,55 +50,36 @@
                         BorderThickness="1"
                         CornerRadius="3"
                         Style="{DynamicResource MaterialDesignRoot}">
-                        <Grid Margin="5">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-
+                        <StackPanel Margin="4" Orientation="Vertical">
                             <TextBlock
-                                Grid.Row="0"
                                 FontSize="15"
                                 FontWeight="Medium"
                                 Foreground="{DynamicResource PrimaryTextBrush}"
                                 Text="LightBulb" />
-                            <TextBlock Grid.Row="1">
-                                <TextBlock.Style>
-                                    <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="{x:Type TextBlock}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsEnabled}" Value="False">
-                                                <Setter Property="Text" Value="Disabled" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsEnabled}" Value="True">
-                                                <Setter Property="Text" Value="{Binding CurrentColorTemperature}" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </Grid>
+                            <TextBlock Text="{Binding CurrentColorTemperature}" Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
+                            <TextBlock Text="Disabled" Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}" />
+                        </StackPanel>
                     </Border>
                 </tb:TaskbarIcon.TrayToolTip>
                 <tb:TaskbarIcon.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Configure">
+                        <MenuItem Command="{s:Action RestoreWindow}" Header="Configure">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon Kind="Settings" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Command="{s:Action ToggleIsEnabled}">
-                            <MenuItem.Style>
-                                <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="{x:Type MenuItem}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsEnabled}" Value="True">
-                                            <Setter Property="Header" Value="Disable" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsEnabled}" Value="False">
-                                            <Setter Property="Header" Value="Enable" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </MenuItem.Style>
+                        <MenuItem
+                            Command="{s:Action Enable}"
+                            Header="Enable"
+                            Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Power" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem
+                            Command="{s:Action Disable}"
+                            Header="Disable"
+                            Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon Kind="Power" />
                             </MenuItem.Icon>
@@ -163,7 +147,7 @@
             <Border
                 x:Name="Header"
                 Grid.Row="0"
-                Padding="5,10"
+                Padding="6,12"
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 CornerRadius="12,12,0,0"
                 TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
@@ -191,7 +175,7 @@
                     <!--  Application name and version  -->
                     <TextBlock
                         Grid.Column="1"
-                        Margin="5,0,0,0"
+                        Margin="8,0,0,0"
                         VerticalAlignment="Center">
                         <Run
                             FontSize="16"
@@ -213,7 +197,7 @@
                     <!--  Section navigation buttons  -->
                     <StackPanel
                         Grid.Column="3"
-                        Margin="5,0,0,0"
+                        Margin="6,0,0,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         Orientation="Horizontal">
@@ -263,62 +247,77 @@
                 </materialDesign:Transitioner>
             </Border>
 
-            <!--  Status bar  -->
-            <StackPanel
+            <!--  Cycle position  -->
+            <ProgressBar
                 Grid.Row="2"
                 Background="{DynamicResource PrimaryHueMidBrush}"
-                Orientation="Vertical"
+                Value="{Binding CurrentSolarCyclePosition, Mode=OneWay}" />
+
+            <!--  Cycle state and status text  -->
+            <Grid
+                Grid.Row="3"
+                Background="{DynamicResource PrimaryHueMidBrush}"
                 TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
-                <!--  Cycle position  -->
-                <ProgressBar Background="Transparent" Value="{Binding CurrentSolarCyclePosition, Mode=OneWay}" />
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-                <!--  Cycle state and status text  -->
-                <StackPanel
-                    Margin="5"
-                    VerticalAlignment="Bottom"
-                    Orientation="Horizontal">
-                    <!--  Cycle state icon  -->
-                    <materialDesign:PackIcon Background="Transparent" ToolTip="{Binding CurrentSolarCycleState}">
-                        <materialDesign:PackIcon.Style>
-                            <Style BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}" TargetType="{x:Type materialDesign:PackIcon}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentSolarCycleState}" Value="{x:Static models:SolarCycleState.Disabled}">
-                                        <Setter Property="Kind" Value="SyncOff" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding CurrentSolarCycleState}" Value="{x:Static models:SolarCycleState.Transition}">
-                                        <Setter Property="Kind" Value="Sync" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding CurrentSolarCycleState}" Value="{x:Static models:SolarCycleState.Day}">
-                                        <Setter Property="Kind" Value="WhiteBalanceSunny" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding CurrentSolarCycleState}" Value="{x:Static models:SolarCycleState.Night}">
-                                        <Setter Property="Kind" Value="WeatherNight" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </materialDesign:PackIcon.Style>
-                    </materialDesign:PackIcon>
+                <!--  Cycle state icon  -->
+                <materialDesign:PackIcon
+                    Grid.Column="0"
+                    Background="Transparent"
+                    ToolTip="{Binding CurrentSolarCycleState}">
+                    <materialDesign:PackIcon.Style>
+                        <Style BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}" TargetType="{x:Type materialDesign:PackIcon}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentSolarCycleState}" Value="{x:Static models:SolarCycleState.Disabled}">
+                                    <Setter Property="Kind" Value="SyncOff" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CurrentSolarCycleState}" Value="{x:Static models:SolarCycleState.Transition}">
+                                    <Setter Property="Kind" Value="Sync" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CurrentSolarCycleState}" Value="{x:Static models:SolarCycleState.Day}">
+                                    <Setter Property="Kind" Value="WhiteBalanceSunny" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CurrentSolarCycleState}" Value="{x:Static models:SolarCycleState.Night}">
+                                    <Setter Property="Kind" Value="WeatherNight" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </materialDesign:PackIcon.Style>
+                </materialDesign:PackIcon>
 
-                    <!--  Status text  -->
-                    <TextBlock Margin="3,0,0,0" VerticalAlignment="Center">
-                        <TextBlock.Style>
-                            <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="{x:Type TextBlock}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsEnabled}" Value="False">
-                                        <Setter Property="Text" Value="Disabled" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsEnabled}" Value="True">
-                                        <Setter Property="Text" Value="{Binding CurrentColorTemperature}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                <!--  Status text  -->
+                <Grid
+                    Grid.Column="1"
+                    Margin="4,0,0,0"
+                    Background="Transparent"
+                    ToolTip="{Binding CurrentSolarCycleState}">
+                    <TextBlock Text="{Binding CurrentColorTemperature}" Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
+                    <TextBlock Text="Disabled" Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}" />
+                </Grid>
 
-                    <!--  Test button  -->
-                    <Button Command="{s:Action StartCyclePreview}" Content="Test" />
-                </StackPanel>
-            </StackPanel>
+                <!--  Start/stop cycle preview buttons  -->
+                <Grid Grid.Column="2">
+                    <!--  Start cycle preview button  -->
+                    <Button
+                        Command="{s:Action StartCyclePreview}"
+                        Style="{DynamicResource MaterialDesignFlatDarkButton}"
+                        Visibility="{Binding IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}">
+                        <materialDesign:PackIcon Kind="Play" />
+                    </Button>
+
+                    <!--  Stop cycle preview button  -->
+                    <Button
+                        Command="{s:Action StopCyclePreview}"
+                        Style="{DynamicResource MaterialDesignFlatDarkButton}"
+                        Visibility="{Binding IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                        <materialDesign:PackIcon Kind="Stop" />
+                    </Button>
+                </Grid>
+            </Grid>
         </Grid>
     </Border>
 </Window>
