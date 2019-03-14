@@ -49,7 +49,7 @@ namespace LightBulb.ViewModels
             // Initialize timers
             _updateTimer = new AutoResetTimer(UpdateTick);
             _cyclePreviewUpdateTimer = new AutoResetTimer(CyclePreviewUpdateTick);
-            _enableAfterDelayTimer = new ManualResetTimer(() => IsEnabled = true);
+            _enableAfterDelayTimer = new ManualResetTimer(Enable);
 
             // Bind on IsEnabled changes
             this.Bind(o => o.IsEnabled, (sender, args) =>
