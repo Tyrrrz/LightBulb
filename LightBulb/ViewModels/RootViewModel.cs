@@ -127,7 +127,7 @@ namespace LightBulb.ViewModels
             _enableAfterDelayTimer.Start(duration);
 
             // Disable
-            IsEnabled = false;
+            Disable();
         }
 
         public void StartCyclePreview()
