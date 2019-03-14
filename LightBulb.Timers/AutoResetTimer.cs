@@ -5,6 +5,8 @@ namespace LightBulb.Timers
 {
     public class AutoResetTimer : IDisposable
     {
+        private readonly object _lock = new object();
+
         private readonly Action _handler;
         private readonly Timer _internalTimer;
 
@@ -18,12 +20,22 @@ namespace LightBulb.Timers
 
         private void Tick()
         {
-            if (_isBusy)
-                return;
+            // Prevent multiple reentry
+            lock (_lock)
+            {
+                if (_isBusy) return;
+                _isBusy = true;
+            }
 
-            _isBusy = true;
-            _handler();
-            _isBusy = false;
+            // Execute handler and reset busy state
+            try
+            {
+                _handler();
+            }
+            finally
+            {
+                _isBusy = false;
+            }
         }
 
         public AutoResetTimer Start(TimeSpan interval, TimeSpan initialTickDelay)
