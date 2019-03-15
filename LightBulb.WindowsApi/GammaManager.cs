@@ -1,5 +1,7 @@
 ﻿using System;
 using LightBulb.WindowsApi.Internal;
+using LightBulb.WindowsApi.Models;
+using Microsoft.Win32;
 
 namespace LightBulb.WindowsApi
 {
@@ -8,12 +10,17 @@ namespace LightBulb.WindowsApi
         private readonly IntPtr _window;
         private readonly IntPtr _deviceContext;
 
+        private ColorBalance _lastColorBalance = ColorBalance.Default;
         private int _gammaChannelOffset;
 
         public GammaManager(IntPtr window)
         {
             _window = window;
             _deviceContext = NativeMethods.GetDC(window);
+
+            // Refresh gamma on specific system events
+            SystemEvents.DisplaySettingsChanging += (sender, args) => SetGamma(_lastColorBalance);
+            SystemEvents.PowerModeChanged += (sender, args) => SetGamma(_lastColorBalance);
         }
 
         public GammaManager() : this(IntPtr.Zero)
@@ -25,7 +32,7 @@ namespace LightBulb.WindowsApi
             Dispose();
         }
 
-        public void SetGamma(double redMultiplier, double greenMultiplier, double blueMultiplier)
+        public void SetGamma(ColorBalance colorBalance)
         {
             // Create native ramp object
             var ramp = new GammaRamp
@@ -38,9 +45,9 @@ namespace LightBulb.WindowsApi
             // Create linear ramps for each color
             for (var i = 0; i < 256; i++)
             {
-                ramp.Red[i] = (ushort) (i * 255 * redMultiplier);
-                ramp.Green[i] = (ushort) (i * 255 * greenMultiplier);
-                ramp.Blue[i] = (ushort) (i * 255 * blueMultiplier);
+                ramp.Red[i] = (ushort) (i * 255 * colorBalance.Red);
+                ramp.Green[i] = (ushort) (i * 255 * colorBalance.Green);
+                ramp.Blue[i] = (ushort) (i * 255 * colorBalance.Blue);
             }
 
             // Some drivers will ignore request to change gamma if the ramp is the same as last time
@@ -53,6 +60,7 @@ namespace LightBulb.WindowsApi
 
             // Set gamma
             NativeMethods.SetDeviceGammaRamp(_deviceContext, ref ramp);
+            _lastColorBalance = colorBalance;
         }
 
         public void Dispose()

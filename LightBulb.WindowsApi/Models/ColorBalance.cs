@@ -1,0 +1,55 @@
+﻿using System;
+
+namespace LightBulb.WindowsApi.Models
+{
+    public partial struct ColorBalance : IEquatable<ColorBalance>
+    {
+        public double Red { get; }
+
+        public double Green { get; }
+
+        public double Blue { get; }
+
+        public ColorBalance(double red, double green, double blue)
+        {
+            Red = red;
+            Green = green;
+            Blue = blue;
+        }
+
+        public bool Equals(ColorBalance other) =>
+            Red.Equals(other.Red) && Green.Equals(other.Green) && Blue.Equals(other.Blue);
+
+        public override bool Equals(object obj)
+        {
+            if (obj is null)
+                return false;
+
+            return obj is ColorBalance other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = Red.GetHashCode();
+                hashCode = (hashCode * 397) ^ Green.GetHashCode();
+                hashCode = (hashCode * 397) ^ Blue.GetHashCode();
+
+                return hashCode;
+            }
+        }
+    }
+
+    public partial struct ColorBalance
+    {
+        public static bool operator ==(ColorBalance a, ColorBalance b) => a.Equals(b);
+
+        public static bool operator !=(ColorBalance a, ColorBalance b) => !(a == b);
+    }
+
+    public partial struct ColorBalance
+    {
+        public static ColorBalance Default { get; } = new ColorBalance(1, 1, 1);
+    }
+}

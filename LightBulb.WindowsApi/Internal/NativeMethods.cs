@@ -30,10 +30,10 @@ namespace LightBulb.WindowsApi.Internal
         public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
         [DllImport("gdi32.dll", EntryPoint = "SetDeviceGammaRamp", SetLastError = true)]
-        public static extern bool SetDeviceGammaRamp(IntPtr hMonitor, ref GammaRamp ramp);
+        public static extern bool SetDeviceGammaRamp(IntPtr hDC, ref GammaRamp ramp);
 
         [DllImport("gdi32.dll", EntryPoint = "GetDeviceGammaRamp", SetLastError = true)]
-        public static extern bool GetDeviceGammaRamp(IntPtr hMonitor, out GammaRamp ramp);
+        public static extern bool GetDeviceGammaRamp(IntPtr hDC, out GammaRamp ramp);
 
         [DllImport("user32.dll", EntryPoint = "RegisterHotKey", SetLastError = true)]
         public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
