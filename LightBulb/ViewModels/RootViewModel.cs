@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using System.Windows;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.ViewModels.Framework;
@@ -70,9 +69,6 @@ namespace LightBulb.ViewModels
         {
             base.OnViewLoaded();
 
-            // Hide window
-            HideWindow();
-
             // Load settings
             _settingsService.Load();
 
@@ -140,32 +136,15 @@ namespace LightBulb.ViewModels
         {
             _cyclePreviewUpdateTimer.Stop();
             IsCyclePreviewEnabled = false;
+
+            // Reset instant and update gamma
             CurrentInstant = DateTimeOffset.Now;
+            _gammaService.SetGamma(CurrentColorTemperature);
         }
 
         public void ShowAbout() => Process.Start("https://github.com/Tyrrrz/LightBulb");
 
         public void ShowReleases() => Process.Start("https://github.com/Tyrrrz/LightBulb/releases");
-
-        public void HideWindow()
-        {
-            // HACK: view-aware
-            if (View is Window window)
-            {
-                window.Hide();
-            }
-        }
-
-        public void RestoreWindow()
-        {
-            // HACK: view-aware
-            if (View is Window window)
-            {
-                window.Show();
-                window.Activate();
-                window.Focus();
-            }
-        }
 
         public void Exit() => RequestClose();
 

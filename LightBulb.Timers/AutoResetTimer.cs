@@ -38,13 +38,13 @@ namespace LightBulb.Timers
             }
         }
 
-        public AutoResetTimer Start(TimeSpan interval, TimeSpan initialTickDelay)
+        public AutoResetTimer Start(TimeSpan initialTickDelay, TimeSpan interval)
         {
             _internalTimer.Change(initialTickDelay, interval);
             return this;
         }
 
-        public AutoResetTimer Start(TimeSpan interval) => Start(interval, interval);
+        public AutoResetTimer Start(TimeSpan interval) => Start(TimeSpan.Zero, interval);
 
         public AutoResetTimer Stop()
         {

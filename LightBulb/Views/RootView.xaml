@@ -10,13 +10,14 @@
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:tb="http://www.hardcodet.net/taskbar"
     xmlns:viewModels="clr-namespace:LightBulb.ViewModels"
-    Width="600"
-    Height="450"
+    Width="280"
+    Height="280"
     d:DataContext="{d:DesignInstance Type=viewModels:RootViewModel}"
     AllowsTransparency="True"
     Background="Transparent"
-    Deactivated="{s:Action HideWindow}"
+    Deactivated="RootView_OnDeactivated"
     Icon="/LightBulb;component/favicon.ico"
+    Loaded="RootView_OnLoaded"
     ResizeMode="NoResize"
     ShowInTaskbar="False"
     Style="{DynamicResource MaterialDesignRoot}"
@@ -38,11 +39,12 @@
 
             <!--  Tray icon  -->
             <tb:TaskbarIcon
+                x:Name="TaskbarIcon"
                 Grid.Row="0"
                 IconSource="/LightBulb;component/favicon.ico"
-                LeftClickCommand="{s:Action RestoreWindow}"
                 NoLeftClickDelay="True"
-                ToolTipText="LightBulb">
+                ToolTipText="LightBulb"
+                TrayLeftMouseUp="TaskbarIcon_OnTrayLeftMouseUp">
                 <tb:TaskbarIcon.TrayToolTip>
                     <Border
                         Background="{DynamicResource MaterialDesignBackground}"
@@ -51,19 +53,30 @@
                         CornerRadius="3"
                         Style="{DynamicResource MaterialDesignRoot}">
                         <StackPanel Margin="4" Orientation="Vertical">
+                            <!--  Title  -->
                             <TextBlock
                                 FontSize="15"
                                 FontWeight="Medium"
                                 Foreground="{DynamicResource PrimaryTextBrush}"
                                 Text="LightBulb" />
-                            <TextBlock Text="{Binding CurrentColorTemperature}" Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
+
+                            <!--  Disabled  -->
                             <TextBlock Text="Disabled" Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}" />
+
+                            <!--  Current temperature  -->
+                            <TextBlock Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                                <Run Text="Temp:" />
+                                <Run Text="{Binding CurrentColorTemperature, Mode=OneWay}" />
+                            </TextBlock>
                         </StackPanel>
                     </Border>
                 </tb:TaskbarIcon.TrayToolTip>
                 <tb:TaskbarIcon.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Command="{s:Action RestoreWindow}" Header="Configure">
+                        <MenuItem
+                            x:Name="ConfigureMenuItem"
+                            Click="ConfigureMenuItem_OnClick"
+                            Header="Configure">
                             <MenuItem.Icon>
                                 <materialDesign:PackIcon Kind="Settings" />
                             </MenuItem.Icon>
@@ -150,6 +163,7 @@
                 Padding="6,12"
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 CornerRadius="12,12,0,0"
+                MouseDown="Header_OnMouseDown"
                 TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -188,6 +202,7 @@
                     <!--  Version updates  -->
                     <Button
                         Grid.Column="2"
+                        Padding="4"
                         Command="{s:Action ShowReleases}"
                         Style="{DynamicResource MaterialDesignFlatDarkButton}"
                         ToolTip="New version available for download">
@@ -203,6 +218,7 @@
                         Orientation="Horizontal">
                         <Button
                             x:Name="NavigateGeneralSettingsButton"
+                            Padding="4"
                             BorderThickness="0,0,0,2"
                             Style="{DynamicResource MaterialDesignFlatDarkButton}"
                             ToolTip="General">
@@ -210,6 +226,7 @@
                         </Button>
                         <Button
                             x:Name="NavigateGeolocationSettingsButton"
+                            Padding="4"
                             BorderThickness="0,0,0,2"
                             Style="{DynamicResource MaterialDesignFlatDarkButton}"
                             ToolTip="Geolocation">
@@ -217,6 +234,7 @@
                         </Button>
                         <Button
                             x:Name="NavigateAdvancedSettingsButton"
+                            Padding="4"
                             BorderThickness="0,0,0,2"
                             Style="{DynamicResource MaterialDesignFlatDarkButton}"
                             ToolTip="Advanced">
@@ -253,7 +271,7 @@
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 Value="{Binding CurrentSolarCyclePosition, Mode=OneWay}" />
 
-            <!--  Cycle state and status text  -->
+            <!--  Footer  -->
             <Grid
                 Grid.Row="3"
                 Background="{DynamicResource PrimaryHueMidBrush}"
@@ -267,8 +285,8 @@
                 <!--  Cycle state icon  -->
                 <materialDesign:PackIcon
                     Grid.Column="0"
-                    Background="Transparent"
-                    ToolTip="{Binding CurrentSolarCycleState}">
+                    Margin="4,0,0,0"
+                    VerticalAlignment="Center">
                     <materialDesign:PackIcon.Style>
                         <Style BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}" TargetType="{x:Type materialDesign:PackIcon}">
                             <Style.Triggers>
@@ -290,19 +308,34 @@
                 </materialDesign:PackIcon>
 
                 <!--  Status text  -->
-                <Grid
+                <StackPanel
                     Grid.Column="1"
-                    Margin="4,0,0,0"
-                    Background="Transparent"
-                    ToolTip="{Binding CurrentSolarCycleState}">
-                    <TextBlock Text="{Binding CurrentColorTemperature}" Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
-                    <TextBlock Text="Disabled" Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}" />
-                </Grid>
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <!--  Disabled  -->
+                    <TextBlock
+                        Margin="8,0,0,0"
+                        Text="Disabled"
+                        Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}" />
+
+                    <!--  Current temperature  -->
+                    <TextBlock Margin="8,0,0,0" Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                        <Run Text="Temp:" />
+                        <Run Text="{Binding CurrentColorTemperature, Mode=OneWay}" />
+                    </TextBlock>
+
+                    <!--  Cycle preview time  -->
+                    <TextBlock Margin="8,0,0,0" Visibility="{Binding IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                        <Run Text="Time:" />
+                        <Run Text="{Binding CurrentInstant, StringFormat=\{0:HH\:mm\}, Mode=OneWay}" />
+                    </TextBlock>
+                </StackPanel>
 
                 <!--  Start/stop cycle preview buttons  -->
                 <Grid Grid.Column="2">
                     <!--  Start cycle preview button  -->
                     <Button
+                        Padding="4"
                         Command="{s:Action StartCyclePreview}"
                         Style="{DynamicResource MaterialDesignFlatDarkButton}"
                         Visibility="{Binding IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}">
@@ -311,6 +344,7 @@
 
                     <!--  Stop cycle preview button  -->
                     <Button
+                        Padding="4"
                         Command="{s:Action StopCyclePreview}"
                         Style="{DynamicResource MaterialDesignFlatDarkButton}"
                         Visibility="{Binding IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">

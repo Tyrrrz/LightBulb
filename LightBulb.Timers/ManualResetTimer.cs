@@ -14,7 +14,7 @@ namespace LightBulb.Timers
 
         public ManualResetTimer Start(TimeSpan delay)
         {
-            _internalTimer.Start(Timeout.InfiniteTimeSpan, delay);
+            _internalTimer.Start(delay, Timeout.InfiniteTimeSpan);
             return this;
         }
 
