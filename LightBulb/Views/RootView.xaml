@@ -286,7 +286,7 @@
                 <!--  Cycle state icon  -->
                 <materialDesign:PackIcon
                     Grid.Column="0"
-                    Margin="4,0,0,0"
+                    Margin="6,0,0,0"
                     VerticalAlignment="Center">
                     <materialDesign:PackIcon.Style>
                         <Style BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}" TargetType="{x:Type materialDesign:PackIcon}">
@@ -311,36 +311,38 @@
                 <!--  Status text  -->
                 <StackPanel
                     Grid.Column="1"
+                    Margin="4,0,0,0"
                     VerticalAlignment="Center"
                     Orientation="Horizontal">
                     <!--  Disabled  -->
-                    <TextBlock
-                        Margin="4,0,0,0"
-                        Text="Disabled"
-                        Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}" />
+                    <TextBlock Text="Disabled" Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}" />
 
                     <!--  Current temperature  -->
-                    <TextBlock Margin="4,0,0,0" Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                    <TextBlock Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
                         <Run Text="Temp:" />
                         <Run Text="{Binding CurrentColorTemperature, Mode=OneWay}" />
                     </TextBlock>
 
                     <!--  Cycle preview time  -->
-                    <TextBlock Margin="4,0,0,0" Visibility="{Binding IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                    <TextBlock Margin="8,0,0,0" Visibility="{Binding IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
                         <Run Text="Time:" />
                         <Run Text="{Binding CurrentInstant, StringFormat=\{0:HH\:mm\}, Mode=OneWay}" />
                     </TextBlock>
                 </StackPanel>
 
                 <!--  Start/stop cycle preview buttons  -->
-                <Grid Grid.Column="2">
+                <Grid
+                    Grid.Column="2"
+                    Margin="0,0,6,1"
+                    VerticalAlignment="Center">
                     <!--  Start cycle preview button  -->
                     <Button
                         Padding="4"
                         Command="{s:Action StartCyclePreview}"
                         Style="{DynamicResource MaterialDesignFlatDarkButton}"
+                        ToolTip="Preview day cycle"
                         Visibility="{Binding IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}">
-                        <materialDesign:PackIcon Kind="Play" />
+                        <materialDesign:PackIcon Kind="PlayCircleOutline" />
                     </Button>
 
                     <!--  Stop cycle preview button  -->
@@ -348,8 +350,9 @@
                         Padding="4"
                         Command="{s:Action StopCyclePreview}"
                         Style="{DynamicResource MaterialDesignFlatDarkButton}"
+                        ToolTip="Stop preview"
                         Visibility="{Binding IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
-                        <materialDesign:PackIcon Kind="Stop" />
+                        <materialDesign:PackIcon Kind="StopCircleOutline" />
                     </Button>
                 </Grid>
             </Grid>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.ViewModels.Framework;
@@ -107,10 +108,8 @@ namespace LightBulb.ViewModels
             else
             {
                 CurrentInstant += delta;
+                _gammaService.SetGamma(CurrentColorTemperature);
             }
-
-            // Update gamma
-            _gammaService.SetGamma(CurrentColorTemperature);
         }
 
         public void Enable() => IsEnabled = true;
@@ -136,6 +135,9 @@ namespace LightBulb.ViewModels
         {
             _cyclePreviewUpdateTimer.Stop();
             IsCyclePreviewEnabled = false;
+
+            // HACK: wait a little to make sure last tick was handled to avoid race conditions
+            Thread.Sleep(33);
 
             // Reset instant and update gamma
             CurrentInstant = DateTimeOffset.Now;
