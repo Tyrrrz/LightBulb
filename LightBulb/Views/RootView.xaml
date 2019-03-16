@@ -270,7 +270,7 @@
             <ProgressBar
                 Grid.Row="2"
                 Background="{DynamicResource PrimaryHueMidBrush}"
-                Value="{Binding CurrentSolarCyclePosition, Mode=OneWay}" />
+                Value="{Binding SolarCyclePosition, Mode=OneWay}" />
 
             <!--  Footer  -->
             <Grid
@@ -291,16 +291,16 @@
                     <materialDesign:PackIcon.Style>
                         <Style BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}" TargetType="{x:Type materialDesign:PackIcon}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding CurrentSolarCycleState}" Value="{x:Static models:SolarCycleState.Disabled}">
+                                <DataTrigger Binding="{Binding SolarCycleState}" Value="{x:Static models:SolarCycleState.Disabled}">
                                     <Setter Property="Kind" Value="SyncOff" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding CurrentSolarCycleState}" Value="{x:Static models:SolarCycleState.Transition}">
+                                <DataTrigger Binding="{Binding SolarCycleState}" Value="{x:Static models:SolarCycleState.Transition}">
                                     <Setter Property="Kind" Value="Sync" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding CurrentSolarCycleState}" Value="{x:Static models:SolarCycleState.Day}">
+                                <DataTrigger Binding="{Binding SolarCycleState}" Value="{x:Static models:SolarCycleState.Day}">
                                     <Setter Property="Kind" Value="WhiteBalanceSunny" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding CurrentSolarCycleState}" Value="{x:Static models:SolarCycleState.Night}">
+                                <DataTrigger Binding="{Binding SolarCycleState}" Value="{x:Static models:SolarCycleState.Night}">
                                     <Setter Property="Kind" Value="WeatherNight" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -326,7 +326,7 @@
                     <!--  Cycle preview time  -->
                     <TextBlock Margin="8,0,0,0" Visibility="{Binding IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
                         <Run Text="Time:" />
-                        <Run Text="{Binding CurrentInstant, StringFormat=\{0:HH\:mm\}, Mode=OneWay}" />
+                        <Run Text="{Binding Instant, StringFormat=\{0:HH\:mm\}, Mode=OneWay}" />
                     </TextBlock>
                 </StackPanel>
 

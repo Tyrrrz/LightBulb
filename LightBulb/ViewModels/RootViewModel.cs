@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using System.Threading;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.ViewModels.Framework;
@@ -17,8 +16,8 @@ namespace LightBulb.ViewModels
         private readonly ColorTemperatureService _colorTemperatureService;
         private readonly GammaService _gammaService;
 
-        private readonly AutoResetTimer _updateTimer;
-        private readonly AutoResetTimer _cyclePreviewUpdateTimer;
+        private readonly AutoResetTimer _gammaUpdateTimer;
+        private readonly AutoResetTimer _instantUpdateTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
         public string ApplicationVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -27,13 +26,18 @@ namespace LightBulb.ViewModels
 
         public bool IsCyclePreviewEnabled { get; private set; }
 
-        public DateTimeOffset CurrentInstant { get; private set; } = DateTimeOffset.Now;
+        public DateTimeOffset Instant { get; private set; } = DateTimeOffset.Now;
 
-        public ColorTemperature CurrentColorTemperature => _colorTemperatureService.GetTemperature(CurrentInstant);
+        public ColorTemperature TargetColorTemperature =>
+            IsEnabled || IsCyclePreviewEnabled
+                ? _colorTemperatureService.GetTemperature(Instant)
+                : ColorTemperature.Default;
 
-        public double CurrentSolarCyclePosition => CurrentInstant.TimeOfDay.TotalDays;
+        public ColorTemperature CurrentColorTemperature { get; private set; } = ColorTemperature.Default;
 
-        public SolarCycleState CurrentSolarCycleState => !IsEnabled ? SolarCycleState.Disabled :
+        public double SolarCyclePosition => Instant.TimeOfDay.TotalDays;
+
+        public SolarCycleState SolarCycleState => !IsEnabled ? SolarCycleState.Disabled :
             CurrentColorTemperature == _settingsService.MaxTemperature ? SolarCycleState.Day :
             CurrentColorTemperature == _settingsService.MinTemperature ? SolarCycleState.Night :
             SolarCycleState.Transition;
@@ -46,24 +50,17 @@ namespace LightBulb.ViewModels
             _colorTemperatureService = colorTemperatureService;
             _gammaService = gammaService;
 
-            // Initialize timers
-            _updateTimer = new AutoResetTimer(UpdateTick);
-            _cyclePreviewUpdateTimer = new AutoResetTimer(CyclePreviewUpdateTick);
-            _enableAfterDelayTimer = new ManualResetTimer(Enable);
-
-            // Bind on IsEnabled changes
+            // When IsEnabled switches to 'true' - cancel 'disable temporarily'
             this.Bind(o => o.IsEnabled, (sender, args) =>
             {
                 if (IsEnabled)
-                {
                     _enableAfterDelayTimer.Stop();
-                    _gammaService.SetGamma(CurrentColorTemperature);
-                }
-                else
-                {
-                    _gammaService.ResetGamma();
-                }
             });
+
+            // Initialize timers
+            _gammaUpdateTimer = new AutoResetTimer(GammaUpdateTick);
+            _instantUpdateTimer = new AutoResetTimer(InstantUpdateTick);
+            _enableAfterDelayTimer = new ManualResetTimer(Enable);
         }
 
         protected override void OnViewLoaded()
@@ -73,42 +70,73 @@ namespace LightBulb.ViewModels
             // Load settings
             _settingsService.Load();
 
-            // Start update timer
-            _updateTimer.Start(TimeSpan.FromSeconds(5));
+            // Start timers
+            _gammaUpdateTimer.Start(TimeSpan.FromMilliseconds(17));
+            _instantUpdateTimer.Start(TimeSpan.FromMilliseconds(17));
         }
 
-        private void UpdateTick()
+        private void GammaUpdateTick()
         {
-            // If disabled - return
-            if (!IsEnabled)
+            // If reached target temperature - return
+            if (CurrentColorTemperature == TargetColorTemperature)
                 return;
 
-            // If cycle preview is currently running - return
-            if (IsCyclePreviewEnabled)
-                return;
+            // Determine if temperature transition should be smooth
+            var isSmooth = !IsCyclePreviewEnabled;
 
-            // Set new instant
-            CurrentInstant = DateTimeOffset.Now;
+            // If smooth - advance towards target temperature in small steps
+            if (isSmooth)
+            {
+                // Calculate difference and delta
+                var diff = TargetColorTemperature.Value - CurrentColorTemperature.Value;
+                var delta = 30 * Math.Sign(diff);
+
+                // Calculate new color temperature
+                CurrentColorTemperature = Math.Abs(diff) >= Math.Abs(delta)
+                    ? new ColorTemperature(CurrentColorTemperature.Value + delta)
+                    : TargetColorTemperature;
+            }
+            // Otherwise - just snap to target temperature
+            else
+            {
+                CurrentColorTemperature = TargetColorTemperature;
+            }
 
             // Update gamma
             _gammaService.SetGamma(CurrentColorTemperature);
         }
 
-        private void CyclePreviewUpdateTick()
+        private void InstantUpdateTick()
         {
-            // Advance current instant by this much on every tick
-            var delta = TimeSpan.FromMinutes(3);
+            // If disabled - return
+            if (!IsEnabled)
+                return;
 
-            // If current instant is 1 day (full cycle) past real current instant - stop
-            if (CurrentInstant >= DateTimeOffset.Now + TimeSpan.FromDays(1) - delta)
+            // If in cycle preview mode - advance quickly until reached full cycle
+            if (IsCyclePreviewEnabled)
             {
-                StopCyclePreview();
+                // Expected delta
+                var delta = TimeSpan.FromMinutes(3);
+
+                // Cycle is supposed to end 1 full day past current real time
+                var cycleEnd = DateTimeOffset.Now + TimeSpan.FromDays(1);
+
+                // If end of cycle is within delta - snap to the end and disable cycle preview
+                if (cycleEnd - Instant <= delta)
+                {
+                    Instant = cycleEnd;
+                    IsCyclePreviewEnabled = false;
+                }
+                // Otherwise - advance by delta
+                else
+                {
+                    Instant += delta;
+                }
             }
-            // Otherwise - shift current instant by delta
+            // Otherwise - simply update instant with current time
             else
             {
-                CurrentInstant += delta;
-                _gammaService.SetGamma(CurrentColorTemperature);
+                Instant = DateTimeOffset.Now;
             }
         }
 
@@ -122,27 +150,12 @@ namespace LightBulb.ViewModels
             _enableAfterDelayTimer.Start(duration);
 
             // Disable
-            Disable();
+            IsEnabled = false;
         }
 
-        public void StartCyclePreview()
-        {
-            _cyclePreviewUpdateTimer.Start(TimeSpan.FromMilliseconds(17));
-            IsCyclePreviewEnabled = true;
-        }
+        public void StartCyclePreview() => IsCyclePreviewEnabled = true;
 
-        public void StopCyclePreview()
-        {
-            _cyclePreviewUpdateTimer.Stop();
-            IsCyclePreviewEnabled = false;
-
-            // HACK: wait a little to make sure last tick was handled to avoid race conditions
-            Thread.Sleep(33);
-
-            // Reset instant and update gamma
-            CurrentInstant = DateTimeOffset.Now;
-            _gammaService.SetGamma(CurrentColorTemperature);
-        }
+        public void StopCyclePreview() => IsCyclePreviewEnabled = false;
 
         public void ShowAbout() => Process.Start("https://github.com/Tyrrrz/LightBulb");
 
@@ -152,13 +165,13 @@ namespace LightBulb.ViewModels
 
         public void Dispose()
         {
-            // Reset gamma
-            _gammaService.ResetGamma();
-
             // Dispose stuff
-            _updateTimer.Dispose();
+            _gammaUpdateTimer.Dispose();
+            _instantUpdateTimer.Dispose();
             _enableAfterDelayTimer.Dispose();
-            _cyclePreviewUpdateTimer.Dispose();
+
+            // Reset gamma
+            _gammaService.SetGamma(ColorTemperature.Default);
         }
     }
 }

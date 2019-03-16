@@ -5,11 +5,18 @@ using LightBulb.WindowsApi.Models;
 
 namespace LightBulb.Services
 {
-    public class GammaService : IDisposable
+    public partial class GammaService : IDisposable
     {
         private readonly GammaManager _gammaManager = new GammaManager();
 
-        private ColorBalance GetColorBalance(ColorTemperature temperature)
+        public void SetGamma(ColorTemperature temperature) => _gammaManager.SetGamma(GetColorBalance(temperature));
+
+        public void Dispose() => _gammaManager.Dispose();
+    }
+
+    public partial class GammaService
+    {
+        private static ColorBalance GetColorBalance(ColorTemperature temperature)
         {
             // Original code credit: http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
 
@@ -42,11 +49,5 @@ namespace LightBulb.Services
 
             return new ColorBalance(GetRed(), GetGreen(), GetBlue());
         }
-
-        public void SetGamma(ColorTemperature temperature) => _gammaManager.SetGamma(GetColorBalance(temperature));
-
-        public void ResetGamma() => _gammaManager.SetGamma(ColorBalance.Default);
-
-        public void Dispose() => _gammaManager.Dispose();
     }
 }

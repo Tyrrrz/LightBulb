@@ -39,4 +39,9 @@ namespace LightBulb.Models
 
         public static bool operator <(ColorTemperature a, ColorTemperature b) => a.CompareTo(b) < 0;
     }
+
+    public partial struct ColorTemperature
+    {
+        public static ColorTemperature Default { get; } = new ColorTemperature(6600);
+    }
 }
