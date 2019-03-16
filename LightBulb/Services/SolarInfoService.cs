@@ -9,7 +9,7 @@ namespace LightBulb.Services
 
         private double RadiansToDegrees(double radians) => radians * 180 / Math.PI;
 
-        private DateTimeOffset GetEventTime(GeographicCoordinates location, DateTimeOffset day,
+        private DateTimeOffset GetEventTime(GeoLocation location, DateTimeOffset day,
             bool isSunrise)
         {
             // Original code credit:
@@ -60,7 +60,7 @@ namespace LightBulb.Services
             return day.Date.AddHours(meanTime);
         }
 
-        public SolarInfo GetSolarInfo(GeographicCoordinates location, DateTimeOffset day)
+        public SolarInfo GetSolarInfo(GeoLocation location, DateTimeOffset day)
         {
             var sunrise = GetEventTime(location, day, true);
             var sunset = GetEventTime(location, day, false);
@@ -68,6 +68,6 @@ namespace LightBulb.Services
             return new SolarInfo(sunrise, sunset);
         }
 
-        public SolarInfo GetSolarInfo(GeographicCoordinates location) => GetSolarInfo(location, DateTimeOffset.Now);
+        public SolarInfo GetSolarInfo(GeoLocation location) => GetSolarInfo(location, DateTimeOffset.Now);
     }
 }

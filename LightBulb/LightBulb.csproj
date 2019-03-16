@@ -67,13 +67,13 @@
     <Compile Include="Internal\Extensions.cs" />
     <Compile Include="Internal\Guards.cs" />
     <Compile Include="Models\ColorTemperature.cs" />
-    <Compile Include="Models\GeographicCoordinates.cs" />
+    <Compile Include="Models\GeoLocation.cs" />
     <Compile Include="Models\HotKey.cs" />
     <Compile Include="Models\SolarCycleState.cs" />
     <Compile Include="Models\SolarInfo.cs" />
     <Compile Include="Services\GammaService.cs" />
     <Compile Include="Services\ColorTemperatureService.cs" />
-    <Compile Include="Services\LocationService.cs" />
+    <Compile Include="Services\GeoLocationService.cs" />
     <Compile Include="Services\HotKeyService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\SolarInfoService.cs" />

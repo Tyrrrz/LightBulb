@@ -21,7 +21,7 @@ namespace LightBulb.ViewModels.Components
             set => _settingsService.SunsetTime = value;
         }
 
-        public GeographicCoordinates? Location
+        public GeoLocation? Location
         {
             get => _settingsService.Location;
             set => _settingsService.Location = value;

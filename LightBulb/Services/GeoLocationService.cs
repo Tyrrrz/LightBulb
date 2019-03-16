@@ -8,20 +8,18 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
-    public class LocationService : IDisposable
+    public class GeoLocationService : IDisposable
     {
         private readonly HttpClient _httpClient = new HttpClient();
 
-        public LocationService()
+        public GeoLocationService()
         {
             // Set user-agent header
             var version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
             _httpClient.DefaultRequestHeaders.Add("User-Agent", $"LightBulb v{version} (github.com/Tyrrrz/LightBulb)");
         }
 
-        // TODO: move this to LightBulb's own webserver
-
-        public async Task<GeographicCoordinates> GetLocationAsync()
+        public async Task<GeoLocation> GetLocationAsync()
         {
             var request = "http://ip-api.com/json";
             var response = await _httpClient.GetStringAsync(request);
@@ -32,10 +30,10 @@ namespace LightBulb.Services
             var latitude = responseJson["lat"].Value<double>();
             var longitude = responseJson["lon"].Value<double>();
 
-            return new GeographicCoordinates(latitude, longitude);
+            return new GeoLocation(latitude, longitude);
         }
 
-        public async Task<GeographicCoordinates> GetLocationAsync(string query)
+        public async Task<GeoLocation> GetLocationAsync(string query)
         {
             var request = $"https://nominatim.openstreetmap.org/search?q={query.UrlEncode()}&format=json";
             var response = await _httpClient.GetStringAsync(request);
@@ -46,7 +44,7 @@ namespace LightBulb.Services
             var latitude = responseJson.First["lat"].Value<double>();
             var longitude = responseJson.First["lon"].Value<double>();
 
-            return new GeographicCoordinates(latitude, longitude);
+            return new GeoLocation(latitude, longitude);
         }
 
         public void Dispose() => _httpClient.Dispose();

@@ -2,19 +2,19 @@
 
 namespace LightBulb.Models
 {
-    public partial struct GeographicCoordinates : IEquatable<GeographicCoordinates>
+    public partial struct GeoLocation : IEquatable<GeoLocation>
     {
         public double Latitude { get; }
 
         public double Longitude { get; }
 
-        public GeographicCoordinates(double latitude, double longitude)
+        public GeoLocation(double latitude, double longitude)
         {
             Latitude = latitude;
             Longitude = longitude;
         }
 
-        public bool Equals(GeographicCoordinates other) =>
+        public bool Equals(GeoLocation other) =>
             Latitude.Equals(other.Latitude) && Longitude.Equals(other.Longitude);
 
         public override bool Equals(object obj)
@@ -22,7 +22,7 @@ namespace LightBulb.Models
             if (obj is null)
                 return false;
 
-            return obj is GeographicCoordinates other && Equals(other);
+            return obj is GeoLocation other && Equals(other);
         }
 
         public override int GetHashCode()
@@ -34,10 +34,10 @@ namespace LightBulb.Models
         }
     }
 
-    public partial struct GeographicCoordinates
+    public partial struct GeoLocation
     {
-        public static bool operator ==(GeographicCoordinates a, GeographicCoordinates b) => a.Equals(b);
+        public static bool operator ==(GeoLocation a, GeoLocation b) => a.Equals(b);
 
-        public static bool operator !=(GeographicCoordinates a, GeographicCoordinates b) => !(a == b);
+        public static bool operator !=(GeoLocation a, GeoLocation b) => !(a == b);
     }
 }

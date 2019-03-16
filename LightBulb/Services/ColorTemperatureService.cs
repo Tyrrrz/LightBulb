@@ -38,7 +38,7 @@ namespace LightBulb.Services
             if (untilNextSunrise <= untilNextSunset)
             {
                 // Check if in transition period to night
-                if (instant <= prevSunset.Add(offset))
+                if (instant <= prevSunset + offset)
                 {
                     // Smooth transition
                     var norm = (instant - prevSunset).TotalHours / offset.TotalHours;
@@ -53,7 +53,7 @@ namespace LightBulb.Services
             else
             {
                 // Check if in transition period to day
-                if (instant <= prevSunrise.Add(offset))
+                if (instant <= prevSunrise + offset)
                 {
                     // Smooth transition
                     var norm = (instant - prevSunrise).TotalHours / offset.TotalHours;

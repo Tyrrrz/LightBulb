@@ -19,7 +19,7 @@ namespace LightBulb.Services
 
         public TimeSpan TemperatureTransitionDuration { get; set; } = TimeSpan.FromMinutes(90);
 
-        public GeographicCoordinates? Location { get; set; }
+        public GeoLocation? Location { get; set; }
 
         public SettingsService()
         {
