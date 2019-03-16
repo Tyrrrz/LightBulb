@@ -20,7 +20,7 @@ namespace LightBulb.ViewModels
         private readonly AutoResetTimer _cyclePreviewUpdateTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
-        public string ApplicationVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+        public string ApplicationVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         public bool IsEnabled { get; set; } = true;
 

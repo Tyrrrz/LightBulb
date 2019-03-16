@@ -202,6 +202,7 @@
                     <!--  Version updates  -->
                     <Button
                         Grid.Column="2"
+                        Margin="4,0,0,0"
                         Padding="4"
                         Command="{s:Action ShowReleases}"
                         Style="{DynamicResource MaterialDesignFlatDarkButton}"
@@ -314,18 +315,18 @@
                     Orientation="Horizontal">
                     <!--  Disabled  -->
                     <TextBlock
-                        Margin="8,0,0,0"
+                        Margin="4,0,0,0"
                         Text="Disabled"
                         Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}" />
 
                     <!--  Current temperature  -->
-                    <TextBlock Margin="8,0,0,0" Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                    <TextBlock Margin="4,0,0,0" Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
                         <Run Text="Temp:" />
                         <Run Text="{Binding CurrentColorTemperature, Mode=OneWay}" />
                     </TextBlock>
 
                     <!--  Cycle preview time  -->
-                    <TextBlock Margin="8,0,0,0" Visibility="{Binding IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                    <TextBlock Margin="4,0,0,0" Visibility="{Binding IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
                         <Run Text="Time:" />
                         <Run Text="{Binding CurrentInstant, StringFormat=\{0:HH\:mm\}, Mode=OneWay}" />
                     </TextBlock>

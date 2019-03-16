@@ -15,7 +15,7 @@ namespace LightBulb.Services
         public GeoLocationService()
         {
             // Set user-agent header
-            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             _httpClient.DefaultRequestHeaders.Add("User-Agent", $"LightBulb v{version} (github.com/Tyrrrz/LightBulb)");
         }
 
