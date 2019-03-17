@@ -47,6 +47,10 @@ namespace LightBulb.ViewModels
                 if (!IsEnabled && !IsCyclePreviewEnabled && CurrentColorTemperature == TargetColorTemperature)
                     return CycleState.Disabled;
 
+                // If target temperature has not been reached - in transition
+                if (CurrentColorTemperature != TargetColorTemperature)
+                    return CycleState.Transition;
+
                 // If at max temperature - day
                 if (CurrentColorTemperature == _settingsService.MaxTemperature)
                     return CycleState.Day;
@@ -55,7 +59,7 @@ namespace LightBulb.ViewModels
                 if (CurrentColorTemperature == _settingsService.MinTemperature)
                     return CycleState.Night;
 
-                // Otherwise - in transition
+                // Otherwise - in transition (shouldn't reach here)
                 return CycleState.Transition;
             }
         }
