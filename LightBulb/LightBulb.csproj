@@ -88,6 +88,12 @@
     <Compile Include="ViewModels\Framework\Extensions.cs" />
     <Compile Include="ViewModels\Framework\IViewModelFactory.cs" />
     <Compile Include="ViewModels\RootViewModel.cs" />
+    <Compile Include="Views\Components\GeneralSettingsView.xaml.cs">
+      <DependentUpon>GeneralSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Components\LocationSettingsView.xaml.cs">
+      <DependentUpon>LocationSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RootView.xaml.cs">
       <DependentUpon>RootView.xaml</DependentUpon>
     </Compile>
@@ -141,13 +147,18 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\Components\GeneralSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Components\LocationSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\RootView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Components\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LightBulb.Timers\LightBulb.Timers.csproj">

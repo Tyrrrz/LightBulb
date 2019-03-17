@@ -115,6 +115,25 @@
 
                 <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidForegroundBrush}" />
             </Style>
+
+            <Style
+                x:Key="MaterialDesignFlatDarkActionToggleButton"
+                BasedOn="{StaticResource MaterialDesignActionToggleButton}"
+                TargetType="{x:Type ToggleButton}">
+                <Style.Resources>
+                    <SolidColorBrush x:Key="MaterialDesignFlatButtonClick" Color="#4C4C4C" />
+                </Style.Resources>
+
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryHueMidForegroundBrush}" />
+
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource MaterialDesignFlatButtonClick}" />
+                        <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignFlatButtonClick}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </s:ApplicationLoader>
     </Application.Resources>
 </Application>

@@ -5,15 +5,14 @@ using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.ViewModels.Framework;
 using LightBulb.Timers;
+using LightBulb.ViewModels.Components;
 using Stylet;
 
 namespace LightBulb.ViewModels
 {
     public class RootViewModel : Screen, IDisposable
     {
-        private readonly IViewModelFactory _viewModelFactory;
         private readonly SettingsService _settingsService;
-        private readonly UpdateService _updateService;
         private readonly ColorTemperatureService _colorTemperatureService;
         private readonly GammaService _gammaService;
 
@@ -27,7 +26,7 @@ namespace LightBulb.ViewModels
 
         public bool IsEnabled { get; set; } = true;
 
-        public bool IsCyclePreviewEnabled { get; private set; }
+        public bool IsCyclePreviewEnabled { get; set; }
 
         public DateTimeOffset Instant { get; private set; } = DateTimeOffset.Now;
 
@@ -78,14 +77,22 @@ namespace LightBulb.ViewModels
             }
         }
 
+        public GeneralSettingsViewModel GeneralSettings { get; }
+
+        public LocationSettingsViewModel LocationSettings { get; }
+
+        public int SettingsIndex { get; set; }
+
         public RootViewModel(IViewModelFactory viewModelFactory, SettingsService settingsService,
             UpdateService updateService, ColorTemperatureService colorTemperatureService, GammaService gammaService)
         {
-            _viewModelFactory = viewModelFactory;
             _settingsService = settingsService;
-            _updateService = updateService;
             _colorTemperatureService = colorTemperatureService;
             _gammaService = gammaService;
+
+            // Initialize view models
+            GeneralSettings = viewModelFactory.CreateGeneralSettingsViewModel();
+            LocationSettings = viewModelFactory.CreateLocationSettingsViewModel();
 
             // When IsEnabled switches to 'true' - cancel 'disable temporarily'
             this.Bind(o => o.IsEnabled, (sender, args) =>
@@ -103,7 +110,7 @@ namespace LightBulb.ViewModels
 
             _checkForUpdatesTimer = new AutoResetTimer(async () =>
             {
-                IsUpdateAvailable = await _updateService.CheckForUpdatesAsync();
+                IsUpdateAvailable = await updateService.CheckForUpdatesAsync();
             });
 
             _enableAfterDelayTimer = new ManualResetTimer(Enable);
@@ -197,9 +204,9 @@ namespace LightBulb.ViewModels
             IsEnabled = false;
         }
 
-        public void StartCyclePreview() => IsCyclePreviewEnabled = true;
+        public void NavigateGeneralSettings() => SettingsIndex = 0;
 
-        public void StopCyclePreview() => IsCyclePreviewEnabled = false;
+        public void NavigateLocationSettings() => SettingsIndex = 1;
 
         public void ShowAbout() => Process.Start("https://github.com/Tyrrrz/LightBulb");
 

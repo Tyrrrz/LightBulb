@@ -205,44 +205,81 @@
                         <materialDesign:PackIcon Kind="AlertCircleOutline" />
                     </Button>
 
-                    <!--  Section navigation buttons  -->
+                    <!--  Settings navigation buttons  -->
                     <StackPanel
                         Grid.Column="3"
                         Margin="6,0,0,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         Orientation="Horizontal">
-                        <Button
-                            x:Name="NavigateGeneralSettingsButton"
-                            Padding="4"
-                            BorderThickness="0,0,0,2"
-                            Style="{DynamicResource MaterialDesignFlatDarkButton}"
-                            ToolTip="General">
-                            <materialDesign:PackIcon Kind="Tune" />
-                        </Button>
-                        <Button
-                            x:Name="NavigateGeolocationSettingsButton"
-                            Padding="4"
-                            BorderThickness="0,0,0,2"
-                            Style="{DynamicResource MaterialDesignFlatDarkButton}"
-                            ToolTip="Geolocation">
-                            <materialDesign:PackIcon Kind="Earth" />
-                        </Button>
-                        <Button
-                            x:Name="NavigateAdvancedSettingsButton"
-                            Padding="4"
-                            BorderThickness="0,0,0,2"
-                            Style="{DynamicResource MaterialDesignFlatDarkButton}"
-                            ToolTip="Advanced">
-                            <materialDesign:PackIcon Kind="CheckboxMultipleMarkedOutline" />
-                        </Button>
+                        <!--  General settings  -->
+                        <Border BorderThickness="0,0,0,2" CornerRadius="2">
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SettingsIndex}" Value="0">
+                                            <Setter Property="BorderBrush" Value="{DynamicResource SecondaryAccentBrush}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <Button
+                                Padding="4"
+                                Command="{s:Action NavigateGeneralSettings}"
+                                Style="{DynamicResource MaterialDesignFlatDarkButton}"
+                                ToolTip="General">
+                                <materialDesign:PackIcon Kind="Tune" />
+                            </Button>
+                        </Border>
+
+                        <!--  Location settings  -->
+                        <Border BorderThickness="0,0,0,2" CornerRadius="2">
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SettingsIndex}" Value="1">
+                                            <Setter Property="BorderBrush" Value="{DynamicResource SecondaryAccentBrush}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <Button
+                                Padding="4"
+                                Command="{s:Action NavigateLocationSettings}"
+                                Style="{DynamicResource MaterialDesignFlatDarkButton}"
+                                ToolTip="Geolocation">
+                                <materialDesign:PackIcon Kind="Earth" />
+                            </Button>
+                        </Border>
+
+                        <!--  Advanced settings  -->
+                        <Border BorderThickness="0,0,0,2" CornerRadius="2">
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SettingsIndex}" Value="2">
+                                            <Setter Property="BorderBrush" Value="{DynamicResource SecondaryAccentBrush}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <Button
+                                Padding="4"
+                                Style="{DynamicResource MaterialDesignFlatDarkButton}"
+                                ToolTip="Advanced">
+                                <materialDesign:PackIcon Kind="CheckboxMultipleMarkedOutline" />
+                            </Button>
+                        </Border>
                     </StackPanel>
                 </Grid>
             </Border>
 
-            <!--  Content  -->
+            <!--  Settings page  -->
             <Border Grid.Row="1" Background="{DynamicResource MaterialDesignCardBackground}">
-                <materialDesign:Transitioner x:Name="ContentTransitioner" SelectedIndex="0">
+                <materialDesign:Transitioner SelectedIndex="{Binding SettingsIndex}">
                     <materialDesign:Transitioner.Resources>
                         <Style TargetType="{x:Type materialDesign:TransitionerSlide}">
                             <Setter Property="Background" Value="{DynamicResource MaterialDesignCardBackground}" />
@@ -258,6 +295,9 @@
                             </Setter>
                         </Style>
                     </materialDesign:Transitioner.Resources>
+
+                    <ContentControl s:View.Model="{Binding GeneralSettings}" />
+                    <ContentControl s:View.Model="{Binding LocationSettings}" />
                 </materialDesign:Transitioner>
             </Border>
 
@@ -310,31 +350,22 @@
                     VerticalAlignment="Center"
                     Text="{Binding StatusText}" />
 
-                <!--  Start/stop cycle preview buttons  -->
-                <Grid
+                <!--  Toggle cycle preview button  -->
+                <ToggleButton
                     Grid.Column="2"
+                    Width="24"
+                    Height="24"
                     Margin="0,0,6,1"
-                    VerticalAlignment="Center">
-                    <!--  Start cycle preview button  -->
-                    <Button
-                        Padding="4"
-                        Command="{s:Action StartCyclePreview}"
-                        Style="{DynamicResource MaterialDesignFlatDarkButton}"
-                        ToolTip="Preview day cycle"
-                        Visibility="{Binding IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}">
+                    VerticalAlignment="Center"
+                    IsChecked="{Binding IsCyclePreviewEnabled}"
+                    Style="{StaticResource MaterialDesignFlatDarkActionToggleButton}">
+                    <ToggleButton.Content>
                         <materialDesign:PackIcon Kind="PlayCircleOutline" />
-                    </Button>
-
-                    <!--  Stop cycle preview button  -->
-                    <Button
-                        Padding="4"
-                        Command="{s:Action StopCyclePreview}"
-                        Style="{DynamicResource MaterialDesignFlatDarkButton}"
-                        ToolTip="Stop preview"
-                        Visibility="{Binding IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                    </ToggleButton.Content>
+                    <materialDesign:ToggleButtonAssist.OnContent>
                         <materialDesign:PackIcon Kind="StopCircleOutline" />
-                    </Button>
-                </Grid>
+                    </materialDesign:ToggleButtonAssist.OnContent>
+                </ToggleButton>
             </Grid>
         </Grid>
     </Border>
