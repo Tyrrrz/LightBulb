@@ -17,6 +17,7 @@ namespace LightBulb.ViewModels
         private readonly GammaService _gammaService;
 
         private readonly AutoResetTimer _updateTimer;
+        private readonly AutoResetTimer _settingsAutoSaveTimer;
         private readonly AutoResetTimer _checkForUpdatesTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
@@ -112,6 +113,12 @@ namespace LightBulb.ViewModels
                 UpdateGamma();
             });
 
+            _settingsAutoSaveTimer = new AutoResetTimer(() =>
+            {
+                if (!_settingsService.IsSaved)
+                    _settingsService.Save();
+            });
+
             _checkForUpdatesTimer = new AutoResetTimer(async () =>
             {
                 IsUpdateAvailable = await updateService.CheckForUpdatesAsync();
@@ -129,6 +136,7 @@ namespace LightBulb.ViewModels
 
             // Start timers
             _updateTimer.Start(TimeSpan.FromMilliseconds(17)); // 60hz
+            _settingsAutoSaveTimer.Start(TimeSpan.FromSeconds(5));
             _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
         }
 
@@ -222,6 +230,8 @@ namespace LightBulb.ViewModels
         {
             // Dispose stuff
             _updateTimer.Dispose();
+            _settingsAutoSaveTimer.Dispose();
+            _checkForUpdatesTimer.Dispose();
             _enableAfterDelayTimer.Dispose();
 
             // Reset gamma

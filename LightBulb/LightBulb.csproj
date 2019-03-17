@@ -144,7 +144,7 @@
       <Version>1.5.1</Version>
     </PackageReference>
     <PackageReference Include="Tyrrrz.Settings">
-      <Version>1.3.3</Version>
+      <Version>1.3.4</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
