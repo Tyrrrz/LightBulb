@@ -200,7 +200,8 @@
                         Padding="4"
                         Command="{s:Action ShowReleases}"
                         Style="{DynamicResource MaterialDesignFlatDarkButton}"
-                        ToolTip="New version available for download">
+                        ToolTip="New version available for download"
+                        Visibility="{Binding IsUpdateAvailable, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
                         <materialDesign:PackIcon Kind="AlertCircleOutline" />
                     </Button>
 

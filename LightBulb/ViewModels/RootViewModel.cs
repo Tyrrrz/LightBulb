@@ -13,13 +13,17 @@ namespace LightBulb.ViewModels
     {
         private readonly IViewModelFactory _viewModelFactory;
         private readonly SettingsService _settingsService;
+        private readonly UpdateService _updateService;
         private readonly ColorTemperatureService _colorTemperatureService;
         private readonly GammaService _gammaService;
 
         private readonly AutoResetTimer _updateTimer;
+        private readonly AutoResetTimer _checkForUpdatesTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
         public string ApplicationVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+        public bool IsUpdateAvailable { get; private set; }
 
         public bool IsEnabled { get; set; } = true;
 
@@ -75,10 +79,11 @@ namespace LightBulb.ViewModels
         }
 
         public RootViewModel(IViewModelFactory viewModelFactory, SettingsService settingsService,
-            ColorTemperatureService colorTemperatureService, GammaService gammaService)
+            UpdateService updateService, ColorTemperatureService colorTemperatureService, GammaService gammaService)
         {
             _viewModelFactory = viewModelFactory;
             _settingsService = settingsService;
+            _updateService = updateService;
             _colorTemperatureService = colorTemperatureService;
             _gammaService = gammaService;
 
@@ -90,7 +95,17 @@ namespace LightBulb.ViewModels
             });
 
             // Initialize timers
-            _updateTimer = new AutoResetTimer(UpdateTick);
+            _updateTimer = new AutoResetTimer(() =>
+            {
+                UpdateInstant();
+                UpdateGamma();
+            });
+
+            _checkForUpdatesTimer = new AutoResetTimer(async () =>
+            {
+                IsUpdateAvailable = await _updateService.CheckForUpdatesAsync();
+            });
+
             _enableAfterDelayTimer = new ManualResetTimer(Enable);
         }
 
@@ -101,8 +116,9 @@ namespace LightBulb.ViewModels
             // Load settings
             _settingsService.Load();
 
-            // Start update timer at 60hz
-            _updateTimer.Start(TimeSpan.FromMilliseconds(17));
+            // Start timers
+            _updateTimer.Start(TimeSpan.FromMilliseconds(17)); // 60hz
+            _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
         }
 
         private void UpdateInstant()
@@ -166,12 +182,6 @@ namespace LightBulb.ViewModels
 
             // Update gamma
             _gammaService.SetGamma(CurrentColorTemperature);
-        }
-
-        private void UpdateTick()
-        {
-            UpdateInstant();
-            UpdateGamma();
         }
 
         public void Enable() => IsEnabled = true;
