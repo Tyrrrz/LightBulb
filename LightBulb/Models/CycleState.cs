@@ -1,6 +1,6 @@
 ﻿namespace LightBulb.Models
 {
-    public enum SolarCycleState
+    public enum CycleState
     {
         Disabled,
         Day,

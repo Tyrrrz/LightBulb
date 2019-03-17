@@ -16,8 +16,7 @@ namespace LightBulb.ViewModels
         private readonly ColorTemperatureService _colorTemperatureService;
         private readonly GammaService _gammaService;
 
-        private readonly AutoResetTimer _gammaUpdateTimer;
-        private readonly AutoResetTimer _instantUpdateTimer;
+        private readonly AutoResetTimer _updateTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
         public string ApplicationVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -35,12 +34,45 @@ namespace LightBulb.ViewModels
 
         public ColorTemperature CurrentColorTemperature { get; private set; } = ColorTemperature.Default;
 
-        public double SolarCyclePosition => Instant.TimeOfDay.TotalDays;
+        public double CyclePosition => Instant.TimeOfDay.TotalDays;
 
-        public SolarCycleState SolarCycleState => !IsEnabled ? SolarCycleState.Disabled :
-            CurrentColorTemperature == _settingsService.MaxTemperature ? SolarCycleState.Day :
-            CurrentColorTemperature == _settingsService.MinTemperature ? SolarCycleState.Night :
-            SolarCycleState.Transition;
+        public CycleState CycleState
+        {
+            get
+            {
+                // If disabled, not in cycle preview, and target temperature reached - disabled
+                if (!IsEnabled && !IsCyclePreviewEnabled && CurrentColorTemperature == TargetColorTemperature)
+                    return CycleState.Disabled;
+
+                // If at max temperature - day
+                if (CurrentColorTemperature == _settingsService.MaxTemperature)
+                    return CycleState.Day;
+
+                // If at min temperature - night
+                if (CurrentColorTemperature == _settingsService.MinTemperature)
+                    return CycleState.Night;
+
+                // Otherwise - in transition
+                return CycleState.Transition;
+            }
+        }
+
+        public string StatusText
+        {
+            get
+            {
+                // If in cycle preview - show current temperature and instant
+                if (IsCyclePreviewEnabled)
+                    return $"Temp: {CurrentColorTemperature}   Time: {Instant:t}";
+
+                // If enabled or in transition - show current temperature
+                if (IsEnabled || CurrentColorTemperature != TargetColorTemperature)
+                    return $"Temp: {CurrentColorTemperature}";
+
+                // Otherwise - disabled
+                return "Disabled";
+            }
+        }
 
         public RootViewModel(IViewModelFactory viewModelFactory, SettingsService settingsService,
             ColorTemperatureService colorTemperatureService, GammaService gammaService)
@@ -58,8 +90,7 @@ namespace LightBulb.ViewModels
             });
 
             // Initialize timers
-            _gammaUpdateTimer = new AutoResetTimer(GammaUpdateTick);
-            _instantUpdateTimer = new AutoResetTimer(InstantUpdateTick);
+            _updateTimer = new AutoResetTimer(UpdateTick);
             _enableAfterDelayTimer = new ManualResetTimer(Enable);
         }
 
@@ -70,12 +101,41 @@ namespace LightBulb.ViewModels
             // Load settings
             _settingsService.Load();
 
-            // Start timers
-            _gammaUpdateTimer.Start(TimeSpan.FromMilliseconds(17));
-            _instantUpdateTimer.Start(TimeSpan.FromMilliseconds(17));
+            // Start update timer at 60hz
+            _updateTimer.Start(TimeSpan.FromMilliseconds(17));
         }
 
-        private void GammaUpdateTick()
+        private void UpdateInstant()
+        {
+            // If in cycle preview mode - advance quickly until reached full cycle
+            if (IsCyclePreviewEnabled)
+            {
+                // Cycle is supposed to end 1 full day past current real time
+                var targetInstant = DateTimeOffset.Now + TimeSpan.FromDays(1);
+
+                // Calculate difference
+                var diff = targetInstant - Instant;
+
+                // Calculate delta delta
+                var delta = TimeSpan.FromMinutes(3);
+                if (delta > diff)
+                    delta = diff;
+
+                // Set new instant
+                Instant += delta;
+
+                // If target instant reached - disable cycle preview
+                if (Instant >= targetInstant)
+                    IsCyclePreviewEnabled = false;
+            }
+            // Otherwise - simply set instant to now
+            else
+            {
+                Instant = DateTimeOffset.Now;
+            }
+        }
+
+        private void UpdateGamma()
         {
             // If reached target temperature - return
             if (CurrentColorTemperature == TargetColorTemperature)
@@ -87,14 +147,16 @@ namespace LightBulb.ViewModels
             // If smooth - advance towards target temperature in small steps
             if (isSmooth)
             {
-                // Calculate difference and delta
+                // Calculate difference
                 var diff = TargetColorTemperature.Value - CurrentColorTemperature.Value;
-                var delta = 30 * Math.Sign(diff);
 
-                // Calculate new color temperature
-                CurrentColorTemperature = Math.Abs(diff) >= Math.Abs(delta)
-                    ? new ColorTemperature(CurrentColorTemperature.Value + delta)
-                    : TargetColorTemperature;
+                // Calculate delta
+                var delta = 30.0 * Math.Sign(diff);
+                if (Math.Abs(delta) > Math.Abs(diff))
+                    delta = diff;
+
+                // Set new color temperature
+                CurrentColorTemperature = new ColorTemperature(CurrentColorTemperature.Value + delta);
             }
             // Otherwise - just snap to target temperature
             else
@@ -106,38 +168,10 @@ namespace LightBulb.ViewModels
             _gammaService.SetGamma(CurrentColorTemperature);
         }
 
-        private void InstantUpdateTick()
+        private void UpdateTick()
         {
-            // If disabled - return
-            if (!IsEnabled)
-                return;
-
-            // If in cycle preview mode - advance quickly until reached full cycle
-            if (IsCyclePreviewEnabled)
-            {
-                // Expected delta
-                var delta = TimeSpan.FromMinutes(3);
-
-                // Cycle is supposed to end 1 full day past current real time
-                var cycleEnd = DateTimeOffset.Now + TimeSpan.FromDays(1);
-
-                // If end of cycle is within delta - snap to the end and disable cycle preview
-                if (cycleEnd - Instant <= delta)
-                {
-                    Instant = cycleEnd;
-                    IsCyclePreviewEnabled = false;
-                }
-                // Otherwise - advance by delta
-                else
-                {
-                    Instant += delta;
-                }
-            }
-            // Otherwise - simply update instant with current time
-            else
-            {
-                Instant = DateTimeOffset.Now;
-            }
+            UpdateInstant();
+            UpdateGamma();
         }
 
         public void Enable() => IsEnabled = true;
@@ -166,8 +200,7 @@ namespace LightBulb.ViewModels
         public void Dispose()
         {
             // Dispose stuff
-            _gammaUpdateTimer.Dispose();
-            _instantUpdateTimer.Dispose();
+            _updateTimer.Dispose();
             _enableAfterDelayTimer.Dispose();
 
             // Reset gamma

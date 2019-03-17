@@ -60,14 +60,8 @@
                                 Foreground="{DynamicResource PrimaryTextBrush}"
                                 Text="LightBulb" />
 
-                            <!--  Disabled  -->
-                            <TextBlock Text="Disabled" Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}" />
-
-                            <!--  Current temperature  -->
-                            <TextBlock Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
-                                <Run Text="Temp:" />
-                                <Run Text="{Binding CurrentColorTemperature, Mode=OneWay}" />
-                            </TextBlock>
+                            <!--  Status text  -->
+                            <TextBlock Text="{Binding StatusText}" />
                         </StackPanel>
                     </Border>
                 </tb:TaskbarIcon.TrayToolTip>
@@ -270,7 +264,7 @@
             <ProgressBar
                 Grid.Row="2"
                 Background="{DynamicResource PrimaryHueMidBrush}"
-                Value="{Binding SolarCyclePosition, Mode=OneWay}" />
+                Value="{Binding CyclePosition, Mode=OneWay}" />
 
             <!--  Footer  -->
             <Grid
@@ -291,16 +285,16 @@
                     <materialDesign:PackIcon.Style>
                         <Style BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}" TargetType="{x:Type materialDesign:PackIcon}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding SolarCycleState}" Value="{x:Static models:SolarCycleState.Disabled}">
+                                <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Disabled}">
                                     <Setter Property="Kind" Value="SyncOff" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding SolarCycleState}" Value="{x:Static models:SolarCycleState.Transition}">
+                                <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Transition}">
                                     <Setter Property="Kind" Value="Sync" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding SolarCycleState}" Value="{x:Static models:SolarCycleState.Day}">
+                                <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Day}">
                                     <Setter Property="Kind" Value="WhiteBalanceSunny" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding SolarCycleState}" Value="{x:Static models:SolarCycleState.Night}">
+                                <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Night}">
                                     <Setter Property="Kind" Value="WeatherNight" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -309,26 +303,11 @@
                 </materialDesign:PackIcon>
 
                 <!--  Status text  -->
-                <StackPanel
+                <TextBlock
                     Grid.Column="1"
                     Margin="4,0,0,0"
                     VerticalAlignment="Center"
-                    Orientation="Horizontal">
-                    <!--  Disabled  -->
-                    <TextBlock Text="Disabled" Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}" />
-
-                    <!--  Current temperature  -->
-                    <TextBlock Visibility="{Binding IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
-                        <Run Text="Temp:" />
-                        <Run Text="{Binding CurrentColorTemperature, Mode=OneWay}" />
-                    </TextBlock>
-
-                    <!--  Cycle preview time  -->
-                    <TextBlock Margin="8,0,0,0" Visibility="{Binding IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
-                        <Run Text="Time:" />
-                        <Run Text="{Binding Instant, StringFormat=\{0:HH\:mm\}, Mode=OneWay}" />
-                    </TextBlock>
-                </StackPanel>
+                    Text="{Binding StatusText}" />
 
                 <!--  Start/stop cycle preview buttons  -->
                 <Grid

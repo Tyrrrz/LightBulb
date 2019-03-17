@@ -69,7 +69,7 @@
     <Compile Include="Models\ColorTemperature.cs" />
     <Compile Include="Models\GeoLocation.cs" />
     <Compile Include="Models\HotKey.cs" />
-    <Compile Include="Models\SolarCycleState.cs" />
+    <Compile Include="Models\CycleState.cs" />
     <Compile Include="Models\SolarInfo.cs" />
     <Compile Include="Services\GammaService.cs" />
     <Compile Include="Services\ColorTemperatureService.cs" />
