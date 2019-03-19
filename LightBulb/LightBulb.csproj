@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Converters\ColorTemperatureToDoubleConverter.cs" />
+    <Compile Include="Converters\TimeSpanToHoursConverter.cs" />
     <Compile Include="Converters\TimeSpanToMinutesConverter.cs" />
     <Compile Include="Internal\Extensions.cs" />
     <Compile Include="Internal\Guards.cs" />

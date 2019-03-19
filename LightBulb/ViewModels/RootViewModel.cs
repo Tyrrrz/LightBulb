@@ -60,7 +60,7 @@ namespace LightBulb.ViewModels
                 if (CurrentColorTemperature == _settingsService.MinTemperature)
                     return CycleState.Night;
 
-                // Otherwise - in transition (shouldn't reach here)
+                // Otherwise - in transition (shouldn't reach here, but just in case)
                 return CycleState.Transition;
             }
         }
@@ -151,7 +151,7 @@ namespace LightBulb.ViewModels
                 // Calculate difference
                 var diff = targetInstant - Instant;
 
-                // Calculate delta delta
+                // Calculate delta
                 var delta = TimeSpan.FromMinutes(3);
                 if (delta > diff)
                     delta = diff;

@@ -30,6 +30,9 @@ namespace LightBulb.ViewModels.Components
         public LocationSettingsViewModel(SettingsService settingsService)
         {
             _settingsService = settingsService;
+
+            // HACK: when settings change - fire property changed event for all properties in this view model
+            _settingsService.PropertyChanged += (sender, args) => NotifyOfPropertyChange(null);
         }
     }
 }
