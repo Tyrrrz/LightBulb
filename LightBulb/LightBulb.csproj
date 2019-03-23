@@ -84,6 +84,7 @@
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\SolarInfoService.cs" />
     <Compile Include="Services\UpdateService.cs" />
+    <Compile Include="ViewModels\Components\AdvancedSettingsViewModel.cs" />
     <Compile Include="ViewModels\Components\GeneralSettingsViewModel.cs" />
     <Compile Include="ViewModels\Components\LocationSettingsViewModel.cs" />
     <Compile Include="ViewModels\Framework\DialogManager.cs" />
@@ -91,6 +92,9 @@
     <Compile Include="ViewModels\Framework\Extensions.cs" />
     <Compile Include="ViewModels\Framework\IViewModelFactory.cs" />
     <Compile Include="ViewModels\RootViewModel.cs" />
+    <Compile Include="Views\Components\AdvancedSettingsView.xaml.cs">
+      <DependentUpon>AdvancedSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Components\GeneralSettingsView.xaml.cs">
       <DependentUpon>GeneralSettingsView.xaml</DependentUpon>
     </Compile>
@@ -150,6 +154,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\Components\AdvancedSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Components\GeneralSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

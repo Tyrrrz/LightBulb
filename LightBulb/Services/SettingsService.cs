@@ -21,6 +21,12 @@ namespace LightBulb.Services
         // TODO: rename
         public bool IsInternetSyncEnabled { get; set; } = true;
 
+        public bool IsGammaPollingEnabled { get; set; } = true;
+
+        public bool IsGammaSmoothingEnabled { get; set; } = true;
+
+        public bool IsPauseWhenFullScreenEnabled { get; set; }
+
         public SettingsService()
         {
             // TODO: handle non-portable

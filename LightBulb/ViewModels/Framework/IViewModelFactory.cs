@@ -8,5 +8,7 @@ namespace LightBulb.ViewModels.Framework
         GeneralSettingsViewModel CreateGeneralSettingsViewModel();
 
         LocationSettingsViewModel CreateLocationSettingsViewModel();
+
+        AdvancedSettingsViewModel CreateAdvancedSettingsViewModel();
     }
 }

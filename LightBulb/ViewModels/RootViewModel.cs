@@ -87,6 +87,8 @@ namespace LightBulb.ViewModels
 
         public LocationSettingsViewModel LocationSettings { get; }
 
+        public AdvancedSettingsViewModel AdvancedSettings { get; }
+
         public int SettingsIndex { get; set; }
 
         public RootViewModel(IViewModelFactory viewModelFactory,
@@ -101,6 +103,7 @@ namespace LightBulb.ViewModels
             // Initialize view models
             GeneralSettings = viewModelFactory.CreateGeneralSettingsViewModel();
             LocationSettings = viewModelFactory.CreateLocationSettingsViewModel();
+            AdvancedSettings = viewModelFactory.CreateAdvancedSettingsViewModel();
 
             // When IsEnabled switches to 'true' - cancel 'disable temporarily'
             this.Bind(o => o.IsEnabled, (sender, args) =>
@@ -198,7 +201,7 @@ namespace LightBulb.ViewModels
                 return;
 
             // Determine if temperature transition should be smooth
-            var isSmooth = !IsCyclePreviewEnabled;
+            var isSmooth = _settingsService.IsGammaSmoothingEnabled && !IsCyclePreviewEnabled;
 
             // If smooth - advance towards target temperature in small steps
             if (isSmooth)
@@ -241,6 +244,8 @@ namespace LightBulb.ViewModels
 
         public void NavigateLocationSettings() => SettingsIndex = 1;
 
+        public void NavigateAdvancedSettings() => SettingsIndex = 2;
+
         public void ShowAbout() => Process.Start("https://github.com/Tyrrrz/LightBulb");
 
         public void ShowReleases() => Process.Start("https://github.com/Tyrrrz/LightBulb/releases");
@@ -252,6 +257,7 @@ namespace LightBulb.ViewModels
             // Dispose stuff
             _updateTimer.Dispose();
             _settingsAutoSaveTimer.Dispose();
+            _internetSyncTimer.Dispose();
             _checkForUpdatesTimer.Dispose();
             _enableAfterDelayTimer.Dispose();
 

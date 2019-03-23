@@ -268,6 +268,7 @@
 
                             <Button
                                 Padding="4"
+                                Command="{s:Action NavigateAdvancedSettings}"
                                 Style="{DynamicResource MaterialDesignFlatDarkButton}"
                                 ToolTip="Advanced">
                                 <materialDesign:PackIcon Kind="CheckboxMultipleMarkedOutline" />
@@ -298,6 +299,7 @@
 
                     <ContentControl s:View.Model="{Binding GeneralSettings}" />
                     <ContentControl s:View.Model="{Binding LocationSettings}" />
+                    <ContentControl s:View.Model="{Binding AdvancedSettings}" />
                 </materialDesign:Transitioner>
             </Border>
 
