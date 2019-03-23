@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using LightBulb.Models;
 using Tyrrrz.Settings;
 
@@ -29,14 +30,25 @@ namespace LightBulb.Services
 
         public SettingsService()
         {
-            // TODO: handle non-portable
+            // Determine if application is running as portable
+            var isPortable = Environment.GetCommandLineArgs().Contains("--portable");
 
-            Configuration.FileName = "Config.dat";
-            Configuration.SubDirectoryPath = "";
-            Configuration.StorageSpace = StorageSpace.Instance;
+            // If portable - store settings in the same directory as the executable
+            if (isPortable)
+            {
+                Configuration.FileName = "Config.dat";
+                Configuration.SubDirectoryPath = "";
+                Configuration.StorageSpace = StorageSpace.Instance;
+            }
+            // If not portable - store settings in roaming app data directory
+            else
+            {
+                Configuration.FileName = "Config.dat";
+                Configuration.SubDirectoryPath = "LightBulb";
+                Configuration.StorageSpace = StorageSpace.SyncedUserDomain;
+            }
 
             // Ignore failures when loading/saving settings
-            // TODO: logging?
             Configuration.ThrowIfCannotLoad = false;
             Configuration.ThrowIfCannotSave = false;
         }
