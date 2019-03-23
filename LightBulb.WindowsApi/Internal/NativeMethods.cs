@@ -8,7 +8,7 @@ namespace LightBulb.WindowsApi.Internal
     internal static partial class NativeMethods
     {
         public delegate void WinEventHandler(IntPtr hWinEventHook, uint eventType, IntPtr hWnd, int idObject,
-            int idChild, uint dwEventThread, uint dwmsEventTime);
+            int idChild, uint idEventThread, uint dwmsEventTime);
     }
 
     [SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -30,10 +30,10 @@ namespace LightBulb.WindowsApi.Internal
         public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
         [DllImport("gdi32.dll", EntryPoint = "SetDeviceGammaRamp", SetLastError = true)]
-        public static extern bool SetDeviceGammaRamp(IntPtr hDC, ref GammaRamp ramp);
+        public static extern bool SetDeviceGammaRamp(IntPtr hDC, ref GammaRamp lpRamp);
 
         [DllImport("gdi32.dll", EntryPoint = "GetDeviceGammaRamp", SetLastError = true)]
-        public static extern bool GetDeviceGammaRamp(IntPtr hDC, out GammaRamp ramp);
+        public static extern bool GetDeviceGammaRamp(IntPtr hDC, out GammaRamp lpRamp);
 
         [DllImport("user32.dll", EntryPoint = "RegisterHotKey", SetLastError = true)]
         public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
@@ -44,22 +44,16 @@ namespace LightBulb.WindowsApi.Internal
         [DllImport("user32.dll", EntryPoint = "GetForegroundWindow", SetLastError = true)]
         public static extern IntPtr GetForegroundWindow();
 
-        [DllImport("user32.dll", EntryPoint = "GetDesktopWindow", SetLastError = true)]
-        public static extern IntPtr GetDesktopWindow();
-
-        [DllImport("user32.dll", EntryPoint = "GetShellWindow", SetLastError = true)]
-        public static extern IntPtr GetShellWindow();
-
         [DllImport("user32.dll", EntryPoint = "GetWindowRect", SetLastError = true)]
-        public static extern bool GetWindowRect(IntPtr hWindow, out Rect rect);
+        public static extern bool GetWindowRect(IntPtr hWnd, out Rect lpRect);
 
         [DllImport("user32.dll", EntryPoint = "GetClientRect", SetLastError = true)]
-        public static extern bool GetClientRect(IntPtr hWindow, out Rect rect);
+        public static extern bool GetClientRect(IntPtr hWnd, out Rect lpRect);
 
         [DllImport("user32.dll", EntryPoint = "IsWindowVisible", SetLastError = true)]
-        public static extern bool IsWindowVisible(IntPtr hWindow);
+        public static extern bool IsWindowVisible(IntPtr hWnd);
 
         [DllImport("user32.dll", EntryPoint = "GetClassName", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern int GetClassName(IntPtr hWindow, StringBuilder className, int maxCount);
+        public static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
     }
 }
