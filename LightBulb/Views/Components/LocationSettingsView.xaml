@@ -6,20 +6,21 @@
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:s="https://github.com/canton7/Stylet"
     d:DataContext="{d:DesignInstance Type=components:LocationSettingsViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     Style="{DynamicResource MaterialDesignRoot}"
     mc:Ignorable="d">
     <StackPanel Orientation="Vertical">
-        <!--  Sunrise time temperature  -->
+        <!--  Sunrise time  -->
         <TextBlock Margin="5" ToolTip="When the sun rises">
             <Run Text="Sunrise time:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SunriseTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
         </TextBlock>
         <Slider
             Margin="7,0,7,5"
-            IsEnabled="{Binding IsInternetSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
+            IsEnabled="{Binding IsInternetSyncEnabled, Converter={x:Static converters:InverseBoolConverter.Instance}}"
             LargeChange="0.5"
             Maximum="24"
             Minimum="0"
@@ -28,14 +29,14 @@
             TickPlacement="BottomRight"
             Value="{Binding SunriseTime, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
 
-        <!--  Sunset time temperature  -->
+        <!--  Sunset time  -->
         <TextBlock Margin="5" ToolTip="When the sun sets">
             <Run Text="Sunset time:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SunsetTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
         </TextBlock>
         <Slider
             Margin="7,0,7,5"
-            IsEnabled="{Binding IsInternetSyncEnabled, Converter={StaticResource InvertBoolConverter}}"
+            IsEnabled="{Binding IsInternetSyncEnabled, Converter={x:Static converters:InverseBoolConverter.Instance}}"
             LargeChange="0.5"
             Maximum="24"
             Minimum="0"
@@ -63,43 +64,12 @@
                 IsChecked="{Binding IsInternetSyncEnabled}" />
         </Grid>
 
-        <!--  Geoinfo (when set)  -->
-        <TextBlock Margin="5" Text="Location:" />
-        <Grid Margin="5,0,5,5" Visibility="{Binding IsGeoInfoSet, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Collapsed}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <!--  Country flag  -->
-            <Image
-                Grid.Column="0"
-                Width="16"
-                Height="16"
-                VerticalAlignment="Center"
-                Source="{Binding GeoInfoCountryFlagUrl, IsAsync=True}" />
-
-            <!--  Geoinfo is set  -->
-            <TextBlock
-                Grid.Column="1"
-                Margin="3,0,0,0"
-                VerticalAlignment="Top"
-                TextWrapping="Wrap">
-                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.GeoInfo.City, Mode=OneWay, TargetNullValue=???}" />
-                <Run Text="/" />
-                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.GeoInfo.Country, Mode=OneWay, TargetNullValue=???}" />
-                <Run Text="(" /><Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.GeoInfo.Latitude, Mode=OneWay, TargetNullValue=xx}" />
-                <Run Text="lat" />
-                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SettingsService.GeoInfo.Longitude, Mode=OneWay, TargetNullValue=xx}" />
-                <Run Text="lng" /><Run Text=")" />
-            </TextBlock>
-        </Grid>
-
-        <!--  Geoinfo (when not set)  -->
-        <TextBlock
-            Margin="5,0,5,5"
-            Foreground="{DynamicResource PrimaryTextBrush}"
-            Text="&lt; not set &gt;"
-            Visibility="{Binding IsGeoInfoSet, Converter={StaticResource InvertBoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Collapsed}}" />
+        <!--  Location  -->
+        <TextBlock Margin="5" Visibility="{Binding Location, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+            <Run Text="Latitude:" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Location.Latitude, Mode=OneWay}" />
+            <Run Text="Longitude:" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Location.Longitude, Mode=OneWay}" />
+        </TextBlock>
     </StackPanel>
 </UserControl>

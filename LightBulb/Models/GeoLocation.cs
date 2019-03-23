@@ -32,6 +32,8 @@ namespace LightBulb.Models
                 return (Latitude.GetHashCode() * 397) ^ Longitude.GetHashCode();
             }
         }
+
+        public override string ToString() => $"Lat: {Latitude} / Lng: {Longitude}";
     }
 
     public partial struct GeoLocation

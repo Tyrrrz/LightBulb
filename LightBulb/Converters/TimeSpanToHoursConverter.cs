@@ -14,7 +14,7 @@ namespace LightBulb.Converters
             if (value is TimeSpan timeSpanValue)
                 return timeSpanValue.TotalHours;
 
-            throw new ArgumentException("Unexpected value.", nameof(value));
+            return default(double);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -22,7 +22,7 @@ namespace LightBulb.Converters
             if (value is double doubleValue)
                 return TimeSpan.FromHours(doubleValue);
 
-            throw new ArgumentException("Unexpected value.", nameof(value));
+            return default(TimeSpan);
         }
     }
 }

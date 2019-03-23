@@ -18,6 +18,7 @@ namespace LightBulb.ViewModels
 
         private readonly AutoResetTimer _updateTimer;
         private readonly AutoResetTimer _settingsAutoSaveTimer;
+        private readonly AutoResetTimer _internetSyncTimer;
         private readonly AutoResetTimer _checkForUpdatesTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
@@ -88,8 +89,10 @@ namespace LightBulb.ViewModels
 
         public int SettingsIndex { get; set; }
 
-        public RootViewModel(IViewModelFactory viewModelFactory, SettingsService settingsService,
-            UpdateService updateService, ColorTemperatureService colorTemperatureService, GammaService gammaService)
+        public RootViewModel(IViewModelFactory viewModelFactory,
+            SettingsService settingsService, UpdateService updateService,
+            ColorTemperatureService colorTemperatureService, GammaService gammaService,
+            GeoLocationService geoLocationService, SolarInfoService solarInfoService)
         {
             _settingsService = settingsService;
             _colorTemperatureService = colorTemperatureService;
@@ -119,6 +122,23 @@ namespace LightBulb.ViewModels
                     _settingsService.Save();
             });
 
+            _internetSyncTimer = new AutoResetTimer(async () =>
+            {
+                if (!_settingsService.IsInternetSyncEnabled)
+                    return;
+
+                // TODO: rework later
+                var location = await geoLocationService.GetLocationAsync();
+                var solarInfo = solarInfoService.GetSolarInfo(location);
+
+                if (_settingsService.IsInternetSyncEnabled)
+                {
+                    _settingsService.Location = location;
+                    _settingsService.SunriseTime = solarInfo.Sunrise.TimeOfDay;
+                    _settingsService.SunsetTime = solarInfo.Sunset.TimeOfDay;
+                }
+            });
+
             _checkForUpdatesTimer = new AutoResetTimer(async () =>
             {
                 IsUpdateAvailable = await updateService.CheckForUpdatesAsync();
@@ -137,6 +157,7 @@ namespace LightBulb.ViewModels
             // Start timers
             _updateTimer.Start(TimeSpan.FromMilliseconds(17)); // 60hz
             _settingsAutoSaveTimer.Start(TimeSpan.FromSeconds(5));
+            _internetSyncTimer.Start(TimeSpan.FromHours(3));
             _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
         }
 

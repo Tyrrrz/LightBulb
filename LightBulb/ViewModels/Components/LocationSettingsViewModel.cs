@@ -27,6 +27,12 @@ namespace LightBulb.ViewModels.Components
             set => _settingsService.Location = value;
         }
 
+        public bool IsInternetSyncEnabled
+        {
+            get => _settingsService.IsInternetSyncEnabled;
+            set => _settingsService.IsInternetSyncEnabled = value;
+        }
+
         public LocationSettingsViewModel(SettingsService settingsService)
         {
             _settingsService = settingsService;

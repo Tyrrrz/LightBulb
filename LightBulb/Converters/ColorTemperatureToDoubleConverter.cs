@@ -15,7 +15,7 @@ namespace LightBulb.Converters
             if (value is ColorTemperature temperature)
                 return temperature.Value;
 
-            throw new ArgumentException("Unexpected value.", nameof(value));
+            return default(double);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -23,7 +23,7 @@ namespace LightBulb.Converters
             if (value is double temperatureValue)
                 return new ColorTemperature(temperatureValue);
 
-            throw new ArgumentException("Unexpected value.", nameof(value));
+            return default(ColorTemperature);
         }
     }
 }

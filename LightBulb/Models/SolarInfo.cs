@@ -13,5 +13,7 @@ namespace LightBulb.Models
             Sunrise = sunrise;
             Sunset = sunset;
         }
+
+        public override string ToString() => $"Sunrise: {Sunrise:t} / Sunset: {Sunset:t}";
     }
 }
