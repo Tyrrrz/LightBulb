@@ -5,21 +5,9 @@ using System.Text;
 
 namespace LightBulb.WindowsApi.Internal
 {
-    internal static partial class NativeMethods
-    {
-        public delegate void WinEventHandler(IntPtr hWinEventHook, uint eventType, IntPtr hWnd, int idObject,
-            int idChild, uint idEventThread, uint dwmsEventTime);
-    }
-
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    internal static partial class NativeMethods
+    internal static class NativeMethods
     {
-        [DllImport("user32.dll", EntryPoint = "SetWinEventHook", SetLastError = true)]
-        public static extern IntPtr SetWinEventHook(
-            uint eventMin, uint eventMax,
-            IntPtr hmodWinEventProc, WinEventHandler lpfnWinEventProc,
-            uint idProcess, uint idThread, uint dwFlags);
-
         [DllImport("user32.dll", EntryPoint = "UnhookWinEvent", SetLastError = true)]
         public static extern bool UnhookWinEvent(IntPtr hWinEventHook);
 

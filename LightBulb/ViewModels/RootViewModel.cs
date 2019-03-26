@@ -15,6 +15,7 @@ namespace LightBulb.ViewModels
         private readonly SettingsService _settingsService;
         private readonly ColorTemperatureService _colorTemperatureService;
         private readonly GammaService _gammaService;
+        private readonly WindowService _windowService;
 
         private readonly AutoResetTimer _updateTimer;
         private readonly AutoResetTimer _settingsAutoSaveTimer;
@@ -28,12 +29,14 @@ namespace LightBulb.ViewModels
 
         public bool IsEnabled { get; set; } = true;
 
+        public bool IsPaused { get; private set; }
+
         public bool IsCyclePreviewEnabled { get; set; }
 
         public DateTimeOffset Instant { get; private set; } = DateTimeOffset.Now;
 
         public ColorTemperature TargetColorTemperature =>
-            IsEnabled || IsCyclePreviewEnabled
+            IsEnabled && !IsPaused || IsCyclePreviewEnabled
                 ? _colorTemperatureService.GetTemperature(Instant)
                 : ColorTemperature.Default;
 
@@ -45,24 +48,20 @@ namespace LightBulb.ViewModels
         {
             get
             {
-                // If disabled, not in cycle preview, and target temperature reached - disabled
-                if (!IsEnabled && !IsCyclePreviewEnabled && CurrentColorTemperature == TargetColorTemperature)
-                    return CycleState.Disabled;
-
                 // If target temperature has not been reached - in transition
                 if (CurrentColorTemperature != TargetColorTemperature)
                     return CycleState.Transition;
 
-                // If at max temperature - day
-                if (CurrentColorTemperature == _settingsService.MaxTemperature)
+                // If at max temperature and enabled and not paused - day
+                if (CurrentColorTemperature == _settingsService.MaxTemperature && IsEnabled && !IsPaused)
                     return CycleState.Day;
 
-                // If at min temperature - night
-                if (CurrentColorTemperature == _settingsService.MinTemperature)
+                // If at min temperature and enabled and not paused - night
+                if (CurrentColorTemperature == _settingsService.MinTemperature && IsEnabled && !IsPaused)
                     return CycleState.Night;
 
-                // Otherwise - in transition (shouldn't reach here, but just in case)
-                return CycleState.Transition;
+                // Otherwise - disabled
+                return CycleState.Disabled;
             }
         }
 
@@ -74,12 +73,12 @@ namespace LightBulb.ViewModels
                 if (IsCyclePreviewEnabled)
                     return $"Temp: {CurrentColorTemperature}   Time: {Instant:t}";
 
-                // If enabled or in transition - show current temperature
-                if (IsEnabled || CurrentColorTemperature != TargetColorTemperature)
+                // If in transition or not disabled or paused - show current temperature
+                if (CurrentColorTemperature != TargetColorTemperature || IsEnabled && !IsPaused)
                     return $"Temp: {CurrentColorTemperature}";
 
-                // Otherwise - disabled
-                return "Disabled";
+                // Otherwise - show "paused" or "disabled"
+                return IsPaused ? "Paused" : "Disabled";
             }
         }
 
@@ -94,11 +93,13 @@ namespace LightBulb.ViewModels
         public RootViewModel(IViewModelFactory viewModelFactory,
             SettingsService settingsService, UpdateService updateService,
             ColorTemperatureService colorTemperatureService, GammaService gammaService,
+            WindowService windowService,
             GeoLocationService geoLocationService, SolarInfoService solarInfoService)
         {
             _settingsService = settingsService;
             _colorTemperatureService = colorTemperatureService;
             _gammaService = gammaService;
+            _windowService = windowService;
 
             // Initialize view models
             GeneralSettings = viewModelFactory.CreateGeneralSettingsViewModel();
@@ -115,6 +116,7 @@ namespace LightBulb.ViewModels
             // Initialize timers
             _updateTimer = new AutoResetTimer(() =>
             {
+                UpdateIsPaused();
                 UpdateInstant();
                 UpdateGamma();
             });
@@ -164,6 +166,11 @@ namespace LightBulb.ViewModels
             _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
         }
 
+        private void UpdateIsPaused()
+        {
+            IsPaused = _settingsService.IsPauseWhenFullScreenEnabled && _windowService.IsForegroundWindowFullScreen();
+        }
+
         private void UpdateInstant()
         {
             // If in cycle preview mode - advance quickly until reached full cycle
@@ -196,8 +203,13 @@ namespace LightBulb.ViewModels
 
         private void UpdateGamma()
         {
-            // If reached target temperature and polling is disabled - return
-            if (CurrentColorTemperature == TargetColorTemperature && !_settingsService.IsGammaPollingEnabled)
+            // Determine if an update is needed
+            var isUpdateNeeded =
+                CurrentColorTemperature != TargetColorTemperature || // target temperature not reached yet
+                IsEnabled && _settingsService.IsGammaPollingEnabled; // gamma polling
+
+            // If update is not needed - return
+            if (!isUpdateNeeded)
                 return;
 
             // Determine if gamma change should be smooth

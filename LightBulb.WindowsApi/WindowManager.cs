@@ -8,77 +8,9 @@ namespace LightBulb.WindowsApi
 {
     public partial class WindowManager : IDisposable
     {
-        private readonly WinEvent _foregroundWindowChangedEvent;
-        private WinEvent _foregroundWindowLocationChangedEvent;
+        public IntPtr GetForegroundWindow() => NativeMethods.GetForegroundWindow();
 
-        private IntPtr _lastForegroundWindow;
-
-        public event EventHandler ForegroundWindowChanged;
-        public event EventHandler ForegroundWindowLocationChanged; 
-
-        public WindowManager()
-        {
-            var foregroundWindowLocationChangedEventHandler = new NativeMethods.WinEventHandler(
-                (hook, type, hWnd, idObject, child, thread, time) =>
-                {
-                    // Only events from windows
-                    if (idObject != 0)
-                        return;
-
-                    // Only events from foreground window
-                    if (hWnd != _lastForegroundWindow)
-                        return;
-
-                    // Fire event
-                    ForegroundWindowLocationChanged?.Invoke(this, EventArgs.Empty);
-                });
-
-            var foregroundWindowChangedEventHandler = new NativeMethods.WinEventHandler(
-                (hook, type, hWnd, idObject, child, thread, time) =>
-                {
-                    // Only events from windows
-                    if (idObject != 0)
-                        return;
-
-                    // Remember foreground window
-                    _lastForegroundWindow = hWnd;
-
-                    // Unhook location change event
-                    _foregroundWindowLocationChangedEvent?.Dispose();
-
-                    // Hook location change event of foreground window
-                    _foregroundWindowLocationChangedEvent =
-                        WinEvent.Register(0x800B, thread, foregroundWindowLocationChangedEventHandler);
-
-                    // Fire event
-                    ForegroundWindowChanged?.Invoke(this, EventArgs.Empty);
-                });
-
-            // Register foreground window change event
-            _foregroundWindowChangedEvent = WinEvent.Register(0x0003, foregroundWindowChangedEventHandler);
-        }
-
-        private string GetWindowClassName(IntPtr hWnd)
-        {
-            var buffer = new StringBuilder(256);
-            NativeMethods.GetClassName(hWnd, buffer, buffer.Capacity);
-
-            return buffer.ToString();
-        }
-
-        private Rect GetWindowRect(IntPtr hWnd)
-        {
-            NativeMethods.GetWindowRect(hWnd, out var rect);
-            return rect;
-        }
-
-        private Rect GetWindowClientRect(IntPtr hWnd)
-        {
-            NativeMethods.GetClientRect(hWnd, out var rect);
-            return rect;
-        }
-
-        private bool IsWindowFullScreen(IntPtr hWnd)
+        public bool IsWindowFullScreen(IntPtr hWnd)
         {
             // If window is a system window - return false
             var windowClassName = GetWindowClassName(hWnd);
@@ -115,21 +47,9 @@ namespace LightBulb.WindowsApi
                    absoluteClientRect.Right >= screenRect.Right && absoluteClientRect.Bottom >= screenRect.Bottom;
         }
 
-        public bool IsForegroundWindowFullScreen()
-        {
-            var hWnd = NativeMethods.GetForegroundWindow();
-
-            // If failed for some reason - return false
-            if (hWnd == IntPtr.Zero)
-                return false;
-
-            return IsWindowFullScreen(hWnd);
-        }
-
         public void Dispose()
         {
-            _foregroundWindowChangedEvent.Dispose();
-            _foregroundWindowLocationChangedEvent?.Dispose();
+            // Disposable for consistency with other WinApi manager classes
         }
     }
 
@@ -140,5 +60,25 @@ namespace LightBulb.WindowsApi
             "Progman", "WorkerW", "ImmersiveLauncher", "ImmersiveSwitchList", "MultitaskingViewFrame",
             "ForegroundStaging", "ApplicationManager_DesktopShellWindow"
         };
+
+        private static string GetWindowClassName(IntPtr hWnd)
+        {
+            var buffer = new StringBuilder(256);
+            NativeMethods.GetClassName(hWnd, buffer, buffer.Capacity);
+
+            return buffer.ToString();
+        }
+
+        private static Rect GetWindowRect(IntPtr hWnd)
+        {
+            NativeMethods.GetWindowRect(hWnd, out var rect);
+            return rect;
+        }
+
+        private static Rect GetWindowClientRect(IntPtr hWnd)
+        {
+            NativeMethods.GetClientRect(hWnd, out var rect);
+            return rect;
+        }
     }
 }
