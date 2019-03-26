@@ -196,8 +196,8 @@ namespace LightBulb.ViewModels
 
         private void UpdateGamma()
         {
-            // If reached target temperature - return
-            if (CurrentColorTemperature == TargetColorTemperature)
+            // If reached target temperature and polling is disabled - return
+            if (CurrentColorTemperature == TargetColorTemperature && !_settingsService.IsGammaPollingEnabled)
                 return;
 
             // Determine if gamma change should be smooth
