@@ -89,7 +89,7 @@ namespace LightBulb.ViewModels
 
         public AdvancedSettingsViewModel AdvancedSettings { get; }
 
-        public int SettingsIndex { get; set; }
+        public int SettingsIndex { get; private set; }
 
         public RootViewModel(IViewModelFactory viewModelFactory,
             SettingsService settingsService, UpdateService updateService,
@@ -200,7 +200,7 @@ namespace LightBulb.ViewModels
             if (CurrentColorTemperature == TargetColorTemperature)
                 return;
 
-            // Determine if temperature transition should be smooth
+            // Determine if gamma change should be smooth
             var isSmooth = _settingsService.IsGammaSmoothingEnabled && !IsCyclePreviewEnabled;
 
             // If smooth - advance towards target temperature in small steps

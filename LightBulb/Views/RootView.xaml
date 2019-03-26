@@ -280,7 +280,7 @@
 
             <!--  Settings page  -->
             <Border Grid.Row="1" Background="{DynamicResource MaterialDesignCardBackground}">
-                <materialDesign:Transitioner SelectedIndex="{Binding SettingsIndex}">
+                <materialDesign:Transitioner SelectedIndex="{Binding SettingsIndex, Mode=OneWay}">
                     <materialDesign:Transitioner.Resources>
                         <Style TargetType="{x:Type materialDesign:TransitionerSlide}">
                             <Setter Property="Background" Value="{DynamicResource MaterialDesignCardBackground}" />

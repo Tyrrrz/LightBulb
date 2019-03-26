@@ -14,9 +14,6 @@ namespace LightBulb.Services
 
         public async Task<bool> CheckForUpdatesAsync()
         {
-            // Cleanup leftover files
-            _updateManager.Cleanup();
-
             // Check for updates
             var check = await _updateManager.CheckForUpdatesAsync();
 
