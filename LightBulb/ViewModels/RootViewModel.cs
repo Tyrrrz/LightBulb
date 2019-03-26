@@ -121,11 +121,7 @@ namespace LightBulb.ViewModels
                 UpdateGamma();
             });
 
-            _settingsAutoSaveTimer = new AutoResetTimer(() =>
-            {
-                if (!_settingsService.IsSaved)
-                    _settingsService.Save();
-            });
+            _settingsAutoSaveTimer = new AutoResetTimer(() => _settingsService.SaveIfNeeded());
 
             _internetSyncTimer = new AutoResetTimer(async () =>
             {
@@ -262,7 +258,14 @@ namespace LightBulb.ViewModels
 
         public void ShowReleases() => Process.Start("https://github.com/Tyrrrz/LightBulb/releases");
 
-        public void Exit() => RequestClose();
+        public void Exit()
+        {
+            // Save settings
+            _settingsService.SaveIfNeeded();
+
+            // Close
+            RequestClose();
+        }
 
         public void Dispose()
         {

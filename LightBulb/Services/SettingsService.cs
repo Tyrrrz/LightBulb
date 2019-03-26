@@ -52,5 +52,11 @@ namespace LightBulb.Services
             Configuration.ThrowIfCannotLoad = false;
             Configuration.ThrowIfCannotSave = false;
         }
+
+        public void SaveIfNeeded()
+        {
+            if (!IsSaved)
+                Save();
+        }
     }
 }
