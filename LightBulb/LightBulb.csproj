@@ -87,6 +87,7 @@
     <Compile Include="Services\WindowService.cs" />
     <Compile Include="ViewModels\Components\AdvancedSettingsViewModel.cs" />
     <Compile Include="ViewModels\Components\GeneralSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Components\HotKeyViewModel.cs" />
     <Compile Include="ViewModels\Components\LocationSettingsViewModel.cs" />
     <Compile Include="ViewModels\Framework\DialogManager.cs" />
     <Compile Include="ViewModels\Framework\DialogScreen.cs" />
@@ -98,6 +99,9 @@
     </Compile>
     <Compile Include="Views\Components\GeneralSettingsView.xaml.cs">
       <DependentUpon>GeneralSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Components\HotKeyView.xaml.cs">
+      <DependentUpon>HotKeyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Components\LocationSettingsView.xaml.cs">
       <DependentUpon>LocationSettingsView.xaml</DependentUpon>
@@ -160,6 +164,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Components\GeneralSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Components\HotKeyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

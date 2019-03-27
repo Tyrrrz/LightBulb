@@ -36,9 +36,14 @@ namespace LightBulb.Models
 
         public override string ToString()
         {
+            // If key and modifiers are not set - return "none"
+            if (Key == Key.None && Modifiers == ModifierKeys.None)
+                return "< None >";
+
+            // Create string buffer
             var buffer = new StringBuilder();
 
-            // Modifiers
+            // Append modifiers
             if (Modifiers.HasFlag(ModifierKeys.Control))
                 buffer.Append("Ctrl + ");
             if (Modifiers.HasFlag(ModifierKeys.Shift))
@@ -48,7 +53,7 @@ namespace LightBulb.Models
             if (Modifiers.HasFlag(ModifierKeys.Windows))
                 buffer.Append("Win + ");
 
-            // Key
+            // Append key
             buffer.Append(Key);
 
             return buffer.ToString();
@@ -60,5 +65,10 @@ namespace LightBulb.Models
         public static bool operator ==(HotKey a, HotKey b) => a.Equals(b);
 
         public static bool operator !=(HotKey a, HotKey b) => !(a == b);
+    }
+
+    public partial struct HotKey
+    {
+        public static HotKey None { get; } = new HotKey();
     }
 }

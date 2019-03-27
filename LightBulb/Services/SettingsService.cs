@@ -28,6 +28,10 @@ namespace LightBulb.Services
 
         public bool IsPauseWhenFullScreenEnabled { get; set; }
 
+        public HotKey ToggleHotkey { get; set; }
+
+        public HotKey ToggleGammaPollingHotKey { get; set; }
+
         public SettingsService()
         {
             // Determine if application is running as portable
@@ -36,14 +40,14 @@ namespace LightBulb.Services
             // If portable - store settings in the same directory as the executable
             if (isPortable)
             {
-                Configuration.FileName = "Config.dat";
+                Configuration.FileName = "Settings.dat";
                 Configuration.SubDirectoryPath = "";
                 Configuration.StorageSpace = StorageSpace.Instance;
             }
             // If not portable - store settings in roaming app data directory
             else
             {
-                Configuration.FileName = "Config.dat";
+                Configuration.FileName = "Settings.dat";
                 Configuration.SubDirectoryPath = "LightBulb";
                 Configuration.StorageSpace = StorageSpace.SyncedUserDomain;
             }
