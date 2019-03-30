@@ -1,4 +1,5 @@
-﻿using LightBulb.Models;
+﻿using LightBulb.Messages;
+using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.ViewModels.Framework;
 using Stylet;
@@ -7,6 +8,7 @@ namespace LightBulb.ViewModels.Components
 {
     public class AdvancedSettingsViewModel : PropertyChangedBase
     {
+        private readonly IEventAggregator _eventAggregator;
         private readonly SettingsService _settingsService;
         private readonly HotKeyService _hotKeyService;
 
@@ -32,9 +34,10 @@ namespace LightBulb.ViewModels.Components
 
         public HotKeyViewModel ToggleGammaPollingHotKey { get; }
 
-        public AdvancedSettingsViewModel(IViewModelFactory viewModelFactory, SettingsService settingsService,
-            HotKeyService hotKeyService)
+        public AdvancedSettingsViewModel(IEventAggregator eventAggregator, IViewModelFactory viewModelFactory,
+            SettingsService settingsService, HotKeyService hotKeyService)
         {
+            _eventAggregator = eventAggregator;
             _settingsService = settingsService;
             _hotKeyService = hotKeyService;
 
@@ -69,11 +72,13 @@ namespace LightBulb.ViewModels.Components
         {
             _hotKeyService.UnregisterAllHotKeys();
 
+            // TODO: rework later
             if (ToggleHotKey != HotKey.None)
-                _hotKeyService.RegisterHotKey(ToggleHotKey, () => { });
+                _hotKeyService.RegisterHotKey(ToggleHotKey,
+                    () => _eventAggregator.Publish(new ToggleIsEnabledMessage()));
 
             if (ToggleGammaPollingHotKey != HotKey.None)
-                _hotKeyService.RegisterHotKey(ToggleHotKey,
+                _hotKeyService.RegisterHotKey(ToggleGammaPollingHotKey,
                     () => _settingsService.IsGammaPollingEnabled = !_settingsService.IsGammaPollingEnabled);
         }
     }

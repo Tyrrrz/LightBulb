@@ -72,6 +72,7 @@
     <Compile Include="Converters\TimeSpanToMinutesConverter.cs" />
     <Compile Include="Internal\Extensions.cs" />
     <Compile Include="Internal\Guards.cs" />
+    <Compile Include="Messages\ToggleIsEnabledMessage.cs" />
     <Compile Include="Models\ColorTemperature.cs" />
     <Compile Include="Models\GeoLocation.cs" />
     <Compile Include="Models\HotKey.cs" />

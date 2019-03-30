@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using LightBulb.Messages;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.ViewModels.Framework;
@@ -10,7 +11,7 @@ using Stylet;
 
 namespace LightBulb.ViewModels
 {
-    public class RootViewModel : Screen, IDisposable
+    public class RootViewModel : Screen, IHandle<ToggleIsEnabledMessage>, IDisposable
     {
         private readonly SettingsService _settingsService;
         private readonly ColorTemperatureService _colorTemperatureService;
@@ -48,7 +49,7 @@ namespace LightBulb.ViewModels
         {
             get
             {
-                // If target temperature has not been reached - in transition
+                // If target temperature has not been reached - transition
                 if (CurrentColorTemperature != TargetColorTemperature)
                     return CycleState.Transition;
 
@@ -90,16 +91,18 @@ namespace LightBulb.ViewModels
 
         public int SettingsIndex { get; private set; }
 
-        public RootViewModel(IViewModelFactory viewModelFactory,
+        public RootViewModel(IEventAggregator eventAggregator, IViewModelFactory viewModelFactory,
             SettingsService settingsService, UpdateService updateService,
             ColorTemperatureService colorTemperatureService, GammaService gammaService,
-            WindowService windowService,
-            GeoLocationService geoLocationService, SolarInfoService solarInfoService)
+            WindowService windowService, GeoLocationService geoLocationService, SolarInfoService solarInfoService)
         {
             _settingsService = settingsService;
             _colorTemperatureService = colorTemperatureService;
             _gammaService = gammaService;
             _windowService = windowService;
+
+            // Handle messages
+            eventAggregator.Subscribe(this);
 
             // Initialize view models
             GeneralSettings = viewModelFactory.CreateGeneralSettingsViewModel();
@@ -266,6 +269,8 @@ namespace LightBulb.ViewModels
             // Close
             RequestClose();
         }
+
+        public void Handle(ToggleIsEnabledMessage message) => IsEnabled = !IsEnabled;
 
         public void Dispose()
         {
