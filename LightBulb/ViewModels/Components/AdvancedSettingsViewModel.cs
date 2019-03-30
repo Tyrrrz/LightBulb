@@ -10,7 +10,7 @@ namespace LightBulb.ViewModels.Components
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly SettingsService _settingsService;
-        private readonly HotKeyService _hotKeyService;
+        private readonly WinApiService _winApiService;
 
         public bool IsGammaPollingEnabled
         {
@@ -35,11 +35,11 @@ namespace LightBulb.ViewModels.Components
         public HotKeyViewModel ToggleGammaPollingHotKey { get; }
 
         public AdvancedSettingsViewModel(IEventAggregator eventAggregator, IViewModelFactory viewModelFactory,
-            SettingsService settingsService, HotKeyService hotKeyService)
+            SettingsService settingsService, WinApiService winApiService)
         {
             _eventAggregator = eventAggregator;
             _settingsService = settingsService;
-            _hotKeyService = hotKeyService;
+            _winApiService = winApiService;
 
             // Initialize view models
             ToggleHotKey = viewModelFactory.CreateHotKeyViewModel();
@@ -70,15 +70,15 @@ namespace LightBulb.ViewModels.Components
 
         public void RegisterHotKeys()
         {
-            _hotKeyService.UnregisterAllHotKeys();
+            _winApiService.UnregisterAllHotKeys();
 
             // TODO: rework later
             if (ToggleHotKey != HotKey.None)
-                _hotKeyService.RegisterHotKey(ToggleHotKey,
+                _winApiService.RegisterHotKey(ToggleHotKey,
                     () => _eventAggregator.Publish(new ToggleIsEnabledMessage()));
 
             if (ToggleGammaPollingHotKey != HotKey.None)
-                _hotKeyService.RegisterHotKey(ToggleGammaPollingHotKey,
+                _winApiService.RegisterHotKey(ToggleGammaPollingHotKey,
                     () => _settingsService.IsGammaPollingEnabled = !_settingsService.IsGammaPollingEnabled);
         }
     }

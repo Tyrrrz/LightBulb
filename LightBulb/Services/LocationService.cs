@@ -8,11 +8,11 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
-    public class GeoLocationService : IDisposable
+    public class LocationService : IDisposable
     {
         private readonly HttpClient _httpClient = new HttpClient();
 
-        public GeoLocationService()
+        public LocationService()
         {
             // Set user-agent header
             var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();

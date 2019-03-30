@@ -14,9 +14,8 @@ namespace LightBulb.ViewModels
     public class RootViewModel : Screen, IHandle<ToggleIsEnabledMessage>, IDisposable
     {
         private readonly SettingsService _settingsService;
-        private readonly ColorTemperatureService _colorTemperatureService;
-        private readonly GammaService _gammaService;
-        private readonly WindowService _windowService;
+        private readonly CalculationService _calculationService;
+        private readonly WinApiService _winApiService;
 
         private readonly AutoResetTimer _updateTimer;
         private readonly AutoResetTimer _settingsAutoSaveTimer;
@@ -38,7 +37,7 @@ namespace LightBulb.ViewModels
 
         public ColorTemperature TargetColorTemperature =>
             IsEnabled && !IsPaused || IsCyclePreviewEnabled
-                ? _colorTemperatureService.GetTemperature(Instant)
+                ? _calculationService.CalculateColorTemperature(Instant)
                 : ColorTemperature.Default;
 
         public ColorTemperature CurrentColorTemperature { get; private set; } = ColorTemperature.Default;
@@ -49,19 +48,19 @@ namespace LightBulb.ViewModels
         {
             get
             {
-                // If target temperature has not been reached - transition
+                // If target temperature has not been reached - return transition
                 if (CurrentColorTemperature != TargetColorTemperature)
                     return CycleState.Transition;
 
-                // If at max temperature and enabled and not paused - day
+                // If at max temperature and enabled and not paused - return day
                 if (CurrentColorTemperature == _settingsService.MaxTemperature && IsEnabled && !IsPaused)
                     return CycleState.Day;
 
-                // If at min temperature and enabled and not paused - night
+                // If at min temperature and enabled and not paused - return night
                 if (CurrentColorTemperature == _settingsService.MinTemperature && IsEnabled && !IsPaused)
                     return CycleState.Night;
 
-                // Otherwise - disabled
+                // Otherwise - return disabled
                 return CycleState.Disabled;
             }
         }
@@ -70,15 +69,15 @@ namespace LightBulb.ViewModels
         {
             get
             {
-                // If in cycle preview - show current temperature and instant
+                // If in cycle preview - return current temperature and instant
                 if (IsCyclePreviewEnabled)
                     return $"Temp: {CurrentColorTemperature}   Time: {Instant:t}";
 
-                // If in transition or not disabled or paused - show current temperature
+                // If in transition or not disabled or paused - return current temperature
                 if (CurrentColorTemperature != TargetColorTemperature || IsEnabled && !IsPaused)
                     return $"Temp: {CurrentColorTemperature}";
 
-                // Otherwise - show "paused" or "disabled"
+                // Otherwise - return "paused" or "disabled"
                 return IsPaused ? "Paused" : "Disabled";
             }
         }
@@ -93,13 +92,12 @@ namespace LightBulb.ViewModels
 
         public RootViewModel(IEventAggregator eventAggregator, IViewModelFactory viewModelFactory,
             SettingsService settingsService, UpdateService updateService,
-            ColorTemperatureService colorTemperatureService, GammaService gammaService,
-            WindowService windowService, GeoLocationService geoLocationService, SolarInfoService solarInfoService)
+            CalculationService calculationService, LocationService locationService,
+            WinApiService winApiService)
         {
             _settingsService = settingsService;
-            _colorTemperatureService = colorTemperatureService;
-            _gammaService = gammaService;
-            _windowService = windowService;
+            _calculationService = calculationService;
+            _winApiService = winApiService;
 
             // Handle messages
             eventAggregator.Subscribe(this);
@@ -132,14 +130,15 @@ namespace LightBulb.ViewModels
                     return;
 
                 // TODO: rework later
-                var location = await geoLocationService.GetLocationAsync();
-                var solarInfo = solarInfoService.GetSolarInfo(location);
+                var location = await locationService.GetLocationAsync();
 
                 if (_settingsService.IsInternetSyncEnabled)
                 {
                     _settingsService.Location = location;
-                    _settingsService.SunriseTime = solarInfo.Sunrise.TimeOfDay;
-                    _settingsService.SunsetTime = solarInfo.Sunset.TimeOfDay;
+
+                    var day = DateTimeOffset.Now;
+                    _settingsService.SunriseTime = _calculationService.CalculateSunrise(location, day).TimeOfDay;
+                    _settingsService.SunsetTime = _calculationService.CalculateSunset(location, day).TimeOfDay;
                 }
             });
 
@@ -167,7 +166,7 @@ namespace LightBulb.ViewModels
 
         private void UpdateIsPaused()
         {
-            IsPaused = _settingsService.IsPauseWhenFullScreenEnabled && _windowService.IsForegroundWindowFullScreen();
+            IsPaused = _settingsService.IsPauseWhenFullScreenEnabled && _winApiService.IsForegroundWindowFullScreen();
         }
 
         private void UpdateInstant()
@@ -235,7 +234,7 @@ namespace LightBulb.ViewModels
             }
 
             // Update gamma
-            _gammaService.SetGamma(CurrentColorTemperature);
+            _winApiService.SetGamma(CurrentColorTemperature);
         }
 
         public void Enable() => IsEnabled = true;
@@ -282,7 +281,7 @@ namespace LightBulb.ViewModels
             _enableAfterDelayTimer.Dispose();
 
             // Reset gamma
-            _gammaService.SetGamma(ColorTemperature.Default);
+            _winApiService.SetGamma(ColorTemperature.Default);
         }
     }
 }

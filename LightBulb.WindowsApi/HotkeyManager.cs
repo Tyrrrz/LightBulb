@@ -6,14 +6,14 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.WindowsApi
 {
-    public class HotkeyManager : IDisposable
+    public class HotKeyManager : IDisposable
     {
         private readonly Dictionary<int, Action> _hotKeyHandlersMap = new Dictionary<int, Action>();
         private readonly WndProcSpongeWindow _wndProcSponge;
 
         private int _lastHotKeyId;
 
-        public HotkeyManager()
+        public HotKeyManager()
         {
             _wndProcSponge = new WndProcSpongeWindow(m =>
             {
@@ -29,7 +29,7 @@ namespace LightBulb.WindowsApi
             });
         }
 
-        ~HotkeyManager()
+        ~HotKeyManager()
         {
             Dispose();
         }
