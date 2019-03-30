@@ -136,9 +136,9 @@ namespace LightBulb.ViewModels
                 {
                     _settingsService.Location = location;
 
-                    var day = DateTimeOffset.Now;
-                    _settingsService.SunriseTime = _calculationService.CalculateSunrise(location, day).TimeOfDay;
-                    _settingsService.SunsetTime = _calculationService.CalculateSunset(location, day).TimeOfDay;
+                    var date = DateTimeOffset.Now;
+                    _settingsService.SunriseTime = _calculationService.CalculateSunrise(location, date).TimeOfDay;
+                    _settingsService.SunsetTime = _calculationService.CalculateSunset(location, date).TimeOfDay;
                 }
             });
 

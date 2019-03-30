@@ -32,7 +32,7 @@ namespace LightBulb.WindowsApi
             var clientRect = GetWindowClientRect(hWnd);
 
             // Calculate absolute client rect (not relative to window rect)
-            var absoluteClientRect = new Rect(
+            var absoluteWindowClientRect = new Rect(
                 windowRect.Left + clientRect.Left,
                 windowRect.Top + clientRect.Top,
                 windowRect.Left + clientRect.Right,
@@ -42,9 +42,11 @@ namespace LightBulb.WindowsApi
             // Get screen rect
             var screenRect = Screen.FromHandle(hWnd).Bounds;
 
-            // Bounding check
-            return absoluteClientRect.Left <= 0 && absoluteClientRect.Top <= 0 &&
-                   absoluteClientRect.Right >= screenRect.Right && absoluteClientRect.Bottom >= screenRect.Bottom;
+            // Bounding box check
+            return absoluteWindowClientRect.Left <= 0 &&
+                   absoluteWindowClientRect.Top <= 0 &&
+                   absoluteWindowClientRect.Right >= screenRect.Right &&
+                   absoluteWindowClientRect.Bottom >= screenRect.Bottom;
         }
 
         public void Dispose()

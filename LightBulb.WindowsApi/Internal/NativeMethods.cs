@@ -8,9 +8,6 @@ namespace LightBulb.WindowsApi.Internal
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     internal static class NativeMethods
     {
-        [DllImport("user32.dll", EntryPoint = "UnhookWinEvent", SetLastError = true)]
-        public static extern bool UnhookWinEvent(IntPtr hWinEventHook);
-
         [DllImport("user32.dll", EntryPoint = "GetDC", SetLastError = true)]
         public static extern IntPtr GetDC(IntPtr hWnd);
 
@@ -41,7 +38,7 @@ namespace LightBulb.WindowsApi.Internal
         [DllImport("user32.dll", EntryPoint = "IsWindowVisible", SetLastError = true)]
         public static extern bool IsWindowVisible(IntPtr hWnd);
 
-        [DllImport("user32.dll", EntryPoint = "GetClassName", SetLastError = true, CharSet = CharSet.Unicode)]
+        [DllImport("user32.dll", EntryPoint = "GetClassName", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
     }
 }
