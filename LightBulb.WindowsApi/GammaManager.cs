@@ -1,7 +1,6 @@
 ﻿using System;
 using LightBulb.WindowsApi.Internal;
 using LightBulb.WindowsApi.Models;
-using Microsoft.Win32;
 
 namespace LightBulb.WindowsApi
 {
@@ -12,17 +11,12 @@ namespace LightBulb.WindowsApi
         private readonly IntPtr _window;
         private readonly IntPtr _deviceContext;
 
-        private ColorBalance _lastColorBalance = ColorBalance.Default;
         private int _gammaChannelOffset;
 
         public GammaManager(IntPtr window)
         {
             _window = window;
             _deviceContext = NativeMethods.GetDC(window);
-
-            // Refresh gamma on specific system events
-            SystemEvents.DisplaySettingsChanging += (sender, args) => SetGamma(_lastColorBalance);
-            SystemEvents.PowerModeChanged += (sender, args) => SetGamma(_lastColorBalance);
         }
 
         public GammaManager() : this(IntPtr.Zero)
@@ -72,7 +66,6 @@ namespace LightBulb.WindowsApi
 
                 // Set gamma
                 NativeMethods.SetDeviceGammaRamp(_deviceContext, ref ramp);
-                _lastColorBalance = colorBalance;
             }
         }
 

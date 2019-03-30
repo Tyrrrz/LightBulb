@@ -28,15 +28,15 @@ namespace LightBulb.WindowsApi
             if (windowRect == Rect.Empty)
                 return false;
 
-            // Get client rect
-            var clientRect = GetWindowClientRect(hWnd);
+            // Get window client rect
+            var windowClientRect = GetWindowClientRect(hWnd);
 
-            // Calculate absolute client rect (not relative to window rect)
+            // Calculate absolute window client rect (not relative to window rect)
             var absoluteWindowClientRect = new Rect(
-                windowRect.Left + clientRect.Left,
-                windowRect.Top + clientRect.Top,
-                windowRect.Left + clientRect.Right,
-                windowRect.Top + clientRect.Bottom
+                windowRect.Left + windowClientRect.Left,
+                windowRect.Top + windowClientRect.Top,
+                windowRect.Left + windowClientRect.Right,
+                windowRect.Top + windowClientRect.Bottom
             );
 
             // Get screen rect
