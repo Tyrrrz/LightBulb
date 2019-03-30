@@ -12,13 +12,13 @@
     Style="{DynamicResource MaterialDesignRoot}"
     mc:Ignorable="d">
     <StackPanel Orientation="Vertical">
-        <!--  Day-time temperature  -->
-        <TextBlock Margin="5" ToolTip="Color temperature during day-time">
+        <!--  Max temperature  -->
+        <TextBlock Margin="6" ToolTip="Color temperature during day-time">
             <Run Text="Day-time color temperature:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding MaxColorTemperature, Mode=OneWay}" />
         </TextBlock>
         <Slider
-            Margin="7,0,7,5"
+            Margin="8,0,8,6"
             IsSnapToTickEnabled="True"
             LargeChange="500"
             Maximum="6600"
@@ -28,13 +28,13 @@
             TickPlacement="BottomRight"
             Value="{Binding MaxColorTemperature, Converter={x:Static converters:ColorTemperatureToDoubleConverter.Instance}}" />
 
-        <!--  Night-time temperature  -->
-        <TextBlock Margin="5" ToolTip="Color temperature during night-time">
+        <!--  Min temperature  -->
+        <TextBlock Margin="6" ToolTip="Color temperature during night-time">
             <Run Text="Night-time color temperature:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding MinColorTemperature, Mode=OneWay}" />
         </TextBlock>
         <Slider
-            Margin="7,0,7,5"
+            Margin="8,0,8,6"
             IsSnapToTickEnabled="True"
             LargeChange="500"
             Maximum="6600"
@@ -44,13 +44,13 @@
             TickPlacement="BottomRight"
             Value="{Binding MinColorTemperature, Converter={x:Static converters:ColorTemperatureToDoubleConverter.Instance}}" />
 
-        <!--  Temperature switch duration  -->
-        <TextBlock Margin="5" ToolTip="How long does it take to switch between day and night temperatures">
+        <!--  Temperature transition duration  -->
+        <TextBlock Margin="6" ToolTip="Duration of sunrise and sunset">
             <Run Text="Transition duration:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding TemperatureTransitionDuration, Mode=OneWay}" />
         </TextBlock>
         <Slider
-            Margin="7,0,7,5"
+            Margin="8,0,8,6"
             IsSnapToTickEnabled="True"
             LargeChange="30"
             Maximum="180"

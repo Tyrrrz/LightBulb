@@ -14,12 +14,12 @@
     mc:Ignorable="d">
     <StackPanel Orientation="Vertical">
         <!--  Sunrise time  -->
-        <TextBlock Margin="5" ToolTip="When the sun rises">
+        <TextBlock Margin="6" ToolTip="Sunrise time of day">
             <Run Text="Sunrise time:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SunriseTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
         </TextBlock>
         <Slider
-            Margin="7,0,7,5"
+            Margin="8,0,8,6"
             IsEnabled="{Binding IsInternetSyncEnabled, Converter={x:Static converters:InverseBoolConverter.Instance}}"
             LargeChange="0.5"
             Maximum="24"
@@ -30,12 +30,12 @@
             Value="{Binding SunriseTime, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
 
         <!--  Sunset time  -->
-        <TextBlock Margin="5" ToolTip="When the sun sets">
+        <TextBlock Margin="6" ToolTip="Sunset time of day">
             <Run Text="Sunset time:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SunsetTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
         </TextBlock>
         <Slider
-            Margin="7,0,7,5"
+            Margin="8,0,8,6"
             IsEnabled="{Binding IsInternetSyncEnabled, Converter={x:Static converters:InverseBoolConverter.Instance}}"
             LargeChange="0.5"
             Maximum="24"
@@ -46,7 +46,7 @@
             Value="{Binding SunsetTime, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
 
         <!--  Internet sync on/off  -->
-        <Grid Margin="5">
+        <Grid Margin="6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -56,7 +56,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Internet synchronization:"
-                ToolTip="Pull sunrise and sunset times for your location from the Internet" />
+                ToolTip="Pull sunrise and sunset times for your location automatically from the Internet" />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"
@@ -65,7 +65,7 @@
         </Grid>
 
         <!--  Location  -->
-        <TextBlock Margin="5" Visibility="{Binding Location, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+        <TextBlock Margin="6" Visibility="{Binding Location, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
             <Run Text="Latitude:" />
             <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Location.Latitude, Mode=OneWay}" />
             <Run Text="Longitude:" />

@@ -11,6 +11,7 @@ namespace LightBulb.Services
 
         public ColorTemperature MinTemperature { get; set; } = new ColorTemperature(3900);
 
+        // TODO: get rid of this and calculate it implicitly
         public TimeSpan TemperatureTransitionDuration { get; set; } = TimeSpan.FromMinutes(90);
 
         public TimeSpan SunriseTime { get; set; } = new TimeSpan(07, 20, 00);

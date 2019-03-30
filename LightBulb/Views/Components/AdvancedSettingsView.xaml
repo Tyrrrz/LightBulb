@@ -13,7 +13,7 @@
     mc:Ignorable="d">
     <StackPanel Orientation="Vertical">
         <!--  Gamma polling enabled/disabled  -->
-        <Grid Margin="5">
+        <Grid Margin="6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -23,7 +23,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Gamma polling:"
-                ToolTip="Refresh gamma settings every few seconds, making sure they are not overriden" />
+                ToolTip="Repeatedly refresh gamma to prevent other applications from overriding it" />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"
@@ -32,7 +32,7 @@
         </Grid>
 
         <!--  Gamma smoothing enabled/disabled  -->
-        <Grid Margin="5">
+        <Grid Margin="6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -42,7 +42,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Gamma smoothing:"
-                ToolTip="Switch temperatures slowly, giving time for eyes to adjust" />
+                ToolTip="Transition slowly when changing gamma to give time for eyes to adjust" />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"
@@ -51,7 +51,7 @@
         </Grid>
 
         <!--  Pause when full screen enabled/disabled  -->
-        <Grid Margin="5">
+        <Grid Margin="6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -61,7 +61,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Pause when fullscreen:"
-                ToolTip="Reset gamma when any fullscreen window is in foreground" />
+                ToolTip="Reset gamma to default and don't change it when any fullscreen window is in foreground" />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"
@@ -70,7 +70,7 @@
         </Grid>
 
         <!--  Toggle hotkey  -->
-        <Grid Margin="5">
+        <Grid Margin="6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -80,7 +80,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Toggle LightBulb:"
-                ToolTip="Hotkey to switch LightBulb on/off" />
+                ToolTip="Hot key to switch LightBulb on/off" />
             <ContentControl
                 Grid.Column="1"
                 Width="120"
@@ -91,7 +91,7 @@
         </Grid>
 
         <!--  Toggle polling hotkey  -->
-        <Grid Margin="5">
+        <Grid Margin="6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -101,7 +101,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Toggle gamma polling:"
-                ToolTip="Hotkey to switch gamma polling on/off" />
+                ToolTip="Hot key to switch gamma polling on/off" />
             <ContentControl
                 Grid.Column="1"
                 Width="120"
