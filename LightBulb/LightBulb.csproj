@@ -1,21 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D55442F3-01FD-488F-ABE0-0A71B4B79315}</ProjectGuid>
+    <ProjectGuid>{0A32502C-95DD-4CDA-B98F-36891AD566C4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LightBulb</RootNamespace>
     <AssemblyName>LightBulb</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -39,13 +37,18 @@
   <PropertyGroup>
     <ApplicationIcon>..\favicon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -58,87 +61,49 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Helpers\SyncedTimer.cs" />
-    <Compile Include="Helpers\Timer.cs" />
-    <Compile Include="Helpers\ValueSmoother.cs" />
-    <Compile Include="Internal\Extensions.cs" />
-    <Compile Include="Internal\HookManager.cs" />
-    <Compile Include="Internal\NativeMethods.cs" />
-    <Compile Include="Internal\SpongeWindow.cs" />
-    <Compile Include="Internal\WndProcEventArgs.cs" />
-    <Compile Include="Locator.cs" />
-    <Compile Include="Converters\HotkeyToStringConverter.cs" />
-    <Page Include="Views\GeneralSettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AdvancedSettingsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\GeoSettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\HotkeyEditorControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\ColorIntensity.cs" />
+    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Converters\ColorTemperatureToDoubleConverter.cs" />
+    <Compile Include="Converters\InverseBoolConverter.cs" />
+    <Compile Include="Converters\TimeSpanToHoursConverter.cs" />
+    <Compile Include="Converters\TimeSpanToMinutesConverter.cs" />
+    <Compile Include="Internal\Extensions.cs" />
+    <Compile Include="Internal\Guards.cs" />
+    <Compile Include="Messages\ToggleIsEnabledMessage.cs" />
+    <Compile Include="Models\ColorTemperature.cs" />
+    <Compile Include="Models\GeoLocation.cs" />
+    <Compile Include="Models\HotKey.cs" />
     <Compile Include="Models\CycleState.cs" />
-    <Compile Include="Models\GammaRamp.cs" />
-    <Compile Include="Models\GeoInfo.cs" />
-    <Compile Include="Models\Hotkey.cs" />
-    <Compile Include="Models\Proxy.cs" />
-    <Compile Include="Models\Rect.cs" />
-    <Compile Include="Models\SolarInfo.cs" />
-    <Compile Include="Services\FileSettingsService.cs" />
-    <Compile Include="Services\HttpService.cs" />
-    <Compile Include="Services\IGammaService.cs" />
-    <Compile Include="Services\IGeoService.cs" />
-    <Compile Include="Services\IHotkeyService.cs" />
-    <Compile Include="Services\IHttpService.cs" />
-    <Compile Include="Services\ISettingsService.cs" />
-    <Compile Include="Services\ITemperatureService.cs" />
-    <Compile Include="Services\IVersionCheckService.cs" />
-    <Compile Include="Services\IWindowService.cs" />
-    <Compile Include="Services\TemperatureService.cs" />
-    <Compile Include="Services\WebGeoService.cs" />
-    <Compile Include="Services\WebVersionCheckService.cs" />
-    <Compile Include="Services\WindowsGammaService.cs" />
-    <Compile Include="Services\WindowsHotkeyService.cs" />
-    <Compile Include="Services\WindowsWindowService.cs" />
-    <Compile Include="ViewModels\AdvancedSettingsViewModel.cs" />
-    <Compile Include="ViewModels\GeneralSettingsViewModel.cs" />
-    <Compile Include="ViewModels\GeoSettingsViewModel.cs" />
-    <Compile Include="ViewModels\IAdvancedSettingsViewModel.cs" />
-    <Compile Include="ViewModels\IGeneralSettingsViewModel.cs" />
-    <Compile Include="ViewModels\IGeoSettingsViewModel.cs" />
-    <Compile Include="ViewModels\IMainViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="Views\GeneralSettingsView.xaml.cs">
-      <DependentUpon>GeneralSettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AdvancedSettingsView.xaml.cs">
+    <Compile Include="Services\CalculationService.cs" />
+    <Compile Include="Services\LocationService.cs" />
+    <Compile Include="Services\SettingsService.cs" />
+    <Compile Include="Services\UpdateService.cs" />
+    <Compile Include="Services\WinApiService.cs" />
+    <Compile Include="ViewModels\Components\AdvancedSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Components\GeneralSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Components\HotKeyViewModel.cs" />
+    <Compile Include="ViewModels\Components\LocationSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Framework\DialogManager.cs" />
+    <Compile Include="ViewModels\Framework\DialogScreen.cs" />
+    <Compile Include="ViewModels\Framework\IViewModelFactory.cs" />
+    <Compile Include="ViewModels\RootViewModel.cs" />
+    <Compile Include="Views\Components\AdvancedSettingsView.xaml.cs">
       <DependentUpon>AdvancedSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GeoSettingsView.xaml.cs">
-      <DependentUpon>GeoSettingsView.xaml</DependentUpon>
+    <Compile Include="Views\Components\GeneralSettingsView.xaml.cs">
+      <DependentUpon>GeneralSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\HotkeyEditorControl.xaml.cs">
-      <DependentUpon>HotkeyEditorControl.xaml</DependentUpon>
+    <Compile Include="Views\Components\HotKeyView.xaml.cs">
+      <DependentUpon>HotKeyView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
+    <Compile Include="Views\Components\LocationSettingsView.xaml.cs">
+      <DependentUpon>LocationSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RootView.xaml.cs">
+      <DependentUpon>RootView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -154,10 +119,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="..\favicon.ico" />
@@ -166,34 +132,59 @@
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf">
       <Version>1.0.8</Version>
     </PackageReference>
-    <PackageReference Include="MaterialDesignColors">
-      <Version>1.1.3</Version>
-    </PackageReference>
     <PackageReference Include="MaterialDesignThemes">
-      <Version>2.3.1.953</Version>
-    </PackageReference>
-    <PackageReference Include="MvvmLightLibs">
-      <Version>5.3.0</Version>
+      <Version>2.5.0.1205</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>10.0.3</Version>
+      <Version>12.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Onova">
+      <Version>2.4.2</Version>
+    </PackageReference>
+    <PackageReference Include="PropertyChanged.Fody">
+      <Version>2.6.0</Version>
+    </PackageReference>
+    <PackageReference Include="Stylet">
+      <Version>1.1.22</Version>
     </PackageReference>
     <PackageReference Include="Tyrrrz.Extensions">
-      <Version>1.5.0</Version>
+      <Version>1.5.1</Version>
     </PackageReference>
     <PackageReference Include="Tyrrrz.Settings">
-      <Version>1.3.2</Version>
-    </PackageReference>
-    <PackageReference Include="Tyrrrz.WpfExtensions">
-      <Version>1.0.5</Version>
+      <Version>1.3.4</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\Components\AdvancedSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Components\GeneralSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Components\HotKeyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Components\LocationSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RootView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LightBulb.Timers\LightBulb.Timers.csproj">
+      <Project>{ad032031-20fe-43c7-8531-92c9ab99f318}</Project>
+      <Name>LightBulb.Timers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LightBulb.WindowsApi\LightBulb.WindowsApi.csproj">
+      <Project>{966ee539-7568-40be-85d7-362d8922dea8}</Project>
+      <Name>LightBulb.WindowsApi</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

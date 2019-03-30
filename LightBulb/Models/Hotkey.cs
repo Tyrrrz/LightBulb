@@ -1,56 +1,74 @@
 ﻿using System;
+using System.Text;
+using System.Windows.Input;
 
 namespace LightBulb.Models
 {
-    /// <summary>
-    /// Combination of a key and modifiers
-    /// </summary>
-    public class Hotkey : IEquatable<Hotkey>
+    public partial struct HotKey : IEquatable<HotKey>
     {
-        /// <summary>
-        /// Key
-        /// </summary>
-        public int Key { get; }
+        public Key Key { get; }
 
-        /// <summary>
-        /// Modifiers
-        /// </summary>
-        public int Modifiers { get; }
+        public ModifierKeys Modifiers { get; }
 
-        public Hotkey(int key, int modifiers)
+        public HotKey(Key key, ModifierKeys modifiers = ModifierKeys.None)
         {
             Key = key;
             Modifiers = modifiers;
         }
 
+        public bool Equals(HotKey other) => Key == other.Key && Modifiers == other.Modifiers;
+
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(this, obj)) return true;
-            if (ReferenceEquals(obj, null)) return false;
-            return Equals(obj as Hotkey);
-        }
+            if (obj is null)
+                return false;
 
-        public bool Equals(Hotkey other)
-        {
-            if (ReferenceEquals(other, null)) return false;
-            return Key == other.Key && Modifiers == other.Modifiers;
+            return obj is HotKey other && Equals(other);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return (Key*397) ^ Modifiers;
+                return ((int) Key * 397) ^ (int) Modifiers;
             }
         }
 
-        public static bool operator ==(Hotkey a, Hotkey b)
+        public override string ToString()
         {
-            if (ReferenceEquals(a, b)) return true;
-            if (ReferenceEquals(a, null)) return false;
-            return a.Equals(b);
-        }
+            // If key and modifiers are not set - return "none"
+            if (Key == Key.None && Modifiers == ModifierKeys.None)
+                return "< None >";
 
-        public static bool operator !=(Hotkey a, Hotkey b) => !(a == b);
+            // Create string buffer
+            var buffer = new StringBuilder();
+
+            // Append modifiers
+            if (Modifiers.HasFlag(ModifierKeys.Control))
+                buffer.Append("Ctrl + ");
+            if (Modifiers.HasFlag(ModifierKeys.Shift))
+                buffer.Append("Shift + ");
+            if (Modifiers.HasFlag(ModifierKeys.Alt))
+                buffer.Append("Alt + ");
+            if (Modifiers.HasFlag(ModifierKeys.Windows))
+                buffer.Append("Win + ");
+
+            // Append key
+            buffer.Append(Key);
+
+            return buffer.ToString();
+        }
+    }
+
+    public partial struct HotKey
+    {
+        public static bool operator ==(HotKey a, HotKey b) => a.Equals(b);
+
+        public static bool operator !=(HotKey a, HotKey b) => !(a == b);
+    }
+
+    public partial struct HotKey
+    {
+        public static HotKey None { get; } = new HotKey();
     }
 }
