@@ -78,7 +78,7 @@ namespace LightBulb.Services
 
         private double RadiansToDegrees(double radians) => radians * 180 / Math.PI;
 
-        private DateTimeOffset CalculateSunriseSunset(GeoLocation location, DateTimeOffset day,
+        private DateTimeOffset CalculateSunriseSunset(GeoLocation location, DateTimeOffset date,
             bool isSunrise)
         {
             // Based on:
@@ -90,7 +90,7 @@ namespace LightBulb.Services
             // Convert longitude to hour value and calculate an approximate time
             var lngHours = location.Longitude / 15;
             var timeApproxHours = isSunrise ? 6 : 18;
-            var timeApproxDays = day.DayOfYear + (timeApproxHours - lngHours) / 24;
+            var timeApproxDays = date.DayOfYear + (timeApproxHours - lngHours) / 24;
 
             // Calculate the Sun's mean anomaly
             var sunMeanAnomaly = 0.9856 * timeApproxDays - 3.289;
@@ -128,13 +128,13 @@ namespace LightBulb.Services
             // Calculate local mean time
             var meanTime = sunLocalHours + sunRightAscHours - 0.06571 * timeApproxDays - 6.622;
 
-            return day.Date.AddHours(meanTime);
+            return date.ResetTimeOfDay() + TimeSpan.FromHours(meanTime);
         }
 
-        public DateTimeOffset CalculateSunrise(GeoLocation location, DateTimeOffset day) =>
-            CalculateSunriseSunset(location, day, true);
+        public DateTimeOffset CalculateSunrise(GeoLocation location, DateTimeOffset date) =>
+            CalculateSunriseSunset(location, date, true);
 
-        public DateTimeOffset CalculateSunset(GeoLocation location, DateTimeOffset day) =>
-            CalculateSunriseSunset(location, day, false);
+        public DateTimeOffset CalculateSunset(GeoLocation location, DateTimeOffset date) =>
+            CalculateSunriseSunset(location, date, false);
     }
 }
