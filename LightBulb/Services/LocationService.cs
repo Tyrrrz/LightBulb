@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using LightBulb.Models;
 using Newtonsoft.Json.Linq;
-using Tyrrrz.Extensions;
 
 namespace LightBulb.Services
 {
@@ -35,7 +35,8 @@ namespace LightBulb.Services
 
         public async Task<GeoLocation> GetLocationAsync(string query)
         {
-            var request = $"https://nominatim.openstreetmap.org/search?q={query.UrlEncode()}&format=json";
+            var queryEncoded = WebUtility.UrlEncode(query);
+            var request = $"https://nominatim.openstreetmap.org/search?q={queryEncoded}&format=json";
             var response = await _httpClient.GetStringAsync(request);
             var responseJson = JToken.Parse(response);
 

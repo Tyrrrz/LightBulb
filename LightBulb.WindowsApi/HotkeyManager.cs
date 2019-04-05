@@ -25,7 +25,7 @@ namespace LightBulb.WindowsApi
                 var id = m.WParam.ToInt32();
 
                 // Process hotkey press
-                _hotKeyHandlersMap.GetOrDefault(id)?.Invoke();
+                _hotKeyHandlersMap.GetValueOrDefault(id)?.Invoke();
             });
         }
 
