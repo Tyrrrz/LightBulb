@@ -3,8 +3,8 @@
 [![Build](https://img.shields.io/appveyor/ci/Tyrrrz/LightBulb/master.svg)](https://ci.appveyor.com/project/Tyrrrz/LightBulb)
 [![Release](https://img.shields.io/github/release/Tyrrrz/LightBulb.svg)](https://github.com/Tyrrrz/LightBulb/releases)
 [![Downloads](https://img.shields.io/github/downloads/Tyrrrz/LightBulb/total.svg)](https://github.com/Tyrrrz/LightBulb/releases)
-[![Donate](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://patreon.com/tyrrrz)
-[![Donate](https://img.shields.io/badge/buymeacoffee-donate-yellow.svg)](https://buymeacoffee.com/tyrrrz)
+[![Donate](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://patreon.com/Tyrrrz)
+[![Donate](https://img.shields.io/badge/buymeacoffee-donate-yellow.svg)](https://buymeacoffee.com/Tyrrrz)
 
 LightBulb is an application that reduces eyestrain produced by staring at a computer screen when working late hours. As the day goes on, it continuously adjusts gamma, transitioning the display color temperature from cold blue in the afternoon to warm yellow during the night. Its primary objective is to match the color of the screen to the light sources of your surrounding environment - typically, sunlight during the day and artificial light during the night. LightBulb has minimal impact on performance and offers many customization options.
 
@@ -19,7 +19,7 @@ _Currently only compatible with Windows 7 or higher._
 ## Download
 
 - [Stable releases](https://github.com/Tyrrrz/LightBulb/releases)
-- Chocolatey: `choco install lightbulb`
+- [Chocolatey](https://chocolatey.org/packages/LightBulb): `choco install lightbulb`
 - [Continuous integration](https://ci.appveyor.com/project/Tyrrrz/LightBulb)
 
 ## Features
