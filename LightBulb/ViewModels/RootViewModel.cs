@@ -4,9 +4,9 @@ using System.Reflection;
 using LightBulb.Messages;
 using LightBulb.Models;
 using LightBulb.Services;
-using LightBulb.ViewModels.Framework;
 using LightBulb.Timers;
 using LightBulb.ViewModels.Components;
+using LightBulb.ViewModels.Framework;
 using Stylet;
 
 namespace LightBulb.ViewModels

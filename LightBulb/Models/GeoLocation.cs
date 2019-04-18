@@ -2,7 +2,7 @@
 
 namespace LightBulb.Models
 {
-    public partial struct GeoLocation : IEquatable<GeoLocation>
+    public readonly partial struct GeoLocation : IEquatable<GeoLocation>
     {
         public double Latitude { get; }
 

@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace LightBulb.Models
 {
-    public partial struct HotKey : IEquatable<HotKey>
+    public readonly partial struct HotKey : IEquatable<HotKey>
     {
         public Key Key { get; }
 

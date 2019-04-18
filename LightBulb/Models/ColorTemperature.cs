@@ -3,7 +3,7 @@ using LightBulb.Internal;
 
 namespace LightBulb.Models
 {
-    public partial struct ColorTemperature : IEquatable<ColorTemperature>, IComparable<ColorTemperature>
+    public readonly partial struct ColorTemperature : IEquatable<ColorTemperature>, IComparable<ColorTemperature>
     {
         public double Value { get; }
 

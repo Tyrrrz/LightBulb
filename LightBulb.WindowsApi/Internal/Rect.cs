@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace LightBulb.WindowsApi.Internal
 {
     [StructLayout(LayoutKind.Sequential)]
-    [SuppressMessage("ReSharper", "ConvertToAutoPropertyWhenPossible")]
-    public partial struct Rect : IEquatable<Rect>
+    public readonly partial struct Rect : IEquatable<Rect>
     {
         public int Left { get; }
 

@@ -2,7 +2,7 @@
 
 namespace LightBulb.WindowsApi.Models
 {
-    public partial struct ColorBalance : IEquatable<ColorBalance>
+    public readonly partial struct ColorBalance : IEquatable<ColorBalance>
     {
         public double Red { get; }
 
