@@ -12,9 +12,9 @@ _Currently only compatible with Windows 7 or higher._
 
 ## Screenshots
 
-![](http://tyrrrz.me/Projects/LightBulb/Images/1.png)
-![](http://tyrrrz.me/Projects/LightBulb/Images/2.png)
-![](http://tyrrrz.me/Projects/LightBulb/Images/3.png)
+![general](.screenshots/general.png)
+![geo](.screenshots/geo.png)
+![advanced](.screenshots/advanced.png)
 
 ## Download
 
