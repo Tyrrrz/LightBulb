@@ -14,10 +14,13 @@ namespace LightBulb.ViewModels
     public class RootViewModel : Screen, IHandle<ToggleIsEnabledMessage>, IDisposable
     {
         private readonly SettingsService _settingsService;
+        private readonly UpdateService _updateService;
         private readonly CalculationService _calculationService;
-        private readonly WinApiService _winApiService;
+        private readonly LocationService _locationService;
+        private readonly SystemService _systemService;
 
         private readonly AutoResetTimer _updateTimer;
+        private readonly AutoResetTimer _gammaPollingTimer;
         private readonly AutoResetTimer _settingsAutoSaveTimer;
         private readonly AutoResetTimer _internetSyncTimer;
         private readonly AutoResetTimer _checkForUpdatesTimer;
@@ -93,11 +96,13 @@ namespace LightBulb.ViewModels
         public RootViewModel(IEventAggregator eventAggregator, IViewModelFactory viewModelFactory,
             SettingsService settingsService, UpdateService updateService,
             CalculationService calculationService, LocationService locationService,
-            WinApiService winApiService)
+            SystemService systemService)
         {
             _settingsService = settingsService;
+            _updateService = updateService;
             _calculationService = calculationService;
-            _winApiService = winApiService;
+            _locationService = locationService;
+            _systemService = systemService;
 
             // Handle messages
             eventAggregator.Subscribe(this);
@@ -122,6 +127,12 @@ namespace LightBulb.ViewModels
                 UpdateGamma();
             });
 
+            _gammaPollingTimer = new AutoResetTimer(() =>
+            {
+                if (_settingsService.IsGammaPollingEnabled && IsEnabled && CurrentColorTemperature == TargetColorTemperature)
+                    _systemService.SetGamma(CurrentColorTemperature);
+            });
+
             _settingsAutoSaveTimer = new AutoResetTimer(() => _settingsService.SaveIfNeeded());
 
             _internetSyncTimer = new AutoResetTimer(async () =>
@@ -130,21 +141,21 @@ namespace LightBulb.ViewModels
                     return;
 
                 // TODO: rework later
-                var location = await locationService.GetLocationAsync();
+                var location = await _locationService.GetLocationAsync();
 
                 if (_settingsService.IsInternetSyncEnabled)
                 {
                     _settingsService.Location = location;
 
-                    var date = DateTimeOffset.Now;
-                    _settingsService.SunriseTime = _calculationService.CalculateSunrise(location, date).TimeOfDay;
-                    _settingsService.SunsetTime = _calculationService.CalculateSunset(location, date).TimeOfDay;
+                    var instant = DateTimeOffset.Now;
+                    _settingsService.SunriseTime = _calculationService.CalculateSunrise(location, instant).TimeOfDay;
+                    _settingsService.SunsetTime = _calculationService.CalculateSunset(location, instant).TimeOfDay;
                 }
             });
 
             _checkForUpdatesTimer = new AutoResetTimer(async () =>
             {
-                IsUpdateAvailable = await updateService.CheckForUpdatesAsync();
+                IsUpdateAvailable = await _updateService.CheckForUpdatesAsync();
             });
 
             _enableAfterDelayTimer = new ManualResetTimer(Enable);
@@ -159,6 +170,7 @@ namespace LightBulb.ViewModels
 
             // Start timers
             _updateTimer.Start(TimeSpan.FromMilliseconds(17)); // 60hz
+            _gammaPollingTimer.Start(TimeSpan.FromSeconds(1));
             _settingsAutoSaveTimer.Start(TimeSpan.FromSeconds(5));
             _internetSyncTimer.Start(TimeSpan.FromHours(3));
             _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
@@ -166,7 +178,7 @@ namespace LightBulb.ViewModels
 
         private void UpdateIsPaused()
         {
-            IsPaused = _settingsService.IsPauseWhenFullScreenEnabled && _winApiService.IsForegroundWindowFullScreen();
+            IsPaused = _settingsService.IsPauseWhenFullScreenEnabled && _systemService.IsForegroundWindowFullScreen();
         }
 
         private void UpdateInstant()
@@ -201,13 +213,8 @@ namespace LightBulb.ViewModels
 
         private void UpdateGamma()
         {
-            // Determine if an update is needed
-            var isUpdateNeeded =
-                CurrentColorTemperature != TargetColorTemperature || // target temperature not reached yet
-                IsEnabled && _settingsService.IsGammaPollingEnabled; // gamma polling
-
             // If update is not needed - return
-            if (!isUpdateNeeded)
+            if (CurrentColorTemperature == TargetColorTemperature)
                 return;
 
             // Determine if gamma change should be smooth
@@ -234,7 +241,7 @@ namespace LightBulb.ViewModels
             }
 
             // Update gamma
-            _winApiService.SetGamma(CurrentColorTemperature);
+            _systemService.SetGamma(CurrentColorTemperature);
         }
 
         public void Enable() => IsEnabled = true;
@@ -281,7 +288,7 @@ namespace LightBulb.ViewModels
             _enableAfterDelayTimer.Dispose();
 
             // Reset gamma
-            _winApiService.SetGamma(ColorTemperature.Default);
+            _systemService.SetGamma(ColorTemperature.Default);
         }
     }
 }

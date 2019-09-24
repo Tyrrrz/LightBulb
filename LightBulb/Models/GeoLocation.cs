@@ -14,8 +14,7 @@ namespace LightBulb.Models
             Longitude = longitude;
         }
 
-        public bool Equals(GeoLocation other) =>
-            Latitude.Equals(other.Latitude) && Longitude.Equals(other.Longitude);
+        public bool Equals(GeoLocation other) => Latitude.Equals(other.Latitude) && Longitude.Equals(other.Longitude);
 
         public override bool Equals(object obj)
         {

@@ -17,8 +17,7 @@ namespace LightBulb.WindowsApi.Models
             Blue = blue;
         }
 
-        public bool Equals(ColorBalance other) =>
-            Red.Equals(other.Red) && Green.Equals(other.Green) && Blue.Equals(other.Blue);
+        public bool Equals(ColorBalance other) => Red.Equals(other.Red) && Green.Equals(other.Green) && Blue.Equals(other.Blue);
 
         public override bool Equals(object obj)
         {

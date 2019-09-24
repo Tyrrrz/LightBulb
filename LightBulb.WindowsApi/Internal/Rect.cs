@@ -22,10 +22,7 @@ namespace LightBulb.WindowsApi.Internal
             Bottom = bottom;
         }
 
-        public bool Equals(Rect other)
-        {
-            return Left == other.Left && Top == other.Top && Right == other.Right && Bottom == other.Bottom;
-        }
+        public bool Equals(Rect other) => Left == other.Left && Top == other.Top && Right == other.Right && Bottom == other.Bottom;
 
         public override bool Equals(object obj)
         {

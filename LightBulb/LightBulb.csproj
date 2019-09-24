@@ -71,8 +71,10 @@
     <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\TimeSpanToHoursConverter.cs" />
     <Compile Include="Converters\TimeSpanToMinutesConverter.cs" />
+    <Compile Include="Internal\DirectoryEx.cs" />
     <Compile Include="Internal\Extensions.cs" />
     <Compile Include="Internal\Guards.cs" />
+    <Compile Include="Internal\UnitConversion.cs" />
     <Compile Include="Messages\ToggleIsEnabledMessage.cs" />
     <Compile Include="Models\ColorTemperature.cs" />
     <Compile Include="Models\GeoLocation.cs" />
@@ -82,7 +84,7 @@
     <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\UpdateService.cs" />
-    <Compile Include="Services\WinApiService.cs" />
+    <Compile Include="Services\SystemService.cs" />
     <Compile Include="ViewModels\Components\AdvancedSettingsViewModel.cs" />
     <Compile Include="ViewModels\Components\GeneralSettingsViewModel.cs" />
     <Compile Include="ViewModels\Components\HotKeyViewModel.cs" />
@@ -111,15 +113,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -143,7 +136,7 @@
       <Version>12.0.2</Version>
     </PackageReference>
     <PackageReference Include="Onova">
-      <Version>2.4.3</Version>
+      <Version>2.4.5</Version>
     </PackageReference>
     <PackageReference Include="PropertyChanged.Fody">
       <Version>2.6.1</Version>

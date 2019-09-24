@@ -4,7 +4,7 @@ using LightBulb.Models;
 
 namespace LightBulb.Services
 {
-    public partial class CalculationService
+    public class CalculationService
     {
         private readonly SettingsService _settingsService;
 
@@ -12,11 +12,7 @@ namespace LightBulb.Services
         {
             _settingsService = settingsService;
         }
-    }
 
-    // Color temperature
-    public partial class CalculationService
-    {
         public ColorTemperature CalculateColorTemperature(DateTimeOffset instant)
         {
             // TODO: transition should end at sunset, not start at sunset
@@ -69,16 +65,8 @@ namespace LightBulb.Services
                 return maxTemp;
             }
         }
-    }
 
-    // Sunrise/sunset
-    public partial class CalculationService
-    {
-        private double DegreesToRadians(double degree) => degree * (Math.PI / 180);
-
-        private double RadiansToDegrees(double radians) => radians * 180 / Math.PI;
-
-        private DateTimeOffset CalculateSunriseSunset(GeoLocation location, DateTimeOffset date,
+        private DateTimeOffset CalculateSunriseSunset(GeoLocation location, DateTimeOffset instant,
             bool isSunrise)
         {
             // Based on:
@@ -90,51 +78,52 @@ namespace LightBulb.Services
             // Convert longitude to hour value and calculate an approximate time
             var lngHours = location.Longitude / 15;
             var timeApproxHours = isSunrise ? 6 : 18;
-            var timeApproxDays = date.DayOfYear + (timeApproxHours - lngHours) / 24;
+            var timeApproxDays = instant.DayOfYear + (timeApproxHours - lngHours) / 24;
 
             // Calculate the Sun's mean anomaly
             var sunMeanAnomaly = 0.9856 * timeApproxDays - 3.289;
 
             // Calculate the Sun's true longitude
             var sunLng = sunMeanAnomaly + 282.634 +
-                         1.916 * Math.Sin(DegreesToRadians(sunMeanAnomaly)) +
-                         0.020 * Math.Sin(2 * DegreesToRadians(sunMeanAnomaly));
-            sunLng = sunLng % 360; // wrap [0;360)
+                         1.916 * Math.Sin(UnitConversion.DegreesToRadians(sunMeanAnomaly)) +
+                         0.020 * Math.Sin(2 * UnitConversion.DegreesToRadians(sunMeanAnomaly));
+
+            sunLng %= 360; // wrap [0;360)
 
             // Calculate the Sun's right ascension
-            var sunRightAsc = RadiansToDegrees(Math.Atan(0.91764 * Math.Tan(DegreesToRadians(sunLng))));
-            sunRightAsc = sunRightAsc % 360; // wrap [0;360)
+            var sunRightAsc = UnitConversion.RadiansToDegrees(Math.Atan(0.91764 * Math.Tan(UnitConversion.DegreesToRadians(sunLng))));
+            sunRightAsc %= 360; // wrap [0;360)
 
             // Right ascension value needs to be in the same quadrant as true longitude
             var sunLngQuad = Math.Floor(sunLng / 90) * 90;
             var sunRightAscQuad = Math.Floor(sunRightAsc / 90) * 90;
             var sunRightAscHours = sunRightAsc + (sunLngQuad - sunRightAscQuad);
-            sunRightAscHours = sunRightAscHours / 15;
+            sunRightAscHours /= 15;
 
             // Calculate Sun's declination
-            var sinDec = 0.39782 * Math.Sin(DegreesToRadians(sunLng));
+            var sinDec = 0.39782 * Math.Sin(UnitConversion.DegreesToRadians(sunLng));
             var cosDec = Math.Cos(Math.Asin(sinDec));
 
             // Calculate the Sun's local hour angle
             const double zenith = 90.83; // official sunrise/sunset
             var sunLocalHoursCos =
-                (Math.Cos(DegreesToRadians(zenith)) - sinDec * Math.Sin(DegreesToRadians(location.Latitude))) /
-                (cosDec * Math.Cos(DegreesToRadians(location.Latitude)));
+                (Math.Cos(UnitConversion.DegreesToRadians(zenith)) - sinDec * Math.Sin(UnitConversion.DegreesToRadians(location.Latitude))) /
+                (cosDec * Math.Cos(UnitConversion.DegreesToRadians(location.Latitude)));
             var sunLocalHours = isSunrise
-                ? 360 - RadiansToDegrees(Math.Acos(sunLocalHoursCos))
-                : RadiansToDegrees(Math.Acos(sunLocalHoursCos));
-            sunLocalHours = sunLocalHours / 15;
+                ? 360 - UnitConversion.RadiansToDegrees(Math.Acos(sunLocalHoursCos))
+                : UnitConversion.RadiansToDegrees(Math.Acos(sunLocalHoursCos));
+            sunLocalHours /= 15;
 
             // Calculate local mean time
             var meanTime = sunLocalHours + sunRightAscHours - 0.06571 * timeApproxDays - 6.622;
 
-            return date.ResetTimeOfDay() + TimeSpan.FromHours(meanTime);
+            return instant.ResetTimeOfDay() + TimeSpan.FromHours(meanTime);
         }
 
-        public DateTimeOffset CalculateSunrise(GeoLocation location, DateTimeOffset date) =>
-            CalculateSunriseSunset(location, date, true);
+        public DateTimeOffset CalculateSunrise(GeoLocation location, DateTimeOffset instant) =>
+            CalculateSunriseSunset(location, instant, true);
 
-        public DateTimeOffset CalculateSunset(GeoLocation location, DateTimeOffset date) =>
-            CalculateSunriseSunset(location, date, false);
+        public DateTimeOffset CalculateSunset(GeoLocation location, DateTimeOffset instant) =>
+            CalculateSunriseSunset(location, instant, false);
     }
 }

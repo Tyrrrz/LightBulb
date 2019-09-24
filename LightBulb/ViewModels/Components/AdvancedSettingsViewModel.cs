@@ -10,7 +10,7 @@ namespace LightBulb.ViewModels.Components
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly SettingsService _settingsService;
-        private readonly WinApiService _winApiService;
+        private readonly SystemService _systemService;
 
         public bool IsGammaPollingEnabled
         {
@@ -35,11 +35,11 @@ namespace LightBulb.ViewModels.Components
         public HotKeyViewModel ToggleGammaPollingHotKey { get; }
 
         public AdvancedSettingsViewModel(IEventAggregator eventAggregator, IViewModelFactory viewModelFactory,
-            SettingsService settingsService, WinApiService winApiService)
+            SettingsService settingsService, SystemService systemService)
         {
             _eventAggregator = eventAggregator;
             _settingsService = settingsService;
-            _winApiService = winApiService;
+            _systemService = systemService;
 
             // Initialize view models
             ToggleHotKey = viewModelFactory.CreateHotKeyViewModel();
@@ -49,15 +49,14 @@ namespace LightBulb.ViewModels.Components
             _settingsService.PropertyChanged += (sender, args) => NotifyOfPropertyChange(null);
 
             // Update hotkeys when they change in settings
-            _settingsService.Bind(o => o.ToggleHotkey,
-                (sender, args) => ToggleHotKey.Model = _settingsService.ToggleHotkey);
+            _settingsService.Bind(o => o.ToggleHotKey, (sender, args) => ToggleHotKey.Model = _settingsService.ToggleHotKey);
             _settingsService.Bind(o => o.ToggleGammaPollingHotKey,
                 (sender, args) => ToggleGammaPollingHotKey.Model = _settingsService.ToggleGammaPollingHotKey);
 
             // Re-register hotkeys when they change
             ToggleHotKey.Bind(o => o.Model, (sender, args) =>
             {
-                _settingsService.ToggleHotkey = ToggleHotKey;
+                _settingsService.ToggleHotKey = ToggleHotKey;
                 RegisterHotKeys();
             });
 
@@ -70,15 +69,15 @@ namespace LightBulb.ViewModels.Components
 
         public void RegisterHotKeys()
         {
-            _winApiService.UnregisterAllHotKeys();
+            _systemService.UnregisterAllHotKeys();
 
             // TODO: rework later
             if (ToggleHotKey != HotKey.None)
-                _winApiService.RegisterHotKey(ToggleHotKey,
+                _systemService.RegisterHotKey(ToggleHotKey,
                     () => _eventAggregator.Publish(new ToggleIsEnabledMessage()));
 
             if (ToggleGammaPollingHotKey != HotKey.None)
-                _winApiService.RegisterHotKey(ToggleGammaPollingHotKey,
+                _systemService.RegisterHotKey(ToggleGammaPollingHotKey,
                     () => _settingsService.IsGammaPollingEnabled = !_settingsService.IsGammaPollingEnabled);
         }
     }

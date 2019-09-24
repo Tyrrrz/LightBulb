@@ -13,7 +13,7 @@ namespace LightBulb.ViewModels.Framework
 
             // If there is a parent - ask them to close this dialog
             if (Parent != null)
-                RequestClose(Equals(dialogResult, default(T)));
+                RequestClose(!Equals(dialogResult, default(T)));
             // Otherwise close ourselves
             else
                 ((IScreenState) this).Close();

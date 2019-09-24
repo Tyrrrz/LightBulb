@@ -6,23 +6,12 @@ using LightBulb.WindowsApi.Models;
 
 namespace LightBulb.Services
 {
-    public partial class WinApiService : IDisposable
+    public class SystemService : IDisposable
     {
         private readonly GammaManager _gammaManager = new GammaManager();
         private readonly HotKeyManager _hotKeyManager = new HotKeyManager();
         private readonly WindowManager _windowManager = new WindowManager();
 
-        public void Dispose()
-        {
-            _gammaManager.Dispose();
-            _hotKeyManager.Dispose();
-            _windowManager.Dispose();
-        }
-    }
-
-    // Gamma
-    public partial class WinApiService
-    {
         private static ColorBalance GetColorBalance(ColorTemperature temperature)
         {
             // Algorithm taken from http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
@@ -58,11 +47,7 @@ namespace LightBulb.Services
         }
 
         public void SetGamma(ColorTemperature temperature) => _gammaManager.SetGamma(GetColorBalance(temperature));
-    }
 
-    // HotKeys
-    public partial class WinApiService
-    {
         public void RegisterHotKey(HotKey hotKey, Action handler)
         {
             var virtualKey = KeyInterop.VirtualKeyFromKey(hotKey.Key);
@@ -72,15 +57,18 @@ namespace LightBulb.Services
         }
 
         public void UnregisterAllHotKeys() => _hotKeyManager.UnregisterAllHotKeys();
-    }
 
-    // Windows
-    public partial class WinApiService
-    {
         public bool IsForegroundWindowFullScreen()
         {
             var foregroundWindow = _windowManager.GetForegroundWindow();
             return _windowManager.IsWindowFullScreen(foregroundWindow);
+        }
+
+        public void Dispose()
+        {
+            _gammaManager.Dispose();
+            _hotKeyManager.Dispose();
+            _windowManager.Dispose();
         }
     }
 }

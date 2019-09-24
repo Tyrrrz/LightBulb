@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using LightBulb.Internal;
 using LightBulb.Models;
 using Tyrrrz.Settings;
 
@@ -29,23 +29,22 @@ namespace LightBulb.Services
 
         public bool IsPauseWhenFullScreenEnabled { get; set; }
 
-        public HotKey ToggleHotkey { get; set; }
+        public HotKey ToggleHotKey { get; set; }
 
         public HotKey ToggleGammaPollingHotKey { get; set; }
 
         public SettingsService()
         {
-            // Determine if application is running as portable
-            var isPortable = Environment.GetCommandLineArgs().Contains("--portable");
+            var applicationDirPath = AppDomain.CurrentDomain.BaseDirectory;
 
-            // If portable - store settings in the same directory as the executable
-            if (isPortable)
+            // If we have write access to application directory - store configuration file there
+            if (DirectoryEx.CheckWriteAccess(applicationDirPath))
             {
                 Configuration.FileName = "Settings.dat";
                 Configuration.SubDirectoryPath = "";
                 Configuration.StorageSpace = StorageSpace.Instance;
             }
-            // If not portable - store settings in roaming app data directory
+            // Otherwise - store settings in roaming app data directory
             else
             {
                 Configuration.FileName = "Settings.dat";
