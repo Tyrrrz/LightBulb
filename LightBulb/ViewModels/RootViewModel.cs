@@ -26,7 +26,7 @@ namespace LightBulb.ViewModels
         private readonly AutoResetTimer _checkForUpdatesTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
-        public string ApplicationVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public string ApplicationVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
 
         public bool IsUpdateAvailable { get; private set; }
 
