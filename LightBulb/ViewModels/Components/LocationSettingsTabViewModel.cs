@@ -1,11 +1,10 @@
 ﻿using System;
 using LightBulb.Models;
 using LightBulb.Services;
-using Stylet;
 
 namespace LightBulb.ViewModels.Components
 {
-    public class LocationSettingsViewModel : PropertyChangedBase
+    public class LocationSettingsTabViewModel : SettingsTabViewModel
     {
         private readonly SettingsService _settingsService;
 
@@ -33,9 +32,12 @@ namespace LightBulb.ViewModels.Components
             set => _settingsService.IsInternetSyncEnabled = value;
         }
 
-        public LocationSettingsViewModel(SettingsService settingsService)
+        public LocationSettingsTabViewModel(SettingsService settingsService)
         {
             _settingsService = settingsService;
+
+            // Set display name
+            DisplayName = "Location settings";
 
             // HACK: when settings change - fire property changed event for all properties in this view model
             _settingsService.PropertyChanged += (sender, args) => NotifyOfPropertyChange(null);

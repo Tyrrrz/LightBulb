@@ -1,8 +1,8 @@
 ﻿namespace LightBulb.Views.Components
 {
-    public partial class LocationSettingsView
+    public partial class AdvancedSettingsTabView
     {
-        public LocationSettingsView()
+        public AdvancedSettingsTabView()
         {
             InitializeComponent();
         }

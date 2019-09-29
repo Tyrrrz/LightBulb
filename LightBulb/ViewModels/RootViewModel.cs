@@ -1,18 +1,20 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reflection;
+using LightBulb.Internal;
 using LightBulb.Messages;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.Timers;
-using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Framework;
 using Stylet;
+using Tyrrrz.Extensions;
 
 namespace LightBulb.ViewModels
 {
     public class RootViewModel : Screen, IHandle<ToggleIsEnabledMessage>, IDisposable
     {
+        private readonly IViewModelFactory _viewModelFactory;
+        private readonly DialogManager _dialogManager;
         private readonly SettingsService _settingsService;
         private readonly UpdateService _updateService;
         private readonly CalculationService _calculationService;
@@ -38,79 +40,69 @@ namespace LightBulb.ViewModels
 
         public DateTimeOffset Instant { get; private set; } = DateTimeOffset.Now;
 
-        public ColorTemperature TargetColorTemperature =>
-            IsEnabled && !IsPaused || IsCyclePreviewEnabled
-                ? _calculationService.CalculateColorTemperature(Instant)
-                : ColorTemperature.Default;
+        public ColorTemperature TargetColorTemperature
+        {
+            get
+            {
+                // If in cycle preview - return temperature for instant (even when disabled)
+                if (IsCyclePreviewEnabled)
+                    return _calculationService.CalculateColorTemperature(Instant);
+
+                // If disabled or paused - return default temperature
+                if (!IsEnabled || IsPaused)
+                    return ColorTemperature.Default;
+
+                // Otherwise - return temperature for instant
+                return _calculationService.CalculateColorTemperature(Instant);
+            }
+        }
 
         public ColorTemperature CurrentColorTemperature { get; private set; } = ColorTemperature.Default;
-
-        public double CyclePosition => Instant.TimeOfDay.TotalDays;
 
         public CycleState CycleState
         {
             get
             {
-                // If target temperature has not been reached - return transition
+                // If target temperature has not been reached - return transition (even when disabled)
                 if (CurrentColorTemperature != TargetColorTemperature)
                     return CycleState.Transition;
 
-                // If at max temperature and enabled and not paused - return day
-                if (CurrentColorTemperature == _settingsService.MaxTemperature && IsEnabled && !IsPaused)
+                // If disabled or paused - return disabled
+                if (!IsEnabled || IsPaused)
+                    return CycleState.Disabled;
+
+                // If at max temperature - return day
+                if (CurrentColorTemperature == _settingsService.MaxTemperature)
                     return CycleState.Day;
 
                 // If at min temperature and enabled and not paused - return night
-                if (CurrentColorTemperature == _settingsService.MinTemperature && IsEnabled && !IsPaused)
+                if (CurrentColorTemperature == _settingsService.MinTemperature)
                     return CycleState.Night;
 
-                // Otherwise - return disabled
-                return CycleState.Disabled;
+                // Otherwise - return transition (shouldn't reach here)
+                return CycleState.Transition;
             }
         }
 
-        public string StatusText
-        {
-            get
-            {
-                // If in cycle preview - return current temperature and instant
-                if (IsCyclePreviewEnabled)
-                    return $"Temp: {CurrentColorTemperature}   Time: {Instant:t}";
-
-                // If in transition or not disabled or paused - return current temperature
-                if (CurrentColorTemperature != TargetColorTemperature || IsEnabled && !IsPaused)
-                    return $"Temp: {CurrentColorTemperature}";
-
-                // Otherwise - return "paused" or "disabled"
-                return IsPaused ? "Paused" : "Disabled";
-            }
-        }
-
-        public GeneralSettingsViewModel GeneralSettings { get; }
-
-        public LocationSettingsViewModel LocationSettings { get; }
-
-        public AdvancedSettingsViewModel AdvancedSettings { get; }
-
-        public int SettingsIndex { get; private set; }
-
-        public RootViewModel(IEventAggregator eventAggregator, IViewModelFactory viewModelFactory,
+        public RootViewModel(
+            IEventAggregator eventAggregator, IViewModelFactory viewModelFactory, DialogManager dialogManager,
             SettingsService settingsService, UpdateService updateService,
             CalculationService calculationService, LocationService locationService,
             SystemService systemService)
         {
+            _viewModelFactory = viewModelFactory;
+            _dialogManager = dialogManager;
             _settingsService = settingsService;
             _updateService = updateService;
             _calculationService = calculationService;
             _locationService = locationService;
             _systemService = systemService;
 
+            // Title
+            DisplayName = $"LightBulb v{ApplicationVersion}";
+
             // Handle messages
             eventAggregator.Subscribe(this);
-
-            // Initialize view models
-            GeneralSettings = viewModelFactory.CreateGeneralSettingsViewModel();
-            LocationSettings = viewModelFactory.CreateLocationSettingsViewModel();
-            AdvancedSettings = viewModelFactory.CreateAdvancedSettingsViewModel();
 
             // When IsEnabled switches to 'true' - cancel 'disable temporarily'
             this.Bind(o => o.IsEnabled, (sender, args) =>
@@ -217,6 +209,10 @@ namespace LightBulb.ViewModels
             if (CurrentColorTemperature == TargetColorTemperature)
                 return;
 
+            // TODO: remove this after optimizing
+            if (Math.Abs(TargetColorTemperature.Value - CurrentColorTemperature.Value) < 10)
+                return;
+
             // Determine if gamma change should be smooth
             var isSmooth = _settingsService.IsGammaSmoothingEnabled && !IsCyclePreviewEnabled;
 
@@ -257,15 +253,11 @@ namespace LightBulb.ViewModels
             IsEnabled = false;
         }
 
-        public void NavigateGeneralSettings() => SettingsIndex = 0;
+        public async void ShowSettings() => await _dialogManager.ShowDialogAsync(_viewModelFactory.CreateSettingsViewModel());
 
-        public void NavigateLocationSettings() => SettingsIndex = 1;
+        public void ShowAbout() => "https://github.com/Tyrrrz/LightBulb".ToUri().OpenInBrowser();
 
-        public void NavigateAdvancedSettings() => SettingsIndex = 2;
-
-        public void ShowAbout() => Process.Start("https://github.com/Tyrrrz/LightBulb");
-
-        public void ShowReleases() => Process.Start("https://github.com/Tyrrrz/LightBulb/releases");
+        public void ShowReleases() => "https://github.com/Tyrrrz/LightBulb/releases".ToUri().OpenInBrowser();
 
         public void Exit()
         {

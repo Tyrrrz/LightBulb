@@ -1,11 +1,10 @@
 ﻿using System;
 using LightBulb.Models;
 using LightBulb.Services;
-using Stylet;
 
 namespace LightBulb.ViewModels.Components
 {
-    public class GeneralSettingsViewModel : PropertyChangedBase
+    public class GeneralSettingsTabViewModel : SettingsTabViewModel
     {
         private readonly SettingsService _settingsService;
 
@@ -39,9 +38,12 @@ namespace LightBulb.ViewModels.Components
             set => _settingsService.TemperatureTransitionDuration = value;
         }
 
-        public GeneralSettingsViewModel(SettingsService settingsService)
+        public GeneralSettingsTabViewModel(SettingsService settingsService)
         {
             _settingsService = settingsService;
+
+            // Set display name
+            DisplayName = "General settings";
 
             // HACK: when settings change - fire property changed event for all properties in this view model
             _settingsService.PropertyChanged += (sender, args) => NotifyOfPropertyChange(null);

@@ -34,22 +34,6 @@ namespace LightBulb.Views
             Focus();
         }
 
-        private void RootView_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            // Hide window to tray
-            HideToTray();
-
-            // Position window above the taskbar and at the edge of the screen
-            Left = SystemParameters.WorkArea.Width - Width - 5;
-            Top = SystemParameters.WorkArea.Height - Height;
-        }
-
-        private void RootView_OnDeactivated(object sender, EventArgs e)
-        {
-            // Hide window to tray
-            HideToTray();
-        }
-
         private void TaskbarIcon_OnTrayLeftMouseUp(object sender, RoutedEventArgs routedEventArgs)
         {
             RestoreFromTray();
@@ -64,6 +48,11 @@ namespace LightBulb.Views
         {
             if (e.ChangedButton == MouseButton.Left)
                 DragMove();
+        }
+
+        private void CloseButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            HideToTray();
         }
     }
 }

@@ -20,5 +20,6 @@ namespace LightBulb.Internal
                 ? dateTime.AtTimeOfDay(timeOfDay)
                 : dateTime.AddDays(-1).AtTimeOfDay(timeOfDay);
 
+        public static void OpenInBrowser(this Uri uri) => ProcessEx.StartShellExecute(uri.ToString());
     }
 }

@@ -7,7 +7,7 @@
     <Company>Tyrrrz</Company>
     <Copyright>Copyright (c) Alexey Golub</Copyright>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>..\favicon.ico</ApplicationIcon>
+    <ApplicationIcon>../favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

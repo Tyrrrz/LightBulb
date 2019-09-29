@@ -6,7 +6,7 @@ using Stylet;
 
 namespace LightBulb.ViewModels.Components
 {
-    public class AdvancedSettingsViewModel : PropertyChangedBase
+    public class AdvancedSettingsTabViewModel : SettingsTabViewModel
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly SettingsService _settingsService;
@@ -34,12 +34,15 @@ namespace LightBulb.ViewModels.Components
 
         public HotKeyViewModel ToggleGammaPollingHotKey { get; }
 
-        public AdvancedSettingsViewModel(IEventAggregator eventAggregator, IViewModelFactory viewModelFactory,
+        public AdvancedSettingsTabViewModel(IEventAggregator eventAggregator, IViewModelFactory viewModelFactory,
             SettingsService settingsService, SystemService systemService)
         {
             _eventAggregator = eventAggregator;
             _settingsService = settingsService;
             _systemService = systemService;
+
+            // Set display name
+            DisplayName = "Advanced settings";
 
             // Initialize view models
             ToggleHotKey = viewModelFactory.CreateHotKeyViewModel();
