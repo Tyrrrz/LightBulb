@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:LightBulb.Models"
     xmlns:s="https://github.com/canton7/Stylet"
-    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:tb="http://www.hardcodet.net/taskbar"
     xmlns:viewModels="clr-namespace:LightBulb.ViewModels"
     Width="280"
