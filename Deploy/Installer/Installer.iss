@@ -32,9 +32,9 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
 Source: "..\..\License.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\..\LightBulb\bin\Release\LightBulb.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\..\LightBulb\bin\Release\*.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\..\LightBulb\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\LightBulb\bin\netcoreapp3.0\Release\LightBulb.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\LightBulb\bin\netcoreapp3.0\Release\*.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\LightBulb\bin\netcoreapp3.0\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\LightBulb.exe"
