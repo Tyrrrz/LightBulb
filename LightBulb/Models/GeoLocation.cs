@@ -24,13 +24,7 @@ namespace LightBulb.Models
             return obj is GeoLocation other && Equals(other);
         }
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (Latitude.GetHashCode() * 397) ^ Longitude.GetHashCode();
-            }
-        }
+        public override int GetHashCode() => HashCode.Combine(Latitude, Longitude);
 
         public override string ToString() => $"Lat: {Latitude} / Lng: {Longitude}";
     }

@@ -22,7 +22,7 @@ namespace LightBulb.Converters
         {
             if (value is string stringValue)
             {
-                var stringValueCleaned = stringValue.Trim('K').Trim();
+                var stringValueCleaned = stringValue.Trim('K', 'k', ' ');
                 return new ColorTemperature(double.Parse(stringValueCleaned, CultureInfo.InvariantCulture));
             }
 

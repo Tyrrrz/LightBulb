@@ -20,11 +20,11 @@ namespace LightBulb.Models
             return obj is ColorTemperature other && Equals(other);
         }
 
-        public override int GetHashCode() => Value.GetHashCode();
-
         public bool Equals(ColorTemperature other) => Value.Equals(other.Value);
 
         public int CompareTo(ColorTemperature other) => Value.CompareTo(other.Value);
+
+        public override int GetHashCode() => HashCode.Combine(Value);
 
         public override string ToString() => $"{Value:F0}K";
     }

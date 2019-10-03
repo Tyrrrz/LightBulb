@@ -27,17 +27,9 @@ namespace LightBulb.WindowsApi.Models
             return obj is ColorBalance other && Equals(other);
         }
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = Red.GetHashCode();
-                hashCode = (hashCode * 397) ^ Green.GetHashCode();
-                hashCode = (hashCode * 397) ^ Blue.GetHashCode();
+        public override int GetHashCode() => HashCode.Combine(Red, Green, Blue);
 
-                return hashCode;
-            }
-        }
+        public override string ToString() => $"R:{Red} G:{Green} B:{Blue}";
     }
 
     public partial struct ColorBalance

@@ -26,13 +26,7 @@ namespace LightBulb.Models
             return obj is HotKey other && Equals(other);
         }
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return ((int) Key * 397) ^ (int) Modifiers;
-            }
-        }
+        public override int GetHashCode() => HashCode.Combine(Key, Modifiers);
 
         public override string ToString()
         {
