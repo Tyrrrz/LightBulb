@@ -13,10 +13,19 @@
     mc:Ignorable="d">
     <StackPanel Orientation="Vertical">
         <!--  Max temperature  -->
-        <TextBlock Margin="6" ToolTip="Color temperature during day-time">
-            <Run Text="Day-time color temperature:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding MaxColorTemperature, Mode=OneWay}" />
-        </TextBlock>
+        <StackPanel
+            Margin="6"
+            Orientation="Horizontal"
+            ToolTip="Color temperature during day-time">
+            <TextBlock VerticalAlignment="Center" Text="Day-time color temperature:" />
+            <TextBox
+                Width="40"
+                Margin="8,0"
+                Padding="0"
+                VerticalAlignment="Center"
+                Text="{Binding MaxColorTemperature, Converter={x:Static converters:ColorTemperatureToStringConverter.Instance}}"
+                TextAlignment="Center" />
+        </StackPanel>
         <Slider
             Margin="8,0,8,6"
             IsSnapToTickEnabled="True"
@@ -29,10 +38,19 @@
             Value="{Binding MaxColorTemperature, Converter={x:Static converters:ColorTemperatureToDoubleConverter.Instance}}" />
 
         <!--  Min temperature  -->
-        <TextBlock Margin="6" ToolTip="Color temperature during night-time">
-            <Run Text="Night-time color temperature:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding MinColorTemperature, Mode=OneWay}" />
-        </TextBlock>
+        <StackPanel
+            Margin="6"
+            Orientation="Horizontal"
+            ToolTip="Color temperature during night-time">
+            <TextBlock VerticalAlignment="Center" Text="Night-time color temperature:" />
+            <TextBox
+                Width="40"
+                Margin="8,0"
+                Padding="0"
+                VerticalAlignment="Center"
+                Text="{Binding MinColorTemperature, Converter={x:Static converters:ColorTemperatureToStringConverter.Instance}}"
+                TextAlignment="Center" />
+        </StackPanel>
         <Slider
             Margin="8,0,8,6"
             IsSnapToTickEnabled="True"

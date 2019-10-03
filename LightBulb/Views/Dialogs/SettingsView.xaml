@@ -39,7 +39,7 @@
                         </Border.Style>
                         <Button
                             Margin="4"
-                            Padding="4"
+                            Padding="8,4"
                             Command="{s:Action ActivateTab}"
                             CommandParameter="{Binding}"
                             Style="{DynamicResource MaterialDesignFlatDarkButton}"
