@@ -1,4 +1,5 @@
-﻿using LightBulb.Messages;
+﻿using LightBulb.Internal;
+using LightBulb.Messages;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.ViewModels.Framework;
@@ -6,7 +7,7 @@ using Stylet;
 
 namespace LightBulb.ViewModels.Components
 {
-    public class AdvancedSettingsTabViewModel : SettingsTabViewModel
+    public class AdvancedSettingsTabViewModel : SettingsTabViewModelBase
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly SettingsService _settingsService;
@@ -44,12 +45,15 @@ namespace LightBulb.ViewModels.Components
             // Set display name
             DisplayName = "Advanced settings";
 
+            // Set order
+            Order = 2;
+
             // Initialize view models
             ToggleHotKey = viewModelFactory.CreateHotKeyViewModel();
             ToggleGammaPollingHotKey = viewModelFactory.CreateHotKeyViewModel();
 
             // HACK: when settings change - fire property changed event for all properties in this view model
-            _settingsService.PropertyChanged += (sender, args) => NotifyOfPropertyChange(null);
+            _settingsService.Bind((sender, args) => NotifyOfPropertyChange(null));
 
             // Update hotkeys when they change in settings
             _settingsService.Bind(o => o.ToggleHotKey, (sender, args) => ToggleHotKey.Model = _settingsService.ToggleHotKey);

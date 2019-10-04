@@ -7,19 +7,13 @@ namespace LightBulb.ViewModels.Dialogs
 {
     public class SettingsViewModel : DialogScreen
     {
-        public IReadOnlyList<SettingsTabViewModel> Tabs { get; }
+        public IReadOnlyList<ISettingsTabViewModel> Tabs { get; }
 
-        public SettingsTabViewModel ActiveTab { get; private set; }
+        public ISettingsTabViewModel ActiveTab { get; private set; }
 
-        public SettingsViewModel(IViewModelFactory viewModelFactory)
+        public SettingsViewModel(IEnumerable<ISettingsTabViewModel> tabs)
         {
-            // Create view models for tabs
-            Tabs = new SettingsTabViewModel[]
-            {
-                viewModelFactory.CreateGeneralSettingsTabViewModel(),
-                viewModelFactory.CreateLocationSettingsTabViewModel(),
-                viewModelFactory.CreateAdvancedSettingsTabViewModel()
-            };
+            Tabs = tabs.OrderBy(t => t.Order).ToArray();
 
             // Pre-select first tab
             var firstTab = Tabs.FirstOrDefault();
@@ -27,7 +21,7 @@ namespace LightBulb.ViewModels.Dialogs
                 ActivateTab(firstTab);
         }
 
-        public void ActivateTab(SettingsTabViewModel settingsTab)
+        public void ActivateTab(ISettingsTabViewModel settingsTab)
         {
             // Deactivate previously selected tab
             if (ActiveTab != null)

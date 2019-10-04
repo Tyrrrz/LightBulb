@@ -1,10 +1,11 @@
 ﻿using System;
+using LightBulb.Internal;
 using LightBulb.Models;
 using LightBulb.Services;
 
 namespace LightBulb.ViewModels.Components
 {
-    public class GeneralSettingsTabViewModel : SettingsTabViewModel
+    public class GeneralSettingsTabViewModel : SettingsTabViewModelBase
     {
         private readonly SettingsService _settingsService;
 
@@ -45,8 +46,11 @@ namespace LightBulb.ViewModels.Components
             // Set display name
             DisplayName = "General settings";
 
+            // Set order
+            Order = 0;
+
             // HACK: when settings change - fire property changed event for all properties in this view model
-            _settingsService.PropertyChanged += (sender, args) => NotifyOfPropertyChange(null);
+            _settingsService.Bind((sender, args) => NotifyOfPropertyChange(null));
         }
     }
 }

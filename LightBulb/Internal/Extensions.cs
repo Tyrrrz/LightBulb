@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace LightBulb.Internal
 {
@@ -21,5 +22,18 @@ namespace LightBulb.Internal
                 : dateTime.AddDays(-1).AtTimeOfDay(timeOfDay);
 
         public static void OpenInBrowser(this Uri uri) => ProcessEx.StartShellExecute(uri.ToString());
+
+        public static void Bind<TSource>(this TSource target, EventHandler<PropertyChangedEventArgs> handler)
+            where TSource : class, INotifyPropertyChanged
+        {
+            target.PropertyChanged += (sender, args) => handler(target, args);
+        }
+
+        public static void BindAndInvoke<TSource>(this TSource target, EventHandler<PropertyChangedEventArgs> handler)
+            where TSource : class, INotifyPropertyChanged
+        {
+            target.Bind(handler);
+            handler.Invoke(target, new PropertyChangedEventArgs(null));
+        }
     }
 }

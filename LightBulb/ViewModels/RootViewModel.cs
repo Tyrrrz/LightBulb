@@ -18,13 +18,12 @@ namespace LightBulb.ViewModels
         private readonly SettingsService _settingsService;
         private readonly UpdateService _updateService;
         private readonly CalculationService _calculationService;
-        private readonly LocationService _locationService;
         private readonly SystemService _systemService;
 
         private readonly AutoResetTimer _updateTimer;
         private readonly AutoResetTimer _gammaPollingTimer;
         private readonly AutoResetTimer _settingsAutoSaveTimer;
-        private readonly AutoResetTimer _internetSyncTimer;
+        private readonly AutoResetTimer _updateSunriseSunsetTimer;
         private readonly AutoResetTimer _checkForUpdatesTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
@@ -87,15 +86,13 @@ namespace LightBulb.ViewModels
         public RootViewModel(
             IEventAggregator eventAggregator, IViewModelFactory viewModelFactory, DialogManager dialogManager,
             SettingsService settingsService, UpdateService updateService,
-            CalculationService calculationService, LocationService locationService,
-            SystemService systemService)
+            CalculationService calculationService, SystemService systemService)
         {
             _viewModelFactory = viewModelFactory;
             _dialogManager = dialogManager;
             _settingsService = settingsService;
             _updateService = updateService;
             _calculationService = calculationService;
-            _locationService = locationService;
             _systemService = systemService;
 
             // Title
@@ -127,22 +124,15 @@ namespace LightBulb.ViewModels
 
             _settingsAutoSaveTimer = new AutoResetTimer(() => _settingsService.SaveIfNeeded());
 
-            _internetSyncTimer = new AutoResetTimer(async () =>
+            _updateSunriseSunsetTimer = new AutoResetTimer(() =>
             {
-                if (!_settingsService.IsInternetSyncEnabled)
+                if (_settingsService.IsManualSunriseSunset || _settingsService.Location == null)
                     return;
 
-                // TODO: rework later
-                var location = await _locationService.GetLocationAsync();
-
-                if (_settingsService.IsInternetSyncEnabled)
-                {
-                    _settingsService.Location = location;
-
-                    var instant = DateTimeOffset.Now;
-                    _settingsService.SunriseTime = _calculationService.CalculateSunrise(location, instant).TimeOfDay;
-                    _settingsService.SunsetTime = _calculationService.CalculateSunset(location, instant).TimeOfDay;
-                }
+                var location = _settingsService.Location.Value;
+                var instant = DateTimeOffset.Now;
+                _settingsService.SunriseTime = _calculationService.CalculateSunrise(location, instant).TimeOfDay;
+                _settingsService.SunsetTime = _calculationService.CalculateSunset(location, instant).TimeOfDay;
             });
 
             _checkForUpdatesTimer = new AutoResetTimer(async () =>
@@ -164,7 +154,7 @@ namespace LightBulb.ViewModels
             _updateTimer.Start(TimeSpan.FromMilliseconds(17)); // 60hz
             _gammaPollingTimer.Start(TimeSpan.FromSeconds(1));
             _settingsAutoSaveTimer.Start(TimeSpan.FromSeconds(5));
-            _internetSyncTimer.Start(TimeSpan.FromHours(3));
+            _updateSunriseSunsetTimer.Start(TimeSpan.FromHours(3));
             _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
         }
 
@@ -275,7 +265,7 @@ namespace LightBulb.ViewModels
             // Dispose stuff
             _updateTimer.Dispose();
             _settingsAutoSaveTimer.Dispose();
-            _internetSyncTimer.Dispose();
+            _updateSunriseSunsetTimer.Dispose();
             _checkForUpdatesTimer.Dispose();
             _enableAfterDelayTimer.Dispose();
 

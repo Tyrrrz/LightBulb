@@ -51,8 +51,8 @@
                                     Foreground="{DynamicResource PrimaryTextBrush}"
                                     Text="LightBulb" />
 
-                                <!--  Status text  -->
-                                <TextBlock Text="{Binding StatusText}" />
+                                <!--  Temperature  -->
+                                <TextBlock Text="{Binding CurrentColorTemperature}" />
                             </StackPanel>
                         </Border>
                     </tb:TaskbarIcon.TrayToolTip>

@@ -5,6 +5,7 @@
     xmlns:components="clr-namespace:LightBulb.ViewModels.Components"
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:s="https://github.com/canton7/Stylet"
     d:DataContext="{d:DesignInstance Type=components:LocationSettingsTabViewModel}"
@@ -13,63 +14,124 @@
     Style="{DynamicResource MaterialDesignRoot}"
     mc:Ignorable="d">
     <StackPanel Orientation="Vertical">
-        <!--  Sunrise time  -->
-        <TextBlock Margin="6" ToolTip="Sunrise time of day">
-            <Run Text="Sunrise time:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SunriseTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
-        </TextBlock>
-        <Slider
-            Margin="8,0,8,6"
-            IsEnabled="{Binding IsInternetSyncEnabled, Converter={x:Static converters:InverseBoolConverter.Instance}}"
-            LargeChange="0.5"
-            Maximum="24"
-            Minimum="0"
-            SmallChange="0.25"
-            TickFrequency="1"
-            TickPlacement="BottomRight"
-            Value="{Binding SunriseTime, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
-
-        <!--  Sunset time  -->
-        <TextBlock Margin="6" ToolTip="Sunset time of day">
-            <Run Text="Sunset time:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SunsetTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
-        </TextBlock>
-        <Slider
-            Margin="8,0,8,6"
-            IsEnabled="{Binding IsInternetSyncEnabled, Converter={x:Static converters:InverseBoolConverter.Instance}}"
-            LargeChange="0.5"
-            Maximum="24"
-            Minimum="0"
-            SmallChange="0.25"
-            TickFrequency="1"
-            TickPlacement="BottomRight"
-            Value="{Binding SunsetTime, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
-
-        <!--  Internet sync on/off  -->
-        <Grid Margin="6">
+        <!--  Manual/location-based configuration  -->
+        <TextBlock Margin="6" Text="Solar configuration:" />
+        <Grid Margin="6,0,6,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock
+            <RadioButton
                 Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="Internet synchronization:"
-                ToolTip="Pull sunrise and sunset times for your location automatically from the Internet" />
-            <ToggleButton
+                Content="Manual"
+                GroupName="SunriseSunsetConfigurationType"
+                IsChecked="{Binding IsManualSunriseSunset}"
+                ToolTip="Sunrise and sunset times are configured manually" />
+            <RadioButton
                 Grid.Column="1"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                IsChecked="{Binding IsInternetSyncEnabled}" />
+                Content="Location-based"
+                GroupName="SunriseSunsetConfigurationType"
+                IsChecked="{Binding IsManualSunriseSunset, Converter={x:Static converters:InverseBoolConverter.Instance}}"
+                ToolTip="Sunrise and sunset times are calculated automatically based on location" />
         </Grid>
 
-        <!--  Location  -->
-        <TextBlock Margin="6" Visibility="{Binding Location, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
-            <Run Text="Latitude:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Location.Latitude, Mode=OneWay}" />
-            <Run Text="Longitude:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Location.Longitude, Mode=OneWay}" />
-        </TextBlock>
+        <!--  Manual  -->
+        <StackPanel Orientation="Vertical" Visibility="{Binding IsManualSunriseSunset, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+            <!--  Sunrise time  -->
+            <TextBlock Margin="6" ToolTip="Sunrise time of day">
+                <Run Text="Sunrise time:" />
+                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SunriseTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
+            </TextBlock>
+            <Slider
+                Margin="8,0,8,6"
+                LargeChange="0.5"
+                Maximum="24"
+                Minimum="0"
+                SmallChange="0.25"
+                TickFrequency="1"
+                TickPlacement="BottomRight"
+                Value="{Binding SunriseTime, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
+
+            <!--  Sunset time  -->
+            <TextBlock Margin="6" ToolTip="Sunset time of day">
+                <Run Text="Sunset time:" />
+                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SunsetTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
+            </TextBlock>
+            <Slider
+                Margin="8,0,8,6"
+                LargeChange="0.5"
+                Maximum="24"
+                Minimum="0"
+                SmallChange="0.25"
+                TickFrequency="1"
+                TickPlacement="BottomRight"
+                Value="{Binding SunsetTime, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
+        </StackPanel>
+
+        <!--  Location-based  -->
+        <StackPanel Orientation="Vertical" Visibility="{Binding IsManualSunriseSunset, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}">
+            <TextBlock Margin="6" Text="Your location:" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!--  Location query  -->
+                <TextBox
+                    Grid.Column="0"
+                    Margin="8,0,8,6"
+                    VerticalAlignment="Center"
+                    Text="{Binding LocationQuery, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.ToolTip>
+                        <TextBlock>
+                            <Run Text="You can specify a search query or enter coordinates directly." />
+                            <LineBreak />
+                            <LineBreak />
+                            <Run Text="Valid values are:" />
+                            <LineBreak />
+                            <Run FontWeight="SemiBold" Text="41.25, -120.9762" />
+                            <LineBreak />
+                            <Run FontWeight="SemiBold" Text="41.25°N, 120.9762°W" />
+                            <LineBreak />
+                            <Run FontWeight="SemiBold" Text="New York, USA" />
+                            <LineBreak />
+                            <Run FontWeight="SemiBold" Text="Germany" />
+                        </TextBlock>
+                    </TextBox.ToolTip>
+                </TextBox>
+
+                <!--  Autodetect  -->
+                <Button
+                    Grid.Column="1"
+                    Margin="2"
+                    Padding="4"
+                    Command="{s:Action ResolveCurrentLocation}"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    ToolTip="Resolve location automatically based on your IP">
+                    <materialDesign:PackIcon
+                        Width="24"
+                        Height="24"
+                        Kind="Location" />
+                </Button>
+
+                <!--  Search  -->
+                <Button
+                    Grid.Column="2"
+                    Margin="2"
+                    Padding="4"
+                    Command="{s:Action ResolveLocation}"
+                    IsDefault="True"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    ToolTip="Resolve location using specified query">
+                    <materialDesign:PackIcon
+                        Width="24"
+                        Height="24"
+                        Kind="Search" />
+                </Button>
+            </Grid>
+        </StackPanel>
     </StackPanel>
 </UserControl>

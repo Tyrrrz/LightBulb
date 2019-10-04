@@ -3,7 +3,7 @@ using Stylet;
 
 namespace LightBulb.ViewModels.Components
 {
-    public abstract class SettingsTabViewModel : PropertyChangedBase
+    public abstract class SettingsTabViewModelBase : PropertyChangedBase, ISettingsTabViewModel
     {
         public string DisplayName { get; protected set; }
 
@@ -12,7 +12,9 @@ namespace LightBulb.ViewModels.Components
 
         public bool IsActive { get; set; }
 
-        protected SettingsTabViewModel()
+        public int Order { get; protected set; }
+
+        protected SettingsTabViewModelBase()
         {
             DisplayName = Type.ToString();
         }

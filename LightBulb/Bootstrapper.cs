@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Threading;
 using LightBulb.Services;
 using LightBulb.ViewModels;
+using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Framework;
 using Stylet;
 using StyletIoC;
@@ -34,6 +35,9 @@ namespace LightBulb
 
             // Bind settings as singleton
             builder.Bind<SettingsService>().ToSelf().InSingletonScope();
+
+            // Bind all settings tabs
+            builder.Bind<ISettingsTabViewModel>().ToAllImplementations();
 
             // Bind view model factory
             builder.Bind<IViewModelFactory>().ToAbstractFactory();

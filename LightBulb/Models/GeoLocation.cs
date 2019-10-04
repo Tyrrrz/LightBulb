@@ -29,7 +29,8 @@ namespace LightBulb.Models
 
         public override int GetHashCode() => HashCode.Combine(Latitude, Longitude);
 
-        public override string ToString() => $"Lat: {Latitude} / Lng: {Longitude}";
+        public override string ToString() =>
+            $"{Latitude.ToString(CultureInfo.InvariantCulture)}, {Longitude.ToString(CultureInfo.InvariantCulture)}";
     }
 
     public partial struct GeoLocation
@@ -80,8 +81,6 @@ namespace LightBulb.Models
                     return true;
                 }
             }
-
-            // TODO: add a dictionary of common cities/countries
 
             return false;
         }

@@ -20,8 +20,7 @@ namespace LightBulb.Services
 
         public GeoLocation? Location { get; set; }
 
-        // TODO: rename
-        public bool IsInternetSyncEnabled { get; set; } = true;
+        public bool IsManualSunriseSunset { get; set; } = true;
 
         public bool IsGammaPollingEnabled { get; set; } = true;
 

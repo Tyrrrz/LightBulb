@@ -9,11 +9,5 @@ namespace LightBulb.ViewModels.Framework
         SettingsViewModel CreateSettingsViewModel();
 
         HotKeyViewModel CreateHotKeyViewModel();
-
-        GeneralSettingsTabViewModel CreateGeneralSettingsTabViewModel();
-
-        LocationSettingsTabViewModel CreateLocationSettingsTabViewModel();
-
-        AdvancedSettingsTabViewModel CreateAdvancedSettingsTabViewModel();
     }
 }
