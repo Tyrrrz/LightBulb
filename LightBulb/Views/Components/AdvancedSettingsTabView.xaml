@@ -11,6 +11,25 @@
     Style="{DynamicResource MaterialDesignRoot}"
     mc:Ignorable="d">
     <StackPanel Orientation="Vertical">
+        <!--  Auto start  -->
+        <Grid Margin="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="Start with Windows:"
+                ToolTip="Launch LightBulb as soon as you log in" />
+            <ToggleButton
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                IsChecked="{Binding IsAutoStartEnabled}" />
+        </Grid>
+
         <!--  Gamma polling enabled/disabled  -->
         <Grid Margin="6">
             <Grid.ColumnDefinitions>

@@ -26,6 +26,18 @@ namespace LightBulb.ViewModels.Components
             set => _settingsService.IsPauseWhenFullScreenEnabled = value;
         }
 
+        public bool IsAutoStartEnabled
+        {
+            get => _systemService.IsAutoStartEnabled();
+            set
+            {
+                if (value)
+                    _systemService.EnableAutoStart();
+                else
+                    _systemService.DisableAutoStart();
+            }
+        }
+
         public AdvancedSettingsTabViewModel(SettingsService settingsService, SystemService systemService)
         {
             _settingsService = settingsService;

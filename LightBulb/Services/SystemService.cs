@@ -1,8 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Windows.Input;
 using LightBulb.Models;
 using LightBulb.WindowsApi;
 using LightBulb.WindowsApi.Models;
+using Microsoft.Win32;
 
 namespace LightBulb.Services
 {
@@ -62,6 +65,31 @@ namespace LightBulb.Services
         {
             var foregroundWindow = _windowManager.GetForegroundWindow();
             return _windowManager.IsWindowFullScreen(foregroundWindow);
+        }
+
+        public bool IsAutoStartEnabled()
+        {
+            using var registry = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
+
+            var registryValue = registry?.GetValue("LightBulb") as string;
+            var appFilePath = Path.ChangeExtension(Assembly.GetExecutingAssembly().Location, "exe");
+
+            return string.Equals(registryValue, appFilePath, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public void EnableAutoStart()
+        {
+            using var registry = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
+
+            var appFilePath = Path.ChangeExtension(Assembly.GetExecutingAssembly().Location, "exe");
+            registry?.SetValue("LightBulb", appFilePath);
+        }
+
+        public void DisableAutoStart()
+        {
+            using var registry = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
+
+            registry?.DeleteValue("LightBulb", false);
         }
 
         public void Dispose()
