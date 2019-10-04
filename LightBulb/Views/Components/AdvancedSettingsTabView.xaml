@@ -5,7 +5,6 @@
     xmlns:components="clr-namespace:LightBulb.ViewModels.Components"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:s="https://github.com/canton7/Stylet"
     d:DataContext="{d:DesignInstance Type=components:AdvancedSettingsTabViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -67,48 +66,6 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 IsChecked="{Binding IsPauseWhenFullScreenEnabled}" />
-        </Grid>
-
-        <!--  Toggle hotkey  -->
-        <Grid Margin="6">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="Toggle LightBulb:"
-                ToolTip="Hot key to switch LightBulb on/off" />
-            <ContentControl
-                Grid.Column="1"
-                Width="120"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                s:View.Model="{Binding ToggleHotKey}"
-                FontSize="12" />
-        </Grid>
-
-        <!--  Toggle polling hotkey  -->
-        <Grid Margin="6">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="Toggle gamma polling:"
-                ToolTip="Hot key to switch gamma polling on/off" />
-            <ContentControl
-                Grid.Column="1"
-                Width="120"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                s:View.Model="{Binding ToggleGammaPollingHotKey}"
-                FontSize="12" />
         </Grid>
     </StackPanel>
 </UserControl>

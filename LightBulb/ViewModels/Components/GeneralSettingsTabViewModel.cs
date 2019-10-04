@@ -44,7 +44,7 @@ namespace LightBulb.ViewModels.Components
             _settingsService = settingsService;
 
             // Set display name
-            DisplayName = "General settings";
+            DisplayName = "General";
 
             // Set order
             Order = 0;

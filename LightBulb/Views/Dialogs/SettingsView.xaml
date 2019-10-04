@@ -57,6 +57,9 @@
                                             <DataTrigger Binding="{Binding Type}" Value="{x:Type components:AdvancedSettingsTabViewModel}">
                                                 <Setter Property="Kind" Value="CheckboxesMarked" />
                                             </DataTrigger>
+                                            <DataTrigger Binding="{Binding Type}" Value="{x:Type components:HotKeySettingsTabViewModel}">
+                                                <Setter Property="Kind" Value="Keyboard" />
+                                            </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </materialDesign:PackIcon.Style>

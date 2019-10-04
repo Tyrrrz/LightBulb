@@ -46,7 +46,7 @@ namespace LightBulb.ViewModels.Components
             _calculationService = calculationService;
 
             // Set display name
-            DisplayName = "Location settings";
+            DisplayName = "Location";
 
             // Set order
             Order = 1;
