@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using LightBulb.Internal;
 using LightBulb.Messages;
 using LightBulb.Models;
@@ -140,6 +141,25 @@ namespace LightBulb.ViewModels
             _enableAfterDelayTimer = new ManualResetTimer(Enable);
         }
 
+        private async Task EnsureGammaRangeIsUnlockedAsync()
+        {
+            // If already unlocked - return
+            if (_systemService.IsGammaRangeUnlocked())
+                return;
+
+            // Show prompt to the user
+            var prompt = _viewModelFactory.CreateMessageBoxViewModel("Limited gamma range", 
+                $"{App.Name} detected that this computer doesn't have the extended gamma range unlocked. " +
+                $"This may cause the app to work incorrectly.{Environment.NewLine}{Environment.NewLine}" +
+                "Press OK to unlock gamma range.");
+
+            var promptResult = await _dialogManager.ShowDialogAsync(prompt);
+
+            // Unlock gamma range if user agreed to it
+            if (promptResult == true)
+                _systemService.UnlockGammaRange();
+        }
+
         protected override void OnViewLoaded()
         {
             base.OnViewLoaded();
@@ -153,6 +173,12 @@ namespace LightBulb.ViewModels
             _settingsAutoSaveTimer.Start(TimeSpan.FromSeconds(5));
             _updateSunriseSunsetTimer.Start(TimeSpan.FromHours(3));
             _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
+        }
+        
+        // This is a custom event that fires when the dialog host is loaded
+        public async void OnViewFullyLoaded()
+        {
+            await EnsureGammaRangeIsUnlockedAsync();
         }
 
         private void UpdateIsPaused()

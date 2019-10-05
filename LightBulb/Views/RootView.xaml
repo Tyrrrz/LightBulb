@@ -22,7 +22,10 @@
     WindowStyle="None"
     mc:Ignorable="d">
     <Border BorderBrush="{DynamicResource PrimaryHueLightBrush}" BorderThickness="1">
-        <materialDesign:DialogHost CloseOnClickAway="True" Style="{DynamicResource MaterialDesignEmbeddedDialogHost}">
+        <materialDesign:DialogHost
+            CloseOnClickAway="True"
+            Loaded="{s:Action OnViewFullyLoaded}"
+            Style="{DynamicResource MaterialDesignEmbeddedDialogHost}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

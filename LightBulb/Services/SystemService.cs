@@ -85,6 +85,20 @@ namespace LightBulb.Services
             registry?.DeleteValue(App.Name, false);
         }
 
+        public bool IsGammaRangeUnlocked()
+        {
+            using var registry = OpenGammaRangeRegistryKey(false);
+            var value = registry?.GetValue("GdiICMGammaRange") as int?;
+
+            return value == 256;
+        }
+
+        public void UnlockGammaRange()
+        {
+            using var registry = OpenGammaRangeRegistryKey(true);
+            registry?.SetValue("GdiICMGammaRange", 256, RegistryValueKind.DWord);
+        }
+
         public void Dispose()
         {
             _gammaManager.Dispose();
@@ -97,11 +111,13 @@ namespace LightBulb.Services
     {
         private static string AutoStartKeyValue => $"\"{App.ExecutableFilePath}\" --autostart";
 
-        private static RegistryKey OpenAutoStartRegistryKey(bool write)
-        {
-            const string subKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+        private static RegistryKey OpenRegistryKey(string subKey, bool write) =>
+            write ? Registry.CurrentUser.CreateSubKey(subKey, true) : Registry.CurrentUser.OpenSubKey(subKey, false);
 
-            return write ? Registry.CurrentUser.CreateSubKey(subKey, true) : Registry.CurrentUser.OpenSubKey(subKey, false);
-        }
+        private static RegistryKey OpenAutoStartRegistryKey(bool write) =>
+            OpenRegistryKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", write);
+
+        private static RegistryKey OpenGammaRangeRegistryKey(bool write) =>
+            OpenRegistryKey("Software\\Microsoft\\Windows NT\\CurrentVersion\\ICM", write);
     }
 }
