@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:s="https://github.com/canton7/Stylet"
     Width="350"
-    Height="220"
+    Height="270"
     d:DataContext="{d:DesignInstance Type=dialogs:SettingsViewModel}"
     Style="{DynamicResource MaterialDesignRoot}"
     mc:Ignorable="d">
@@ -70,14 +70,18 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <!--  Active settings tab  -->
-        <ScrollViewer
-            Grid.Column="1"
-            Padding="8"
-            Background="{DynamicResource MaterialDesignCardBackground}"
-            HorizontalScrollBarVisibility="Disabled"
-            VerticalScrollBarVisibility="Auto">
-            <materialDesign:Transitioner ItemsSource="{Binding Tabs}" SelectedItem="{Binding ActiveTab, Mode=OneWay}">
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!--  Active settings tab  -->
+            <materialDesign:Transitioner
+                Grid.Row="0"
+                ItemsSource="{Binding Tabs}"
+                SelectedItem="{Binding ActiveTab, Mode=OneWay}">
                 <materialDesign:Transitioner.Resources>
                     <Style TargetType="{x:Type materialDesign:TransitionerSlide}">
                         <Setter Property="Background" Value="{DynamicResource MaterialDesignCardBackground}" />
@@ -95,10 +99,46 @@
                 </materialDesign:Transitioner.Resources>
                 <materialDesign:Transitioner.ItemTemplate>
                     <DataTemplate>
-                        <ContentControl s:View.Model="{Binding}" />
+                        <ScrollViewer
+                            Padding="8"
+                            Background="{DynamicResource MaterialDesignCardBackground}"
+                            HorizontalScrollBarVisibility="Disabled"
+                            VerticalScrollBarVisibility="Auto">
+                            <ContentControl s:View.Model="{Binding}" />
+                        </ScrollViewer>
                     </DataTemplate>
                 </materialDesign:Transitioner.ItemTemplate>
             </materialDesign:Transitioner>
-        </ScrollViewer>
+
+            <!--  Separator  -->
+            <Rectangle
+                Grid.Row="1"
+                Height="1"
+                Margin="12,0"
+                HorizontalAlignment="Stretch"
+                Fill="{DynamicResource DividerBrush}" />
+
+            <!--  Buttons  -->
+            <StackPanel
+                Grid.Row="2"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <!--  Reset  -->
+                <Button
+                    Margin="8"
+                    Command="{s:Action ResetSettings}"
+                    Content="RESET"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    ToolTip="Reset all settings to their defaults" />
+
+                <!--  Close  -->
+                <Button
+                    Margin="8"
+                    Command="{s:Action Close}"
+                    Content="CLOSE"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    ToolTip="Close this dialog (settings are saved automatically)" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
