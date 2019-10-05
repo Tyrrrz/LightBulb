@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Reflection;
 using System.Windows.Input;
 using LightBulb.Models;
 using LightBulb.WindowsApi;
@@ -9,7 +7,7 @@ using Microsoft.Win32;
 
 namespace LightBulb.Services
 {
-    public class SystemService : IDisposable
+    public partial class SystemService : IDisposable
     {
         private readonly GammaManager _gammaManager = new GammaManager();
         private readonly HotKeyManager _hotKeyManager = new HotKeyManager();
@@ -69,27 +67,22 @@ namespace LightBulb.Services
 
         public bool IsAutoStartEnabled()
         {
-            using var registry = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
+            using var registry = OpenAutoStartRegistryKey(false);
+            var value = registry?.GetValue(App.Name) as string;
 
-            var registryValue = registry?.GetValue("LightBulb") as string;
-            var appFilePath = Path.ChangeExtension(Assembly.GetExecutingAssembly().Location, "exe");
-
-            return string.Equals(registryValue, appFilePath, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(value, AutoStartKeyValue, StringComparison.OrdinalIgnoreCase);
         }
 
         public void EnableAutoStart()
         {
-            using var registry = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
-
-            var appFilePath = Path.ChangeExtension(Assembly.GetExecutingAssembly().Location, "exe");
-            registry?.SetValue("LightBulb", appFilePath);
+            using var registry = OpenAutoStartRegistryKey(true);
+            registry?.SetValue(App.Name, AutoStartKeyValue);
         }
 
         public void DisableAutoStart()
         {
-            using var registry = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
-
-            registry?.DeleteValue("LightBulb", false);
+            using var registry = OpenAutoStartRegistryKey(true);
+            registry?.DeleteValue(App.Name, false);
         }
 
         public void Dispose()
@@ -97,6 +90,18 @@ namespace LightBulb.Services
             _gammaManager.Dispose();
             _hotKeyManager.Dispose();
             _windowManager.Dispose();
+        }
+    }
+
+    public partial class SystemService
+    {
+        private static string AutoStartKeyValue => $"\"{App.ExecutableFilePath}\" --autostart";
+
+        private static RegistryKey OpenAutoStartRegistryKey(bool write)
+        {
+            const string subKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+
+            return write ? Registry.CurrentUser.CreateSubKey(subKey, true) : Registry.CurrentUser.OpenSubKey(subKey, false);
         }
     }
 }

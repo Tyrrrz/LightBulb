@@ -34,7 +34,14 @@ namespace LightBulb.Views
             Focus();
         }
 
-        private void TaskbarIcon_OnTrayLeftMouseUp(object sender, RoutedEventArgs routedEventArgs)
+        private void RootView_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            // Hide to tray as soon as window loads if the application was started automatically
+            if (!App.IsStartedByUser)
+                HideToTray();
+        }
+
+        private void TaskbarIcon_OnTrayLeftMouseUp(object sender, RoutedEventArgs e)
         {
             RestoreFromTray();
         }

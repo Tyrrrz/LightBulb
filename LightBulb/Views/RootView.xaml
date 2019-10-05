@@ -15,6 +15,7 @@
     Height="350"
     d:DataContext="{d:DesignInstance Type=viewModels:RootViewModel}"
     Icon="/LightBulb;component/favicon.ico"
+    Loaded="RootView_OnLoaded"
     ResizeMode="NoResize"
     Style="{DynamicResource MaterialDesignRoot}"
     WindowStartupLocation="CenterScreen"

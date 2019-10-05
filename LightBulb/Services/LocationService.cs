@@ -14,9 +14,9 @@ namespace LightBulb.Services
         public LocationService()
         {
             _httpClient.DefaultRequestHeaders.Add("User-Agent",
-                $"LightBulb v{App.VersionString} (github.com/Tyrrrz/LightBulb)");
+                $"{App.Name} v{App.VersionString} ({App.GitHubProjectUrl})");
             _httpClient.DefaultRequestHeaders.Add("X-User-Agent-Purpose",
-                "LightBulb is using your API to identify coordinates of a user-specified location.");
+                $"{App.Name} is using your API to identify coordinates of a user-specified location.");
         }
 
         public async Task<GeoLocation> GetLocationAsync()

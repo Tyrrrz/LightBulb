@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using LightBulb.Internal;
 using LightBulb.Messages;
 using LightBulb.Models;
@@ -94,7 +93,7 @@ namespace LightBulb.ViewModels
             _systemService = systemService;
 
             // Title
-            DisplayName = $"LightBulb v{App.VersionString}";
+            DisplayName = $"{App.Name} v{App.VersionString}";
 
             // Handle messages
             eventAggregator.Subscribe(this);
@@ -243,9 +242,9 @@ namespace LightBulb.ViewModels
 
         public async void ShowSettings() => await _dialogManager.ShowDialogAsync(_viewModelFactory.CreateSettingsViewModel());
 
-        public void ShowAbout() => "https://github.com/Tyrrrz/LightBulb".ToUri().OpenInBrowser();
+        public void ShowAbout() => App.GitHubProjectUrl.ToUri().OpenInBrowser();
 
-        public void ShowReleases() => "https://github.com/Tyrrrz/LightBulb/releases".ToUri().OpenInBrowser();
+        public void ShowReleases() => App.GitHubProjectReleasesUrl.ToUri().OpenInBrowser();
 
         public void Exit()
         {
