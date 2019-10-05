@@ -40,14 +40,9 @@ namespace LightBulb.ViewModels.Components
         }
 
         public GeneralSettingsTabViewModel(SettingsService settingsService)
+            : base(0, "General")
         {
             _settingsService = settingsService;
-
-            // Set display name
-            DisplayName = "General";
-
-            // Set order
-            Order = 0;
 
             // HACK: when settings change - fire property changed event for all properties in this view model
             _settingsService.Bind((sender, args) => NotifyOfPropertyChange(null));

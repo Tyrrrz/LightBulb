@@ -5,18 +5,19 @@ namespace LightBulb.ViewModels.Components
 {
     public abstract class SettingsTabViewModelBase : PropertyChangedBase, ISettingsTabViewModel
     {
-        public string DisplayName { get; protected set; }
+        public int Order { get; }
+
+        public string DisplayName { get; }
 
         // This is purely for binding purposes
         public Type Type => GetType();
 
         public bool IsActive { get; set; }
 
-        public int Order { get; protected set; }
-
-        protected SettingsTabViewModelBase()
+        protected SettingsTabViewModelBase(int order, string displayName)
         {
-            DisplayName = Type.ToString();
+            Order = order;
+            DisplayName = displayName;
         }
     }
 }

@@ -19,16 +19,11 @@ namespace LightBulb.ViewModels.Components
 
         public HotKeySettingsTabViewModel(IEventAggregator eventAggregator, IViewModelFactory viewModelFactory, SettingsService settingsService,
             SystemService systemService)
+            : base(3, "Hotkeys")
         {
             _eventAggregator = eventAggregator;
             _settingsService = settingsService;
             _systemService = systemService;
-
-            // Set display name
-            DisplayName = "Hotkeys";
-
-            // Set order
-            Order = 3;
 
             // Initialize view models
             ToggleHotKey = viewModelFactory.CreateHotKeyViewModel();

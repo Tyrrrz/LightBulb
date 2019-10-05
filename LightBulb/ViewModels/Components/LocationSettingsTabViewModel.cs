@@ -2,6 +2,7 @@
 using LightBulb.Internal;
 using LightBulb.Models;
 using LightBulb.Services;
+using Stylet;
 using Tyrrrz.Extensions;
 
 namespace LightBulb.ViewModels.Components
@@ -10,7 +11,8 @@ namespace LightBulb.ViewModels.Components
     {
         private readonly SettingsService _settingsService;
         private readonly LocationService _locationService;
-        private readonly CalculationService _calculationService;
+
+        public bool IsBusy { get; private set; }
 
         public TimeSpan SunriseTime
         {
@@ -23,6 +25,8 @@ namespace LightBulb.ViewModels.Components
             get => _settingsService.SunsetTime;
             set => _settingsService.SunsetTime = value;
         }
+
+        public bool IsLocationAutoDetected { get; private set; }
 
         public string LocationQuery { get; set; }
 
@@ -40,57 +44,75 @@ namespace LightBulb.ViewModels.Components
 
         public LocationSettingsTabViewModel(SettingsService settingsService, LocationService locationService,
             CalculationService calculationService)
+            : base(1, "Location")
         {
             _settingsService = settingsService;
             _locationService = locationService;
-            _calculationService = calculationService;
-
-            // Set display name
-            DisplayName = "Location";
-
-            // Set order
-            Order = 1;
 
             // Set location query
             LocationQuery = Location?.ToString();
 
             // HACK: when settings change - fire property changed event for all properties in this view model
             _settingsService.Bind((sender, args) => NotifyOfPropertyChange(null));
-        }
 
-        private void SetLocation(GeoLocation location)
-        {
-            // Set location
-            Location = location;
-            LocationQuery = location.ToString();
-
-            // Update sunrise and sunset times
-            var instant = DateTimeOffset.Now;
-            _settingsService.SunriseTime = _calculationService.CalculateSunrise(location, instant).TimeOfDay;
-            _settingsService.SunsetTime = _calculationService.CalculateSunset(location, instant).TimeOfDay;
-        }
-
-        public async void ResolveCurrentLocation()
-        {
-            // Get location based on current IP
-            var location = await _locationService.GetLocationAsync();
-            SetLocation(location);
-        }
-
-        public bool CanProcessLocationQuery => !LocationQuery.IsNullOrWhiteSpace();
-
-        public async void ResolveLocation()
-        {
-            // Try to parse location in case the query contains raw coordinates
-            if (GeoLocation.TryParse(LocationQuery, out var parsedLocation))
+            // HACK: re-calculate sunrise/sunset when location changes
+            _settingsService.Bind(o => o.Location, (sender, args) =>
             {
-                SetLocation(parsedLocation);
+                var location = args.NewValue;
+                var instant = DateTimeOffset.Now;
+
+                if (location != null)
+                {
+                    _settingsService.SunriseTime = calculationService.CalculateSunrise(location.Value, instant).TimeOfDay;
+                    _settingsService.SunsetTime = calculationService.CalculateSunset(location.Value, instant).TimeOfDay;
+                }
+            });
+        }
+
+        public bool CanAutoDetectLocation => !IsBusy && !IsLocationAutoDetected;
+
+        public async void AutoDetectLocation()
+        {
+            IsBusy = true;
+
+            try
+            {
+                // Get location based on current IP
+                Location = await _locationService.GetLocationAsync();
+                LocationQuery = Location?.ToString();
+                IsLocationAutoDetected = true;
             }
-            // Otherwise search for the location online
-            else
+            finally
             {
-                var location = await _locationService.GetLocationAsync(LocationQuery);
-                SetLocation(location);
+                IsBusy = false;
+            }
+        }
+
+        public bool CanSetLocation => !IsBusy && !LocationQuery.IsNullOrWhiteSpace() && LocationQuery != Location?.ToString();
+
+        public async void SetLocation()
+        {
+            IsBusy = true;
+
+            try
+            {
+                // Try to parse location in case the query contains raw coordinates
+                if (GeoLocation.TryParse(LocationQuery, out var parsedLocation))
+                {
+                    Location = parsedLocation;
+                }
+                // Otherwise search for the location online
+                else
+                {
+                    Location = await _locationService.GetLocationAsync(LocationQuery);
+                }
+
+                LocationQuery = Location?.ToString();
+                IsLocationAutoDetected = false;
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
     }

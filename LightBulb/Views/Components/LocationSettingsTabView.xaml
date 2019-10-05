@@ -27,13 +27,13 @@
                 Content="Manual"
                 GroupName="SunriseSunsetConfigurationType"
                 IsChecked="{Binding IsManualSunriseSunset}"
-                ToolTip="Sunrise and sunset times are configured manually" />
+                ToolTip="Configure sunrise and sunset times manually" />
             <RadioButton
                 Grid.Column="1"
                 Content="Location-based"
                 GroupName="SunriseSunsetConfigurationType"
                 IsChecked="{Binding IsManualSunriseSunset, Converter={x:Static converters:InverseBoolConverter.Instance}}"
-                ToolTip="Sunrise and sunset times are calculated automatically based on location" />
+                ToolTip="Specify location and have sunrise and sunset times calculated automatically" />
         </Grid>
 
         <!--  Manual  -->
@@ -74,16 +74,31 @@
             <TextBlock Margin="6" Text="Your location:" />
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
+                <!--  Autodetect  -->
+                <Button
+                    Grid.Column="0"
+                    Margin="2"
+                    Padding="4"
+                    Command="{s:Action AutoDetectLocation}"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    ToolTip="Detect location automatically based on your IP">
+                    <materialDesign:PackIcon
+                        Width="24"
+                        Height="24"
+                        Kind="Location" />
+                </Button>
+
                 <!--  Location query  -->
                 <TextBox
-                    Grid.Column="0"
+                    Grid.Column="1"
                     Margin="8,0,8,6"
-                    VerticalAlignment="Center"
+                    FontSize="14"
+                    IsEnabled="{Binding IsBusy, Converter={x:Static converters:InverseBoolConverter.Instance}}"
                     Text="{Binding LocationQuery, UpdateSourceTrigger=PropertyChanged}">
                     <TextBox.ToolTip>
                         <TextBlock>
@@ -103,33 +118,19 @@
                     </TextBox.ToolTip>
                 </TextBox>
 
-                <!--  Autodetect  -->
-                <Button
-                    Grid.Column="1"
-                    Margin="2"
-                    Padding="4"
-                    Command="{s:Action ResolveCurrentLocation}"
-                    Style="{DynamicResource MaterialDesignFlatButton}"
-                    ToolTip="Resolve location automatically based on your IP">
-                    <materialDesign:PackIcon
-                        Width="24"
-                        Height="24"
-                        Kind="Location" />
-                </Button>
-
-                <!--  Search  -->
+                <!--  Set  -->
                 <Button
                     Grid.Column="2"
                     Margin="2"
                     Padding="4"
-                    Command="{s:Action ResolveLocation}"
+                    Command="{s:Action SetLocation}"
                     IsDefault="True"
                     Style="{DynamicResource MaterialDesignFlatButton}"
-                    ToolTip="Resolve location using specified query">
+                    ToolTip="Set location">
                     <materialDesign:PackIcon
                         Width="24"
                         Height="24"
-                        Kind="Search" />
+                        Kind="Tick" />
                 </Button>
             </Grid>
         </StackPanel>
