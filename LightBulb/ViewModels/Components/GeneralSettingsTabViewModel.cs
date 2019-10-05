@@ -45,7 +45,7 @@ namespace LightBulb.ViewModels.Components
             _settingsService = settingsService;
 
             // HACK: when settings change - fire property changed event for all properties in this view model
-            _settingsService.Bind((sender, args) => NotifyOfPropertyChange(null));
+            _settingsService.Bind((sender, args) => Refresh());
         }
     }
 }

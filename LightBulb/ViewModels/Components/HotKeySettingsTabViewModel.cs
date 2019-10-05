@@ -30,7 +30,7 @@ namespace LightBulb.ViewModels.Components
             ToggleGammaPollingHotKey = viewModelFactory.CreateHotKeyViewModel();
 
             // HACK: when settings change - fire property changed event for all properties in this view model
-            _settingsService.Bind((sender, args) => NotifyOfPropertyChange(null));
+            _settingsService.Bind((sender, args) => Refresh());
 
             // Update hotkeys when they change in settings
             _settingsService.Bind(o => o.ToggleHotKey, (sender, args) => ToggleHotKey.Model = _settingsService.ToggleHotKey);

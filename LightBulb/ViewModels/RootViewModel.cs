@@ -46,7 +46,7 @@ namespace LightBulb.ViewModels
 
                 // If disabled or paused - return default temperature
                 if (!IsEnabled || IsPaused)
-                    return ColorTemperature.Default;
+                    return _settingsService.IsDefaultToDayTimeTemperature ? _settingsService.MaxTemperature : ColorTemperature.Default;
 
                 // Otherwise - return temperature for instant
                 return _calculationService.CalculateColorTemperature(Instant);

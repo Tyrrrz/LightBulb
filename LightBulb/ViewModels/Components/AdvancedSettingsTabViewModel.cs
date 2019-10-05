@@ -20,6 +20,12 @@ namespace LightBulb.ViewModels.Components
             }
         }
 
+        public bool IsDefaultToDayTimeTemperature
+        {
+            get => _settingsService.IsDefaultToDayTimeTemperature;
+            set => _settingsService.IsDefaultToDayTimeTemperature = value;
+        }
+
         public bool IsGammaPollingEnabled
         {
             get => _settingsService.IsGammaPollingEnabled;
@@ -45,7 +51,7 @@ namespace LightBulb.ViewModels.Components
             _systemService = systemService;
 
             // HACK: when settings change - fire property changed event for all properties in this view model
-            _settingsService.Bind((sender, args) => NotifyOfPropertyChange(null));
+            _settingsService.Bind((sender, args) => Refresh());
         }
     }
 }

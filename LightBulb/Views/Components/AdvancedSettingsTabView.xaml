@@ -12,7 +12,7 @@
     mc:Ignorable="d">
     <StackPanel Orientation="Vertical">
         <!--  Auto start  -->
-        <Grid Margin="6">
+        <Grid Margin="6" ToolTip="Launch LightBulb as soon as you log in">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -21,8 +21,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Start with Windows:"
-                ToolTip="Launch LightBulb as soon as you log in" />
+                Text="Start with Windows:" />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"
@@ -30,8 +29,8 @@
                 IsChecked="{Binding IsAutoStartEnabled}" />
         </Grid>
 
-        <!--  Gamma polling enabled/disabled  -->
-        <Grid Margin="6">
+        <!--  Default to day time  -->
+        <Grid Margin="6" ToolTip="When LightBulb is disabled or paused, restore day-time temperature instead of default monitor temperature">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -40,8 +39,25 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Gamma polling:"
-                ToolTip="Repeatedly refresh gamma to prevent other applications from overriding it" />
+                Text="Default to day-time temperature:" />
+            <ToggleButton
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                IsChecked="{Binding IsDefaultToDayTimeTemperature}" />
+        </Grid>
+
+        <!--  Gamma polling enabled/disabled  -->
+        <Grid Margin="6" ToolTip="Repeatedly refresh gamma to prevent other applications from overriding it">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="Gamma polling:" />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"
@@ -50,7 +66,7 @@
         </Grid>
 
         <!--  Gamma smoothing enabled/disabled  -->
-        <Grid Margin="6">
+        <Grid Margin="6" ToolTip="Transition slowly when changing gamma to give time for eyes to adjust">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -59,8 +75,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Gamma smoothing:"
-                ToolTip="Transition slowly when changing gamma to give time for eyes to adjust" />
+                Text="Gamma smoothing:" />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"
@@ -69,7 +84,7 @@
         </Grid>
 
         <!--  Pause when full screen enabled/disabled  -->
-        <Grid Margin="6">
+        <Grid Margin="6" ToolTip="Reset gamma to default and don't change it when any fullscreen window is in foreground">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -78,8 +93,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Pause when fullscreen:"
-                ToolTip="Reset gamma to default and don't change it when any fullscreen window is in foreground" />
+                Text="Pause when fullscreen:" />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"

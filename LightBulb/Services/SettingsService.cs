@@ -22,6 +22,8 @@ namespace LightBulb.Services
 
         public bool IsManualSunriseSunset { get; set; } = true;
 
+        public bool IsDefaultToDayTimeTemperature { get; set; } = false;
+
         public bool IsGammaPollingEnabled { get; set; } = true;
 
         public bool IsGammaSmoothingEnabled { get; set; } = true;
