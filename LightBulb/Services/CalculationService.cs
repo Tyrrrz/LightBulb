@@ -70,15 +70,14 @@ namespace LightBulb.Services
             bool isSunrise)
         {
             // Based on:
-            // https://github.com/ceeK/Solar/blob/9d8ed80a3977c97d7a2014ef28b129ec80c52a70/Solar/Solar.swift
-            // Copyright (c) 2016 Chris Howell (MIT License)
+            // https://edwilliams.org/sunrise_sunset_algorithm.htm
 
-            // TODO: this is not 100% accurate
+            var dateUtc = instant.ToUniversalTime().ResetTimeOfDay();
 
             // Convert longitude to hour value and calculate an approximate time
             var lngHours = location.Longitude / 15;
             var timeApproxHours = isSunrise ? 6 : 18;
-            var timeApproxDays = instant.DayOfYear + (timeApproxHours - lngHours) / 24;
+            var timeApproxDays = dateUtc.DayOfYear + (timeApproxHours - lngHours) / 24;
 
             // Calculate the Sun's mean anomaly
             var sunMeanAnomaly = 0.9856 * timeApproxDays - 3.289;
@@ -117,7 +116,15 @@ namespace LightBulb.Services
             // Calculate local mean time
             var meanTime = sunLocalHours + sunRightAscHours - 0.06571 * timeApproxDays - 6.622;
 
-            return instant.ResetTimeOfDay() + TimeSpan.FromHours(meanTime);
+            // Adjust mean time to UTC
+            var hoursUtc = meanTime - lngHours;
+            hoursUtc %= 24; // wrap [0;24)
+
+            // Compose a date
+            var eventUtc = dateUtc + TimeSpan.FromHours(hoursUtc);
+
+            // Convert back to whichever offset was provided
+            return eventUtc.ToOffset(instant.Offset);
         }
 
         public DateTimeOffset CalculateSunrise(GeoLocation location, DateTimeOffset instant) =>
