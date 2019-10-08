@@ -23,7 +23,6 @@ namespace LightBulb.ViewModels
         private readonly AutoResetTimer _updateTimer;
         private readonly AutoResetTimer _gammaPollingTimer;
         private readonly AutoResetTimer _settingsAutoSaveTimer;
-        private readonly AutoResetTimer _updateSunriseSunsetTimer;
         private readonly AutoResetTimer _checkForUpdatesTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
@@ -122,17 +121,6 @@ namespace LightBulb.ViewModels
 
             _settingsAutoSaveTimer = new AutoResetTimer(() => _settingsService.SaveIfNeeded());
 
-            _updateSunriseSunsetTimer = new AutoResetTimer(() =>
-            {
-                if (_settingsService.IsManualSunriseSunset || _settingsService.Location == null)
-                    return;
-
-                var location = _settingsService.Location.Value;
-                var instant = DateTimeOffset.Now;
-                _settingsService.SunriseTime = _calculationService.CalculateSunrise(location, instant).TimeOfDay;
-                _settingsService.SunsetTime = _calculationService.CalculateSunset(location, instant).TimeOfDay;
-            });
-
             _checkForUpdatesTimer = new AutoResetTimer(async () =>
             {
                 IsUpdateAvailable = await _updateService.CheckForUpdatesAsync();
@@ -171,7 +159,6 @@ namespace LightBulb.ViewModels
             _updateTimer.Start(TimeSpan.FromMilliseconds(17)); // 60hz
             _gammaPollingTimer.Start(TimeSpan.FromSeconds(1));
             _settingsAutoSaveTimer.Start(TimeSpan.FromSeconds(5));
-            _updateSunriseSunsetTimer.Start(TimeSpan.FromHours(3));
             _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
         }
         
@@ -288,7 +275,6 @@ namespace LightBulb.ViewModels
             // Dispose stuff
             _updateTimer.Dispose();
             _settingsAutoSaveTimer.Dispose();
-            _updateSunriseSunsetTimer.Dispose();
             _checkForUpdatesTimer.Dispose();
             _enableAfterDelayTimer.Dispose();
 

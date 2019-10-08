@@ -2,7 +2,6 @@
 using LightBulb.Internal;
 using LightBulb.Models;
 using LightBulb.Services;
-using Stylet;
 using Tyrrrz.Extensions;
 
 namespace LightBulb.ViewModels.Components
@@ -42,8 +41,7 @@ namespace LightBulb.ViewModels.Components
             set => _settingsService.IsManualSunriseSunset = value;
         }
 
-        public LocationSettingsTabViewModel(SettingsService settingsService, LocationService locationService,
-            CalculationService calculationService)
+        public LocationSettingsTabViewModel(SettingsService settingsService, LocationService locationService)
             : base(1, "Location")
         {
             _settingsService = settingsService;
@@ -54,19 +52,6 @@ namespace LightBulb.ViewModels.Components
 
             // HACK: when settings change - fire property changed event for all properties in this view model
             _settingsService.Bind((sender, args) => Refresh());
-
-            // HACK: re-calculate sunrise/sunset when location changes
-            _settingsService.Bind(o => o.Location, (sender, args) =>
-            {
-                var location = args.NewValue;
-                var instant = DateTimeOffset.Now;
-
-                if (location != null)
-                {
-                    _settingsService.SunriseTime = calculationService.CalculateSunrise(location.Value, instant).TimeOfDay;
-                    _settingsService.SunsetTime = calculationService.CalculateSunset(location.Value, instant).TimeOfDay;
-                }
-            });
         }
 
         public bool CanAutoDetectLocation => !IsBusy && !IsLocationAutoDetected;

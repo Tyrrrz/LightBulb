@@ -13,59 +13,6 @@ namespace LightBulb.Services
             _settingsService = settingsService;
         }
 
-        public ColorTemperature CalculateColorTemperature(DateTimeOffset instant)
-        {
-            // TODO: transition should end at sunset, not start at sunset
-
-            // Get settings
-            var minTemp = _settingsService.MinTemperature;
-            var maxTemp = _settingsService.MaxTemperature;
-            var offset = _settingsService.TemperatureTransitionDuration;
-            var sunriseTime = _settingsService.SunriseTime;
-            var sunsetTime = _settingsService.SunsetTime;
-
-            // Get next and previous sunrise and sunset
-            var nextSunrise = instant.NextTimeOfDay(sunriseTime);
-            var prevSunrise = instant.PreviousTimeOfDay(sunriseTime);
-            var nextSunset = instant.NextTimeOfDay(sunsetTime);
-            var prevSunset = instant.PreviousTimeOfDay(sunsetTime);
-
-            // Calculate time until next sunrise and sunset
-            var untilNextSunrise = nextSunrise - instant;
-            var untilNextSunset = nextSunset - instant;
-
-            // Next event is sunrise
-            if (untilNextSunrise <= untilNextSunset)
-            {
-                // Check if in transition period to night
-                if (instant <= prevSunset + offset)
-                {
-                    // Smooth transition
-                    var norm = (instant - prevSunset).TotalHours / offset.TotalHours;
-                    var value = minTemp.Value + (maxTemp.Value - minTemp.Value) * Math.Cos(norm * Math.PI / 2);
-                    return new ColorTemperature(value);
-                }
-
-                // Night time
-                return minTemp;
-            }
-            // Next event is sunset
-            else
-            {
-                // Check if in transition period to day
-                if (instant <= prevSunrise + offset)
-                {
-                    // Smooth transition
-                    var norm = (instant - prevSunrise).TotalHours / offset.TotalHours;
-                    var value = maxTemp.Value + (minTemp.Value - maxTemp.Value) * Math.Cos(norm * Math.PI / 2);
-                    return new ColorTemperature(value);
-                }
-
-                // Day time
-                return maxTemp;
-            }
-        }
-
         private DateTimeOffset CalculateSunriseSunset(GeoLocation location, DateTimeOffset instant,
             bool isSunrise)
         {
@@ -127,10 +74,79 @@ namespace LightBulb.Services
             return eventUtc.ToOffset(instant.Offset);
         }
 
-        public DateTimeOffset CalculateSunrise(GeoLocation location, DateTimeOffset instant) =>
-            CalculateSunriseSunset(location, instant, true);
+        public DateTimeOffset CalculateSunrise(GeoLocation location, DateTimeOffset instant) => CalculateSunriseSunset(location, instant, true);
 
-        public DateTimeOffset CalculateSunset(GeoLocation location, DateTimeOffset instant) =>
-            CalculateSunriseSunset(location, instant, false);
+        public DateTimeOffset CalculateSunset(GeoLocation location, DateTimeOffset instant) => CalculateSunriseSunset(location, instant, false);
+
+        private TimeSpan GetSunriseTime(DateTimeOffset instant)
+        {
+            // Short-circuit if manual time is configured or location is not set
+            if (_settingsService.IsManualSunriseSunset || _settingsService.Location == null)
+                return _settingsService.SunriseTime;
+
+            return CalculateSunrise(_settingsService.Location.Value, instant).TimeOfDay;
+        }
+
+        private TimeSpan GetSunsetTime(DateTimeOffset instant)
+        {
+            // Short-circuit if manual time is configured or location is not set
+            if (_settingsService.IsManualSunriseSunset || _settingsService.Location == null)
+                return _settingsService.SunsetTime;
+
+            return CalculateSunset(_settingsService.Location.Value, instant).TimeOfDay;
+        }
+
+        public ColorTemperature CalculateColorTemperature(DateTimeOffset instant)
+        {
+            // TODO: transition should end at sunset, not start at sunset
+
+            // Get settings
+            var minTemp = _settingsService.MinTemperature;
+            var maxTemp = _settingsService.MaxTemperature;
+            var offset = _settingsService.TemperatureTransitionDuration;
+            var sunriseTime = GetSunriseTime(instant);
+            var sunsetTime = GetSunsetTime(instant);
+
+            // Get next and previous sunrise and sunset
+            var nextSunrise = instant.NextTimeOfDay(sunriseTime);
+            var prevSunrise = instant.PreviousTimeOfDay(sunriseTime);
+            var nextSunset = instant.NextTimeOfDay(sunsetTime);
+            var prevSunset = instant.PreviousTimeOfDay(sunsetTime);
+
+            // Calculate time until next sunrise and sunset
+            var untilNextSunrise = nextSunrise - instant;
+            var untilNextSunset = nextSunset - instant;
+
+            // Next event is sunrise
+            if (untilNextSunrise <= untilNextSunset)
+            {
+                // Check if in transition period to night
+                if (instant <= prevSunset + offset)
+                {
+                    // Smooth transition
+                    var norm = (instant - prevSunset).TotalHours / offset.TotalHours;
+                    var value = minTemp.Value + (maxTemp.Value - minTemp.Value) * Math.Cos(norm * Math.PI / 2);
+                    return new ColorTemperature(value);
+                }
+
+                // Night time
+                return minTemp;
+            }
+            // Next event is sunset
+            else
+            {
+                // Check if in transition period to day
+                if (instant <= prevSunrise + offset)
+                {
+                    // Smooth transition
+                    var norm = (instant - prevSunrise).TotalHours / offset.TotalHours;
+                    var value = maxTemp.Value + (minTemp.Value - maxTemp.Value) * Math.Cos(norm * Math.PI / 2);
+                    return new ColorTemperature(value);
+                }
+
+                // Day time
+                return maxTemp;
+            }
+        }
     }
 }
