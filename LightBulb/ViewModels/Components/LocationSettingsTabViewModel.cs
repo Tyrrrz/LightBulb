@@ -16,13 +16,13 @@ namespace LightBulb.ViewModels.Components
         public TimeSpan SunriseTime
         {
             get => _settingsService.SunriseTime;
-            set => _settingsService.SunriseTime = value;
+            set => _settingsService.SunriseTime = value.Clamp(TimeSpan.Zero, new TimeSpan(23, 59, 59));
         }
 
         public TimeSpan SunsetTime
         {
             get => _settingsService.SunsetTime;
-            set => _settingsService.SunsetTime = value;
+            set => _settingsService.SunsetTime = value.Clamp(TimeSpan.Zero, new TimeSpan(23, 59, 59));
         }
 
         public bool IsLocationAutoDetected { get; private set; }

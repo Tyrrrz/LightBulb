@@ -1,5 +1,4 @@
 ﻿using System;
-using LightBulb.Internal;
 
 namespace LightBulb.Models
 {
@@ -9,7 +8,7 @@ namespace LightBulb.Models
 
         public ColorTemperature(double value)
         {
-            Value = value.GuardNotNegative(nameof(value));
+            Value = value;
         }
 
         public override bool Equals(object obj)

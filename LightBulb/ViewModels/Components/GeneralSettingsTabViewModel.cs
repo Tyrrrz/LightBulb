@@ -2,6 +2,7 @@
 using LightBulb.Internal;
 using LightBulb.Models;
 using LightBulb.Services;
+using Tyrrrz.Extensions;
 
 namespace LightBulb.ViewModels.Components
 {
@@ -14,7 +15,7 @@ namespace LightBulb.ViewModels.Components
             get => _settingsService.MinTemperature;
             set
             {
-                _settingsService.MinTemperature = value;
+                _settingsService.MinTemperature = value.Clamp(new ColorTemperature(1000), new ColorTemperature(10000));
 
                 if (MinColorTemperature > MaxColorTemperature)
                     MaxColorTemperature = MinColorTemperature;
@@ -26,7 +27,7 @@ namespace LightBulb.ViewModels.Components
             get => _settingsService.MaxTemperature;
             set
             {
-                _settingsService.MaxTemperature = value;
+                _settingsService.MaxTemperature = value.Clamp(new ColorTemperature(1000), new ColorTemperature(10000));
 
                 if (MaxColorTemperature < MinColorTemperature)
                     MinColorTemperature = MaxColorTemperature;
@@ -36,7 +37,7 @@ namespace LightBulb.ViewModels.Components
         public TimeSpan TemperatureTransitionDuration
         {
             get => _settingsService.TemperatureTransitionDuration;
-            set => _settingsService.TemperatureTransitionDuration = value;
+            set => _settingsService.TemperatureTransitionDuration = value.Clamp(TimeSpan.Zero, TimeSpan.FromHours(5));
         }
 
         public GeneralSettingsTabViewModel(SettingsService settingsService)
