@@ -111,13 +111,13 @@ namespace LightBulb.Services
     {
         private static string AutoStartKeyValue => $"\"{App.ExecutableFilePath}\" --autostart";
 
-        private static RegistryKey OpenRegistryKey(string subKey, bool write) =>
-            write ? Registry.CurrentUser.CreateSubKey(subKey, true) : Registry.CurrentUser.OpenSubKey(subKey, false);
+        private static RegistryKey OpenRegistryKey(RegistryKey parent, string subKey, bool write) =>
+            write ? parent.CreateSubKey(subKey, true) : parent.OpenSubKey(subKey, false);
 
         private static RegistryKey OpenAutoStartRegistryKey(bool write) =>
-            OpenRegistryKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", write);
+            OpenRegistryKey(Registry.CurrentUser, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", write);
 
         private static RegistryKey OpenGammaRangeRegistryKey(bool write) =>
-            OpenRegistryKey("Software\\Microsoft\\Windows NT\\CurrentVersion\\ICM", write);
+            OpenRegistryKey(Registry.LocalMachine, "Software\\Microsoft\\Windows NT\\CurrentVersion\\ICM", write);
     }
 }
