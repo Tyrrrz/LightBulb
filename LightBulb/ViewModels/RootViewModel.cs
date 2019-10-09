@@ -26,8 +26,6 @@ namespace LightBulb.ViewModels
         private readonly AutoResetTimer _checkForUpdatesTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
-        public bool IsUpdateAvailable { get; private set; }
-
         public bool IsEnabled { get; set; } = true;
 
         public bool IsPaused { get; private set; }
@@ -123,7 +121,7 @@ namespace LightBulb.ViewModels
 
             _checkForUpdatesTimer = new AutoResetTimer(async () =>
             {
-                IsUpdateAvailable = await _updateService.CheckForUpdatesAsync();
+                await _updateService.CheckPrepareUpdateAsync();
             });
 
             _enableAfterDelayTimer = new ManualResetTimer(Enable);

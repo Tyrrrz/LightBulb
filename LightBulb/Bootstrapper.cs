@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using LightBulb.Internal;
 using LightBulb.Services;
 using LightBulb.ViewModels;
 using LightBulb.ViewModels.Components;
@@ -43,13 +44,21 @@ namespace LightBulb
             builder.Bind<IViewModelFactory>().ToAbstractFactory();
         }
 
-#if !DEBUG
+        protected override void Launch()
+        {
+            // Finalize pending updates (and restart) before launching the app
+            var updateService = (UpdateService) GetInstance(typeof(UpdateService));
+            updateService.FinalizePendingUpdates();
+
+            base.Launch();
+        }
+
         protected override void OnUnhandledException(DispatcherUnhandledExceptionEventArgs e)
         {
             base.OnUnhandledException(e);
 
-            MessageBox.Show(e.Exception.ToString(), "Error occured", MessageBoxButton.OK, MessageBoxImage.Error);
+            if (!EnvironmentEx.IsDebug())
+                MessageBox.Show(e.Exception.ToString(), "Error occured", MessageBoxButton.OK, MessageBoxImage.Error);
         }
-#endif
     }
 }
