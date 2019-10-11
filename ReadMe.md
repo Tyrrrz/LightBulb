@@ -19,7 +19,6 @@ _Currently only compatible with Windows 7 or higher._
 ## Download
 
 - [Stable releases](https://github.com/Tyrrrz/LightBulb/releases)
-- [Chocolatey](https://chocolatey.org/packages/LightBulb): `choco install lightbulb`
 - [Continuous integration](https://ci.appveyor.com/project/Tyrrrz/LightBulb)
 
 ## Features
