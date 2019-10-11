@@ -19,12 +19,11 @@
             ToolTip="Color temperature during day-time">
             <TextBlock VerticalAlignment="Center" Text="Day-time color temperature:" />
             <TextBox
-                Width="40"
+                MinWidth="30"
                 Margin="8,0"
                 Padding="0"
                 VerticalAlignment="Center"
-                Text="{Binding MaxColorTemperature, Converter={x:Static converters:ColorTemperatureToStringConverter.Instance}}"
-                TextAlignment="Center" />
+                Text="{Binding MaxColorTemperature, Converter={x:Static converters:ColorTemperatureToStringConverter.Instance}}" />
         </StackPanel>
         <Slider
             Margin="8,0,8,6"
@@ -44,12 +43,11 @@
             ToolTip="Color temperature during night-time">
             <TextBlock VerticalAlignment="Center" Text="Night-time color temperature:" />
             <TextBox
-                Width="40"
+                MinWidth="30"
                 Margin="8,0"
                 Padding="0"
                 VerticalAlignment="Center"
-                Text="{Binding MinColorTemperature, Converter={x:Static converters:ColorTemperatureToStringConverter.Instance}}"
-                TextAlignment="Center" />
+                Text="{Binding MinColorTemperature, Converter={x:Static converters:ColorTemperatureToStringConverter.Instance}}" />
         </StackPanel>
         <Slider
             Margin="8,0,8,6"
@@ -63,10 +61,18 @@
             Value="{Binding MinColorTemperature, Converter={x:Static converters:ColorTemperatureToDoubleConverter.Instance}}" />
 
         <!--  Temperature transition duration  -->
-        <TextBlock Margin="6" ToolTip="Duration of sunrise and sunset">
-            <Run Text="Transition duration:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding TemperatureTransitionDuration, Mode=OneWay}" />
-        </TextBlock>
+        <StackPanel
+            Margin="6"
+            Orientation="Horizontal"
+            ToolTip="Duration of sunrise and sunset">
+            <TextBlock VerticalAlignment="Center" Text="Transition duration:" />
+            <TextBox
+                MinWidth="50"
+                Margin="8,0"
+                Padding="0"
+                VerticalAlignment="Center"
+                Text="{Binding TemperatureTransitionDuration, Converter={x:Static converters:TimeSpanToStringConverter.Instance}}" />
+        </StackPanel>
         <Slider
             Margin="8,0,8,6"
             IsSnapToTickEnabled="True"

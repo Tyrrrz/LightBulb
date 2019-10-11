@@ -39,10 +39,15 @@
         <!--  Manual  -->
         <StackPanel Orientation="Vertical" Visibility="{Binding IsManualSunriseSunset, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
             <!--  Sunrise time  -->
-            <TextBlock Margin="6" ToolTip="Sunrise time of day">
-                <Run Text="Sunrise time:" />
-                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SunriseTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
-            </TextBlock>
+            <StackPanel Margin="6" Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center" Text="Sunrise:" />
+                <TextBox
+                    MinWidth="30"
+                    Margin="8,0"
+                    Padding="0"
+                    VerticalAlignment="Center"
+                    Text="{Binding SunriseTime, Converter={x:Static converters:TimeSpanToStringConverter.Instance}, ConverterParameter=hh\\:mm}" />
+            </StackPanel>
             <Slider
                 Margin="8,0,8,6"
                 LargeChange="0.5"
@@ -54,10 +59,15 @@
                 Value="{Binding SunriseTime, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
 
             <!--  Sunset time  -->
-            <TextBlock Margin="6" ToolTip="Sunset time of day">
-                <Run Text="Sunset time:" />
-                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SunsetTime, StringFormat=\{0:hh\\:mm\}, Mode=OneWay}" />
-            </TextBlock>
+            <StackPanel Margin="6" Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center" Text="Sunset:" />
+                <TextBox
+                    MinWidth="30"
+                    Margin="8,0"
+                    Padding="0"
+                    VerticalAlignment="Center"
+                    Text="{Binding SunsetTime, Converter={x:Static converters:TimeSpanToStringConverter.Instance}, ConverterParameter=hh\\:mm}" />
+            </StackPanel>
             <Slider
                 Margin="8,0,8,6"
                 LargeChange="0.5"
