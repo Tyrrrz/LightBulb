@@ -2,16 +2,17 @@
     x:Class="LightBulb.Views.RootView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:LightBulb.Views.Controls"
+    xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:lightBulb="clr-namespace:LightBulb"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="clr-namespace:LightBulb.Models"
     xmlns:s="https://github.com/canton7/Stylet"
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:tb="http://www.hardcodet.net/taskbar"
     xmlns:viewModels="clr-namespace:LightBulb.ViewModels"
-    Width="500"
+    Width="450"
     Height="350"
     d:DataContext="{d:DesignInstance Type=viewModels:RootViewModel}"
     Icon="/LightBulb;component/favicon.ico"
@@ -188,7 +189,7 @@
                                 FontSize="19"
                                 FontWeight="Medium"
                                 Foreground="{DynamicResource PrimaryInverseTextBrush}"
-                                Text="LightBulb" />
+                                Text="{x:Static lightBulb:App.Name}" />
                             <Run Text="v" /><Run Text="{x:Static lightBulb:App.VersionString}" />
                         </TextBlock>
 
@@ -209,113 +210,157 @@
                     </Grid>
                 </Border>
 
-                <!--  Graph (placeholder)  -->
-                <Image
-                    Grid.Row="1"
-                    Margin="8"
-                    VerticalAlignment="Center"
-                    Source="https://via.placeholder.com/350x150"
-                    Stretch="Fill" />
-
-                <!--  Footer  -->
-                <Grid Grid.Row="2" Margin="8">
+                <!--  Body  -->
+                <Grid Grid.Row="1" Margin="0,8,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <!--  Current time  -->
-                    <StackPanel
+                    <!--  Sunset time  -->
+                    <TextBlock
                         Grid.Column="0"
+                        HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Orientation="Horizontal">
-                        <materialDesign:PackIcon
-                            Width="24"
-                            Height="24"
-                            Kind="ClockOutline" />
-                        <TextBlock
-                            Margin="6,1,0,0"
-                            FontSize="19"
-                            Text="{Binding Instant, StringFormat=\{0:HH\:mm\}, Mode=OneWay}" />
-                    </StackPanel>
+                        FontSize="19"
+                        TextAlignment="Center">
+                        <TextBlock.ToolTip>
+                            <TextBlock>
+                                <Run Text="{Binding TimeUntilSunset, Converter={x:Static converters:TimeSpanToHumanizedDurationStringConverter.Instance}, Mode=OneWay}" />
+                                <Run Text="until sunset" />
+                            </TextBlock>
+                        </TextBlock.ToolTip>
+                        <Run Text="Sunset" />
+                        <LineBreak />
+                        <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SunsetTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, Mode=OneWay}" />
+                    </TextBlock>
 
-                    <!--  Current cycle state and temperature  -->
-                    <StackPanel
+                    <!--  Cycle graph  -->
+                    <Grid
                         Grid.Column="1"
-                        Margin="12,0,0,0"
+                        Width="220"
+                        Height="220">
+                        <!--  Night time arc  -->
+                        <controls:Arc
+                            EndAngle="{Binding SunriseTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            StartAngle="{Binding SunsetTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            Stroke="#FFD280"
+                            StrokeThickness="24" />
+
+                        <!--  Day time arc  -->
+                        <controls:Arc
+                            EndAngle="{Binding SunsetTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            StartAngle="{Binding SunriseTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            Stroke="#E0F0FA"
+                            StrokeThickness="24" />
+
+                        <!--  Current time position  -->
+                        <controls:RotatedPoint
+                            Angle="{Binding Instant.TimeOfDay.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            Fill="{DynamicResource SecondaryAccentBrush}"
+                            Size="12" />
+
+                        <!--  Time and temperature  -->
+                        <StackPanel
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Width="48"
+                                Height="48"
+                                Kind="{Binding CycleState, Converter={x:Static converters:CycleStateToPackIconKindConverter.Instance}, Mode=OneWay}" />
+                            <TextBlock
+                                Margin="8,0,0,0"
+                                VerticalAlignment="Center"
+                                FontSize="20">
+                                <Run Text="{Binding Instant, StringFormat=\{0:t\}, Mode=OneWay}" />
+                                <LineBreak />
+                                <Run Text="{Binding CurrentColorTemperature, Mode=OneWay}" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+
+                    <!--  Sunrise time  -->
+                    <TextBlock
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Orientation="Horizontal">
-                        <materialDesign:PackIcon Width="24" Height="24">
-                            <materialDesign:PackIcon.Style>
-                                <Style TargetType="{x:Type materialDesign:PackIcon}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Disabled}">
-                                            <Setter Property="Kind" Value="EyeOffOutline" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Transition}">
-                                            <Setter Property="Kind" Value="ThemeLightDark" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Day}">
-                                            <Setter Property="Kind" Value="WhiteBalanceSunny" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding CycleState}" Value="{x:Static models:CycleState.Night}">
-                                            <Setter Property="Kind" Value="WeatherNight" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </materialDesign:PackIcon.Style>
-                        </materialDesign:PackIcon>
-                        <TextBlock
-                            Margin="6,1,0,0"
-                            FontSize="19"
-                            Text="{Binding CurrentColorTemperature, Mode=OneWay}" />
-                    </StackPanel>
-
-                    <StackPanel
-                        Grid.Column="3"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal">
-
-                        <!--  Cycle preview  -->
-                        <ToggleButton
-                            Padding="4"
-                            IsChecked="{Binding IsCyclePreviewEnabled}"
-                            Style="{StaticResource MaterialDesignFlatActionToggleButton}"
-                            ToolTip="Preview 24-hour cycle">
-                            <ToggleButton.Content>
-                                <materialDesign:PackIcon
-                                    Width="24"
-                                    Height="24"
-                                    Kind="PlayCircleOutline" />
-                            </ToggleButton.Content>
-                            <materialDesign:ToggleButtonAssist.OnContent>
-                                <materialDesign:PackIcon
-                                    Width="24"
-                                    Height="24"
-                                    Kind="StopCircleOutline" />
-                            </materialDesign:ToggleButtonAssist.OnContent>
-                        </ToggleButton>
-
-                        <!--  Settings  -->
-                        <Button
-                            Command="{s:Action ShowSettings}"
-                            Style="{DynamicResource MaterialDesignFlatButton}"
-                            ToolTip="Open settings">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon
-                                    Width="24"
-                                    Height="24"
-                                    Kind="Settings" />
-                                <TextBlock
-                                    Margin="4,0,0,0"
-                                    VerticalAlignment="Center"
-                                    Text="SETTINGS" />
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
+                        FontSize="19"
+                        TextAlignment="Center">
+                        <TextBlock.ToolTip>
+                            <TextBlock>
+                                <Run Text="{Binding TimeUntilSunrise, Converter={x:Static converters:TimeSpanToHumanizedDurationStringConverter.Instance}, Mode=OneWay}" />
+                                <Run Text="until sunrise" />
+                            </TextBlock>
+                        </TextBlock.ToolTip>
+                        <Run Text="Sunrise" />
+                        <LineBreak />
+                        <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SunriseTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, Mode=OneWay}" />
+                    </TextBlock>
                 </Grid>
+
+                <!--  Buttons  -->
+                <StackPanel
+                    Grid.Row="2"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <!--  Start cycle preview  -->
+                    <Button
+                        Margin="8"
+                        Command="{s:Action EnableCyclePreview}"
+                        Style="{DynamicResource MaterialDesignFlatButton}"
+                        ToolTip="Preview 24-hour cycle"
+                        Visibility="{Binding IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Width="24"
+                                Height="24"
+                                Kind="PlayCircleOutline" />
+                            <TextBlock
+                                Margin="4,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="PREVIEW" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  Stop cycle preview  -->
+                    <Button
+                        Margin="8"
+                        Command="{s:Action DisableCyclePreview}"
+                        Style="{DynamicResource MaterialDesignFlatButton}"
+                        ToolTip="Stop preview"
+                        Visibility="{Binding IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Width="24"
+                                Height="24"
+                                Kind="StopCircleOutline" />
+                            <TextBlock
+                                Margin="4,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="STOP" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  Settings  -->
+                    <Button
+                        Margin="8"
+                        Command="{s:Action ShowSettings}"
+                        Style="{DynamicResource MaterialDesignFlatButton}"
+                        ToolTip="Open settings">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Width="24"
+                                Height="24"
+                                Kind="Settings" />
+                            <TextBlock
+                                Margin="4,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="SETTINGS" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
             </Grid>
         </materialDesign:DialogHost>
     </Border>

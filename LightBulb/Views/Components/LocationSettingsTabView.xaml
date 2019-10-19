@@ -26,18 +26,18 @@
                 Grid.Column="0"
                 Content="Manual"
                 GroupName="SunriseSunsetConfigurationType"
-                IsChecked="{Binding IsManualSunriseSunset}"
+                IsChecked="{Binding IsManualSunriseSunsetEnabled}"
                 ToolTip="Configure sunrise and sunset times manually" />
             <RadioButton
                 Grid.Column="1"
                 Content="Location-based"
                 GroupName="SunriseSunsetConfigurationType"
-                IsChecked="{Binding IsManualSunriseSunset, Converter={x:Static converters:InverseBoolConverter.Instance}}"
+                IsChecked="{Binding IsManualSunriseSunsetEnabled, Converter={x:Static converters:InverseBoolConverter.Instance}}"
                 ToolTip="Specify location and have sunrise and sunset times calculated automatically" />
         </Grid>
 
         <!--  Manual  -->
-        <StackPanel Orientation="Vertical" Visibility="{Binding IsManualSunriseSunset, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+        <StackPanel Orientation="Vertical" Visibility="{Binding IsManualSunriseSunsetEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
             <!--  Sunrise time  -->
             <StackPanel Margin="6" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Text="Sunrise:" />
@@ -46,7 +46,7 @@
                     Margin="8,0"
                     Padding="0"
                     VerticalAlignment="Center"
-                    Text="{Binding SunriseTime, Converter={x:Static converters:TimeSpanToStringConverter.Instance}, ConverterParameter=hh\\:mm}" />
+                    Text="{Binding ManualSunriseTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}}" />
             </StackPanel>
             <Slider
                 Margin="8,0,8,6"
@@ -54,9 +54,7 @@
                 Maximum="24"
                 Minimum="0"
                 SmallChange="0.25"
-                TickFrequency="1"
-                TickPlacement="BottomRight"
-                Value="{Binding SunriseTime, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
+                Value="{Binding ManualSunriseTime, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
 
             <!--  Sunset time  -->
             <StackPanel Margin="6" Orientation="Horizontal">
@@ -66,7 +64,7 @@
                     Margin="8,0"
                     Padding="0"
                     VerticalAlignment="Center"
-                    Text="{Binding SunsetTime, Converter={x:Static converters:TimeSpanToStringConverter.Instance}, ConverterParameter=hh\\:mm}" />
+                    Text="{Binding ManualSunsetTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}}" />
             </StackPanel>
             <Slider
                 Margin="8,0,8,6"
@@ -74,13 +72,11 @@
                 Maximum="24"
                 Minimum="0"
                 SmallChange="0.25"
-                TickFrequency="1"
-                TickPlacement="BottomRight"
-                Value="{Binding SunsetTime, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
+                Value="{Binding ManualSunsetTime, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
         </StackPanel>
 
         <!--  Location-based  -->
-        <StackPanel Orientation="Vertical" Visibility="{Binding IsManualSunriseSunset, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}">
+        <StackPanel Orientation="Vertical" Visibility="{Binding IsManualSunriseSunsetEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}">
             <TextBlock Margin="6" Text="Your location:" />
             <Grid>
                 <Grid.ColumnDefinitions>

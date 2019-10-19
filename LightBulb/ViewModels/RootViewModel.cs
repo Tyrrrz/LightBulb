@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using LightBulb.Helpers;
 using LightBulb.Internal;
 using LightBulb.Messages;
 using LightBulb.Models;
@@ -77,6 +78,18 @@ namespace LightBulb.ViewModels
                 return CycleState.Transition;
             }
         }
+
+        public TimeSpan SunriseTime => _settingsService.IsManualSunriseSunsetEnabled || _settingsService.Location == null
+            ? _settingsService.ManualSunriseTime
+            : Astronomy.CalculateSunrise(_settingsService.Location.Value, Instant).TimeOfDay;
+
+        public TimeSpan SunsetTime => _settingsService.IsManualSunriseSunsetEnabled || _settingsService.Location == null
+            ? _settingsService.ManualSunsetTime
+            : Astronomy.CalculateSunset(_settingsService.Location.Value, Instant).TimeOfDay;
+
+        public TimeSpan TimeUntilSunrise => Instant.NextTimeOfDay(SunriseTime) - Instant;
+
+        public TimeSpan TimeUntilSunset => Instant.NextTimeOfDay(SunsetTime) - Instant;
 
         public RootViewModel(
             IEventAggregator eventAggregator, IViewModelFactory viewModelFactory, DialogManager dialogManager,
@@ -251,6 +264,12 @@ namespace LightBulb.ViewModels
             IsEnabled = false;
         }
 
+        public void Toggle() => IsEnabled = !IsEnabled;
+
+        public void EnableCyclePreview() => IsCyclePreviewEnabled = true;
+
+        public void DisableCyclePreview() => IsCyclePreviewEnabled = false;
+
         public async void ShowSettings() => await _dialogManager.ShowDialogAsync(_viewModelFactory.CreateSettingsViewModel());
 
         public void ShowAbout() => App.GitHubProjectUrl.ToUri().OpenInBrowser();
@@ -266,7 +285,7 @@ namespace LightBulb.ViewModels
             RequestClose();
         }
 
-        public void Handle(ToggleIsEnabledMessage message) => IsEnabled = !IsEnabled;
+        public void Handle(ToggleIsEnabledMessage message) => Toggle();
 
         public void Dispose()
         {

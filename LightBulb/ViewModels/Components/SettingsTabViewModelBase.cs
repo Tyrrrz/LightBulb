@@ -1,5 +1,4 @@
-﻿using System;
-using Stylet;
+﻿using Stylet;
 
 namespace LightBulb.ViewModels.Components
 {
@@ -8,9 +7,6 @@ namespace LightBulb.ViewModels.Components
         public int Order { get; }
 
         public string DisplayName { get; }
-
-        // This is purely for binding purposes
-        public Type Type => GetType();
 
         public bool IsActive { get; set; }
 

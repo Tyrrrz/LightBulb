@@ -1,10 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Text;
 
 namespace LightBulb.Internal
 {
     internal static class Extensions
     {
+        public static StringBuilder AppendIfNotEmpty(this StringBuilder builder, char value) =>
+            builder.Length > 0 ? builder.Append(value) : builder;
+
         public static DateTimeOffset ResetTimeOfDay(this DateTimeOffset dateTime) =>
             new DateTimeOffset(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0, 0, dateTime.Offset);
 

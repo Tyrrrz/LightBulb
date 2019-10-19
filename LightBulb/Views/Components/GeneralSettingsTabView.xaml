@@ -27,13 +27,10 @@
         </StackPanel>
         <Slider
             Margin="8,0,8,6"
-            IsSnapToTickEnabled="True"
             LargeChange="500"
             Maximum="6600"
             Minimum="2500"
             SmallChange="100"
-            TickFrequency="100"
-            TickPlacement="BottomRight"
             Value="{Binding MaxColorTemperature, Converter={x:Static converters:ColorTemperatureToDoubleConverter.Instance}}" />
 
         <!--  Min temperature  -->
@@ -51,13 +48,10 @@
         </StackPanel>
         <Slider
             Margin="8,0,8,6"
-            IsSnapToTickEnabled="True"
             LargeChange="500"
             Maximum="6600"
             Minimum="2500"
             SmallChange="100"
-            TickFrequency="100"
-            TickPlacement="BottomRight"
             Value="{Binding MinColorTemperature, Converter={x:Static converters:ColorTemperatureToDoubleConverter.Instance}}" />
 
         <!--  Temperature transition duration  -->
@@ -71,17 +65,14 @@
                 Margin="8,0"
                 Padding="0"
                 VerticalAlignment="Center"
-                Text="{Binding TemperatureTransitionDuration, Converter={x:Static converters:TimeSpanToStringConverter.Instance}}" />
+                Text="{Binding TemperatureTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}}" />
         </StackPanel>
         <Slider
             Margin="8,0,8,6"
-            IsSnapToTickEnabled="True"
-            LargeChange="30"
-            Maximum="180"
+            LargeChange="0.5"
+            Maximum="3"
             Minimum="0"
-            SmallChange="5"
-            TickFrequency="5"
-            TickPlacement="BottomRight"
-            Value="{Binding TemperatureTransitionDuration, Converter={x:Static converters:TimeSpanToMinutesConverter.Instance}}" />
+            SmallChange="0.08"
+            Value="{Binding TemperatureTransitionDuration, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
     </StackPanel>
 </UserControl>

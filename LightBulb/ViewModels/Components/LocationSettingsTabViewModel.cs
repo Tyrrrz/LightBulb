@@ -2,6 +2,7 @@
 using LightBulb.Internal;
 using LightBulb.Models;
 using LightBulb.Services;
+using Stylet;
 using Tyrrrz.Extensions;
 
 namespace LightBulb.ViewModels.Components
@@ -13,21 +14,23 @@ namespace LightBulb.ViewModels.Components
 
         public bool IsBusy { get; private set; }
 
-        public TimeSpan SunriseTime
+        public bool IsManualSunriseSunsetEnabled
         {
-            get => _settingsService.SunriseTime;
-            set => _settingsService.SunriseTime = value.Clamp(TimeSpan.Zero, new TimeSpan(23, 59, 59));
+            get => _settingsService.IsManualSunriseSunsetEnabled;
+            set => _settingsService.IsManualSunriseSunsetEnabled = value;
         }
 
-        public TimeSpan SunsetTime
+        public TimeSpan ManualSunriseTime
         {
-            get => _settingsService.SunsetTime;
-            set => _settingsService.SunsetTime = value.Clamp(TimeSpan.Zero, new TimeSpan(23, 59, 59));
+            get => _settingsService.ManualSunriseTime;
+            set => _settingsService.ManualSunriseTime = value.Clamp(TimeSpan.Zero, new TimeSpan(23, 59, 59));
         }
 
-        public bool IsLocationAutoDetected { get; private set; }
-
-        public string LocationQuery { get; set; }
+        public TimeSpan ManualSunsetTime
+        {
+            get => _settingsService.ManualSunsetTime;
+            set => _settingsService.ManualSunsetTime = value.Clamp(TimeSpan.Zero, new TimeSpan(23, 59, 59));
+        }
 
         public GeoLocation? Location
         {
@@ -35,11 +38,9 @@ namespace LightBulb.ViewModels.Components
             set => _settingsService.Location = value;
         }
 
-        public bool IsManualSunriseSunset
-        {
-            get => _settingsService.IsManualSunriseSunset;
-            set => _settingsService.IsManualSunriseSunset = value;
-        }
+        public bool IsLocationAutoDetected { get; private set; }
+
+        public string LocationQuery { get; set; }
 
         public LocationSettingsTabViewModel(SettingsService settingsService, LocationService locationService)
             : base(1, "Location")
@@ -47,8 +48,8 @@ namespace LightBulb.ViewModels.Components
             _settingsService = settingsService;
             _locationService = locationService;
 
-            // Set location query
-            LocationQuery = Location?.ToString();
+            // Bind location query to location
+            _settingsService.BindAndInvoke(o => o.Location, (sender, args) => LocationQuery = Location?.ToString());
 
             // HACK: when settings change - fire property changed event for all properties in this view model
             _settingsService.Bind((sender, args) => Refresh());
@@ -64,7 +65,6 @@ namespace LightBulb.ViewModels.Components
             {
                 // Get location based on current IP
                 Location = await _locationService.GetLocationAsync();
-                LocationQuery = Location?.ToString();
                 IsLocationAutoDetected = true;
             }
             finally
@@ -92,7 +92,6 @@ namespace LightBulb.ViewModels.Components
                     Location = await _locationService.GetLocationAsync(LocationQuery);
                 }
 
-                LocationQuery = Location?.ToString();
                 IsLocationAutoDetected = false;
             }
             finally

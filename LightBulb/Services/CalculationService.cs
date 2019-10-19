@@ -17,8 +17,8 @@ namespace LightBulb.Services
         private TimeSpan GetSunriseTime(DateTimeOffset instant)
         {
             // Short-circuit if manual time is configured or location is not set
-            if (_settingsService.IsManualSunriseSunset || _settingsService.Location == null)
-                return _settingsService.SunriseTime;
+            if (_settingsService.IsManualSunriseSunsetEnabled || _settingsService.Location == null)
+                return _settingsService.ManualSunriseTime;
 
             return Astronomy.CalculateSunrise(_settingsService.Location.Value, instant).TimeOfDay;
         }
@@ -26,8 +26,8 @@ namespace LightBulb.Services
         private TimeSpan GetSunsetTime(DateTimeOffset instant)
         {
             // Short-circuit if manual time is configured or location is not set
-            if (_settingsService.IsManualSunriseSunset || _settingsService.Location == null)
-                return _settingsService.SunsetTime;
+            if (_settingsService.IsManualSunriseSunsetEnabled || _settingsService.Location == null)
+                return _settingsService.ManualSunsetTime;
 
             return Astronomy.CalculateSunset(_settingsService.Location.Value, instant).TimeOfDay;
         }

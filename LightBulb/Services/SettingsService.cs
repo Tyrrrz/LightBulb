@@ -14,13 +14,13 @@ namespace LightBulb.Services
         // TODO: get rid of this and calculate it implicitly
         public TimeSpan TemperatureTransitionDuration { get; set; } = TimeSpan.FromMinutes(90);
 
-        public TimeSpan SunriseTime { get; set; } = new TimeSpan(07, 20, 00);
+        public bool IsManualSunriseSunsetEnabled { get; set; } = true;
 
-        public TimeSpan SunsetTime { get; set; } = new TimeSpan(16, 30, 00);
+        public TimeSpan ManualSunriseTime { get; set; } = new TimeSpan(07, 20, 00);
+
+        public TimeSpan ManualSunsetTime { get; set; } = new TimeSpan(16, 30, 00);
 
         public GeoLocation? Location { get; set; }
-
-        public bool IsManualSunriseSunset { get; set; } = true;
 
         public bool IsDefaultToDayTimeTemperature { get; set; } = false;
 
