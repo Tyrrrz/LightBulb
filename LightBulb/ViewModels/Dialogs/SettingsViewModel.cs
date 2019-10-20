@@ -37,6 +37,18 @@ namespace LightBulb.ViewModels.Dialogs
             ActiveTab.IsActive = true;
         }
 
-        public void ResetSettings() => _settingsService.Reset();
+        public void Reset() => _settingsService.Reset();
+
+        public void Save()
+        {
+            _settingsService.Save();
+            Close(true);
+        }
+
+        public void Cancel()
+        {
+            _settingsService.Load();
+            Close(false);
+        }
     }
 }

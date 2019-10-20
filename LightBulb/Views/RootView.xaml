@@ -24,7 +24,7 @@
     mc:Ignorable="d">
     <Border BorderBrush="{DynamicResource PrimaryHueLightBrush}" BorderThickness="1">
         <materialDesign:DialogHost
-            CloseOnClickAway="True"
+            CloseOnClickAway="False"
             Loaded="{s:Action OnViewFullyLoaded}"
             Style="{DynamicResource MaterialDesignEmbeddedDialogHost}">
             <Grid>

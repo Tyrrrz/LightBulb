@@ -27,10 +27,12 @@
         </StackPanel>
         <Slider
             Margin="8,0,8,6"
+            IsSnapToTickEnabled="True"
             LargeChange="500"
             Maximum="6600"
             Minimum="2500"
             SmallChange="100"
+            TickFrequency="20"
             Value="{Binding MaxColorTemperature, Converter={x:Static converters:ColorTemperatureToDoubleConverter.Instance}}" />
 
         <!--  Min temperature  -->
@@ -48,10 +50,12 @@
         </StackPanel>
         <Slider
             Margin="8,0,8,6"
+            IsSnapToTickEnabled="True"
             LargeChange="500"
             Maximum="6600"
             Minimum="2500"
             SmallChange="100"
+            TickFrequency="20"
             Value="{Binding MinColorTemperature, Converter={x:Static converters:ColorTemperatureToDoubleConverter.Instance}}" />
 
         <!--  Temperature transition duration  -->

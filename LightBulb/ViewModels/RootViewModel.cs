@@ -23,7 +23,6 @@ namespace LightBulb.ViewModels
 
         private readonly AutoResetTimer _updateTimer;
         private readonly AutoResetTimer _gammaPollingTimer;
-        private readonly AutoResetTimer _settingsAutoSaveTimer;
         private readonly AutoResetTimer _checkForUpdatesTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
@@ -130,8 +129,6 @@ namespace LightBulb.ViewModels
                     _systemService.SetGamma(CurrentColorTemperature);
             });
 
-            _settingsAutoSaveTimer = new AutoResetTimer(() => _settingsService.SaveIfNeeded());
-
             _checkForUpdatesTimer = new AutoResetTimer(async () =>
             {
                 await _updateService.CheckPrepareUpdateAsync();
@@ -169,7 +166,6 @@ namespace LightBulb.ViewModels
             // Start timers
             _updateTimer.Start(TimeSpan.FromMilliseconds(17)); // 60hz
             _gammaPollingTimer.Start(TimeSpan.FromSeconds(1));
-            _settingsAutoSaveTimer.Start(TimeSpan.FromSeconds(5));
             _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
         }
         
@@ -291,7 +287,6 @@ namespace LightBulb.ViewModels
         {
             // Dispose stuff
             _updateTimer.Dispose();
-            _settingsAutoSaveTimer.Dispose();
             _checkForUpdatesTimer.Dispose();
             _enableAfterDelayTimer.Dispose();
 
