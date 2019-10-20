@@ -1,14 +1,19 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace LightBulb
 {
     public partial class App
     {
-        public static string Name => typeof(App).Assembly.GetName().Name;
+        private static readonly Assembly Assembly = typeof(App).Assembly;
 
-        public static string VersionString => typeof(App).Assembly.GetName().Version.ToString(3);
+        public static string Name => Assembly.GetName().Name;
+
+        public static Version Version => Assembly.GetName().Version;
+
+        public static string VersionString => Version.ToString(3);
 
         public static string GitHubProjectUrl { get; } = "https://github.com/Tyrrrz/LightBulb";
 

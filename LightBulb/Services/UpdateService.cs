@@ -30,14 +30,9 @@ namespace LightBulb.Services
 
                 return check.LastVersion;
             }
-            catch (UpdaterAlreadyLaunchedException)
+            catch
             {
-                // Ignore race conditions
-                return null;
-            }
-            catch (LockFileNotAcquiredException)
-            {
-                // Ignore race conditions
+                // Failure to check for updates shouldn't crash the app
                 return null;
             }
         }
@@ -49,6 +44,10 @@ namespace LightBulb.Services
                 // Get last prepared update
                 var updateVersion = GetLastPreparedUpdate();
                 if (updateVersion == null)
+                    return;
+
+                // Don't update if the prepared update is a downgrade
+                if (App.Version >= updateVersion)
                     return;
 
                 // Launch updater and restart
