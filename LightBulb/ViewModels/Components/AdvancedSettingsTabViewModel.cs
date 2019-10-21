@@ -20,10 +20,10 @@ namespace LightBulb.ViewModels.Components
             }
         }
 
-        public bool IsDefaultToDayTimeTemperature
+        public bool IsDefaultToDayConfigurationEnabled
         {
-            get => _settingsService.IsDefaultToDayTimeTemperature;
-            set => _settingsService.IsDefaultToDayTimeTemperature = value;
+            get => _settingsService.IsDefaultToDayConfigurationEnabled;
+            set => _settingsService.IsDefaultToDayConfigurationEnabled = value;
         }
 
         public bool IsGammaPollingEnabled

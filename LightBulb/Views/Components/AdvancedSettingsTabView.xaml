@@ -30,7 +30,7 @@
         </Grid>
 
         <!--  Default to day time  -->
-        <Grid Margin="6" ToolTip="When LightBulb is disabled or paused, restore day-time temperature instead of default monitor temperature">
+        <Grid Margin="6" ToolTip="When LightBulb is disabled or paused, restore day-time temperature and brightness instead of default monitor settings">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -39,12 +39,12 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Default to day-time temperature:" />
+                Text="Default to day-time settings:" />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
-                IsChecked="{Binding IsDefaultToDayTimeTemperature}" />
+                IsChecked="{Binding IsDefaultToDayConfigurationEnabled}" />
         </Grid>
 
         <!--  Gamma polling enabled/disabled  -->

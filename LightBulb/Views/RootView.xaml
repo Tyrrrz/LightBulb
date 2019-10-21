@@ -58,7 +58,7 @@
                                     Text="LightBulb" />
 
                                 <!--  Temperature  -->
-                                <TextBlock Text="{Binding CurrentColorTemperature}" />
+                                <TextBlock Text="{Binding CurrentColorConfiguration}" />
                             </StackPanel>
                         </Border>
                     </tb:TaskbarIcon.TrayToolTip>
@@ -227,7 +227,7 @@
                         TextAlignment="Center">
                         <TextBlock.ToolTip>
                             <TextBlock>
-                                <Run Text="{Binding TimeUntilSunset, Converter={x:Static converters:TimeSpanToHumanizedDurationStringConverter.Instance}, Mode=OneWay}" />
+                                <Run FontWeight="SemiBold" Text="{Binding TimeUntilSunset, Converter={x:Static converters:TimeSpanToHumanizedDurationStringConverter.Instance}, Mode=OneWay}" />
                                 <Run Text="until sunset" />
                             </TextBlock>
                         </TextBlock.ToolTip>
@@ -265,7 +265,20 @@
                         <StackPanel
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
+                            Background="Transparent"
                             Orientation="Horizontal">
+                            <StackPanel.ToolTip>
+                                <TextBlock>
+                                    <Run Text="Current time is" />
+                                    <Run FontWeight="SemiBold" Text="{Binding Instant, StringFormat=\{0:t\}, Mode=OneWay}" />
+                                    <LineBreak />
+                                    <Run Text="Color temperature is at" />
+                                    <Run FontWeight="SemiBold" Text="{Binding CurrentColorConfiguration.Temperature, StringFormat=\{0:F0\} K, Mode=OneWay}" />
+                                    <LineBreak />
+                                    <Run Text="Brightness is at" />
+                                    <Run FontWeight="SemiBold" Text="{Binding CurrentColorConfiguration.Brightness, StringFormat=\{0:P0\}, Mode=OneWay}" />
+                                </TextBlock>
+                            </StackPanel.ToolTip>
                             <materialDesign:PackIcon
                                 Width="48"
                                 Height="48"
@@ -274,9 +287,9 @@
                                 Margin="8,0,0,0"
                                 VerticalAlignment="Center"
                                 FontSize="20">
-                                <Run Text="{Binding Instant, StringFormat=\{0:t\}, Mode=OneWay}" />
+                                <Run Text="{Binding CurrentColorConfiguration.Temperature, StringFormat=\{0:F0\} K, Mode=OneWay}" />
                                 <LineBreak />
-                                <Run Text="{Binding CurrentColorTemperature, Mode=OneWay}" />
+                                <Run Text="{Binding CurrentColorConfiguration.Brightness, StringFormat=\{0:P0\}, Mode=OneWay}" />
                             </TextBlock>
                         </StackPanel>
                     </Grid>
@@ -290,7 +303,7 @@
                         TextAlignment="Center">
                         <TextBlock.ToolTip>
                             <TextBlock>
-                                <Run Text="{Binding TimeUntilSunrise, Converter={x:Static converters:TimeSpanToHumanizedDurationStringConverter.Instance}, Mode=OneWay}" />
+                                <Run FontWeight="SemiBold" Text="{Binding TimeUntilSunrise, Converter={x:Static converters:TimeSpanToHumanizedDurationStringConverter.Instance}, Mode=OneWay}" />
                                 <Run Text="until sunrise" />
                             </TextBlock>
                         </TextBlock.ToolTip>

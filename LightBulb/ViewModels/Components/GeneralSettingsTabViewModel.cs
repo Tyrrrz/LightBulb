@@ -1,6 +1,5 @@
 ﻿using System;
 using LightBulb.Internal;
-using LightBulb.Models;
 using LightBulb.Services;
 using Tyrrrz.Extensions;
 
@@ -10,27 +9,51 @@ namespace LightBulb.ViewModels.Components
     {
         private readonly SettingsService _settingsService;
 
-        public ColorTemperature MinColorTemperature
+        public double NightColorTemperature
         {
-            get => _settingsService.MinTemperature;
+            get => _settingsService.NightTemperature;
             set
             {
-                _settingsService.MinTemperature = value.Clamp(new ColorTemperature(1000), new ColorTemperature(10000));
+                _settingsService.NightTemperature = value.Clamp(1000.0, 10000.0);
 
-                if (MinColorTemperature > MaxColorTemperature)
-                    MaxColorTemperature = MinColorTemperature;
+                if (NightColorTemperature > DayColorTemperature)
+                    DayColorTemperature = NightColorTemperature;
             }
         }
 
-        public ColorTemperature MaxColorTemperature
+        public double DayColorTemperature
         {
-            get => _settingsService.MaxTemperature;
+            get => _settingsService.DayTemperature;
             set
             {
-                _settingsService.MaxTemperature = value.Clamp(new ColorTemperature(1000), new ColorTemperature(10000));
+                _settingsService.DayTemperature = value.Clamp(1000.0, 10000.0);
 
-                if (MaxColorTemperature < MinColorTemperature)
-                    MinColorTemperature = MaxColorTemperature;
+                if (DayColorTemperature < NightColorTemperature)
+                    NightColorTemperature = DayColorTemperature;
+            }
+        }
+
+        public double NightBrightness
+        {
+            get => _settingsService.NightBrightness;
+            set
+            {
+                _settingsService.NightBrightness = value.Clamp(0.1, 1.0);
+
+                if (NightBrightness > DayBrightness)
+                    DayBrightness = NightBrightness;
+            }
+        }
+
+        public double DayBrightness
+        {
+            get => _settingsService.DayBrightness;
+            set
+            {
+                _settingsService.DayBrightness = value.Clamp(0.1, 1.0);
+
+                if (DayBrightness < NightBrightness)
+                    NightBrightness = DayBrightness;
             }
         }
 

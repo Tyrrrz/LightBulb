@@ -12,7 +12,7 @@
     Style="{DynamicResource MaterialDesignRoot}"
     mc:Ignorable="d">
     <StackPanel Orientation="Vertical">
-        <!--  Max temperature  -->
+        <!--  Day temperature  -->
         <StackPanel
             Margin="6"
             Orientation="Horizontal"
@@ -23,7 +23,7 @@
                 Margin="8,0"
                 Padding="0"
                 VerticalAlignment="Center"
-                Text="{Binding MaxColorTemperature, Converter={x:Static converters:ColorTemperatureToStringConverter.Instance}}" />
+                Text="{Binding DayColorTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
         </StackPanel>
         <Slider
             Margin="8,0,8,6"
@@ -33,9 +33,9 @@
             Minimum="2500"
             SmallChange="100"
             TickFrequency="20"
-            Value="{Binding MaxColorTemperature, Converter={x:Static converters:ColorTemperatureToDoubleConverter.Instance}}" />
+            Value="{Binding DayColorTemperature}" />
 
-        <!--  Min temperature  -->
+        <!--  Night temperature  -->
         <StackPanel
             Margin="6"
             Orientation="Horizontal"
@@ -46,7 +46,7 @@
                 Margin="8,0"
                 Padding="0"
                 VerticalAlignment="Center"
-                Text="{Binding MinColorTemperature, Converter={x:Static converters:ColorTemperatureToStringConverter.Instance}}" />
+                Text="{Binding NightColorTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
         </StackPanel>
         <Slider
             Margin="8,0,8,6"
@@ -56,7 +56,53 @@
             Minimum="2500"
             SmallChange="100"
             TickFrequency="20"
-            Value="{Binding MinColorTemperature, Converter={x:Static converters:ColorTemperatureToDoubleConverter.Instance}}" />
+            Value="{Binding NightColorTemperature}" />
+
+        <!--  Day brightness  -->
+        <StackPanel
+            Margin="6"
+            Orientation="Horizontal"
+            ToolTip="Brightness during night-time">
+            <TextBlock VerticalAlignment="Center" Text="Day-time brightness:" />
+            <TextBox
+                MinWidth="30"
+                Margin="8,0"
+                Padding="0"
+                VerticalAlignment="Center"
+                Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
+        </StackPanel>
+        <Slider
+            Margin="8,0,8,6"
+            IsSnapToTickEnabled="True"
+            LargeChange="0.1"
+            Maximum="1"
+            Minimum="0.1"
+            SmallChange="0.01"
+            TickFrequency="0.01"
+            Value="{Binding DayBrightness}" />
+
+        <!--  Night brightness  -->
+        <StackPanel
+            Margin="6"
+            Orientation="Horizontal"
+            ToolTip="Brightness during night-time">
+            <TextBlock VerticalAlignment="Center" Text="Night-time brightness:" />
+            <TextBox
+                MinWidth="30"
+                Margin="8,0"
+                Padding="0"
+                VerticalAlignment="Center"
+                Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
+        </StackPanel>
+        <Slider
+            Margin="8,0,8,6"
+            IsSnapToTickEnabled="True"
+            LargeChange="0.1"
+            Maximum="1"
+            Minimum="0.1"
+            SmallChange="0.01"
+            TickFrequency="0.01"
+            Value="{Binding NightBrightness}" />
 
         <!--  Temperature transition duration  -->
         <StackPanel

@@ -32,13 +32,11 @@ namespace LightBulb.Services
             return Astronomy.CalculateSunset(_settingsService.Location.Value, instant).TimeOfDay;
         }
 
-        public ColorTemperature CalculateColorTemperature(DateTimeOffset instant)
+        private double GetCurveValue(DateTimeOffset instant, double from, double to)
         {
             // TODO: transition should end at sunset, not start at sunset
 
             // Get settings
-            var minTemp = _settingsService.MinTemperature;
-            var maxTemp = _settingsService.MaxTemperature;
             var offset = _settingsService.TemperatureTransitionDuration;
             var sunriseTime = GetSunriseTime(instant);
             var sunsetTime = GetSunsetTime(instant);
@@ -61,12 +59,11 @@ namespace LightBulb.Services
                 {
                     // Smooth transition
                     var norm = (instant - prevSunset).TotalHours / offset.TotalHours;
-                    var value = minTemp.Value + (maxTemp.Value - minTemp.Value) * Math.Cos(norm * Math.PI / 2);
-                    return new ColorTemperature(value);
+                    return from + (to - from) * Math.Cos(norm * Math.PI / 2);
                 }
 
                 // Night time
-                return minTemp;
+                return from;
             }
             // Next event is sunset
             else
@@ -76,13 +73,19 @@ namespace LightBulb.Services
                 {
                     // Smooth transition
                     var norm = (instant - prevSunrise).TotalHours / offset.TotalHours;
-                    var value = maxTemp.Value + (minTemp.Value - maxTemp.Value) * Math.Cos(norm * Math.PI / 2);
-                    return new ColorTemperature(value);
+                    return to + (from - to) * Math.Cos(norm * Math.PI / 2);
                 }
 
                 // Day time
-                return maxTemp;
+                return to;
             }
+        }
+
+        public ColorConfiguration CalculateColorTemperature(DateTimeOffset instant)
+        {
+            return new ColorConfiguration(
+                GetCurveValue(instant, _settingsService.NightTemperature, _settingsService.DayTemperature),
+                GetCurveValue(instant, _settingsService.NightBrightness, _settingsService.DayBrightness));
         }
     }
 }

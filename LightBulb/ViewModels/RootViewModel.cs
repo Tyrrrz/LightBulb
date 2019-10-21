@@ -34,7 +34,7 @@ namespace LightBulb.ViewModels
 
         public DateTimeOffset Instant { get; private set; } = DateTimeOffset.Now;
 
-        public ColorTemperature TargetColorTemperature
+        public ColorConfiguration TargetColorConfiguration
         {
             get
             {
@@ -44,21 +44,25 @@ namespace LightBulb.ViewModels
 
                 // If disabled or paused - return default temperature
                 if (!IsEnabled || IsPaused)
-                    return _settingsService.IsDefaultToDayTimeTemperature ? _settingsService.MaxTemperature : ColorTemperature.Default;
+                {
+                    return _settingsService.IsDefaultToDayConfigurationEnabled
+                        ? new ColorConfiguration(_settingsService.DayTemperature, _settingsService.DayBrightness)
+                        : ColorConfiguration.Default;
+                }
 
                 // Otherwise - return temperature for instant
                 return _calculationService.CalculateColorTemperature(Instant);
             }
         }
 
-        public ColorTemperature CurrentColorTemperature { get; private set; } = ColorTemperature.Default;
+        public ColorConfiguration CurrentColorConfiguration { get; private set; } = ColorConfiguration.Default;
 
         public CycleState CycleState
         {
             get
             {
                 // If target temperature has not been reached - return transition (even when disabled)
-                if (CurrentColorTemperature != TargetColorTemperature)
+                if (CurrentColorConfiguration != TargetColorConfiguration)
                     return CycleState.Transition;
 
                 // If disabled or paused - return disabled
@@ -66,11 +70,11 @@ namespace LightBulb.ViewModels
                     return CycleState.Disabled;
 
                 // If at max temperature - return day
-                if (CurrentColorTemperature == _settingsService.MaxTemperature)
+                if (CurrentColorConfiguration.Equals(_settingsService.DayTemperature, _settingsService.DayBrightness))
                     return CycleState.Day;
 
                 // If at min temperature and enabled and not paused - return night
-                if (CurrentColorTemperature == _settingsService.MinTemperature)
+                if (CurrentColorConfiguration.Equals(_settingsService.NightTemperature, _settingsService.NightBrightness))
                     return CycleState.Night;
 
                 // Otherwise - return transition (shouldn't reach here)
@@ -125,8 +129,8 @@ namespace LightBulb.ViewModels
 
             _gammaPollingTimer = new AutoResetTimer(() =>
             {
-                if (_settingsService.IsGammaPollingEnabled && IsEnabled && CurrentColorTemperature == TargetColorTemperature)
-                    _systemService.SetGamma(CurrentColorTemperature);
+                if (_settingsService.IsGammaPollingEnabled && IsEnabled && CurrentColorConfiguration == TargetColorConfiguration)
+                    _systemService.SetGamma(CurrentColorConfiguration);
             });
 
             _checkForUpdatesTimer = new AutoResetTimer(async () =>
@@ -213,38 +217,13 @@ namespace LightBulb.ViewModels
         private void UpdateGamma()
         {
             // If update is not needed - return
-            if (CurrentColorTemperature == TargetColorTemperature)
+            if (CurrentColorConfiguration == TargetColorConfiguration)
                 return;
 
-            // TODO: remove this after optimizing
-            if (Math.Abs(TargetColorTemperature.Value - CurrentColorTemperature.Value) < 10)
-                return;
-
-            // Determine if gamma change should be smooth
             var isSmooth = _settingsService.IsGammaSmoothingEnabled && !IsCyclePreviewEnabled;
+            CurrentColorConfiguration = isSmooth ? CurrentColorConfiguration.Interpolate(TargetColorConfiguration) : TargetColorConfiguration;
 
-            // If smooth - advance towards target temperature in small steps
-            if (isSmooth)
-            {
-                // Calculate difference
-                var diff = TargetColorTemperature.Value - CurrentColorTemperature.Value;
-
-                // Calculate delta
-                var delta = 30.0 * Math.Sign(diff);
-                if (Math.Abs(delta) > Math.Abs(diff))
-                    delta = diff;
-
-                // Set new color temperature
-                CurrentColorTemperature = new ColorTemperature(CurrentColorTemperature.Value + delta);
-            }
-            // Otherwise - just snap to target temperature
-            else
-            {
-                CurrentColorTemperature = TargetColorTemperature;
-            }
-
-            // Update gamma
-            _systemService.SetGamma(CurrentColorTemperature);
+            _systemService.SetGamma(CurrentColorConfiguration);
         }
 
         public void Enable() => IsEnabled = true;
@@ -272,14 +251,7 @@ namespace LightBulb.ViewModels
 
         public void ShowReleases() => App.GitHubProjectReleasesUrl.ToUri().OpenInBrowser();
 
-        public void Exit()
-        {
-            // Save settings
-            _settingsService.SaveIfNeeded();
-
-            // Close
-            RequestClose();
-        }
+        public void Exit() => RequestClose();
 
         public void Handle(ToggleIsEnabledMessage message) => Toggle();
 
@@ -291,7 +263,7 @@ namespace LightBulb.ViewModels
             _enableAfterDelayTimer.Dispose();
 
             // Reset gamma
-            _systemService.SetGamma(ColorTemperature.Default);
+            _systemService.SetGamma(ColorConfiguration.Default);
         }
     }
 }

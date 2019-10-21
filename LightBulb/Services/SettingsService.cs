@@ -7,9 +7,13 @@ namespace LightBulb.Services
 {
     public class SettingsService : SettingsManager
     {
-        public ColorTemperature MaxTemperature { get; set; } = new ColorTemperature(6600);
+        public double NightTemperature { get; set; } = 3900.0;
 
-        public ColorTemperature MinTemperature { get; set; } = new ColorTemperature(3900);
+        public double DayTemperature { get; set; } = 6600.0;
+
+        public double NightBrightness { get; set; } = 0.85;
+
+        public double DayBrightness { get; set; } = 1.0;
 
         // TODO: get rid of this and calculate it implicitly
         public TimeSpan TemperatureTransitionDuration { get; set; } = TimeSpan.FromMinutes(90);
@@ -22,7 +26,7 @@ namespace LightBulb.Services
 
         public GeoLocation? Location { get; set; }
 
-        public bool IsDefaultToDayTimeTemperature { get; set; } = false;
+        public bool IsDefaultToDayConfigurationEnabled { get; set; } = false;
 
         public bool IsGammaPollingEnabled { get; set; } = true;
 
@@ -56,12 +60,6 @@ namespace LightBulb.Services
             // Ignore failures when loading/saving settings
             Configuration.ThrowIfCannotLoad = false;
             Configuration.ThrowIfCannotSave = false;
-        }
-
-        public void SaveIfNeeded()
-        {
-            if (!IsSaved)
-                Save();
         }
     }
 }
