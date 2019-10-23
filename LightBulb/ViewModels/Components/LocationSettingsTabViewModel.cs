@@ -1,5 +1,4 @@
 ﻿using System;
-using LightBulb.Internal;
 using LightBulb.Models;
 using LightBulb.Services;
 using Stylet;
@@ -50,9 +49,6 @@ namespace LightBulb.ViewModels.Components
 
             // Bind location query to location
             _settingsService.BindAndInvoke(o => o.Location, (sender, args) => LocationQuery = Location?.ToString());
-
-            // HACK: when settings change - fire property changed event for all properties in this view model
-            _settingsService.Bind((sender, args) => Refresh());
         }
 
         public bool CanAutoDetectLocation => !IsBusy && !IsLocationAutoDetected;

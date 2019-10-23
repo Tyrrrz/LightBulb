@@ -1,5 +1,4 @@
-﻿using LightBulb.Internal;
-using LightBulb.Messages;
+﻿using LightBulb.Messages;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.ViewModels.Framework;
@@ -15,6 +14,7 @@ namespace LightBulb.ViewModels.Components
 
         public HotKeyViewModel ToggleHotKey { get; }
 
+        // TODO: remove this one?
         public HotKeyViewModel ToggleGammaPollingHotKey { get; }
 
         public HotKeySettingsTabViewModel(IEventAggregator eventAggregator, IViewModelFactory viewModelFactory, SettingsService settingsService,
@@ -28,9 +28,6 @@ namespace LightBulb.ViewModels.Components
             // Initialize view models
             ToggleHotKey = viewModelFactory.CreateHotKeyViewModel();
             ToggleGammaPollingHotKey = viewModelFactory.CreateHotKeyViewModel();
-
-            // HACK: when settings change - fire property changed event for all properties in this view model
-            _settingsService.Bind((sender, args) => Refresh());
 
             // Update hotkeys when they change in settings
             _settingsService.Bind(o => o.ToggleHotKey, (sender, args) => ToggleHotKey.Model = _settingsService.ToggleHotKey);
