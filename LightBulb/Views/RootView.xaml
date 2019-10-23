@@ -236,7 +236,7 @@
                         <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SunsetTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, Mode=OneWay}" />
                     </TextBlock>
 
-                    <!--  Cycle graph  -->
+                    <!--  Cycle display  -->
                     <Grid
                         Grid.Column="1"
                         Width="220"
@@ -261,24 +261,12 @@
                             Fill="{DynamicResource SecondaryAccentBrush}"
                             Size="12" />
 
-                        <!--  Time and temperature  -->
+                        <!--  Current temperature and brightness  -->
                         <StackPanel
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Background="Transparent"
                             Orientation="Horizontal">
-                            <StackPanel.ToolTip>
-                                <TextBlock>
-                                    <Run Text="Current time is" />
-                                    <Run FontWeight="SemiBold" Text="{Binding Instant, StringFormat=\{0:t\}, Mode=OneWay}" />
-                                    <LineBreak />
-                                    <Run Text="Color temperature is at" />
-                                    <Run FontWeight="SemiBold" Text="{Binding CurrentColorConfiguration.Temperature, StringFormat=\{0:F0\} K, Mode=OneWay}" />
-                                    <LineBreak />
-                                    <Run Text="Brightness is at" />
-                                    <Run FontWeight="SemiBold" Text="{Binding CurrentColorConfiguration.Brightness, StringFormat=\{0:P0\}, Mode=OneWay}" />
-                                </TextBlock>
-                            </StackPanel.ToolTip>
                             <materialDesign:PackIcon
                                 Width="48"
                                 Height="48"
@@ -291,6 +279,22 @@
                                 <LineBreak />
                                 <Run Text="{Binding CurrentColorConfiguration.Brightness, StringFormat=\{0:P0\}, Mode=OneWay}" />
                             </TextBlock>
+                        </StackPanel>
+
+                        <!--  Current time  -->
+                        <StackPanel
+                            Margin="0,0,0,40"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Width="16"
+                                Height="16"
+                                Kind="ClockOutline" />
+                            <TextBlock
+                                Margin="6,0,0,0"
+                                FontSize="14"
+                                Text="{Binding Instant, StringFormat=\{0:t\}}" />
                         </StackPanel>
                     </Grid>
 
