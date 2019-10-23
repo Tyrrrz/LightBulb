@@ -1,17 +1,41 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using LightBulb.Models;
-using LightBulb.ViewModels.Components;
 using Tyrrrz.Extensions;
 
-namespace LightBulb.Views.Components
+namespace LightBulb.Views.Controls
 {
-    public partial class HotKeyView
+    public class HotKeyEditor : TextBox
     {
-        private HotKeyViewModel ViewModel => (HotKeyViewModel) DataContext;
+        public static readonly DependencyProperty HotKeyProperty =
+            DependencyProperty.Register(nameof(HotKey), typeof(HotKey), typeof(HotKeyEditor),
+                new FrameworkPropertyMetadata(default(HotKey), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, HotKeyChanged));
 
-        public HotKeyView()
+        private static void HotKeyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            InitializeComponent();
+            if (sender is HotKeyEditor control)
+            {
+                control.Text = control.HotKey.ToString();
+            }
+        }
+
+        public HotKey HotKey
+        {
+            get => (HotKey) GetValue(HotKeyProperty);
+            set => SetValue(HotKeyProperty, value);
+        }
+
+        public HotKeyEditor()
+        {
+            IsReadOnly = true;
+            IsReadOnlyCaretVisible = false;
+            IsUndoEnabled = false;
+
+            if (ContextMenu != null)
+                ContextMenu.Visibility = Visibility.Collapsed;
+
+            Text = HotKey.ToString();
         }
 
         private static bool HasKeyChar(Key key) =>
@@ -27,9 +51,8 @@ namespace LightBulb.Views.Components
                 Key.OemMinus, Key.DeadCharProcessed, Key.Oem1, Key.Oem5, Key.Oem7, Key.OemPeriod, Key.OemComma, Key.Add,
                 Key.Divide, Key.Multiply, Key.Subtract, Key.Oem102, Key.Decimal);
 
-        private void HotkeyTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
-            // Don't let the event pass further, because we don't want standard textbox shortcuts working
             e.Handled = true;
 
             // Get modifiers and key data
@@ -47,7 +70,7 @@ namespace LightBulb.Views.Components
             // If Delete/Backspace/Escape is pressed without modifiers - clear current value and return
             if (key.IsEither(Key.Delete, Key.Back, Key.Escape) && modifiers == ModifierKeys.None)
             {
-                ViewModel.Model = HotKey.None;
+                HotKey = HotKey.None;
                 return;
             }
 
@@ -67,7 +90,7 @@ namespace LightBulb.Views.Components
                 return;
 
             // Set value
-            ViewModel.Model = new HotKey(key, modifiers);
+            HotKey = new HotKey(key, modifiers);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using LightBulb.Messages;
 using LightBulb.Models;
 using LightBulb.Services;
-using LightBulb.ViewModels.Framework;
 using Stylet;
 
 namespace LightBulb.ViewModels.Components
@@ -12,9 +11,13 @@ namespace LightBulb.ViewModels.Components
         private readonly SettingsService _settingsService;
         private readonly SystemService _systemService;
 
-        public HotKeyViewModel ToggleHotKey { get; }
+        public HotKey ToggleHotKey
+        {
+            get => _settingsService.ToggleHotKey;
+            set => _settingsService.ToggleHotKey = value;
+        }
 
-        public HotKeySettingsTabViewModel(IEventAggregator eventAggregator, IViewModelFactory viewModelFactory, SettingsService settingsService,
+        public HotKeySettingsTabViewModel(IEventAggregator eventAggregator, SettingsService settingsService,
             SystemService systemService)
             : base(3, "Hotkeys")
         {
@@ -22,25 +25,14 @@ namespace LightBulb.ViewModels.Components
             _settingsService = settingsService;
             _systemService = systemService;
 
-            // Initialize view models
-            ToggleHotKey = viewModelFactory.CreateHotKeyViewModel();
-
-            // Update hotkeys when they change in settings
-            _settingsService.Bind(o => o.ToggleHotKey, (sender, args) => ToggleHotKey.Model = _settingsService.ToggleHotKey);
-
             // Re-register hotkeys when they change
-            ToggleHotKey.Bind(o => o.Model, (sender, args) =>
-            {
-                _settingsService.ToggleHotKey = ToggleHotKey;
-                RegisterHotKeys();
-            });
+            this.Bind(o => o.ToggleHotKey, (sender, args) => RegisterHotKeys());
         }
 
         public void RegisterHotKeys()
         {
             _systemService.UnregisterAllHotKeys();
 
-            // TODO: rework later
             if (ToggleHotKey != HotKey.None)
                 _systemService.RegisterHotKey(ToggleHotKey,
                     () => _eventAggregator.Publish(new ToggleIsEnabledMessage()));
