@@ -39,6 +39,8 @@ namespace LightBulb.ViewModels.Components
 
         public bool IsLocationAutoDetected { get; private set; }
 
+        public bool IsLocationError { get; private set; }
+
         public string LocationQuery { get; set; }
 
         public LocationSettingsTabViewModel(SettingsService settingsService, LocationService locationService)
@@ -56,12 +58,17 @@ namespace LightBulb.ViewModels.Components
         public async void AutoDetectLocation()
         {
             IsBusy = true;
+            IsLocationError = false;
 
             try
             {
                 // Get location based on current IP
                 Location = await _locationService.GetLocationAsync();
                 IsLocationAutoDetected = true;
+            }
+            catch
+            {
+                IsLocationError = true;
             }
             finally
             {
@@ -74,6 +81,7 @@ namespace LightBulb.ViewModels.Components
         public async void SetLocation()
         {
             IsBusy = true;
+            IsLocationError = false;
 
             try
             {
@@ -89,6 +97,10 @@ namespace LightBulb.ViewModels.Components
                 }
 
                 IsLocationAutoDetected = false;
+            }
+            catch
+            {
+                IsLocationError = true;
             }
             finally
             {

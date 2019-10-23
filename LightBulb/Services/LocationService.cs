@@ -26,8 +26,6 @@ namespace LightBulb.Services
 
             var json = JToken.Parse(raw);
 
-            // TODO: handle errors
-
             var latitude = json["lat"].Value<double>();
             var longitude = json["lon"].Value<double>();
 
@@ -42,8 +40,6 @@ namespace LightBulb.Services
             var raw = await _httpClient.GetStringAsync(url);
 
             var json = JToken.Parse(raw);
-
-            // TODO: handle errors
 
             var latitude = json.First["lat"].Value<double>();
             var longitude = json.First["lon"].Value<double>();

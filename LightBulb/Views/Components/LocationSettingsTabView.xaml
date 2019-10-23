@@ -77,6 +77,7 @@
 
         <!--  Location-based  -->
         <StackPanel Orientation="Vertical" Visibility="{Binding IsManualSunriseSunsetEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}">
+            <!--  Location  -->
             <TextBlock Margin="6" Text="Your location:" />
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -139,6 +140,13 @@
                         Kind="Tick" />
                 </Button>
             </Grid>
+
+            <!--  Location error  -->
+            <TextBlock
+                Margin="6"
+                Foreground="DarkRed"
+                Text="There was an error resolving location"
+                Visibility="{Binding IsLocationError, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
         </StackPanel>
     </StackPanel>
 </UserControl>
