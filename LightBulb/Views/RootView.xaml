@@ -292,7 +292,7 @@
                                 Height="16"
                                 Kind="ClockOutline" />
                             <TextBlock
-                                Margin="6,0,0,0"
+                                Margin="4,0,0,0"
                                 FontSize="14"
                                 Text="{Binding Instant, StringFormat=\{0:t\}}" />
                         </StackPanel>
@@ -320,7 +320,7 @@
                 <!--  Buttons  -->
                 <StackPanel
                     Grid.Row="2"
-                    HorizontalAlignment="Right"
+                    HorizontalAlignment="Center"
                     Orientation="Horizontal">
                     <!--  Start cycle preview  -->
                     <Button
@@ -375,6 +375,24 @@
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
                                 Text="SETTINGS" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  About  -->
+                    <Button
+                        Margin="8"
+                        Command="{s:Action ShowAbout}"
+                        Style="{DynamicResource MaterialDesignFlatButton}"
+                        ToolTip="Open project page on GitHub">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Width="24"
+                                Height="24"
+                                Kind="Web" />
+                            <TextBlock
+                                Margin="4,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="ABOUT" />
                         </StackPanel>
                     </Button>
                 </StackPanel>
