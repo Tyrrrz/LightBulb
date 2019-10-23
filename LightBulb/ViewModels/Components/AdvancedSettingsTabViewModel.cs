@@ -25,12 +25,6 @@ namespace LightBulb.ViewModels.Components
             set => _settingsService.IsDefaultToDayConfigurationEnabled = value;
         }
 
-        public bool IsGammaPollingEnabled
-        {
-            get => _settingsService.IsGammaPollingEnabled;
-            set => _settingsService.IsGammaPollingEnabled = value;
-        }
-
         public bool IsGammaSmoothingEnabled
         {
             get => _settingsService.IsGammaSmoothingEnabled;

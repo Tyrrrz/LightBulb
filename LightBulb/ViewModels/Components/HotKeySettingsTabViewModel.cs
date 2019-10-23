@@ -14,9 +14,6 @@ namespace LightBulb.ViewModels.Components
 
         public HotKeyViewModel ToggleHotKey { get; }
 
-        // TODO: remove this one?
-        public HotKeyViewModel ToggleGammaPollingHotKey { get; }
-
         public HotKeySettingsTabViewModel(IEventAggregator eventAggregator, IViewModelFactory viewModelFactory, SettingsService settingsService,
             SystemService systemService)
             : base(3, "Hotkeys")
@@ -27,23 +24,14 @@ namespace LightBulb.ViewModels.Components
 
             // Initialize view models
             ToggleHotKey = viewModelFactory.CreateHotKeyViewModel();
-            ToggleGammaPollingHotKey = viewModelFactory.CreateHotKeyViewModel();
 
             // Update hotkeys when they change in settings
             _settingsService.Bind(o => o.ToggleHotKey, (sender, args) => ToggleHotKey.Model = _settingsService.ToggleHotKey);
-            _settingsService.Bind(o => o.ToggleGammaPollingHotKey,
-                (sender, args) => ToggleGammaPollingHotKey.Model = _settingsService.ToggleGammaPollingHotKey);
 
             // Re-register hotkeys when they change
             ToggleHotKey.Bind(o => o.Model, (sender, args) =>
             {
                 _settingsService.ToggleHotKey = ToggleHotKey;
-                RegisterHotKeys();
-            });
-
-            ToggleGammaPollingHotKey.Bind(o => o.Model, (sender, args) =>
-            {
-                _settingsService.ToggleGammaPollingHotKey = ToggleGammaPollingHotKey;
                 RegisterHotKeys();
             });
         }
@@ -56,10 +44,6 @@ namespace LightBulb.ViewModels.Components
             if (ToggleHotKey != HotKey.None)
                 _systemService.RegisterHotKey(ToggleHotKey,
                     () => _eventAggregator.Publish(new ToggleIsEnabledMessage()));
-
-            if (ToggleGammaPollingHotKey != HotKey.None)
-                _systemService.RegisterHotKey(ToggleGammaPollingHotKey,
-                    () => _settingsService.IsGammaPollingEnabled = !_settingsService.IsGammaPollingEnabled);
         }
     }
 }

@@ -47,24 +47,6 @@
                 IsChecked="{Binding IsDefaultToDayConfigurationEnabled}" />
         </Grid>
 
-        <!--  Gamma polling enabled/disabled  -->
-        <Grid Margin="6" ToolTip="Repeatedly refresh gamma to prevent other applications from overriding it">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="Gamma polling:" />
-            <ToggleButton
-                Grid.Column="1"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                IsChecked="{Binding IsGammaPollingEnabled}" />
-        </Grid>
-
         <!--  Gamma smoothing enabled/disabled  -->
         <Grid Margin="6" ToolTip="Transition slowly when changing gamma to give time for eyes to adjust">
             <Grid.ColumnDefinitions>

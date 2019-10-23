@@ -32,26 +32,5 @@
                 s:View.Model="{Binding ToggleHotKey}"
                 FontSize="12" />
         </Grid>
-
-        <!--  Toggle polling hotkey  -->
-        <Grid Margin="6">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="Toggle gamma polling:"
-                ToolTip="Hot key to switch gamma polling on/off" />
-            <ContentControl
-                Grid.Column="1"
-                Width="120"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                s:View.Model="{Binding ToggleGammaPollingHotKey}"
-                FontSize="12" />
-        </Grid>
     </StackPanel>
 </UserControl>

@@ -22,7 +22,6 @@ namespace LightBulb.ViewModels
         private readonly SystemService _systemService;
 
         private readonly AutoResetTimer _updateTimer;
-        private readonly AutoResetTimer _gammaPollingTimer;
         private readonly AutoResetTimer _checkForUpdatesTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
@@ -127,12 +126,6 @@ namespace LightBulb.ViewModels
                 UpdateGamma();
             });
 
-            _gammaPollingTimer = new AutoResetTimer(() =>
-            {
-                if (_settingsService.IsGammaPollingEnabled && IsEnabled && CurrentColorConfiguration == TargetColorConfiguration)
-                    _systemService.SetGamma(CurrentColorConfiguration);
-            });
-
             _checkForUpdatesTimer = new AutoResetTimer(async () =>
             {
                 await _updateService.CheckPrepareUpdateAsync();
@@ -168,8 +161,7 @@ namespace LightBulb.ViewModels
             _settingsService.Load();
 
             // Start timers
-            _updateTimer.Start(TimeSpan.FromMilliseconds(17)); // 60hz
-            _gammaPollingTimer.Start(TimeSpan.FromSeconds(1));
+            _updateTimer.Start(TimeSpan.FromMilliseconds(50));
             _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
         }
         
@@ -196,7 +188,7 @@ namespace LightBulb.ViewModels
                 var diff = targetInstant - Instant;
 
                 // Calculate delta
-                var delta = TimeSpan.FromMinutes(3);
+                var delta = TimeSpan.FromMinutes(5);
                 if (delta > diff)
                     delta = diff;
 
@@ -221,7 +213,10 @@ namespace LightBulb.ViewModels
                 return;
 
             var isSmooth = _settingsService.IsGammaSmoothingEnabled && !IsCyclePreviewEnabled;
-            CurrentColorConfiguration = isSmooth ? CurrentColorConfiguration.Interpolate(TargetColorConfiguration) : TargetColorConfiguration;
+
+            CurrentColorConfiguration = isSmooth
+                ? CurrentColorConfiguration.Interpolate(TargetColorConfiguration)
+                : TargetColorConfiguration;
 
             _systemService.SetGamma(CurrentColorConfiguration);
         }

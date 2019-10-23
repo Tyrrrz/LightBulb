@@ -28,15 +28,11 @@ namespace LightBulb.Services
 
         public bool IsDefaultToDayConfigurationEnabled { get; set; } = false;
 
-        public bool IsGammaPollingEnabled { get; set; } = true;
-
         public bool IsGammaSmoothingEnabled { get; set; } = true;
 
         public bool IsPauseWhenFullScreenEnabled { get; set; }
 
         public HotKey ToggleHotKey { get; set; }
-
-        public HotKey ToggleGammaPollingHotKey { get; set; }
 
         public SettingsService()
         {
