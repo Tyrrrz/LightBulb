@@ -34,8 +34,12 @@ namespace LightBulb
         {
             base.ConfigureIoC(builder);
 
-            // Bind settings as singleton
+            // Bind all services as singletons (this is critical for some of them)
+            builder.Bind<CalculationService>().ToSelf().InSingletonScope();
+            builder.Bind<LocationService>().ToSelf().InSingletonScope();
             builder.Bind<SettingsService>().ToSelf().InSingletonScope();
+            builder.Bind<SystemService>().ToSelf().InSingletonScope();
+            builder.Bind<UpdateService>().ToSelf().InSingletonScope();
 
             // Bind all settings tabs
             builder.Bind<ISettingsTabViewModel>().ToAllImplementations();
