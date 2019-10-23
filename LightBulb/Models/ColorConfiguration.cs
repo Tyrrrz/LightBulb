@@ -22,7 +22,7 @@ namespace LightBulb.Models
 
         public override int GetHashCode() => HashCode.Combine(Temperature, Brightness);
 
-        public override string ToString() => $"{Temperature:F0} K, {Brightness:P0}";
+        public override string ToString() => $"{Temperature:F0} K / {Brightness:P0}";
     }
 
     public partial struct ColorConfiguration

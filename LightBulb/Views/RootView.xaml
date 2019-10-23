@@ -45,9 +45,8 @@
                     <tb:TaskbarIcon.TrayToolTip>
                         <Border
                             Background="{DynamicResource MaterialDesignBackground}"
-                            BorderBrush="{DynamicResource MaterialDesignDivider}"
+                            BorderBrush="{DynamicResource PrimaryHueLightBrush}"
                             BorderThickness="1"
-                            CornerRadius="3"
                             Style="{DynamicResource MaterialDesignRoot}">
                             <StackPanel Margin="4" Orientation="Vertical">
                                 <!--  Title  -->
@@ -57,19 +56,20 @@
                                     Foreground="{DynamicResource PrimaryTextBrush}"
                                     Text="LightBulb" />
 
-                                <!--  Temperature  -->
-                                <TextBlock Text="{Binding CurrentColorConfiguration}" />
+                                <!--  Status  -->
+                                <TextBlock Text="{Binding CurrentColorConfiguration}" Visibility="{Binding IsWorking, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
+                                <TextBlock Text="Disabled" Visibility="{Binding IsWorking, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}" />
                             </StackPanel>
                         </Border>
                     </tb:TaskbarIcon.TrayToolTip>
                     <tb:TaskbarIcon.ContextMenu>
                         <ContextMenu>
                             <MenuItem
-                                x:Name="ConfigureMenuItem"
-                                Click="ConfigureMenuItem_OnClick"
-                                Header="Configure">
+                                x:Name="ShowWindowMenuItem"
+                                Click="ShowWindowMenuItem_OnClick"
+                                Header="Open">
                                 <MenuItem.Icon>
-                                    <materialDesign:PackIcon Kind="Settings" />
+                                    <materialDesign:PackIcon Kind="WindowMaximize" />
                                 </MenuItem.Icon>
                             </MenuItem>
                             <MenuItem
@@ -140,7 +140,7 @@
                             </MenuItem>
                             <MenuItem Command="{s:Action Exit}" Header="Exit">
                                 <MenuItem.Icon>
-                                    <materialDesign:PackIcon Kind="ExitToApp" />
+                                    <materialDesign:PackIcon Kind="Close" />
                                 </MenuItem.Icon>
                             </MenuItem>
                         </ContextMenu>

@@ -31,26 +31,22 @@ namespace LightBulb.ViewModels
 
         public bool IsCyclePreviewEnabled { get; set; }
 
+        public bool IsWorking => IsEnabled && !IsPaused || IsCyclePreviewEnabled;
+
         public DateTimeOffset Instant { get; private set; } = DateTimeOffset.Now;
 
         public ColorConfiguration TargetColorConfiguration
         {
             get
             {
-                // If in cycle preview - return temperature for instant (even when disabled)
-                if (IsCyclePreviewEnabled)
-                    return _calculationService.CalculateColorTemperature(Instant);
+                // If working - calculate color configuration for current instant
+                if (IsWorking)
+                    return _calculationService.CalculateColorConfiguration(Instant);
 
-                // If disabled or paused - return default temperature
-                if (!IsEnabled || IsPaused)
-                {
-                    return _settingsService.IsDefaultToDayConfigurationEnabled
-                        ? new ColorConfiguration(_settingsService.DayTemperature, _settingsService.DayBrightness)
-                        : ColorConfiguration.Default;
-                }
-
-                // Otherwise - return temperature for instant
-                return _calculationService.CalculateColorTemperature(Instant);
+                // Otherwise - return default temperature
+                return _settingsService.IsDefaultToDayConfigurationEnabled
+                    ? new ColorConfiguration(_settingsService.DayTemperature, _settingsService.DayBrightness)
+                    : ColorConfiguration.Default;
             }
         }
 
@@ -65,7 +61,7 @@ namespace LightBulb.ViewModels
                     return CycleState.Transition;
 
                 // If disabled or paused - return disabled
-                if (!IsEnabled || IsPaused)
+                if (!IsWorking)
                     return CycleState.Disabled;
 
                 // If at max temperature - return day

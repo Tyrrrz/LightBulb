@@ -46,7 +46,7 @@ namespace LightBulb.Views
             RestoreFromTray();
         }
 
-        private void ConfigureMenuItem_OnClick(object sender, RoutedEventArgs e)
+        private void ShowWindowMenuItem_OnClick(object sender, RoutedEventArgs e)
         {
             RestoreFromTray();
         }
