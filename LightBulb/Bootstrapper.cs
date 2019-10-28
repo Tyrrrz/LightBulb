@@ -2,8 +2,10 @@
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using LightBulb.Internal;
 using LightBulb.Services;
 using LightBulb.ViewModels;
+using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Framework;
 using Stylet;
 using StyletIoC;
@@ -32,18 +34,35 @@ namespace LightBulb
         {
             base.ConfigureIoC(builder);
 
-            // Bind settings as singleton
+            // Bind all services as singletons (this is critical for some of them)
+            builder.Bind<CalculationService>().ToSelf().InSingletonScope();
+            builder.Bind<LocationService>().ToSelf().InSingletonScope();
             builder.Bind<SettingsService>().ToSelf().InSingletonScope();
+            builder.Bind<SystemService>().ToSelf().InSingletonScope();
+            builder.Bind<UpdateService>().ToSelf().InSingletonScope();
+
+            // Bind all settings tabs
+            builder.Bind<ISettingsTabViewModel>().ToAllImplementations();
 
             // Bind view model factory
             builder.Bind<IViewModelFactory>().ToAbstractFactory();
+        }
+
+        protected override void Launch()
+        {
+            // Finalize pending updates (and restart) before launching the app
+            var updateService = (UpdateService) GetInstance(typeof(UpdateService));
+            updateService.FinalizePendingUpdates();
+
+            base.Launch();
         }
 
         protected override void OnUnhandledException(DispatcherUnhandledExceptionEventArgs e)
         {
             base.OnUnhandledException(e);
 
-            MessageBox.Show(e.Exception.ToString(), "Error occured", MessageBoxButton.OK, MessageBoxImage.Error);
+            if (!EnvironmentEx.IsDebug())
+                MessageBox.Show(e.Exception.ToString(), "Error occured", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

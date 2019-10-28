@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using LightBulb.WindowsApi.Internal;
-using Tyrrrz.Extensions;
 
 namespace LightBulb.WindowsApi
 {

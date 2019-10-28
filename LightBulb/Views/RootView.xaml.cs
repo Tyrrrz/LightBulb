@@ -36,26 +36,17 @@ namespace LightBulb.Views
 
         private void RootView_OnLoaded(object sender, RoutedEventArgs e)
         {
-            // Hide window to tray
-            HideToTray();
-
-            // Position window above the taskbar and at the edge of the screen
-            Left = SystemParameters.WorkArea.Width - Width - 5;
-            Top = SystemParameters.WorkArea.Height - Height;
+            // Hide to tray as soon as window loads if the application was started automatically
+            if (!App.IsStartedByUser)
+                HideToTray();
         }
 
-        private void RootView_OnDeactivated(object sender, EventArgs e)
-        {
-            // Hide window to tray
-            HideToTray();
-        }
-
-        private void TaskbarIcon_OnTrayLeftMouseUp(object sender, RoutedEventArgs routedEventArgs)
+        private void TaskbarIcon_OnTrayLeftMouseUp(object sender, RoutedEventArgs e)
         {
             RestoreFromTray();
         }
 
-        private void ConfigureMenuItem_OnClick(object sender, RoutedEventArgs e)
+        private void ShowWindowMenuItem_OnClick(object sender, RoutedEventArgs e)
         {
             RestoreFromTray();
         }
@@ -64,6 +55,11 @@ namespace LightBulb.Views
         {
             if (e.ChangedButton == MouseButton.Left)
                 DragMove();
+        }
+
+        private void CloseButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            HideToTray();
         }
     }
 }

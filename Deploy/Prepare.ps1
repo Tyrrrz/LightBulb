@@ -1,22 +1,21 @@
-# --- INSTALLER ---
+$licenseFilePath = "$PSScriptRoot/../License.txt"
 
-# Run Inno Setup Compiler
-& "c:\Program Files (x86)\Inno Setup 5\iscc" "$PSScriptRoot\Installer\Installer.iss"
+$projectDirPath = "$PSScriptRoot/../LightBulb"
+$publishDirPath = "$PSScriptRoot/bin/build/"
+$artifactFilePath = "$PSScriptRoot/bin/LightBulb.zip"
 
-# --- PORTABLE ---
+# Prepare directory
+if (Test-Path $publishDirPath) {
+    Remove-Item $publishDirPath -Recurse -Force
+}
+New-Item $publishDirPath -ItemType Directory -Force
 
-# Get files
+# Build & publish
+dotnet publish $projectDirPath -o $publishDirPath -c Release | Out-Host
+
 $files = @()
-$files += Get-Item -Path "$PSScriptRoot\..\License.txt"
-$files += Get-ChildItem -Path "$PSScriptRoot\..\LightBulb\bin\Release\*" -Include "*.exe", "*.dll", "*.config"
-$files += Get-ChildItem -Path "$PSScriptRoot\Portable\*";
+$files += Get-Item -Path $licenseFilePath
+$files += Get-ChildItem -Path $publishDirPath
 
 # Pack into archive
-New-Item "$PSScriptRoot\Portable\bin" -ItemType Directory -Force
-$files | Compress-Archive -DestinationPath "$PSScriptRoot\Portable\bin\LightBulb-Portable.zip" -Force
-
-# --- CHOCOLATEY ---
-
-# Create package
-New-Item "$PSScriptRoot\Choco\bin\" -ItemType Directory -Force
-choco pack $PSScriptRoot\Choco\lightbulb.nuspec --out $PSScriptRoot\Choco\bin\
+$files | Compress-Archive -DestinationPath $artifactFilePath -Force

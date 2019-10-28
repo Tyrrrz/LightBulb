@@ -1,52 +1,18 @@
 ﻿using System;
 using System.Windows.Input;
+using LightBulb.Internal;
 using LightBulb.Models;
 using LightBulb.WindowsApi;
-using LightBulb.WindowsApi.Models;
 
 namespace LightBulb.Services
 {
-    public class SystemService : IDisposable
+    public partial class SystemService : IDisposable
     {
         private readonly GammaManager _gammaManager = new GammaManager();
         private readonly HotKeyManager _hotKeyManager = new HotKeyManager();
         private readonly WindowManager _windowManager = new WindowManager();
 
-        private static ColorBalance GetColorBalance(ColorTemperature temperature)
-        {
-            // Algorithm taken from http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
-
-            double GetRed()
-            {
-                if (temperature.Value > 6600)
-                    return Math.Pow(temperature.Value / 100 - 60, -0.1332047592) * 329.698727446 / 255;
-
-                return 1;
-            }
-
-            double GetGreen()
-            {
-                if (temperature.Value > 6600)
-                    return Math.Pow(temperature.Value / 100 - 60, -0.0755148492) * 288.1221695283 / 255;
-
-                return (Math.Log(temperature.Value / 100) * 99.4708025861 - 161.1195681661) / 255;
-            }
-
-            double GetBlue()
-            {
-                if (temperature.Value >= 6600)
-                    return 1;
-
-                if (temperature.Value <= 1900)
-                    return 0;
-
-                return (Math.Log(temperature.Value / 100 - 10) * 138.5177312231 - 305.0447927307) / 255;
-            }
-
-            return new ColorBalance(GetRed(), GetGreen(), GetBlue());
-        }
-
-        public void SetGamma(ColorTemperature temperature) => _gammaManager.SetGamma(GetColorBalance(temperature));
+        public void SetGamma(ColorConfiguration colorConfiguration) => _gammaManager.SetGamma(colorConfiguration.ToColorBalance());
 
         public void RegisterHotKey(HotKey hotKey, Action handler)
         {
@@ -64,11 +30,44 @@ namespace LightBulb.Services
             return _windowManager.IsWindowFullScreen(foregroundWindow);
         }
 
+        public bool IsAutoStartEnabled()
+        {
+            var registryKeyEntryValue = RegistryEx.GetValueOrDefault<string>(AutoStartRegistryPath, AutoStartRegistryEntryName);
+            return string.Equals(registryKeyEntryValue, AutoStartRegistryEntryValue, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public void EnableAutoStart() =>
+            RegistryEx.SetValue(AutoStartRegistryPath, AutoStartRegistryEntryName, AutoStartRegistryEntryValue);
+
+        public void DisableAutoStart() =>
+            RegistryEx.DeleteValue(AutoStartRegistryPath, AutoStartRegistryEntryName);
+
+        public bool IsGammaRangeUnlocked() =>
+            RegistryEx.GetValueOrDefault<int>(GammaRangeRegistryPath, GammaRangeRegistryEntryName) == GammaRangeRegistryEntryValue;
+
+        public void UnlockGammaRange() =>
+            RegistryEx.SetValue(GammaRangeRegistryPath, GammaRangeRegistryEntryName, GammaRangeRegistryEntryValue);
+
         public void Dispose()
         {
             _gammaManager.Dispose();
             _hotKeyManager.Dispose();
             _windowManager.Dispose();
         }
+    }
+
+    public partial class SystemService
+    {
+        private const string AutoStartRegistryPath = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+
+        private static string AutoStartRegistryEntryName => App.Name;
+
+        private static string AutoStartRegistryEntryValue => $"\"{App.ExecutableFilePath}\" --autostart";
+
+        private const string GammaRangeRegistryPath = "HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\ICM";
+
+        private const string GammaRangeRegistryEntryName = "GdiICMGammaRange";
+
+        private const int GammaRangeRegistryEntryValue = 256;
     }
 }

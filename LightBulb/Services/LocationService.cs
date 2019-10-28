@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
 using System.Threading.Tasks;
 using LightBulb.Models;
 using Newtonsoft.Json.Linq;
@@ -14,21 +13,21 @@ namespace LightBulb.Services
 
         public LocationService()
         {
-            // Set user-agent header
-            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            _httpClient.DefaultRequestHeaders.Add("User-Agent", $"LightBulb v{version} (github.com/Tyrrrz/LightBulb)");
+            _httpClient.DefaultRequestHeaders.Add("User-Agent",
+                $"{App.Name} v{App.VersionString} ({App.GitHubProjectUrl})");
+            _httpClient.DefaultRequestHeaders.Add("X-User-Agent-Purpose",
+                $"{App.Name} is using your API to identify coordinates of a user-specified location.");
         }
 
         public async Task<GeoLocation> GetLocationAsync()
         {
-            var request = "http://ip-api.com/json";
-            var response = await _httpClient.GetStringAsync(request);
-            var responseJson = JToken.Parse(response);
+            var url = "http://ip-api.com/json";
+            var raw = await _httpClient.GetStringAsync(url);
 
-            // TODO: handle errors
+            var json = JToken.Parse(raw);
 
-            var latitude = responseJson["lat"].Value<double>();
-            var longitude = responseJson["lon"].Value<double>();
+            var latitude = json["lat"].Value<double>();
+            var longitude = json["lon"].Value<double>();
 
             return new GeoLocation(latitude, longitude);
         }
@@ -36,14 +35,14 @@ namespace LightBulb.Services
         public async Task<GeoLocation> GetLocationAsync(string query)
         {
             var queryEncoded = WebUtility.UrlEncode(query);
-            var request = $"https://nominatim.openstreetmap.org/search?q={queryEncoded}&format=json";
-            var response = await _httpClient.GetStringAsync(request);
-            var responseJson = JToken.Parse(response);
 
-            // TODO: handle errors
+            var url = $"https://nominatim.openstreetmap.org/search?q={queryEncoded}&format=json";
+            var raw = await _httpClient.GetStringAsync(url);
 
-            var latitude = responseJson.First["lat"].Value<double>();
-            var longitude = responseJson.First["lon"].Value<double>();
+            var json = JToken.Parse(raw);
+
+            var latitude = json.First["lat"].Value<double>();
+            var longitude = json.First["lon"].Value<double>();
 
             return new GeoLocation(latitude, longitude);
         }

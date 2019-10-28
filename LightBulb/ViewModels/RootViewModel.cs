@@ -1,34 +1,28 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Reflection;
-using LightBulb.Messages;
+using System.Threading.Tasks;
+using LightBulb.Helpers;
+using LightBulb.Internal;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.Timers;
-using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Framework;
 using Stylet;
+using Tyrrrz.Extensions;
 
 namespace LightBulb.ViewModels
 {
-    public class RootViewModel : Screen, IHandle<ToggleIsEnabledMessage>, IDisposable
+    public class RootViewModel : Screen, IDisposable
     {
+        private readonly IViewModelFactory _viewModelFactory;
+        private readonly DialogManager _dialogManager;
         private readonly SettingsService _settingsService;
         private readonly UpdateService _updateService;
         private readonly CalculationService _calculationService;
-        private readonly LocationService _locationService;
         private readonly SystemService _systemService;
 
         private readonly AutoResetTimer _updateTimer;
-        private readonly AutoResetTimer _gammaPollingTimer;
-        private readonly AutoResetTimer _settingsAutoSaveTimer;
-        private readonly AutoResetTimer _internetSyncTimer;
         private readonly AutoResetTimer _checkForUpdatesTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
-
-        public string ApplicationVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
-
-        public bool IsUpdateAvailable { get; private set; }
 
         public bool IsEnabled { get; set; } = true;
 
@@ -36,81 +30,77 @@ namespace LightBulb.ViewModels
 
         public bool IsCyclePreviewEnabled { get; set; }
 
+        public bool IsWorking => IsEnabled && !IsPaused || IsCyclePreviewEnabled;
+
         public DateTimeOffset Instant { get; private set; } = DateTimeOffset.Now;
 
-        public ColorTemperature TargetColorTemperature =>
-            IsEnabled && !IsPaused || IsCyclePreviewEnabled
-                ? _calculationService.CalculateColorTemperature(Instant)
-                : ColorTemperature.Default;
+        public ColorConfiguration TargetColorConfiguration
+        {
+            get
+            {
+                // If working - calculate color configuration for current instant
+                if (IsWorking)
+                    return _calculationService.CalculateColorConfiguration(Instant);
 
-        public ColorTemperature CurrentColorTemperature { get; private set; } = ColorTemperature.Default;
+                // Otherwise - return default temperature
+                return _settingsService.IsDefaultToDayConfigurationEnabled
+                    ? new ColorConfiguration(_settingsService.DayTemperature, _settingsService.DayBrightness)
+                    : ColorConfiguration.Default;
+            }
+        }
 
-        public double CyclePosition => Instant.TimeOfDay.TotalDays;
+        public ColorConfiguration CurrentColorConfiguration { get; private set; } = ColorConfiguration.Default;
 
         public CycleState CycleState
         {
             get
             {
-                // If target temperature has not been reached - return transition
-                if (CurrentColorTemperature != TargetColorTemperature)
+                // If target temperature has not been reached - return transition (even when disabled)
+                if (CurrentColorConfiguration != TargetColorConfiguration)
                     return CycleState.Transition;
 
-                // If at max temperature and enabled and not paused - return day
-                if (CurrentColorTemperature == _settingsService.MaxTemperature && IsEnabled && !IsPaused)
+                // If disabled or paused - return disabled
+                if (!IsWorking)
+                    return CycleState.Disabled;
+
+                // If at max temperature - return day
+                if (CurrentColorConfiguration.Equals(_settingsService.DayTemperature, _settingsService.DayBrightness))
                     return CycleState.Day;
 
                 // If at min temperature and enabled and not paused - return night
-                if (CurrentColorTemperature == _settingsService.MinTemperature && IsEnabled && !IsPaused)
+                if (CurrentColorConfiguration.Equals(_settingsService.NightTemperature, _settingsService.NightBrightness))
                     return CycleState.Night;
 
-                // Otherwise - return disabled
-                return CycleState.Disabled;
+                // Otherwise - return transition (shouldn't reach here)
+                return CycleState.Transition;
             }
         }
 
-        public string StatusText
-        {
-            get
-            {
-                // If in cycle preview - return current temperature and instant
-                if (IsCyclePreviewEnabled)
-                    return $"Temp: {CurrentColorTemperature}   Time: {Instant:t}";
+        public TimeSpan SunriseTime => _settingsService.IsManualSunriseSunsetEnabled || _settingsService.Location == null
+            ? _settingsService.ManualSunriseTime
+            : Astronomy.CalculateSunrise(_settingsService.Location.Value, Instant).TimeOfDay;
 
-                // If in transition or not disabled or paused - return current temperature
-                if (CurrentColorTemperature != TargetColorTemperature || IsEnabled && !IsPaused)
-                    return $"Temp: {CurrentColorTemperature}";
+        public TimeSpan SunsetTime => _settingsService.IsManualSunriseSunsetEnabled || _settingsService.Location == null
+            ? _settingsService.ManualSunsetTime
+            : Astronomy.CalculateSunset(_settingsService.Location.Value, Instant).TimeOfDay;
 
-                // Otherwise - return "paused" or "disabled"
-                return IsPaused ? "Paused" : "Disabled";
-            }
-        }
+        public TimeSpan TimeUntilSunrise => Instant.NextTimeOfDay(SunriseTime) - Instant;
 
-        public GeneralSettingsViewModel GeneralSettings { get; }
+        public TimeSpan TimeUntilSunset => Instant.NextTimeOfDay(SunsetTime) - Instant;
 
-        public LocationSettingsViewModel LocationSettings { get; }
-
-        public AdvancedSettingsViewModel AdvancedSettings { get; }
-
-        public int SettingsIndex { get; private set; }
-
-        public RootViewModel(IEventAggregator eventAggregator, IViewModelFactory viewModelFactory,
+        public RootViewModel(IViewModelFactory viewModelFactory, DialogManager dialogManager,
             SettingsService settingsService, UpdateService updateService,
-            CalculationService calculationService, LocationService locationService,
-            SystemService systemService)
+            CalculationService calculationService, SystemService systemService)
         {
+            _viewModelFactory = viewModelFactory;
+            _dialogManager = dialogManager;
             _settingsService = settingsService;
             _updateService = updateService;
             _calculationService = calculationService;
-            _locationService = locationService;
             _systemService = systemService;
 
-            // Handle messages
-            eventAggregator.Subscribe(this);
-
-            // Initialize view models
-            GeneralSettings = viewModelFactory.CreateGeneralSettingsViewModel();
-            LocationSettings = viewModelFactory.CreateLocationSettingsViewModel();
-            AdvancedSettings = viewModelFactory.CreateAdvancedSettingsViewModel();
+            // Title
+            DisplayName = $"{App.Name} v{App.VersionString}";
 
             // When IsEnabled switches to 'true' - cancel 'disable temporarily'
             this.Bind(o => o.IsEnabled, (sender, args) =>
@@ -127,38 +117,32 @@ namespace LightBulb.ViewModels
                 UpdateGamma();
             });
 
-            _gammaPollingTimer = new AutoResetTimer(() =>
-            {
-                if (_settingsService.IsGammaPollingEnabled && IsEnabled && CurrentColorTemperature == TargetColorTemperature)
-                    _systemService.SetGamma(CurrentColorTemperature);
-            });
-
-            _settingsAutoSaveTimer = new AutoResetTimer(() => _settingsService.SaveIfNeeded());
-
-            _internetSyncTimer = new AutoResetTimer(async () =>
-            {
-                if (!_settingsService.IsInternetSyncEnabled)
-                    return;
-
-                // TODO: rework later
-                var location = await _locationService.GetLocationAsync();
-
-                if (_settingsService.IsInternetSyncEnabled)
-                {
-                    _settingsService.Location = location;
-
-                    var instant = DateTimeOffset.Now;
-                    _settingsService.SunriseTime = _calculationService.CalculateSunrise(location, instant).TimeOfDay;
-                    _settingsService.SunsetTime = _calculationService.CalculateSunset(location, instant).TimeOfDay;
-                }
-            });
-
             _checkForUpdatesTimer = new AutoResetTimer(async () =>
             {
-                IsUpdateAvailable = await _updateService.CheckForUpdatesAsync();
+                await _updateService.CheckPrepareUpdateAsync();
             });
 
             _enableAfterDelayTimer = new ManualResetTimer(Enable);
+        }
+
+        private async Task EnsureGammaRangeIsUnlockedAsync()
+        {
+            // If already unlocked - return
+            if (_systemService.IsGammaRangeUnlocked())
+                return;
+
+            // Show prompt to the user
+            var prompt = _viewModelFactory.CreateMessageBoxViewModel("Limited gamma range", 
+                $"{App.Name} detected that this computer doesn't have the extended gamma range unlocked. " +
+                "This may cause the app to work incorrectly with some settings." +
+                $"{Environment.NewLine}{Environment.NewLine}" +
+                "Press OK to unlock gamma range.");
+
+            var promptResult = await _dialogManager.ShowDialogAsync(prompt);
+
+            // Unlock gamma range if user agreed to it
+            if (promptResult == true)
+                _systemService.UnlockGammaRange();
         }
 
         protected override void OnViewLoaded()
@@ -168,12 +152,28 @@ namespace LightBulb.ViewModels
             // Load settings
             _settingsService.Load();
 
+            // Register hot keys
+            RegisterHotKeys();
+
             // Start timers
-            _updateTimer.Start(TimeSpan.FromMilliseconds(17)); // 60hz
-            _gammaPollingTimer.Start(TimeSpan.FromSeconds(1));
-            _settingsAutoSaveTimer.Start(TimeSpan.FromSeconds(5));
-            _internetSyncTimer.Start(TimeSpan.FromHours(3));
+            _updateTimer.Start(TimeSpan.FromMilliseconds(50));
             _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
+        }
+        
+        // This is a custom event that fires when the dialog host is loaded
+        public async void OnViewFullyLoaded()
+        {
+            await EnsureGammaRangeIsUnlockedAsync();
+        }
+
+        private void RegisterHotKeys()
+        {
+            _systemService.UnregisterAllHotKeys();
+
+            if (_settingsService.ToggleHotKey != HotKey.None)
+            {
+                _systemService.RegisterHotKey(_settingsService.ToggleHotKey, Toggle);
+            }
         }
 
         private void UpdateIsPaused()
@@ -193,7 +193,7 @@ namespace LightBulb.ViewModels
                 var diff = targetInstant - Instant;
 
                 // Calculate delta
-                var delta = TimeSpan.FromMinutes(3);
+                var delta = TimeSpan.FromMinutes(5);
                 if (delta > diff)
                     delta = diff;
 
@@ -214,34 +214,16 @@ namespace LightBulb.ViewModels
         private void UpdateGamma()
         {
             // If update is not needed - return
-            if (CurrentColorTemperature == TargetColorTemperature)
+            if (CurrentColorConfiguration == TargetColorConfiguration)
                 return;
 
-            // Determine if gamma change should be smooth
             var isSmooth = _settingsService.IsGammaSmoothingEnabled && !IsCyclePreviewEnabled;
 
-            // If smooth - advance towards target temperature in small steps
-            if (isSmooth)
-            {
-                // Calculate difference
-                var diff = TargetColorTemperature.Value - CurrentColorTemperature.Value;
+            CurrentColorConfiguration = isSmooth
+                ? CurrentColorConfiguration.Interpolate(TargetColorConfiguration)
+                : TargetColorConfiguration;
 
-                // Calculate delta
-                var delta = 30.0 * Math.Sign(diff);
-                if (Math.Abs(delta) > Math.Abs(diff))
-                    delta = diff;
-
-                // Set new color temperature
-                CurrentColorTemperature = new ColorTemperature(CurrentColorTemperature.Value + delta);
-            }
-            // Otherwise - just snap to target temperature
-            else
-            {
-                CurrentColorTemperature = TargetColorTemperature;
-            }
-
-            // Update gamma
-            _systemService.SetGamma(CurrentColorTemperature);
+            _systemService.SetGamma(CurrentColorConfiguration);
         }
 
         public void Enable() => IsEnabled = true;
@@ -257,38 +239,35 @@ namespace LightBulb.ViewModels
             IsEnabled = false;
         }
 
-        public void NavigateGeneralSettings() => SettingsIndex = 0;
+        public void Toggle() => IsEnabled = !IsEnabled;
 
-        public void NavigateLocationSettings() => SettingsIndex = 1;
+        public void EnableCyclePreview() => IsCyclePreviewEnabled = true;
 
-        public void NavigateAdvancedSettings() => SettingsIndex = 2;
+        public void DisableCyclePreview() => IsCyclePreviewEnabled = false;
 
-        public void ShowAbout() => Process.Start("https://github.com/Tyrrrz/LightBulb");
-
-        public void ShowReleases() => Process.Start("https://github.com/Tyrrrz/LightBulb/releases");
-
-        public void Exit()
+        public async void ShowSettings()
         {
-            // Save settings
-            _settingsService.SaveIfNeeded();
+            await _dialogManager.ShowDialogAsync(_viewModelFactory.CreateSettingsViewModel());
 
-            // Close
-            RequestClose();
+            // Re-register hot keys
+            RegisterHotKeys();
         }
 
-        public void Handle(ToggleIsEnabledMessage message) => IsEnabled = !IsEnabled;
+        public void ShowAbout() => App.GitHubProjectUrl.ToUri().OpenInBrowser();
+
+        public void ShowReleases() => App.GitHubProjectReleasesUrl.ToUri().OpenInBrowser();
+
+        public void Exit() => RequestClose();
 
         public void Dispose()
         {
             // Dispose stuff
             _updateTimer.Dispose();
-            _settingsAutoSaveTimer.Dispose();
-            _internetSyncTimer.Dispose();
             _checkForUpdatesTimer.Dispose();
             _enableAfterDelayTimer.Dispose();
 
             // Reset gamma
-            _systemService.SetGamma(ColorTemperature.Default);
+            _systemService.SetGamma(ColorConfiguration.Default);
         }
     }
 }

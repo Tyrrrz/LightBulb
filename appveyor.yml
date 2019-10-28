@@ -1,6 +1,6 @@
 version: '{build}'
 
-image: Visual Studio 2017
+image: Visual Studio 2019
 configuration: Release
 
 before_build:
@@ -13,28 +13,15 @@ after_build:
 - ps: Deploy\Prepare.ps1
 
 artifacts:
-- path: Deploy\Installer\bin\LightBulb-Installer.exe
-  name: LightBulb-Installer.exe
-- path: Deploy\Portable\bin\LightBulb-Portable.zip
-  name: LightBulb-Portable.zip
-- path: Deploy\Choco\bin\LightBulb*.nupkg
-  name: LightBulb-Choco.nupkg
+- path: Deploy\bin\LightBulb.zip
+  name: LightBulb.zip
 
 deploy:
 - provider: GitHub
   auth_token:
     secure: sjQHWRw29AMiVMn3MtidtWnAzAf1mJ+mkJ/7h1B9TIAHhkFrqwMK7LtXV+uNJ9AO
-  artifact: LightBulb-Installer.exe,LightBulb-Portable.zip
+  artifact: LightBulb.zip
   description: '[Changelog](https://github.com/Tyrrrz/LightBulb/blob/master/Changelog.md)'
-  on:
-    branch: master
-    appveyor_repo_tag: true
-- provider: NuGet
-  server: https://push.chocolatey.org/
-  api_key:
-    secure: aQVQ50i8GcwxMXTHf2ck5PijnOeVZY8Z9MEROQTvT49/7/az9w8ru8NCyEsV6H5I
-  artifact: LightBulb-Choco.nupkg
-  skip_symbols: true
   on:
     branch: master
     appveyor_repo_tag: true

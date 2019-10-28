@@ -1,23 +1,69 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Onova;
+using Onova.Exceptions;
 using Onova.Services;
 
 namespace LightBulb.Services
 {
-    public class UpdateService
+    public class UpdateService : IDisposable
     {
-        // TODO: this currently uses Onova only to check for updates and not to apply updates
-
         private readonly IUpdateManager _updateManager = new UpdateManager(
-            new GithubPackageResolver("Tyrrrz", "LightBulb", "LightBulb*"),
+            new GithubPackageResolver("Tyrrrz", "LightBulb", "LightBulb.zip"),
             new ZipPackageExtractor());
 
-        public async Task<bool> CheckForUpdatesAsync()
-        {
-            // Check for updates
-            var check = await _updateManager.CheckForUpdatesAsync();
+        private Version GetLastPreparedUpdate() => _updateManager.GetPreparedUpdates().Max();
 
-            return check.CanUpdate;
+        public async Task<Version> CheckPrepareUpdateAsync()
+        {
+            try
+            {
+                // Check for updates
+                var check = await _updateManager.CheckForUpdatesAsync();
+                if (!check.CanUpdate)
+                    return null;
+
+                // Prepare update
+                if (check.LastVersion != GetLastPreparedUpdate())
+                    await _updateManager.PrepareUpdateAsync(check.LastVersion);
+
+                return check.LastVersion;
+            }
+            catch
+            {
+                // Failure to check for updates shouldn't crash the app
+                return null;
+            }
         }
+
+        public void FinalizePendingUpdates()
+        {
+            try
+            {
+                // Get last prepared update
+                var updateVersion = GetLastPreparedUpdate();
+                if (updateVersion == null)
+                    return;
+
+                // Don't update if the prepared update is a downgrade
+                if (App.Version >= updateVersion)
+                    return;
+
+                // Launch updater and restart
+                _updateManager.LaunchUpdater(updateVersion);
+                Environment.Exit(0);
+            }
+            catch (UpdaterAlreadyLaunchedException)
+            {
+                // Ignore race conditions
+            }
+            catch (LockFileNotAcquiredException)
+            {
+                // Ignore race conditions
+            }
+        }
+
+        public void Dispose() => _updateManager.Dispose();
     }
 }

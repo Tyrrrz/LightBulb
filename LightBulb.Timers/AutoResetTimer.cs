@@ -11,6 +11,7 @@ namespace LightBulb.Timers
         private readonly Timer _internalTimer;
 
         private bool _isBusy;
+        private bool _isDisposed;
 
         public AutoResetTimer(Action handler)
         {
@@ -21,20 +22,25 @@ namespace LightBulb.Timers
         private void Tick()
         {
             // Prevent multiple reentry
+            if (_isBusy)
+                return;
+
             lock (_lock)
             {
-                if (_isBusy) return;
-                _isBusy = true;
-            }
+                // Prevent executing when already disposed (race condition)
+                if (_isDisposed)
+                    return;
 
-            // Execute handler and reset busy state
-            try
-            {
-                _handler();
-            }
-            finally
-            {
-                _isBusy = false;
+                _isBusy = true;
+
+                try
+                {
+                    _handler();
+                }
+                finally
+                {
+                    _isBusy = false;
+                }
             }
         }
 
@@ -52,6 +58,14 @@ namespace LightBulb.Timers
             return this;
         }
 
-        public void Dispose() => _internalTimer.Dispose();
+        public void Dispose()
+        {
+            // Lock so that tick doesn't trigger after dispose (bad idea?)
+            lock (_lock)
+            {
+                _isDisposed = true;
+                _internalTimer.Dispose();
+            }
+        }
     }
 }

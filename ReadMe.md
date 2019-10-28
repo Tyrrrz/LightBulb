@@ -19,7 +19,6 @@ _Currently only compatible with Windows 7 or higher._
 ## Download
 
 - [Stable releases](https://github.com/Tyrrrz/LightBulb/releases)
-- [Chocolatey](https://chocolatey.org/packages/LightBulb): `choco install lightbulb`
 - [Continuous integration](https://ci.appveyor.com/project/Tyrrrz/LightBulb)
 
 ## Features
@@ -37,21 +36,16 @@ LightBulb aims to be very customizable. Refer to [this guide](https://github.com
 
 You can also manually fine-tune every detail using the [configuration file](https://github.com/Tyrrrz/LightBulb/wiki/Config-file).
 
-## Web APIs used
-
-- [IP-API](http://ip-api.com)
-- [SunriseSunset](https://sunrise-sunset.org)
-- [GitHub](https://developer.github.com)
-
 ## Libraries used
 
- - [GalaSoft.MVVMLight](http://www.mvvmlight.net)
- - [Newtonsoft.Json](http://www.newtonsoft.com/json)
- - [MaterialDesignInXamlToolkit](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit)
- - [Hardcodet.NotifyIcon.Wpf](http://www.hardcodet.net/wpf-notifyicon)
- - [Tyrrrz.Extensions](https://github.com/Tyrrrz/Extensions)
- - [Tyrrrz.WpfExtensions](https://github.com/Tyrrrz/WpfExtensions)
- - [Tyrrrz.Settings](https://github.com/Tyrrrz/Settings)
+- [Stylet](https://github.com/canton7/Stylet)
+- [PropertyChanged.Fody](https://github.com/Fody/PropertyChanged)
+- [MaterialDesignInXamlToolkit](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit)
+- [Newtonsoft.Json](http://www.newtonsoft.com/json)
+- [Hardcodet.NotifyIcon.Wpf](http://www.hardcodet.net/wpf-notifyicon)
+- [Onova](https://github.com/Tyrrrz/Onova)
+- [Tyrrrz.Extensions](https://github.com/Tyrrrz/Extensions)
+- [Tyrrrz.Settings](https://github.com/Tyrrrz/Settings)
 
 ## Donate
 

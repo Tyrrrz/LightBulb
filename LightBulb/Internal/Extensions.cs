@@ -1,9 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace LightBulb.Internal
 {
     internal static class Extensions
     {
+        public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> items)
+        {
+            foreach (var item in items)
+                collection.Add(item);
+        }
+
+        public static StringBuilder AppendIfNotEmpty(this StringBuilder builder, char value) =>
+            builder.Length > 0 ? builder.Append(value) : builder;
+
         public static DateTimeOffset ResetTimeOfDay(this DateTimeOffset dateTime) =>
             new DateTimeOffset(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0, 0, dateTime.Offset);
 
@@ -20,5 +31,6 @@ namespace LightBulb.Internal
                 ? dateTime.AtTimeOfDay(timeOfDay)
                 : dateTime.AddDays(-1).AtTimeOfDay(timeOfDay);
 
+        public static void OpenInBrowser(this Uri uri) => ProcessEx.StartShellExecute(uri.ToString());
     }
 }
