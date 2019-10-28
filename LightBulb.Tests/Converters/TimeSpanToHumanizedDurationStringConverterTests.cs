@@ -48,6 +48,12 @@ namespace LightBulb.Tests.Converters
             );
 
             yield return new TestCaseData(
+                TimeSpan.FromHours(2) + TimeSpan.FromMinutes(10) + TimeSpan.FromSeconds(15),
+                "2 hours 10 minutes",
+                null
+            );
+
+            yield return new TestCaseData(
                 TimeSpan.FromSeconds(10),
                 "10 seconds",
                 null

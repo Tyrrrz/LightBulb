@@ -23,6 +23,9 @@ namespace LightBulb.Tests.Services
 
         [Test]
         [TestCase("Kyiv, Ukraine")]
+        [TestCase("Dresden")]
+        [TestCase("UK")]
+        [TestCase("King's Cross, Platform 9 3/4")]
         [TestCase("Statue of Liberty")]
         public async Task GetLocationAsync_Query_Test(string query)
         {
