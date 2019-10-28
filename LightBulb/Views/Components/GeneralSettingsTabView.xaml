@@ -16,7 +16,7 @@
         <StackPanel
             Margin="6"
             Orientation="Horizontal"
-            ToolTip="Color temperature during day-time">
+            ToolTip="Color temperature during the day">
             <TextBlock VerticalAlignment="Center" Text="Day-time color temperature:" />
             <TextBox
                 MinWidth="30"
@@ -40,7 +40,7 @@
         <StackPanel
             Margin="6"
             Orientation="Horizontal"
-            ToolTip="Color temperature during night-time">
+            ToolTip="Color temperature during the night">
             <TextBlock VerticalAlignment="Center" Text="Night-time color temperature:" />
             <TextBox
                 MinWidth="30"
@@ -64,7 +64,7 @@
         <StackPanel
             Margin="6"
             Orientation="Horizontal"
-            ToolTip="Brightness during night-time">
+            ToolTip="Brightness during the day">
             <TextBlock VerticalAlignment="Center" Text="Day-time brightness:" />
             <TextBox
                 MinWidth="30"
@@ -88,7 +88,7 @@
         <StackPanel
             Margin="6"
             Orientation="Horizontal"
-            ToolTip="Brightness during night-time">
+            ToolTip="Brightness during the night">
             <TextBlock VerticalAlignment="Center" Text="Night-time brightness:" />
             <TextBox
                 MinWidth="30"

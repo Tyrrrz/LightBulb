@@ -170,7 +170,7 @@
                             Foreground="{DynamicResource SecondaryTextBrush}"
                             IsChecked="{Binding IsEnabled}"
                             Style="{DynamicResource MaterialDesignActionAccentToggleButton}"
-                            ToolTip="On/off">
+                            ToolTip="Switch LightBulb on/off">
                             <materialDesign:ToggleButtonAssist.OnContent>
                                 <materialDesign:PackIcon
                                     Width="24"

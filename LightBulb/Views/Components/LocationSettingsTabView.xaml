@@ -27,13 +27,13 @@
                 Content="Manual"
                 GroupName="SunriseSunsetConfigurationType"
                 IsChecked="{Binding IsManualSunriseSunsetEnabled}"
-                ToolTip="Configure sunrise and sunset times manually" />
+                ToolTip="Configure when the sun rises and sets manually" />
             <RadioButton
                 Grid.Column="1"
                 Content="Location-based"
                 GroupName="SunriseSunsetConfigurationType"
                 IsChecked="{Binding IsManualSunriseSunsetEnabled, Converter={x:Static converters:InverseBoolConverter.Instance}}"
-                ToolTip="Specify location and have sunrise and sunset times calculated automatically" />
+                ToolTip="Configure location and use it to automatically calculate sunrise and sunset" />
         </Grid>
 
         <!--  Manual  -->
@@ -95,7 +95,7 @@
                     Padding="4"
                     Command="{s:Action AutoDetectLocation}"
                     Style="{DynamicResource MaterialDesignFlatButton}"
-                    ToolTip="Detect location automatically based on your IP">
+                    ToolTip="Try to detect location automatically based on your IP">
                     <materialDesign:PackIcon
                         Width="24"
                         Height="24"
@@ -111,10 +111,10 @@
                     Text="{Binding LocationQuery, UpdateSourceTrigger=PropertyChanged}">
                     <TextBox.ToolTip>
                         <TextBlock>
-                            <Run Text="You can specify a search query or enter coordinates directly." />
+                            <Run Text="You can enter coordinates directly or specify a search query." />
                             <LineBreak />
                             <LineBreak />
-                            <Run Text="Valid values are:" />
+                            <Run Text="Examples of valid values:" />
                             <LineBreak />
                             <Run FontWeight="SemiBold" Text="41.25, -120.9762" />
                             <LineBreak />
