@@ -1,10 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace LightBulb.Internal
 {
     internal static class Extensions
     {
+        public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> items)
+        {
+            foreach (var item in items)
+                collection.Add(item);
+        }
+
         public static StringBuilder AppendIfNotEmpty(this StringBuilder builder, char value) =>
             builder.Length > 0 ? builder.Append(value) : builder;
 
