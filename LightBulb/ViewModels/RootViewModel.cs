@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using LightBulb.Helpers;
 using LightBulb.Internal;
-using LightBulb.Messages;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.Timers;
@@ -12,7 +11,7 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.ViewModels
 {
-    public class RootViewModel : Screen, IHandle<ToggleIsEnabledMessage>, IDisposable
+    public class RootViewModel : Screen, IDisposable
     {
         private readonly IViewModelFactory _viewModelFactory;
         private readonly DialogManager _dialogManager;
@@ -89,8 +88,7 @@ namespace LightBulb.ViewModels
 
         public TimeSpan TimeUntilSunset => Instant.NextTimeOfDay(SunsetTime) - Instant;
 
-        public RootViewModel(
-            IEventAggregator eventAggregator, IViewModelFactory viewModelFactory, DialogManager dialogManager,
+        public RootViewModel(IViewModelFactory viewModelFactory, DialogManager dialogManager,
             SettingsService settingsService, UpdateService updateService,
             CalculationService calculationService, SystemService systemService)
         {
@@ -103,9 +101,6 @@ namespace LightBulb.ViewModels
 
             // Title
             DisplayName = $"{App.Name} v{App.VersionString}";
-
-            // Handle messages
-            eventAggregator.Subscribe(this);
 
             // When IsEnabled switches to 'true' - cancel 'disable temporarily'
             this.Bind(o => o.IsEnabled, (sender, args) =>
@@ -157,6 +152,9 @@ namespace LightBulb.ViewModels
             // Load settings
             _settingsService.Load();
 
+            // Register hot keys
+            RegisterHotKeys();
+
             // Start timers
             _updateTimer.Start(TimeSpan.FromMilliseconds(50));
             _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
@@ -166,6 +164,16 @@ namespace LightBulb.ViewModels
         public async void OnViewFullyLoaded()
         {
             await EnsureGammaRangeIsUnlockedAsync();
+        }
+
+        private void RegisterHotKeys()
+        {
+            _systemService.UnregisterAllHotKeys();
+
+            if (_settingsService.ToggleHotKey != HotKey.None)
+            {
+                _systemService.RegisterHotKey(_settingsService.ToggleHotKey, Toggle);
+            }
         }
 
         private void UpdateIsPaused()
@@ -237,15 +245,19 @@ namespace LightBulb.ViewModels
 
         public void DisableCyclePreview() => IsCyclePreviewEnabled = false;
 
-        public async void ShowSettings() => await _dialogManager.ShowDialogAsync(_viewModelFactory.CreateSettingsViewModel());
+        public async void ShowSettings()
+        {
+            await _dialogManager.ShowDialogAsync(_viewModelFactory.CreateSettingsViewModel());
+
+            // Re-register hot keys
+            RegisterHotKeys();
+        }
 
         public void ShowAbout() => App.GitHubProjectUrl.ToUri().OpenInBrowser();
 
         public void ShowReleases() => App.GitHubProjectReleasesUrl.ToUri().OpenInBrowser();
 
         public void Exit() => RequestClose();
-
-        public void Handle(ToggleIsEnabledMessage message) => Toggle();
 
         public void Dispose()
         {
