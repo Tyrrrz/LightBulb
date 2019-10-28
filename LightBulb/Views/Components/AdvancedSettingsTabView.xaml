@@ -21,7 +21,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Start with Windows:" />
+                Text="Start with Windows" />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"
@@ -39,7 +39,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Default to day-time settings:" />
+                Text="Default to day-time settings" />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"
@@ -57,7 +57,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Gamma smoothing:" />
+                Text="Gamma smoothing" />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"
@@ -75,7 +75,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Pause when fullscreen:" />
+                Text="Pause when fullscreen" />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"

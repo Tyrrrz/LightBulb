@@ -23,6 +23,7 @@
                 Margin="8,0"
                 Padding="0"
                 VerticalAlignment="Center"
+                BorderBrush="{DynamicResource DividerBrush}"
                 Text="{Binding DayColorTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
         </StackPanel>
         <Slider
@@ -46,6 +47,7 @@
                 Margin="8,0"
                 Padding="0"
                 VerticalAlignment="Center"
+                BorderBrush="{DynamicResource DividerBrush}"
                 Text="{Binding NightColorTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
         </StackPanel>
         <Slider
@@ -69,6 +71,7 @@
                 Margin="8,0"
                 Padding="0"
                 VerticalAlignment="Center"
+                BorderBrush="{DynamicResource DividerBrush}"
                 Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
         </StackPanel>
         <Slider
@@ -92,6 +95,7 @@
                 Margin="8,0"
                 Padding="0"
                 VerticalAlignment="Center"
+                BorderBrush="{DynamicResource DividerBrush}"
                 Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
         </StackPanel>
         <Slider
@@ -115,6 +119,7 @@
                 Margin="8,0"
                 Padding="0"
                 VerticalAlignment="Center"
+                BorderBrush="{DynamicResource DividerBrush}"
                 Text="{Binding TemperatureTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}}" />
         </StackPanel>
         <Slider

@@ -46,6 +46,7 @@
                     Margin="8,0"
                     Padding="0"
                     VerticalAlignment="Center"
+                    BorderBrush="{DynamicResource DividerBrush}"
                     Text="{Binding ManualSunriseTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}}" />
             </StackPanel>
             <Slider
@@ -64,6 +65,7 @@
                     Margin="8,0"
                     Padding="0"
                     VerticalAlignment="Center"
+                    BorderBrush="{DynamicResource DividerBrush}"
                     Text="{Binding ManualSunsetTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}}" />
             </StackPanel>
             <Slider

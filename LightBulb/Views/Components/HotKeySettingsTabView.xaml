@@ -22,7 +22,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Toggle LightBulb:"
+                Text="Toggle LightBulb"
                 ToolTip="Hot key to switch LightBulb on/off" />
             <controls:HotKeyEditor
                 Grid.Column="1"
