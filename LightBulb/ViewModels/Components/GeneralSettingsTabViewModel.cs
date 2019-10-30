@@ -1,4 +1,5 @@
 ﻿using System;
+using LightBulb.Models;
 using LightBulb.Services;
 using Tyrrrz.Extensions;
 
@@ -8,36 +9,36 @@ namespace LightBulb.ViewModels.Components
     {
         private readonly SettingsService _settingsService;
 
-        public double NightColorTemperature
+        public double NightTemperature
         {
-            get => _settingsService.NightTemperature;
+            get => _settingsService.NightConfiguration.Temperature;
             set
             {
-                _settingsService.NightTemperature = value.Clamp(1000.0, 10000.0);
+                _settingsService.NightConfiguration = new ColorConfiguration(value.Clamp(1000.0, 10000.0), NightBrightness);
 
-                if (NightColorTemperature > DayColorTemperature)
-                    DayColorTemperature = NightColorTemperature;
+                if (NightTemperature > DayTemperature)
+                    DayTemperature = NightTemperature;
             }
         }
 
-        public double DayColorTemperature
+        public double DayTemperature
         {
-            get => _settingsService.DayTemperature;
+            get => _settingsService.DayConfiguration.Temperature;
             set
             {
-                _settingsService.DayTemperature = value.Clamp(1000.0, 10000.0);
+                _settingsService.DayConfiguration = new ColorConfiguration(value.Clamp(1000.0, 10000.0), DayBrightness);
 
-                if (DayColorTemperature < NightColorTemperature)
-                    NightColorTemperature = DayColorTemperature;
+                if (DayTemperature < NightTemperature)
+                    NightTemperature = DayTemperature;
             }
         }
 
         public double NightBrightness
         {
-            get => _settingsService.NightBrightness;
+            get => _settingsService.NightConfiguration.Brightness;
             set
             {
-                _settingsService.NightBrightness = value.Clamp(0.1, 1.0);
+                _settingsService.NightConfiguration = new ColorConfiguration(NightTemperature, value.Clamp(0.1, 1.0));
 
                 if (NightBrightness > DayBrightness)
                     DayBrightness = NightBrightness;
@@ -46,10 +47,10 @@ namespace LightBulb.ViewModels.Components
 
         public double DayBrightness
         {
-            get => _settingsService.DayBrightness;
+            get => _settingsService.DayConfiguration.Brightness;
             set
             {
-                _settingsService.DayBrightness = value.Clamp(0.1, 1.0);
+                _settingsService.DayConfiguration = new ColorConfiguration(DayTemperature, value.Clamp(0.1, 1.0));
 
                 if (DayBrightness < NightBrightness)
                     NightBrightness = DayBrightness;

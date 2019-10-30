@@ -236,7 +236,7 @@
                         <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SunsetTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, Mode=OneWay}" />
                     </TextBlock>
 
-                    <!--  Cycle display  -->
+                    <!--  Sundial  -->
                     <Grid
                         Grid.Column="1"
                         Width="220"

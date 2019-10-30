@@ -30,12 +30,6 @@ _Currently only compatible with Windows 7 or higher._
 - Configurable global hotkeys
 - Minimal impact on performance
 
-## Customization
-
-LightBulb aims to be very customizable. Refer to [this guide](https://github.com/Tyrrrz/LightBulb/wiki/Settings-explanation) to understand what each setting does.
-
-You can also manually fine-tune every detail using the [configuration file](https://github.com/Tyrrrz/LightBulb/wiki/Config-file).
-
 ## Libraries used
 
 - [Stylet](https://github.com/canton7/Stylet)

@@ -84,8 +84,8 @@ namespace LightBulb.Services
         public ColorConfiguration CalculateColorConfiguration(DateTimeOffset instant)
         {
             return new ColorConfiguration(
-                GetCurveValue(instant, _settingsService.NightTemperature, _settingsService.DayTemperature),
-                GetCurveValue(instant, _settingsService.NightBrightness, _settingsService.DayBrightness));
+                GetCurveValue(instant, _settingsService.NightConfiguration.Temperature, _settingsService.DayConfiguration.Temperature),
+                GetCurveValue(instant, _settingsService.NightConfiguration.Brightness, _settingsService.DayConfiguration.Brightness));
         }
     }
 }

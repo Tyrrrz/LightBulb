@@ -42,9 +42,9 @@ namespace LightBulb.ViewModels
                 if (IsWorking)
                     return _calculationService.CalculateColorConfiguration(Instant);
 
-                // Otherwise - return default temperature
+                // Otherwise - return default configuration
                 return _settingsService.IsDefaultToDayConfigurationEnabled
-                    ? new ColorConfiguration(_settingsService.DayTemperature, _settingsService.DayBrightness)
+                    ? _settingsService.DayConfiguration
                     : ColorConfiguration.Default;
             }
         }
@@ -55,7 +55,7 @@ namespace LightBulb.ViewModels
         {
             get
             {
-                // If target temperature has not been reached - return transition (even when disabled)
+                // If target configuration has not been reached - return transition (even when disabled)
                 if (CurrentColorConfiguration != TargetColorConfiguration)
                     return CycleState.Transition;
 
@@ -63,12 +63,12 @@ namespace LightBulb.ViewModels
                 if (!IsWorking)
                     return CycleState.Disabled;
 
-                // If at max temperature - return day
-                if (CurrentColorConfiguration.Equals(_settingsService.DayTemperature, _settingsService.DayBrightness))
+                // If at day configuration - return day
+                if (CurrentColorConfiguration == _settingsService.DayConfiguration)
                     return CycleState.Day;
 
-                // If at min temperature and enabled and not paused - return night
-                if (CurrentColorConfiguration.Equals(_settingsService.NightTemperature, _settingsService.NightBrightness))
+                // If at night configuration - return night
+                if (CurrentColorConfiguration == _settingsService.NightConfiguration)
                     return CycleState.Night;
 
                 // Otherwise - return transition (shouldn't reach here)
@@ -213,16 +213,30 @@ namespace LightBulb.ViewModels
 
         private void UpdateGamma()
         {
-            // If update is not needed - return
+            // Don't update if already reached target
             if (CurrentColorConfiguration == TargetColorConfiguration)
                 return;
 
+            // Don't update on small changes to avoid input lag
+            var isSmallChange =
+                Math.Abs(TargetColorConfiguration.Temperature - CurrentColorConfiguration.Temperature) < 25 &&
+                Math.Abs(TargetColorConfiguration.Brightness - CurrentColorConfiguration.Brightness) < 0.01;
+
+            var isExtremeState =
+                TargetColorConfiguration == _settingsService.NightConfiguration ||
+                TargetColorConfiguration == _settingsService.DayConfiguration;
+
+            if (isSmallChange && !isExtremeState)
+                return;
+
+            // Calculate current configuration
             var isSmooth = _settingsService.IsGammaSmoothingEnabled && !IsCyclePreviewEnabled;
 
             CurrentColorConfiguration = isSmooth
                 ? CurrentColorConfiguration.Interpolate(TargetColorConfiguration)
                 : TargetColorConfiguration;
 
+            // Set gamma to new value
             _systemService.SetGamma(CurrentColorConfiguration);
         }
 

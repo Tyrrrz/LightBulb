@@ -14,9 +14,7 @@ namespace LightBulb.Models
             Brightness = brightness;
         }
 
-        public bool Equals(double temperature, double brightness) => Temperature.Equals(temperature) && Brightness.Equals(brightness);
-
-        public bool Equals(ColorConfiguration other) => Equals(other.Temperature, other.Brightness);
+        public bool Equals(ColorConfiguration other) => Temperature.Equals(other.Temperature) && Brightness.Equals(other.Brightness);
 
         public override bool Equals(object obj) => obj is ColorConfiguration other && Equals(other);
 

@@ -24,7 +24,7 @@
                 Padding="0"
                 VerticalAlignment="Center"
                 BorderBrush="{DynamicResource DividerBrush}"
-                Text="{Binding DayColorTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
+                Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
         </StackPanel>
         <Slider
             Margin="8,0,8,6"
@@ -34,7 +34,7 @@
             Minimum="2500"
             SmallChange="100"
             TickFrequency="20"
-            Value="{Binding DayColorTemperature}" />
+            Value="{Binding DayTemperature}" />
 
         <!--  Night temperature  -->
         <StackPanel
@@ -48,7 +48,7 @@
                 Padding="0"
                 VerticalAlignment="Center"
                 BorderBrush="{DynamicResource DividerBrush}"
-                Text="{Binding NightColorTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
+                Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
         </StackPanel>
         <Slider
             Margin="8,0,8,6"
@@ -58,7 +58,7 @@
             Minimum="2500"
             SmallChange="100"
             TickFrequency="20"
-            Value="{Binding NightColorTemperature}" />
+            Value="{Binding NightTemperature}" />
 
         <!--  Day brightness  -->
         <StackPanel

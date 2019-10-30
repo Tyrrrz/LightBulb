@@ -7,13 +7,9 @@ namespace LightBulb.Services
 {
     public class SettingsService : SettingsManager
     {
-        public double NightTemperature { get; set; } = 3900.0;
+        public ColorConfiguration NightConfiguration { get; set; } = new ColorConfiguration(3900, 0.85);
 
-        public double DayTemperature { get; set; } = 6600.0;
-
-        public double NightBrightness { get; set; } = 0.85;
-
-        public double DayBrightness { get; set; } = 1.0;
+        public ColorConfiguration DayConfiguration { get; set; } = new ColorConfiguration(6600, 1);
 
         // TODO: get rid of this and calculate it implicitly
         public TimeSpan TemperatureTransitionDuration { get; set; } = TimeSpan.FromMinutes(90);
