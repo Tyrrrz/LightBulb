@@ -244,22 +244,37 @@
                         <!--  Night time arc  -->
                         <controls:Arc
                             EndAngle="{Binding SunriseTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
-                            StartAngle="{Binding SunsetTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            StartAngle="{Binding SunsetEndTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
                             Stroke="#FFD280"
                             StrokeThickness="24" />
 
                         <!--  Day time arc  -->
                         <controls:Arc
                             EndAngle="{Binding SunsetTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            StartAngle="{Binding SunriseEndTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            Stroke="#F2F8FF"
+                            StrokeThickness="24" />
+
+                        <!--  Sunrise transition  -->
+                        <controls:Arc
+                            EndAngle="{Binding SunriseEndTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
                             StartAngle="{Binding SunriseTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
-                            Stroke="#E0F0FA"
+                            Stroke="#FFEDCD"
+                            StrokeThickness="24" />
+
+                        <!--  Sunset transition  -->
+                        <controls:Arc
+                            EndAngle="{Binding SunsetEndTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            StartAngle="{Binding SunsetTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            Stroke="#FFEDCD"
                             StrokeThickness="24" />
 
                         <!--  Current time position  -->
                         <controls:RotatedPoint
                             Angle="{Binding Instant.TimeOfDay.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
-                            Fill="{DynamicResource SecondaryAccentBrush}"
-                            Size="12" />
+                            Fill="#C0FF8B50"
+                            Size="12"
+                            Stroke="#FF8B50" />
 
                         <!--  Current temperature and brightness  -->
                         <StackPanel

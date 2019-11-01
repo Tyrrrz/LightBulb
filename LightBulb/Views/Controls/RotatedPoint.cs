@@ -42,8 +42,8 @@ namespace LightBulb.Views.Controls
 
         private Geometry GetDefiningGeometry()
         {
-            var offsetX = StrokeThickness + Size;
-            var offsetY = StrokeThickness + Size;
+            var offsetX = Size;
+            var offsetY = Size;
 
             var radiusX = (ActualWidth / 2.0 - offsetX).ClampMin(0);
             var radiusY = (ActualHeight / 2.0 - offsetY).ClampMin(0);
