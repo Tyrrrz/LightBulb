@@ -25,13 +25,11 @@
             <RadioButton
                 Grid.Column="0"
                 Content="Manual"
-                GroupName="SunriseSunsetConfigurationType"
                 IsChecked="{Binding IsManualSunriseSunsetEnabled}"
                 ToolTip="Configure when the sun rises and sets manually" />
             <RadioButton
                 Grid.Column="1"
                 Content="Location-based"
-                GroupName="SunriseSunsetConfigurationType"
                 IsChecked="{Binding IsManualSunriseSunsetEnabled, Converter={x:Static converters:InverseBoolConverter.Instance}}"
                 ToolTip="Configure location and use it to automatically calculate sunrise and sunset" />
         </Grid>
