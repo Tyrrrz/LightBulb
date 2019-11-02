@@ -108,11 +108,11 @@
             TickFrequency="0.01"
             Value="{Binding NightBrightness}" />
 
-        <!--  Temperature transition duration  -->
+        <!--  Configuration transition duration  -->
         <StackPanel
             Margin="6"
             Orientation="Horizontal"
-            ToolTip="Duration of sunrise and sunset">
+            ToolTip="Duration of time it takes to switch to day configuration after sunrise or to night configuration after sunset">
             <TextBlock VerticalAlignment="Center" Text="Transition duration:" />
             <TextBox
                 MinWidth="50"
@@ -120,7 +120,7 @@
                 Padding="0"
                 VerticalAlignment="Center"
                 BorderBrush="{DynamicResource DividerBrush}"
-                Text="{Binding TemperatureTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}}" />
+                Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}}" />
         </StackPanel>
         <Slider
             Margin="8,0,8,6"
@@ -128,6 +128,6 @@
             Maximum="3"
             Minimum="0"
             SmallChange="0.08"
-            Value="{Binding TemperatureTransitionDuration, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
+            Value="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
     </StackPanel>
 </UserControl>

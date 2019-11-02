@@ -55,10 +55,10 @@ namespace LightBulb.ViewModels.Components
             }
         }
 
-        public TimeSpan TemperatureTransitionDuration
+        public TimeSpan ConfigurationTransitionDuration
         {
-            get => SettingsService.TemperatureTransitionDuration;
-            set => SettingsService.TemperatureTransitionDuration = value.Clamp(TimeSpan.Zero, TimeSpan.FromHours(5));
+            get => SettingsService.ConfigurationTransitionDuration;
+            set => SettingsService.ConfigurationTransitionDuration = value.Clamp(TimeSpan.Zero, TimeSpan.FromHours(5));
         }
 
         public GeneralSettingsTabViewModel(SettingsService settingsService)

@@ -34,10 +34,8 @@ namespace LightBulb.Services
 
         private double GetCurveValue(DateTimeOffset instant, double from, double to)
         {
-            // TODO: transition should end at sunset, not start at sunset
-
             // Get settings
-            var offset = _settingsService.TemperatureTransitionDuration;
+            var offset = _settingsService.ConfigurationTransitionDuration;
             var sunriseTime = GetSunriseTime(instant);
             var sunsetTime = GetSunsetTime(instant);
 
