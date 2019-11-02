@@ -4,7 +4,6 @@ using LightBulb.Helpers;
 using LightBulb.Internal;
 using LightBulb.Models;
 using LightBulb.Services;
-using LightBulb.Timers;
 using LightBulb.ViewModels.Framework;
 using Stylet;
 using Tyrrrz.Extensions;

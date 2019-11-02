@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
 
-namespace LightBulb.Timers
+namespace LightBulb.Internal
 {
-    public class ManualResetTimer : IDisposable
+    internal class ManualResetTimer : IDisposable
     {
         private readonly AutoResetTimer _internalTimer;
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
 
-namespace LightBulb.Timers
+namespace LightBulb.Internal
 {
-    public class AutoResetTimer : IDisposable
+    internal class AutoResetTimer : IDisposable
     {
         private readonly object _lock = new object();
 

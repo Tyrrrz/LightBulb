@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LightBulb.Timers\LightBulb.Timers.csproj" />
     <ProjectReference Include="..\LightBulb.WindowsApi\LightBulb.WindowsApi.csproj" />
   </ItemGroup>
 
