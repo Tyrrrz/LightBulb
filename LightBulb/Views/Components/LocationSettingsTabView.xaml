@@ -141,6 +141,13 @@
                 </Button>
             </Grid>
 
+            <!--  Location progress  -->
+            <ProgressBar
+                Margin="6,0"
+                Background="Transparent"
+                IsIndeterminate="True"
+                Visibility="{Binding IsBusy, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
+
             <!--  Location error  -->
             <TextBlock
                 Margin="6"
