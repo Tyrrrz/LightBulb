@@ -6,9 +6,11 @@ using LightBulb.Internal;
 using LightBulb.Services;
 using LightBulb.ViewModels;
 using LightBulb.ViewModels.Components;
+using LightBulb.ViewModels.Dialogs;
 using LightBulb.ViewModels.Framework;
 using Stylet;
 using StyletIoC;
+using MessageBoxViewModel = Stylet.MessageBoxViewModel;
 
 namespace LightBulb
 {
@@ -32,20 +34,25 @@ namespace LightBulb
 
         protected override void ConfigureIoC(IStyletIoCBuilder builder)
         {
-            base.ConfigureIoC(builder);
+            // We don't call base method because that autobinds everything in transient scope.
+            // We need to bind our dependencies as singletons due to extensive event routing.
 
-            // Bind all services as singletons (this is critical for some of them)
+            // Bind services
             builder.Bind<CalculationService>().ToSelf().InSingletonScope();
             builder.Bind<LocationService>().ToSelf().InSingletonScope();
             builder.Bind<SettingsService>().ToSelf().InSingletonScope();
             builder.Bind<SystemService>().ToSelf().InSingletonScope();
             builder.Bind<UpdateService>().ToSelf().InSingletonScope();
 
-            // Bind all settings tabs
-            builder.Bind<ISettingsTabViewModel>().ToAllImplementations();
-
-            // Bind view model factory
+            // Bind view model layer services
+            builder.Bind<DialogManager>().ToSelf().InSingletonScope();
             builder.Bind<IViewModelFactory>().ToAbstractFactory();
+
+            // Bind view models
+            builder.Bind<RootViewModel>().ToSelf().InSingletonScope();
+            builder.Bind<MessageBoxViewModel>().ToSelf().InSingletonScope();
+            builder.Bind<SettingsViewModel>().ToSelf().InSingletonScope();
+            builder.Bind<ISettingsTabViewModel>().ToAllImplementations().InSingletonScope();
         }
 
         protected override void Launch()

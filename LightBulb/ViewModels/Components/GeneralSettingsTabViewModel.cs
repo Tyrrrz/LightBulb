@@ -7,14 +7,12 @@ namespace LightBulb.ViewModels.Components
 {
     public class GeneralSettingsTabViewModel : SettingsTabViewModelBase
     {
-        private readonly SettingsService _settingsService;
-
         public double NightTemperature
         {
-            get => _settingsService.NightConfiguration.Temperature;
+            get => SettingsService.NightConfiguration.Temperature;
             set
             {
-                _settingsService.NightConfiguration = new ColorConfiguration(value.Clamp(1000.0, 10000.0), NightBrightness);
+                SettingsService.NightConfiguration = new ColorConfiguration(value.Clamp(1000.0, 10000.0), NightBrightness);
 
                 if (NightTemperature > DayTemperature)
                     DayTemperature = NightTemperature;
@@ -23,10 +21,10 @@ namespace LightBulb.ViewModels.Components
 
         public double DayTemperature
         {
-            get => _settingsService.DayConfiguration.Temperature;
+            get => SettingsService.DayConfiguration.Temperature;
             set
             {
-                _settingsService.DayConfiguration = new ColorConfiguration(value.Clamp(1000.0, 10000.0), DayBrightness);
+                SettingsService.DayConfiguration = new ColorConfiguration(value.Clamp(1000.0, 10000.0), DayBrightness);
 
                 if (DayTemperature < NightTemperature)
                     NightTemperature = DayTemperature;
@@ -35,10 +33,10 @@ namespace LightBulb.ViewModels.Components
 
         public double NightBrightness
         {
-            get => _settingsService.NightConfiguration.Brightness;
+            get => SettingsService.NightConfiguration.Brightness;
             set
             {
-                _settingsService.NightConfiguration = new ColorConfiguration(NightTemperature, value.Clamp(0.1, 1.0));
+                SettingsService.NightConfiguration = new ColorConfiguration(NightTemperature, value.Clamp(0.1, 1.0));
 
                 if (NightBrightness > DayBrightness)
                     DayBrightness = NightBrightness;
@@ -47,10 +45,10 @@ namespace LightBulb.ViewModels.Components
 
         public double DayBrightness
         {
-            get => _settingsService.DayConfiguration.Brightness;
+            get => SettingsService.DayConfiguration.Brightness;
             set
             {
-                _settingsService.DayConfiguration = new ColorConfiguration(DayTemperature, value.Clamp(0.1, 1.0));
+                SettingsService.DayConfiguration = new ColorConfiguration(DayTemperature, value.Clamp(0.1, 1.0));
 
                 if (DayBrightness < NightBrightness)
                     NightBrightness = DayBrightness;
@@ -59,14 +57,13 @@ namespace LightBulb.ViewModels.Components
 
         public TimeSpan TemperatureTransitionDuration
         {
-            get => _settingsService.TemperatureTransitionDuration;
-            set => _settingsService.TemperatureTransitionDuration = value.Clamp(TimeSpan.Zero, TimeSpan.FromHours(5));
+            get => SettingsService.TemperatureTransitionDuration;
+            set => SettingsService.TemperatureTransitionDuration = value.Clamp(TimeSpan.Zero, TimeSpan.FromHours(5));
         }
 
         public GeneralSettingsTabViewModel(SettingsService settingsService)
-            : base(0, "General")
+            : base(settingsService, 0, "General")
         {
-            _settingsService = settingsService;
         }
     }
 }

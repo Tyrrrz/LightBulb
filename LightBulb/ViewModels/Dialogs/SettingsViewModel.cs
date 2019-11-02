@@ -17,7 +17,6 @@ namespace LightBulb.ViewModels.Dialogs
         public SettingsViewModel(SettingsService settingsService, IEnumerable<ISettingsTabViewModel> tabs)
         {
             _settingsService = settingsService;
-
             Tabs = tabs.OrderBy(t => t.Order).ToArray();
 
             // Pre-select first tab

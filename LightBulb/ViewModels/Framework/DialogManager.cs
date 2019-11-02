@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MaterialDesignThemes.Wpf;
 using Stylet;
 
@@ -22,7 +23,7 @@ namespace LightBulb.ViewModels.Framework
             void OnDialogOpened(object openSender, DialogOpenedEventArgs openArgs)
             {
                 // Delegate to close the dialog and unregister event handler
-                void OnScreenClosed(object closeSender, CloseEventArgs closeArgs)
+                void OnScreenClosed(object closeSender, EventArgs args)
                 {
                     openArgs.Session.Close();
                     dialogScreen.Closed -= OnScreenClosed;

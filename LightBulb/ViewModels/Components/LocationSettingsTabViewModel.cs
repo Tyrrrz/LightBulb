@@ -8,33 +8,32 @@ namespace LightBulb.ViewModels.Components
 {
     public class LocationSettingsTabViewModel : SettingsTabViewModelBase
     {
-        private readonly SettingsService _settingsService;
         private readonly LocationService _locationService;
 
         public bool IsBusy { get; private set; }
 
         public bool IsManualSunriseSunsetEnabled
         {
-            get => _settingsService.IsManualSunriseSunsetEnabled;
-            set => _settingsService.IsManualSunriseSunsetEnabled = value;
+            get => SettingsService.IsManualSunriseSunsetEnabled;
+            set => SettingsService.IsManualSunriseSunsetEnabled = value;
         }
 
         public TimeSpan ManualSunriseTime
         {
-            get => _settingsService.ManualSunriseTime;
-            set => _settingsService.ManualSunriseTime = value.Clamp(TimeSpan.Zero, new TimeSpan(23, 59, 59));
+            get => SettingsService.ManualSunriseTime;
+            set => SettingsService.ManualSunriseTime = value.Clamp(TimeSpan.Zero, new TimeSpan(23, 59, 59));
         }
 
         public TimeSpan ManualSunsetTime
         {
-            get => _settingsService.ManualSunsetTime;
-            set => _settingsService.ManualSunsetTime = value.Clamp(TimeSpan.Zero, new TimeSpan(23, 59, 59));
+            get => SettingsService.ManualSunsetTime;
+            set => SettingsService.ManualSunsetTime = value.Clamp(TimeSpan.Zero, new TimeSpan(23, 59, 59));
         }
 
         public GeoLocation? Location
         {
-            get => _settingsService.Location;
-            set => _settingsService.Location = value;
+            get => SettingsService.Location;
+            set => SettingsService.Location = value;
         }
 
         public bool IsLocationAutoDetected { get; private set; }
@@ -44,13 +43,12 @@ namespace LightBulb.ViewModels.Components
         public string LocationQuery { get; set; }
 
         public LocationSettingsTabViewModel(SettingsService settingsService, LocationService locationService)
-            : base(1, "Location")
+            : base(settingsService, 1, "Location")
         {
-            _settingsService = settingsService;
             _locationService = locationService;
 
             // Bind location query to location
-            _settingsService.BindAndInvoke(o => o.Location, (sender, args) => LocationQuery = Location?.ToString());
+            SettingsService.BindAndInvoke(o => o.Location, (sender, args) => LocationQuery = Location?.ToString());
         }
 
         public bool CanAutoDetectLocation => !IsBusy && !IsLocationAutoDetected;

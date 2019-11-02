@@ -4,9 +4,9 @@ namespace LightBulb.ViewModels.Components
 {
     public class AdvancedSettingsTabViewModel : SettingsTabViewModelBase
     {
-        private readonly SettingsService _settingsService;
         private readonly SystemService _systemService;
 
+        // HACK: this doesn't not go through SettingsService is not affected by Save/Reset/etc
         public bool IsAutoStartEnabled
         {
             get => _systemService.IsAutoStartEnabled();
@@ -21,26 +21,25 @@ namespace LightBulb.ViewModels.Components
 
         public bool IsDefaultToDayConfigurationEnabled
         {
-            get => _settingsService.IsDefaultToDayConfigurationEnabled;
-            set => _settingsService.IsDefaultToDayConfigurationEnabled = value;
+            get => SettingsService.IsDefaultToDayConfigurationEnabled;
+            set => SettingsService.IsDefaultToDayConfigurationEnabled = value;
         }
 
         public bool IsGammaSmoothingEnabled
         {
-            get => _settingsService.IsGammaSmoothingEnabled;
-            set => _settingsService.IsGammaSmoothingEnabled = value;
+            get => SettingsService.IsGammaSmoothingEnabled;
+            set => SettingsService.IsGammaSmoothingEnabled = value;
         }
 
         public bool IsPauseWhenFullScreenEnabled
         {
-            get => _settingsService.IsPauseWhenFullScreenEnabled;
-            set => _settingsService.IsPauseWhenFullScreenEnabled = value;
+            get => SettingsService.IsPauseWhenFullScreenEnabled;
+            set => SettingsService.IsPauseWhenFullScreenEnabled = value;
         }
 
         public AdvancedSettingsTabViewModel(SettingsService settingsService, SystemService systemService)
-            : base(2, "Advanced")
+            : base(settingsService, 2, "Advanced")
         {
-            _settingsService = settingsService;
             _systemService = systemService;
         }
     }

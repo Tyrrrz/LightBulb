@@ -8,7 +8,7 @@ namespace LightBulb.ViewModels.Framework
             string message)
         {
             var viewModel = factory.CreateMessageBoxViewModel();
-            viewModel.DisplayName = title;
+            viewModel.Title = title;
             viewModel.Message = message;
 
             return viewModel;

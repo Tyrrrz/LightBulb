@@ -5,18 +5,15 @@ namespace LightBulb.ViewModels.Components
 {
     public class HotKeySettingsTabViewModel : SettingsTabViewModelBase
     {
-        private readonly SettingsService _settingsService;
-
         public HotKey ToggleHotKey
         {
-            get => _settingsService.ToggleHotKey;
-            set => _settingsService.ToggleHotKey = value;
+            get => SettingsService.ToggleHotKey;
+            set => SettingsService.ToggleHotKey = value;
         }
 
         public HotKeySettingsTabViewModel(SettingsService settingsService)
-            : base(3, "Hotkeys")
+            : base(settingsService, 3, "Hotkeys")
         {
-            _settingsService = settingsService;
         }
     }
 }
