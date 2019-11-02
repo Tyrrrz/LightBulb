@@ -19,8 +19,8 @@ namespace LightBulb.ViewModels.Components
             Order = order;
             DisplayName = displayName;
 
-            // Route property changes from settings service (e.g. when settings are reset)
-            SettingsService.PropertyChanged += (sender, args) => Refresh();
+            // Refresh settings when they are reset
+            SettingsService.SettingsReset += (sender, args) => Refresh();
         }
     }
 }

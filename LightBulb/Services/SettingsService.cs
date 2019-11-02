@@ -7,6 +7,8 @@ namespace LightBulb.Services
 {
     public class SettingsService : SettingsManager
     {
+        public event EventHandler SettingsReset;
+
         // General
 
         public ColorConfiguration NightConfiguration { get; set; } = new ColorConfiguration(3900, 0.85);
@@ -58,6 +60,12 @@ namespace LightBulb.Services
 
             Configuration.ThrowIfCannotLoad = false;
             Configuration.ThrowIfCannotSave = true;
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            SettingsReset?.Invoke(this, EventArgs.Empty);
         }
     }
 }

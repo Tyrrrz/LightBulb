@@ -49,6 +49,9 @@ namespace LightBulb.ViewModels.Components
 
             // Bind location query to location
             SettingsService.BindAndInvoke(o => o.Location, (sender, args) => LocationQuery = Location?.ToString());
+
+            // Reset state when settings are reset
+            SettingsService.SettingsReset += (sender, args) => IsLocationAutoDetected = IsLocationError = false;
         }
 
         public bool CanAutoDetectLocation => !IsBusy && !IsLocationAutoDetected;
