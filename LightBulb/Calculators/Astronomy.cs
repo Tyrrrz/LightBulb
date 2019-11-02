@@ -2,7 +2,7 @@
 using LightBulb.Internal;
 using LightBulb.Models;
 
-namespace LightBulb.Helpers
+namespace LightBulb.Calculators
 {
     public static class Astronomy
     {

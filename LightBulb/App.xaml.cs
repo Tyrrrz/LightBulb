@@ -21,6 +21,6 @@ namespace LightBulb
 
         public static string ExecutableFilePath => Path.ChangeExtension(typeof(App).Assembly.Location, "exe");
 
-        public static bool IsStartedByUser => !Environment.GetCommandLineArgs().Contains("--autostart", StringComparer.OrdinalIgnoreCase);
+        public static bool IsAutoStarted => Environment.GetCommandLineArgs().Contains("--autostart", StringComparer.OrdinalIgnoreCase);
     }
 }

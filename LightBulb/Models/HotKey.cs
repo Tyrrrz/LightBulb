@@ -18,13 +18,7 @@ namespace LightBulb.Models
 
         public bool Equals(HotKey other) => Key == other.Key && Modifiers == other.Modifiers;
 
-        public override bool Equals(object obj)
-        {
-            if (obj is null)
-                return false;
-
-            return obj is HotKey other && Equals(other);
-        }
+        public override bool Equals(object obj) => obj is HotKey other && Equals(other);
 
         public override int GetHashCode() => HashCode.Combine(Key, Modifiers);
 

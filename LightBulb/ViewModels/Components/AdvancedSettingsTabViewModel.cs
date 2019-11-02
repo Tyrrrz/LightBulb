@@ -6,7 +6,7 @@ namespace LightBulb.ViewModels.Components
     {
         private readonly SystemService _systemService;
 
-        // HACK: this doesn't not go through SettingsService is not affected by Save/Reset/etc
+        // HACK: this doesn't go through SettingsService and is not affected by Save/Reset/etc
         public bool IsAutoStartEnabled
         {
             get => _systemService.IsAutoStartEnabled();

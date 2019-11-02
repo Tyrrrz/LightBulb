@@ -1,32 +1,32 @@
 ﻿using System;
+using LightBulb.Internal;
 using LightBulb.WindowsApi.Models;
-using Tyrrrz.Extensions;
 
 namespace LightBulb.Models
 {
     public static class Extensions
     {
-        public static double Interpolate(this double from, double to, double absStep)
-        {
-            absStep = Math.Abs(absStep);
-
-            return to >= from ? (from + absStep).ClampMax(to) : (from - absStep).ClampMin(to);
-        }
-
-        public static ColorConfiguration Interpolate(this ColorConfiguration from, ColorConfiguration to)
+        public static ColorConfiguration StepTo(this ColorConfiguration from, ColorConfiguration to,
+            double temperatureMaxAbsStep, double brightnessMaxAbsStep)
         {
             var temperatureAbsDelta = Math.Abs(to.Temperature - from.Temperature);
             var brightnessAbsDelta = Math.Abs(to.Brightness - from.Brightness);
 
-            // Adjust brightness step so that both properties finish interpolating at the same time
-            const double temperatureAbsStep = 30.0;
-            var brightnessAbsStep = temperatureAbsDelta > 0 ? brightnessAbsDelta * temperatureAbsStep / temperatureAbsDelta : 0.008;
+            var temperatureSteps = temperatureAbsDelta / temperatureMaxAbsStep;
+            var brightnessSteps = brightnessAbsDelta / brightnessMaxAbsStep;
 
-            // Interpolate
-            var resultTemperature = from.Temperature.Interpolate(to.Temperature, temperatureAbsStep);
-            var resultBrightness = from.Brightness.Interpolate(to.Brightness, brightnessAbsStep);
+            var temperatureAdjustedStep = temperatureSteps >= brightnessSteps
+                ? temperatureMaxAbsStep
+                : temperatureAbsDelta / brightnessSteps;
 
-            return new ColorConfiguration(resultTemperature, resultBrightness);
+            var brightnessAdjustedStep = brightnessSteps >= temperatureSteps
+                ? brightnessMaxAbsStep
+                : brightnessAbsDelta / temperatureSteps;
+
+            return new ColorConfiguration(
+                from.Temperature.StepTo(to.Temperature, temperatureAdjustedStep),
+                from.Brightness.StepTo(to.Brightness, brightnessAdjustedStep)
+            );
         }
 
         public static ColorBalance ToColorBalance(this ColorConfiguration colorConfiguration)

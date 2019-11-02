@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using LightBulb.Helpers;
+using LightBulb.Calculators;
 using LightBulb.Models;
 using NUnit.Framework;
 
-namespace LightBulb.Tests.Helpers
+namespace LightBulb.Tests.Calculators
 {
     [TestFixture]
     public class AstronomyTests

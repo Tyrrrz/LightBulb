@@ -2,9 +2,9 @@
 using LightBulb.Internal;
 using LightBulb.Models;
 
-namespace LightBulb.Helpers
+namespace LightBulb.Calculators
 {
-    public static class ColorConfigurationFlow
+    public static class Flow
     {
         private static double GetCurveValue(
             TimeSpan sunriseTime, double dayValue,
@@ -57,8 +57,15 @@ namespace LightBulb.Helpers
             TimeSpan transitionDuration, DateTimeOffset instant)
         {
             return new ColorConfiguration(
-                GetCurveValue(sunriseTime, dayConfiguration.Temperature, sunsetTime, nightConfiguration.Temperature, transitionDuration, instant),
-                GetCurveValue(sunriseTime, dayConfiguration.Brightness, sunsetTime, nightConfiguration.Brightness, transitionDuration, instant));
+                GetCurveValue(
+                    sunriseTime, dayConfiguration.Temperature,
+                    sunsetTime, nightConfiguration.Temperature,
+                    transitionDuration, instant),
+                GetCurveValue(
+                    sunriseTime, dayConfiguration.Brightness,
+                    sunsetTime, nightConfiguration.Brightness,
+                    transitionDuration, instant)
+            );
         }
     }
 }

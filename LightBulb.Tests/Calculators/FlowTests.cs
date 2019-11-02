@@ -1,12 +1,12 @@
 ﻿using System;
-using LightBulb.Helpers;
+using LightBulb.Calculators;
 using LightBulb.Models;
 using NUnit.Framework;
 
-namespace LightBulb.Tests.Helpers
+namespace LightBulb.Tests.Calculators
 {
     [TestFixture]
-    public class ColorConfigurationFlowTests
+    public class FlowTests
     {
         [Test]
         public void CalculateColorConfiguration_DayTime_Test()
@@ -24,7 +24,7 @@ namespace LightBulb.Tests.Helpers
                 TimeSpan.Zero);
 
             // Act
-            var configuration = ColorConfigurationFlow.CalculateColorConfiguration(
+            var configuration = Flow.CalculateColorConfiguration(
                 sunriseTime, dayConfiguration,
                 sunsetTime, nightConfiguration,
                 transitionDuration, instant);
@@ -49,7 +49,7 @@ namespace LightBulb.Tests.Helpers
                 TimeSpan.Zero);
 
             // Act
-            var configuration = ColorConfigurationFlow.CalculateColorConfiguration(
+            var configuration = Flow.CalculateColorConfiguration(
                 sunriseTime, dayConfiguration,
                 sunsetTime, nightConfiguration,
                 transitionDuration, instant);
@@ -74,7 +74,7 @@ namespace LightBulb.Tests.Helpers
                 TimeSpan.Zero);
 
             // Act
-            var configuration = ColorConfigurationFlow.CalculateColorConfiguration(
+            var configuration = Flow.CalculateColorConfiguration(
                 sunriseTime, dayConfiguration,
                 sunsetTime, nightConfiguration,
                 transitionDuration, instant);
@@ -105,7 +105,7 @@ namespace LightBulb.Tests.Helpers
                 TimeSpan.Zero);
 
             // Act
-            var configuration = ColorConfigurationFlow.CalculateColorConfiguration(
+            var configuration = Flow.CalculateColorConfiguration(
                 sunriseTime, dayConfiguration,
                 sunsetTime, nightConfiguration,
                 transitionDuration, instant);
@@ -140,11 +140,11 @@ namespace LightBulb.Tests.Helpers
                 TimeSpan.Zero);
 
             // Act
-            var configuration1 = ColorConfigurationFlow.CalculateColorConfiguration(
+            var configuration1 = Flow.CalculateColorConfiguration(
                 sunriseTime, dayConfiguration,
                 sunsetTime, nightConfiguration,
                 transitionDuration, instant1);
-            var configuration2 = ColorConfigurationFlow.CalculateColorConfiguration(
+            var configuration2 = Flow.CalculateColorConfiguration(
                 sunriseTime, dayConfiguration,
                 sunsetTime, nightConfiguration,
                 transitionDuration, instant2);
@@ -174,7 +174,7 @@ namespace LightBulb.Tests.Helpers
                     instantTime.Hours, instantTime.Minutes, instantTime.Seconds,
                     TimeSpan.Zero);
 
-                var configuration = ColorConfigurationFlow.CalculateColorConfiguration(
+                var configuration = Flow.CalculateColorConfiguration(
                     sunriseTime, dayConfiguration,
                     sunsetTime, nightConfiguration,
                     transitionDuration, instant);

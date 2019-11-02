@@ -1,11 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Tyrrrz.Extensions;
 
 namespace LightBulb.Internal
 {
     internal static class Extensions
     {
+        public static double StepTo(this double from, double to, double absStep)
+        {
+            absStep = Math.Abs(absStep);
+            return to >= from ? (from + absStep).ClampMax(to) : (from - absStep).ClampMin(to);
+        }
+
+        public static DateTimeOffset StepTo(this DateTimeOffset from, DateTimeOffset to, TimeSpan absStep)
+        {
+            absStep = absStep.Duration();
+            return to >= from ? (from + absStep).ClampMax(to) : (from - absStep).ClampMin(to);
+        }
+
         public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> items)
         {
             foreach (var item in items)

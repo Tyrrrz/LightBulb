@@ -7,11 +7,15 @@ namespace LightBulb.Services
 {
     public class SettingsService : SettingsManager
     {
+        // General
+
         public ColorConfiguration NightConfiguration { get; set; } = new ColorConfiguration(3900, 0.85);
 
         public ColorConfiguration DayConfiguration { get; set; } = new ColorConfiguration(6600, 1);
 
         public TimeSpan ConfigurationTransitionDuration { get; set; } = TimeSpan.FromMinutes(90);
+
+        // Location
 
         public bool IsManualSunriseSunsetEnabled { get; set; } = true;
 
@@ -21,11 +25,15 @@ namespace LightBulb.Services
 
         public GeoLocation? Location { get; set; }
 
+        // Advanced
+
         public bool IsDefaultToDayConfigurationEnabled { get; set; } = false;
 
         public bool IsGammaSmoothingEnabled { get; set; } = true;
 
         public bool IsPauseWhenFullScreenEnabled { get; set; }
+
+        // Hotkeys
 
         public HotKey ToggleHotKey { get; set; }
 
@@ -48,9 +56,8 @@ namespace LightBulb.Services
                 Configuration.StorageSpace = StorageSpace.SyncedUserDomain;
             }
 
-            // Ignore failures when loading/saving settings
             Configuration.ThrowIfCannotLoad = false;
-            Configuration.ThrowIfCannotSave = false;
+            Configuration.ThrowIfCannotSave = true;
         }
     }
 }

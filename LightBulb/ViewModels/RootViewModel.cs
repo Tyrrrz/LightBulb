@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using LightBulb.Helpers;
+using LightBulb.Calculators;
 using LightBulb.Internal;
 using LightBulb.Models;
 using LightBulb.Services;
@@ -39,7 +39,7 @@ namespace LightBulb.ViewModels
                 // If working - calculate color configuration for current instant
                 if (IsWorking)
                 {
-                    return ColorConfigurationFlow.CalculateColorConfiguration(
+                    return Flow.CalculateColorConfiguration(
                         SunriseTime, _settingsService.DayConfiguration,
                         SunsetTime, _settingsService.NightConfiguration,
                         _settingsService.ConfigurationTransitionDuration, Instant);
@@ -194,16 +194,8 @@ namespace LightBulb.ViewModels
                 // Cycle is supposed to end 1 full day past current real time
                 var targetInstant = DateTimeOffset.Now + TimeSpan.FromDays(1);
 
-                // Calculate difference
-                var diff = targetInstant - Instant;
-
-                // Calculate delta
-                var delta = TimeSpan.FromMinutes(5);
-                if (delta > diff)
-                    delta = diff;
-
-                // Set new instant
-                Instant += delta;
+                // Update instant
+                Instant = Instant.StepTo(targetInstant, TimeSpan.FromMinutes(5));
 
                 // If target instant reached - disable cycle preview
                 if (Instant >= targetInstant)
@@ -234,11 +226,11 @@ namespace LightBulb.ViewModels
             if (isSmallChange && !isExtremeState)
                 return;
 
-            // Calculate current configuration
+            // Update current configuration
             var isSmooth = _settingsService.IsGammaSmoothingEnabled && !IsCyclePreviewEnabled;
 
             CurrentColorConfiguration = isSmooth
-                ? CurrentColorConfiguration.Interpolate(TargetColorConfiguration)
+                ? CurrentColorConfiguration.StepTo(TargetColorConfiguration, 30, 0.008)
                 : TargetColorConfiguration;
 
             // Set gamma to new value
