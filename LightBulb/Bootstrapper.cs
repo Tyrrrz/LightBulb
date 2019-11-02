@@ -38,7 +38,6 @@ namespace LightBulb
             // We need to bind our dependencies as singletons due to extensive event routing.
 
             // Bind services
-            builder.Bind<CalculationService>().ToSelf().InSingletonScope();
             builder.Bind<LocationService>().ToSelf().InSingletonScope();
             builder.Bind<SettingsService>().ToSelf().InSingletonScope();
             builder.Bind<SystemService>().ToSelf().InSingletonScope();

@@ -17,7 +17,6 @@ namespace LightBulb.ViewModels
         private readonly DialogManager _dialogManager;
         private readonly SettingsService _settingsService;
         private readonly UpdateService _updateService;
-        private readonly CalculationService _calculationService;
         private readonly SystemService _systemService;
 
         private readonly AutoResetTimer _updateTimer;
@@ -40,7 +39,12 @@ namespace LightBulb.ViewModels
             {
                 // If working - calculate color configuration for current instant
                 if (IsWorking)
-                    return _calculationService.CalculateColorConfiguration(Instant);
+                {
+                    return ColorConfigurationFlow.CalculateColorConfiguration(
+                        SunriseTime, _settingsService.DayConfiguration,
+                        SunsetTime, _settingsService.NightConfiguration,
+                        _settingsService.ConfigurationTransitionDuration, Instant);
+                }
 
                 // Otherwise - return default configuration
                 return _settingsService.IsDefaultToDayConfigurationEnabled
@@ -93,14 +97,12 @@ namespace LightBulb.ViewModels
         public TimeSpan TimeUntilSunset => Instant.NextTimeOfDay(SunsetTime) - Instant;
 
         public RootViewModel(IViewModelFactory viewModelFactory, DialogManager dialogManager,
-            SettingsService settingsService, UpdateService updateService,
-            CalculationService calculationService, SystemService systemService)
+            SettingsService settingsService, UpdateService updateService, SystemService systemService)
         {
             _viewModelFactory = viewModelFactory;
             _dialogManager = dialogManager;
             _settingsService = settingsService;
             _updateService = updateService;
-            _calculationService = calculationService;
             _systemService = systemService;
 
             // Title
