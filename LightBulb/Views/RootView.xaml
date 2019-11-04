@@ -92,6 +92,7 @@
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Kind="PowerSettings" />
                                 </MenuItem.Icon>
+                                <MenuItem Command="{s:Action DisableTemporarilyUntilSunrise}" Header="Until sunrise" />
                                 <MenuItem Command="{s:Action DisableTemporarily}" Header="1 day">
                                     <MenuItem.CommandParameter>
                                         <system:TimeSpan>24:0:0</system:TimeSpan>

@@ -249,6 +249,13 @@ namespace LightBulb.ViewModels
             IsEnabled = false;
         }
 
+        public void DisableTemporarilyUntilSunrise()
+        {
+            // Use real time here instead of Instant, because that's what the user likely wants
+            var timeUntilSunrise = DateTimeOffset.Now.NextTimeOfDay(ActualSunriseEndTime) - DateTimeOffset.Now;
+            DisableTemporarily(timeUntilSunrise);
+        }
+
         public void Toggle() => IsEnabled = !IsEnabled;
 
         public void EnableCyclePreview() => IsCyclePreviewEnabled = true;
