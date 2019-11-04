@@ -19,8 +19,8 @@ _Currently only compatible with Windows 7 or higher._
 
 ## Download
 
-- [Stable releases](https://github.com/Tyrrrz/LightBulb/releases)
-- [Continuous integration](https://ci.appveyor.com/project/Tyrrrz/LightBulb)
+- **[Latest release](https://github.com/Tyrrrz/LightBulb/releases/latest)**
+- [CI build](https://ci.appveyor.com/project/Tyrrrz/LightBulb/branch/master/artifacts)
 
 ## Features
 
