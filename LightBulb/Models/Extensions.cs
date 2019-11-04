@@ -6,11 +6,11 @@ namespace LightBulb.Models
 {
     public static class Extensions
     {
-        public static ColorConfiguration StepTo(this ColorConfiguration from, ColorConfiguration to,
+        public static ColorConfiguration StepTo(this ColorConfiguration value, ColorConfiguration target,
             double temperatureMaxAbsStep, double brightnessMaxAbsStep)
         {
-            var temperatureAbsDelta = Math.Abs(to.Temperature - from.Temperature);
-            var brightnessAbsDelta = Math.Abs(to.Brightness - from.Brightness);
+            var temperatureAbsDelta = Math.Abs(target.Temperature - value.Temperature);
+            var brightnessAbsDelta = Math.Abs(target.Brightness - value.Brightness);
 
             var temperatureSteps = temperatureAbsDelta / temperatureMaxAbsStep;
             var brightnessSteps = brightnessAbsDelta / brightnessMaxAbsStep;
@@ -24,8 +24,8 @@ namespace LightBulb.Models
                 : brightnessAbsDelta / temperatureSteps;
 
             return new ColorConfiguration(
-                from.Temperature.StepTo(to.Temperature, temperatureAdjustedStep),
-                from.Brightness.StepTo(to.Brightness, brightnessAdjustedStep)
+                value.Temperature.StepTo(target.Temperature, temperatureAdjustedStep),
+                value.Brightness.StepTo(target.Brightness, brightnessAdjustedStep)
             );
         }
 

@@ -225,15 +225,9 @@
                         VerticalAlignment="Center"
                         FontSize="19"
                         TextAlignment="Center">
-                        <TextBlock.ToolTip>
-                            <TextBlock>
-                                <Run FontWeight="SemiBold" Text="{Binding TimeUntilSunset, Converter={x:Static converters:TimeSpanToHumanizedDurationStringConverter.Instance}, Mode=OneWay}" />
-                                <Run Text="until sunset" />
-                            </TextBlock>
-                        </TextBlock.ToolTip>
                         <Run Text="Sunset" />
                         <LineBreak />
-                        <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SunsetTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, Mode=OneWay}" />
+                        <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ActualSunsetTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, Mode=OneWay}" />
                     </TextBlock>
 
                     <!--  Sundial  -->
@@ -243,29 +237,29 @@
                         Height="220">
                         <!--  Night time arc  -->
                         <controls:Arc
-                            EndAngle="{Binding SunriseTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
-                            StartAngle="{Binding SunsetEndTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            EndAngle="{Binding ActualSunriseTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            StartAngle="{Binding ActualSunsetEndTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
                             Stroke="#FFD280"
                             StrokeThickness="24" />
 
                         <!--  Day time arc  -->
                         <controls:Arc
-                            EndAngle="{Binding SunsetTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
-                            StartAngle="{Binding SunriseEndTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            EndAngle="{Binding ActualSunsetTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            StartAngle="{Binding ActualSunriseEndTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
                             Stroke="#F2F8FF"
                             StrokeThickness="24" />
 
                         <!--  Sunrise transition  -->
                         <controls:Arc
-                            EndAngle="{Binding SunriseEndTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
-                            StartAngle="{Binding SunriseTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            EndAngle="{Binding ActualSunriseEndTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            StartAngle="{Binding ActualSunriseTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
                             Stroke="#FFEDCD"
                             StrokeThickness="24" />
 
                         <!--  Sunset transition  -->
                         <controls:Arc
-                            EndAngle="{Binding SunsetEndTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
-                            StartAngle="{Binding SunsetTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            EndAngle="{Binding ActualSunsetEndTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                            StartAngle="{Binding ActualSunsetTime.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
                             Stroke="#FFEDCD"
                             StrokeThickness="24" />
 
@@ -320,15 +314,9 @@
                         VerticalAlignment="Center"
                         FontSize="19"
                         TextAlignment="Center">
-                        <TextBlock.ToolTip>
-                            <TextBlock>
-                                <Run FontWeight="SemiBold" Text="{Binding TimeUntilSunrise, Converter={x:Static converters:TimeSpanToHumanizedDurationStringConverter.Instance}, Mode=OneWay}" />
-                                <Run Text="until sunrise" />
-                            </TextBlock>
-                        </TextBlock.ToolTip>
                         <Run Text="Sunrise" />
                         <LineBreak />
-                        <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SunriseTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, Mode=OneWay}" />
+                        <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ActualSunriseTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, Mode=OneWay}" />
                     </TextBlock>
                 </Grid>
 

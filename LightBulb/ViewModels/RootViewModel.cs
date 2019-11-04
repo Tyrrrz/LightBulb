@@ -32,6 +32,21 @@ namespace LightBulb.ViewModels
 
         public DateTimeOffset Instant { get; private set; } = DateTimeOffset.Now;
 
+        public TimeSpan ActualSunriseTime => _settingsService.Location != null && !_settingsService.IsManualSunriseSunsetEnabled
+            ? Astronomy.CalculateSunriseTime(_settingsService.Location.Value, Instant)
+            : _settingsService.ManualSunriseTime;
+
+        public TimeSpan ActualSunsetTime => _settingsService.Location != null && !_settingsService.IsManualSunriseSunsetEnabled
+            ? Astronomy.CalculateSunsetTime(_settingsService.Location.Value, Instant)
+            : _settingsService.ManualSunsetTime;
+
+        public TimeSpan ActualConfigurationTransitionDuration =>
+            _settingsService.ConfigurationTransitionDuration.ClampMax((ActualSunsetTime - ActualSunriseTime).Duration());
+
+        public TimeSpan ActualSunriseEndTime => ActualSunriseTime + ActualConfigurationTransitionDuration;
+
+        public TimeSpan ActualSunsetEndTime => ActualSunsetTime + ActualConfigurationTransitionDuration;
+
         public ColorConfiguration TargetColorConfiguration
         {
             get
@@ -40,9 +55,9 @@ namespace LightBulb.ViewModels
                 if (IsWorking)
                 {
                     return Flow.CalculateColorConfiguration(
-                        SunriseTime, _settingsService.DayConfiguration,
-                        SunsetTime, _settingsService.NightConfiguration,
-                        _settingsService.ConfigurationTransitionDuration, Instant);
+                        ActualSunriseTime, _settingsService.DayConfiguration,
+                        ActualSunsetTime, _settingsService.NightConfiguration,
+                        ActualConfigurationTransitionDuration, Instant);
                 }
 
                 // Otherwise - return default configuration
@@ -78,22 +93,6 @@ namespace LightBulb.ViewModels
                 return CycleState.Transition;
             }
         }
-
-        public TimeSpan SunriseTime => _settingsService.Location != null && !_settingsService.IsManualSunriseSunsetEnabled
-            ? Astronomy.CalculateSunriseTime(_settingsService.Location.Value, Instant)
-            : _settingsService.ManualSunriseTime;
-
-        public TimeSpan SunsetTime => _settingsService.Location != null && !_settingsService.IsManualSunriseSunsetEnabled
-            ? Astronomy.CalculateSunsetTime(_settingsService.Location.Value, Instant)
-            : _settingsService.ManualSunsetTime;
-
-        public TimeSpan SunriseEndTime => SunriseTime + _settingsService.ConfigurationTransitionDuration;
-
-        public TimeSpan SunsetEndTime => SunsetTime + _settingsService.ConfigurationTransitionDuration;
-
-        public TimeSpan TimeUntilSunrise => Instant.NextTimeOfDay(SunriseTime) - Instant;
-
-        public TimeSpan TimeUntilSunset => Instant.NextTimeOfDay(SunsetTime) - Instant;
 
         public RootViewModel(IViewModelFactory viewModelFactory, DialogManager dialogManager,
             SettingsService settingsService, UpdateService updateService, SystemService systemService)
