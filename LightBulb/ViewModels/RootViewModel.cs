@@ -79,15 +79,15 @@ namespace LightBulb.ViewModels
             }
         }
 
-        public TimeSpan SunriseTime => _settingsService.IsManualSunriseSunsetEnabled || _settingsService.Location == null
-            ? _settingsService.ManualSunriseTime
-            : Astronomy.CalculateSunrise(_settingsService.Location.Value, Instant).TimeOfDay;
+        public TimeSpan SunriseTime => _settingsService.Location != null && !_settingsService.IsManualSunriseSunsetEnabled
+            ? Astronomy.CalculateSunriseTime(_settingsService.Location.Value, Instant)
+            : _settingsService.ManualSunriseTime;
+
+        public TimeSpan SunsetTime => _settingsService.Location != null && !_settingsService.IsManualSunriseSunsetEnabled
+            ? Astronomy.CalculateSunsetTime(_settingsService.Location.Value, Instant)
+            : _settingsService.ManualSunsetTime;
 
         public TimeSpan SunriseEndTime => SunriseTime + _settingsService.ConfigurationTransitionDuration;
-
-        public TimeSpan SunsetTime => _settingsService.IsManualSunriseSunsetEnabled || _settingsService.Location == null
-            ? _settingsService.ManualSunsetTime
-            : Astronomy.CalculateSunset(_settingsService.Location.Value, Instant).TimeOfDay;
 
         public TimeSpan SunsetEndTime => SunsetTime + _settingsService.ConfigurationTransitionDuration;
 
