@@ -38,3 +38,18 @@ Name: "{group}\{#AppName} on Github"; Filename: "https://github.com/Tyrrrz/Light
 
 [Run]
 Filename: "{app}\LightBulb.exe"; Description: "{cm:LaunchProgram,{#StringChange(AppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
+[Code]
+procedure InstallDotnetCore();
+var
+  ErrorCode: Integer;
+begin
+  ShellExec('', 'powershell',
+    '-NoProfile -ExecutionPolicy unrestricted -Command "Write-Host ''Installing .NET Core runtime...''; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing ''https://dot.net/v1/dotnet-install.ps1''))) -Channel Current -Runtime windowsdesktop"',
+    '', SW_SHOW, ewWaitUntilTerminated, ErrorCode)
+end;
+
+procedure CurPageChanged(CurPageID: Integer);
+begin
+  if CurPageId = wpInstalling then InstallDotnetCore();
+end;
