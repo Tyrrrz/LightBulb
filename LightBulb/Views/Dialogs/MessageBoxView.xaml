@@ -32,6 +32,7 @@
         <TextBlock
             Grid.Row="1"
             Margin="8,0,8,8"
+            FontSize="15"
             Text="{Binding Message}"
             TextWrapping="Wrap" />
 
@@ -43,21 +44,23 @@
             <Button
                 Margin="8"
                 Command="{s:Action Close}"
-                Content="OK"
+                Content="{Binding OkButtonText}"
                 IsDefault="True"
-                Style="{DynamicResource MaterialDesignFlatButton}">
+                Style="{DynamicResource MaterialDesignFlatButton}"
+                Visibility="{Binding IsOkButtonVisible, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
                 <Button.CommandParameter>
                     <sys:Boolean>True</sys:Boolean>
                 </Button.CommandParameter>
             </Button>
 
-            <!--  Close  -->
+            <!--  Cancel  -->
             <Button
                 Margin="8"
                 Command="{s:Action Close}"
-                Content="CLOSE"
+                Content="{Binding CancelButtonText}"
                 IsCancel="True"
-                Style="{DynamicResource MaterialDesignFlatButton}" />
+                Style="{DynamicResource MaterialDesignFlatButton}"
+                Visibility="{Binding IsCancelButtonVisible, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
         </StackPanel>
     </Grid>
 </UserControl>

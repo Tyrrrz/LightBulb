@@ -136,17 +136,37 @@ namespace LightBulb.ViewModels
                 return;
 
             // Show prompt to the user
-            var prompt = _viewModelFactory.CreateMessageBoxViewModel("Limited gamma range", 
+            var dialog = _viewModelFactory.CreateMessageBoxViewModel("Limited gamma range", 
                 $"{App.Name} detected that this computer doesn't have the extended gamma range unlocked. " +
                 "This may cause the app to work incorrectly with some settings." +
-                $"{Environment.NewLine}{Environment.NewLine}" +
-                "Press OK to unlock gamma range.");
+                Environment.NewLine + Environment.NewLine +
+                "Press OK to unlock gamma range.",
+                "OK", "CANCEL");
 
-            var promptResult = await _dialogManager.ShowDialogAsync(prompt);
+            var promptResult = await _dialogManager.ShowDialogAsync(dialog);
 
             // Unlock gamma range if user agreed to it
             if (promptResult == true)
                 _systemService.UnlockGammaRange();
+        }
+
+        private async Task ShowFirstTimeExperienceMessageAsync()
+        {
+            if (!_settingsService.IsFirstTimeExperienceEnabled)
+                return;
+
+            // Show message to the user
+            var dialog = _viewModelFactory.CreateMessageBoxViewModel("Welcome",
+                $"Thank you for installing {App.Name}!" +
+                Environment.NewLine + Environment.NewLine +
+                "To get the most personalized experience, configure your location in settings.",
+                "OK", null);
+
+            await _dialogManager.ShowDialogAsync(dialog);
+
+            // Disable first time experience
+            _settingsService.IsFirstTimeExperienceEnabled = false;
+            _settingsService.Save();
         }
 
         protected override void OnViewLoaded()
@@ -168,6 +188,7 @@ namespace LightBulb.ViewModels
         public async void OnViewFullyLoaded()
         {
             await EnsureGammaRangeIsUnlockedAsync();
+            await ShowFirstTimeExperienceMessageAsync();
         }
 
         private void RegisterHotKeys()

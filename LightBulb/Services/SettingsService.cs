@@ -9,6 +9,8 @@ namespace LightBulb.Services
     {
         public event EventHandler SettingsReset;
 
+        public bool IsFirstTimeExperienceEnabled { get; set; } = true;
+
         // General
 
         public ColorConfiguration NightConfiguration { get; set; } = new ColorConfiguration(3900, 0.85);
