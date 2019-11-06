@@ -29,7 +29,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
 Source: "..\License.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "bin\build\*"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Source\*"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\LightBulb.exe"

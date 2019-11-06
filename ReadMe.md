@@ -1,7 +1,6 @@
 # LightBulb 💡
 
-[![Build](https://img.shields.io/appveyor/ci/Tyrrrz/LightBulb/master.svg)](https://ci.appveyor.com/project/Tyrrrz/LightBulb)
-[![Tests](https://img.shields.io/appveyor/tests/Tyrrrz/LightBulb/master.svg)](https://ci.appveyor.com/project/Tyrrrz/LightBulb/branch/master/tests)
+[![Build](https://github.com/Tyrrrz/LightBulb/workflows/CI/badge.svg?branch=master)](https://github.com/Tyrrrz/LightBulb/actions)
 [![Release](https://img.shields.io/github/release/Tyrrrz/LightBulb.svg)](https://github.com/Tyrrrz/LightBulb/releases)
 [![Downloads](https://img.shields.io/github/downloads/Tyrrrz/LightBulb/total.svg)](https://github.com/Tyrrrz/LightBulb/releases)
 [![Donate](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://patreon.com/Tyrrrz)
@@ -20,7 +19,7 @@ _Currently only compatible with Windows 7 or higher._
 ## Download
 
 - **[Latest release](https://github.com/Tyrrrz/LightBulb/releases/latest)**
-- [CI build](https://ci.appveyor.com/project/Tyrrrz/LightBulb/branch/master/artifacts)
+- [CI build](https://github.com/Tyrrrz/LightBulb/actions)
 
 ## Features
 

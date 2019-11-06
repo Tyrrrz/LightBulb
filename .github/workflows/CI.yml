@@ -1,0 +1,38 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.0.100
+
+    - name: Build & publish
+      run: dotnet publish LightBulb/ -o PublishOutput/ --configuration Release
+
+    - name: Create installer
+      run: |
+        choco install innosetup --no-progress
+        dotnet publish LightBulb/ -o Installer/Source/ --configuration Release
+        & "c:\Program Files (x86)\Inno Setup 6\ISCC.exe" Installer/Installer.iss
+      shell: pwsh
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@master
+      with:
+        name: LightBulb
+        path: PublishOutput/
+
+    - name: Upload build artifact (installer)
+      uses: actions/upload-artifact@master
+      with:
+        name: LightBulb-Installer
+        path: Installer/bin/LightBulb-Installer.exe
