@@ -19,17 +19,17 @@ jobs:
         dotnet-version: 3.0.100
 
     - name: Build & publish
-      run: dotnet publish LightBulb/ -o PublishOutput/ --configuration Release
+      run: dotnet publish LightBulb/ -o LightBulb/bin/Publish/ --configuration Release
 
-    - name: Pack (archive)
-      run: Compress-Archive -Path PublishOutput/* -DestinationPath PublishOutput/Archive.zip -Force
-      shell: pwsh
-
-    - name: Pack (installer)
+    - name: Create installer
       run: |
         choco install innosetup --no-progress
-        dotnet publish LightBulb/ -o Installer/Source/ --configuration Release
+        Copy-Item -Path LightBulb/bin/Publish/ -Recurse -Destination Installer/Source/
         & "c:\Program Files (x86)\Inno Setup 6\ISCC.exe" Installer/Installer.iss
+      shell: pwsh
+
+    - name: Create archive
+      run: Compress-Archive -Path LightBulb/bin/Publish/* -DestinationPath LightBulb/bin/Publish/Archive.zip -Force
       shell: pwsh
 
     - name: Create release
@@ -43,17 +43,17 @@ jobs:
         draft: false
         prerelease: false
 
-    - name: Upload release artifact (archive)
+    - name: Upload release asset (archive)
       uses: actions/upload-release-asset@v1.0.1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: PublishOutput/Archive.zip
+        asset_path: LightBulb/bin/Publish/Archive.zip
         asset_name: LightBulb.zip
         asset_content_type: application/zip
 
-    - name: Upload release artifact (installer)
+    - name: Upload release asset (installer)
       uses: actions/upload-release-asset@v1.0.1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
