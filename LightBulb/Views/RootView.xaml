@@ -15,6 +15,7 @@
     Width="450"
     Height="350"
     d:DataContext="{d:DesignInstance Type=viewModels:RootViewModel}"
+    Background="{DynamicResource MaterialDesignPaper}"
     Icon="/LightBulb;component/favicon.ico"
     Loaded="RootView_OnLoaded"
     ResizeMode="NoResize"
