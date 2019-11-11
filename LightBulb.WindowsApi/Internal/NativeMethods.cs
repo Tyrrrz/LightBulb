@@ -26,6 +26,9 @@ namespace LightBulb.WindowsApi.Internal
         [DllImport("user32.dll", EntryPoint = "UnregisterHotKey", SetLastError = true)]
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
+        [DllImport("user32.dll", EntryPoint = "GetDesktopWindow", SetLastError = true)]
+        public static extern IntPtr GetDesktopWindow();
+
         [DllImport("user32.dll", EntryPoint = "GetForegroundWindow", SetLastError = true)]
         public static extern IntPtr GetForegroundWindow();
 

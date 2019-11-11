@@ -19,7 +19,7 @@ namespace LightBulb.WindowsApi
             _deviceContext = NativeMethods.GetDC(window);
         }
 
-        public GammaManager() : this(IntPtr.Zero)
+        public GammaManager() : this(NativeMethods.GetDesktopWindow())
         {
         }
 
