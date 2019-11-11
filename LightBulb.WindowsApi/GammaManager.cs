@@ -1,25 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 using LightBulb.WindowsApi.Internal;
 using LightBulb.WindowsApi.Models;
 
 namespace LightBulb.WindowsApi
 {
-    public class GammaManager : IDisposable
+    // This class doesn't use GetDC(IntPtr.Zero) to get DC for virtual screen because
+    // that doesn't work on Win10 with multi-monitor setup since v1903.
+    // https://github.com/Tyrrrz/LightBulb/issues/100
+    public partial class GammaManager : IDisposable
     {
         private readonly object _lock = new object();
-
-        private readonly IntPtr _window;
-        private readonly IntPtr _deviceContext;
+        private readonly IReadOnlyList<IntPtr> _deviceContextHandles;
 
         private int _gammaChannelOffset;
 
-        public GammaManager(IntPtr window)
+        public GammaManager(IReadOnlyList<IntPtr> deviceContextHandles)
         {
-            _window = window;
-            _deviceContext = NativeMethods.GetDC(window);
+            _deviceContextHandles = deviceContextHandles;
         }
 
-        public GammaManager() : this(NativeMethods.GetDesktopWindow())
+        public GammaManager() : this(GetDeviceContextHandlesForAllMonitors())
         {
         }
 
@@ -65,14 +68,25 @@ namespace LightBulb.WindowsApi
                 var ramp = CreateGammaRamp(colorBalance);
 
                 // Set gamma
-                NativeMethods.SetDeviceGammaRamp(_deviceContext, ref ramp);
+                foreach (var hdc in _deviceContextHandles)
+                    NativeMethods.SetDeviceGammaRamp(hdc, ref ramp);
             }
         }
 
         public void Dispose()
         {
-            NativeMethods.ReleaseDC(_window, _deviceContext);
+            foreach (var hdc in _deviceContextHandles)
+                NativeMethods.DeleteDC(hdc);
+
             GC.SuppressFinalize(this);
         }
+    }
+
+    public partial class GammaManager
+    {
+        private static IReadOnlyList<IntPtr> GetDeviceContextHandlesForAllMonitors() =>
+            Screen.AllScreens
+                .Select(s => NativeMethods.CreateDC(s.DeviceName, null, null, IntPtr.Zero))
+                .ToArray();
     }
 }
