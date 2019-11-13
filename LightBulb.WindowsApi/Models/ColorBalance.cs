@@ -19,13 +19,7 @@ namespace LightBulb.WindowsApi.Models
 
         public bool Equals(ColorBalance other) => Red.Equals(other.Red) && Green.Equals(other.Green) && Blue.Equals(other.Blue);
 
-        public override bool Equals(object obj)
-        {
-            if (obj is null)
-                return false;
-
-            return obj is ColorBalance other && Equals(other);
-        }
+        public override bool Equals(object? obj) => obj is ColorBalance other && Equals(other);
 
         public override int GetHashCode() => HashCode.Combine(Red, Green, Blue);
 

@@ -40,7 +40,7 @@ namespace LightBulb.ViewModels.Components
 
         public bool IsLocationError { get; private set; }
 
-        public string LocationQuery { get; set; }
+        public string? LocationQuery { get; set; }
 
         public LocationSettingsTabViewModel(SettingsService settingsService, LocationService locationService)
             : base(settingsService, 1, "Location")
@@ -94,7 +94,7 @@ namespace LightBulb.ViewModels.Components
                 // Otherwise search for the location online
                 else
                 {
-                    Location = await _locationService.GetLocationAsync(LocationQuery);
+                    Location = await _locationService.GetLocationAsync(LocationQuery!);
                 }
 
                 IsLocationAutoDetected = false;

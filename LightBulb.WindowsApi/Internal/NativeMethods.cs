@@ -33,7 +33,7 @@ namespace LightBulb.WindowsApi.Internal
     internal static partial class NativeMethods
     {
         [DllImport("gdi32.dll", EntryPoint = "CreateDC", SetLastError = true)]
-        public static extern IntPtr CreateDC(string lpszDriver, string lpszDevice, string lpszOutput, IntPtr lpInitData);
+        public static extern IntPtr CreateDC(string? lpszDriver, string? lpszDevice, string? lpszOutput, IntPtr lpInitData);
 
         [DllImport("gdi32.dll", EntryPoint = "DeleteDC", SetLastError = true)]
         public static extern bool DeleteDC(IntPtr hdc);

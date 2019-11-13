@@ -24,13 +24,7 @@ namespace LightBulb.WindowsApi.Internal
 
         public bool Equals(Rect other) => Left == other.Left && Top == other.Top && Right == other.Right && Bottom == other.Bottom;
 
-        public override bool Equals(object obj)
-        {
-            if (obj is null)
-                return false;
-
-            return obj is Rect other && Equals(other);
-        }
+        public override bool Equals(object? obj) => obj is Rect other && Equals(other);
 
         public override int GetHashCode()
         {

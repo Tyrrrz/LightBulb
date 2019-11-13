@@ -7,7 +7,7 @@ namespace LightBulb.Services
 {
     public class SettingsService : SettingsManager
     {
-        public event EventHandler SettingsReset;
+        public event EventHandler? SettingsReset;
 
         public bool IsFirstTimeExperienceEnabled { get; set; } = true;
 
@@ -43,10 +43,8 @@ namespace LightBulb.Services
 
         public SettingsService()
         {
-            var applicationDirPath = AppDomain.CurrentDomain.BaseDirectory;
-
             // If we have write access to application directory - store configuration file there
-            if (DirectoryEx.CheckWriteAccess(applicationDirPath))
+            if (DirectoryEx.CheckWriteAccess(App.ExecutableDirPath))
             {
                 Configuration.FileName = "Settings.dat";
                 Configuration.SubDirectoryPath = "";

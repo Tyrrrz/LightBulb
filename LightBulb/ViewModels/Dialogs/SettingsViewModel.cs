@@ -12,7 +12,7 @@ namespace LightBulb.ViewModels.Dialogs
 
         public IReadOnlyList<ISettingsTabViewModel> Tabs { get; }
 
-        public ISettingsTabViewModel ActiveTab { get; private set; }
+        public ISettingsTabViewModel? ActiveTab { get; private set; }
 
         public SettingsViewModel(SettingsService settingsService, IEnumerable<ISettingsTabViewModel> tabs)
         {

@@ -16,7 +16,7 @@ namespace LightBulb.Models
 
         public bool Equals(ColorConfiguration other) => Temperature.Equals(other.Temperature) && Brightness.Equals(other.Brightness);
 
-        public override bool Equals(object obj) => obj is ColorConfiguration other && Equals(other);
+        public override bool Equals(object? obj) => obj is ColorConfiguration other && Equals(other);
 
         public override int GetHashCode() => HashCode.Combine(Temperature, Brightness);
 

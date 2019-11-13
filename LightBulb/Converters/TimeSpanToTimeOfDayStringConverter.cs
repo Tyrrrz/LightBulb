@@ -10,7 +10,7 @@ namespace LightBulb.Converters
     {
         public static TimeSpanToTimeOfDayStringConverter Instance { get; } = new TimeSpanToTimeOfDayStringConverter();
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is TimeSpan timeSpanValue)
                 return (DateTimeOffset.Now.ResetTimeOfDay() + timeSpanValue).ToString("t", culture);

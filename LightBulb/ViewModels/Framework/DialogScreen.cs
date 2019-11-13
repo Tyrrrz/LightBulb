@@ -7,7 +7,7 @@ namespace LightBulb.ViewModels.Framework
     {
         public T DialogResult { get; private set; }
 
-        public event EventHandler Closed;
+        public event EventHandler? Closed;
 
         public void Close(T dialogResult = default)
         {

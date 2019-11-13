@@ -13,9 +13,9 @@ namespace LightBulb.Services
             new GithubPackageResolver("Tyrrrz", "LightBulb", "LightBulb.zip"),
             new ZipPackageExtractor());
 
-        private Version GetLastPreparedUpdate() => _updateManager.GetPreparedUpdates().Max();
+        private Version? GetLastPreparedUpdate() => _updateManager.GetPreparedUpdates().Max();
 
-        public async Task<Version> CheckPrepareUpdateAsync()
+        public async Task<Version?> CheckPrepareUpdateAsync()
         {
             try
             {

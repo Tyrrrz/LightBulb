@@ -6,8 +6,8 @@ namespace LightBulb.ViewModels.Framework
     public static class Extensions
     {
         public static MessageBoxViewModel CreateMessageBoxViewModel(this IViewModelFactory factory,
-            string title, string message,
-            string okButtonText, string cancelButtonText)
+            string? title, string? message,
+            string? okButtonText, string? cancelButtonText)
         {
             var viewModel = factory.CreateMessageBoxViewModel();
             viewModel.Title = title;

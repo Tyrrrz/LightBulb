@@ -90,7 +90,7 @@ namespace LightBulb.Internal
                 {
                     "add", path,
                     "/v", entryName,
-                    "/d", entryValue.ToString(),
+                    "/d", entryValue.ToString()!,
                     "/t", GetRegistryValueType(entryValue.GetType()),
                     "/f"
                 }, true);

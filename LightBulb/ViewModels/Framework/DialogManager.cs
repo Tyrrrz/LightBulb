@@ -20,10 +20,10 @@ namespace LightBulb.ViewModels.Framework
             var view = _viewManager.CreateAndBindViewForModelIfNecessary(dialogScreen);
 
             // Set up event routing that will close the view when called from viewmodel
-            void OnDialogOpened(object openSender, DialogOpenedEventArgs openArgs)
+            void OnDialogOpened(object? openSender, DialogOpenedEventArgs openArgs)
             {
                 // Delegate to close the dialog and unregister event handler
-                void OnScreenClosed(object closeSender, EventArgs args)
+                void OnScreenClosed(object? closeSender, EventArgs args)
                 {
                     openArgs.Session.Close();
                     dialogScreen.Closed -= OnScreenClosed;
