@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Threading;
-using System.Windows;
-using System.Windows.Threading;
-using LightBulb.Internal;
 using LightBulb.Services;
 using LightBulb.ViewModels;
 using LightBulb.ViewModels.Components;
@@ -11,6 +8,11 @@ using LightBulb.ViewModels.Framework;
 using Stylet;
 using StyletIoC;
 using MessageBoxViewModel = Stylet.MessageBoxViewModel;
+
+#if !DEBUG
+using System.Windows;
+using System.Windows.Threading;
+#endif
 
 namespace LightBulb
 {
@@ -68,12 +70,13 @@ namespace LightBulb
             base.Launch();
         }
 
+#if !DEBUG
         protected override void OnUnhandledException(DispatcherUnhandledExceptionEventArgs e)
         {
             base.OnUnhandledException(e);
 
-            if (!EnvironmentEx.IsDebug())
-                MessageBox.Show(e.Exception.ToString(), "Error occured", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(e.Exception.ToString(), "Error occured", MessageBoxButton.OK, MessageBoxImage.Error);
         }
+#endif
     }
 }
