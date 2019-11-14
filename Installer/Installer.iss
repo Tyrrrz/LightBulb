@@ -49,8 +49,11 @@ var
   ErrorCode: Integer;
 begin
   ShellExec('', 'powershell',
-    '-NoProfile -ExecutionPolicy unrestricted -Command "Write-Host ''Installing .NET Core runtime...''; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing ''https://dot.net/v1/dotnet-install.ps1''))) -Channel Current -Runtime windowsdesktop"',
-    '', SW_SHOW, ewWaitUntilTerminated, ErrorCode)
+    '-NoProfile -ExecutionPolicy unrestricted -Command "Write-Host ''Installing .NET Core runtime...''; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing ''https://dot.net/v1/dotnet-install.ps1''))) -Channel Current -Runtime dotnet"',
+    '', SW_SHOW, ewWaitUntilTerminated, ErrorCode);
+  ShellExec('', 'powershell',
+    '-NoProfile -ExecutionPolicy unrestricted -Command "Write-Host ''Installing .NET Core Desktop runtime...''; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing ''https://dot.net/v1/dotnet-install.ps1''))) -Channel Current -Runtime windowsdesktop"',
+    '', SW_SHOW, ewWaitUntilTerminated, ErrorCode);
 end;
 
 procedure CurPageChanged(CurPageID: Integer);
