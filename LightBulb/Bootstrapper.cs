@@ -7,7 +7,7 @@ using LightBulb.ViewModels.Dialogs;
 using LightBulb.ViewModels.Framework;
 using Stylet;
 using StyletIoC;
-using MessageBoxViewModel = Stylet.MessageBoxViewModel;
+using MessageBoxViewModel = LightBulb.ViewModels.Dialogs.MessageBoxViewModel;
 
 #if !DEBUG
 using System.Windows;
@@ -18,11 +18,10 @@ namespace LightBulb
 {
     public class Bootstrapper : Bootstrapper<RootViewModel>
     {
-        // ReSharper disable once NotAccessedField.Local (need to keep reference)
         private readonly Mutex _identityMutex;
         private readonly bool _isOnlyRunningInstance;
 
-        public  Bootstrapper()
+        public Bootstrapper()
         {
             _identityMutex = new Mutex(true, "LightBulb_Identity", out _isOnlyRunningInstance);
         }
@@ -78,5 +77,12 @@ namespace LightBulb
             MessageBox.Show(e.Exception.ToString(), "Error occured", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 #endif
+
+        public override void Dispose()
+        {
+            _identityMutex.Dispose();
+
+            base.Dispose();
+        }
     }
 }
