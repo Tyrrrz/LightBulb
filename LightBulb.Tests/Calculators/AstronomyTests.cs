@@ -24,6 +24,13 @@ namespace LightBulb.Tests.Calculators
                 new DateTimeOffset(2019, 11, 04, 00, 00, 00, TimeSpan.FromHours(+2)),
                 new TimeSpan(06, 55, 00)
             );
+
+            // Shenzhen
+            yield return new TestCaseData(
+                new GeoLocation(22.5333, 114.1333),
+                new DateTimeOffset(2019, 11, 15, 00, 00, 00, TimeSpan.FromHours(+8)),
+                new TimeSpan(06, 36, 00)
+            );
         }
 
         [Test]
@@ -51,6 +58,13 @@ namespace LightBulb.Tests.Calculators
                 new GeoLocation(35.6762, 139.6503),
                 new DateTimeOffset(2019, 11, 04, 00, 00, 00, TimeSpan.FromHours(+9)),
                 new TimeSpan(16, 43, 00)
+            );
+
+            // Shenzhen
+            yield return new TestCaseData(
+                new GeoLocation(22.5333, 114.1333),
+                new DateTimeOffset(2019, 11, 15, 00, 00, 00, TimeSpan.FromHours(+8)),
+                new TimeSpan(17, 40, 00)
             );
         }
 
