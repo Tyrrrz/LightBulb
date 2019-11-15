@@ -179,6 +179,9 @@ namespace LightBulb.ViewModels
             // Register hot keys
             RegisterHotKeys();
 
+            // Refresh
+            Refresh();
+
             // Start timers
             _updateTimer.Start(TimeSpan.FromMilliseconds(50));
             _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
@@ -221,7 +224,7 @@ namespace LightBulb.ViewModels
                 if (Instant >= targetInstant)
                     IsCyclePreviewEnabled = false;
             }
-            // Otherwise - simply set instant to now
+            // Otherwise - synchronize instant with system clock
             else
             {
                 Instant = DateTimeOffset.Now;
@@ -234,7 +237,7 @@ namespace LightBulb.ViewModels
             if (CurrentColorConfiguration == TargetColorConfiguration)
                 return;
 
-            // Don't update on small changes to avoid input lag
+            // Don't update on small changes to avoid lag
             var isSmallChange =
                 Math.Abs(TargetColorConfiguration.Temperature - CurrentColorConfiguration.Temperature) < 25 &&
                 Math.Abs(TargetColorConfiguration.Brightness - CurrentColorConfiguration.Brightness) < 0.01;
@@ -289,6 +292,9 @@ namespace LightBulb.ViewModels
 
             // Re-register hot keys
             RegisterHotKeys();
+
+            // Refresh
+            Refresh();
         }
 
         public void ShowAbout() => App.GitHubProjectUrl.ToUri().OpenInBrowser();
