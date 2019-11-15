@@ -56,15 +56,19 @@ namespace LightBulb.Calculators
                 : RadiansToDegrees(Math.Acos(sunLocalHoursCos));
             sunLocalHours /= 15;
 
-            // Calculate local time of the event
-            var meanTime = sunLocalHours + sunRightAscHours - 0.06571 * timeApproxDays - 6.622;
+            // Calculate mean time of the event
+            var meanHours = sunLocalHours + sunRightAscHours - 0.06571 * timeApproxDays - 6.622;
 
             // Adjust mean time to UTC
-            var hoursUtc = meanTime - lngHours;
-            hoursUtc = Wrap(hoursUtc, 0, 24);
+            var utcHours = meanHours - lngHours;
+            utcHours = Wrap(utcHours, 0, 24);
 
-            // Convert back to whichever offset was provided
-            return TimeSpan.FromHours(hoursUtc) + instant.Offset;
+            // Adjust UTC time to local time
+            // (we use the offset provided because we can't accurately calculate local timezone from coordinates)
+            var localHours = utcHours + instant.Offset.TotalHours;
+            localHours = Wrap(localHours, 0, 24);
+
+            return TimeSpan.FromHours(localHours);
         }
 
         public static TimeSpan CalculateSunriseTime(GeoLocation location, DateTimeOffset instant) =>
