@@ -4,13 +4,18 @@ using LightBulb.WindowsApi.Internal;
 
 namespace LightBulb.WindowsApi
 {
-    public class SystemProcess
+    public class SystemProcess : IDisposable
     {
         public IntPtr Handle { get; }
 
         public SystemProcess(IntPtr handle)
         {
             Handle = handle;
+        }
+
+        ~SystemProcess()
+        {
+            Dispose();
         }
 
         public string GetExecutableFilePath()
@@ -22,6 +27,12 @@ namespace LightBulb.WindowsApi
             NativeMethods.QueryFullProcessImageName(Handle, 0, buffer, ref bufferSize);
 
             return buffer.ToString();
+        }
+
+        public void Dispose()
+        {
+            NativeMethods.CloseHandle(Handle);
+            GC.SuppressFinalize(this);
         }
     }
 }

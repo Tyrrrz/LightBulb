@@ -5,7 +5,7 @@ using LightBulb.WindowsApi.Internal;
 
 namespace LightBulb.WindowsApi
 {
-    public partial class SystemWindow
+    public partial class SystemWindow : IDisposable
     {
         public IntPtr Handle { get; }
 
@@ -104,6 +104,11 @@ namespace LightBulb.WindowsApi
             var handle = NativeMethods.OpenProcess(ProcessAccessFlags.QueryLimitedInformation, false, processId);
 
             return new SystemProcess(handle);
+        }
+
+        public void Dispose()
+        {
+            // No cleaning up is needed, but this is for consistency
         }
     }
 
