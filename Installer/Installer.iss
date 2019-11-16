@@ -13,7 +13,6 @@ AppUpdatesURL="https://github.com/Tyrrrz/LightBulb/releases"
 AppMutex=LightBulb_Identity
 DefaultDirName={autopf}\{#AppName}
 DefaultGroupName={#AppName}
-PrivilegesRequired=lowest
 AllowNoIcons=yes
 DisableWelcomePage=yes
 DisableProgramGroupPage=no
@@ -41,6 +40,9 @@ Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: 
 
 [Run]
 Filename: "{app}\LightBulb.exe"; Description: "{cm:LaunchProgram,{#StringChange(AppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
+[UninstallDelete]
+Type: filesandordirs; Name: "{autoappdata}\LightBulb"
 
 [Code]
 procedure InstallDotnetCore();
