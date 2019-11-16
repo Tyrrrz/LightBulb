@@ -62,7 +62,7 @@ namespace LightBulb.Services
 
         private static string AutoStartRegistryEntryName => App.Name;
 
-        private static string AutoStartRegistryEntryValue => $"\"{App.ExecutableFilePath}\" --autostart";
+        private static string AutoStartRegistryEntryValue => $"\"{App.ExecutableFilePath}\" {App.HiddenOnLaunchArgument}";
 
         private const string GammaRangeRegistryPath = "HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\ICM";
 

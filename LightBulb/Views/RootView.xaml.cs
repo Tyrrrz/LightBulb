@@ -37,7 +37,7 @@ namespace LightBulb.Views
         private void RootView_OnLoaded(object sender, RoutedEventArgs e)
         {
             // Hide to tray as soon as window loads if the application was started automatically
-            if (App.IsAutoStarted)
+            if (App.IsHiddenOnLaunch)
                 HideToTray();
         }
 

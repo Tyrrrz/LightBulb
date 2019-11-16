@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,20 +10,25 @@ namespace LightBulb
     {
         private static readonly Assembly Assembly = typeof(App).Assembly;
 
-        public static string Name => Assembly.GetName().Name!;
+        public static string Name { get; } = Assembly.GetName().Name!;
 
-        public static Version Version => Assembly.GetName().Version!;
+        public static Version Version { get; } = Assembly.GetName().Version!;
 
-        public static string VersionString => Version.ToString(3);
+        public static string VersionString { get; } = Version.ToString(3);
+
+        public static string ExecutableDirPath { get; } = AppDomain.CurrentDomain.BaseDirectory!;
+
+        public static string ExecutableFilePath { get; } = Path.ChangeExtension(typeof(App).Assembly.Location, "exe");
 
         public static string GitHubProjectUrl { get; } = "https://github.com/Tyrrrz/LightBulb";
+    }
 
-        public static string GitHubProjectReleasesUrl { get; } = "https://github.com/Tyrrrz/LightBulb/releases";
+    public partial class App
+    {
+        private static readonly IReadOnlyList<string> CommandLineArgs = Environment.GetCommandLineArgs();
 
-        public static string ExecutableDirPath => AppDomain.CurrentDomain.BaseDirectory!;
+        public static string HiddenOnLaunchArgument { get; } = "--start-hidden";
 
-        public static string ExecutableFilePath => Path.ChangeExtension(typeof(App).Assembly.Location, "exe");
-
-        public static bool IsAutoStarted => Environment.GetCommandLineArgs().Contains("--autostart", StringComparer.OrdinalIgnoreCase);
+        public static bool IsHiddenOnLaunch { get; } = CommandLineArgs.Contains(HiddenOnLaunchArgument, StringComparer.OrdinalIgnoreCase);
     }
 }

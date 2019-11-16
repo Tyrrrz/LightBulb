@@ -299,8 +299,6 @@ namespace LightBulb.ViewModels
 
         public void ShowAbout() => App.GitHubProjectUrl.ToUri().OpenInBrowser();
 
-        public void ShowReleases() => App.GitHubProjectReleasesUrl.ToUri().OpenInBrowser();
-
         public void Exit() => RequestClose();
 
         public void Dispose()
