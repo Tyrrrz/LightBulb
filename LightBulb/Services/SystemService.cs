@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Input;
 using LightBulb.Internal;
 using LightBulb.Models;
@@ -8,9 +9,16 @@ namespace LightBulb.Services
 {
     public partial class SystemService : IDisposable
     {
+        private readonly SettingsService _settingsService;
+
         private readonly GammaManager _gammaManager = new GammaManager();
         private readonly HotKeyManager _hotKeyManager = new HotKeyManager();
         private readonly WindowManager _windowManager = new WindowManager();
+
+        public SystemService(SettingsService settingsService)
+        {
+            _settingsService = settingsService;
+        }
 
         public void SetGamma(ColorConfiguration colorConfiguration) => _gammaManager.SetGamma(colorConfiguration.ToColorBalance());
 
@@ -28,6 +36,14 @@ namespace LightBulb.Services
         {
             var foregroundWindow = _windowManager.GetForegroundWindow();
             return _windowManager.IsWindowFullScreen(foregroundWindow);
+        }
+
+        public bool IsForegroundWindowExcluded()
+        {
+            var foregroundWindow = _windowManager.GetForegroundWindow();
+            var foregroundProcess = _windowManager.GetWindowProcessHandle(foregroundWindow);
+            return _settingsService.ExcludedApplications != null && _settingsService.ExcludedApplications.Any(a =>
+                string.Equals(a.ExecutableFilePath, _windowManager.GetProcessExecutableFilePath(foregroundProcess), StringComparison.OrdinalIgnoreCase));
         }
 
         public bool IsAutoStartEnabled()

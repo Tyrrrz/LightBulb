@@ -10,26 +10,41 @@ namespace LightBulb.WindowsApi
     {
         public IntPtr GetForegroundWindow() => NativeMethods.GetForegroundWindow();
 
-        public bool IsWindowFullScreen(IntPtr hWnd)
+        public IntPtr GetWindowProcessHandle(IntPtr hwnd)
+        {
+            NativeMethods.GetWindowThreadProcessId(hwnd, out var processId);
+            return NativeMethods.OpenProcess(ProcessAccessFlags.QueryLimitedInformation, false, processId);
+        }
+
+        public string GetProcessExecutableFilePath(IntPtr hproc)
+        {
+            var fileNameBuilder = new StringBuilder(1024);
+            var bufferLength = (uint)fileNameBuilder.Capacity + 1;
+            return NativeMethods.QueryFullProcessImageName(hproc, 0, fileNameBuilder, ref bufferLength) ?
+                fileNameBuilder.ToString() :
+                "";
+        }
+
+        public bool IsWindowFullScreen(IntPtr hwnd)
         {
             // If window is a system window - return false
-            var windowClassName = GetWindowClassName(hWnd);
+            var windowClassName = GetWindowClassName(hwnd);
             if (SystemWindowClassNames.Contains(windowClassName, StringComparer.OrdinalIgnoreCase))
                 return false;
 
             // If window is not visible - return false;
-            if (!NativeMethods.IsWindowVisible(hWnd))
+            if (!NativeMethods.IsWindowVisible(hwnd))
                 return false;
 
             // Get window rect
-            var windowRect = GetWindowRect(hWnd);
+            var windowRect = GetWindowRect(hwnd);
 
             // If window rect is empty - return false
             if (windowRect == Rect.Empty)
                 return false;
 
             // Get window client rect
-            var windowClientRect = GetWindowClientRect(hWnd);
+            var windowClientRect = GetWindowClientRect(hwnd);
 
             // Calculate absolute window client rect (not relative to window rect)
             var absoluteWindowClientRect = new Rect(
@@ -40,7 +55,7 @@ namespace LightBulb.WindowsApi
             );
 
             // Get screen rect
-            var screenRect = Screen.FromHandle(hWnd).Bounds;
+            var screenRect = Screen.FromHandle(hwnd).Bounds;
 
             // Bounding box check
             return absoluteWindowClientRect.Left <= 0 &&

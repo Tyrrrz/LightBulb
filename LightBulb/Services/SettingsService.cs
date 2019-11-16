@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using LightBulb.Internal;
 using LightBulb.Models;
 using Tyrrrz.Settings;
@@ -35,7 +36,11 @@ namespace LightBulb.Services
 
         public bool IsGammaSmoothingEnabled { get; set; } = true;
 
-        public bool IsPauseWhenFullScreenEnabled { get; set; }
+        public bool IsPauseWhenFullScreenEnabled { get; set; } = false;
+
+        // Excluded applications
+
+        public IReadOnlyList<ExcludedApplication>? ExcludedApplications { get; set; }
 
         // Hotkeys
 
@@ -46,16 +51,16 @@ namespace LightBulb.Services
             // If we have write access to application directory - store configuration file there
             if (DirectoryEx.CheckWriteAccess(App.ExecutableDirPath))
             {
-                Configuration.FileName = "Settings.dat";
+                Configuration.FileName = "Settings.json";
                 Configuration.SubDirectoryPath = "";
                 Configuration.StorageSpace = StorageSpace.Instance;
             }
             // Otherwise - store settings in roaming app data directory
             else
             {
-                Configuration.FileName = "Settings.dat";
+                Configuration.FileName = "Settings.json";
                 Configuration.SubDirectoryPath = "LightBulb";
-                Configuration.StorageSpace = StorageSpace.SyncedUserDomain;
+                Configuration.StorageSpace = StorageSpace.UserDomain;
             }
 
             Configuration.ThrowIfCannotLoad = false;

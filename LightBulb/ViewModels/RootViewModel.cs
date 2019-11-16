@@ -206,7 +206,9 @@ namespace LightBulb.ViewModels
 
         private void UpdateIsPaused()
         {
-            IsPaused = _settingsService.IsPauseWhenFullScreenEnabled && _systemService.IsForegroundWindowFullScreen();
+            IsPaused =
+                _settingsService.IsPauseWhenFullScreenEnabled && _systemService.IsForegroundWindowFullScreen() ||
+                _systemService.IsForegroundWindowExcluded();
         }
 
         private void UpdateInstant()
