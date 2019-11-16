@@ -4,11 +4,11 @@ using LightBulb.WindowsApi.Internal;
 
 namespace LightBulb.WindowsApi
 {
-    public class NativeProcess
+    public class SystemProcess
     {
         public IntPtr Handle { get; }
 
-        public NativeProcess(IntPtr handle)
+        public SystemProcess(IntPtr handle)
         {
             Handle = handle;
         }

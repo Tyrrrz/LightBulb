@@ -4,7 +4,7 @@ using LightBulb.WindowsApi.Internal;
 
 namespace LightBulb.WindowsApi
 {
-    public partial class NativeHotKey : IDisposable
+    public partial class GlobalHotKey : IDisposable
     {
         public int Id { get; }
 
@@ -14,7 +14,7 @@ namespace LightBulb.WindowsApi
 
         public Action Handler { get; }
 
-        public NativeHotKey(int id, int virtualKey, int modifiers, Action handler)
+        public GlobalHotKey(int id, int virtualKey, int modifiers, Action handler)
         {
             Id = id;
             VirtualKey = virtualKey;
@@ -25,7 +25,7 @@ namespace LightBulb.WindowsApi
             SpongeWindow.MessageReceived += SpongeWindowOnMessageReceived;
         }
 
-        ~NativeHotKey()
+        ~GlobalHotKey()
         {
             Dispose();
         }
@@ -52,20 +52,20 @@ namespace LightBulb.WindowsApi
         }
     }
 
-    public partial class NativeHotKey
+    public partial class GlobalHotKey
     {
         private static int _lastHotKeyId;
 
-        public static NativeHotKey Register(int virtualKey, int modifiers, Action handler)
+        public static GlobalHotKey Register(int virtualKey, int modifiers, Action handler)
         {
             var id = _lastHotKeyId++;
             NativeMethods.RegisterHotKey(SpongeWindow.Handle, id, modifiers, virtualKey);
 
-            return new NativeHotKey(id, virtualKey, modifiers, handler);
+            return new GlobalHotKey(id, virtualKey, modifiers, handler);
         }
     }
 
-    public partial class NativeHotKey
+    public partial class GlobalHotKey
     {
         private static readonly SpongeWindow SpongeWindow = new SpongeWindow();
     }

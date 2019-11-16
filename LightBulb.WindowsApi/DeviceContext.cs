@@ -6,18 +6,18 @@ using LightBulb.WindowsApi.Internal;
 
 namespace LightBulb.WindowsApi
 {
-    public partial class NativeDeviceContext : IDisposable
+    public partial class DeviceContext : IDisposable
     {
         private int _gammaChannelOffset;
 
         public IntPtr Handle { get; }
 
-        public NativeDeviceContext(IntPtr handle)
+        public DeviceContext(IntPtr handle)
         {
             Handle = handle;
         }
 
-        ~NativeDeviceContext()
+        ~DeviceContext()
         {
             Dispose();
         }
@@ -62,12 +62,12 @@ namespace LightBulb.WindowsApi
         }
     }
 
-    public partial class NativeDeviceContext
+    public partial class DeviceContext
     {
-        public static NativeDeviceContext FromDeviceName(string deviceName) =>
-            new NativeDeviceContext(NativeMethods.CreateDC(deviceName, null, null, IntPtr.Zero));
+        public static DeviceContext FromDeviceName(string deviceName) =>
+            new DeviceContext(NativeMethods.CreateDC(deviceName, null, null, IntPtr.Zero));
 
-        public static IReadOnlyList<NativeDeviceContext> GetAllMonitorDeviceContexts() =>
+        public static IReadOnlyList<DeviceContext> GetAllMonitorDeviceContexts() =>
             Screen.AllScreens.Select(s => FromDeviceName(s.DeviceName)).ToArray();
     }
 }

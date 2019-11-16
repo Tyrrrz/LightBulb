@@ -8,14 +8,14 @@ namespace LightBulb.Services
 {
     public class HotKeyService : IDisposable
     {
-        private readonly List<NativeHotKey> _registeredHotKeys = new List<NativeHotKey>();
+        private readonly List<GlobalHotKey> _registeredHotKeys = new List<GlobalHotKey>();
 
         public void RegisterHotKey(HotKey hotKey, Action handler)
         {
             var virtualKey = KeyInterop.VirtualKeyFromKey(hotKey.Key);
             var modifiers = (int) hotKey.Modifiers;
 
-            var registeredHotKey = NativeHotKey.Register(virtualKey, modifiers, handler);
+            var registeredHotKey = GlobalHotKey.Register(virtualKey, modifiers, handler);
             _registeredHotKeys.Add(registeredHotKey);
         }
 

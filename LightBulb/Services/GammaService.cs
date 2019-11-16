@@ -9,7 +9,7 @@ namespace LightBulb.Services
     {
         // Device contexts for all monitors.
         // We can't just get device context for virtual screen because that doesn't work anymore since Win10 v1903.
-        private readonly IReadOnlyList<NativeDeviceContext> _deviceContexts = NativeDeviceContext.GetAllMonitorDeviceContexts();
+        private readonly IReadOnlyList<DeviceContext> _deviceContexts = DeviceContext.GetAllMonitorDeviceContexts();
 
         public void SetGamma(ColorConfiguration colorConfiguration)
         {

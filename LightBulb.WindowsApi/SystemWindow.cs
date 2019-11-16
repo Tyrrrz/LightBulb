@@ -5,11 +5,11 @@ using LightBulb.WindowsApi.Internal;
 
 namespace LightBulb.WindowsApi
 {
-    public partial class NativeWindow
+    public partial class SystemWindow
     {
         public IntPtr Handle { get; }
 
-        public NativeWindow(IntPtr handle)
+        public SystemWindow(IntPtr handle)
         {
             Handle = handle;
         }
@@ -98,21 +98,21 @@ namespace LightBulb.WindowsApi
                    absoluteWindowClientRect.Bottom >= screenRect.Bottom;
         }
 
-        public NativeProcess GetProcess()
+        public SystemProcess GetProcess()
         {
             NativeMethods.GetWindowThreadProcessId(Handle, out var processId);
             var handle = NativeMethods.OpenProcess(ProcessAccessFlags.QueryLimitedInformation, false, processId);
 
-            return new NativeProcess(handle);
+            return new SystemProcess(handle);
         }
     }
 
-    public partial class NativeWindow
+    public partial class SystemWindow
     {
-        public static NativeWindow GetForegroundWindow()
+        public static SystemWindow GetForegroundWindow()
         {
             var handle = NativeMethods.GetForegroundWindow();
-            return new NativeWindow(handle);
+            return new SystemWindow(handle);
         }
     }
 }

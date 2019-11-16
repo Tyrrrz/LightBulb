@@ -4,8 +4,8 @@ namespace LightBulb.Services
 {
     public class WindowService
     {
-        public bool IsForegroundWindowFullScreen() => NativeWindow.GetForegroundWindow().IsFullScreen();
+        public bool IsForegroundWindowFullScreen() => SystemWindow.GetForegroundWindow().IsFullScreen();
 
-        public string GetForegroundWindowExecutableFilePath() => NativeWindow.GetForegroundWindow().GetProcess().GetExecutableFilePath();
+        public string GetForegroundWindowExecutableFilePath() => SystemWindow.GetForegroundWindow().GetProcess().GetExecutableFilePath();
     }
 }
