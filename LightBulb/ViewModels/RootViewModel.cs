@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using LightBulb.Calculators;
 using LightBulb.Internal;
@@ -16,7 +17,10 @@ namespace LightBulb.ViewModels
         private readonly DialogManager _dialogManager;
         private readonly SettingsService _settingsService;
         private readonly UpdateService _updateService;
-        private readonly SystemService _systemService;
+        private readonly GammaService _gammaService;
+        private readonly HotKeyService _hotKeyService;
+        private readonly RegistryService _registryService;
+        private readonly WindowService _windowService;
 
         private readonly AutoResetTimer _updateTimer;
         private readonly AutoResetTimer _checkForUpdatesTimer;
@@ -95,13 +99,18 @@ namespace LightBulb.ViewModels
         }
 
         public RootViewModel(IViewModelFactory viewModelFactory, DialogManager dialogManager,
-            SettingsService settingsService, UpdateService updateService, SystemService systemService)
+            SettingsService settingsService, UpdateService updateService,
+            GammaService gammaService, HotKeyService hotKeyService,
+            RegistryService registryService, WindowService windowService)
         {
             _viewModelFactory = viewModelFactory;
             _dialogManager = dialogManager;
             _settingsService = settingsService;
             _updateService = updateService;
-            _systemService = systemService;
+            _gammaService = gammaService;
+            _hotKeyService = hotKeyService;
+            _registryService = registryService;
+            _windowService = windowService;
 
             // Title
             DisplayName = $"{App.Name} v{App.VersionString}";
@@ -132,7 +141,7 @@ namespace LightBulb.ViewModels
         private async Task EnsureGammaRangeIsUnlockedAsync()
         {
             // If already unlocked - return
-            if (_systemService.IsGammaRangeUnlocked())
+            if (_registryService.IsGammaRangeUnlocked())
                 return;
 
             // Show prompt to the user
@@ -147,7 +156,7 @@ namespace LightBulb.ViewModels
 
             // Unlock gamma range if user agreed to it
             if (promptResult == true)
-                _systemService.UnlockGammaRange();
+                _registryService.UnlockGammaRange();
         }
 
         private async Task ShowFirstTimeExperienceMessageAsync()
@@ -196,19 +205,25 @@ namespace LightBulb.ViewModels
 
         private void RegisterHotKeys()
         {
-            _systemService.UnregisterAllHotKeys();
+            _hotKeyService.UnregisterAllHotKeys();
 
             if (_settingsService.ToggleHotKey != HotKey.None)
             {
-                _systemService.RegisterHotKey(_settingsService.ToggleHotKey, Toggle);
+                _hotKeyService.RegisterHotKey(_settingsService.ToggleHotKey, Toggle);
             }
         }
 
         private void UpdateIsPaused()
         {
-            IsPaused =
-                _settingsService.IsPauseWhenFullScreenEnabled && _systemService.IsForegroundWindowFullScreen() ||
-                _systemService.IsForegroundWindowExcluded();
+            bool IsPausedByFullScreen() =>
+                _settingsService.IsPauseWhenFullScreenEnabled && _windowService.IsForegroundWindowFullScreen();
+
+            bool IsPausedByExcludedApplication() =>
+                _settingsService.ExcludedApplications != null &&
+                _settingsService.ExcludedApplications.Any(a =>
+                    FileEx.ArePathEqual(a.ExecutableFilePath, _windowService.GetForegroundWindowExecutableFilePath()));
+
+            IsPaused = IsPausedByFullScreen() || IsPausedByExcludedApplication();
         }
 
         private void UpdateInstant()
@@ -259,7 +274,7 @@ namespace LightBulb.ViewModels
                 : TargetColorConfiguration;
 
             // Set gamma to new value
-            _systemService.SetGamma(CurrentColorConfiguration);
+            _gammaService.SetGamma(CurrentColorConfiguration);
         }
 
         public void Enable() => IsEnabled = true;
@@ -305,13 +320,9 @@ namespace LightBulb.ViewModels
 
         public void Dispose()
         {
-            // Dispose stuff
             _updateTimer.Dispose();
             _checkForUpdatesTimer.Dispose();
             _enableAfterDelayTimer.Dispose();
-
-            // Reset gamma
-            _systemService.SetGamma(ColorConfiguration.Default);
         }
     }
 }

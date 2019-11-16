@@ -2,12 +2,49 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security;
+using LightBulb.Internal;
 using Microsoft.Win32;
 using Tyrrrz.Extensions;
 
-namespace LightBulb.Internal
+namespace LightBulb.Services
 {
-    internal static class RegistryEx
+    public partial class RegistryService
+    {
+        public bool IsAutoStartEnabled()
+        {
+            var registryKeyEntryValue = GetValueOrDefault<string>(AutoStartRegistryPath, AutoStartRegistryEntryName);
+            return string.Equals(registryKeyEntryValue, AutoStartRegistryEntryValue, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public void EnableAutoStart() =>
+            SetValue(AutoStartRegistryPath, AutoStartRegistryEntryName, AutoStartRegistryEntryValue);
+
+        public void DisableAutoStart() =>
+            DeleteValue(AutoStartRegistryPath, AutoStartRegistryEntryName);
+
+        public bool IsGammaRangeUnlocked() =>
+            GetValueOrDefault<int>(GammaRangeRegistryPath, GammaRangeRegistryEntryName) == GammaRangeRegistryEntryValue;
+
+        public void UnlockGammaRange() =>
+            SetValue(GammaRangeRegistryPath, GammaRangeRegistryEntryName, GammaRangeRegistryEntryValue);
+    }
+
+    public partial class RegistryService
+    {
+        private const string AutoStartRegistryPath = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+
+        private static string AutoStartRegistryEntryName => App.Name;
+
+        private static string AutoStartRegistryEntryValue => $"\"{App.ExecutableFilePath}\" {App.HiddenOnLaunchArgument}";
+
+        private const string GammaRangeRegistryPath = "HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\ICM";
+
+        private const string GammaRangeRegistryEntryName = "GdiICMGammaRange";
+
+        private const int GammaRangeRegistryEntryValue = 256;
+    }
+
+    public partial class RegistryService
     {
         private static RegistryKey GetRegistryKeyFromHiveName(string hiveName)
         {

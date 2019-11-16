@@ -3,20 +3,18 @@ using System.Windows.Forms;
 
 namespace LightBulb.WindowsApi.Internal
 {
-    internal sealed class WndProcSpongeWindow : NativeWindow
+    internal sealed class SpongeWindow : NativeWindow
     {
-        private readonly Action<Message> _handler;
+        public event EventHandler<Message>? MessageReceived;
 
-        public WndProcSpongeWindow(Action<Message> handler)
+        public SpongeWindow()
         {
-            _handler = handler;
-
             CreateHandle(new CreateParams());
         }
 
         protected override void WndProc(ref Message m)
         {
-            _handler?.Invoke(m);
+            MessageReceived?.Invoke(this, m);
             base.WndProc(ref m);
         }
     }

@@ -26,17 +26,7 @@ namespace LightBulb.WindowsApi.Internal
 
         public override bool Equals(object? obj) => obj is Rect other && Equals(other);
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = Left;
-                hashCode = (hashCode * 397) ^ Top;
-                hashCode = (hashCode * 397) ^ Right;
-                hashCode = (hashCode * 397) ^ Bottom;
-                return hashCode;
-            }
-        }
+        public override int GetHashCode() => HashCode.Combine(Left, Top, Right, Bottom);
 
         public override string ToString() => $"L:{Left} T:{Top} R:{Right} B:{Bottom}";
     }
