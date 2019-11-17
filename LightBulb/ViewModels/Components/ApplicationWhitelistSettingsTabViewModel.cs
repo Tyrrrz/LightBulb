@@ -16,20 +16,41 @@ namespace LightBulb.ViewModels.Components
             set => SettingsService.IsApplicationWhitelistEnabled = value;
         }
 
-        public IReadOnlyList<ExternalApplication> WhitelistedApplications
+        public IReadOnlyList<ExternalApplication>? AvailableApplications { get; private set; }
+
+        public IReadOnlyList<ExternalApplication>? WhitelistedApplications
         {
-            get => SettingsService.WhitelistedApplications ?? Array.Empty<ExternalApplication>();
+            get => SettingsService.WhitelistedApplications;
             set => SettingsService.WhitelistedApplications = value;
         }
-
-        public IReadOnlyList<ExternalApplication> RunningApplications =>
-            WhitelistedApplications.Concat(_externalApplicationService.GetAllRunningApplications()
-                .Where(wa => !WhitelistedApplications.Any(wb => wb.IsSameExecutableFileAs(wa)))).ToArray();
 
         public ApplicationWhitelistSettingsTabViewModel(SettingsService settingsService, ExternalApplicationService externalApplicationService)
             : base(settingsService, 3, "Application whitelist")
         {
             _externalApplicationService = externalApplicationService;
+        }
+
+        protected override void OnActivated()
+        {
+            base.OnActivated();
+
+            UpdateAvailableApplications();
+        }
+
+        private void UpdateAvailableApplications()
+        {
+            var applicationsByExecutablePath = new Dictionary<string, ExternalApplication>();
+
+            // Add all running applications
+            foreach (var application in _externalApplicationService.GetAllRunningApplications())
+                applicationsByExecutablePath[application.ExecutableFilePath] = application;
+
+            // Add or overwrite previously whitelisted applications
+            // (this is important to maintain same references here and in list of selected applications)
+            foreach (var application in WhitelistedApplications ?? Array.Empty<ExternalApplication>())
+                applicationsByExecutablePath[application.ExecutableFilePath] = application;
+
+            AvailableApplications = applicationsByExecutablePath.Values.ToArray();
         }
     }
 }

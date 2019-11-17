@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using LightBulb.Models;
 using LightBulb.WindowsApi;
 
 namespace LightBulb.Services
 {
-    public partial class ExternalApplicationService
+    public class ExternalApplicationService
     {
         public ExternalApplication GetForegroundApplication()
         {
             using var window = SystemWindow.GetForegroundWindow();
             using var process = window.GetProcess();
 
-            return GetExternalApplication(process);
+            return new ExternalApplication(process.GetExecutableFilePath());
         }
 
         public bool IsForegroundApplicationFullScreen()
@@ -32,21 +31,11 @@ namespace LightBulb.Services
                     var executableFilePath = process.GetExecutableFilePath();
 
                     if (!string.IsNullOrWhiteSpace(executableFilePath))
-                        result.Add(GetExternalApplication(process));
+                        result.Add(new ExternalApplication(executableFilePath));
                 }
             }
 
             return result;
-        }
-    }
-
-    public partial class ExternalApplicationService
-    {
-        private static ExternalApplication GetExternalApplication(SystemProcess process)
-        {
-            var executableFilePath = process.GetExecutableFilePath();
-            var name = Path.GetFileNameWithoutExtension(executableFilePath) ?? executableFilePath;
-            return new ExternalApplication(name, executableFilePath);
         }
     }
 }

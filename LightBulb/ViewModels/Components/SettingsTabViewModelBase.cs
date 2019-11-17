@@ -21,6 +21,17 @@ namespace LightBulb.ViewModels.Components
 
             // Refresh settings when they are reset
             SettingsService.SettingsReset += (sender, args) => Refresh();
+
+            // Bind IsActive to pseudo-event
+            this.Bind(o => o.IsActive, (sender, args) =>
+            {
+                if (args.NewValue)
+                    OnActivated();
+            });
+        }
+
+        protected virtual void OnActivated()
+        {
         }
     }
 }
