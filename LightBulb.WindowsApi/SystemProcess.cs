@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using LightBulb.WindowsApi.Internal;
 
 namespace LightBulb.WindowsApi
 {
-    public class SystemProcess : IDisposable
+    public partial class SystemProcess : IDisposable
     {
         public IntPtr Handle { get; }
 
@@ -34,5 +37,25 @@ namespace LightBulb.WindowsApi
             NativeMethods.CloseHandle(Handle);
             GC.SuppressFinalize(this);
         }
+    }
+
+    public partial class SystemProcess
+    {
+        public static SystemProcess Open(int processId)
+        {
+            var handle = NativeMethods.OpenProcess(ProcessAccessFlags.QueryLimitedInformation, false, processId);
+            return new SystemProcess(handle);
+        }
+
+        // TODO: use native call
+        public static IReadOnlyList<SystemProcess> GetAllWindowedProcesses() =>
+            Process.GetProcesses()
+                .Where(p => p.MainWindowHandle != IntPtr.Zero)
+                .Select(p =>
+                {
+                    using (p)
+                        return Open(p.Id);
+                })
+                .ToArray();
     }
 }

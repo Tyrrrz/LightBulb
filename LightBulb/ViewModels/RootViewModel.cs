@@ -20,7 +20,7 @@ namespace LightBulb.ViewModels
         private readonly GammaService _gammaService;
         private readonly HotKeyService _hotKeyService;
         private readonly RegistryService _registryService;
-        private readonly WindowService _windowService;
+        private readonly ExternalApplicationService _externalApplicationService;
 
         private readonly AutoResetTimer _updateTimer;
         private readonly AutoResetTimer _checkForUpdatesTimer;
@@ -81,9 +81,13 @@ namespace LightBulb.ViewModels
                 if (CurrentColorConfiguration != TargetColorConfiguration)
                     return CycleState.Transition;
 
-                // If disabled or paused - return disabled
-                if (!IsWorking)
+                // If disabled - return disabled
+                if (!IsEnabled)
                     return CycleState.Disabled;
+
+                // If paused - return paused
+                if (IsPaused)
+                    return CycleState.Paused;
 
                 // If at day configuration - return day
                 if (CurrentColorConfiguration == _settingsService.DayConfiguration)
@@ -101,7 +105,7 @@ namespace LightBulb.ViewModels
         public RootViewModel(IViewModelFactory viewModelFactory, DialogManager dialogManager,
             SettingsService settingsService, UpdateService updateService,
             GammaService gammaService, HotKeyService hotKeyService,
-            RegistryService registryService, WindowService windowService)
+            RegistryService registryService, ExternalApplicationService externalApplicationService)
         {
             _viewModelFactory = viewModelFactory;
             _dialogManager = dialogManager;
@@ -110,7 +114,7 @@ namespace LightBulb.ViewModels
             _gammaService = gammaService;
             _hotKeyService = hotKeyService;
             _registryService = registryService;
-            _windowService = windowService;
+            _externalApplicationService = externalApplicationService;
 
             // Title
             DisplayName = $"{App.Name} v{App.VersionString}";
@@ -216,12 +220,11 @@ namespace LightBulb.ViewModels
         private void UpdateIsPaused()
         {
             bool IsPausedByFullScreen() =>
-                _settingsService.IsPauseWhenFullScreenEnabled && _windowService.IsForegroundWindowFullScreen();
+                _settingsService.IsPauseWhenFullScreenEnabled && _externalApplicationService.IsForegroundApplicationFullScreen();
 
             bool IsPausedByExcludedApplication() =>
-                _settingsService.ExcludedApplications != null &&
-                _settingsService.ExcludedApplications.Any(a =>
-                    FileEx.ArePathEqual(a.ExecutableFilePath, _windowService.GetForegroundWindowExecutableFilePath()));
+                _settingsService.WhitelistedApplications != null && _settingsService.IsApplicationWhitelistEnabled &&
+                _settingsService.WhitelistedApplications.Any(a => a.IsSameExecutableFileAs(_externalApplicationService.GetForegroundApplication()));
 
             IsPaused = IsPausedByFullScreen() || IsPausedByExcludedApplication();
         }

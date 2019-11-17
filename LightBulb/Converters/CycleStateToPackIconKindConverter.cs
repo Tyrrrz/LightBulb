@@ -18,6 +18,7 @@ namespace LightBulb.Converters
                 return cycleStateValue switch
                 {
                     CycleState.Disabled => PackIconKind.Cancel,
+                    CycleState.Paused => PackIconKind.PauseCircleOutline,
                     CycleState.Day => PackIconKind.WhiteBalanceSunny,
                     CycleState.Night => PackIconKind.MoonAndStars,
                     CycleState.Transition => PackIconKind.Sync,

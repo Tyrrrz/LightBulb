@@ -11,7 +11,7 @@ namespace LightBulb.WindowsApi.Internal
         private const string Kernel = "kernel32.dll";
 
         [DllImport(Kernel, SetLastError = true)]
-        public static extern IntPtr OpenProcess(ProcessAccessFlags processAccess, bool bInheritHandle, uint processId);
+        public static extern IntPtr OpenProcess(ProcessAccessFlags processAccess, bool bInheritHandle, int processId);
 
         [DllImport(Kernel, SetLastError = true)]
         public static extern bool QueryFullProcessImageName(IntPtr hPrc, uint dwFlags, StringBuilder lpExeName, ref uint lpdwSize);
@@ -46,7 +46,7 @@ namespace LightBulb.WindowsApi.Internal
         public static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
         [DllImport(User, SetLastError = true)]
-        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
     }
 
     internal static partial class NativeMethods

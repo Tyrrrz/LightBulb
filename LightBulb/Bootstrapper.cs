@@ -49,7 +49,7 @@ namespace LightBulb
             builder.Bind<GammaService>().ToSelf().InSingletonScope();
             builder.Bind<HotKeyService>().ToSelf().InSingletonScope();
             builder.Bind<RegistryService>().ToSelf().InSingletonScope();
-            builder.Bind<WindowService>().ToSelf().InSingletonScope();
+            builder.Bind<ExternalApplicationService>().ToSelf().InSingletonScope();
             builder.Bind<UpdateService>().ToSelf().InSingletonScope();
 
             // Bind view model layer services

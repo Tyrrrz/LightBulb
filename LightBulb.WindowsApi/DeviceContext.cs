@@ -64,8 +64,11 @@ namespace LightBulb.WindowsApi
 
     public partial class DeviceContext
     {
-        public static DeviceContext FromDeviceName(string deviceName) =>
-            new DeviceContext(NativeMethods.CreateDC(deviceName, null, null, IntPtr.Zero));
+        public static DeviceContext FromDeviceName(string deviceName)
+        {
+            var handle = NativeMethods.CreateDC(deviceName, null, null, IntPtr.Zero);
+            return new DeviceContext(handle);
+        }
 
         public static IReadOnlyList<DeviceContext> GetAllMonitorDeviceContexts() =>
             Screen.AllScreens.Select(s => FromDeviceName(s.DeviceName)).ToArray();

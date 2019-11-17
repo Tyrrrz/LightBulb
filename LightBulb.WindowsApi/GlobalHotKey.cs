@@ -22,7 +22,7 @@ namespace LightBulb.WindowsApi
             Handler = handler;
 
             // Wire up wnd proc events
-            SpongeWindow.MessageReceived += SpongeWindowOnMessageReceived;
+            SpongeWindow.Instance.MessageReceived += SpongeWindowOnMessageReceived;
         }
 
         ~GlobalHotKey()
@@ -46,8 +46,8 @@ namespace LightBulb.WindowsApi
 
         public void Dispose()
         {
-            NativeMethods.UnregisterHotKey(SpongeWindow.Handle, Id);
-            SpongeWindow.MessageReceived -= SpongeWindowOnMessageReceived;
+            NativeMethods.UnregisterHotKey(SpongeWindow.Instance.Handle, Id);
+            SpongeWindow.Instance.MessageReceived -= SpongeWindowOnMessageReceived;
             GC.SuppressFinalize(this);
         }
     }
@@ -59,14 +59,9 @@ namespace LightBulb.WindowsApi
         public static GlobalHotKey Register(int virtualKey, int modifiers, Action handler)
         {
             var id = _lastHotKeyId++;
-            NativeMethods.RegisterHotKey(SpongeWindow.Handle, id, modifiers, virtualKey);
+            NativeMethods.RegisterHotKey(SpongeWindow.Instance.Handle, id, modifiers, virtualKey);
 
             return new GlobalHotKey(id, virtualKey, modifiers, handler);
         }
-    }
-
-    public partial class GlobalHotKey
-    {
-        private static readonly SpongeWindow SpongeWindow = new SpongeWindow();
     }
 }

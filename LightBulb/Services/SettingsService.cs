@@ -38,9 +38,11 @@ namespace LightBulb.Services
 
         public bool IsPauseWhenFullScreenEnabled { get; set; } = false;
 
-        // Excluded applications
+        // Application whitelist
 
-        public IReadOnlyList<ExcludedApplication>? ExcludedApplications { get; set; }
+        public bool IsApplicationWhitelistEnabled { get; set; } = false;
+
+        public IReadOnlyList<ExternalApplication>? WhitelistedApplications { get; set; }
 
         // Hotkeys
 
@@ -60,7 +62,7 @@ namespace LightBulb.Services
             {
                 Configuration.FileName = "Settings.json";
                 Configuration.SubDirectoryPath = "LightBulb";
-                Configuration.StorageSpace = StorageSpace.UserDomain;
+                Configuration.StorageSpace = StorageSpace.SyncedUserDomain;
             }
 
             Configuration.ThrowIfCannotLoad = false;

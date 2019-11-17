@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace LightBulb.WindowsApi.Internal
 {
-    internal sealed class SpongeWindow : NativeWindow
+    internal sealed partial class SpongeWindow : NativeWindow
     {
         public event EventHandler<Message>? MessageReceived;
 
@@ -17,5 +17,10 @@ namespace LightBulb.WindowsApi.Internal
             MessageReceived?.Invoke(this, m);
             base.WndProc(ref m);
         }
+    }
+
+    internal sealed partial class SpongeWindow
+    {
+        public static SpongeWindow Instance { get; } = new SpongeWindow();
     }
 }

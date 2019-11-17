@@ -70,7 +70,7 @@ namespace LightBulb.WindowsApi
             if (IsSystemWindow())
                 return false;
 
-            // If window is not visible - return false;
+            // If window is not visible - return false
             if (!IsVisible())
                 return false;
 
@@ -101,9 +101,7 @@ namespace LightBulb.WindowsApi
         public SystemProcess GetProcess()
         {
             NativeMethods.GetWindowThreadProcessId(Handle, out var processId);
-            var handle = NativeMethods.OpenProcess(ProcessAccessFlags.QueryLimitedInformation, false, processId);
-
-            return new SystemProcess(handle);
+            return SystemProcess.Open(processId);
         }
 
         public void Dispose()
