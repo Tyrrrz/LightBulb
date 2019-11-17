@@ -43,5 +43,19 @@ namespace LightBulb.WindowsApi.Internal
 
         [DllImport("gdi32.dll", EntryPoint = "SetDeviceGammaRamp", SetLastError = true)]
         public static extern bool SetDeviceGammaRamp(IntPtr hdc, ref GammaRamp lpRamp);
+
+        [DllImport("User32.dll", EntryPoint = "RegisterPowerSettingNotification", SetLastError = true)]
+        public static extern IntPtr RegisterPowerSettingNotification(IntPtr hRecipient, ref Guid PowerSettingGuid, Int32 Flags);
+
+        [DllImport("User32.dll", EntryPoint = "UnregisterPowerSettingNotification", SetLastError = true)]
+        public static extern bool UnregisterPowerSettingNotification(in IntPtr Handle);
+
+        [StructLayout(LayoutKind.Sequential, Pack = 4)]
+        internal struct PowerBroadcastSetting
+        {
+            public Guid PowerSetting;
+            public uint DataLength;
+            public byte Data;
+        }
     }
 }

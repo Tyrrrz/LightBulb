@@ -11,6 +11,7 @@ namespace LightBulb.Services
         private readonly GammaManager _gammaManager = new GammaManager();
         private readonly HotKeyManager _hotKeyManager = new HotKeyManager();
         private readonly WindowManager _windowManager = new WindowManager();
+        private readonly PowerSettingManager _powerSettingManager = new PowerSettingManager();
 
         public void SetGamma(ColorConfiguration colorConfiguration) => _gammaManager.SetGamma(colorConfiguration.ToColorBalance());
 
@@ -29,6 +30,10 @@ namespace LightBulb.Services
             var foregroundWindow = _windowManager.GetForegroundWindow();
             return _windowManager.IsWindowFullScreen(foregroundWindow);
         }
+
+        public void RegisterPowerEvent(Guid settingGuid, Action<byte> handler) => _powerSettingManager.RegisterPowerEvent(settingGuid, handler);
+
+        public void UnregisterPowerEvents() => _powerSettingManager.UnregisterEvents();
 
         public bool IsAutoStartEnabled()
         {

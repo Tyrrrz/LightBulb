@@ -179,6 +179,9 @@ namespace LightBulb.ViewModels
             // Register hot keys
             RegisterHotKeys();
 
+            // Register callback for monitor power on
+            DisplayStateChangeEvent();
+
             // Refresh
             Refresh();
 
@@ -202,6 +205,21 @@ namespace LightBulb.ViewModels
             {
                 _systemService.RegisterHotKey(_settingsService.ToggleHotKey, Toggle);
             }
+        }
+
+        private void DisplayStateChangeEvent()
+        {
+            _systemService.UnregisterPowerEvents();
+            _systemService.RegisterPowerEvent(
+                new Guid("6FE69556-704A-47A0-8F24-C28D936FDA47"),
+                DisplayStateChange);
+        }
+
+        private void DisplayStateChange(byte newState)
+        {
+            // Only force update if display is turning on
+            if(newState == 0x1)
+                UpdateGamma(true);
         }
 
         private void UpdateIsPaused()
@@ -231,10 +249,10 @@ namespace LightBulb.ViewModels
             }
         }
 
-        private void UpdateGamma()
+        private void UpdateGamma(bool force = false)
         {
             // Don't update if already reached target
-            if (CurrentColorConfiguration == TargetColorConfiguration)
+            if (!force && CurrentColorConfiguration == TargetColorConfiguration)
                 return;
 
             // Don't update on small changes to avoid lag
@@ -246,7 +264,7 @@ namespace LightBulb.ViewModels
                 TargetColorConfiguration == _settingsService.NightConfiguration ||
                 TargetColorConfiguration == _settingsService.DayConfiguration;
 
-            if (isSmallChange && !isExtremeState)
+            if (!force && isSmallChange && !isExtremeState)
                 return;
 
             // Update current configuration
