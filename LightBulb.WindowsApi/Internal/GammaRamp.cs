@@ -3,7 +3,7 @@
 namespace LightBulb.WindowsApi.Internal
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct GammaRamp
+    internal struct GammaRamp
     {
         [field: MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
         public ushort[] Red { get; set; }

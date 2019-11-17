@@ -18,9 +18,10 @@ namespace LightBulb.Converters
                 return settingsTab switch
                 {
                     GeneralSettingsTabViewModel _ => PackIconKind.Settings,
-                    HotKeySettingsTabViewModel _ => PackIconKind.Keyboard,
                     LocationSettingsTabViewModel _ => PackIconKind.Globe,
                     AdvancedSettingsTabViewModel _ => PackIconKind.CheckboxesMarked,
+                    ApplicationWhitelistSettingsTabViewModel _ => PackIconKind.FormatListChecks,
+                    HotKeySettingsTabViewModel _ => PackIconKind.Keyboard,
                     _ => PackIconKind.QuestionMark // shouldn't happen
                 };
             }

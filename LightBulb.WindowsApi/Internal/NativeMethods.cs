@@ -8,40 +8,61 @@ namespace LightBulb.WindowsApi.Internal
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     internal static partial class NativeMethods
     {
-        [DllImport("user32.dll", EntryPoint = "RegisterHotKey", SetLastError = true)]
-        public static extern bool RegisterHotKey(IntPtr hwnd, int id, int fsModifiers, int vk);
+        private const string Kernel = "kernel32.dll";
 
-        [DllImport("user32.dll", EntryPoint = "UnregisterHotKey", SetLastError = true)]
-        public static extern bool UnregisterHotKey(IntPtr hwnd, int id);
+        [DllImport(Kernel, SetLastError = true)]
+        public static extern IntPtr OpenProcess(ProcessAccessFlags processAccess, bool bInheritHandle, int processId);
 
-        [DllImport("user32.dll", EntryPoint = "GetForegroundWindow", SetLastError = true)]
-        public static extern IntPtr GetForegroundWindow();
+        [DllImport(Kernel, SetLastError = true)]
+        public static extern bool QueryFullProcessImageName(IntPtr hPrc, uint dwFlags, StringBuilder lpExeName, ref uint lpdwSize);
 
-        [DllImport("user32.dll", EntryPoint = "GetWindowRect", SetLastError = true)]
-        public static extern bool GetWindowRect(IntPtr hwnd, out Rect lpRect);
-
-        [DllImport("user32.dll", EntryPoint = "GetClientRect", SetLastError = true)]
-        public static extern bool GetClientRect(IntPtr hwnd, out Rect lpRect);
-
-        [DllImport("user32.dll", EntryPoint = "IsWindowVisible", SetLastError = true)]
-        public static extern bool IsWindowVisible(IntPtr hwnd);
-
-        [DllImport("user32.dll", EntryPoint = "GetClassName", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern int GetClassName(IntPtr hwnd, StringBuilder lpClassName, int nMaxCount);
+        [DllImport(Kernel, SetLastError = true)]
+        public static extern bool CloseHandle(IntPtr hObj);
     }
 
     internal static partial class NativeMethods
     {
-        [DllImport("gdi32.dll", EntryPoint = "CreateDC", SetLastError = true)]
+        private const string User = "user32.dll";
+
+        [DllImport(User, SetLastError = true)]
+        public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
+
+        [DllImport(User, SetLastError = true)]
+        public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+        [DllImport(User, SetLastError = true)]
+        public static extern IntPtr GetForegroundWindow();
+
+        [DllImport(User, SetLastError = true)]
+        public static extern bool GetWindowRect(IntPtr hWnd, out Rect lpRect);
+
+        [DllImport(User, SetLastError = true)]
+        public static extern bool GetClientRect(IntPtr hWnd, out Rect lpRect);
+
+        [DllImport(User, SetLastError = true)]
+        public static extern bool IsWindowVisible(IntPtr hWnd);
+
+        [DllImport(User, CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+
+        [DllImport(User, SetLastError = true)]
+        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
+    }
+
+    internal static partial class NativeMethods
+    {
+        private const string Gdi = "gdi32.dll";
+
+        [DllImport(Gdi, SetLastError = true)]
         public static extern IntPtr CreateDC(string? lpszDriver, string? lpszDevice, string? lpszOutput, IntPtr lpInitData);
 
-        [DllImport("gdi32.dll", EntryPoint = "DeleteDC", SetLastError = true)]
-        public static extern bool DeleteDC(IntPtr hdc);
+        [DllImport(Gdi, SetLastError = true)]
+        public static extern bool DeleteDC(IntPtr hDc);
 
-        [DllImport("gdi32.dll", EntryPoint = "GetDeviceGammaRamp", SetLastError = true)]
-        public static extern bool GetDeviceGammaRamp(IntPtr hdc, out GammaRamp lpRamp);
+        [DllImport(Gdi, SetLastError = true)]
+        public static extern bool GetDeviceGammaRamp(IntPtr hDc, out GammaRamp lpRamp);
 
-        [DllImport("gdi32.dll", EntryPoint = "SetDeviceGammaRamp", SetLastError = true)]
-        public static extern bool SetDeviceGammaRamp(IntPtr hdc, ref GammaRamp lpRamp);
+        [DllImport(Gdi, SetLastError = true)]
+        public static extern bool SetDeviceGammaRamp(IntPtr hDc, ref GammaRamp lpRamp);
     }
 }
