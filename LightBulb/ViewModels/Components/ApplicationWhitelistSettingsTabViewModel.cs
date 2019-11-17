@@ -45,8 +45,8 @@ namespace LightBulb.ViewModels.Components
             foreach (var application in _externalApplicationService.GetAllRunningApplications())
                 applicationsByExecutablePath[application.ExecutableFilePath] = application;
 
-            // Add or overwrite previously whitelisted applications
-            // (this is important to maintain same references here and in list of selected applications)
+            // Add previously whitelisted applications
+            // (this order is important to preserve references in selected applications)
             foreach (var application in WhitelistedApplications ?? Array.Empty<ExternalApplication>())
                 applicationsByExecutablePath[application.ExecutableFilePath] = application;
 

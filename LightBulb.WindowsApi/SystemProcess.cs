@@ -21,20 +21,19 @@ namespace LightBulb.WindowsApi
             Dispose();
         }
 
-        public string GetExecutableFilePath()
+        public string? GetExecutableFilePath()
         {
             var buffer = new StringBuilder(1024);
             var bufferSize = (uint) buffer.Capacity + 1;
 
-            // This can return empty string
-            NativeMethods.QueryFullProcessImageName(Handle, 0, buffer, ref bufferSize);
-
-            return buffer.ToString();
+            return NativeMethods.QueryFullProcessImageName(Handle, 0, buffer, ref bufferSize) ? buffer.ToString() : null;
         }
 
         public void Dispose()
         {
+            // Potentially unhandled error
             NativeMethods.CloseHandle(Handle);
+
             GC.SuppressFinalize(this);
         }
     }
@@ -43,6 +42,7 @@ namespace LightBulb.WindowsApi
     {
         public static SystemProcess Open(int processId)
         {
+            // Potentially unhandled error
             var handle = NativeMethods.OpenProcess(ProcessAccessFlags.QueryLimitedInformation, false, processId);
             return new SystemProcess(handle);
         }

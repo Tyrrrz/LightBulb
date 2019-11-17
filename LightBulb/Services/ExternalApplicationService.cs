@@ -6,12 +6,14 @@ namespace LightBulb.Services
 {
     public class ExternalApplicationService
     {
-        public ExternalApplication GetForegroundApplication()
+        public ExternalApplication? GetForegroundApplication()
         {
             using var window = SystemWindow.GetForegroundWindow();
             using var process = window.GetProcess();
 
-            return new ExternalApplication(process.GetExecutableFilePath());
+            var executableFilePath = process.GetExecutableFilePath();
+
+            return !string.IsNullOrWhiteSpace(executableFilePath) ? new ExternalApplication(executableFilePath) : null;
         }
 
         public bool IsForegroundApplicationFullScreen()

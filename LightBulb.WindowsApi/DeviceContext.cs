@@ -56,8 +56,12 @@ namespace LightBulb.WindowsApi
 
         public void Dispose()
         {
+            // Reset gamma
             SetGamma(1, 1, 1);
+
+            // Potentially unhandled error
             NativeMethods.DeleteDC(Handle);
+
             GC.SuppressFinalize(this);
         }
     }
@@ -66,6 +70,7 @@ namespace LightBulb.WindowsApi
     {
         public static DeviceContext FromDeviceName(string deviceName)
         {
+            // Potentially unhandled error
             var handle = NativeMethods.CreateDC(deviceName, null, null, IntPtr.Zero);
             return new DeviceContext(handle);
         }

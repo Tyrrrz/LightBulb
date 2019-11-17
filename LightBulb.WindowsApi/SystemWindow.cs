@@ -14,24 +14,14 @@ namespace LightBulb.WindowsApi
             Handle = handle;
         }
 
-        private Rect GetRect()
-        {
-            NativeMethods.GetWindowRect(Handle, out var rect);
-            return rect;
-        }
+        private Rect? GetRect() => NativeMethods.GetWindowRect(Handle, out var rect) ? rect : (Rect?) null;
 
-        private Rect GetClientRect()
-        {
-            NativeMethods.GetClientRect(Handle, out var rect);
-            return rect;
-        }
+        private Rect? GetClientRect() => NativeMethods.GetClientRect(Handle, out var rect) ? rect : (Rect?) null;
 
-        public string GetClassName()
+        public string? GetClassName()
         {
             var buffer = new StringBuilder(256);
-            NativeMethods.GetClassName(Handle, buffer, buffer.Capacity);
-
-            return buffer.ToString();
+            return NativeMethods.GetClassName(Handle, buffer, buffer.Capacity) >= 0 ? buffer.ToString() : null;
         }
 
         public bool IsSystemWindow()
@@ -75,12 +65,12 @@ namespace LightBulb.WindowsApi
                 return false;
 
             // Get window rect
-            var windowRect = GetRect();
+            var windowRect = GetRect() ?? Rect.Empty;
             if (windowRect == Rect.Empty)
                 return false;
 
             // Calculate absolute window client rect (not relative to window)
-            var windowClientRect = GetClientRect();
+            var windowClientRect = GetClientRect() ?? Rect.Empty;
 
             var absoluteWindowClientRect = new Rect(
                 windowRect.Left + windowClientRect.Left,
@@ -100,6 +90,7 @@ namespace LightBulb.WindowsApi
 
         public SystemProcess GetProcess()
         {
+            // Potentially unhandled error
             NativeMethods.GetWindowThreadProcessId(Handle, out var processId);
             return SystemProcess.Open(processId);
         }
@@ -114,6 +105,7 @@ namespace LightBulb.WindowsApi
     {
         public static SystemWindow GetForegroundWindow()
         {
+            // Potentially unhandled error
             var handle = NativeMethods.GetForegroundWindow();
             return new SystemWindow(handle);
         }
