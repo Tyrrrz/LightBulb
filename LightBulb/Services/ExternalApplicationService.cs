@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using LightBulb.Models;
 using LightBulb.WindowsApi;
 
@@ -33,12 +35,16 @@ namespace LightBulb.Services
             {
                 using var _ = window;
 
-                // Ignore invisible windows
-                if (!window.IsVisible())
+                // Ignore invisible and system windows
+                if (!window.IsVisible() || window.IsSystemWindow())
                     continue;
 
                 using var process = window.GetProcess();
                 var executableFilePath = process?.GetExecutableFilePath();
+
+                // Ignore explorer
+                if (string.Equals(Path.GetFileNameWithoutExtension(executableFilePath), "explorer", StringComparison.OrdinalIgnoreCase))
+                    continue;
 
                 if (!string.IsNullOrWhiteSpace(executableFilePath))
                     result.Add(new ExternalApplication(executableFilePath));
