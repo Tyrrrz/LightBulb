@@ -7,9 +7,11 @@
     xmlns:components="clr-namespace:LightBulb.ViewModels.Components"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:s="https://github.com/canton7/Stylet"
     d:DataContext="{d:DesignInstance Type=components:ApplicationWhitelistSettingsTabViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Loaded="{s:Action OnViewLoaded}"
     Style="{DynamicResource MaterialDesignRoot}"
     mc:Ignorable="d">
     <StackPanel Orientation="Vertical">

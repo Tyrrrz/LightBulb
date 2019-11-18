@@ -11,15 +11,7 @@ namespace LightBulb.Views.Controls
 
     public sealed class Arc : Shape
     {
-        private static object CoerceAngle(DependencyObject d, object baseValue)
-        {
-            if (baseValue is double angle)
-            {
-                return angle % 360.0;
-            }
-
-            return baseValue;
-        }
+        private static object CoerceAngle(DependencyObject d, object baseValue) => baseValue is double angle ? angle % 360.0 : baseValue;
 
         public static readonly DependencyProperty StartAngleProperty =
             DependencyProperty.Register(nameof(StartAngle), typeof(double), typeof(Arc),

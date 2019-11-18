@@ -266,7 +266,7 @@
                             StrokeThickness="24" />
 
                         <!--  Current time position  -->
-                        <controls:RotatedPoint
+                        <controls:ArcPoint
                             Angle="{Binding Instant.TimeOfDay.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
                             Fill="#C0FF8B50"
                             Size="12"

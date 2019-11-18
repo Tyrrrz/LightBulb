@@ -30,12 +30,7 @@ namespace LightBulb.ViewModels.Components
             _externalApplicationService = externalApplicationService;
         }
 
-        protected override void OnActivated()
-        {
-            base.OnActivated();
-
-            UpdateAvailableApplications();
-        }
+        public void OnViewLoaded() => UpdateAvailableApplications();
 
         private void UpdateAvailableApplications()
         {
@@ -50,7 +45,7 @@ namespace LightBulb.ViewModels.Components
             foreach (var application in WhitelistedApplications ?? Array.Empty<ExternalApplication>())
                 applicationsByExecutablePath[application.ExecutableFilePath] = application;
 
-            AvailableApplications = applicationsByExecutablePath.Values.ToArray();
+            AvailableApplications = applicationsByExecutablePath.Values.OrderBy(a => a.Name).ToArray();
         }
     }
 }

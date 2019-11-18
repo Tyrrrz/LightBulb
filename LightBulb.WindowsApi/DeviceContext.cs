@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using System.Windows.Forms;
 using LightBulb.WindowsApi.Internal;
 
@@ -59,8 +59,8 @@ namespace LightBulb.WindowsApi
             // Reset gamma
             SetGamma(1, 1, 1);
 
-            // Potentially unhandled error
-            NativeMethods.DeleteDC(Handle);
+            if (!NativeMethods.DeleteDC(Handle))
+                Debug.WriteLine("Could not dispose device context.");
 
             GC.SuppressFinalize(this);
         }
@@ -68,14 +68,25 @@ namespace LightBulb.WindowsApi
 
     public partial class DeviceContext
     {
-        public static DeviceContext FromDeviceName(string deviceName)
+        public static DeviceContext? FromDeviceName(string deviceName)
         {
-            // Potentially unhandled error
             var handle = NativeMethods.CreateDC(deviceName, null, null, IntPtr.Zero);
-            return new DeviceContext(handle);
+            return handle != IntPtr.Zero ? new DeviceContext(handle) : null;
         }
 
-        public static IReadOnlyList<DeviceContext> GetAllMonitorDeviceContexts() =>
-            Screen.AllScreens.Select(s => FromDeviceName(s.DeviceName)).ToArray();
+        // TODO: use native call
+        public static IReadOnlyList<DeviceContext> GetAllMonitorDeviceContexts()
+        {
+            var result = new List<DeviceContext>();
+
+            foreach (var screen in Screen.AllScreens)
+            {
+                var deviceContext = FromDeviceName(screen.DeviceName);
+                if (deviceContext != null)
+                    result.Add(deviceContext);
+            }
+
+            return result;
+        }
     }
 }

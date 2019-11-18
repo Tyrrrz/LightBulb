@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using LightBulb.WindowsApi.Internal;
 
@@ -49,8 +50,8 @@ namespace LightBulb.WindowsApi
             // Unwire wnd proc events
             SpongeWindow.Instance.MessageReceived -= SpongeWindowOnMessageReceived;
 
-            // Potentially unhandled error
-            NativeMethods.UnregisterHotKey(SpongeWindow.Instance.Handle, Id);
+            if (!NativeMethods.UnregisterHotKey(SpongeWindow.Instance.Handle, Id))
+                Debug.WriteLine("Could not dispose global hotkey.");
 
             GC.SuppressFinalize(this);
         }
@@ -60,14 +61,12 @@ namespace LightBulb.WindowsApi
     {
         private static int _lastHotKeyId;
 
-        public static GlobalHotKey Register(int virtualKey, int modifiers, Action handler)
+        public static GlobalHotKey? Register(int virtualKey, int modifiers, Action handler)
         {
             var id = _lastHotKeyId++;
-
-            // Potentially unhandled error
-            NativeMethods.RegisterHotKey(SpongeWindow.Instance.Handle, id, modifiers, virtualKey);
-
-            return new GlobalHotKey(id, virtualKey, modifiers, handler);
+            return NativeMethods.RegisterHotKey(SpongeWindow.Instance.Handle, id, modifiers, virtualKey)
+                ? new GlobalHotKey(id, virtualKey, modifiers, handler)
+                : null;
         }
     }
 }

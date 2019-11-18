@@ -40,7 +40,14 @@ namespace LightBulb.Models
 
     public partial class ExternalApplication
     {
+        public static bool operator ==(ExternalApplication a, ExternalApplication b) => a?.Equals(b) ?? b is null;
+
+        public static bool operator !=(ExternalApplication a, ExternalApplication b) => !(a == b);
+    }
+
+    public partial class ExternalApplication
+    {
         private static string? NormalizeFilePath(string? filePath) =>
-            string.IsNullOrWhiteSpace(filePath) ? filePath : Path.GetFullPath(filePath);
+            !string.IsNullOrWhiteSpace(filePath) ? Path.GetFullPath(filePath) : filePath;
     }
 }

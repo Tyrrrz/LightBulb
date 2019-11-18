@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using LightBulb.WindowsApi.Internal;
 
@@ -31,8 +30,8 @@ namespace LightBulb.WindowsApi
 
         public void Dispose()
         {
-            // Potentially unhandled error
-            NativeMethods.CloseHandle(Handle);
+            if (!NativeMethods.CloseHandle(Handle))
+                Debug.WriteLine("Could not dispose process.");
 
             GC.SuppressFinalize(this);
         }
@@ -40,22 +39,27 @@ namespace LightBulb.WindowsApi
 
     public partial class SystemProcess
     {
-        public static SystemProcess Open(int processId)
+        public static SystemProcess? Open(int processId)
         {
-            // Potentially unhandled error
             var handle = NativeMethods.OpenProcess(ProcessAccessFlags.QueryLimitedInformation, false, processId);
-            return new SystemProcess(handle);
+            return handle != IntPtr.Zero ? new SystemProcess(handle) : null;
         }
 
         // TODO: use native call
-        public static IReadOnlyList<SystemProcess> GetAllWindowedProcesses() =>
-            Process.GetProcesses()
-                .Where(p => p.MainWindowHandle != IntPtr.Zero)
-                .Select(p =>
-                {
-                    using (p)
-                        return Open(p.Id);
-                })
-                .ToArray();
+        public static IReadOnlyList<SystemProcess> GetAllWindowedProcesses()
+        {
+            var result = new List<SystemProcess>();
+
+            foreach (var process in Process.GetProcesses())
+            {
+                using var _ = process;
+
+                var systemProcess = Open(process.Id);
+                if (systemProcess != null)
+                    result.Add(systemProcess);
+            }
+
+            return result;
+        }
     }
 }

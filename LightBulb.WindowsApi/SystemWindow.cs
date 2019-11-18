@@ -88,11 +88,10 @@ namespace LightBulb.WindowsApi
                    absoluteWindowClientRect.Bottom >= screenRect.Bottom;
         }
 
-        public SystemProcess GetProcess()
+        public SystemProcess? GetProcess()
         {
-            // Potentially unhandled error
             NativeMethods.GetWindowThreadProcessId(Handle, out var processId);
-            return SystemProcess.Open(processId);
+            return processId != 0 ? SystemProcess.Open(processId) : null;
         }
 
         public void Dispose()
@@ -103,11 +102,10 @@ namespace LightBulb.WindowsApi
 
     public partial class SystemWindow
     {
-        public static SystemWindow GetForegroundWindow()
+        public static SystemWindow? GetForegroundWindow()
         {
-            // Potentially unhandled error
             var handle = NativeMethods.GetForegroundWindow();
-            return new SystemWindow(handle);
+            return handle != IntPtr.Zero ? new SystemWindow(handle) : null;
         }
     }
 }

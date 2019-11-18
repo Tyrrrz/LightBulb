@@ -6,24 +6,16 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Views.Controls
 {
-    public class RotatedPoint : Shape
+    public class ArcPoint : Shape
     {
-        private static object CoerceAngle(DependencyObject d, object baseValue)
-        {
-            if (baseValue is double angle)
-            {
-                return angle % 360.0;
-            }
-
-            return baseValue;
-        }
+        private static object CoerceAngle(DependencyObject d, object baseValue) => baseValue is double angle ? angle % 360.0 : baseValue;
 
         public static readonly DependencyProperty AngleProperty =
-            DependencyProperty.Register(nameof(Angle), typeof(double), typeof(RotatedPoint),
+            DependencyProperty.Register(nameof(Angle), typeof(double), typeof(ArcPoint),
                 new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender, null, CoerceAngle));
 
         public static readonly DependencyProperty SizeProperty =
-            DependencyProperty.Register(nameof(Size), typeof(double), typeof(RotatedPoint),
+            DependencyProperty.Register(nameof(Size), typeof(double), typeof(ArcPoint),
                 new FrameworkPropertyMetadata(2.0, FrameworkPropertyMetadataOptions.AffectsRender, null, CoerceAngle));
 
         public double Angle
