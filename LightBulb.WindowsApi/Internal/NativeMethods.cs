@@ -11,7 +11,7 @@ namespace LightBulb.WindowsApi.Internal
         private const string Kernel = "kernel32.dll";
 
         [DllImport(Kernel, SetLastError = true)]
-        public static extern IntPtr OpenProcess(ProcessAccessFlags processAccess, bool bInheritHandle, int processId);
+        public static extern IntPtr OpenProcess(ProcessAccessFlags processAccess, bool bInheritHandle, uint processId);
 
         [DllImport(Kernel, SetLastError = true)]
         public static extern bool QueryFullProcessImageName(IntPtr hPrc, uint dwFlags, StringBuilder lpExeName, ref uint lpdwSize);
@@ -23,6 +23,8 @@ namespace LightBulb.WindowsApi.Internal
     internal static partial class NativeMethods
     {
         private const string User = "user32.dll";
+
+        public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
 
         [DllImport(User, SetLastError = true)]
         public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
@@ -46,7 +48,10 @@ namespace LightBulb.WindowsApi.Internal
         public static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
         [DllImport(User, SetLastError = true)]
-        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
+        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
+        [DllImport(User, SetLastError = true)]
+        public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
     }
 
     internal static partial class NativeMethods

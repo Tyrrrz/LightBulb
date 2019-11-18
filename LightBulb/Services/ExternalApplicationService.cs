@@ -28,10 +28,17 @@ namespace LightBulb.Services
         {
             var result = new List<ExternalApplication>();
 
-            foreach (var process in SystemProcess.GetAllWindowedProcesses())
+            // Enumerate all top-level windows
+            foreach (var window in SystemWindow.GetAllWindows())
             {
-                using var _ = process;
-                var executableFilePath = process.GetExecutableFilePath();
+                using var _ = window;
+
+                // Ignore invisible windows
+                if (!window.IsVisible())
+                    continue;
+
+                using var process = window.GetProcess();
+                var executableFilePath = process?.GetExecutableFilePath();
 
                 if (!string.IsNullOrWhiteSpace(executableFilePath))
                     result.Add(new ExternalApplication(executableFilePath));

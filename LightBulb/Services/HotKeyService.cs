@@ -20,7 +20,6 @@ namespace LightBulb.Services
             // Register hotkey
             var registeredHotKey = GlobalHotKey.Register(virtualKey, modifiers, handler);
 
-            // Add to the list
             if (registeredHotKey != null)
                 _registeredHotKeys.Add(registeredHotKey);
             else

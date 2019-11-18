@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 using LightBulb.WindowsApi.Internal;
@@ -106,6 +108,27 @@ namespace LightBulb.WindowsApi
         {
             var handle = NativeMethods.GetForegroundWindow();
             return handle != IntPtr.Zero ? new SystemWindow(handle) : null;
+        }
+
+        public static IReadOnlyList<SystemWindow> GetAllWindows()
+        {
+            var result = new List<SystemWindow>();
+
+            var callback = new NativeMethods.EnumWindowsProc((hWnd, lParam) =>
+            {
+                if (hWnd != IntPtr.Zero)
+                {
+                    var window = new SystemWindow(hWnd);
+                    result.Add(window);
+                }
+
+                return true;
+            });
+
+            if (!NativeMethods.EnumWindows(callback, IntPtr.Zero))
+                Debug.WriteLine("Failed to enumerate windows.");
+
+            return result;
         }
     }
 }
