@@ -222,11 +222,11 @@ namespace LightBulb.ViewModels
             bool IsPausedByFullScreen() =>
                 _settingsService.IsPauseWhenFullScreenEnabled && _externalApplicationService.IsForegroundApplicationFullScreen();
 
-            bool IsPausedByExcludedApplication() =>
+            bool IsPausedByWhitelistedApplication() =>
                 _settingsService.IsApplicationWhitelistEnabled && _settingsService.WhitelistedApplications != null &&
                 _settingsService.WhitelistedApplications.Contains(_externalApplicationService.GetForegroundApplication());
 
-            IsPaused = IsPausedByFullScreen() || IsPausedByExcludedApplication();
+            IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
         }
 
         private void UpdateInstant()

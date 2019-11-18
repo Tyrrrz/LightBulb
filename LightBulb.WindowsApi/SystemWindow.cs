@@ -58,14 +58,6 @@ namespace LightBulb.WindowsApi
 
         public bool IsFullScreen()
         {
-            // If window is a system window - return false
-            if (IsSystemWindow())
-                return false;
-
-            // If window is not visible - return false
-            if (!IsVisible())
-                return false;
-
             // Get window rect
             var windowRect = GetRect() ?? Rect.Empty;
             if (windowRect == Rect.Empty)

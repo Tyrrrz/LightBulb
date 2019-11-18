@@ -24,7 +24,7 @@
                 VerticalAlignment="Center"
                 Text="Toggle LightBulb"
                 ToolTip="Hotkey to switch LightBulb on/off" />
-            <controls:HotKeyEditor
+            <controls:HotKeyTextBox
                 Grid.Column="1"
                 Width="120"
                 HorizontalAlignment="Right"

@@ -58,7 +58,7 @@
                     <CheckBox
                         Content="{Binding Name}"
                         IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}, Mode=OneWay}"
-                        IsHitTestVisible="False" />
+                        ToolTip="{Binding ExecutableFilePath}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

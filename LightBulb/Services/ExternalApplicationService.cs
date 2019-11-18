@@ -21,7 +21,7 @@ namespace LightBulb.Services
         public bool IsForegroundApplicationFullScreen()
         {
             using var window = SystemWindow.GetForegroundWindow();
-            return window != null && window.IsFullScreen();
+            return window != null && window.IsVisible() && !window.IsSystemWindow() && window.IsFullScreen();
         }
 
         public IReadOnlyList<ExternalApplication> GetAllRunningApplications()

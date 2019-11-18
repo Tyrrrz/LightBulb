@@ -6,15 +6,15 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Views.Controls
 {
-    public class HotKeyEditor : TextBox
+    public class HotKeyTextBox : TextBox
     {
         public static readonly DependencyProperty HotKeyProperty =
-            DependencyProperty.Register(nameof(HotKey), typeof(HotKey), typeof(HotKeyEditor),
+            DependencyProperty.Register(nameof(HotKey), typeof(HotKey), typeof(HotKeyTextBox),
                 new FrameworkPropertyMetadata(default(HotKey), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, HotKeyChanged));
 
         private static void HotKeyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            if (sender is HotKeyEditor control)
+            if (sender is HotKeyTextBox control)
             {
                 control.Text = control.HotKey.ToString();
             }
@@ -26,7 +26,7 @@ namespace LightBulb.Views.Controls
             set => SetValue(HotKeyProperty, value);
         }
 
-        public HotKeyEditor()
+        public HotKeyTextBox()
         {
             IsReadOnly = true;
             IsReadOnlyCaretVisible = false;

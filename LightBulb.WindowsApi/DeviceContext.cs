@@ -74,7 +74,6 @@ namespace LightBulb.WindowsApi
             return handle != IntPtr.Zero ? new DeviceContext(handle) : null;
         }
 
-        // TODO: use native call
         public static IReadOnlyList<DeviceContext> GetAllMonitorDeviceContexts()
         {
             var result = new List<DeviceContext>();
