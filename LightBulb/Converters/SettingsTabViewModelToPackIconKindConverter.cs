@@ -20,7 +20,7 @@ namespace LightBulb.Converters
                     GeneralSettingsTabViewModel _ => PackIconKind.Settings,
                     LocationSettingsTabViewModel _ => PackIconKind.Globe,
                     AdvancedSettingsTabViewModel _ => PackIconKind.CheckboxesMarked,
-                    ApplicationWhitelistSettingsTabViewModel _ => PackIconKind.FormatListChecks,
+                    ApplicationWhitelistSettingsTabViewModel _ => PackIconKind.Apps,
                     HotKeySettingsTabViewModel _ => PackIconKind.Keyboard,
                     _ => PackIconKind.QuestionMark // shouldn't happen
                 };
