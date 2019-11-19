@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using LightBulb.Calculators;
 using LightBulb.Internal;
 using LightBulb.Models;
@@ -319,7 +320,7 @@ namespace LightBulb.ViewModels
 
         public void ShowAbout() => App.GitHubProjectUrl.ToUri().OpenInBrowser();
 
-        public void Exit() => RequestClose();
+        public void Exit() => Application.Current.Shutdown();
 
         public void Dispose()
         {

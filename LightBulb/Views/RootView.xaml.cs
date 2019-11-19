@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
@@ -39,6 +40,12 @@ namespace LightBulb.Views
             // Hide to tray as soon as window loads if the application was started automatically
             if (App.IsHiddenOnLaunch)
                 HideToTray();
+        }
+
+        private void RootView_OnClosing(object sender, CancelEventArgs e)
+        {
+            e.Cancel = true;
+            HideToTray();
         }
 
         private void TaskbarIcon_OnTrayLeftMouseUp(object sender, RoutedEventArgs e)
