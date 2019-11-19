@@ -7,14 +7,14 @@ using LightBulb.WindowsApi.Internal;
 
 namespace LightBulb.WindowsApi
 {
-    public partial class PowerBroadcast
+    public partial class PowerSettingEvent
     {
-        public Action<byte> Handler { get; }
+        public Action Handler { get; }
         public Guid Id { get; }
 
         readonly IntPtr _handle;
 
-        public PowerBroadcast(IntPtr handle, Action<byte> handler, Guid id)
+        public PowerSettingEvent(IntPtr handle, Action handler, Guid id)
         {
             Handler = handler;
             Id = id;
@@ -30,10 +30,10 @@ namespace LightBulb.WindowsApi
 
             var powerSetting = Marshal.PtrToStructure<PowerBroadcastSetting>(m.LParam);
 
-            Handler(powerSetting.Data);
+            Handler();
         }
 
-        ~PowerBroadcast()
+        ~PowerSettingEvent()
         {
             Dispose();
         }
@@ -49,15 +49,15 @@ namespace LightBulb.WindowsApi
         }
     }
 
-    public partial class PowerBroadcast
+    public partial class PowerSettingEvent
     {
         private static readonly SpongeWindow SpongeWindow = new SpongeWindow();
 
-        public static PowerBroadcast? Register(Action<byte> handler, Guid id)
+        public static PowerSettingEvent? Register(Guid id, Action handler)
         {
             IntPtr handle = NativeMethods.RegisterPowerSettingNotification(SpongeWindow.Handle, ref id, 0);
 
-            return handle != null ? new PowerBroadcast(handle, handler, id) : null;
+            return handle != null ? new PowerSettingEvent(handle, handler, id) : null;
         }
     }
 }
