@@ -23,7 +23,9 @@ namespace LightBulb.ViewModels
         private readonly RegistryService _registryService;
         private readonly ExternalApplicationService _externalApplicationService;
 
-        private readonly AutoResetTimer _updateTimer;
+        private readonly AutoResetTimer _updateConfigurationTimer;
+        private readonly AutoResetTimer _updateInstantTimer;
+        private readonly AutoResetTimer _updateIsPausedTimer;
         private readonly AutoResetTimer _checkForUpdatesTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
@@ -120,26 +122,27 @@ namespace LightBulb.ViewModels
             // Title
             DisplayName = $"{App.Name} v{App.VersionString}";
 
-            // When IsEnabled switches to 'true' - cancel 'disable temporarily'
+            // Cancel 'disable temporarily' when switched on
             this.Bind(o => o.IsEnabled, (sender, args) =>
             {
                 if (IsEnabled)
                     _enableAfterDelayTimer.Stop();
             });
 
+            // Change instant timer interval based on whether cycle preview is enabled
+            this.Bind(o => o.IsCyclePreviewEnabled, (sender, args) =>
+            {
+                if (IsCyclePreviewEnabled)
+                    _updateInstantTimer.Start(TimeSpan.FromMilliseconds(50));
+                else
+                    _updateInstantTimer.Start(DateTimeOffset.Now.UntilNextMinute(), TimeSpan.FromMinutes(1));
+            });
+
             // Initialize timers
-            _updateTimer = new AutoResetTimer(() =>
-            {
-                UpdateIsPaused();
-                UpdateInstant();
-                UpdateGamma();
-            });
-
-            _checkForUpdatesTimer = new AutoResetTimer(async () =>
-            {
-                await _updateService.CheckPrepareUpdateAsync();
-            });
-
+            _updateConfigurationTimer = new AutoResetTimer(UpdateConfiguration);
+            _updateInstantTimer = new AutoResetTimer(UpdateInstant);
+            _updateIsPausedTimer = new AutoResetTimer(UpdateIsPaused);
+            _checkForUpdatesTimer = new AutoResetTimer(async () => await _updateService.CheckPrepareUpdateAsync());
             _enableAfterDelayTimer = new ManualResetTimer(Enable);
         }
 
@@ -197,7 +200,9 @@ namespace LightBulb.ViewModels
             Refresh();
 
             // Start timers
-            _updateTimer.Start(TimeSpan.FromMilliseconds(50));
+            _updateConfigurationTimer.Start(TimeSpan.FromMilliseconds(50));
+            _updateInstantTimer.Start(DateTimeOffset.Now.UntilNextMinute(), TimeSpan.FromMinutes(1));
+            _updateIsPausedTimer.Start(TimeSpan.FromSeconds(1.5));
             _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
         }
         
@@ -218,41 +223,7 @@ namespace LightBulb.ViewModels
             }
         }
 
-        private void UpdateIsPaused()
-        {
-            bool IsPausedByFullScreen() =>
-                _settingsService.IsPauseWhenFullScreenEnabled && _externalApplicationService.IsForegroundApplicationFullScreen();
-
-            bool IsPausedByWhitelistedApplication() =>
-                _settingsService.IsApplicationWhitelistEnabled && _settingsService.WhitelistedApplications != null &&
-                _settingsService.WhitelistedApplications.Contains(_externalApplicationService.GetForegroundApplication());
-
-            IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
-        }
-
-        private void UpdateInstant()
-        {
-            // If in cycle preview mode - advance quickly until reached full cycle
-            if (IsCyclePreviewEnabled)
-            {
-                // Cycle is supposed to end 1 full day past current real time
-                var targetInstant = DateTimeOffset.Now + TimeSpan.FromDays(1);
-
-                // Update instant
-                Instant = Instant.StepTo(targetInstant, TimeSpan.FromMinutes(5));
-
-                // If target instant reached - disable cycle preview
-                if (Instant >= targetInstant)
-                    IsCyclePreviewEnabled = false;
-            }
-            // Otherwise - synchronize instant with system clock
-            else
-            {
-                Instant = DateTimeOffset.Now;
-            }
-        }
-
-        private void UpdateGamma()
+        private void UpdateConfiguration()
         {
             bool IsUpdateNeeded()
             {
@@ -286,6 +257,40 @@ namespace LightBulb.ViewModels
 
             // Set gamma to new value
             _gammaService.SetGamma(CurrentColorConfiguration);
+        }
+
+        private void UpdateInstant()
+        {
+            // If in cycle preview mode - advance quickly until reached full cycle
+            if (IsCyclePreviewEnabled)
+            {
+                // Cycle is supposed to end 1 full day past current real time
+                var targetInstant = DateTimeOffset.Now + TimeSpan.FromDays(1);
+
+                // Update instant
+                Instant = Instant.StepTo(targetInstant, TimeSpan.FromMinutes(5));
+
+                // If target instant reached - disable cycle preview
+                if (Instant >= targetInstant)
+                    IsCyclePreviewEnabled = false;
+            }
+            // Otherwise - synchronize instant with system clock
+            else
+            {
+                Instant = DateTimeOffset.Now;
+            }
+        }
+
+        private void UpdateIsPaused()
+        {
+            bool IsPausedByFullScreen() =>
+                _settingsService.IsPauseWhenFullScreenEnabled && _externalApplicationService.IsForegroundApplicationFullScreen();
+
+            bool IsPausedByWhitelistedApplication() =>
+                _settingsService.IsApplicationWhitelistEnabled && _settingsService.WhitelistedApplications != null &&
+                _settingsService.WhitelistedApplications.Contains(_externalApplicationService.GetForegroundApplication());
+
+            IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
         }
 
         public void Enable() => IsEnabled = true;
@@ -331,7 +336,9 @@ namespace LightBulb.ViewModels
 
         public void Dispose()
         {
-            _updateTimer.Dispose();
+            _updateConfigurationTimer.Dispose();
+            _updateInstantTimer.Dispose();
+            _updateIsPausedTimer.Dispose();
             _checkForUpdatesTimer.Dispose();
             _enableAfterDelayTimer.Dispose();
         }
