@@ -254,24 +254,31 @@ namespace LightBulb.ViewModels
 
         private void UpdateGamma()
         {
-            // Don't update if already reached target
-            if (CurrentColorConfiguration == TargetColorConfiguration)
-                return;
+            bool IsUpdateNeeded()
+            {
+                // No change
+                if (CurrentColorConfiguration == TargetColorConfiguration)
+                    return false;
 
-            // Don't update on small changes to avoid lag
-            var isSmallChange =
-                Math.Abs(TargetColorConfiguration.Temperature - CurrentColorConfiguration.Temperature) < 25 &&
-                Math.Abs(TargetColorConfiguration.Brightness - CurrentColorConfiguration.Brightness) < 0.01;
+                // One of the extreme states
+                if (TargetColorConfiguration == _settingsService.NightConfiguration ||
+                    TargetColorConfiguration == _settingsService.DayConfiguration)
+                    return true;
 
-            var isExtremeState =
-                TargetColorConfiguration == _settingsService.NightConfiguration ||
-                TargetColorConfiguration == _settingsService.DayConfiguration;
+                // Change is too small
+                if (Math.Abs(TargetColorConfiguration.Temperature - CurrentColorConfiguration.Temperature) < 25 &&
+                    Math.Abs(TargetColorConfiguration.Brightness - CurrentColorConfiguration.Brightness) < 0.01)
+                    return false;
 
-            if (isSmallChange && !isExtremeState)
+                return true;
+            }
+
+            // Avoid redundant updates
+            if (!IsUpdateNeeded())
                 return;
 
             // Update current configuration
-            var isSmooth = _settingsService.IsGammaSmoothingEnabled && !IsCyclePreviewEnabled;
+            var isSmooth = _settingsService.IsConfigurationSmoothingEnabled && !IsCyclePreviewEnabled;
 
             CurrentColorConfiguration = isSmooth
                 ? CurrentColorConfiguration.StepTo(TargetColorConfiguration, 30, 0.008)

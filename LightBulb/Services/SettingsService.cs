@@ -34,7 +34,7 @@ namespace LightBulb.Services
 
         public bool IsDefaultToDayConfigurationEnabled { get; set; } = false;
 
-        public bool IsGammaSmoothingEnabled { get; set; } = true;
+        public bool IsConfigurationSmoothingEnabled { get; set; } = true;
 
         public bool IsPauseWhenFullScreenEnabled { get; set; } = false;
 
