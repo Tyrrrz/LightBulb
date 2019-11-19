@@ -21,6 +21,7 @@ namespace LightBulb.ViewModels
         private readonly HotKeyService _hotKeyService;
         private readonly RegistryService _registryService;
         private readonly ExternalApplicationService _externalApplicationService;
+        private readonly PowerBroadcastService _powerBroadcastService;
 
         private readonly AutoResetTimer _updateTimer;
         private readonly AutoResetTimer _checkForUpdatesTimer;
@@ -105,7 +106,8 @@ namespace LightBulb.ViewModels
         public RootViewModel(IViewModelFactory viewModelFactory, DialogManager dialogManager,
             SettingsService settingsService, UpdateService updateService,
             GammaService gammaService, HotKeyService hotKeyService,
-            RegistryService registryService, ExternalApplicationService externalApplicationService)
+            RegistryService registryService, ExternalApplicationService externalApplicationService,
+            PowerBroadcastService powerBroadcastService)
         {
             _viewModelFactory = viewModelFactory;
             _dialogManager = dialogManager;
@@ -115,6 +117,7 @@ namespace LightBulb.ViewModels
             _hotKeyService = hotKeyService;
             _registryService = registryService;
             _externalApplicationService = externalApplicationService;
+            _powerBroadcastService = powerBroadcastService;
 
             // Title
             DisplayName = $"{App.Name} v{App.VersionString}";
@@ -192,6 +195,9 @@ namespace LightBulb.ViewModels
             // Register hot keys
             RegisterHotKeys();
 
+            // Update gamma on DisplayState change
+            RegisterDisplayState();
+
             // Refresh
             Refresh();
 
@@ -215,6 +221,12 @@ namespace LightBulb.ViewModels
             {
                 _hotKeyService.RegisterHotKey(_settingsService.ToggleHotKey, Toggle);
             }
+        }
+
+        private void RegisterDisplayState()
+        {
+            _powerBroadcastService.UnregisterAllBroadcasts();
+            _powerBroadcastService.RegisterDisplayOn(() => UpdateGamma(true));
         }
 
         private void UpdateIsPaused()
@@ -251,10 +263,10 @@ namespace LightBulb.ViewModels
             }
         }
 
-        private void UpdateGamma()
+        private void UpdateGamma(bool force = false)
         {
             // Don't update if already reached target
-            if (CurrentColorConfiguration == TargetColorConfiguration)
+            if (!force && CurrentColorConfiguration == TargetColorConfiguration)
                 return;
 
             // Don't update on small changes to avoid lag
@@ -266,7 +278,7 @@ namespace LightBulb.ViewModels
                 TargetColorConfiguration == _settingsService.NightConfiguration ||
                 TargetColorConfiguration == _settingsService.DayConfiguration;
 
-            if (isSmallChange && !isExtremeState)
+            if (!force && isSmallChange && !isExtremeState)
                 return;
 
             // Update current configuration

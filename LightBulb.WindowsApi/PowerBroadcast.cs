@@ -4,22 +4,22 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using LightBulb.WindowsApi.Internal;
 
+
 namespace LightBulb.WindowsApi
 {
     public partial class PowerBroadcast
     {
-        public Action Handler { get; }
+        public Action<byte> Handler { get; }
         public Guid Id { get; }
 
-        readonly IntPtr handle;
+        readonly IntPtr _handle;
 
-        public PowerBroadcast(Action handler, Guid id)
+        public PowerBroadcast(IntPtr handle, Action<byte> handler, Guid id)
         {
             Handler = handler;
             Id = id;
             SpongeWindow.MessageReceived += SpongeWindowOnMessageReceived;
-            // Register for notification and store the handle to deregister
-            handle = NativeMethods.RegisterPowerSettingNotification(SpongeWindow.Handle, ref id, 0);
+            _handle = handle;
         }
 
         private void SpongeWindowOnMessageReceived(object? sender, Message m)
@@ -30,7 +30,7 @@ namespace LightBulb.WindowsApi
 
             var powerSetting = Marshal.PtrToStructure<PowerBroadcastSetting>(m.LParam);
 
-            Handler();
+            Handler(powerSetting.Data);
         }
 
         ~PowerBroadcast()
@@ -42,7 +42,7 @@ namespace LightBulb.WindowsApi
         {
             SpongeWindow.Instance.MessageReceived -= SpongeWindowOnMessageReceived;
 
-            if (!NativeMethods.UnregisterPowerSettingNotification(handle))
+            if (!NativeMethods.UnregisterPowerSettingNotification(_handle))
                 Debug.WriteLine("Could not power broadcast.");
 
             GC.SuppressFinalize(this);
@@ -52,5 +52,12 @@ namespace LightBulb.WindowsApi
     public partial class PowerBroadcast
     {
         private static readonly SpongeWindow SpongeWindow = new SpongeWindow();
+
+        public static PowerBroadcast? Register(Action<byte> handler, Guid id)
+        {
+            IntPtr handle = NativeMethods.RegisterPowerSettingNotification(SpongeWindow.Handle, ref id, 0);
+
+            return handle != null ? new PowerBroadcast(handle, handler, id) : null;
+        }
     }
 }
