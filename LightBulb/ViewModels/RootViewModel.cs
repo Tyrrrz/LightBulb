@@ -22,12 +22,15 @@ namespace LightBulb.ViewModels
         private readonly HotKeyService _hotKeyService;
         private readonly RegistryService _registryService;
         private readonly ExternalApplicationService _externalApplicationService;
+        private readonly SystemEventService _systemEventService;
 
         private readonly AutoResetTimer _updateConfigurationTimer;
         private readonly AutoResetTimer _updateInstantTimer;
         private readonly AutoResetTimer _updateIsPausedTimer;
         private readonly AutoResetTimer _checkForUpdatesTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
+
+        private bool _isGammaStale;
 
         public bool IsEnabled { get; set; } = true;
 
@@ -108,7 +111,8 @@ namespace LightBulb.ViewModels
         public RootViewModel(IViewModelFactory viewModelFactory, DialogManager dialogManager,
             SettingsService settingsService, UpdateService updateService,
             GammaService gammaService, HotKeyService hotKeyService,
-            RegistryService registryService, ExternalApplicationService externalApplicationService)
+            RegistryService registryService, ExternalApplicationService externalApplicationService,
+            SystemEventService systemEventService)
         {
             _viewModelFactory = viewModelFactory;
             _dialogManager = dialogManager;
@@ -118,6 +122,7 @@ namespace LightBulb.ViewModels
             _hotKeyService = hotKeyService;
             _registryService = registryService;
             _externalApplicationService = externalApplicationService;
+            _systemEventService = systemEventService;
 
             // Title
             DisplayName = $"{App.Name} v{App.VersionString}";
@@ -149,6 +154,9 @@ namespace LightBulb.ViewModels
             _updateIsPausedTimer = new AutoResetTimer(UpdateIsPaused);
             _checkForUpdatesTimer = new AutoResetTimer(async () => await _updateService.CheckPrepareUpdateAsync());
             _enableAfterDelayTimer = new ManualResetTimer(Enable);
+
+            // Reset gamma when power settings change
+            _systemEventService.DisplayStateChanged += (sender, args) => _isGammaStale = true;
         }
 
         private async Task EnsureGammaRangeIsUnlockedAsync()
@@ -232,6 +240,10 @@ namespace LightBulb.ViewModels
         {
             bool IsUpdateNeeded()
             {
+                // Gamma is stale
+                if (_isGammaStale)
+                    return true;
+
                 // No change
                 if (CurrentColorConfiguration == TargetColorConfiguration)
                     return false;
@@ -262,6 +274,7 @@ namespace LightBulb.ViewModels
 
             // Set gamma to new value
             _gammaService.SetGamma(CurrentColorConfiguration);
+            _isGammaStale = false;
         }
 
         private void UpdateInstant()

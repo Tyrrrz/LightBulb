@@ -52,6 +52,12 @@ namespace LightBulb.WindowsApi.Internal
 
         [DllImport(User, SetLastError = true)]
         public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+        [DllImport(User, SetLastError = true)]
+        public static extern IntPtr RegisterPowerSettingNotification(IntPtr hRecipient, ref Guid powerSettingGuid, int flags);
+
+        [DllImport(User, SetLastError = true)]
+        public static extern bool UnregisterPowerSettingNotification(IntPtr handle);
     }
 
     internal static partial class NativeMethods
