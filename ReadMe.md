@@ -3,8 +3,7 @@
 [![Build](https://github.com/Tyrrrz/LightBulb/workflows/CI/badge.svg?branch=master)](https://github.com/Tyrrrz/LightBulb/actions)
 [![Release](https://img.shields.io/github/release/Tyrrrz/LightBulb.svg)](https://github.com/Tyrrrz/LightBulb/releases)
 [![Downloads](https://img.shields.io/github/downloads/Tyrrrz/LightBulb/total.svg)](https://github.com/Tyrrrz/LightBulb/releases)
-[![Donate](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://patreon.com/Tyrrrz)
-[![Donate](https://img.shields.io/badge/buymeacoffee-donate-yellow.svg)](https://buymeacoffee.com/Tyrrrz)
+[![Donate](https://img.shields.io/badge/donate-$$$-purple.svg)](https://tyrrrz.me/donate)
 
 LightBulb is an application that reduces eyestrain produced by staring at a computer screen when working late hours. As the day goes on, it continuously adjusts gamma, transitioning the display color temperature from cold blue in the afternoon to warm yellow during the night. Its primary objective is to match the color of the screen to the light sources of your surrounding environment - typically, sunlight during the day and artificial light during the night. LightBulb has minimal impact on performance and offers many customization options.
 
@@ -40,7 +39,3 @@ _Currently only compatible with Windows 7 or higher._
 - [Onova](https://github.com/Tyrrrz/Onova)
 - [Tyrrrz.Extensions](https://github.com/Tyrrrz/Extensions)
 - [Tyrrrz.Settings](https://github.com/Tyrrrz/Settings)
-
-## Donate
-
-If you really like my projects and want to support me, consider donating to me on [Patreon](https://patreon.com/tyrrrz) or [BuyMeACoffee](https://buymeacoffee.com/tyrrrz). All donations are optional and are greatly appreciated. 🙏

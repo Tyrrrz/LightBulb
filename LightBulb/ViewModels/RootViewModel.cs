@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using LightBulb.Calculators;
 using LightBulb.Internal;
 using LightBulb.Models;
@@ -23,7 +24,9 @@ namespace LightBulb.ViewModels
         private readonly ExternalApplicationService _externalApplicationService;
         private readonly SystemEventService _systemEventService;
 
-        private readonly AutoResetTimer _updateTimer;
+        private readonly AutoResetTimer _updateConfigurationTimer;
+        private readonly AutoResetTimer _updateInstantTimer;
+        private readonly AutoResetTimer _updateIsPausedTimer;
         private readonly AutoResetTimer _checkForUpdatesTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
@@ -124,26 +127,32 @@ namespace LightBulb.ViewModels
             // Title
             DisplayName = $"{App.Name} v{App.VersionString}";
 
-            // When IsEnabled switches to 'true' - cancel 'disable temporarily'
+            // Cancel 'disable temporarily' when switched on
             this.Bind(o => o.IsEnabled, (sender, args) =>
             {
                 if (IsEnabled)
                     _enableAfterDelayTimer.Stop();
             });
 
+            // Change instant timer interval based on whether cycle preview is enabled
+            this.Bind(o => o.IsCyclePreviewEnabled, (sender, args) =>
+            {
+                if (IsCyclePreviewEnabled)
+                {
+                    _updateInstantTimer.Start(TimeSpan.FromMilliseconds(50));
+                }
+                else
+                {
+                    _updateInstantTimer.Start(DateTimeOffset.Now.UntilNextMinute(), TimeSpan.FromMinutes(1));
+                    UpdateInstant(); // dangerous as it can cause race conditions
+                }
+            });
+
             // Initialize timers
-            _updateTimer = new AutoResetTimer(() =>
-            {
-                UpdateIsPaused();
-                UpdateInstant();
-                UpdateGamma();
-            });
-
-            _checkForUpdatesTimer = new AutoResetTimer(async () =>
-            {
-                await _updateService.CheckPrepareUpdateAsync();
-            });
-
+            _updateConfigurationTimer = new AutoResetTimer(UpdateConfiguration);
+            _updateInstantTimer = new AutoResetTimer(UpdateInstant);
+            _updateIsPausedTimer = new AutoResetTimer(UpdateIsPaused);
+            _checkForUpdatesTimer = new AutoResetTimer(async () => await _updateService.CheckPrepareUpdateAsync());
             _enableAfterDelayTimer = new ManualResetTimer(Enable);
 
             // Reset gamma when power settings change
@@ -204,7 +213,9 @@ namespace LightBulb.ViewModels
             Refresh();
 
             // Start timers
-            _updateTimer.Start(TimeSpan.FromMilliseconds(50));
+            _updateConfigurationTimer.Start(TimeSpan.FromMilliseconds(50));
+            _updateInstantTimer.Start(DateTimeOffset.Now.UntilNextMinute(), TimeSpan.FromMinutes(1));
+            _updateIsPausedTimer.Start(TimeSpan.FromSeconds(1.5));
             _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
         }
         
@@ -225,16 +236,40 @@ namespace LightBulb.ViewModels
             }
         }
 
-        private void UpdateIsPaused()
+        private void UpdateConfiguration()
         {
-            bool IsPausedByFullScreen() =>
-                _settingsService.IsPauseWhenFullScreenEnabled && _externalApplicationService.IsForegroundApplicationFullScreen();
+            bool IsUpdateNeeded()
+            {
+                // No change
+                if (CurrentColorConfiguration == TargetColorConfiguration)
+                    return false;
 
-            bool IsPausedByWhitelistedApplication() =>
-                _settingsService.IsApplicationWhitelistEnabled && _settingsService.WhitelistedApplications != null &&
-                _settingsService.WhitelistedApplications.Contains(_externalApplicationService.GetForegroundApplication());
+                // One of the extreme states
+                if (TargetColorConfiguration == _settingsService.NightConfiguration ||
+                    TargetColorConfiguration == _settingsService.DayConfiguration)
+                    return true;
 
-            IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
+                // Change is too small
+                if (Math.Abs(TargetColorConfiguration.Temperature - CurrentColorConfiguration.Temperature) < 25 &&
+                    Math.Abs(TargetColorConfiguration.Brightness - CurrentColorConfiguration.Brightness) < 0.01)
+                    return false;
+
+                return true;
+            }
+
+            // Avoid redundant updates
+            if (!IsUpdateNeeded())
+                return;
+
+            // Update current configuration
+            var isSmooth = _settingsService.IsConfigurationSmoothingEnabled && !IsCyclePreviewEnabled;
+
+            CurrentColorConfiguration = isSmooth
+                ? CurrentColorConfiguration.StepTo(TargetColorConfiguration, 30, 0.008)
+                : TargetColorConfiguration;
+
+            // Set gamma to new value
+            _gammaService.SetGamma(CurrentColorConfiguration);
         }
 
         private void UpdateInstant()
@@ -259,33 +294,16 @@ namespace LightBulb.ViewModels
             }
         }
 
-        private void UpdateGamma()
+        private void UpdateIsPaused()
         {
-            // Don't update if already reached target
-            if (CurrentColorConfiguration == TargetColorConfiguration)
-                return;
+            bool IsPausedByFullScreen() =>
+                _settingsService.IsPauseWhenFullScreenEnabled && _externalApplicationService.IsForegroundApplicationFullScreen();
 
-            // Don't update on small changes to avoid lag
-            var isSmallChange =
-                Math.Abs(TargetColorConfiguration.Temperature - CurrentColorConfiguration.Temperature) < 25 &&
-                Math.Abs(TargetColorConfiguration.Brightness - CurrentColorConfiguration.Brightness) < 0.01;
+            bool IsPausedByWhitelistedApplication() =>
+                _settingsService.IsApplicationWhitelistEnabled && _settingsService.WhitelistedApplications != null &&
+                _settingsService.WhitelistedApplications.Contains(_externalApplicationService.GetForegroundApplication());
 
-            var isExtremeState =
-                TargetColorConfiguration == _settingsService.NightConfiguration ||
-                TargetColorConfiguration == _settingsService.DayConfiguration;
-
-            if (isSmallChange && !isExtremeState)
-                return;
-
-            // Update current configuration
-            var isSmooth = _settingsService.IsGammaSmoothingEnabled && !IsCyclePreviewEnabled;
-
-            CurrentColorConfiguration = isSmooth
-                ? CurrentColorConfiguration.StepTo(TargetColorConfiguration, 30, 0.008)
-                : TargetColorConfiguration;
-
-            // Set gamma to new value
-            _gammaService.SetGamma(CurrentColorConfiguration);
+            IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
         }
 
         public void Enable() => IsEnabled = true;
@@ -327,11 +345,13 @@ namespace LightBulb.ViewModels
 
         public void ShowAbout() => App.GitHubProjectUrl.ToUri().OpenInBrowser();
 
-        public void Exit() => RequestClose();
+        public void Exit() => Application.Current.Shutdown();
 
         public void Dispose()
         {
-            _updateTimer.Dispose();
+            _updateConfigurationTimer.Dispose();
+            _updateInstantTimer.Dispose();
+            _updateIsPausedTimer.Dispose();
             _checkForUpdatesTimer.Dispose();
             _enableAfterDelayTimer.Dispose();
         }

@@ -25,10 +25,10 @@ namespace LightBulb.ViewModels.Components
             set => SettingsService.IsDefaultToDayConfigurationEnabled = value;
         }
 
-        public bool IsGammaSmoothingEnabled
+        public bool IsConfigurationSmoothingEnabled
         {
-            get => SettingsService.IsGammaSmoothingEnabled;
-            set => SettingsService.IsGammaSmoothingEnabled = value;
+            get => SettingsService.IsConfigurationSmoothingEnabled;
+            set => SettingsService.IsConfigurationSmoothingEnabled = value;
         }
 
         public bool IsPauseWhenFullScreenEnabled

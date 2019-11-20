@@ -40,6 +40,16 @@ namespace LightBulb.Internal
                 ? dateTime.AtTimeOfDay(timeOfDay)
                 : dateTime.AddDays(-1).AtTimeOfDay(timeOfDay);
 
+        public static TimeSpan UntilNextMinute(this DateTimeOffset dateTime)
+        {
+            var lastMinute = new DateTimeOffset(
+                dateTime.Year, dateTime.Month, dateTime.Day,
+                dateTime.Hour, dateTime.Minute, 0,
+                dateTime.Offset);
+
+            return TimeSpan.FromMinutes(1) - (dateTime - lastMinute);
+        }
+
         public static void OpenInBrowser(this Uri uri) => ProcessEx.StartShellExecute(uri.ToString());
     }
 }
