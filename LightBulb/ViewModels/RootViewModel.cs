@@ -262,7 +262,7 @@ namespace LightBulb.ViewModels
         private void UpdateGamma()
         {
             // Don't update if already reached target
-            if (!_isGammaStale && CurrentColorConfiguration == TargetColorConfiguration)
+            if (CurrentColorConfiguration == TargetColorConfiguration)
                 return;
 
             // Don't update on small changes to avoid lag
@@ -274,7 +274,7 @@ namespace LightBulb.ViewModels
                 TargetColorConfiguration == _settingsService.NightConfiguration ||
                 TargetColorConfiguration == _settingsService.DayConfiguration;
 
-            if (!_isGammaStale && isSmallChange && !isExtremeState)
+            if (isSmallChange && !isExtremeState)
                 return;
 
             // Update current configuration
@@ -286,7 +286,6 @@ namespace LightBulb.ViewModels
 
             // Set gamma to new value
             _gammaService.SetGamma(CurrentColorConfiguration);
-            _isGammaStale = false;
         }
 
         public void Enable() => IsEnabled = true;
