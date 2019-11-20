@@ -30,7 +30,7 @@ namespace LightBulb.ViewModels
         private readonly AutoResetTimer _checkForUpdatesTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
-        private bool _isGammaStale = false;
+        private bool _isGammaStale;
 
         public bool IsEnabled { get; set; } = true;
 
@@ -240,6 +240,10 @@ namespace LightBulb.ViewModels
         {
             bool IsUpdateNeeded()
             {
+                // Gamma is stale
+                if (_isGammaStale)
+                    return true;
+
                 // No change
                 if (CurrentColorConfiguration == TargetColorConfiguration)
                     return false;
@@ -270,6 +274,7 @@ namespace LightBulb.ViewModels
 
             // Set gamma to new value
             _gammaService.SetGamma(CurrentColorConfiguration);
+            _isGammaStale = false;
         }
 
         private void UpdateInstant()
