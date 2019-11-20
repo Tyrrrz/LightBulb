@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using LightBulb.WindowsApi.Internal;
 
-
 namespace LightBulb.WindowsApi
 {
     public partial class PowerSettingEvent
