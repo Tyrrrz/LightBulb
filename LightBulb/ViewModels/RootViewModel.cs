@@ -21,7 +21,7 @@ namespace LightBulb.ViewModels
         private readonly HotKeyService _hotKeyService;
         private readonly RegistryService _registryService;
         private readonly ExternalApplicationService _externalApplicationService;
-        private readonly PowerBroadcastService _powerBroadcastService;
+        private readonly SystemEventService _systemEventService;
 
         private readonly AutoResetTimer _updateTimer;
         private readonly AutoResetTimer _checkForUpdatesTimer;
@@ -109,7 +109,7 @@ namespace LightBulb.ViewModels
             SettingsService settingsService, UpdateService updateService,
             GammaService gammaService, HotKeyService hotKeyService,
             RegistryService registryService, ExternalApplicationService externalApplicationService,
-            PowerBroadcastService powerBroadcastService)
+            SystemEventService systemEventService)
         {
             _viewModelFactory = viewModelFactory;
             _dialogManager = dialogManager;
@@ -119,7 +119,7 @@ namespace LightBulb.ViewModels
             _hotKeyService = hotKeyService;
             _registryService = registryService;
             _externalApplicationService = externalApplicationService;
-            _powerBroadcastService = powerBroadcastService;
+            _systemEventService = systemEventService;
 
             // Title
             DisplayName = $"{App.Name} v{App.VersionString}";
@@ -145,6 +145,9 @@ namespace LightBulb.ViewModels
             });
 
             _enableAfterDelayTimer = new ManualResetTimer(Enable);
+
+            // Reset gamma when power settings change
+            _systemEventService.DisplayStateChanged += (sender, args) => _isGammaStale = true;
         }
 
         private async Task EnsureGammaRangeIsUnlockedAsync()
@@ -197,9 +200,6 @@ namespace LightBulb.ViewModels
             // Register hot keys
             RegisterHotKeys();
 
-            // Update gamma on DisplayState change
-            RegisterDisplayState();
-
             // Refresh
             Refresh();
 
@@ -223,11 +223,6 @@ namespace LightBulb.ViewModels
             {
                 _hotKeyService.RegisterHotKey(_settingsService.ToggleHotKey, Toggle);
             }
-        }
-
-        private void RegisterDisplayState()
-        {
-            _powerBroadcastService.DisplayStateChanged += ((s, e) => _isGammaStale = true);
         }
 
         private void UpdateIsPaused()

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using LightBulb.WindowsApi.Internal;
 
@@ -9,17 +8,20 @@ namespace LightBulb.WindowsApi
 {
     public partial class PowerSettingEvent
     {
-        public Action Handler { get; }
+        public IntPtr Handle { get; }
+
         public Guid Id { get; }
 
-        readonly IntPtr _handle;
+        public Action Handler { get; }
 
-        public PowerSettingEvent(IntPtr handle, Action handler, Guid id)
+        public PowerSettingEvent(IntPtr handle, Guid id, Action handler)
         {
-            Handler = handler;
+            Handle = handle;
             Id = id;
-            SpongeWindow.MessageReceived += SpongeWindowOnMessageReceived;
-            _handle = handle;
+            Handler = handler;
+
+            // Wire up wnd proc events
+            SpongeWindow.Instance.MessageReceived += SpongeWindowOnMessageReceived;
         }
 
         private void SpongeWindowOnMessageReceived(object? sender, Message m)
@@ -28,8 +30,7 @@ namespace LightBulb.WindowsApi
             if (m.Msg != 0x218 || m.WParam.ToInt32() != 0x8013)
                 return;
 
-            var powerSetting = Marshal.PtrToStructure<PowerBroadcastSetting>(m.LParam);
-
+            // Trigger handler
             Handler();
         }
 
@@ -40,10 +41,11 @@ namespace LightBulb.WindowsApi
 
         public void Dispose()
         {
+            // Unwire wnd proc events
             SpongeWindow.Instance.MessageReceived -= SpongeWindowOnMessageReceived;
 
-            if (!NativeMethods.UnregisterPowerSettingNotification(_handle))
-                Debug.WriteLine("Could not power broadcast.");
+            if (!NativeMethods.UnregisterPowerSettingNotification(Handle))
+                Debug.WriteLine("Could not dispose power setting event.");
 
             GC.SuppressFinalize(this);
         }
@@ -51,13 +53,10 @@ namespace LightBulb.WindowsApi
 
     public partial class PowerSettingEvent
     {
-        private static readonly SpongeWindow SpongeWindow = new SpongeWindow();
-
         public static PowerSettingEvent? Register(Guid id, Action handler)
         {
-            IntPtr handle = NativeMethods.RegisterPowerSettingNotification(SpongeWindow.Handle, ref id, 0);
-
-            return handle != null ? new PowerSettingEvent(handle, handler, id) : null;
+            var handle = NativeMethods.RegisterPowerSettingNotification(SpongeWindow.Instance.Handle, ref id, 0);
+            return handle != IntPtr.Zero ? new PowerSettingEvent(handle, id, handler) : null;
         }
     }
 }

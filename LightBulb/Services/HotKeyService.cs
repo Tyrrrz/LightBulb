@@ -28,7 +28,7 @@ namespace LightBulb.Services
 
         public void UnregisterAllHotKeys()
         {
-            // Dispose all registered hotkeys and remove them from the lsit
+            // Dispose all registered hotkeys and remove them from the list
             foreach (var registeredHotKey in _registeredHotKeys.ToArray())
             {
                 registeredHotKey.Dispose();
