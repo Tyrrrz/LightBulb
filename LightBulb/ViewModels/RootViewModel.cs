@@ -133,9 +133,14 @@ namespace LightBulb.ViewModels
             this.Bind(o => o.IsCyclePreviewEnabled, (sender, args) =>
             {
                 if (IsCyclePreviewEnabled)
+                {
                     _updateInstantTimer.Start(TimeSpan.FromMilliseconds(50));
+                }
                 else
+                {
                     _updateInstantTimer.Start(DateTimeOffset.Now.UntilNextMinute(), TimeSpan.FromMinutes(1));
+                    UpdateInstant(); // dangerous as it can cause race conditions
+                }
             });
 
             // Initialize timers
