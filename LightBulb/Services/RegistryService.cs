@@ -10,12 +10,6 @@ namespace LightBulb.Services
 {
     public partial class RegistryService
     {
-        public bool IsAutoStartEnabled()
-        {
-            var registryKeyEntryValue = GetValueOrDefault<string>(AutoStartRegistryPath, AutoStartRegistryEntryName);
-            return string.Equals(registryKeyEntryValue, AutoStartRegistryEntryValue, StringComparison.OrdinalIgnoreCase);
-        }
-
         public void EnableAutoStart() =>
             SetValue(AutoStartRegistryPath, AutoStartRegistryEntryName, AutoStartRegistryEntryValue);
 

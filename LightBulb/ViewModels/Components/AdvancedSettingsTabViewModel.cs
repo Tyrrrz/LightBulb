@@ -4,19 +4,10 @@ namespace LightBulb.ViewModels.Components
 {
     public class AdvancedSettingsTabViewModel : SettingsTabViewModelBase
     {
-        private readonly RegistryService _registryService;
-
-        // HACK: this doesn't go through SettingsService and is not affected by Save/Reset/etc
         public bool IsAutoStartEnabled
         {
-            get => _registryService.IsAutoStartEnabled();
-            set
-            {
-                if (value)
-                    _registryService.EnableAutoStart();
-                else
-                    _registryService.DisableAutoStart();
-            }
+            get => SettingsService.IsAutoStartEnabled;
+            set => SettingsService.IsAutoStartEnabled = value;
         }
 
         public bool IsDefaultToDayConfigurationEnabled
@@ -37,10 +28,9 @@ namespace LightBulb.ViewModels.Components
             set => SettingsService.IsPauseWhenFullScreenEnabled = value;
         }
 
-        public AdvancedSettingsTabViewModel(SettingsService settingsService, RegistryService registryService)
+        public AdvancedSettingsTabViewModel(SettingsService settingsService)
             : base(settingsService, 2, "Advanced")
         {
-            _registryService = registryService;
         }
     }
 }

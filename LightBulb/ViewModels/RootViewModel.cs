@@ -205,11 +205,7 @@ namespace LightBulb.ViewModels
 
             // Load settings
             _settingsService.Load();
-
-            // Register hot keys
-            RegisterHotKeys();
-
-            // Refresh
+            SyncSettings();
             Refresh();
 
             // Start timers
@@ -226,14 +222,18 @@ namespace LightBulb.ViewModels
             await ShowFirstTimeExperienceMessageAsync();
         }
 
-        private void RegisterHotKeys()
+        private void SyncSettings()
         {
+            // Register hotkeys
             _hotKeyService.UnregisterAllHotKeys();
-
             if (_settingsService.ToggleHotKey != HotKey.None)
-            {
                 _hotKeyService.RegisterHotKey(_settingsService.ToggleHotKey, Toggle);
-            }
+
+            // Set autostart
+            if (_settingsService.IsAutoStartEnabled)
+                _registryService.EnableAutoStart();
+            else
+                _registryService.DisableAutoStart();
         }
 
         private void UpdateConfiguration()
@@ -341,10 +341,7 @@ namespace LightBulb.ViewModels
         {
             await _dialogManager.ShowDialogAsync(_viewModelFactory.CreateSettingsViewModel());
 
-            // Re-register hot keys
-            RegisterHotKeys();
-
-            // Refresh
+            SyncSettings();
             Refresh();
         }
 

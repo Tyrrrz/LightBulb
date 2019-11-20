@@ -32,6 +32,8 @@ namespace LightBulb.Services
 
         // Advanced
 
+        public bool IsAutoStartEnabled { get; set; } = false;
+
         public bool IsDefaultToDayConfigurationEnabled { get; set; } = false;
 
         public bool IsConfigurationSmoothingEnabled { get; set; } = true;
@@ -53,20 +55,24 @@ namespace LightBulb.Services
             // If we have write access to application directory - store configuration file there
             if (DirectoryEx.CheckWriteAccess(App.ExecutableDirPath))
             {
-                Configuration.FileName = "Settings.json";
                 Configuration.SubDirectoryPath = "";
                 Configuration.StorageSpace = StorageSpace.Instance;
             }
             // Otherwise - store settings in roaming app data directory
             else
             {
-                Configuration.FileName = "Settings.json";
                 Configuration.SubDirectoryPath = "LightBulb";
                 Configuration.StorageSpace = StorageSpace.SyncedUserDomain;
             }
 
+            Configuration.FileName = "Settings.json";
             Configuration.ThrowIfCannotLoad = false;
             Configuration.ThrowIfCannotSave = true;
+
+            // Auto-start by default in release builds
+#if !DEBUG
+            IsAutoStartEnabled = true;
+#endif
         }
 
         public override void Reset()
