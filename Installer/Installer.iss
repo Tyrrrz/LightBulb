@@ -42,7 +42,7 @@ Root: HKLM; Subkey: "Software\Microsoft\Windows NT\CurrentVersion\ICM"; ValueTyp
 Filename: "{app}\LightBulb.exe"; Description: "{cm:LaunchProgram,{#StringChange(AppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [UninstallDelete]
-Type: filesandordirs; Name: "{autoappdata}\LightBulb"
+Name: "{userappdata}\LightBulb"; Type: filesandordirs
 
 [Code]
 procedure InstallDotnetCore();
