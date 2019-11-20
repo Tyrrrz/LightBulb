@@ -27,7 +27,7 @@ namespace LightBulb.ViewModels
         private readonly AutoResetTimer _checkForUpdatesTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
-        private bool _gammaStale = false;
+        private bool _isGammaStale = false;
 
         public bool IsEnabled { get; set; } = true;
 
@@ -227,7 +227,7 @@ namespace LightBulb.ViewModels
 
         private void RegisterDisplayState()
         {
-            _powerBroadcastService.DisplayStateChanged += ((s, e) => _gammaStale = true);
+            _powerBroadcastService.DisplayStateChanged += ((s, e) => _isGammaStale = true);
         }
 
         private void UpdateIsPaused()
@@ -267,7 +267,7 @@ namespace LightBulb.ViewModels
         private void UpdateGamma()
         {
             // Don't update if already reached target
-            if (!_gammaStale && CurrentColorConfiguration == TargetColorConfiguration)
+            if (!_isGammaStale && CurrentColorConfiguration == TargetColorConfiguration)
                 return;
 
             // Don't update on small changes to avoid lag
@@ -279,7 +279,7 @@ namespace LightBulb.ViewModels
                 TargetColorConfiguration == _settingsService.NightConfiguration ||
                 TargetColorConfiguration == _settingsService.DayConfiguration;
 
-            if (!_gammaStale && isSmallChange && !isExtremeState)
+            if (!_isGammaStale && isSmallChange && !isExtremeState)
                 return;
 
             // Update current configuration
@@ -291,6 +291,7 @@ namespace LightBulb.ViewModels
 
             // Set gamma to new value
             _gammaService.SetGamma(CurrentColorConfiguration);
+            _isGammaStale = false;
         }
 
         public void Enable() => IsEnabled = true;
