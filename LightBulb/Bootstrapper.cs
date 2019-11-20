@@ -40,8 +40,7 @@ namespace LightBulb
 
         protected override void ConfigureIoC(IStyletIoCBuilder builder)
         {
-            // We don't call base method because that autobinds everything in transient scope.
-            // We need to bind our dependencies as singletons due to extensive event routing.
+            base.ConfigureIoC(builder);
 
             // Bind services
             builder.Bind<LocationService>().ToSelf().InSingletonScope();
@@ -50,6 +49,7 @@ namespace LightBulb
             builder.Bind<HotKeyService>().ToSelf().InSingletonScope();
             builder.Bind<RegistryService>().ToSelf().InSingletonScope();
             builder.Bind<ExternalApplicationService>().ToSelf().InSingletonScope();
+            builder.Bind<SystemEventService>().ToSelf().InSingletonScope();
             builder.Bind<UpdateService>().ToSelf().InSingletonScope();
 
             // Bind view model layer services
