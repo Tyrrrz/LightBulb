@@ -133,7 +133,7 @@ namespace LightBulb.Services
             try
             {
                 using var registryKey = GetRegistryKey(path, true);
-                registryKey.DeleteValue(entryName);
+                registryKey.DeleteValue(entryName, false);
             }
             catch (Exception e) when (e is SecurityException || e is UnauthorizedAccessException)
             {

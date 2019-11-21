@@ -159,10 +159,8 @@ namespace LightBulb.ViewModels
                 "Press OK to unlock gamma range.",
                 "OK", "CANCEL");
 
-            var promptResult = await _dialogManager.ShowDialogAsync(dialog);
-
             // Unlock gamma range if user agreed to it
-            if (promptResult == true)
+            if (await _dialogManager.ShowDialogAsync(dialog) == true)
                 _registryService.UnlockGammaRange();
         }
 
@@ -172,10 +170,10 @@ namespace LightBulb.ViewModels
                 return;
 
             // Show message to the user
-            var dialog = _viewModelFactory.CreateMessageBoxViewModel("Welcome",
+            var dialog = _viewModelFactory.CreateMessageBoxViewModel("Set your location",
                 $"Thank you for installing {App.Name}!" +
                 Environment.NewLine + Environment.NewLine +
-                "To get the most personalized experience, configure your location in settings.",
+                "To get the most personalized experience, open settings and configure your location.",
                 "OK", null);
 
             await _dialogManager.ShowDialogAsync(dialog);
