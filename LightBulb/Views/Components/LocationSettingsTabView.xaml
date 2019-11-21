@@ -26,7 +26,7 @@
                 Grid.Column="0"
                 Content="Manual"
                 IsChecked="{Binding IsManualSunriseSunsetEnabled}"
-                ToolTip="Configure when the sun rises and sets manually" />
+                ToolTip="Configure sunrise and sunset manually" />
             <RadioButton
                 Grid.Column="1"
                 Content="Location-based"

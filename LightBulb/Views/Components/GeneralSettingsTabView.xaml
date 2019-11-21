@@ -112,7 +112,7 @@
         <StackPanel
             Margin="6"
             Orientation="Horizontal"
-            ToolTip="Duration of time it takes to switch to day configuration after sunrise or to night configuration after sunset">
+            ToolTip="Duration of time it takes to switch between day-time and night-time gamma at sunrise and sunset">
             <TextBlock VerticalAlignment="Center" Text="Transition duration:" />
             <TextBox
                 MinWidth="50"

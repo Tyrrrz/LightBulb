@@ -30,7 +30,7 @@
         </Grid>
 
         <!--  Default to day time  -->
-        <Grid Margin="6" ToolTip="Restore day-time configuration (as opposed to default monitor configuration) when LightBulb is off">
+        <Grid Margin="6" ToolTip="When LightBulb is disabled or paused, restore day-time gamma instead of default monitor gamma">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -47,7 +47,7 @@
                 IsChecked="{Binding IsDefaultToDayConfigurationEnabled}" />
         </Grid>
 
-        <!--  Gamma smoothing enabled/disabled  -->
+        <!--  Gamma smoothing  -->
         <Grid Margin="6" ToolTip="Transition slowly when changing gamma to give time for eyes to adjust">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -65,8 +65,8 @@
                 IsChecked="{Binding IsConfigurationSmoothingEnabled}" />
         </Grid>
 
-        <!--  Pause when full screen enabled/disabled  -->
-        <Grid Margin="6" ToolTip="Prevent LightBulb from changing gamma when a fullscreen window is in foreground">
+        <!--  Pause when full screen  -->
+        <Grid Margin="6" ToolTip="Pause LightBulb when any fullscreen window is in foreground">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />

@@ -204,7 +204,7 @@
                             VerticalAlignment="Center"
                             Click="CloseButton_OnClick"
                             Style="{DynamicResource MaterialDesignFlatDarkButton}"
-                            ToolTip="Close this window (but keep LightBulb running)">
+                            ToolTip="Hide LightBulb to tray">
                             <materialDesign:PackIcon
                                 Width="24"
                                 Height="24"

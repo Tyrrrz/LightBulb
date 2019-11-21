@@ -16,7 +16,7 @@
     mc:Ignorable="d">
     <StackPanel Orientation="Vertical">
         <!--  Is enabled  -->
-        <Grid Margin="6" ToolTip="Configure LightBulb to pause when any of the selected applications are in foreground">
+        <Grid Margin="6" ToolTip="Pause LightBulb when any of the selected applications are in foreground">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />

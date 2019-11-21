@@ -40,11 +40,6 @@ namespace LightBulb.Services
             }
         }
 
-        public void Dispose()
-        {
-            DisplayStateChanged = null;
-
-            UnregisterAllEvents();
-        }
+        public void Dispose() => UnregisterAllEvents();
     }
 }
