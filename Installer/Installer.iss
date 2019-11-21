@@ -43,26 +43,3 @@ Filename: "{app}\LightBulb.exe"; Description: "{cm:LaunchProgram,{#StringChange(
 
 [UninstallDelete]
 Name: "{userappdata}\LightBulb"; Type: filesandordirs
-
-[Code]
-procedure InstallDotnetCore();
-var
-  Architecture: String;
-  ErrorCode: Integer;
-begin
-  Architecture := '<auto>';
-  if ProcessorArchitecture = paX64 then Architecture := 'x64';
-  if ProcessorArchitecture = paARM64 then Architecture := 'arm64';
-
-  ShellExec('', 'powershell',
-    '-NoProfile -ExecutionPolicy unrestricted -Command "Write-Host ''Installing .NET Core runtime...''; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing ''https://dot.net/v1/dotnet-install.ps1''))) -Channel Current -Runtime dotnet -Architecture ' + Architecture + '"',
-    '', SW_SHOW, ewWaitUntilTerminated, ErrorCode);
-  ShellExec('', 'powershell',
-    '-NoProfile -ExecutionPolicy unrestricted -Command "Write-Host ''Installing .NET Core Desktop runtime...''; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing ''https://dot.net/v1/dotnet-install.ps1''))) -Channel Current -Runtime windowsdesktop -Architecture ' + Architecture + '"',
-    '', SW_SHOW, ewWaitUntilTerminated, ErrorCode);
-end;
-
-procedure CurPageChanged(CurPageID: Integer);
-begin
-  if CurPageId = wpInstalling then InstallDotnetCore();
-end;
