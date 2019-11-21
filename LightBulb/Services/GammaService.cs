@@ -44,7 +44,13 @@ namespace LightBulb.Services
 
             // Set gamma
             foreach (var deviceContext in _deviceContexts)
-                deviceContext.SetGamma(GetRed(), GetGreen(), GetBlue());
+            {
+                deviceContext.SetGamma(
+                    GetRed() * colorConfiguration.Brightness,
+                    GetGreen() * colorConfiguration.Brightness,
+                    GetBlue() * colorConfiguration.Brightness
+                );
+            }
         }
 
         public void Dispose()
