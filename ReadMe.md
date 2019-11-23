@@ -7,24 +7,31 @@
 
 LightBulb is an application that reduces eyestrain produced by staring at a computer screen when working late hours. As the day goes on, it continuously adjusts gamma, transitioning the display color temperature from cold blue in the afternoon to warm yellow during the night. Its primary objective is to match the color of the screen to the light sources of your surrounding environment - typically, sunlight during the day and artificial light during the night. LightBulb has minimal impact on performance and offers many customization options.
 
+_For guides and other info -- check out the [wiki](https://github.com/Tyrrrz/LightBulb/wiki)._
+
 ## Download
 
 - **[Latest release](https://github.com/Tyrrrz/LightBulb/releases/latest)**
 - [CI build](https://github.com/Tyrrrz/LightBulb/actions)
 
-## Screenshots
-
-![dashboard](.screenshots/dashboard.png)
-![settings](.screenshots/settings.png)
+Note: This application requires .NET Core 3 runtime for desktop apps, which you can [download here](https://dotnet.microsoft.com/download/dotnet-core/3.0/runtime).
 
 ## Features
 
 - Extensive customization options
-- Pull sunrise and sunset times from the Internet or set them manually
-- Smooth temperature transition for large changes
-- Pause when a fullscreen application or game is in foreground
-- Configurable global hotkeys
-- Minimal impact on performance
+- Automatically calculate sunrise & sunset times based on configured location
+- Manually set desired sunrise & sunset times
+- Smooth gamma transitions that give time for eyes to adjust
+- Avoid changing gamma in games or other full-screen applications
+- Application whitelist for color-sensitive applications
+- Global hotkey to toggle the application from anywhere
+- Absolutely minimal impact on performance
+- Works without internet connection
+
+## Screenshots
+
+![dashboard](.screenshots/dashboard.png)
+![settings](.screenshots/settings.png)
 
 ## Libraries used
 
