@@ -7,18 +7,15 @@
 
 LightBulb is an application that reduces eyestrain produced by staring at a computer screen when working late hours. As the day goes on, it continuously adjusts gamma, transitioning the display color temperature from cold blue in the afternoon to warm yellow during the night. Its primary objective is to match the color of the screen to the light sources of your surrounding environment - typically, sunlight during the day and artificial light during the night. LightBulb has minimal impact on performance and offers many customization options.
 
-_Currently only compatible with Windows 7 or higher._
-
-## Screenshots
-
-![general](.screenshots/general.png)
-![geo](.screenshots/geo.png)
-![advanced](.screenshots/advanced.png)
-
 ## Download
 
 - **[Latest release](https://github.com/Tyrrrz/LightBulb/releases/latest)**
 - [CI build](https://github.com/Tyrrrz/LightBulb/actions)
+
+## Screenshots
+
+![dashboard](.screenshots/dashboard.png)
+![settings](.screenshots/settings.png)
 
 ## Features
 
