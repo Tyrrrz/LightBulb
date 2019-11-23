@@ -55,10 +55,13 @@
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <CheckBox
-                        Content="{Binding Name}"
-                        IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}, Mode=OneWay}"
-                        ToolTip="{Binding ExecutableFilePath}" />
+                    <!--  HACK: show a checkbox that does nothing but reflects row selection  -->
+                    <Border Background="Transparent" ToolTip="{Binding ExecutableFilePath}">
+                        <CheckBox
+                            Content="{Binding Name}"
+                            IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}, Mode=OneWay}"
+                            IsHitTestVisible="False" />
+                    </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

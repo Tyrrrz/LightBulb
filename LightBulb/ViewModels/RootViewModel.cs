@@ -195,7 +195,7 @@ namespace LightBulb.ViewModels
             // Start timers
             _updateInstantTimer.Start(TimeSpan.FromMilliseconds(50));
             _updateConfigurationTimer.Start(TimeSpan.FromMilliseconds(50));
-            _updateIsPausedTimer.Start(TimeSpan.FromSeconds(1.5));
+            _updateIsPausedTimer.Start(TimeSpan.FromSeconds(1));
             _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
         }
         
