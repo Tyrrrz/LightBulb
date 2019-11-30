@@ -1,9 +1,9 @@
 ﻿using System;
 using LightBulb.Models;
 
-namespace LightBulb.Calculators
+namespace LightBulb.Logic
 {
-    public static class Astronomy
+    public static class AstronomyLogic
     {
         private static double DegreesToRadians(double degree) => degree * (Math.PI / 180);
 

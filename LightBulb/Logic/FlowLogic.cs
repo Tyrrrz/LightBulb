@@ -2,9 +2,9 @@
 using LightBulb.Internal;
 using LightBulb.Models;
 
-namespace LightBulb.Calculators
+namespace LightBulb.Logic
 {
-    public static class Flow
+    public static class FlowLogic
     {
         private static double GetCurveValue(
             TimeSpan sunriseTime, double dayValue,

@@ -32,14 +32,3 @@ Note: This application requires .NET Core 3 runtime for desktop apps, which you 
 
 ![dashboard](.screenshots/dashboard.png)
 ![settings](.screenshots/settings.png)
-
-## Libraries used
-
-- [Stylet](https://github.com/canton7/Stylet)
-- [PropertyChanged.Fody](https://github.com/Fody/PropertyChanged)
-- [MaterialDesignInXamlToolkit](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit)
-- [Newtonsoft.Json](http://www.newtonsoft.com/json)
-- [Hardcodet.NotifyIcon.Wpf](http://www.hardcodet.net/wpf-notifyicon)
-- [Onova](https://github.com/Tyrrrz/Onova)
-- [Tyrrrz.Extensions](https://github.com/Tyrrrz/Extensions)
-- [Tyrrrz.Settings](https://github.com/Tyrrrz/Settings)
