@@ -8,5 +8,5 @@ function Replace-TextInFile {
     [IO.File]::WriteAllText($filePath, $content, [Text.Encoding]::UTF8)
 }
 
-Replace-TextInFile "$PSScriptRoot\LightBulb\LightBulb.csproj" '(?<=<Version>)(.*?)(?=</Version>)' $newVersion
-Replace-TextInFile "$PSScriptRoot\Deploy\Installer.iss" '(?<=#define AppVersion ")(.*?)(?=")' $newVersion
+Replace-TextInFile "$PSScriptRoot\LightBulb.props" '(?<=<Version>)(.*?)(?=</Version>)' $newVersion
+Replace-TextInFile "$PSScriptRoot\Installer\Installer.iss" '(?<=#define AppVersion ")(.*?)(?=")' $newVersion
