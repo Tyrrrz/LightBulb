@@ -14,7 +14,7 @@ _For guides and other info -- check out the [wiki](https://github.com/Tyrrrz/Lig
 - **[Latest release](https://github.com/Tyrrrz/LightBulb/releases/latest)**
 - [CI build](https://github.com/Tyrrrz/LightBulb/actions)
 
-Note: This application requires .NET Core 3 runtime for desktop apps, which you can [download here](https://dotnet.microsoft.com/download/dotnet-core/3.0/runtime).
+Note: This application requires .NET Core runtime for desktop apps, which you can [download here](https://dotnet.microsoft.com/download/dotnet-core/current/runtime).
 
 ## Features
 
