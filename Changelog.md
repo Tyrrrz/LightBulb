@@ -2,7 +2,7 @@
 
 The long awaited new release brings a complete rework of the entire application along with 30+ new features and bug fixes.
 
->**Important**: LightBulb is now built against .NET Core 3. In order to run this and future versions you will need to **[download and install .NET Core 3 runtime](https://dotnet.microsoft.com/download/dotnet-core/3.0/runtime)** (follow the steps for "Run desktop apps").
+>**Important**: LightBulb is now built against .NET Core 3. In order to run this and future versions you will need to **[download and install .NET Core 3 runtime](https://dotnet.microsoft.com/download/dotnet-core/current/runtime)** (follow the steps for "Run desktop apps").
 
 Due to substantial changes, your settings from previous versions will be reset. It's also recommended to uninstall LightBulb 1.x first, if you have it installed.
 
