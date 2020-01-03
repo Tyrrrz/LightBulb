@@ -14,7 +14,7 @@ namespace LightBulb.ViewModels.Framework
 
             viewModel.IsOkButtonVisible = !string.IsNullOrWhiteSpace(okButtonText);
             viewModel.OkButtonText = okButtonText;
-            viewModel.IsCancelButtonVisible = !string.IsNullOrWhiteSpace(okButtonText);
+            viewModel.IsCancelButtonVisible = !string.IsNullOrWhiteSpace(cancelButtonText);
             viewModel.CancelButtonText = cancelButtonText;
 
             return viewModel;
