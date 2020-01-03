@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using Tyrrrz.Extensions;
 
 namespace LightBulb.Models
 {
@@ -40,7 +39,7 @@ namespace LightBulb.Models
         {
             result = default;
 
-            if (value.IsNullOrWhiteSpace())
+            if (string.IsNullOrWhiteSpace(value))
                 return false;
 
             const NumberStyles numberStyles = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;

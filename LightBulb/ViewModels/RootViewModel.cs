@@ -329,7 +329,7 @@ namespace LightBulb.ViewModels
             Refresh();
         }
 
-        public void ShowAbout() => App.GitHubProjectUrl.ToUri().OpenInBrowser();
+        public void ShowAbout() => ProcessEx.StartShellExecute(App.GitHubProjectUrl);
 
         public void Exit() => Application.Current.Shutdown();
 

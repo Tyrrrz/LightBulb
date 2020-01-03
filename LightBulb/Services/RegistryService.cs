@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security;
-using LightBulb.Internal;
 using Microsoft.Win32;
 using Tyrrrz.Extensions;
 

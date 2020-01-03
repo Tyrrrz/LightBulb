@@ -1,5 +1,4 @@
 ﻿using LightBulb.ViewModels.Dialogs;
-using Tyrrrz.Extensions;
 
 namespace LightBulb.ViewModels.Framework
 {
@@ -13,9 +12,9 @@ namespace LightBulb.ViewModels.Framework
             viewModel.Title = title;
             viewModel.Message = message;
 
-            viewModel.IsOkButtonVisible = !okButtonText.IsNullOrWhiteSpace();
+            viewModel.IsOkButtonVisible = !string.IsNullOrWhiteSpace(okButtonText);
             viewModel.OkButtonText = okButtonText;
-            viewModel.IsCancelButtonVisible = !cancelButtonText.IsNullOrWhiteSpace();
+            viewModel.IsCancelButtonVisible = !string.IsNullOrWhiteSpace(okButtonText);
             viewModel.CancelButtonText = cancelButtonText;
 
             return viewModel;

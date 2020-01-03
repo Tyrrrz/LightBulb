@@ -77,7 +77,7 @@ namespace LightBulb.ViewModels.Components
             }
         }
 
-        public bool CanSetLocation => !IsBusy && !LocationQuery.IsNullOrWhiteSpace() && LocationQuery != Location?.ToString();
+        public bool CanSetLocation => !IsBusy && !string.IsNullOrWhiteSpace(LocationQuery) && LocationQuery != Location?.ToString();
 
         public async void SetLocation()
         {

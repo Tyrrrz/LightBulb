@@ -21,7 +21,7 @@ namespace LightBulb.Services
             {
                 // Check for updates
                 var check = await _updateManager.CheckForUpdatesAsync();
-                if (!check.CanUpdate)
+                if (!check.CanUpdate || check.LastVersion == null)
                     return null;
 
                 // Prepare update

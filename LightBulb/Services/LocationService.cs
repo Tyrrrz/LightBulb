@@ -26,8 +26,8 @@ namespace LightBulb.Services
 
             var json = JToken.Parse(raw);
 
-            var latitude = json["lat"].Value<double>();
-            var longitude = json["lon"].Value<double>();
+            var latitude = json["lat"]!.Value<double>();
+            var longitude = json["lon"]!.Value<double>();
 
             return new GeoLocation(latitude, longitude);
         }
@@ -41,8 +41,8 @@ namespace LightBulb.Services
 
             var json = JToken.Parse(raw);
 
-            var latitude = json.First["lat"].Value<double>();
-            var longitude = json.First["lon"].Value<double>();
+            var latitude = json.First!["lat"]!.Value<double>();
+            var longitude = json.First!["lon"]!.Value<double>();
 
             return new GeoLocation(latitude, longitude);
         }
