@@ -42,20 +42,23 @@ namespace LightBulb.ViewModels
 
         public DateTimeOffset Instant { get; private set; } = DateTimeOffset.Now;
 
-        public TimeSpan ActualSunriseTime => _settingsService.Location != null && !_settingsService.IsManualSunriseSunsetEnabled
+        public TimeSpan ActualSunriseStartTime => _settingsService.Location != null && !_settingsService.IsManualSunriseSunsetEnabled
             ? AstronomyLogic.CalculateSunriseTime(_settingsService.Location.Value, Instant)
             : _settingsService.ManualSunriseTime;
 
-        public TimeSpan ActualSunsetTime => _settingsService.Location != null && !_settingsService.IsManualSunriseSunsetEnabled
+        public TimeSpan ActualSunsetEndTime => _settingsService.Location != null && !_settingsService.IsManualSunriseSunsetEnabled
             ? AstronomyLogic.CalculateSunsetTime(_settingsService.Location.Value, Instant)
             : _settingsService.ManualSunsetTime;
 
+        // TODO: move this to FlowLogic
         public TimeSpan ActualConfigurationTransitionDuration =>
-            _settingsService.ConfigurationTransitionDuration.ClampMax((ActualSunsetTime - ActualSunriseTime).Duration());
+            _settingsService.ConfigurationTransitionDuration.ClampMax((ActualSunsetEndTime - ActualSunriseStartTime).Duration() / 2);
 
-        public TimeSpan ActualSunriseEndTime => ActualSunriseTime + ActualConfigurationTransitionDuration;
+        // TODO: move this to FlowLogic
+        public TimeSpan ActualSunriseEndTime => ActualSunriseStartTime + ActualConfigurationTransitionDuration;
 
-        public TimeSpan ActualSunsetEndTime => ActualSunsetTime + ActualConfigurationTransitionDuration;
+        // TODO: move this to FlowLogic
+        public TimeSpan ActualSunsetStartTime => ActualSunsetEndTime - ActualConfigurationTransitionDuration;
 
         public ColorConfiguration TargetColorConfiguration
         {
@@ -65,8 +68,8 @@ namespace LightBulb.ViewModels
                 if (IsWorking)
                 {
                     return FlowLogic.CalculateColorConfiguration(
-                        ActualSunriseTime, _settingsService.DayConfiguration,
-                        ActualSunsetTime, _settingsService.NightConfiguration,
+                        ActualSunriseStartTime, _settingsService.DayConfiguration,
+                        ActualSunsetEndTime, _settingsService.NightConfiguration,
                         ActualConfigurationTransitionDuration, Instant);
                 }
 
@@ -152,7 +155,7 @@ namespace LightBulb.ViewModels
                 return;
 
             // Show prompt to the user
-            var dialog = _viewModelFactory.CreateMessageBoxViewModel("Limited gamma range", 
+            var dialog = _viewModelFactory.CreateMessageBoxViewModel("Limited gamma range",
                 $"{App.Name} detected that this computer doesn't have the extended gamma range unlocked. " +
                 "This may cause the app to work incorrectly with some settings." +
                 Environment.NewLine + Environment.NewLine +
@@ -198,7 +201,7 @@ namespace LightBulb.ViewModels
             _updateIsPausedTimer.Start(TimeSpan.FromSeconds(1));
             _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
         }
-        
+
         // This is a custom event that fires when the dialog host is loaded
         public async void OnViewFullyLoaded()
         {

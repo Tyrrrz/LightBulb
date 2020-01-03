@@ -15,40 +15,32 @@ namespace LightBulb.Logic
             var nextSunrise = instant.NextTimeOfDay(sunriseTime);
             var prevSunrise = instant.PreviousTimeOfDay(sunriseTime);
             var nextSunset = instant.NextTimeOfDay(sunsetTime);
-            var prevSunset = instant.PreviousTimeOfDay(sunsetTime);
 
-            // Calculate time until next sunrise and sunset
-            var untilNextSunrise = nextSunrise - instant;
-            var untilNextSunset = nextSunset - instant;
-
-            // Next event is sunrise
-            if (untilNextSunrise <= untilNextSunset)
+            // After sunrise (transition to day)
+            //           🕑
+            //-------☀---------------------🌙-------
+            //       | trans |      | trans |
+            if (instant >= prevSunrise && instant <= prevSunrise + transitionDuration)
             {
-                // Check if in transition period to night
-                if (instant <= prevSunset + transitionDuration)
-                {
-                    // Smooth transition
-                    var norm = (instant - prevSunset) / transitionDuration;
-                    return nightValue + (dayValue - nightValue) * Math.Cos(norm * Math.PI / 2);
-                }
-
-                // Night time
-                return nightValue;
+                var smoothFactor = (instant - prevSunrise) / transitionDuration;
+                return dayValue + (nightValue - dayValue) * Math.Cos(smoothFactor * Math.PI / 2);
             }
-            // Next event is sunset
-            else
+
+            // Before sunset (transition to night)
+            //                        🕑
+            //-------☀---------------------🌙-------
+            //       | trans |      | trans |
+            if (instant >= nextSunset - transitionDuration && instant <= nextSunset)
             {
-                // Check if in transition period to day
-                if (instant <= prevSunrise + transitionDuration)
-                {
-                    // Smooth transition
-                    var norm = (instant - prevSunrise) / transitionDuration;
-                    return dayValue + (nightValue - dayValue) * Math.Cos(norm * Math.PI / 2);
-                }
-
-                // Day time
-                return dayValue;
+                var smoothFactor = (nextSunset - instant) / transitionDuration;
+                return dayValue + (nightValue - dayValue) * Math.Cos(smoothFactor * Math.PI / 2);
             }
+
+            // Between sunrise and sunset
+            //   🕑                             🕑
+            //-------☀---------------------🌙-------
+            //       | trans |      | trans |
+            return nextSunset <= nextSunrise ? dayValue : nightValue;
         }
 
         public static ColorConfiguration CalculateColorConfiguration(

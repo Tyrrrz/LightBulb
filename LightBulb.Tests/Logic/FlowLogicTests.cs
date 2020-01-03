@@ -70,7 +70,7 @@ namespace LightBulb.Tests.Logic
 
             var instant = new DateTimeOffset(
                 2019, 01, 01,
-                19, 00, 00,
+                17, 00, 00,
                 TimeSpan.Zero);
 
             // Act
@@ -180,18 +180,17 @@ namespace LightBulb.Tests.Logic
                     transitionDuration, instant);
 
                 // Assert
-                if (Math.Abs(configuration.Temperature - lastConfiguration.Temperature) >=
-                    Math.Abs(dayConfiguration.Temperature - nightConfiguration.Temperature) / 2)
-                {
-                    Assert.Fail($"Detected harsh jump in temperature between {instantTime} and {lastInstantTime}: " +
-                                $"from {lastConfiguration} to {configuration}.");
-                }
+                var isHarshJump =
+                    Math.Abs(configuration.Temperature - lastConfiguration.Temperature) >=
+                    Math.Abs(dayConfiguration.Temperature - nightConfiguration.Temperature) / 2
+                    ||
+                    Math.Abs(configuration.Brightness - lastConfiguration.Brightness) >=
+                    Math.Abs(dayConfiguration.Brightness - nightConfiguration.Brightness) / 2;
 
-                if (Math.Abs(configuration.Brightness - lastConfiguration.Brightness) >=
-                    Math.Abs(dayConfiguration.Brightness - nightConfiguration.Brightness) / 2)
+                if (isHarshJump)
                 {
-                    Assert.Fail($"Detected harsh jump in brightness between {instantTime} and {lastInstantTime}: " +
-                                $"from {lastConfiguration} to {configuration}.");
+                    Assert.Fail($"Detected harsh jump in color configuration from {lastInstantTime} to {instantTime}: " +
+                                $"{lastConfiguration} -> {configuration}.");
                 }
 
                 lastInstantTime = instantTime;
