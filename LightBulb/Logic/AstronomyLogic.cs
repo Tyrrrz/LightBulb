@@ -1,5 +1,6 @@
 ﻿using System;
 using LightBulb.Models;
+using Tyrrrz.Extensions;
 
 namespace LightBulb.Logic
 {
@@ -23,16 +24,16 @@ namespace LightBulb.Logic
             var timeApproxHours = isSunrise ? 6 : 18;
             var timeApproxDays = instant.DayOfYear + (timeApproxHours - lngHours) / 24;
 
-            // Calculate the Sun's mean anomaly
+            // Calculate Sun's mean anomaly
             var sunMeanAnomaly = 0.9856 * timeApproxDays - 3.289;
 
-            // Calculate the Sun's true longitude
+            // Calculate Sun's true longitude
             var sunLng = sunMeanAnomaly + 282.634 +
                          1.916 * Math.Sin(DegreesToRadians(sunMeanAnomaly)) +
                          0.020 * Math.Sin(2 * DegreesToRadians(sunMeanAnomaly));
             sunLng = Wrap(sunLng, 0, 360);
 
-            // Calculate the Sun's right ascension
+            // Calculate Sun's right ascension
             var sunRightAsc = RadiansToDegrees(Math.Atan(0.91764 * Math.Tan(DegreesToRadians(sunLng))));
             sunRightAsc = Wrap(sunRightAsc, 0, 360);
 
@@ -46,11 +47,17 @@ namespace LightBulb.Logic
             var sinDec = 0.39782 * Math.Sin(DegreesToRadians(sunLng));
             var cosDec = Math.Cos(Math.Asin(sinDec));
 
-            // Calculate the Sun's local hour angle
+            // Calculate Sun's zenith local hour
             const double zenith = 90.83; // official sunrise/sunset
             var sunLocalHoursCos =
                 (Math.Cos(DegreesToRadians(zenith)) - sinDec * Math.Sin(DegreesToRadians(location.Latitude))) /
                 (cosDec * Math.Cos(DegreesToRadians(location.Latitude)));
+
+            // This value may be invalid in case the Sun never reaches zenith
+            // so we clamp to get the closest highest point instead
+            sunLocalHoursCos = sunLocalHoursCos.Clamp(-1, 1);
+
+            // Calculate local time of Sun's highest point
             var sunLocalHours = isSunrise
                 ? 360 - RadiansToDegrees(Math.Acos(sunLocalHoursCos))
                 : RadiansToDegrees(Math.Acos(sunLocalHoursCos));

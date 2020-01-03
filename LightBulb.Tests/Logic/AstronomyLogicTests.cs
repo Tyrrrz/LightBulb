@@ -31,6 +31,13 @@ namespace LightBulb.Tests.Logic
                 new DateTimeOffset(2019, 11, 15, 00, 00, 00, TimeSpan.FromHours(+8)),
                 new TimeSpan(06, 36, 00)
             );
+
+            // Tromso (doesn't have sunrise at this time, should instead return brightest point of day)
+            yield return new TestCaseData(
+                new GeoLocation(69.6489, 18.9551),
+                new DateTimeOffset(2020, 01, 03, 00, 00, 00, TimeSpan.FromHours(+1)),
+                new TimeSpan(11, 48, 00)
+            );
         }
 
         [Test]
