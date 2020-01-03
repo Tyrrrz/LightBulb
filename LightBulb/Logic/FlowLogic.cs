@@ -17,9 +17,9 @@ namespace LightBulb.Logic
             var nextSunset = instant.NextTimeOfDay(sunsetTime);
 
             // After sunrise (transition to day)
-            //           🕑
-            //-------☀---------------------🌙-------
-            //       | trans |      | trans |
+            //        |   X   |      |       |
+            // -------☀---------------------🌙-------
+            //        | trans |      | trans |
             if (instant >= prevSunrise && instant <= prevSunrise + transitionDuration)
             {
                 var smoothFactor = (instant - prevSunrise) / transitionDuration;
@@ -27,9 +27,9 @@ namespace LightBulb.Logic
             }
 
             // Before sunset (transition to night)
-            //                        🕑
-            //-------☀---------------------🌙-------
-            //       | trans |      | trans |
+            //        |       |      |   X   |
+            // -------☀---------------------🌙-------
+            //        | trans |      | trans |
             if (instant >= nextSunset - transitionDuration && instant <= nextSunset)
             {
                 var smoothFactor = (nextSunset - instant) / transitionDuration;
@@ -37,9 +37,9 @@ namespace LightBulb.Logic
             }
 
             // Between sunrise and sunset
-            //   🕑                             🕑
-            //-------☀---------------------🌙-------
-            //       | trans |      | trans |
+            //    X   |       |   X  |       |  X
+            // -------☀---------------------🌙-------
+            //        | trans |      | trans |
             return nextSunset <= nextSunrise ? dayValue : nightValue;
         }
 
