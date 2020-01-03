@@ -29,6 +29,24 @@
                 IsChecked="{Binding IsAutoStartEnabled}" />
         </Grid>
 
+        <!--  Auto update  -->
+        <Grid Margin="6" ToolTip="Keep LightBulb updated by automatically installing new versions as they become available">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="Auto-update" />
+            <ToggleButton
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                IsChecked="{Binding IsAutoUpdateEnabled}" />
+        </Grid>
+
         <!--  Default to day time  -->
         <Grid Margin="6" ToolTip="When LightBulb is disabled or paused, restore day-time gamma instead of default monitor gamma">
             <Grid.ColumnDefinitions>

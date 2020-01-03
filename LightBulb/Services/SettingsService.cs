@@ -34,6 +34,8 @@ namespace LightBulb.Services
 
         public bool IsAutoStartEnabled { get; set; } = false;
 
+        public bool IsAutoUpdateEnabled { get; set; } = true;
+
         public bool IsDefaultToDayConfigurationEnabled { get; set; } = false;
 
         public bool IsConfigurationSmoothingEnabled { get; set; } = true;

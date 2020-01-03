@@ -11,15 +11,15 @@ namespace LightBulb.Logic
             TimeSpan sunsetTime, double nightValue,
             TimeSpan transitionDuration, DateTimeOffset instant)
         {
-            // Get next and previous sunrise and sunset
+            // Reflect sunrise & sunset times against the current instant
             var nextSunrise = instant.NextTimeOfDay(sunriseTime);
             var prevSunrise = instant.PreviousTimeOfDay(sunriseTime);
             var nextSunset = instant.NextTimeOfDay(sunsetTime);
 
             // After sunrise (transition to day)
-            //        |   X   |      |       |
-            // -------☀---------------------🌙-------
-            //        | trans |      | trans |
+            //        |   X   |       |       |
+            // -------☀----------------------🌙-------
+            //        | trans |       | trans |
             if (instant >= prevSunrise && instant <= prevSunrise + transitionDuration)
             {
                 var smoothFactor = (instant - prevSunrise) / transitionDuration;
@@ -27,9 +27,9 @@ namespace LightBulb.Logic
             }
 
             // Before sunset (transition to night)
-            //        |       |      |   X   |
-            // -------☀---------------------🌙-------
-            //        | trans |      | trans |
+            //        |       |       |   X   |
+            // -------☀----------------------🌙-------
+            //        | trans |       | trans |
             if (instant >= nextSunset - transitionDuration && instant <= nextSunset)
             {
                 var smoothFactor = (nextSunset - instant) / transitionDuration;
@@ -37,9 +37,9 @@ namespace LightBulb.Logic
             }
 
             // Between sunrise and sunset
-            //    X   |       |   X  |       |  X
-            // -------☀---------------------🌙-------
-            //        | trans |      | trans |
+            //    X   |       |   X   |       |   X
+            // -------☀----------------------🌙-------
+            //        | trans |       | trans |
             return nextSunset <= nextSunrise ? dayValue : nightValue;
         }
 

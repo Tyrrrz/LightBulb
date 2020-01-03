@@ -10,6 +10,12 @@ namespace LightBulb.ViewModels.Components
             set => SettingsService.IsAutoStartEnabled = value;
         }
 
+        public bool IsAutoUpdateEnabled
+        {
+            get => SettingsService.IsAutoUpdateEnabled;
+            set => SettingsService.IsAutoUpdateEnabled = value;
+        }
+
         public bool IsDefaultToDayConfigurationEnabled
         {
             get => SettingsService.IsDefaultToDayConfigurationEnabled;

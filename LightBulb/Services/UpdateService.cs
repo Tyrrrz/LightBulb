@@ -13,10 +13,20 @@ namespace LightBulb.Services
             new GithubPackageResolver("Tyrrrz", "LightBulb", "LightBulb.zip"),
             new ZipPackageExtractor());
 
+        private readonly SettingsService _settingsService;
+
+        public UpdateService(SettingsService settingsService)
+        {
+            _settingsService = settingsService;
+        }
+
         private Version? GetLastPreparedUpdate() => _updateManager.GetPreparedUpdates().Max();
 
         public async Task<Version?> CheckPrepareUpdateAsync()
         {
+            if (!_settingsService.IsAutoUpdateEnabled)
+                return null;
+
             try
             {
                 // Check for updates
@@ -39,6 +49,9 @@ namespace LightBulb.Services
 
         public void FinalizePendingUpdates()
         {
+            if (!_settingsService.IsAutoUpdateEnabled)
+                return;
+
             try
             {
                 // Get last prepared update
