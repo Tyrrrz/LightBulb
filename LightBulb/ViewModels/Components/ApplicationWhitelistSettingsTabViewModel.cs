@@ -6,7 +6,7 @@ using LightBulb.Services;
 
 namespace LightBulb.ViewModels.Components
 {
-    public class ApplicationWhitelistSettingsTabViewModel :  SettingsTabViewModelBase
+    public class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewModelBase
     {
         private readonly ExternalApplicationService _externalApplicationService;
 

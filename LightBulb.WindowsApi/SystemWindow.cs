@@ -29,7 +29,7 @@ namespace LightBulb.WindowsApi
         public bool IsSystemWindow()
         {
             var className = GetClassName();
-            
+
             if (string.Equals(className, "Progman", StringComparison.OrdinalIgnoreCase))
                 return true;
 
