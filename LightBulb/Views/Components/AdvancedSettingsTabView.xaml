@@ -100,5 +100,23 @@
                 VerticalAlignment="Center"
                 IsChecked="{Binding IsPauseWhenFullScreenEnabled}" />
         </Grid>
+
+        <!--  Gamma polling  -->
+        <Grid Margin="6" ToolTip="Force-refresh gamma at regular intervals to make sure it doesn't go out of sync">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="Gamma polling" />
+            <ToggleButton
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                IsChecked="{Binding IsGammaPollingEnabled}" />
+        </Grid>
     </StackPanel>
 </UserControl>

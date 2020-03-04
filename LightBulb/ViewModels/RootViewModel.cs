@@ -28,6 +28,7 @@ namespace LightBulb.ViewModels
         private readonly AutoResetTimer _updateConfigurationTimer;
         private readonly AutoResetTimer _updateIsPausedTimer;
         private readonly AutoResetTimer _checkForUpdatesTimer;
+        private readonly AutoResetTimer _pollingTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
         private bool _isGammaStale;
@@ -142,10 +143,11 @@ namespace LightBulb.ViewModels
             _updateInstantTimer = new AutoResetTimer(UpdateInstant);
             _updateIsPausedTimer = new AutoResetTimer(UpdateIsPaused);
             _checkForUpdatesTimer = new AutoResetTimer(async () => await _updateService.CheckPrepareUpdateAsync());
+            _pollingTimer = new AutoResetTimer(PollGamma);
             _enableAfterDelayTimer = new ManualResetTimer(Enable);
 
             // Reset gamma when power settings change
-            _systemEventService.DisplayStateChanged += (sender, args) => _isGammaStale = true;
+            _systemEventService.DisplayStateChanged += (sender, args) => InvalidateGamma();
         }
 
         private async Task EnsureGammaRangeIsUnlockedAsync()
@@ -199,6 +201,7 @@ namespace LightBulb.ViewModels
             _updateInstantTimer.Start(TimeSpan.FromMilliseconds(50));
             _updateConfigurationTimer.Start(TimeSpan.FromMilliseconds(50));
             _updateIsPausedTimer.Start(TimeSpan.FromSeconds(1));
+            _pollingTimer.Start(TimeSpan.FromSeconds(1));
             _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
         }
 
@@ -297,6 +300,16 @@ namespace LightBulb.ViewModels
 
             IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
         }
+
+        private void PollGamma()
+        {
+            if (!_settingsService.IsGammaPollingEnabled)
+                return;
+
+            InvalidateGamma();
+        }
+
+        private void InvalidateGamma() => _isGammaStale = true;
 
         public void Enable() => IsEnabled = true;
 

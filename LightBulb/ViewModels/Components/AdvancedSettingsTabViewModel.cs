@@ -34,6 +34,12 @@ namespace LightBulb.ViewModels.Components
             set => SettingsService.IsPauseWhenFullScreenEnabled = value;
         }
 
+        public bool IsGammaPollingEnabled
+        {
+            get => SettingsService.IsGammaPollingEnabled;
+            set => SettingsService.IsGammaPollingEnabled = value;
+        }
+
         public AdvancedSettingsTabViewModel(SettingsService settingsService)
             : base(settingsService, 2, "Advanced")
         {

@@ -42,6 +42,8 @@ namespace LightBulb.Services
 
         public bool IsPauseWhenFullScreenEnabled { get; set; } = false;
 
+        public bool IsGammaPollingEnabled { get; set; } = false;
+
         // Application whitelist
 
         public bool IsApplicationWhitelistEnabled { get; set; } = false;
