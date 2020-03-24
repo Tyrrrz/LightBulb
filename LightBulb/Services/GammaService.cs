@@ -2,14 +2,37 @@
 using System.Collections.Generic;
 using LightBulb.Models;
 using LightBulb.WindowsApi;
+using Microsoft.Win32;
 
 namespace LightBulb.Services
 {
     public class GammaService : IDisposable
     {
+        private readonly object _lock = new object();
+
         // Device contexts for all monitors.
         // We can't just get device context for virtual screen because that doesn't work anymore since Win10 v1903.
-        private readonly IReadOnlyList<DeviceContext> _deviceContexts = DeviceContext.GetAllMonitorDeviceContexts();
+        // Note: device contexts need to be refreshed if the user enables/disables monitors while the program is running.
+        private IReadOnlyList<DeviceContext> _deviceContexts = Array.Empty<DeviceContext>();
+
+        public GammaService()
+        {
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+            ResetDeviceContexts();
+        }
+
+        private void OnDisplaySettingsChanged(object? sender, EventArgs e) => ResetDeviceContexts();
+
+        private void ResetDeviceContexts()
+        {
+            lock (_lock)
+            {
+                foreach (var deviceContext in _deviceContexts)
+                    deviceContext.Dispose();
+
+                _deviceContexts = DeviceContext.GetAllMonitorDeviceContexts();
+            }
+        }
 
         public void SetGamma(ColorConfiguration colorConfiguration)
         {
@@ -43,20 +66,28 @@ namespace LightBulb.Services
             }
 
             // Set gamma
-            foreach (var deviceContext in _deviceContexts)
+            lock (_lock)
             {
-                deviceContext.SetGamma(
-                    GetRed() * colorConfiguration.Brightness,
-                    GetGreen() * colorConfiguration.Brightness,
-                    GetBlue() * colorConfiguration.Brightness
-                );
+                foreach (var deviceContext in _deviceContexts)
+                {
+                    deviceContext.SetGamma(
+                        GetRed() * colorConfiguration.Brightness,
+                        GetGreen() * colorConfiguration.Brightness,
+                        GetBlue() * colorConfiguration.Brightness
+                    );
+                }
             }
         }
 
         public void Dispose()
         {
-            foreach (var deviceContext in _deviceContexts)
-                deviceContext.Dispose();
+            lock (_lock)
+            {
+                foreach (var deviceContext in _deviceContexts)
+                    deviceContext.Dispose();
+
+                SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+            }
         }
     }
 }
