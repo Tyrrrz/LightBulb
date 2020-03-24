@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using LightBulb.Logic;
+using LightBulb.Domain;
 using LightBulb.Models;
 using NUnit.Framework;
 
-namespace LightBulb.Tests.Logic
+namespace LightBulb.Tests.Domain
 {
     [TestFixture]
-    public class AstronomyLogicTests
+    public class AstronomyTests
     {
         private static IEnumerable<TestCaseData> GetTestCases_CalculateSunriseTime()
         {
@@ -45,7 +45,7 @@ namespace LightBulb.Tests.Logic
         public void CalculateSunriseTime_Test(GeoLocation location, DateTimeOffset instant, TimeSpan expectedSunriseTime)
         {
             // Act
-            var sunriseTime = AstronomyLogic.CalculateSunriseTime(location, instant);
+            var sunriseTime = Astronomy.CalculateSunriseTime(location, instant);
 
             // Assert
             Assert.That(sunriseTime, Is.EqualTo(expectedSunriseTime).Within(TimeSpan.FromMinutes(3)));
@@ -80,7 +80,7 @@ namespace LightBulb.Tests.Logic
         public void CalculateSunsetTime_Test(GeoLocation location, DateTimeOffset instant, TimeSpan expectedSunsetTime)
         {
             // Act
-            var sunsetTime = AstronomyLogic.CalculateSunsetTime(location, instant);
+            var sunsetTime = Astronomy.CalculateSunsetTime(location, instant);
 
             // Assert
             Assert.That(sunsetTime, Is.EqualTo(expectedSunsetTime).Within(TimeSpan.FromMinutes(3)));

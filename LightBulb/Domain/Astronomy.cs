@@ -2,9 +2,9 @@
 using LightBulb.Models;
 using Tyrrrz.Extensions;
 
-namespace LightBulb.Logic
+namespace LightBulb.Domain
 {
-    public static class AstronomyLogic
+    public static class Astronomy
     {
         private static double DegreesToRadians(double degree) => degree * (Math.PI / 180);
 

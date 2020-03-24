@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using LightBulb.Domain;
 using LightBulb.Internal;
-using LightBulb.Logic;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.ViewModels.Framework;
@@ -44,11 +44,11 @@ namespace LightBulb.ViewModels
         public DateTimeOffset Instant { get; private set; } = DateTimeOffset.Now;
 
         public TimeSpan ActualSunriseStartTime => _settingsService.Location != null && !_settingsService.IsManualSunriseSunsetEnabled
-            ? AstronomyLogic.CalculateSunriseTime(_settingsService.Location.Value, Instant)
+            ? Astronomy.CalculateSunriseTime(_settingsService.Location.Value, Instant)
             : _settingsService.ManualSunriseTime;
 
         public TimeSpan ActualSunsetEndTime => _settingsService.Location != null && !_settingsService.IsManualSunriseSunsetEnabled
-            ? AstronomyLogic.CalculateSunsetTime(_settingsService.Location.Value, Instant)
+            ? Astronomy.CalculateSunsetTime(_settingsService.Location.Value, Instant)
             : _settingsService.ManualSunsetTime;
 
         // TODO: move this to FlowLogic
@@ -68,7 +68,7 @@ namespace LightBulb.ViewModels
                 // If working - calculate color configuration for current instant
                 if (IsWorking)
                 {
-                    return FlowLogic.CalculateColorConfiguration(
+                    return Flow.CalculateColorConfiguration(
                         ActualSunriseStartTime, _settingsService.DayConfiguration,
                         ActualSunsetEndTime, _settingsService.NightConfiguration,
                         ActualConfigurationTransitionDuration, Instant);
