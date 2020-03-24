@@ -1,21 +1,25 @@
 ﻿Write-Host "========================================================================"
 Write-Host ""
-Write-Host "This script will install .NET runtime which is required for LightBulb"
+Write-Host "This script will install dependencies required by LightBulb"
 Write-Host ""
 Write-Host "========================================================================"
 Write-Host ""
 
 # Ensure it's not already installed
-Write-Host "Checking installed .NET runtimes..."
+try {
+    Write-Host "Checking installed .NET runtimes..."
 
-$runtimes = & dotnet --list-runtimes | Out-String -Stream
-foreach ($runtime in $runtimes)
-{
-    if ($runtime -like "Microsoft.WindowsDesktop.App 3.1.*") {
-        Write-Host "Already installed: $runtime"
-        Write-Host "Exiting..."
-        exit
+    $runtimes = & dotnet --list-runtimes | Out-String -Stream
+    foreach ($runtime in $runtimes) {
+        if ($runtime -like "Microsoft.WindowsDesktop.App 3.1.*") {
+            Write-Host "Already installed: $runtime"
+            Write-Host "Exiting..."
+            exit
+        }
     }
+} catch {
+    # If .NET is not installed, this will throw.
+    # That's fine, just continue.
 }
 
 # Get .NET runtime installer URL
