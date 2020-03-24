@@ -37,8 +37,7 @@ Write-Host "Please wait, this can take some time..."
 $installerFilePath = [IO.Path]::ChangeExtension([IO.Path]::GetTempFileName(), "exe")
 
 Import-Module BitsTransfer
-Start-BitsTransfer $installerDownloadUrl $installerFilePath
+Start-BitsTransfer $installerDownloadUrl $installerFilePath -DisplayName "Downloading Microsoft .NET Runtime installer..." -Description "Installer will run as soon as it's downloaded"
 
 # Run the installer
-$process = Start-Process $installerFilePath -Wait
-$process.WaitForExit()
+Start-Process $installerFilePath -Wait
