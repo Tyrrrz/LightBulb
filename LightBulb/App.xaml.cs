@@ -8,7 +8,7 @@ namespace LightBulb
 {
     public partial class App
     {
-        private static readonly Assembly Assembly = typeof(App).Assembly;
+        private static Assembly Assembly { get; } = typeof(App).Assembly;
 
         public static string Name { get; } = Assembly.GetName().Name!;
 
@@ -25,7 +25,7 @@ namespace LightBulb
 
     public partial class App
     {
-        private static readonly IReadOnlyList<string> CommandLineArgs = Environment.GetCommandLineArgs();
+        private static IReadOnlyList<string> CommandLineArgs { get; } = Environment.GetCommandLineArgs();
 
         public static string HiddenOnLaunchArgument { get; } = "--start-hidden";
 

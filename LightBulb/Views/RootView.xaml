@@ -5,6 +5,7 @@
     xmlns:controls="clr-namespace:LightBulb.Views.Controls"
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:globalization="clr-namespace:System.Globalization;assembly=System.Runtime"
     xmlns:lightBulb="clr-namespace:LightBulb"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -230,7 +231,7 @@
                         TextAlignment="Center">
                         <Run Text="Sunset" />
                         <LineBreak />
-                        <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ActualSunsetEndTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, Mode=OneWay}" />
+                        <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ActualSunsetEndTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
                     </TextBlock>
 
                     <!--  Sundial  -->
@@ -287,9 +288,9 @@
                                 Margin="8,0,0,0"
                                 VerticalAlignment="Center"
                                 FontSize="20">
-                                <Run Text="{Binding CurrentColorConfiguration.Temperature, StringFormat=\{0:F0\} K, Mode=OneWay}" />
+                                <Run Text="{Binding CurrentColorConfiguration.Temperature, StringFormat=\{0:F0\} K, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
                                 <LineBreak />
-                                <Run Text="{Binding CurrentColorConfiguration.Brightness, StringFormat=\{0:P0\}, Mode=OneWay}" />
+                                <Run Text="{Binding CurrentColorConfiguration.Brightness, StringFormat=\{0:P0\}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
                             </TextBlock>
                         </StackPanel>
 
@@ -306,7 +307,7 @@
                             <TextBlock
                                 Margin="4,0,0,0"
                                 FontSize="14"
-                                Text="{Binding Instant, StringFormat=\{0:t\}}" />
+                                Text="{Binding Instant, StringFormat=\{0:t\}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
                         </StackPanel>
                     </Grid>
 
@@ -319,7 +320,7 @@
                         TextAlignment="Center">
                         <Run Text="Sunrise" />
                         <LineBreak />
-                        <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ActualSunriseStartTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, Mode=OneWay}" />
+                        <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ActualSunriseStartTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
                     </TextBlock>
                 </Grid>
 

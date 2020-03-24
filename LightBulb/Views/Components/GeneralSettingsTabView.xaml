@@ -5,6 +5,7 @@
     xmlns:components="clr-namespace:LightBulb.ViewModels.Components"
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:globalization="clr-namespace:System.Globalization;assembly=System.Runtime"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=components:GeneralSettingsTabViewModel}"
     d:DesignHeight="450"
@@ -24,7 +25,7 @@
                 Padding="0"
                 VerticalAlignment="Center"
                 BorderBrush="{DynamicResource DividerBrush}"
-                Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
+                Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </StackPanel>
         <Slider
             Margin="8,0,8,6"
@@ -48,7 +49,7 @@
                 Padding="0"
                 VerticalAlignment="Center"
                 BorderBrush="{DynamicResource DividerBrush}"
-                Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
+                Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </StackPanel>
         <Slider
             Margin="8,0,8,6"
@@ -72,7 +73,7 @@
                 Padding="0"
                 VerticalAlignment="Center"
                 BorderBrush="{DynamicResource DividerBrush}"
-                Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
+                Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </StackPanel>
         <Slider
             Margin="8,0,8,6"
@@ -96,7 +97,7 @@
                 Padding="0"
                 VerticalAlignment="Center"
                 BorderBrush="{DynamicResource DividerBrush}"
-                Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
+                Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </StackPanel>
         <Slider
             Margin="8,0,8,6"
@@ -120,7 +121,7 @@
                 Padding="0"
                 VerticalAlignment="Center"
                 BorderBrush="{DynamicResource DividerBrush}"
-                Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}}" />
+                Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </StackPanel>
         <Slider
             Margin="8,0,8,6"

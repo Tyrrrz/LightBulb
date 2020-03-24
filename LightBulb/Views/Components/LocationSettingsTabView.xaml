@@ -5,6 +5,7 @@
     xmlns:components="clr-namespace:LightBulb.ViewModels.Components"
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:globalization="clr-namespace:System.Globalization;assembly=System.Runtime"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:s="https://github.com/canton7/Stylet"
@@ -45,7 +46,7 @@
                     Padding="0"
                     VerticalAlignment="Center"
                     BorderBrush="{DynamicResource DividerBrush}"
-                    Text="{Binding ManualSunriseTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}}" />
+                    Text="{Binding ManualSunriseTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
             </StackPanel>
             <Slider
                 Margin="8,0,8,6"
@@ -64,7 +65,7 @@
                     Padding="0"
                     VerticalAlignment="Center"
                     BorderBrush="{DynamicResource DividerBrush}"
-                    Text="{Binding ManualSunsetTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}}" />
+                    Text="{Binding ManualSunsetTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
             </StackPanel>
             <Slider
                 Margin="8,0,8,6"
