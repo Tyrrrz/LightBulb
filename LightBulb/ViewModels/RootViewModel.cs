@@ -7,6 +7,7 @@ using LightBulb.Internal;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.ViewModels.Framework;
+using Microsoft.Win32;
 using Stylet;
 using Tyrrrz.Extensions;
 
@@ -148,6 +149,8 @@ namespace LightBulb.ViewModels
 
             // Reset gamma when power settings change
             _systemEventService.DisplayStateChanged += (sender, args) => InvalidateGamma();
+            SystemEvents.DisplaySettingsChanging += (sender, args) => InvalidateGamma();
+            SystemEvents.DisplaySettingsChanged += (sender, args) => InvalidateGamma();
         }
 
         private async Task EnsureGammaRangeIsUnlockedAsync()
