@@ -16,10 +16,10 @@ jobs:
         dotnet-version: 3.1.100
 
     - name: Build & test
-      run: dotnet test -c Release -l GitHubActions
+      run: dotnet test --configuration Release --logger GitHubActions
 
     - name: Build & publish
-      run: dotnet publish LightBulb/ -o LightBulb/bin/Publish/ -c Release -r win-x86 --self-contained false
+      run: dotnet publish LightBulb/ -o LightBulb/bin/Publish/ --configuration Release
 
     - name: Create installer
       run: |
