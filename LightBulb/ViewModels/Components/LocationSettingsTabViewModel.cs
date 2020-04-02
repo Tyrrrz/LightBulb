@@ -30,6 +30,12 @@ namespace LightBulb.ViewModels.Components
             set => SettingsService.ManualSunsetTime = value.Clamp(TimeSpan.Zero, new TimeSpan(23, 59, 59));
         }
 
+        public TimeSpan ManualTwilightDuration
+        {
+            get => SettingsService.ManualTwilightDuration;
+            set => SettingsService.ManualTwilightDuration = value.Clamp(TimeSpan.Zero, TimeSpan.FromMinutes(180));
+        }
+
         public GeoLocation? Location
         {
             get => SettingsService.Location;

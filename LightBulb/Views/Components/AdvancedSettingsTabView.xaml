@@ -48,7 +48,7 @@
         </Grid>
 
         <!--  Default to day time  -->
-        <Grid Margin="6" ToolTip="When LightBulb is disabled or paused, restore day-time gamma instead of default monitor gamma">
+        <Grid Margin="6" ToolTip="When LightBulb is disabled or paused, restore configured day-time temperature and brightness instead of default monitor gamma">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -63,24 +63,6 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 IsChecked="{Binding IsDefaultToDayConfigurationEnabled}" />
-        </Grid>
-
-        <!--  Gamma smoothing  -->
-        <Grid Margin="6" ToolTip="Transition slowly when changing gamma to give time for eyes to adjust">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="Gamma smoothing" />
-            <ToggleButton
-                Grid.Column="1"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                IsChecked="{Binding IsConfigurationSmoothingEnabled}" />
         </Grid>
 
         <!--  Pause when full screen  -->
@@ -101,8 +83,26 @@
                 IsChecked="{Binding IsPauseWhenFullScreenEnabled}" />
         </Grid>
 
+        <!--  Configuration smoothing  -->
+        <Grid Margin="6" ToolTip="Transition slowly when enabling or disabling LightBulb to give time for eyes to adjust">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="Gamma smoothing" />
+            <ToggleButton
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                IsChecked="{Binding IsConfigurationSmoothingEnabled}" />
+        </Grid>
+
         <!--  Gamma polling  -->
-        <Grid Margin="6" ToolTip="Force-refresh gamma at regular intervals to make sure it doesn't go out of sync">
+        <Grid Margin="6" ToolTip="Force-refresh gamma at regular intervals to make sure it doesn't get overriden by other programs">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />

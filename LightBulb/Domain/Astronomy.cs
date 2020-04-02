@@ -15,7 +15,7 @@ namespace LightBulb.Domain
                 ? to - (from - value) % (to - from)
                 : from + (value - from) % (to - from);
 
-        private static TimeSpan CalculateSunriseSunsetTime(GeoLocation location, DateTimeOffset instant, bool isSunrise)
+        private static TimeSpan CalculateSolarTime(GeoLocation location, DateTimeOffset instant, bool isSunrise, double zenith)
         {
             // Based on https://edwilliams.org/sunrise_sunset_algorithm.htm
 
@@ -48,7 +48,6 @@ namespace LightBulb.Domain
             var cosDec = Math.Cos(Math.Asin(sinDec));
 
             // Calculate Sun's zenith local hour
-            const double zenith = 90.83; // official sunrise/sunset
             var sunLocalHoursCos =
                 (Math.Cos(DegreesToRadians(zenith)) - sinDec * Math.Sin(DegreesToRadians(location.Latitude))) /
                 (cosDec * Math.Cos(DegreesToRadians(location.Latitude)));
@@ -78,10 +77,16 @@ namespace LightBulb.Domain
             return TimeSpan.FromHours(localHours);
         }
 
-        public static TimeSpan CalculateSunriseTime(GeoLocation location, DateTimeOffset instant) =>
-            CalculateSunriseSunsetTime(location, instant, true);
+        public static TimeSpan CalculateSunriseStartTime(GeoLocation location, DateTimeOffset instant) =>
+            CalculateSolarTime(location, instant, true, 96);
 
-        public static TimeSpan CalculateSunsetTime(GeoLocation location, DateTimeOffset instant) =>
-            CalculateSunriseSunsetTime(location, instant, false);
+        public static TimeSpan CalculateSunriseEndTime(GeoLocation location, DateTimeOffset instant) =>
+            CalculateSolarTime(location, instant, true, 90.833);
+
+        public static TimeSpan CalculateSunsetStartTime(GeoLocation location, DateTimeOffset instant) =>
+            CalculateSolarTime(location, instant, false, 90.833);
+
+        public static TimeSpan CalculateSunsetEndTime(GeoLocation location, DateTimeOffset instant) =>
+            CalculateSolarTime(location, instant, false, 96);
     }
 }

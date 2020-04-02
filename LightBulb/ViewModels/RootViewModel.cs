@@ -9,7 +9,6 @@ using LightBulb.Services;
 using LightBulb.ViewModels.Framework;
 using Microsoft.Win32;
 using Stylet;
-using Tyrrrz.Extensions;
 
 namespace LightBulb.ViewModels
 {
@@ -45,22 +44,20 @@ namespace LightBulb.ViewModels
         public DateTimeOffset Instant { get; private set; } = DateTimeOffset.Now;
 
         public TimeSpan ActualSunriseStartTime => _settingsService.Location != null && !_settingsService.IsManualSunriseSunsetEnabled
-            ? Astronomy.CalculateSunriseTime(_settingsService.Location.Value, Instant)
+            ? Astronomy.CalculateSunriseStartTime(_settingsService.Location.Value, Instant)
             : _settingsService.ManualSunriseTime;
 
+        public TimeSpan ActualSunriseEndTime => _settingsService.Location != null && !_settingsService.IsManualSunriseSunsetEnabled
+            ? Astronomy.CalculateSunriseEndTime(_settingsService.Location.Value, Instant)
+            : ActualSunriseStartTime + _settingsService.ManualTwilightDuration;
+
+        public TimeSpan ActualSunsetStartTime => _settingsService.Location != null && !_settingsService.IsManualSunriseSunsetEnabled
+            ? Astronomy.CalculateSunsetStartTime(_settingsService.Location.Value, Instant)
+            : ActualSunsetEndTime - _settingsService.ManualTwilightDuration;
+
         public TimeSpan ActualSunsetEndTime => _settingsService.Location != null && !_settingsService.IsManualSunriseSunsetEnabled
-            ? Astronomy.CalculateSunsetTime(_settingsService.Location.Value, Instant)
+            ? Astronomy.CalculateSunsetEndTime(_settingsService.Location.Value, Instant)
             : _settingsService.ManualSunsetTime;
-
-        // TODO: move this to FlowLogic
-        public TimeSpan ActualConfigurationTransitionDuration =>
-            _settingsService.ConfigurationTransitionDuration.ClampMax((ActualSunsetEndTime - ActualSunriseStartTime).Duration() / 2);
-
-        // TODO: move this to FlowLogic
-        public TimeSpan ActualSunriseEndTime => ActualSunriseStartTime + ActualConfigurationTransitionDuration;
-
-        // TODO: move this to FlowLogic
-        public TimeSpan ActualSunsetStartTime => ActualSunsetEndTime - ActualConfigurationTransitionDuration;
 
         public ColorConfiguration TargetColorConfiguration
         {
@@ -70,9 +67,9 @@ namespace LightBulb.ViewModels
                 if (IsWorking)
                 {
                     return Flow.CalculateColorConfiguration(
-                        ActualSunriseStartTime, _settingsService.DayConfiguration,
-                        ActualSunsetEndTime, _settingsService.NightConfiguration,
-                        ActualConfigurationTransitionDuration, Instant);
+                        ActualSunriseStartTime, ActualSunriseEndTime, _settingsService.DayConfiguration,
+                        ActualSunsetStartTime, ActualSunsetEndTime, _settingsService.NightConfiguration,
+                        Instant);
                 }
 
                 // Otherwise - return default configuration

@@ -227,11 +227,21 @@
                         Grid.Column="0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
+                        Background="Transparent"
                         FontSize="19"
                         TextAlignment="Center">
+                        <TextBlock.ToolTip>
+                            <TextBlock>
+                                <Run Text="Sunset transition starts at" />
+                                <Run Text="{Binding ActualSunsetStartTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+                                <Run Text="and ends at" />
+                                <Run Text="{Binding ActualSunsetEndTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+                            </TextBlock>
+                        </TextBlock.ToolTip>
+
                         <Run Text="Sunset" />
                         <LineBreak />
-                        <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ActualSunsetEndTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+                        <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ActualSunsetStartTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
                     </TextBlock>
 
                     <!--  Sundial  -->
@@ -316,11 +326,21 @@
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
+                        Background="Transparent"
                         FontSize="19"
                         TextAlignment="Center">
+                        <TextBlock.ToolTip>
+                            <TextBlock>
+                                <Run Text="Sunrise transition starts at" />
+                                <Run Text="{Binding ActualSunriseStartTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+                                <Run Text="and ends at" />
+                                <Run Text="{Binding ActualSunriseEndTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+                            </TextBlock>
+                        </TextBlock.ToolTip>
+
                         <Run Text="Sunrise" />
                         <LineBreak />
-                        <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ActualSunriseStartTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+                        <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ActualSunriseEndTime, Converter={x:Static converters:TimeSpanToTimeOfDayStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
                     </TextBlock>
                 </Grid>
 
