@@ -9,12 +9,15 @@ LightBulb is an application that reduces eyestrain produced by staring at a comp
 
 _For guides and other info -- check out the [wiki](https://github.com/Tyrrrz/LightBulb/wiki)._
 
+_Supports Windows 7 and up._
+
 ## Download
 
 - **[Latest release](https://github.com/Tyrrrz/LightBulb/releases/latest)**
 - [CI build](https://github.com/Tyrrrz/LightBulb/actions)
 
-Note: This application requires .NET Core runtime for desktop apps, which you can [download here](https://dotnet.microsoft.com/download/dotnet-core/current/runtime).
+Note: This application requires .NET Core Desktop Runtime: [x64](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-3.1.0-windows-x64-installer) | [x86](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-3.1.0-windows-x86-installer).
+If you're using the installer, it should take care of this for you.
 
 ## Features
 
