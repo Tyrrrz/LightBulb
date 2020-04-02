@@ -38,7 +38,10 @@
         <!--  Manual  -->
         <StackPanel Orientation="Vertical" Visibility="{Binding IsManualSunriseSunsetEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
             <!--  Sunrise time  -->
-            <StackPanel Margin="6" Orientation="Horizontal" ToolTip="Point in time when the sun starts to appear above the horizon">
+            <StackPanel
+                Margin="6"
+                Orientation="Horizontal"
+                ToolTip="Point in time when the sun starts to appear above the horizon">
                 <TextBlock VerticalAlignment="Center" Text="Sunrise:" />
                 <TextBox
                     MinWidth="30"
@@ -57,7 +60,10 @@
                 Value="{Binding ManualSunriseTime, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
 
             <!--  Sunset time  -->
-            <StackPanel Margin="6" Orientation="Horizontal" ToolTip="Point in time when the sun fully disappears below the horizon">
+            <StackPanel
+                Margin="6"
+                Orientation="Horizontal"
+                ToolTip="Point in time when the sun fully disappears below the horizon">
                 <TextBlock VerticalAlignment="Center" Text="Sunset:" />
                 <TextBox
                     MinWidth="30"
