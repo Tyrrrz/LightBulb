@@ -1,3 +1,13 @@
+### v2.1 (19-Apr-2020)
+
+- Added gamma polling option. When enabled, LightBulb will force-refresh gamma every few seconds to make sure it's in sync. In most cases, you should not need to enable it, but if you're experiencing issues then this option may help.
+- Added an option to disable auto-updates. If you prefer not to have the latest version of LightBulb, you now have the option to do so.
+- Fixed an issue where LightBulb didn't pick up new monitors if they were connected after it was launched.
+- Fixed an issue where the time was shown using the invariant culture, instead of the current system's locale. Now the time format should reflect what's configured on the system. 
+- Fixed an issue where the application would work abnormally or crash when there was no full sunrise/sunset for that particular day.
+- Minor UI improvements.
+- LightBulb installer will now detect if the required .NET Core Runtime installation is missing and download and run the appropriate installer if so.
+
 ### v2.0 (23-Nov-2019)
 
 The long awaited new release brings a complete rework of the entire application along with 30+ new features and bug fixes.
@@ -11,7 +21,7 @@ Due to substantial changes, your settings from previous versions will be reset. 
 - Brand new design, new UI, new idea.
 - Main window is now bigger and will no longer hide when it loses focus.
 - Added the dashboard screen. This is now the screen you will see when you open LightBulb. It shows the sundial which represents the 24-hour day cycle partitioned into day, night and transition phases, along with your current position. It also displays current color configuration, current time, time of sunrise and sunset, and has buttons to start 24-hour preview or to access settings.
-- Added application autoupdate. LightBulb will automatically check for updates and install them when it starts.
+- Added application auto-update. LightBulb will automatically check for updates and install them when it starts.
 - Added brightness configuration. Color temperature and brightness now go hand in hand, automatically changing at sunrise and sunset, providing even better blue light reduction. Your eyes will be thankful. [#28](https://github.com/Tyrrrz/LightBulb/issues/28)
 - Added editable text boxes for all settings, letting you rigorously fine-tune every detail. Want to go below 2500K at night -- simply type in your desired temperature. Note that values that exceed slider ranges are not tested so use them at your own risk. [#55](https://github.com/Tyrrrz/LightBulb/issues/55) [#90](https://github.com/Tyrrrz/LightBulb/issues/90)
 - Added manual location configuration on top of the manual sunrise and sunset configuration that was previously available. You can now specify your coordinates manually or click a button to try detect them automatically from your IP. Besides raw coordinates, you can specify any human-readable location and LightBulb will try to search for the corresponding coordinates. [#59](https://github.com/Tyrrrz/LightBulb/issues/59)
