@@ -38,10 +38,7 @@
         <!--  Manual  -->
         <StackPanel Orientation="Vertical" Visibility="{Binding IsManualSunriseSunsetEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
             <!--  Sunrise time  -->
-            <StackPanel
-                Margin="6"
-                Orientation="Horizontal"
-                ToolTip="Point in time when the sun starts to appear above the horizon">
+            <StackPanel Margin="6" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Text="Sunrise:" />
                 <TextBox
                     MinWidth="30"
@@ -60,10 +57,7 @@
                 Value="{Binding ManualSunriseTime, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
 
             <!--  Sunset time  -->
-            <StackPanel
-                Margin="6"
-                Orientation="Horizontal"
-                ToolTip="Point in time when the sun fully disappears below the horizon">
+            <StackPanel Margin="6" Orientation="Horizontal">
                 <TextBlock VerticalAlignment="Center" Text="Sunset:" />
                 <TextBox
                     MinWidth="30"
@@ -80,28 +74,6 @@
                 Minimum="0"
                 SmallChange="0.25"
                 Value="{Binding ManualSunsetTime, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
-
-            <!--  Twilight duration  -->
-            <StackPanel
-                Margin="6"
-                Orientation="Horizontal"
-                ToolTip="Duration of time it takes to transition from night to day at sunrise and from day to night at sunset">
-                <TextBlock VerticalAlignment="Center" Text="Twilight duration:" />
-                <TextBox
-                    MinWidth="50"
-                    Margin="8,0"
-                    Padding="0"
-                    VerticalAlignment="Center"
-                    BorderBrush="{DynamicResource DividerBrush}"
-                    Text="{Binding ManualTwilightDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
-            </StackPanel>
-            <Slider
-                Margin="8,0,8,6"
-                LargeChange="0.5"
-                Maximum="3"
-                Minimum="0"
-                SmallChange="0.08"
-                Value="{Binding ManualTwilightDuration, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
         </StackPanel>
 
         <!--  Location-based  -->

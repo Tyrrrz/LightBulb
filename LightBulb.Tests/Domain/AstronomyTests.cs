@@ -9,28 +9,7 @@ namespace LightBulb.Tests.Domain
     [TestFixture]
     public class AstronomyTests
     {
-        private static IEnumerable<TestCaseData> GetTestCases_CalculateSunriseStartTime()
-        {
-            // Kyiv
-            yield return new TestCaseData(
-                new GeoLocation(50.4547, 30.5238),
-                new DateTimeOffset(2020, 04, 02, 00, 00, 00, TimeSpan.FromHours(+3)),
-                new TimeSpan(05, 57, 00)
-            );
-        }
-
-        [Test]
-        [TestCaseSource(nameof(GetTestCases_CalculateSunriseStartTime))]
-        public void CalculateSunriseStartTime_Test(GeoLocation location, DateTimeOffset instant, TimeSpan expected)
-        {
-            // Act
-            var sunriseTime = Astronomy.CalculateSunriseStartTime(location, instant);
-
-            // Assert
-            Assert.That(sunriseTime, Is.EqualTo(expected).Within(TimeSpan.FromMinutes(3)));
-        }
-
-        private static IEnumerable<TestCaseData> GetTestCases_CalculateSunriseEndTime()
+        private static IEnumerable<TestCaseData> GetTestCases_CalculateSunriseTime()
         {
             // New York
             yield return new TestCaseData(
@@ -62,17 +41,17 @@ namespace LightBulb.Tests.Domain
         }
 
         [Test]
-        [TestCaseSource(nameof(GetTestCases_CalculateSunriseEndTime))]
-        public void CalculateSunriseEndTime_Test(GeoLocation location, DateTimeOffset instant, TimeSpan expected)
+        [TestCaseSource(nameof(GetTestCases_CalculateSunriseTime))]
+        public void CalculateSunriseTime_Test(GeoLocation location, DateTimeOffset instant, TimeSpan expectedSunriseTime)
         {
             // Act
-            var sunriseTime = Astronomy.CalculateSunriseEndTime(location, instant);
+            var sunriseTime = Astronomy.CalculateSunriseTime(location, instant);
 
             // Assert
-            Assert.That(sunriseTime, Is.EqualTo(expected).Within(TimeSpan.FromMinutes(3)));
+            Assert.That(sunriseTime, Is.EqualTo(expectedSunriseTime).Within(TimeSpan.FromMinutes(3)));
         }
 
-        private static IEnumerable<TestCaseData> GetTestCases_CalculateSunsetStartTime()
+        private static IEnumerable<TestCaseData> GetTestCases_CalculateSunsetTime()
         {
             // New York
             yield return new TestCaseData(
@@ -97,35 +76,14 @@ namespace LightBulb.Tests.Domain
         }
 
         [Test]
-        [TestCaseSource(nameof(GetTestCases_CalculateSunsetStartTime))]
-        public void CalculateSunsetStartTime_Test(GeoLocation location, DateTimeOffset instant, TimeSpan expected)
+        [TestCaseSource(nameof(GetTestCases_CalculateSunsetTime))]
+        public void CalculateSunsetTime_Test(GeoLocation location, DateTimeOffset instant, TimeSpan expectedSunsetTime)
         {
             // Act
-            var sunsetTime = Astronomy.CalculateSunsetStartTime(location, instant);
+            var sunsetTime = Astronomy.CalculateSunsetTime(location, instant);
 
             // Assert
-            Assert.That(sunsetTime, Is.EqualTo(expected).Within(TimeSpan.FromMinutes(3)));
-        }
-
-        private static IEnumerable<TestCaseData> GetTestCases_CalculateSunsetEndTime()
-        {
-            // Kyiv
-            yield return new TestCaseData(
-                new GeoLocation(50.4547, 30.5238),
-                new DateTimeOffset(2020, 04, 02, 00, 00, 00, TimeSpan.FromHours(+3)),
-                new TimeSpan(20, 05, 00)
-            );
-        }
-
-        [Test]
-        [TestCaseSource(nameof(GetTestCases_CalculateSunsetEndTime))]
-        public void CalculateSunsetEndTime_Test(GeoLocation location, DateTimeOffset instant, TimeSpan expected)
-        {
-            // Act
-            var sunsetTime = Astronomy.CalculateSunsetEndTime(location, instant);
-
-            // Assert
-            Assert.That(sunsetTime, Is.EqualTo(expected).Within(TimeSpan.FromMinutes(3)));
+            Assert.That(sunsetTime, Is.EqualTo(expectedSunsetTime).Within(TimeSpan.FromMinutes(3)));
         }
     }
 }

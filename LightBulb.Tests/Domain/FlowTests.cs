@@ -12,10 +12,9 @@ namespace LightBulb.Tests.Domain
         public void CalculateColorConfiguration_DayTime_Test()
         {
             // Arrange
-            var sunriseStartTime = new TimeSpan(06, 30, 00);
-            var sunriseEndTime = new TimeSpan(07, 00, 00);
-            var sunsetStartTime = new TimeSpan(18, 00, 00);
-            var sunsetEndTime = new TimeSpan(18, 30, 00);
+            var sunriseTime = new TimeSpan(07, 00, 00);
+            var sunsetTime = new TimeSpan(18, 00, 00);
+            var transitionDuration = new TimeSpan(01, 30, 00);
             var dayConfiguration = new ColorConfiguration(6600, 1);
             var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
@@ -26,61 +25,9 @@ namespace LightBulb.Tests.Domain
 
             // Act
             var configuration = Flow.CalculateColorConfiguration(
-                sunriseStartTime, sunriseEndTime, dayConfiguration,
-                sunsetStartTime, sunsetEndTime, nightConfiguration,
-                instant);
-
-            // Assert
-            Assert.That(configuration, Is.EqualTo(dayConfiguration));
-        }
-
-        [Test]
-        public void CalculateColorConfiguration_DayTime_EdgeSunrise_Test()
-        {
-            // Arrange
-            var sunriseStartTime = new TimeSpan(06, 30, 00);
-            var sunriseEndTime = new TimeSpan(07, 00, 00);
-            var sunsetStartTime = new TimeSpan(18, 00, 00);
-            var sunsetEndTime = new TimeSpan(18, 30, 00);
-            var dayConfiguration = new ColorConfiguration(6600, 1);
-            var nightConfiguration = new ColorConfiguration(3600, 0.85);
-
-            var instant = new DateTimeOffset(
-                2019, 01, 01,
-                07, 00, 00,
-                TimeSpan.Zero);
-
-            // Act
-            var configuration = Flow.CalculateColorConfiguration(
-                sunriseStartTime, sunriseEndTime, dayConfiguration,
-                sunsetStartTime, sunsetEndTime, nightConfiguration,
-                instant);
-
-            // Assert
-            Assert.That(configuration, Is.EqualTo(dayConfiguration));
-        }
-
-        [Test]
-        public void CalculateColorConfiguration_DayTime_EdgeSunset_Test()
-        {
-            // Arrange
-            var sunriseStartTime = new TimeSpan(06, 30, 00);
-            var sunriseEndTime = new TimeSpan(07, 00, 00);
-            var sunsetStartTime = new TimeSpan(18, 00, 00);
-            var sunsetEndTime = new TimeSpan(18, 30, 00);
-            var dayConfiguration = new ColorConfiguration(6600, 1);
-            var nightConfiguration = new ColorConfiguration(3600, 0.85);
-
-            var instant = new DateTimeOffset(
-                2019, 01, 01,
-                18, 00, 00,
-                TimeSpan.Zero);
-
-            // Act
-            var configuration = Flow.CalculateColorConfiguration(
-                sunriseStartTime, sunriseEndTime, dayConfiguration,
-                sunsetStartTime, sunsetEndTime, nightConfiguration,
-                instant);
+                sunriseTime, dayConfiguration,
+                sunsetTime, nightConfiguration,
+                transitionDuration, instant);
 
             // Assert
             Assert.That(configuration, Is.EqualTo(dayConfiguration));
@@ -90,10 +37,9 @@ namespace LightBulb.Tests.Domain
         public void CalculateColorConfiguration_NightTime_Test()
         {
             // Arrange
-            var sunriseStartTime = new TimeSpan(06, 30, 00);
-            var sunriseEndTime = new TimeSpan(07, 00, 00);
-            var sunsetStartTime = new TimeSpan(18, 00, 00);
-            var sunsetEndTime = new TimeSpan(18, 30, 00);
+            var sunriseTime = new TimeSpan(07, 00, 00);
+            var sunsetTime = new TimeSpan(18, 00, 00);
+            var transitionDuration = new TimeSpan(01, 30, 00);
             var dayConfiguration = new ColorConfiguration(6600, 1);
             var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
@@ -104,48 +50,21 @@ namespace LightBulb.Tests.Domain
 
             // Act
             var configuration = Flow.CalculateColorConfiguration(
-                sunriseStartTime, sunriseEndTime, dayConfiguration,
-                sunsetStartTime, sunsetEndTime, nightConfiguration,
-                instant);
+                sunriseTime, dayConfiguration,
+                sunsetTime, nightConfiguration,
+                transitionDuration, instant);
 
             // Assert
             Assert.That(configuration, Is.EqualTo(nightConfiguration));
         }
 
         [Test]
-        public void CalculateColorConfiguration_NightTime_EdgeSunrise_Test()
+        public void CalculateColorConfiguration_TransitionToNight_Test()
         {
             // Arrange
-            var sunriseStartTime = new TimeSpan(06, 30, 00);
-            var sunriseEndTime = new TimeSpan(07, 00, 00);
-            var sunsetStartTime = new TimeSpan(18, 00, 00);
-            var sunsetEndTime = new TimeSpan(18, 30, 00);
-            var dayConfiguration = new ColorConfiguration(6600, 1);
-            var nightConfiguration = new ColorConfiguration(3600, 0.85);
-
-            var instant = new DateTimeOffset(
-                2019, 01, 01,
-                06, 30, 00,
-                TimeSpan.Zero);
-
-            // Act
-            var configuration = Flow.CalculateColorConfiguration(
-                sunriseStartTime, sunriseEndTime, dayConfiguration,
-                sunsetStartTime, sunsetEndTime, nightConfiguration,
-                instant);
-
-            // Assert
-            Assert.That(configuration, Is.EqualTo(nightConfiguration));
-        }
-
-        [Test]
-        public void CalculateColorConfiguration_NightTime_EdgeSunset_Test()
-        {
-            // Arrange
-            var sunriseStartTime = new TimeSpan(06, 30, 00);
-            var sunriseEndTime = new TimeSpan(07, 00, 00);
-            var sunsetStartTime = new TimeSpan(18, 00, 00);
-            var sunsetEndTime = new TimeSpan(18, 30, 00);
+            var sunriseTime = new TimeSpan(07, 00, 00);
+            var sunsetTime = new TimeSpan(18, 00, 00);
+            var transitionDuration = new TimeSpan(01, 30, 00);
             var dayConfiguration = new ColorConfiguration(6600, 1);
             var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
@@ -156,35 +75,9 @@ namespace LightBulb.Tests.Domain
 
             // Act
             var configuration = Flow.CalculateColorConfiguration(
-                sunriseStartTime, sunriseEndTime, dayConfiguration,
-                sunsetStartTime, sunsetEndTime, nightConfiguration,
-                instant);
-
-            // Assert
-            Assert.That(configuration, Is.EqualTo(nightConfiguration));
-        }
-
-        [Test]
-        public void CalculateColorConfiguration_TransitionToNight_Test()
-        {
-            // Arrange
-            var sunriseStartTime = new TimeSpan(06, 30, 00);
-            var sunriseEndTime = new TimeSpan(07, 00, 00);
-            var sunsetStartTime = new TimeSpan(18, 00, 00);
-            var sunsetEndTime = new TimeSpan(18, 30, 00);
-            var dayConfiguration = new ColorConfiguration(6600, 1);
-            var nightConfiguration = new ColorConfiguration(3600, 0.85);
-
-            var instant = new DateTimeOffset(
-                2019, 01, 01,
-                18, 15, 00,
-                TimeSpan.Zero);
-
-            // Act
-            var configuration = Flow.CalculateColorConfiguration(
-                sunriseStartTime, sunriseEndTime, dayConfiguration,
-                sunsetStartTime, sunsetEndTime, nightConfiguration,
-                instant);
+                sunriseTime, dayConfiguration,
+                sunsetTime, nightConfiguration,
+                transitionDuration, instant);
 
             // Assert
             Assert.Multiple(() =>
@@ -200,23 +93,22 @@ namespace LightBulb.Tests.Domain
         public void CalculateColorConfiguration_TransitionToDay_Test()
         {
             // Arrange
-            var sunriseStartTime = new TimeSpan(06, 30, 00);
-            var sunriseEndTime = new TimeSpan(07, 00, 00);
-            var sunsetStartTime = new TimeSpan(18, 00, 00);
-            var sunsetEndTime = new TimeSpan(18, 30, 00);
+            var sunriseTime = new TimeSpan(07, 00, 00);
+            var sunsetTime = new TimeSpan(18, 00, 00);
+            var transitionDuration = new TimeSpan(01, 30, 00);
             var dayConfiguration = new ColorConfiguration(6600, 1);
             var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
             var instant = new DateTimeOffset(
                 2019, 01, 01,
-                06, 50, 00,
+                06, 30, 00,
                 TimeSpan.Zero);
 
             // Act
             var configuration = Flow.CalculateColorConfiguration(
-                sunriseStartTime, sunriseEndTime, dayConfiguration,
-                sunsetStartTime, sunsetEndTime, nightConfiguration,
-                instant);
+                sunriseTime, dayConfiguration,
+                sunsetTime, nightConfiguration,
+                transitionDuration, instant);
 
             // Assert
             Assert.Multiple(() =>
@@ -232,10 +124,9 @@ namespace LightBulb.Tests.Domain
         public void CalculateColorConfiguration_Circularity_Test()
         {
             // Arrange
-            var sunriseStartTime = new TimeSpan(06, 30, 00);
-            var sunriseEndTime = new TimeSpan(07, 00, 00);
-            var sunsetStartTime = new TimeSpan(18, 00, 00);
-            var sunsetEndTime = new TimeSpan(18, 30, 00);
+            var sunriseTime = new TimeSpan(07, 00, 00);
+            var sunsetTime = new TimeSpan(18, 00, 00);
+            var transitionDuration = new TimeSpan(01, 30, 00);
             var dayConfiguration = new ColorConfiguration(6600, 1);
             var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
@@ -250,13 +141,13 @@ namespace LightBulb.Tests.Domain
 
             // Act
             var configuration1 = Flow.CalculateColorConfiguration(
-                sunriseStartTime, sunriseEndTime, dayConfiguration,
-                sunsetStartTime, sunsetEndTime, nightConfiguration,
-                instant1);
+                sunriseTime, dayConfiguration,
+                sunsetTime, nightConfiguration,
+                transitionDuration, instant1);
             var configuration2 = Flow.CalculateColorConfiguration(
-                sunriseStartTime, sunriseEndTime, dayConfiguration,
-                sunsetStartTime, sunsetEndTime, nightConfiguration,
-                instant2);
+                sunriseTime, dayConfiguration,
+                sunsetTime, nightConfiguration,
+                transitionDuration, instant2);
 
             // Assert
             Assert.That(configuration1, Is.EqualTo(configuration2));
@@ -266,10 +157,9 @@ namespace LightBulb.Tests.Domain
         public void CalculateColorConfiguration_Smoothness_Test()
         {
             // Arrange
-            var sunriseStartTime = new TimeSpan(06, 30, 00);
-            var sunriseEndTime = new TimeSpan(07, 00, 00);
-            var sunsetStartTime = new TimeSpan(18, 00, 00);
-            var sunsetEndTime = new TimeSpan(18, 30, 00);
+            var sunriseTime = new TimeSpan(07, 00, 00);
+            var sunsetTime = new TimeSpan(18, 00, 00);
+            var transitionDuration = new TimeSpan(01, 30, 00);
             var dayConfiguration = new ColorConfiguration(6600, 1);
             var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
@@ -285,9 +175,9 @@ namespace LightBulb.Tests.Domain
                     TimeSpan.Zero);
 
                 var configuration = Flow.CalculateColorConfiguration(
-                    sunriseStartTime, sunriseEndTime, dayConfiguration,
-                    sunsetStartTime, sunsetEndTime, nightConfiguration,
-                    instant);
+                    sunriseTime, dayConfiguration,
+                    sunsetTime, nightConfiguration,
+                    transitionDuration, instant);
 
                 // Assert
                 var isHarshJump =

@@ -18,6 +18,8 @@ namespace LightBulb.Services
 
         public ColorConfiguration DayConfiguration { get; set; } = new ColorConfiguration(6600, 1);
 
+        public TimeSpan ConfigurationTransitionDuration { get; set; } = TimeSpan.FromMinutes(30);
+
         // Location
 
         public bool IsManualSunriseSunsetEnabled { get; set; } = true;
@@ -25,8 +27,6 @@ namespace LightBulb.Services
         public TimeSpan ManualSunriseTime { get; set; } = new TimeSpan(07, 20, 00);
 
         public TimeSpan ManualSunsetTime { get; set; } = new TimeSpan(16, 30, 00);
-
-        public TimeSpan ManualTwilightDuration { get; set; } = TimeSpan.FromMinutes(30);
 
         public GeoLocation? Location { get; set; }
 

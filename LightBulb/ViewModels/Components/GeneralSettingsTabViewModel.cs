@@ -1,4 +1,5 @@
-﻿using LightBulb.Models;
+﻿using System;
+using LightBulb.Models;
 using LightBulb.Services;
 using Tyrrrz.Extensions;
 
@@ -52,6 +53,12 @@ namespace LightBulb.ViewModels.Components
                 if (DayBrightness < NightBrightness)
                     NightBrightness = DayBrightness;
             }
+        }
+
+        public TimeSpan ConfigurationTransitionDuration
+        {
+            get => SettingsService.ConfigurationTransitionDuration;
+            set => SettingsService.ConfigurationTransitionDuration = value.Clamp(TimeSpan.Zero, TimeSpan.FromHours(5));
         }
 
         public GeneralSettingsTabViewModel(SettingsService settingsService)

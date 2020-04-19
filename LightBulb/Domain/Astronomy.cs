@@ -15,7 +15,7 @@ namespace LightBulb.Domain
                 ? to - (from - value) % (to - from)
                 : from + (value - from) % (to - from);
 
-        private static TimeSpan CalculateSolarTime(GeoLocation location, DateTimeOffset instant, bool isSunrise, double zenith)
+        private static TimeSpan CalculateSolarTime(GeoLocation location, DateTimeOffset instant, double zenith, bool isSunrise)
         {
             // Based on https://edwilliams.org/sunrise_sunset_algorithm.htm
 
@@ -77,16 +77,10 @@ namespace LightBulb.Domain
             return TimeSpan.FromHours(localHours);
         }
 
-        public static TimeSpan CalculateSunriseStartTime(GeoLocation location, DateTimeOffset instant) =>
-            CalculateSolarTime(location, instant, true, 96);
+        public static TimeSpan CalculateSunriseTime(GeoLocation location, DateTimeOffset instant) =>
+            CalculateSolarTime(location, instant, 90.83, true);
 
-        public static TimeSpan CalculateSunriseEndTime(GeoLocation location, DateTimeOffset instant) =>
-            CalculateSolarTime(location, instant, true, 90.833);
-
-        public static TimeSpan CalculateSunsetStartTime(GeoLocation location, DateTimeOffset instant) =>
-            CalculateSolarTime(location, instant, false, 90.833);
-
-        public static TimeSpan CalculateSunsetEndTime(GeoLocation location, DateTimeOffset instant) =>
-            CalculateSolarTime(location, instant, false, 96);
+        public static TimeSpan CalculateSunsetTime(GeoLocation location, DateTimeOffset instant) =>
+            CalculateSolarTime(location, instant, 90.83, false);
     }
 }

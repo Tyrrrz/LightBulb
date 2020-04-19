@@ -7,71 +7,59 @@ namespace LightBulb.Domain
     public static class Flow
     {
         private static double GetCurveValue(
-            TimeSpan sunriseStartTime, TimeSpan sunriseEndTime, double dayValue,
-            TimeSpan sunsetStartTime, TimeSpan sunsetEndTime, double nightValue,
-            DateTimeOffset instant)
+            TimeSpan sunriseTime, double dayValue,
+            TimeSpan sunsetTime, double nightValue,
+            TimeSpan transitionDuration, DateTimeOffset instant)
         {
-            // Between sunrise start and end (transition to day)
-            //        /   X   -       -       \
-            // -------☀----------------------🌙-------
-            //        | trans |       | trans |
+            // Reflect sunrise & sunset times against the current instant
+            var nextSunrise = instant.NextTimeOfDay(sunriseTime);
+            var nextSunset = instant.NextTimeOfDay(sunsetTime);
 
-            // Assuming it's sunrise, get the time when it started and when it will finish
-            var prevSunriseStart = instant.PreviousTimeOfDay(sunriseStartTime);
-            var nextSunriseEnd = instant.NextTimeOfDay(sunriseEndTime);
-
-            // Check that it's indeed sunrise.
-            // If it's sunrise, previous sunrise end should be before sunrise start (because this one hasn't ended yet).
-            if (prevSunriseStart > instant.PreviousTimeOfDay(sunriseEndTime))
+            // Transition to day
+            //           x
+            // --------------☀----------------------🌙--------------
+            //       | trans |                       | trans |
+            var sunriseEnd = nextSunrise;
+            var sunriseStart = sunriseEnd - transitionDuration;
+            if (sunriseStart <= instant && instant <= sunriseEnd)
             {
-                var smoothFactor = (instant - prevSunriseStart) / (nextSunriseEnd - prevSunriseStart);
-                return dayValue + (nightValue - dayValue) * Math.Cos(smoothFactor * Math.PI / 2);
+                var progress = (instant - sunriseStart) / transitionDuration;
+                return dayValue + (nightValue - dayValue) * Math.Cos(progress * Math.PI / 2);
             }
 
-            // Between sunset start and end (transition to night)
-            //        /       -       -   X   \
-            // -------☀----------------------🌙-------
-            //        | trans |       | trans |
-
-            // Assuming it's sunset, get the time when it started and when it will finish
-            var prevSunsetStart = instant.PreviousTimeOfDay(sunsetStartTime);
-            var nextSunsetEnd = instant.NextTimeOfDay(sunsetEndTime);
-
-            // Check that it's indeed sunset.
-            // If it's sunset, previous sunset end should be before sunset start (because this one hasn't ended yet).
-            if (prevSunsetStart > instant.PreviousTimeOfDay(sunsetEndTime))
+            // Transition to night
+            //                                           x
+            // --------------☀----------------------🌙--------------
+            //       | trans |                       | trans |
+            var sunsetStart = instant.PreviousTimeOfDay(sunsetTime);
+            var sunsetEnd = sunsetStart + transitionDuration;
+            if (sunsetStart <= instant && instant <= sunsetEnd)
             {
-                var smoothFactor = (nextSunsetEnd - instant) / (nextSunsetEnd - prevSunsetStart);
-                return dayValue + (nightValue - dayValue) * Math.Cos(smoothFactor * Math.PI / 2);
+                var progress = (instant - sunsetStart) / transitionDuration;
+                return dayValue + (nightValue - dayValue) * Math.Sin(progress * Math.PI / 2);
             }
 
-            // Day or night time
-            //    X   /       -   X   -       \   X
-            // -------☀----------------------🌙-------
-            //        | trans |       | trans |
-
-            // Get the upcoming events
-            var nextSunriseStart = instant.NextTimeOfDay(sunriseStartTime);
-            var nextSunsetStart = instant.NextTimeOfDay(sunsetStartTime);
-
-            // Depending on what event is nearest, it's currently either day or night
-            return nextSunriseStart >= nextSunsetStart ? dayValue : nightValue;
+            // Day time / night time
+            //    x                      x                      x
+            // --------------☀----------------------🌙--------------
+            //       | trans |                       | trans |
+            return nextSunset <= nextSunrise ? dayValue : nightValue;
         }
 
         public static ColorConfiguration CalculateColorConfiguration(
-            TimeSpan sunriseStartTime, TimeSpan sunriseEndTime, ColorConfiguration dayConfiguration,
-            TimeSpan sunsetStartTime, TimeSpan sunsetEndTime, ColorConfiguration nightConfiguration,
-            DateTimeOffset instant)
+            TimeSpan sunriseTime, ColorConfiguration dayConfiguration,
+            TimeSpan sunsetTime, ColorConfiguration nightConfiguration,
+            TimeSpan transitionDuration, DateTimeOffset instant)
         {
             return new ColorConfiguration(
                 GetCurveValue(
-                    sunriseStartTime, sunriseEndTime, dayConfiguration.Temperature,
-                    sunsetStartTime, sunsetEndTime, nightConfiguration.Temperature,
-                    instant),
+                    sunriseTime, dayConfiguration.Temperature,
+                    sunsetTime, nightConfiguration.Temperature,
+                    transitionDuration, instant),
                 GetCurveValue(
-                    sunriseStartTime, sunriseEndTime, dayConfiguration.Brightness,
-                    sunsetStartTime, sunsetEndTime, nightConfiguration.Brightness,
-                    instant)
+                    sunriseTime, dayConfiguration.Brightness,
+                    sunsetTime, nightConfiguration.Brightness,
+                    transitionDuration, instant)
             );
         }
     }
