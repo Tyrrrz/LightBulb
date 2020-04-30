@@ -116,6 +116,11 @@ namespace LightBulb.Services
 
         public override void Save()
         {
+            // Disallow auto-start in debug mode to make things simpler
+#if DEBUG
+            IsAutoStartEnabled = false;
+#endif
+
             base.Save();
 
             // Update values in the registry
@@ -128,7 +133,7 @@ namespace LightBulb.Services
 
     public partial class SettingsService
     {
-        // Converter to handle time of day serialization
+        // Converter to handle (de-)serialization of TimeOfDay
         private class TimeOfDayJsonConverter : JsonConverter
         {
             public override bool CanConvert(Type objectType) => objectType == typeof(TimeOfDay);

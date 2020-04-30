@@ -3,7 +3,7 @@ using Tyrrrz.Extensions;
 
 namespace LightBulb.Domain
 {
-    public partial class SolarTimes
+    public readonly partial struct SolarTimes
     {
         public TimeOfDay Sunrise { get; }
 
@@ -18,7 +18,7 @@ namespace LightBulb.Domain
         public override string ToString() => $"Sunrise: {Sunrise} | Sunset: {Sunset}";
     }
 
-    public partial class SolarTimes
+    public partial struct SolarTimes
     {
         private static double DegreesToRadians(double degree) => degree * (Math.PI / 180);
 
@@ -97,22 +97,11 @@ namespace LightBulb.Domain
         );
     }
 
-    public partial class SolarTimes : IEquatable<SolarTimes>
+    public partial struct SolarTimes : IEquatable<SolarTimes>
     {
-        public bool Equals(SolarTimes other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Sunrise.Equals(other.Sunrise) && Sunset.Equals(other.Sunset);
-        }
+        public bool Equals(SolarTimes other) => Sunrise.Equals(other.Sunrise) && Sunset.Equals(other.Sunset);
 
-        public override bool Equals(object? obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((SolarTimes) obj);
-        }
+        public override bool Equals(object obj) => obj is SolarTimes other && Equals(other);
 
         public override int GetHashCode() => HashCode.Combine(Sunrise, Sunset);
 

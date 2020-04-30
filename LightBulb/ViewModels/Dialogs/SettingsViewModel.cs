@@ -35,7 +35,7 @@ namespace LightBulb.ViewModels.Dialogs
             settingsTab.IsActive = true;
         }
 
-        // This should just be an overload, but Stylet gets confused when there are two methods with same name
+        // This should just be an overload, but Stylet gets confused when there are two methods with the same name
         public void ActivateTabByType<T>() where T : ISettingsTabViewModel
         {
             var tab = Tabs.OfType<T>().FirstOrDefault();

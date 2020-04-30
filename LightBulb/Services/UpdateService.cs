@@ -22,26 +22,23 @@ namespace LightBulb.Services
 
         private Version? GetLastPreparedUpdate() => _updateManager.GetPreparedUpdates().Max();
 
-        public async Task<Version?> CheckPrepareUpdateAsync()
+        public async Task CheckPrepareUpdateAsync()
         {
             if (!_settingsService.IsAutoUpdateEnabled)
-                return null;
+                return;
 
             try
             {
                 var check = await _updateManager.CheckForUpdatesAsync();
                 if (!check.CanUpdate || check.LastVersion == null)
-                    return null;
+                    return;
 
                 if (check.LastVersion != GetLastPreparedUpdate())
                     await _updateManager.PrepareUpdateAsync(check.LastVersion);
-
-                return check.LastVersion;
             }
             catch
             {
                 // Failure to check for updates shouldn't crash the app
-                return null;
             }
         }
 

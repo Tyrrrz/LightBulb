@@ -81,6 +81,7 @@ Press OK to open settings.".Trim();
 
             // Disable first time experience for next time
             _settingsService.IsFirstTimeExperienceEnabled = false;
+            _settingsService.IsAutoStartEnabled = true;
             _settingsService.Save();
 
             if (await _dialogManager.ShowDialogAsync(dialog) == true)
