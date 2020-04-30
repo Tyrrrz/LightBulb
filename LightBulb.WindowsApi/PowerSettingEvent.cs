@@ -33,10 +33,7 @@ namespace LightBulb.WindowsApi
             Handler();
         }
 
-        ~PowerSettingEvent()
-        {
-            Dispose();
-        }
+        ~PowerSettingEvent() => Dispose();
 
         public void Dispose()
         {
@@ -52,7 +49,7 @@ namespace LightBulb.WindowsApi
 
     public partial class PowerSettingEvent
     {
-        public static PowerSettingEvent? Register(Guid id, Action handler)
+        public static PowerSettingEvent? TryRegister(Guid id, Action handler)
         {
             var handle = NativeMethods.RegisterPowerSettingNotification(SpongeWindow.Instance.Handle, ref id, 0);
             return handle != IntPtr.Zero ? new PowerSettingEvent(handle, id, handler) : null;

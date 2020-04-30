@@ -29,12 +29,10 @@ namespace LightBulb.Services
 
             try
             {
-                // Check for updates
                 var check = await _updateManager.CheckForUpdatesAsync();
                 if (!check.CanUpdate || check.LastVersion == null)
                     return null;
 
-                // Prepare update
                 if (check.LastVersion != GetLastPreparedUpdate())
                     await _updateManager.PrepareUpdateAsync(check.LastVersion);
 
@@ -54,16 +52,13 @@ namespace LightBulb.Services
 
             try
             {
-                // Get last prepared update
                 var updateVersion = GetLastPreparedUpdate();
                 if (updateVersion == null)
                     return;
 
-                // Don't update if the prepared update is a downgrade
                 if (App.Version >= updateVersion)
                     return;
 
-                // Launch updater and restart
                 _updateManager.LaunchUpdater(updateVersion);
                 Environment.Exit(0);
             }

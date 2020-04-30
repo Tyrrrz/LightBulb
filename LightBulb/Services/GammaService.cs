@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using LightBulb.Models;
+using LightBulb.Domain;
 using LightBulb.WindowsApi;
 using Microsoft.Win32;
 

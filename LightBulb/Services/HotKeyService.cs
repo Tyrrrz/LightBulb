@@ -4,12 +4,20 @@ using System.Diagnostics;
 using System.Windows.Input;
 using LightBulb.Models;
 using LightBulb.WindowsApi;
+using Stylet;
 
 namespace LightBulb.Services
 {
     public class HotKeyService : IDisposable
     {
+        private readonly IEventAggregator _eventAggregator;
+
         private readonly List<GlobalHotKey> _registeredHotKeys = new List<GlobalHotKey>();
+
+        public HotKeyService(IEventAggregator eventAggregator)
+        {
+            _eventAggregator = eventAggregator;
+        }
 
         public void RegisterHotKey(HotKey hotKey, Action handler)
         {
@@ -18,7 +26,7 @@ namespace LightBulb.Services
             var modifiers = (int) hotKey.Modifiers;
 
             // Register hotkey
-            var registeredHotKey = GlobalHotKey.Register(virtualKey, modifiers, handler);
+            var registeredHotKey = GlobalHotKey.TryRegister(virtualKey, modifiers, handler);
 
             if (registeredHotKey != null)
                 _registeredHotKeys.Add(registeredHotKey);

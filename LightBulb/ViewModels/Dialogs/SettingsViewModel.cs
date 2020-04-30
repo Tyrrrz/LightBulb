@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using LightBulb.Services;
-using LightBulb.ViewModels.Components;
+using LightBulb.ViewModels.Components.Settings;
 using LightBulb.ViewModels.Framework;
 
 namespace LightBulb.ViewModels.Dialogs
@@ -31,9 +31,16 @@ namespace LightBulb.ViewModels.Dialogs
             if (ActiveTab != null)
                 ActiveTab.IsActive = false;
 
-            // Set new tab
             ActiveTab = settingsTab;
-            ActiveTab.IsActive = true;
+            settingsTab.IsActive = true;
+        }
+
+        // This should just be an overload, but Stylet gets confused when there are two methods with same name
+        public void ActivateTabByType<T>() where T : ISettingsTabViewModel
+        {
+            var tab = Tabs.OfType<T>().FirstOrDefault();
+            if (tab != null)
+                ActivateTab(tab);
         }
 
         public void Reset() => _settingsService.Reset();

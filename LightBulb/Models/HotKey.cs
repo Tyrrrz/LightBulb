@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace LightBulb.Models
 {
-    public readonly partial struct HotKey : IEquatable<HotKey>
+    public readonly partial struct HotKey
     {
         public Key Key { get; }
 
@@ -15,12 +15,6 @@ namespace LightBulb.Models
             Key = key;
             Modifiers = modifiers;
         }
-
-        public bool Equals(HotKey other) => Key == other.Key && Modifiers == other.Modifiers;
-
-        public override bool Equals(object? obj) => obj is HotKey other && Equals(other);
-
-        public override int GetHashCode() => HashCode.Combine(Key, Modifiers);
 
         public override string ToString()
         {
@@ -50,13 +44,19 @@ namespace LightBulb.Models
 
     public partial struct HotKey
     {
+        public static HotKey None { get; } = new HotKey();
+    }
+
+    public partial struct HotKey : IEquatable<HotKey>
+    {
+        public bool Equals(HotKey other) => Key == other.Key && Modifiers == other.Modifiers;
+
+        public override bool Equals(object? obj) => obj is HotKey other && Equals(other);
+
+        public override int GetHashCode() => HashCode.Combine(Key, Modifiers);
+
         public static bool operator ==(HotKey a, HotKey b) => a.Equals(b);
 
         public static bool operator !=(HotKey a, HotKey b) => !(a == b);
-    }
-
-    public partial struct HotKey
-    {
-        public static HotKey None { get; } = new HotKey();
     }
 }

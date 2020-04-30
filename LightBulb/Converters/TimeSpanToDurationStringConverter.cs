@@ -9,20 +9,14 @@ namespace LightBulb.Converters
     {
         public static TimeSpanToDurationStringConverter Instance { get; } = new TimeSpanToDurationStringConverter();
 
-        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is TimeSpan timeSpanValue)
-                return timeSpanValue.ToString("hh\\:mm\\:ss", culture);
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
+            value is TimeSpan timeSpanValue
+                ? timeSpanValue.ToString("hh\\:mm\\:ss", culture)
+                : default;
 
-            return default(string);
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is string stringValue && TimeSpan.TryParse(stringValue, culture, out var result))
-                return result;
-
-            return default(TimeSpan);
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+            value is string stringValue && TimeSpan.TryParse(stringValue, culture, out var result)
+                ? result
+                : default;
     }
 }

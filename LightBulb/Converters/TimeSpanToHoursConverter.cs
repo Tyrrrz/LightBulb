@@ -9,20 +9,14 @@ namespace LightBulb.Converters
     {
         public static TimeSpanToHoursConverter Instance { get; } = new TimeSpanToHoursConverter();
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is TimeSpan timeSpanValue)
-                return timeSpanValue.TotalHours;
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
+            value is TimeSpan timeSpanValue
+                ? timeSpanValue.TotalHours
+                : default;
 
-            return default(double);
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is double doubleValue)
-                return TimeSpan.FromHours(doubleValue);
-
-            return default(TimeSpan);
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+            value is double doubleValue
+                ? TimeSpan.FromHours(doubleValue)
+                : default;
     }
 }

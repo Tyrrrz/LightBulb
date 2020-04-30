@@ -10,12 +10,10 @@ namespace LightBulb.Behaviors
         {
             e.Handled = true;
 
-            var e2 = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
+            AssociatedObject.RaiseEvent(new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
             {
                 RoutedEvent = UIElement.MouseWheelEvent
-            };
-
-            AssociatedObject.RaiseEvent(e2);
+            });
         }
 
         protected override void OnAttached()

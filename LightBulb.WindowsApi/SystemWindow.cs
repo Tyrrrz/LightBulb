@@ -11,10 +11,7 @@ namespace LightBulb.WindowsApi
     {
         public IntPtr Handle { get; }
 
-        public SystemWindow(IntPtr handle)
-        {
-            Handle = handle;
-        }
+        public SystemWindow(IntPtr handle) => Handle = handle;
 
         private Rect? GetRect() => NativeMethods.GetWindowRect(Handle, out var rect) ? rect : (Rect?) null;
 
@@ -85,7 +82,7 @@ namespace LightBulb.WindowsApi
         public SystemProcess? GetProcess()
         {
             NativeMethods.GetWindowThreadProcessId(Handle, out var processId);
-            return processId != 0 ? SystemProcess.Open(processId) : null;
+            return processId != 0 ? SystemProcess.TryOpen(processId) : null;
         }
 
         public void Dispose()
@@ -96,7 +93,7 @@ namespace LightBulb.WindowsApi
 
     public partial class SystemWindow
     {
-        public static SystemWindow? GetForegroundWindow()
+        public static SystemWindow? TryGetForegroundWindow()
         {
             var handle = NativeMethods.GetForegroundWindow();
             return handle != IntPtr.Zero ? new SystemWindow(handle) : null;

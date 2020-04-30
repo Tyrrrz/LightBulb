@@ -14,10 +14,7 @@ namespace LightBulb.WindowsApi
             Handle = handle;
         }
 
-        ~SystemProcess()
-        {
-            Dispose();
-        }
+        ~SystemProcess() => Dispose();
 
         public string? GetExecutableFilePath()
         {
@@ -38,7 +35,7 @@ namespace LightBulb.WindowsApi
 
     public partial class SystemProcess
     {
-        public static SystemProcess? Open(uint processId)
+        public static SystemProcess? TryOpen(uint processId)
         {
             var handle = NativeMethods.OpenProcess(ProcessAccessFlags.QueryLimitedInformation, false, processId);
             return handle != IntPtr.Zero ? new SystemProcess(handle) : null;

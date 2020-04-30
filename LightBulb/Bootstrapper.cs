@@ -2,7 +2,7 @@
 using System.Threading;
 using LightBulb.Services;
 using LightBulb.ViewModels;
-using LightBulb.ViewModels.Components;
+using LightBulb.ViewModels.Components.Settings;
 using LightBulb.ViewModels.Dialogs;
 using LightBulb.ViewModels.Framework;
 using Stylet;
@@ -42,21 +42,17 @@ namespace LightBulb
         {
             base.ConfigureIoC(builder);
 
-            // Bind services
             builder.Bind<LocationService>().ToSelf().InSingletonScope();
             builder.Bind<SettingsService>().ToSelf().InSingletonScope();
             builder.Bind<GammaService>().ToSelf().InSingletonScope();
             builder.Bind<HotKeyService>().ToSelf().InSingletonScope();
-            builder.Bind<RegistryService>().ToSelf().InSingletonScope();
             builder.Bind<ExternalApplicationService>().ToSelf().InSingletonScope();
             builder.Bind<SystemEventService>().ToSelf().InSingletonScope();
             builder.Bind<UpdateService>().ToSelf().InSingletonScope();
 
-            // Bind view model layer services
             builder.Bind<DialogManager>().ToSelf().InSingletonScope();
             builder.Bind<IViewModelFactory>().ToAbstractFactory();
 
-            // Bind view models
             builder.Bind<RootViewModel>().ToSelf().InSingletonScope();
             builder.Bind<MessageBoxViewModel>().ToSelf().InSingletonScope();
             builder.Bind<SettingsViewModel>().ToSelf().InSingletonScope();

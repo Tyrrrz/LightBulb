@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using LightBulb.Models;
+using LightBulb.Domain;
 using MaterialDesignThemes.Wpf;
 
 namespace LightBulb.Converters
@@ -11,27 +11,17 @@ namespace LightBulb.Converters
     {
         public static CycleStateToPackIconKindConverter Instance { get; } = new CycleStateToPackIconKindConverter();
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value switch
         {
-            if (value is CycleState cycleStateValue)
-            {
-                return cycleStateValue switch
-                {
-                    CycleState.Disabled => PackIconKind.Cancel,
-                    CycleState.Paused => PackIconKind.PauseCircleOutline,
-                    CycleState.Day => PackIconKind.WhiteBalanceSunny,
-                    CycleState.Night => PackIconKind.MoonAndStars,
-                    CycleState.Transition => PackIconKind.Sync,
-                    _ => PackIconKind.QuestionMark // shouldn't happen
-                };
-            }
+            CycleState.Disabled => PackIconKind.Cancel,
+            CycleState.Paused => PackIconKind.PauseCircleOutline,
+            CycleState.Day => PackIconKind.WhiteBalanceSunny,
+            CycleState.Night => PackIconKind.MoonAndStars,
+            CycleState.Transition => PackIconKind.Sync,
+            _ => PackIconKind.QuestionMark // shouldn't happen
+        };
 
-            return PackIconKind.QuestionMark;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
             throw new NotSupportedException();
-        }
     }
 }

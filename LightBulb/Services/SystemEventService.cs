@@ -19,7 +19,7 @@ namespace LightBulb.Services
         private void RegisterAllEvents()
         {
             // Display state changed
-            var powerSettingEvent = PowerSettingEvent.Register(
+            var powerSettingEvent = PowerSettingEvent.TryRegister(
                 new Guid("6FE69556-704A-47A0-8F24-C28D936FDA47"),
                 () => DisplayStateChanged?.Invoke(this, EventArgs.Empty)
             );
