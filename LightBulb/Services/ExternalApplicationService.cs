@@ -12,14 +12,12 @@ namespace LightBulb.Services
         {
             foreach (var window in SystemWindow.GetAllWindows())
             {
-                using var _ = window;
-
                 // Ignore invisible and system windows
                 if (!window.IsVisible() || window.IsSystemWindow())
                     continue;
 
-                using var process = window.GetProcess();
-                var executableFilePath = process?.GetExecutableFilePath();
+                using var process = window.TryGetProcess();
+                var executableFilePath = process?.TryGetExecutableFilePath();
 
                 // Ignore explorer
                 if (string.Equals(Path.GetFileNameWithoutExtension(executableFilePath), "explorer", StringComparison.OrdinalIgnoreCase))
@@ -32,10 +30,10 @@ namespace LightBulb.Services
 
         public ExternalApplication? GetForegroundApplication()
         {
-            using var window = SystemWindow.TryGetForegroundWindow();
-            using var process = window?.GetProcess();
+            var window = SystemWindow.TryGetForegroundWindow();
+            using var process = window?.TryGetProcess();
 
-            var executableFilePath = process?.GetExecutableFilePath();
+            var executableFilePath = process?.TryGetExecutableFilePath();
 
             return !string.IsNullOrWhiteSpace(executableFilePath)
                 ? new ExternalApplication(executableFilePath)
@@ -44,7 +42,7 @@ namespace LightBulb.Services
 
         public bool IsForegroundApplicationFullScreen()
         {
-            using var window = SystemWindow.TryGetForegroundWindow();
+            var window = SystemWindow.TryGetForegroundWindow();
             return window != null && window.IsVisible() && !window.IsSystemWindow() && window.IsFullScreen();
         }
     }

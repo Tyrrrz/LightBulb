@@ -22,7 +22,6 @@ namespace LightBulb.WindowsApi
             Modifiers = modifiers;
             Handler = handler;
 
-            // Wire up wnd proc events
             SpongeWindow.Instance.MessageReceived += SpongeWindowOnMessageReceived;
         }
 
@@ -38,13 +37,11 @@ namespace LightBulb.WindowsApi
             if (e.WParam.ToInt32() != Id)
                 return;
 
-            // Trigger handler
             Handler();
         }
 
         public void Dispose()
         {
-            // Unwire wnd proc events
             SpongeWindow.Instance.MessageReceived -= SpongeWindowOnMessageReceived;
 
             if (!NativeMethods.UnregisterHotKey(SpongeWindow.Instance.Handle, Id))

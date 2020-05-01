@@ -55,17 +55,17 @@ namespace LightBulb.Services
 
         public bool IsAutoUpdateEnabled { get; set; } = true;
 
-        public bool IsDefaultToDayConfigurationEnabled { get; set; } = false;
+        public bool IsDefaultToDayConfigurationEnabled { get; set; }
 
         public bool IsConfigurationSmoothingEnabled { get; set; } = true;
 
-        public bool IsPauseWhenFullScreenEnabled { get; set; } = false;
+        public bool IsPauseWhenFullScreenEnabled { get; set; }
 
-        public bool IsGammaPollingEnabled { get; set; } = false;
+        public bool IsGammaPollingEnabled { get; set; }
 
         // Application whitelist
 
-        public bool IsApplicationWhitelistEnabled { get; set; } = false;
+        public bool IsApplicationWhitelistEnabled { get; set; }
 
         public IReadOnlyList<ExternalApplication>? WhitelistedApplications { get; set; }
 

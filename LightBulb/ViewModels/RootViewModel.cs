@@ -119,7 +119,7 @@ Press OK to open settings.".Trim();
 
         public void Dispose()
         {
-            _checkForUpdatesTimer?.Dispose();
+            _checkForUpdatesTimer.Dispose();
         }
     }
 }

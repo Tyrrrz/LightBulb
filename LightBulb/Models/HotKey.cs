@@ -18,14 +18,11 @@ namespace LightBulb.Models
 
         public override string ToString()
         {
-            // If key and modifiers are not set - return "none"
             if (Key == Key.None && Modifiers == ModifierKeys.None)
                 return "< None >";
 
-            // Create string buffer
             var buffer = new StringBuilder();
 
-            // Append modifiers
             if (Modifiers.HasFlag(ModifierKeys.Control))
                 buffer.Append("Ctrl + ");
             if (Modifiers.HasFlag(ModifierKeys.Shift))
@@ -35,7 +32,6 @@ namespace LightBulb.Models
             if (Modifiers.HasFlag(ModifierKeys.Windows))
                 buffer.Append("Win + ");
 
-            // Append key
             buffer.Append(Key);
 
             return buffer.ToString();

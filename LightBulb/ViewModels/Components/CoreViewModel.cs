@@ -4,7 +4,7 @@ using LightBulb.Domain;
 using LightBulb.Internal;
 using LightBulb.Models;
 using LightBulb.Services;
-using Microsoft.Win32;
+using LightBulb.WindowsApi;
 using Stylet;
 
 namespace LightBulb.ViewModels.Components
@@ -15,6 +15,8 @@ namespace LightBulb.ViewModels.Components
         private readonly GammaService _gammaService;
         private readonly HotKeyService _hotKeyService;
         private readonly ExternalApplicationService _externalApplicationService;
+
+        private readonly SystemEventManager _systemEvents = new SystemEventManager();
 
         private readonly AutoResetTimer _updateInstantTimer;
         private readonly AutoResetTimer _updateConfigurationTimer;
@@ -72,8 +74,7 @@ namespace LightBulb.ViewModels.Components
             SettingsService settingsService,
             GammaService gammaService,
             HotKeyService hotKeyService,
-            ExternalApplicationService externalApplicationService,
-            SystemEventService systemEventService)
+            ExternalApplicationService externalApplicationService)
         {
             _settingsService = settingsService;
             _gammaService = gammaService;
@@ -101,9 +102,9 @@ namespace LightBulb.ViewModels.Components
                 RegisterHotKeys();
             };
 
-            systemEventService.DisplayStateChanged += (sender, args) => _isStale = true;
-            SystemEvents.DisplaySettingsChanging += (sender, args) => _isStale = true;
-            SystemEvents.DisplaySettingsChanged += (sender, args) => _isStale = true;
+            // Handle display settings changes
+            _systemEvents.DisplaySettingsChanged += (sender, args) => _isStale = true;
+            _systemEvents.DisplayStateChanged += (sender, args) => _isStale = true;
         }
 
         public void OnViewFullyLoaded()
@@ -227,11 +228,12 @@ namespace LightBulb.ViewModels.Components
 
         public void Dispose()
         {
-            _updateInstantTimer?.Dispose();
-            _updateConfigurationTimer?.Dispose();
-            _updateIsPausedTimer?.Dispose();
-            _pollingTimer?.Dispose();
-            _enableAfterDelayTimer?.Dispose();
+            _systemEvents.Dispose();
+            _updateInstantTimer.Dispose();
+            _updateConfigurationTimer.Dispose();
+            _updateIsPausedTimer.Dispose();
+            _pollingTimer.Dispose();
+            _enableAfterDelayTimer.Dispose();
         }
     }
 }

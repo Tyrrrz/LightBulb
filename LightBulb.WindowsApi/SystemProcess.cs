@@ -9,14 +9,11 @@ namespace LightBulb.WindowsApi
     {
         public IntPtr Handle { get; }
 
-        public SystemProcess(IntPtr handle)
-        {
-            Handle = handle;
-        }
+        public SystemProcess(IntPtr handle) => Handle = handle;
 
         ~SystemProcess() => Dispose();
 
-        public string? GetExecutableFilePath()
+        public string? TryGetExecutableFilePath()
         {
             var buffer = new StringBuilder(1024);
             var bufferSize = (uint) buffer.Capacity + 1;

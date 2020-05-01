@@ -7,19 +7,19 @@ namespace LightBulb.Internal
     {
         private readonly object _lock = new object();
 
-        private readonly Action _handler;
+        private readonly Action _tick;
         private readonly Timer _internalTimer;
 
         private bool _isBusy;
         private bool _isDisposed;
 
-        public AutoResetTimer(Action handler)
+        public AutoResetTimer(Action tick)
         {
-            _handler = handler;
-            _internalTimer = new Timer(_ => Tick(), null, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+            _tick = tick;
+            _internalTimer = new Timer(_ => HandleTick(), null, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
         }
 
-        private void Tick()
+        private void HandleTick()
         {
             // Prevent multiple reentry
             if (_isBusy)
@@ -35,7 +35,7 @@ namespace LightBulb.Internal
 
                 try
                 {
-                    _handler();
+                    _tick();
                 }
                 finally
                 {

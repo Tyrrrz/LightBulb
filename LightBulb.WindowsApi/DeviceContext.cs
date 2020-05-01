@@ -20,7 +20,6 @@ namespace LightBulb.WindowsApi
 
         public void SetGamma(double redMultiplier, double greenMultiplier, double blueMultiplier)
         {
-            // Create native ramp object
             var ramp = new GammaRamp
             {
                 Red = new ushort[256],
@@ -44,7 +43,6 @@ namespace LightBulb.WindowsApi
             ramp.Green[255] = (ushort) (ramp.Green[255] + _gammaChannelOffset);
             ramp.Blue[255] = (ushort) (ramp.Blue[255] + _gammaChannelOffset);
 
-            // Set gamma
             SetGammaRamp(ramp);
         }
 
