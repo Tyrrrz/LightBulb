@@ -91,11 +91,10 @@ namespace LightBulb.WindowsApi
                 processInfo.Verb = "runas";
             }
 
-            using (Process.Start(processInfo))
-            {
-            }
+            using var process = Process.Start(processInfo);
 
-            // Warn: this doesn't wait for exit and doesn't ensure success
+            // This needs to ensure success but we don't really have a fallback plan anyway
+            process.WaitForExit(3000);
         }
 
         private static RegistryKey GetRegistryKey(string path, bool needsWriteAccess)

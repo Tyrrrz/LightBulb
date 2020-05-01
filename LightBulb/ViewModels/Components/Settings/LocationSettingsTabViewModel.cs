@@ -42,6 +42,8 @@ namespace LightBulb.ViewModels.Components.Settings
             : base(settingsService, 1, "Location")
         {
             _locationService = locationService;
+
+            LocationQuery = Location?.ToString();
         }
 
         public bool CanAutoDetectLocation => !IsBusy;
