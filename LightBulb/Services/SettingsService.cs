@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using LightBulb.Domain;
 using LightBulb.Internal;
 using LightBulb.Models;
@@ -81,17 +82,20 @@ namespace LightBulb.Services
 
         public SettingsService()
         {
-            // If we have write access to application directory - store configuration file there
-            if (DirectoryEx.CheckWriteAccess(App.ExecutableDirPath))
+            var installerMarker = Path.Combine(AppDomain.CurrentDomain.BaseDirectory ?? Directory.GetCurrentDirectory(), ".installed");
+            var isInstalled = File.Exists(installerMarker);
+
+            // Prefer storing settings in appdata when installed or when current directory is write-protected
+            if (isInstalled || !DirectoryEx.CheckWriteAccess(App.ExecutableDirPath))
             {
-                Configuration.SubDirectoryPath = "";
-                Configuration.StorageSpace = StorageSpace.Instance;
+                Configuration.StorageSpace = StorageSpace.SyncedUserDomain;
+                Configuration.SubDirectoryPath = "LightBulb";
             }
-            // Otherwise - store settings in roaming app data directory
+            // Otherwise, store them in the current directory
             else
             {
-                Configuration.SubDirectoryPath = "LightBulb";
-                Configuration.StorageSpace = StorageSpace.SyncedUserDomain;
+                Configuration.StorageSpace = StorageSpace.Instance;
+                Configuration.SubDirectoryPath = "";
             }
 
             Configuration.FileName = "Settings.json";
