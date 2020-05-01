@@ -9,23 +9,15 @@ namespace LightBulb.Converters
     {
         public static DoubleToStringConverter Instance { get; } = new DoubleToStringConverter();
 
-        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is double doubleValue)
-                return doubleValue.ToString(culture);
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
+            value is double doubleValue
+                ? doubleValue.ToString(culture)
+                : default;
 
-            return default(string);
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is string stringValue &&
-                double.TryParse(stringValue, NumberStyles.Float | NumberStyles.AllowThousands, culture, out var result))
-            {
-                return result;
-            }
-
-            return default(double);
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+            value is string stringValue &&
+            double.TryParse(stringValue, NumberStyles.Float | NumberStyles.AllowThousands, culture, out var result)
+                ? result
+                : default;
     }
 }

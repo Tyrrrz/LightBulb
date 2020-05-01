@@ -9,17 +9,11 @@ namespace LightBulb.WindowsApi
     {
         public IntPtr Handle { get; }
 
-        public SystemProcess(IntPtr handle)
-        {
-            Handle = handle;
-        }
+        public SystemProcess(IntPtr handle) => Handle = handle;
 
-        ~SystemProcess()
-        {
-            Dispose();
-        }
+        ~SystemProcess() => Dispose();
 
-        public string? GetExecutableFilePath()
+        public string? TryGetExecutableFilePath()
         {
             var buffer = new StringBuilder(1024);
             var bufferSize = (uint) buffer.Capacity + 1;
@@ -38,7 +32,7 @@ namespace LightBulb.WindowsApi
 
     public partial class SystemProcess
     {
-        public static SystemProcess? Open(uint processId)
+        public static SystemProcess? TryOpen(uint processId)
         {
             var handle = NativeMethods.OpenProcess(ProcessAccessFlags.QueryLimitedInformation, false, processId);
             return handle != IntPtr.Zero ? new SystemProcess(handle) : null;

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using LightBulb.Models;
-using Newtonsoft.Json.Linq;
+using LightBulb.Domain;
+using LightBulb.Internal;
 
 namespace LightBulb.Services
 {
@@ -21,13 +22,11 @@ namespace LightBulb.Services
 
         public async Task<GeoLocation> GetLocationAsync()
         {
-            var url = "http://ip-api.com/json";
-            var raw = await _httpClient.GetStringAsync(url);
+            const string url = "http://ip-api.com/json";
+            var json = await _httpClient.GetJsonAsync(url);
 
-            var json = JToken.Parse(raw);
-
-            var latitude = json["lat"]!.Value<double>();
-            var longitude = json["lon"]!.Value<double>();
+            var latitude = json.GetProperty("lat").GetDouble();
+            var longitude = json.GetProperty("lon").GetDouble();
 
             return new GeoLocation(latitude, longitude);
         }
@@ -37,12 +36,12 @@ namespace LightBulb.Services
             var queryEncoded = WebUtility.UrlEncode(query);
 
             var url = $"https://nominatim.openstreetmap.org/search?q={queryEncoded}&format=json";
-            var raw = await _httpClient.GetStringAsync(url);
+            var json = await _httpClient.GetJsonAsync(url);
 
-            var json = JToken.Parse(raw);
+            var firstLocationJson = json.EnumerateArray().First();
 
-            var latitude = json.First!["lat"]!.Value<double>();
-            var longitude = json.First!["lon"]!.Value<double>();
+            var latitude = firstLocationJson.GetProperty("lat").GetDouble();
+            var longitude = firstLocationJson.GetProperty("lon").GetDouble();
 
             return new GeoLocation(latitude, longitude);
         }

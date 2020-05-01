@@ -12,21 +12,14 @@ namespace LightBulb.WindowsApi
 
         public IntPtr Handle { get; }
 
-        public DeviceContext(IntPtr handle)
-        {
-            Handle = handle;
-        }
+        public DeviceContext(IntPtr handle) => Handle = handle;
 
-        ~DeviceContext()
-        {
-            Dispose();
-        }
+        ~DeviceContext() => Dispose();
 
         private void SetGammaRamp(GammaRamp ramp) => NativeMethods.SetDeviceGammaRamp(Handle, ref ramp);
 
         public void SetGamma(double redMultiplier, double greenMultiplier, double blueMultiplier)
         {
-            // Create native ramp object
             var ramp = new GammaRamp
             {
                 Red = new ushort[256],
@@ -50,7 +43,6 @@ namespace LightBulb.WindowsApi
             ramp.Green[255] = (ushort) (ramp.Green[255] + _gammaChannelOffset);
             ramp.Blue[255] = (ushort) (ramp.Blue[255] + _gammaChannelOffset);
 
-            // Set gamma
             SetGammaRamp(ramp);
         }
 
@@ -68,7 +60,7 @@ namespace LightBulb.WindowsApi
 
     public partial class DeviceContext
     {
-        public static DeviceContext? FromDeviceName(string deviceName)
+        public static DeviceContext? TryGetFromDeviceName(string deviceName)
         {
             var handle = NativeMethods.CreateDC(deviceName, null, null, IntPtr.Zero);
             return handle != IntPtr.Zero ? new DeviceContext(handle) : null;
@@ -80,7 +72,7 @@ namespace LightBulb.WindowsApi
 
             foreach (var screen in Screen.AllScreens)
             {
-                var deviceContext = FromDeviceName(screen.DeviceName);
+                var deviceContext = TryGetFromDeviceName(screen.DeviceName);
                 if (deviceContext != null)
                     result.Add(deviceContext);
             }

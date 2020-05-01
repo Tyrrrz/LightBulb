@@ -1,42 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using LightBulb.Models;
+using LightBulb.Domain;
+using LightBulb.Internal;
 using LightBulb.WindowsApi;
-using Microsoft.Win32;
 
 namespace LightBulb.Services
 {
     public class GammaService : IDisposable
     {
-        private readonly object _lock = new object();
-
         // Device contexts for all monitors.
-        // We can't just get device context for virtual screen because that doesn't work anymore since Win10 v1903.
-        // Note: device contexts need to be refreshed if the user enables/disables monitors while the program is running.
-        private IReadOnlyList<DeviceContext> _deviceContexts = Array.Empty<DeviceContext>();
+        // We can't just get device context for the virtual screen because that doesn't work anymore since Win10 v1903.
+        // Wrapped in a dirty container to be able to invalidate the value when the device contexts change (e.g. a new monitor is plugged in).
+        private readonly Dirty<IReadOnlyList<DeviceContext>> _deviceContextsDirty =
+            Dirty.Create(DeviceContext.GetAllMonitorDeviceContexts, dcs => dcs.DisposeAll());
+
+        private readonly SystemEventManager _systemEvents = new SystemEventManager();
 
         public GammaService()
         {
-            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
-            ResetDeviceContexts();
-        }
-
-        private void OnDisplaySettingsChanged(object? sender, EventArgs e) => ResetDeviceContexts();
-
-        private void ResetDeviceContexts()
-        {
-            lock (_lock)
-            {
-                foreach (var deviceContext in _deviceContexts)
-                    deviceContext.Dispose();
-
-                _deviceContexts = DeviceContext.GetAllMonitorDeviceContexts();
-            }
+            _systemEvents.DisplaySettingsChanged += (sender, args) => _deviceContextsDirty.Invalidate();
         }
 
         public void SetGamma(ColorConfiguration colorConfiguration)
         {
-            // Algorithm taken from http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
+            // Algorithm taken from http://tannerhelland.com/4435/convert-temperature-rgb-algorithm-code
 
             double GetRed()
             {
@@ -66,28 +53,20 @@ namespace LightBulb.Services
             }
 
             // Set gamma
-            lock (_lock)
+            foreach (var deviceContext in _deviceContextsDirty.Value)
             {
-                foreach (var deviceContext in _deviceContexts)
-                {
-                    deviceContext.SetGamma(
-                        GetRed() * colorConfiguration.Brightness,
-                        GetGreen() * colorConfiguration.Brightness,
-                        GetBlue() * colorConfiguration.Brightness
-                    );
-                }
+                deviceContext.SetGamma(
+                    GetRed() * colorConfiguration.Brightness,
+                    GetGreen() * colorConfiguration.Brightness,
+                    GetBlue() * colorConfiguration.Brightness
+                );
             }
         }
 
         public void Dispose()
         {
-            lock (_lock)
-            {
-                foreach (var deviceContext in _deviceContexts)
-                    deviceContext.Dispose();
-
-                SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
-            }
+            _deviceContextsDirty.Dispose();
+            _systemEvents.Dispose();
         }
     }
 }

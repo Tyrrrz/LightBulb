@@ -9,23 +9,15 @@ namespace LightBulb.Converters
     {
         public static FractionToPercentageStringConverter Instance { get; } = new FractionToPercentageStringConverter();
 
-        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is double doubleValue)
-                return doubleValue.ToString("P0", culture);
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
+            value is double doubleValue
+                ? doubleValue.ToString("P0", culture)
+                : default;
 
-            return default(string);
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is string stringValue &&
-                double.TryParse(stringValue.Trim('%', ' '), NumberStyles.Float | NumberStyles.AllowThousands, culture, out var result))
-            {
-                return result / 100.0;
-            }
-
-            return default(double);
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+            value is string stringValue &&
+            double.TryParse(stringValue.Trim('%', ' '), NumberStyles.Float | NumberStyles.AllowThousands, culture, out var result)
+                ? result / 100.0
+                : default;
     }
 }

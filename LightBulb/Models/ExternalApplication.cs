@@ -4,18 +4,28 @@ using Tyrrrz.Settings;
 
 namespace LightBulb.Models
 {
-    public partial class ExternalApplication : IEquatable<ExternalApplication>
+    public partial class ExternalApplication
     {
         public string ExecutableFilePath { get; }
 
         [Ignore]
         public string Name => Path.GetFileNameWithoutExtension(ExecutableFilePath) ?? ExecutableFilePath;
 
-        public ExternalApplication(string executableFilePath)
-        {
-            ExecutableFilePath = executableFilePath;
-        }
+        public ExternalApplication(string executableFilePath) => ExecutableFilePath = executableFilePath;
 
+        public override string ToString() => Name;
+    }
+
+    public partial class ExternalApplication
+    {
+        private static string? NormalizeFilePath(string? filePath) =>
+            !string.IsNullOrWhiteSpace(filePath)
+                ? Path.GetFullPath(filePath)
+                : filePath;
+    }
+
+    public partial class ExternalApplication : IEquatable<ExternalApplication>
+    {
         public bool Equals(ExternalApplication other)
         {
             if (ReferenceEquals(null, other)) return false;
@@ -36,18 +46,9 @@ namespace LightBulb.Models
         }
 
         public override int GetHashCode() => HashCode.Combine(NormalizeFilePath(ExecutableFilePath));
-    }
 
-    public partial class ExternalApplication
-    {
         public static bool operator ==(ExternalApplication a, ExternalApplication b) => a?.Equals(b) ?? b is null;
 
         public static bool operator !=(ExternalApplication a, ExternalApplication b) => !(a == b);
-    }
-
-    public partial class ExternalApplication
-    {
-        private static string? NormalizeFilePath(string? filePath) =>
-            !string.IsNullOrWhiteSpace(filePath) ? Path.GetFullPath(filePath) : filePath;
     }
 }

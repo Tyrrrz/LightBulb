@@ -17,8 +17,7 @@ namespace LightBulb.Services
             var virtualKey = KeyInterop.VirtualKeyFromKey(hotKey.Key);
             var modifiers = (int) hotKey.Modifiers;
 
-            // Register hotkey
-            var registeredHotKey = GlobalHotKey.Register(virtualKey, modifiers, handler);
+            var registeredHotKey = GlobalHotKey.TryRegister(virtualKey, modifiers, handler);
 
             if (registeredHotKey != null)
                 _registeredHotKeys.Add(registeredHotKey);
@@ -28,7 +27,6 @@ namespace LightBulb.Services
 
         public void UnregisterAllHotKeys()
         {
-            // Dispose all registered hotkeys and remove them from the list
             foreach (var registeredHotKey in _registeredHotKeys.ToArray())
             {
                 registeredHotKey.Dispose();

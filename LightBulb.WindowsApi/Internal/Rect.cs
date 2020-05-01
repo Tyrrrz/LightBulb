@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace LightBulb.WindowsApi.Internal
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal readonly partial struct Rect : IEquatable<Rect>
+    internal readonly partial struct Rect
     {
         public int Left { get; }
 
@@ -22,24 +22,24 @@ namespace LightBulb.WindowsApi.Internal
             Bottom = bottom;
         }
 
+        public override string ToString() => $"L:{Left} T:{Top} R:{Right} B:{Bottom}";
+    }
+
+    internal partial struct Rect
+    {
+        public static Rect Empty { get; } = new Rect();
+    }
+
+    internal partial struct Rect : IEquatable<Rect>
+    {
         public bool Equals(Rect other) => Left == other.Left && Top == other.Top && Right == other.Right && Bottom == other.Bottom;
 
         public override bool Equals(object? obj) => obj is Rect other && Equals(other);
 
         public override int GetHashCode() => HashCode.Combine(Left, Top, Right, Bottom);
 
-        public override string ToString() => $"L:{Left} T:{Top} R:{Right} B:{Bottom}";
-    }
-
-    internal partial struct Rect
-    {
         public static bool operator ==(Rect a, Rect b) => a.Equals(b);
 
         public static bool operator !=(Rect a, Rect b) => !(a == b);
-    }
-
-    internal partial struct Rect
-    {
-        public static Rect Empty { get; } = new Rect();
     }
 }

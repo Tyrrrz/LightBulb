@@ -7,20 +7,23 @@ using LightBulb.WindowsApi.Internal;
 
 namespace LightBulb.WindowsApi
 {
-    public partial class SystemWindow : IDisposable
+    public partial class SystemWindow
     {
         public IntPtr Handle { get; }
 
-        public SystemWindow(IntPtr handle)
-        {
-            Handle = handle;
-        }
+        public SystemWindow(IntPtr handle) => Handle = handle;
 
-        private Rect? GetRect() => NativeMethods.GetWindowRect(Handle, out var rect) ? rect : (Rect?) null;
+        private Rect? TryGetRect() =>
+            NativeMethods.GetWindowRect(Handle, out var rect)
+                ? rect
+                : (Rect?) null;
 
-        private Rect? GetClientRect() => NativeMethods.GetClientRect(Handle, out var rect) ? rect : (Rect?) null;
+        private Rect? TryGetClientRect() =>
+            NativeMethods.GetClientRect(Handle, out var rect)
+                ? rect
+                : (Rect?) null;
 
-        public string? GetClassName()
+        public string? TryGetClassName()
         {
             var buffer = new StringBuilder(256);
             return NativeMethods.GetClassName(Handle, buffer, buffer.Capacity) >= 0 ? buffer.ToString() : null;
@@ -28,7 +31,7 @@ namespace LightBulb.WindowsApi
 
         public bool IsSystemWindow()
         {
-            var className = GetClassName();
+            var className = TryGetClassName();
 
             if (string.Equals(className, "Progman", StringComparison.OrdinalIgnoreCase))
                 return true;
@@ -59,12 +62,12 @@ namespace LightBulb.WindowsApi
         public bool IsFullScreen()
         {
             // Get window rect
-            var windowRect = GetRect() ?? Rect.Empty;
+            var windowRect = TryGetRect() ?? Rect.Empty;
             if (windowRect == Rect.Empty)
                 return false;
 
             // Calculate absolute window client rect (not relative to window)
-            var windowClientRect = GetClientRect() ?? Rect.Empty;
+            var windowClientRect = TryGetClientRect() ?? Rect.Empty;
 
             var absoluteWindowClientRect = new Rect(
                 windowRect.Left + windowClientRect.Left,
@@ -82,21 +85,16 @@ namespace LightBulb.WindowsApi
                    absoluteWindowClientRect.Bottom >= screenRect.Bottom;
         }
 
-        public SystemProcess? GetProcess()
+        public SystemProcess? TryGetProcess()
         {
             NativeMethods.GetWindowThreadProcessId(Handle, out var processId);
-            return processId != 0 ? SystemProcess.Open(processId) : null;
-        }
-
-        public void Dispose()
-        {
-            // No cleaning up is needed, but this is for consistency
+            return processId != 0 ? SystemProcess.TryOpen(processId) : null;
         }
     }
 
     public partial class SystemWindow
     {
-        public static SystemWindow? GetForegroundWindow()
+        public static SystemWindow? TryGetForegroundWindow()
         {
             var handle = NativeMethods.GetForegroundWindow();
             return handle != IntPtr.Zero ? new SystemWindow(handle) : null;
