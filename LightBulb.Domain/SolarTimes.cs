@@ -101,7 +101,7 @@ namespace LightBulb.Domain
     {
         public bool Equals(SolarTimes other) => Sunrise.Equals(other.Sunrise) && Sunset.Equals(other.Sunset);
 
-        public override bool Equals(object obj) => obj is SolarTimes other && Equals(other);
+        public override bool Equals(object? obj) => obj is SolarTimes other && Equals(other);
 
         public override int GetHashCode() => HashCode.Combine(Sunrise, Sunset);
 
