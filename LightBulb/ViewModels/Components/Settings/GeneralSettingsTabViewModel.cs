@@ -12,7 +12,7 @@ namespace LightBulb.ViewModels.Components.Settings
             get => SettingsService.NightConfiguration.Temperature;
             set
             {
-                SettingsService.NightConfiguration = new ColorConfiguration(value.Clamp(1000.0, 10000.0), NightBrightness);
+                SettingsService.NightConfiguration = new ColorConfiguration(value.Clamp(500.0, 10000.0), NightBrightness);
 
                 if (NightTemperature > DayTemperature)
                     DayTemperature = NightTemperature;
@@ -24,7 +24,7 @@ namespace LightBulb.ViewModels.Components.Settings
             get => SettingsService.DayConfiguration.Temperature;
             set
             {
-                SettingsService.DayConfiguration = new ColorConfiguration(value.Clamp(1000.0, 10000.0), DayBrightness);
+                SettingsService.DayConfiguration = new ColorConfiguration(value.Clamp(500.0, 10000.0), DayBrightness);
 
                 if (DayTemperature < NightTemperature)
                     NightTemperature = DayTemperature;
