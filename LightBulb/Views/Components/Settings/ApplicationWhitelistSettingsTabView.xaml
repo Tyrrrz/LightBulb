@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:behaviors="clr-namespace:LightBulb.Behaviors"
+    xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:s="https://github.com/canton7/Stylet"
@@ -14,7 +15,7 @@
     Loaded="{s:Action OnViewLoaded}"
     Style="{DynamicResource MaterialDesignRoot}"
     mc:Ignorable="d">
-    <StackPanel Orientation="Vertical">
+    <StackPanel IsEnabled="{Binding IsBusy, Converter={x:Static converters:InverseBoolConverter.Instance}}" Orientation="Vertical">
         <!--  Is enabled  -->
         <Grid Margin="6" ToolTip="Pause LightBulb when any of the selected applications are in foreground">
             <Grid.ColumnDefinitions>

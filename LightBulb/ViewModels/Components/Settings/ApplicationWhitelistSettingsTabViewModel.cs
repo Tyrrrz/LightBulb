@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using LightBulb.Models;
 using LightBulb.Services;
 
@@ -9,6 +10,8 @@ namespace LightBulb.ViewModels.Components.Settings
     public class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewModelBase
     {
         private readonly ExternalApplicationService _externalApplicationService;
+
+        public bool IsBusy { get; private set; }
 
         public bool IsApplicationWhitelistEnabled
         {
@@ -32,20 +35,33 @@ namespace LightBulb.ViewModels.Components.Settings
 
         public void OnViewLoaded() => UpdateAvailableApplications();
 
-        private void UpdateAvailableApplications()
+        private async void UpdateAvailableApplications()
         {
-            var applications = new HashSet<ExternalApplication>();
+            IsBusy = true;
 
-            // Add previously whitelisted applications
-            // (this has to be first to preserve references in selected applications)
-            foreach (var application in WhitelistedApplications ?? Array.Empty<ExternalApplication>())
-                applications.Add(application);
+            try
+            {
+                // Getting a list of all processes is somehow pretty CPU-intensive so we offload this to a separate thread
+                await Task.Run(() =>
+                {
+                    var applications = new HashSet<ExternalApplication>();
 
-            // Add all running applications
-            foreach (var application in _externalApplicationService.GetAllRunningApplications())
-                applications.Add(application);
+                    // Add previously whitelisted applications
+                    // (this has to be first to preserve references in selected applications)
+                    foreach (var application in WhitelistedApplications ?? Array.Empty<ExternalApplication>())
+                        applications.Add(application);
 
-            AvailableApplications = applications.ToArray();
+                    // Add all running applications
+                    foreach (var application in _externalApplicationService.GetAllRunningApplications())
+                        applications.Add(application);
+
+                    AvailableApplications = applications.ToArray();
+                });
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
     }
 }
