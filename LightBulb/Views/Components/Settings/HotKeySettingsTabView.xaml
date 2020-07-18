@@ -23,13 +23,123 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Toggle LightBulb"
-                ToolTip="Global hot key to switch LightBulb on/off" />
+                ToolTip="Global hotkey to switch LightBulb on/off" />
             <controls:HotKeyTextBox
                 Grid.Column="1"
                 Width="120"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 HotKey="{Binding ToggleHotKey}"
+                Style="{DynamicResource MaterialDesignTextBox}"
+                TextAlignment="Center" />
+        </Grid>
+
+        <!--  Increase temperature offset hotkey  -->
+        <Grid Margin="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="Temperature offset +"
+                ToolTip="Global hotkey to increase current temperature offset" />
+            <controls:HotKeyTextBox
+                Grid.Column="1"
+                Width="120"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                HotKey="{Binding IncreaseTemperatureOffsetHotKey}"
+                Style="{DynamicResource MaterialDesignTextBox}"
+                TextAlignment="Center" />
+        </Grid>
+
+        <!--  Decrease temperature offset hotkey  -->
+        <Grid Margin="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="Temperature offset -"
+                ToolTip="Global hotkey to decrease current temperature offset" />
+            <controls:HotKeyTextBox
+                Grid.Column="1"
+                Width="120"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                HotKey="{Binding DecreaseTemperatureOffsetHotKey}"
+                Style="{DynamicResource MaterialDesignTextBox}"
+                TextAlignment="Center" />
+        </Grid>
+
+        <!--  Increase brightness offset hotkey  -->
+        <Grid Margin="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="Brightness offset +"
+                ToolTip="Global hotkey to increase current brightness offset" />
+            <controls:HotKeyTextBox
+                Grid.Column="1"
+                Width="120"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                HotKey="{Binding IncreaseBrightnessOffsetHotKey}"
+                Style="{DynamicResource MaterialDesignTextBox}"
+                TextAlignment="Center" />
+        </Grid>
+
+        <!--  Decrease brightness offset hotkey  -->
+        <Grid Margin="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="Brightness offset -"
+                ToolTip="Global hotkey to decrease current brightness offset" />
+            <controls:HotKeyTextBox
+                Grid.Column="1"
+                Width="120"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                HotKey="{Binding DecreaseBrightnessOffsetHotKey}"
+                Style="{DynamicResource MaterialDesignTextBox}"
+                TextAlignment="Center" />
+        </Grid>
+
+        <!--  Reset offset hotkey  -->
+        <Grid Margin="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="Reset offset"
+                ToolTip="Global hotkey to reset current temperature and brightness offset" />
+            <controls:HotKeyTextBox
+                Grid.Column="1"
+                Width="120"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                HotKey="{Binding ResetOffsetHotKey}"
                 Style="{DynamicResource MaterialDesignTextBox}"
                 TextAlignment="Center" />
         </Grid>

@@ -48,13 +48,24 @@ namespace LightBulb.ViewModels.Components
         public TimeOfDay SunsetEnd =>
             SolarTimes.Sunset + _settingsService.ConfigurationTransitionDuration;
 
+        public double ColorConfigurationTemperatureOffset { get; set; }
+
+        public double ColorConfigurationBrightnessOffset { get; set; }
+
+        public bool IsColorConfigurationOffsetEnabled =>
+            Math.Abs(ColorConfigurationTemperatureOffset) + Math.Abs(ColorConfigurationBrightnessOffset) > 0;
+
         public ColorConfiguration TargetColorConfiguration => IsActive
-            ? ColorConfiguration.Calculate(
-                SolarTimes,
-                _settingsService.DayConfiguration,
-                _settingsService.NightConfiguration,
-                _settingsService.ConfigurationTransitionDuration,
-                Instant)
+            ? ColorConfiguration
+                .Calculate(
+                    SolarTimes,
+                    _settingsService.DayConfiguration,
+                    _settingsService.NightConfiguration,
+                    _settingsService.ConfigurationTransitionDuration,
+                    Instant)
+                .WithOffset(
+                    ColorConfigurationTemperatureOffset,
+                    ColorConfigurationBrightnessOffset)
             : _settingsService.IsDefaultToDayConfigurationEnabled
                 ? _settingsService.DayConfiguration
                 : ColorConfiguration.Default;
@@ -123,7 +134,46 @@ namespace LightBulb.ViewModels.Components
             _hotKeyService.UnregisterAllHotKeys();
 
             if (_settingsService.ToggleHotKey != HotKey.None)
+            {
                 _hotKeyService.RegisterHotKey(_settingsService.ToggleHotKey, Toggle);
+            }
+
+            if (_settingsService.IncreaseTemperatureOffsetHotKey != HotKey.None)
+            {
+                _hotKeyService.RegisterHotKey(_settingsService.IncreaseTemperatureOffsetHotKey, () =>
+                {
+                    ColorConfigurationTemperatureOffset += 100;
+                });
+            }
+
+            if (_settingsService.DecreaseTemperatureOffsetHotKey != HotKey.None)
+            {
+                _hotKeyService.RegisterHotKey(_settingsService.DecreaseTemperatureOffsetHotKey, () =>
+                {
+                    ColorConfigurationTemperatureOffset -= 100;
+                });
+            }
+
+            if (_settingsService.IncreaseBrightnessOffsetHotKey != HotKey.None)
+            {
+                _hotKeyService.RegisterHotKey(_settingsService.IncreaseBrightnessOffsetHotKey, () =>
+                {
+                    ColorConfigurationBrightnessOffset += 0.05;
+                });
+            }
+
+            if (_settingsService.DecreaseBrightnessOffsetHotKey != HotKey.None)
+            {
+                _hotKeyService.RegisterHotKey(_settingsService.DecreaseBrightnessOffsetHotKey, () =>
+                {
+                    ColorConfigurationBrightnessOffset -= 0.05;
+                });
+            }
+
+            if (_settingsService.ResetOffsetHotKey != HotKey.None)
+            {
+                _hotKeyService.RegisterHotKey(_settingsService.ResetOffsetHotKey, ResetColorConfigurationOffset);
+            }
         }
 
         private void UpdateInstant()
@@ -226,6 +276,12 @@ namespace LightBulb.ViewModels.Components
         public void EnableCyclePreview() => IsCyclePreviewEnabled = true;
 
         public void DisableCyclePreview() => IsCyclePreviewEnabled = false;
+
+        public void ResetColorConfigurationOffset()
+        {
+            ColorConfigurationTemperatureOffset = 0;
+            ColorConfigurationBrightnessOffset = 0;
+        }
 
         public void Dispose()
         {

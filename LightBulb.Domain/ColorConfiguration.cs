@@ -1,4 +1,5 @@
 ﻿using System;
+using Tyrrrz.Extensions;
 
 namespace LightBulb.Domain
 {
@@ -14,13 +15,12 @@ namespace LightBulb.Domain
             Brightness = brightness;
         }
 
-        public ColorConfiguration WithTemperature(double temperature) =>
-            new ColorConfiguration(temperature, Brightness);
+        public ColorConfiguration WithOffset(double temperatureOffset, double brightnessOffset) => new ColorConfiguration(
+            (Temperature + temperatureOffset).Clamp(0, 20_000),
+            (Brightness + brightnessOffset).Clamp(0.1, 1.5)
+        );
 
-        public ColorConfiguration WithBrightness(double brightness) =>
-            new ColorConfiguration(Temperature, brightness);
-
-        public override string ToString() => $"{Temperature:F0} K | {Brightness:P0}";
+        public override string ToString() => $"{Temperature:F0} K, {Brightness:P0}";
     }
 
     public partial struct ColorConfiguration

@@ -74,6 +74,16 @@ namespace LightBulb.Services
 
         public HotKey ToggleHotKey { get; set; }
 
+        public HotKey IncreaseTemperatureOffsetHotKey { get; set; }
+
+        public HotKey DecreaseTemperatureOffsetHotKey { get; set; }
+
+        public HotKey IncreaseBrightnessOffsetHotKey { get; set; }
+
+        public HotKey DecreaseBrightnessOffsetHotKey { get; set; }
+
+        public HotKey ResetOffsetHotKey { get; set; }
+
         // Events
 
         public event EventHandler? SettingsReset;
