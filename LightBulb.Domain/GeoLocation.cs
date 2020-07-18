@@ -22,43 +22,53 @@ namespace LightBulb.Domain
 
     public partial struct GeoLocation
     {
+        private static GeoLocation? TryParseSigned(string value)
+        {
+            const NumberStyles numberStyles = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
+
+            // 41.25, -120.9762
+            var match = Regex.Match(value, @"^([\+\-]?\d+(?:\.\d+)?)\s*[,\s]\s*([\+\-]?\d+(?:\.\d+)?)$");
+
+            if (match.Success &&
+                double.TryParse(match.Groups[1].Value, numberStyles, CultureInfo.InvariantCulture, out var lat) &&
+                double.TryParse(match.Groups[2].Value, numberStyles, CultureInfo.InvariantCulture, out var lng))
+            {
+                return new GeoLocation(lat, lng);
+            }
+
+            return null;
+        }
+
+        private static GeoLocation? TryParseSuffixed(string value)
+        {
+            const NumberStyles numberStyles = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
+
+            // 41.25°N, 120.9762°W
+            // 41.25N, 120.9762W
+            // 41.25 N, 120.9762 W
+            var match = Regex.Match(value, @"^(\d+(?:\.\d+)?)\s*°?\s*(\w)\s*[,\s]\s*(\d+(?:\.\d+)?)\s*°?\s*(\w)$");
+
+            if (match.Success &&
+                double.TryParse(match.Groups[1].Value, numberStyles, CultureInfo.InvariantCulture, out var lat) &&
+                double.TryParse(match.Groups[3].Value, numberStyles, CultureInfo.InvariantCulture, out var lng))
+            {
+                var latSign = match.Groups[2].Value.Equals("N", StringComparison.OrdinalIgnoreCase) ? 1 : -1;
+                var lngSign = match.Groups[4].Value.Equals("E", StringComparison.OrdinalIgnoreCase) ? 1 : -1;
+
+                return new GeoLocation(lat * latSign, lng * lngSign);
+            }
+
+            return null;
+        }
+
         public static GeoLocation? TryParse(string? value)
         {
             if (string.IsNullOrWhiteSpace(value))
                 return null;
 
-            const NumberStyles numberStyles = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
-
-            // Signed lat/lng
-            // 41.25, -120.9762
-            var signedMatch = Regex.Match(value, @"^([\+\-]?\d+(?:\.\d+)?)\s*[,\s]\s*([\+\-]?\d+(?:\.\d+)?)$");
-            if (signedMatch.Success)
-            {
-                if (double.TryParse(signedMatch.Groups[1].Value, numberStyles, CultureInfo.InvariantCulture, out var lat) &&
-                    double.TryParse(signedMatch.Groups[2].Value, numberStyles, CultureInfo.InvariantCulture, out var lng))
-                {
-                    return new GeoLocation(lat, lng);
-                }
-            }
-
-            // Suffixed lat/lng
-            // 41.25°N, 120.9762°W
-            // 41.25N, 120.9762W
-            // 41.25 N, 120.9762 W
-            var suffixedMatch = Regex.Match(value, @"^(\d+(?:\.\d+)?)\s*°?\s*(\w)\s*[,\s]\s*(\d+(?:\.\d+)?)\s*°?\s*(\w)$");
-            if (suffixedMatch.Success)
-            {
-                if (double.TryParse(suffixedMatch.Groups[1].Value, numberStyles, CultureInfo.InvariantCulture, out var lat) &&
-                    double.TryParse(suffixedMatch.Groups[3].Value, numberStyles, CultureInfo.InvariantCulture, out var lng))
-                {
-                    var latSign = suffixedMatch.Groups[2].Value.Equals("N", StringComparison.OrdinalIgnoreCase) ? 1 : -1;
-                    var lngSign = suffixedMatch.Groups[4].Value.Equals("E", StringComparison.OrdinalIgnoreCase) ? 1 : -1;
-
-                    return new GeoLocation(lat * latSign, lng * lngSign);
-                }
-            }
-
-            return null;
+            return
+                TryParseSigned(value) ??
+                TryParseSuffixed(value);
         }
     }
 

@@ -15,7 +15,7 @@ namespace LightBulb.Domain
             Sunset = sunset;
         }
 
-        public override string ToString() => $"Sunrise: {Sunrise} | Sunset: {Sunset}";
+        public override string ToString() => $"Sunrise: {Sunrise}, Sunset: {Sunset}";
     }
 
     public partial struct SolarTimes
@@ -29,14 +29,14 @@ namespace LightBulb.Domain
                 ? to - (from - value) % (to - from)
                 : from + (value - from) % (to - from);
 
-        private static TimeOfDay CalculateSolarTime(GeoLocation location, DateTimeOffset instant, double zenith, bool isSunrise)
+        private static TimeOfDay CalculateSolarTime(GeoLocation location, DateTimeOffset date, double zenith, bool isSunrise)
         {
             // Based on https://edwilliams.org/sunrise_sunset_algorithm.htm
 
             // Convert longitude to hour value and calculate an approximate time
             var lngHours = location.Longitude / 15;
             var timeApproxHours = isSunrise ? 6 : 18;
-            var timeApproxDays = instant.DayOfYear + (timeApproxHours - lngHours) / 24;
+            var timeApproxDays = date.DayOfYear + (timeApproxHours - lngHours) / 24;
 
             // Calculate Sun's mean anomaly
             var sunMeanAnomaly = 0.9856 * timeApproxDays - 3.289;
@@ -84,16 +84,16 @@ namespace LightBulb.Domain
             utcHours = Wrap(utcHours, 0, 24);
 
             // Adjust UTC time to local time
-            // (we use the offset provided because we can't accurately calculate local timezone from coordinates)
-            var localHours = utcHours + instant.Offset.TotalHours;
+            // (we use the offset provided because it's impossible to calculate timezone from coordinates)
+            var localHours = utcHours + date.Offset.TotalHours;
             localHours = Wrap(localHours, 0, 24);
 
             return new TimeOfDay(TimeSpan.FromHours(localHours));
         }
 
-        public static SolarTimes Calculate(GeoLocation location, DateTimeOffset instant) => new SolarTimes(
-            CalculateSolarTime(location, instant, 90.83, true),
-            CalculateSolarTime(location, instant, 90.83, false)
+        public static SolarTimes Calculate(GeoLocation location, DateTimeOffset date) => new SolarTimes(
+            CalculateSolarTime(location, date, 90.83, true),
+            CalculateSolarTime(location, date, 90.83, false)
         );
     }
 

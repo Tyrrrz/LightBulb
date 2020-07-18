@@ -16,7 +16,11 @@ namespace LightBulb.WindowsApi
 
         ~DeviceContext() => Dispose();
 
-        private void SetGammaRamp(GammaRamp ramp) => NativeMethods.SetDeviceGammaRamp(Handle, ref ramp);
+        private void SetGammaRamp(GammaRamp ramp)
+        {
+            if (!NativeMethods.SetDeviceGammaRamp(Handle, ref ramp))
+                Debug.WriteLine("Could not set gamma ramp.");
+        }
 
         public void SetGamma(double redMultiplier, double greenMultiplier, double blueMultiplier)
         {
@@ -35,9 +39,10 @@ namespace LightBulb.WindowsApi
                 ramp.Blue[i] = (ushort) (i * 255 * blueMultiplier);
             }
 
-            // Some drivers will ignore request to change gamma if the ramp is the same as last time
-            // so we randomize it a bit. Even though our ramp may not have changed, other applications
-            // could have affected the gamma and we need to "force-refresh" it to ensure it's valid.
+            // Some drivers will ignore request to change gamma if the ramp is the same as the last time,
+            // even if it was reset somehow in-between (for example, by screen going to sleep).
+            // In order to work around this, we add a small random deviation to each ramp to make sure
+            // they're always unique, forcing the drivers to refresh the device context every time.
             _gammaChannelOffset = ++_gammaChannelOffset % 5;
             ramp.Red[255] = (ushort) (ramp.Red[255] + _gammaChannelOffset);
             ramp.Green[255] = (ushort) (ramp.Green[255] + _gammaChannelOffset);
@@ -63,7 +68,9 @@ namespace LightBulb.WindowsApi
         public static DeviceContext? TryGetFromDeviceName(string deviceName)
         {
             var handle = NativeMethods.CreateDC(deviceName, null, null, IntPtr.Zero);
-            return handle != IntPtr.Zero ? new DeviceContext(handle) : null;
+            return handle != IntPtr.Zero
+                ? new DeviceContext(handle)
+                : null;
         }
 
         public static IReadOnlyList<DeviceContext> GetAllMonitorDeviceContexts()

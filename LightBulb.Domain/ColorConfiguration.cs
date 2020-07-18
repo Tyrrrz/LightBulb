@@ -14,6 +14,12 @@ namespace LightBulb.Domain
             Brightness = brightness;
         }
 
+        public ColorConfiguration WithTemperature(double temperature) =>
+            new ColorConfiguration(temperature, Brightness);
+
+        public ColorConfiguration WithBrightness(double brightness) =>
+            new ColorConfiguration(Temperature, brightness);
+
         public override string ToString() => $"{Temperature:F0} K | {Brightness:P0}";
     }
 

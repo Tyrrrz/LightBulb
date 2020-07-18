@@ -34,18 +34,18 @@ namespace LightBulb.ViewModels.Components.Settings
 
         private void UpdateAvailableApplications()
         {
-            var applicationsByExecutablePath = new Dictionary<string, ExternalApplication>();
+            var applications = new HashSet<ExternalApplication>();
+
+            // Add previously whitelisted applications
+            // (this has to be first to preserve references in selected applications)
+            foreach (var application in WhitelistedApplications ?? Array.Empty<ExternalApplication>())
+                applications.Add(application);
 
             // Add all running applications
             foreach (var application in _externalApplicationService.GetAllRunningApplications())
-                applicationsByExecutablePath[application.ExecutableFilePath] = application;
+                applications.Add(application);
 
-            // Add previously whitelisted applications
-            // (this order is important to preserve references in selected applications)
-            foreach (var application in WhitelistedApplications ?? Array.Empty<ExternalApplication>())
-                applicationsByExecutablePath[application.ExecutableFilePath] = application;
-
-            AvailableApplications = applicationsByExecutablePath.Values.OrderBy(a => a.Name).ToArray();
+            AvailableApplications = applications.ToArray();
         }
     }
 }

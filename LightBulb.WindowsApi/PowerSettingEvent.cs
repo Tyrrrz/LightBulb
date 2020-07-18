@@ -22,16 +22,16 @@ namespace LightBulb.WindowsApi
             SpongeWindow.Instance.MessageReceived += SpongeWindowOnMessageReceived;
         }
 
+        ~PowerSettingEvent() => Dispose();
+
         private void SpongeWindowOnMessageReceived(object? sender, Message m)
         {
-            // Only PowerSettingChange messages
+            // Only messages related to this event triggering
             if (m.Msg != 0x218 || m.WParam.ToInt32() != 0x8013)
                 return;
 
             Handler();
         }
-
-        ~PowerSettingEvent() => Dispose();
 
         public void Dispose()
         {
@@ -49,7 +49,9 @@ namespace LightBulb.WindowsApi
         public static PowerSettingEvent? TryRegister(Guid id, Action handler)
         {
             var handle = NativeMethods.RegisterPowerSettingNotification(SpongeWindow.Instance.Handle, ref id, 0);
-            return handle != IntPtr.Zero ? new PowerSettingEvent(handle, id, handler) : null;
+            return handle != IntPtr.Zero
+                ? new PowerSettingEvent(handle, id, handler)
+                : null;
         }
     }
 }

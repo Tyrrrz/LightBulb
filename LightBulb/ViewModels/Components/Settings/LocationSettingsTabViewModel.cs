@@ -1,6 +1,5 @@
 ﻿using LightBulb.Domain;
 using LightBulb.Services;
-using Stylet;
 
 namespace LightBulb.ViewModels.Components.Settings
 {
@@ -38,7 +37,7 @@ namespace LightBulb.ViewModels.Components.Settings
 
         public string? LocationQuery { get; set; }
 
-        public LocationSettingsTabViewModel(IEventAggregator eventAggregator, SettingsService settingsService, LocationService locationService)
+        public LocationSettingsTabViewModel(SettingsService settingsService, LocationService locationService)
             : base(settingsService, 1, "Location")
         {
             _locationService = locationService;

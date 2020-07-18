@@ -18,7 +18,9 @@ namespace LightBulb.WindowsApi
             var buffer = new StringBuilder(1024);
             var bufferSize = (uint) buffer.Capacity + 1;
 
-            return NativeMethods.QueryFullProcessImageName(Handle, 0, buffer, ref bufferSize) ? buffer.ToString() : null;
+            return NativeMethods.QueryFullProcessImageName(Handle, 0, buffer, ref bufferSize)
+                ? buffer.ToString()
+                : null;
         }
 
         public void Dispose()
@@ -35,7 +37,9 @@ namespace LightBulb.WindowsApi
         public static SystemProcess? TryOpen(uint processId)
         {
             var handle = NativeMethods.OpenProcess(ProcessAccessFlags.QueryLimitedInformation, false, processId);
-            return handle != IntPtr.Zero ? new SystemProcess(handle) : null;
+            return handle != IntPtr.Zero
+                ? new SystemProcess(handle)
+                : null;
         }
     }
 }

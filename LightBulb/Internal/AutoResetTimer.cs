@@ -16,7 +16,12 @@ namespace LightBulb.Internal
         public AutoResetTimer(Action tick)
         {
             _tick = tick;
-            _internalTimer = new Timer(_ => HandleTick(), null, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+            _internalTimer = new Timer(
+                _ => HandleTick(),
+                null,
+                Timeout.InfiniteTimeSpan,
+                Timeout.InfiniteTimeSpan
+            );
         }
 
         private void HandleTick()
@@ -31,10 +36,9 @@ namespace LightBulb.Internal
                 if (_isDisposed)
                     return;
 
-                _isBusy = true;
-
                 try
                 {
+                    _isBusy = true;
                     _tick();
                 }
                 finally

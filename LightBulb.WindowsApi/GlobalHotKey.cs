@@ -29,12 +29,8 @@ namespace LightBulb.WindowsApi
 
         private void SpongeWindowOnMessageReceived(object? sender, Message e)
         {
-            // Only hotkey-related messages
-            if (e.Msg != 0x0312)
-                return;
-
-            // Only this hotkey
-            if (e.WParam.ToInt32() != Id)
+            // Only messages related to this hotkey triggering
+            if (e.Msg != 0x0312 || e.WParam.ToInt32() != Id)
                 return;
 
             Handler();

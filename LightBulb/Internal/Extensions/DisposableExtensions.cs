@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LightBulb.Internal
+namespace LightBulb.Internal.Extensions
 {
     internal static class DisposableExtensions
     {

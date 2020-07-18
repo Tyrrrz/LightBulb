@@ -28,7 +28,7 @@ namespace LightBulb.Services
             }
         }
 
-        public ExternalApplication? GetForegroundApplication()
+        public ExternalApplication? TryGetForegroundApplication()
         {
             var window = SystemWindow.TryGetForegroundWindow();
             using var process = window?.TryGetProcess();
@@ -43,7 +43,11 @@ namespace LightBulb.Services
         public bool IsForegroundApplicationFullScreen()
         {
             var window = SystemWindow.TryGetForegroundWindow();
-            return window != null && window.IsVisible() && !window.IsSystemWindow() && window.IsFullScreen();
+            return
+                window != null &&
+                window.IsVisible() &&
+                !window.IsSystemWindow() &&
+                window.IsFullScreen();
         }
     }
 }

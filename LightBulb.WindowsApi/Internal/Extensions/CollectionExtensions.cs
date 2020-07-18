@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LightBulb.WindowsApi.Internal
+namespace LightBulb.WindowsApi.Internal.Extensions
 {
     internal static class CollectionExtensions
     {

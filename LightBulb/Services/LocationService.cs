@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using LightBulb.Domain;
-using LightBulb.Internal;
+using LightBulb.Internal.Extensions;
 
 namespace LightBulb.Services
 {

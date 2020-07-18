@@ -38,14 +38,14 @@ namespace LightBulb.ViewModels
             _checkForUpdatesTimer = new AutoResetTimer(async () => await updateService.CheckPrepareUpdateAsync());
         }
 
-        private async Task EnsureGammaRangeIsUnlockedAsync()
+        private async Task ShowGammaRangePromptAsync()
         {
             if (_settingsService.IsExtendedGammaRangeUnlocked)
                 return;
 
             var message = $@"
 {App.Name} has detected that this computer doesn't have the extended gamma range unlocked.
-This may cause the app to work incorrectly with some settings.
+This may cause the app to work incorrectly for some color configurations.
 
 Press OK to unlock gamma range.".Trim();
 
@@ -79,7 +79,7 @@ Press OK to open settings.".Trim();
                 "OK", "CANCEL"
             );
 
-            // Disable first time experience for next time
+            // Disable first time experience in the future
             _settingsService.IsFirstTimeExperienceEnabled = false;
             _settingsService.IsAutoStartEnabled = true;
             _settingsService.Save();
@@ -106,7 +106,7 @@ Press OK to open settings.".Trim();
         // This is a custom event that fires when the dialog host is loaded
         public async void OnViewFullyLoaded()
         {
-            await EnsureGammaRangeIsUnlockedAsync();
+            await ShowGammaRangePromptAsync();
             await ShowFirstTimeExperienceMessageAsync();
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using LightBulb.Domain;
 using LightBulb.Internal;
+using LightBulb.Internal.Extensions;
 using LightBulb.WindowsApi;
 
 namespace LightBulb.Services

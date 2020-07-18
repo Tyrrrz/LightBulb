@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using LightBulb.WindowsApi.Internal;
+using LightBulb.WindowsApi.Internal.Extensions;
 using Microsoft.Win32;
 
 namespace LightBulb.WindowsApi

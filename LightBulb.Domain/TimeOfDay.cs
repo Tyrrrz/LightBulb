@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using LightBulb.Domain.Internal;
+using LightBulb.Domain.Internal.Extensions;
 
 namespace LightBulb.Domain
 {

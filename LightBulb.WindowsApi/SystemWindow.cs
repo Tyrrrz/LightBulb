@@ -26,35 +26,23 @@ namespace LightBulb.WindowsApi
         public string? TryGetClassName()
         {
             var buffer = new StringBuilder(256);
-            return NativeMethods.GetClassName(Handle, buffer, buffer.Capacity) >= 0 ? buffer.ToString() : null;
+            return NativeMethods.GetClassName(Handle, buffer, buffer.Capacity) >= 0
+                ? buffer.ToString()
+                : null;
         }
 
         public bool IsSystemWindow()
         {
             var className = TryGetClassName();
 
-            if (string.Equals(className, "Progman", StringComparison.OrdinalIgnoreCase))
-                return true;
-
-            if (string.Equals(className, "WorkerW", StringComparison.OrdinalIgnoreCase))
-                return true;
-
-            if (string.Equals(className, "ImmersiveLauncher", StringComparison.OrdinalIgnoreCase))
-                return true;
-
-            if (string.Equals(className, "ImmersiveSwitchList", StringComparison.OrdinalIgnoreCase))
-                return true;
-
-            if (string.Equals(className, "MultitaskingViewFrame", StringComparison.OrdinalIgnoreCase))
-                return true;
-
-            if (string.Equals(className, "ForegroundStaging", StringComparison.OrdinalIgnoreCase))
-                return true;
-
-            if (string.Equals(className, "ApplicationManager_DesktopShellWindow", StringComparison.OrdinalIgnoreCase))
-                return true;
-
-            return false;
+            return
+                string.Equals(className, "Progman", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(className, "WorkerW", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(className, "ImmersiveLauncher", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(className, "ImmersiveSwitchList", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(className, "MultitaskingViewFrame", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(className, "ForegroundStaging", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(className, "ApplicationManager_DesktopShellWindow", StringComparison.OrdinalIgnoreCase);
         }
 
         public bool IsVisible() => NativeMethods.IsWindowVisible(Handle);
@@ -88,7 +76,9 @@ namespace LightBulb.WindowsApi
         public SystemProcess? TryGetProcess()
         {
             NativeMethods.GetWindowThreadProcessId(Handle, out var processId);
-            return processId != 0 ? SystemProcess.TryOpen(processId) : null;
+            return processId != 0
+                ? SystemProcess.TryOpen(processId)
+                : null;
         }
     }
 
@@ -97,7 +87,9 @@ namespace LightBulb.WindowsApi
         public static SystemWindow? TryGetForegroundWindow()
         {
             var handle = NativeMethods.GetForegroundWindow();
-            return handle != IntPtr.Zero ? new SystemWindow(handle) : null;
+            return handle != IntPtr.Zero
+                ? new SystemWindow(handle)
+                : null;
         }
 
         public static IReadOnlyList<SystemWindow> GetAllWindows()

@@ -34,7 +34,8 @@ namespace LightBulb.Models
             return string.Equals(
                 NormalizeFilePath(ExecutableFilePath),
                 NormalizeFilePath(other.ExecutableFilePath),
-                StringComparison.OrdinalIgnoreCase);
+                StringComparison.OrdinalIgnoreCase
+            );
         }
 
         public override bool Equals(object? obj)

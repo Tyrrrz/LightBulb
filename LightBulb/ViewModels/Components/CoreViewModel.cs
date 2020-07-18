@@ -2,6 +2,7 @@
 using System.Linq;
 using LightBulb.Domain;
 using LightBulb.Internal;
+using LightBulb.Internal.Extensions;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.WindowsApi;
@@ -190,7 +191,7 @@ namespace LightBulb.ViewModels.Components
 
             bool IsPausedByWhitelistedApplication() =>
                 _settingsService.IsApplicationWhitelistEnabled && _settingsService.WhitelistedApplications != null &&
-                _settingsService.WhitelistedApplications.Contains(_externalApplicationService.GetForegroundApplication());
+                _settingsService.WhitelistedApplications.Contains(_externalApplicationService.TryGetForegroundApplication());
 
             IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
         }

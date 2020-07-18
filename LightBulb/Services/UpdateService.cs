@@ -11,7 +11,8 @@ namespace LightBulb.Services
     {
         private readonly IUpdateManager _updateManager = new UpdateManager(
             new GithubPackageResolver("Tyrrrz", "LightBulb", "LightBulb.zip"),
-            new ZipPackageExtractor());
+            new ZipPackageExtractor()
+        );
 
         private readonly SettingsService _settingsService;
 
@@ -20,7 +21,7 @@ namespace LightBulb.Services
             _settingsService = settingsService;
         }
 
-        private Version? GetLastPreparedUpdate() => _updateManager.GetPreparedUpdates().Max();
+        private Version? TryGetLastPreparedUpdate() => _updateManager.GetPreparedUpdates().Max();
 
         public async Task CheckPrepareUpdateAsync()
         {
@@ -33,7 +34,7 @@ namespace LightBulb.Services
                 if (!check.CanUpdate || check.LastVersion == null)
                     return;
 
-                if (check.LastVersion != GetLastPreparedUpdate())
+                if (check.LastVersion != TryGetLastPreparedUpdate())
                     await _updateManager.PrepareUpdateAsync(check.LastVersion);
             }
             catch
@@ -49,14 +50,14 @@ namespace LightBulb.Services
 
             try
             {
-                var updateVersion = GetLastPreparedUpdate();
-                if (updateVersion == null)
+                var lastPreparedUpdate = TryGetLastPreparedUpdate();
+                if (lastPreparedUpdate == null)
                     return;
 
-                if (App.Version >= updateVersion)
+                if (_updateManager.Updatee.Version >= lastPreparedUpdate)
                     return;
 
-                _updateManager.LaunchUpdater(updateVersion);
+                _updateManager.LaunchUpdater(lastPreparedUpdate);
                 Environment.Exit(0);
             }
             catch (UpdaterAlreadyLaunchedException)

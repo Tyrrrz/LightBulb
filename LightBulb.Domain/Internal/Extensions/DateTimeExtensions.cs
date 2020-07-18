@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LightBulb.Domain.Internal
+namespace LightBulb.Domain.Internal.Extensions
 {
     internal static class DateTimeExtensions
     {
