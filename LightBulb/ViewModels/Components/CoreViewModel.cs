@@ -220,39 +220,13 @@ namespace LightBulb.ViewModels.Components
 
         private void UpdateConfiguration()
         {
-            bool IsUpdateNeeded()
-            {
-                // Gamma requires invalidation
-                if (_isStale)
-                    return true;
-
-                // No change
-                if (CurrentColorConfiguration == TargetColorConfiguration)
-                    return false;
-
-                // One of the extreme states
-                if (TargetColorConfiguration == AdjustedDayConfiguration ||
-                    TargetColorConfiguration == AdjustedNightConfiguration)
-                    return true;
-
-                // Change is too small
-                if (Math.Abs(TargetColorConfiguration.Temperature - CurrentColorConfiguration.Temperature) < 25 &&
-                    Math.Abs(TargetColorConfiguration.Brightness - CurrentColorConfiguration.Brightness) < 0.005)
-                    return false;
-
-                return true;
-            }
-
             var isSmooth = _settingsService.IsConfigurationSmoothingEnabled && !IsCyclePreviewEnabled;
 
             CurrentColorConfiguration = isSmooth
                 ? CurrentColorConfiguration.StepTo(TargetColorConfiguration, 30, 0.008)
                 : TargetColorConfiguration;
 
-            // Refresh gamma only if necessary
-            if (IsUpdateNeeded())
-                _gammaService.SetGamma(CurrentColorConfiguration);
-
+            _gammaService.SetGamma(CurrentColorConfiguration, _isStale);
             _isStale = false;
         }
 
