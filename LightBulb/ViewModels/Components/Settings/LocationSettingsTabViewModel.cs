@@ -1,5 +1,6 @@
 ﻿using LightBulb.Domain;
 using LightBulb.Services;
+using Stylet;
 
 namespace LightBulb.ViewModels.Components.Settings
 {
@@ -42,7 +43,8 @@ namespace LightBulb.ViewModels.Components.Settings
         {
             _locationService = locationService;
 
-            LocationQuery = Location?.ToString();
+            // Bind string representation of location to the actual value
+            settingsService.BindAndInvoke(o => o.Location, (sender, args) => LocationQuery = Location?.ToString());
         }
 
         public bool CanAutoDetectLocation => !IsBusy;
@@ -96,12 +98,6 @@ namespace LightBulb.ViewModels.Components.Settings
             {
                 IsBusy = false;
             }
-        }
-
-        protected override void OnReset()
-        {
-            LocationQuery = null;
-            base.OnReset();
         }
     }
 }

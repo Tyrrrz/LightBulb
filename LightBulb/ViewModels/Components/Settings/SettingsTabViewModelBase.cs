@@ -19,9 +19,7 @@ namespace LightBulb.ViewModels.Components.Settings
             Order = order;
             DisplayName = displayName;
 
-            SettingsService.SettingsReset += (sender, args) => OnReset();
+            SettingsService.SettingsReset += (sender, args) => Refresh();
         }
-
-        protected virtual void OnReset() => Refresh();
     }
 }
