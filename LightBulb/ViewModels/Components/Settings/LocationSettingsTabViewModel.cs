@@ -57,7 +57,6 @@ namespace LightBulb.ViewModels.Components.Settings
             try
             {
                 Location = await _locationService.GetLocationAsync();
-                LocationQuery = Location?.ToString();
             }
             catch
             {
@@ -87,8 +86,6 @@ namespace LightBulb.ViewModels.Components.Settings
                 Location =
                     GeoLocation.TryParse(LocationQuery) ??
                     await _locationService.GetLocationAsync(LocationQuery);
-
-                LocationQuery = Location?.ToString();
             }
             catch
             {

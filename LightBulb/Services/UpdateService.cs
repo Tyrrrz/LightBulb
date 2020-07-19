@@ -54,7 +54,7 @@ namespace LightBulb.Services
                 if (lastPreparedUpdate == null)
                     return;
 
-                if (_updateManager.Updatee.Version >= lastPreparedUpdate)
+                if (lastPreparedUpdate <= _updateManager.Updatee.Version)
                     return;
 
                 _updateManager.LaunchUpdater(lastPreparedUpdate);
