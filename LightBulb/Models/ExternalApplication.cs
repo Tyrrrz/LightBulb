@@ -26,7 +26,7 @@ namespace LightBulb.Models
 
     public partial class ExternalApplication : IEquatable<ExternalApplication>
     {
-        public bool Equals(ExternalApplication other)
+        public bool Equals(ExternalApplication? other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;

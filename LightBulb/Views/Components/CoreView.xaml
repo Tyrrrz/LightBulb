@@ -83,6 +83,40 @@
                 Size="12"
                 Stroke="#FF8B50" />
 
+            <!--  Configuration offset  -->
+            <StackPanel
+                Margin="0,50,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Background="Transparent"
+                Cursor="Hand"
+                MouseLeftButtonUp="{s:Action ResetColorConfigurationOffset}"
+                Orientation="Horizontal"
+                Visibility="{Binding CanResetColorConfigurationOffset, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                <StackPanel.ToolTip>
+                    <TextBlock>
+                        <Run Text="Current temperature and brightness values are adjusted by an offset:" />
+                        <LineBreak />
+                        <Run Text="Temperature offset:" />
+                        <Run Text="{Binding ColorConfigurationTemperatureOffset, StringFormat=\{0:F0\} K, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+                        <LineBreak />
+                        <Run Text="Brightness offset:" />
+                        <Run Text="{Binding ColorConfigurationBrightnessOffset, StringFormat=\{0:P0\}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+                        <LineBreak />
+                        <LineBreak />
+                        <Run FontWeight="SemiBold" Text="Click to reset" />
+                    </TextBlock>
+                </StackPanel.ToolTip>
+                <materialDesign:PackIcon
+                    Width="16"
+                    Height="16"
+                    Kind="SwapVertical" />
+                <TextBlock
+                    Margin="4,0,0,0"
+                    FontSize="15"
+                    Text="offset" />
+            </StackPanel>
+
             <!--  Current temperature and brightness  -->
             <StackPanel
                 HorizontalAlignment="Center"

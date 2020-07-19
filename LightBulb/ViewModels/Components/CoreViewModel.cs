@@ -25,7 +25,7 @@ namespace LightBulb.ViewModels.Components
         private readonly AutoResetTimer _pollingTimer;
         private readonly ManualResetTimer _enableAfterDelayTimer;
 
-        private bool _isStale;
+        private bool _isStale = true;
 
         public bool IsEnabled { get; set; } = true;
 
@@ -48,26 +48,44 @@ namespace LightBulb.ViewModels.Components
         public TimeOfDay SunsetEnd =>
             SolarTimes.Sunset + _settingsService.ConfigurationTransitionDuration;
 
+        public double ColorConfigurationTemperatureOffset { get; set; }
+
+        public double ColorConfigurationBrightnessOffset { get; set; }
+
         public ColorConfiguration TargetColorConfiguration => IsActive
-            ? ColorConfiguration.Calculate(
-                SolarTimes,
-                _settingsService.DayConfiguration,
-                _settingsService.NightConfiguration,
-                _settingsService.ConfigurationTransitionDuration,
-                Instant)
+            ? ColorConfiguration
+                .Calculate(
+                    SolarTimes,
+                    _settingsService.DayConfiguration,
+                    _settingsService.NightConfiguration,
+                    _settingsService.ConfigurationTransitionDuration,
+                    Instant)
+                .WithOffset(
+                    ColorConfigurationTemperatureOffset,
+                    ColorConfigurationBrightnessOffset)
             : _settingsService.IsDefaultToDayConfigurationEnabled
                 ? _settingsService.DayConfiguration
                 : ColorConfiguration.Default;
 
         public ColorConfiguration CurrentColorConfiguration { get; set; } = ColorConfiguration.Default;
 
-        public CycleState CycleState => 42 switch
+        public ColorConfiguration AdjustedDayConfiguration => _settingsService.DayConfiguration.WithOffset(
+            ColorConfigurationTemperatureOffset,
+            ColorConfigurationBrightnessOffset
+        );
+
+        public ColorConfiguration AdjustedNightConfiguration => _settingsService.NightConfiguration.WithOffset(
+            ColorConfigurationTemperatureOffset,
+            ColorConfigurationBrightnessOffset
+        );
+
+        public CycleState CycleState => this switch
         {
             _ when CurrentColorConfiguration != TargetColorConfiguration => CycleState.Transition,
             _ when !IsEnabled => CycleState.Disabled,
             _ when IsPaused => CycleState.Paused,
-            _ when CurrentColorConfiguration == _settingsService.DayConfiguration => CycleState.Day,
-            _ when CurrentColorConfiguration == _settingsService.NightConfiguration => CycleState.Night,
+            _ when CurrentColorConfiguration == AdjustedDayConfiguration => CycleState.Day,
+            _ when CurrentColorConfiguration == AdjustedNightConfiguration => CycleState.Night,
             _ => CycleState.Transition
         };
 
@@ -123,7 +141,62 @@ namespace LightBulb.ViewModels.Components
             _hotKeyService.UnregisterAllHotKeys();
 
             if (_settingsService.ToggleHotKey != HotKey.None)
+            {
                 _hotKeyService.RegisterHotKey(_settingsService.ToggleHotKey, Toggle);
+            }
+
+            if (_settingsService.IncreaseTemperatureOffsetHotKey != HotKey.None)
+            {
+                _hotKeyService.RegisterHotKey(_settingsService.IncreaseTemperatureOffsetHotKey, () =>
+                {
+                    const double delta = +100;
+
+                    // Avoid changing offset when it's already at its limit
+                    if (TargetColorConfiguration.WithOffset(delta, 0) != TargetColorConfiguration)
+                        ColorConfigurationTemperatureOffset += delta;
+                });
+            }
+
+            if (_settingsService.DecreaseTemperatureOffsetHotKey != HotKey.None)
+            {
+                _hotKeyService.RegisterHotKey(_settingsService.DecreaseTemperatureOffsetHotKey, () =>
+                {
+                    const double delta = -100;
+
+                    // Avoid changing offset when it's already at its limit
+                    if (TargetColorConfiguration.WithOffset(delta, 0) != TargetColorConfiguration)
+                        ColorConfigurationTemperatureOffset += delta;
+                });
+            }
+
+            if (_settingsService.IncreaseBrightnessOffsetHotKey != HotKey.None)
+            {
+                _hotKeyService.RegisterHotKey(_settingsService.IncreaseBrightnessOffsetHotKey, () =>
+                {
+                    const double delta = +0.05;
+
+                    // Avoid changing offset when it's already at its limit
+                    if (TargetColorConfiguration.WithOffset(0, delta) != TargetColorConfiguration)
+                        ColorConfigurationBrightnessOffset += delta;
+                });
+            }
+
+            if (_settingsService.DecreaseBrightnessOffsetHotKey != HotKey.None)
+            {
+                _hotKeyService.RegisterHotKey(_settingsService.DecreaseBrightnessOffsetHotKey, () =>
+                {
+                    const double delta = -0.05;
+
+                    // Avoid changing offset when it's already at its limit
+                    if (TargetColorConfiguration.WithOffset(0, delta) != TargetColorConfiguration)
+                        ColorConfigurationBrightnessOffset += delta;
+                });
+            }
+
+            if (_settingsService.ResetOffsetHotKey != HotKey.None)
+            {
+                _hotKeyService.RegisterHotKey(_settingsService.ResetOffsetHotKey, ResetColorConfigurationOffset);
+            }
         }
 
         private void UpdateInstant()
@@ -149,7 +222,7 @@ namespace LightBulb.ViewModels.Components
         {
             bool IsUpdateNeeded()
             {
-                // Gamma is stale
+                // Gamma requires invalidation
                 if (_isStale)
                     return true;
 
@@ -158,21 +231,17 @@ namespace LightBulb.ViewModels.Components
                     return false;
 
                 // One of the extreme states
-                if (TargetColorConfiguration == _settingsService.NightConfiguration ||
-                    TargetColorConfiguration == _settingsService.DayConfiguration)
+                if (TargetColorConfiguration == AdjustedDayConfiguration ||
+                    TargetColorConfiguration == AdjustedNightConfiguration)
                     return true;
 
                 // Change is too small
                 if (Math.Abs(TargetColorConfiguration.Temperature - CurrentColorConfiguration.Temperature) < 25 &&
-                    Math.Abs(TargetColorConfiguration.Brightness - CurrentColorConfiguration.Brightness) < 0.01)
+                    Math.Abs(TargetColorConfiguration.Brightness - CurrentColorConfiguration.Brightness) < 0.005)
                     return false;
 
                 return true;
             }
-
-            // Avoid redundant updates
-            if (!IsUpdateNeeded())
-                return;
 
             var isSmooth = _settingsService.IsConfigurationSmoothingEnabled && !IsCyclePreviewEnabled;
 
@@ -180,7 +249,10 @@ namespace LightBulb.ViewModels.Components
                 ? CurrentColorConfiguration.StepTo(TargetColorConfiguration, 30, 0.008)
                 : TargetColorConfiguration;
 
-            _gammaService.SetGamma(CurrentColorConfiguration);
+            // Refresh gamma only if necessary
+            if (IsUpdateNeeded())
+                _gammaService.SetGamma(CurrentColorConfiguration);
+
             _isStale = false;
         }
 
@@ -226,6 +298,15 @@ namespace LightBulb.ViewModels.Components
         public void EnableCyclePreview() => IsCyclePreviewEnabled = true;
 
         public void DisableCyclePreview() => IsCyclePreviewEnabled = false;
+
+        public bool CanResetColorConfigurationOffset =>
+            Math.Abs(ColorConfigurationTemperatureOffset) + Math.Abs(ColorConfigurationBrightnessOffset) >= 0.01;
+
+        public void ResetColorConfigurationOffset()
+        {
+            ColorConfigurationTemperatureOffset = 0;
+            ColorConfigurationBrightnessOffset = 0;
+        }
 
         public void Dispose()
         {

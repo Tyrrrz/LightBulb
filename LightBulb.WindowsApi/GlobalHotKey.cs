@@ -7,6 +7,10 @@ namespace LightBulb.WindowsApi
 {
     public partial class GlobalHotKey : IDisposable
     {
+        private readonly object _lock = new object();
+
+        private DateTimeOffset _lastTriggerTimestamp = DateTimeOffset.MinValue;
+
         public int Id { get; }
 
         public int VirtualKey { get; }
@@ -33,6 +37,15 @@ namespace LightBulb.WindowsApi
             if (e.Msg != 0x0312 || e.WParam.ToInt32() != Id)
                 return;
 
+            // Throttling
+            lock (_lock)
+            {
+                if ((DateTimeOffset.Now - _lastTriggerTimestamp).Duration() < ThrottleInterval)
+                    return;
+
+                _lastTriggerTimestamp = DateTimeOffset.Now;
+            }
+
             Handler();
         }
 
@@ -49,6 +62,8 @@ namespace LightBulb.WindowsApi
 
     public partial class GlobalHotKey
     {
+        private static readonly TimeSpan ThrottleInterval = TimeSpan.FromSeconds(0.2);
+
         private static int _lastHotKeyId;
 
         public static GlobalHotKey? TryRegister(int virtualKey, int modifiers, Action handler)
