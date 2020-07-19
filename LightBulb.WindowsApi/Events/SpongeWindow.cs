@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace LightBulb.WindowsApi.Internal
+namespace LightBulb.WindowsApi.Events
 {
     internal sealed partial class SpongeWindow : NativeWindow
     {

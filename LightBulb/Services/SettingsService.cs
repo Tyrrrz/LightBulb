@@ -4,7 +4,7 @@ using System.IO;
 using LightBulb.Domain;
 using LightBulb.Internal;
 using LightBulb.Models;
-using LightBulb.WindowsApi;
+using LightBulb.WindowsApi.Registry;
 using Newtonsoft.Json;
 using Tyrrrz.Settings;
 

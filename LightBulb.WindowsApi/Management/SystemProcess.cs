@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
-using LightBulb.WindowsApi.Internal;
 
-namespace LightBulb.WindowsApi
+namespace LightBulb.WindowsApi.Management
 {
     public partial class SystemProcess : IDisposable
     {

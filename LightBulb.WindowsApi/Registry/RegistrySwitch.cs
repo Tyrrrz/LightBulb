@@ -5,7 +5,7 @@ using System.Security;
 using Microsoft.Win32;
 using Tyrrrz.Extensions;
 
-namespace LightBulb.WindowsApi
+namespace LightBulb.WindowsApi.Registry
 {
     public partial class RegistrySwitch
     {
@@ -54,13 +54,13 @@ namespace LightBulb.WindowsApi
             if (string.Equals(hiveName, "HKLM", StringComparison.OrdinalIgnoreCase) ||
                 string.Equals(hiveName, "HKEY_LOCAL_MACHINE", StringComparison.OrdinalIgnoreCase))
             {
-                return Registry.LocalMachine;
+                return Microsoft.Win32.Registry.LocalMachine;
             }
 
             if (string.Equals(hiveName, "HKCU", StringComparison.OrdinalIgnoreCase) ||
                 string.Equals(hiveName, "HKEY_CURRENT_USER", StringComparison.OrdinalIgnoreCase))
             {
-                return Registry.CurrentUser;
+                return Microsoft.Win32.Registry.CurrentUser;
             }
 
             // Others are not supported because they're not used in this application

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using LightBulb.Models;
-using LightBulb.WindowsApi;
+using LightBulb.WindowsApi.Management;
 
 namespace LightBulb.Services
 {

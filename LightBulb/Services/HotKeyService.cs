@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Input;
 using LightBulb.Models;
-using LightBulb.WindowsApi;
+using LightBulb.WindowsApi.Events;
 
 namespace LightBulb.Services
 {
     public class HotKeyService : IDisposable
     {
-        private readonly List<GlobalHotKey> _registeredHotKeys = new List<GlobalHotKey>();
+        private readonly List<IDisposable> _systemEventRegistrations = new List<IDisposable>();
 
         public void RegisterHotKey(HotKey hotKey, Action handler)
         {
@@ -17,20 +17,20 @@ namespace LightBulb.Services
             var virtualKey = KeyInterop.VirtualKeyFromKey(hotKey.Key);
             var modifiers = (int) hotKey.Modifiers;
 
-            var registeredHotKey = GlobalHotKey.TryRegister(virtualKey, modifiers, handler);
+            var registration = SystemEvent.TryRegisterHotKey(virtualKey, modifiers, handler);
 
-            if (registeredHotKey != null)
-                _registeredHotKeys.Add(registeredHotKey);
+            if (registration != null)
+                _systemEventRegistrations.Add(registration);
             else
                 Debug.WriteLine("Failed to register hotkey.");
         }
 
         public void UnregisterAllHotKeys()
         {
-            foreach (var registeredHotKey in _registeredHotKeys.ToArray())
+            foreach (var registration in _systemEventRegistrations.ToArray())
             {
-                registeredHotKey.Dispose();
-                _registeredHotKeys.Remove(registeredHotKey);
+                registration.Dispose();
+                _systemEventRegistrations.Remove(registration);
             }
         }
 

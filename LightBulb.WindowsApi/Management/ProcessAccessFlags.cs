@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LightBulb.WindowsApi.Internal
+namespace LightBulb.WindowsApi.Management
 {
     [Flags]
     internal enum ProcessAccessFlags : uint

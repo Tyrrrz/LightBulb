@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
-using LightBulb.WindowsApi.Internal;
 
-namespace LightBulb.WindowsApi
+namespace LightBulb.WindowsApi.Management
 {
     public partial class SystemWindow
     {

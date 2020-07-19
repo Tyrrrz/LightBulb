@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Linq;
 using LightBulb.Domain;
-using LightBulb.Internal;
 using LightBulb.Internal.Extensions;
 using LightBulb.Models;
 using LightBulb.Services;
-using LightBulb.WindowsApi;
+using LightBulb.WindowsApi.Timers;
 using Stylet;
 
 namespace LightBulb.ViewModels.Components
@@ -17,15 +16,11 @@ namespace LightBulb.ViewModels.Components
         private readonly HotKeyService _hotKeyService;
         private readonly ExternalApplicationService _externalApplicationService;
 
-        private readonly SystemEventManager _systemEvents = new SystemEventManager();
+        private readonly ITimer _updateInstantTimer;
+        private readonly ITimer _updateConfigurationTimer;
+        private readonly ITimer _updateIsPausedTimer;
 
-        private readonly AutoResetTimer _updateInstantTimer;
-        private readonly AutoResetTimer _updateConfigurationTimer;
-        private readonly AutoResetTimer _updateIsPausedTimer;
-        private readonly AutoResetTimer _pollingTimer;
-        private readonly ManualResetTimer _enableAfterDelayTimer;
-
-        private bool _isStale = true;
+        private IDisposable? _enableAfterDelayRegistration;
 
         public bool IsEnabled { get; set; } = true;
 
@@ -100,38 +95,30 @@ namespace LightBulb.ViewModels.Components
             _hotKeyService = hotKeyService;
             _externalApplicationService = externalApplicationService;
 
-            _updateConfigurationTimer = new AutoResetTimer(UpdateConfiguration);
-            _updateInstantTimer = new AutoResetTimer(UpdateInstant);
-            _updateIsPausedTimer = new AutoResetTimer(UpdateIsPaused);
-            _pollingTimer = new AutoResetTimer(PollGamma);
-            _enableAfterDelayTimer = new ManualResetTimer(Enable);
+            _updateConfigurationTimer = Timer.Create(TimeSpan.FromMilliseconds(50), UpdateConfiguration);
+            _updateInstantTimer = Timer.Create(TimeSpan.FromMilliseconds(50), UpdateInstant);
+            _updateIsPausedTimer = Timer.Create(TimeSpan.FromSeconds(1), UpdateIsPaused);
 
-            // Cancel 'disable temporarily' when switched to enabled
+            // Cancel 'disable temporarily' when switching to enabled
             this.Bind(o => o.IsEnabled, (sender, args) =>
             {
                 if (IsEnabled)
-                    _enableAfterDelayTimer.Stop();
+                    _enableAfterDelayRegistration?.Dispose();
             });
 
             // Handle settings changes
             _settingsService.SettingsSaved += (sender, args) =>
             {
-                _isStale = true;
                 Refresh();
                 RegisterHotKeys();
             };
-
-            // Handle display settings changes
-            _systemEvents.DisplaySettingsChanged += (sender, args) => _isStale = true;
-            _systemEvents.DisplayStateChanged += (sender, args) => _isStale = true;
         }
 
         public void OnViewFullyLoaded()
         {
-            _updateInstantTimer.Start(TimeSpan.FromMilliseconds(50));
-            _updateConfigurationTimer.Start(TimeSpan.FromMilliseconds(50));
-            _updateIsPausedTimer.Start(TimeSpan.FromSeconds(1));
-            _pollingTimer.Start(TimeSpan.FromSeconds(1));
+            _updateInstantTimer.Start();
+            _updateConfigurationTimer.Start();
+            _updateIsPausedTimer.Start();
 
             RegisterHotKeys();
         }
@@ -226,8 +213,7 @@ namespace LightBulb.ViewModels.Components
                 ? CurrentColorConfiguration.StepTo(TargetColorConfiguration, 30, 0.008)
                 : TargetColorConfiguration;
 
-            _gammaService.SetGamma(CurrentColorConfiguration, _isStale);
-            _isStale = false;
+            _gammaService.SetGamma(CurrentColorConfiguration);
         }
 
         private void UpdateIsPaused()
@@ -242,21 +228,14 @@ namespace LightBulb.ViewModels.Components
             IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
         }
 
-        private void PollGamma()
-        {
-            if (!_settingsService.IsGammaPollingEnabled)
-                return;
-
-            _isStale = true;
-        }
-
         public void Enable() => IsEnabled = true;
 
         public void Disable() => IsEnabled = false;
 
         public void DisableTemporarily(TimeSpan duration)
         {
-            _enableAfterDelayTimer.Start(duration);
+            _enableAfterDelayRegistration?.Dispose();
+            _enableAfterDelayRegistration = Timer.QueueDelayedAction(duration, Enable);
             IsEnabled = false;
         }
 
@@ -284,12 +263,11 @@ namespace LightBulb.ViewModels.Components
 
         public void Dispose()
         {
-            _systemEvents.Dispose();
             _updateInstantTimer.Dispose();
             _updateConfigurationTimer.Dispose();
             _updateIsPausedTimer.Dispose();
-            _pollingTimer.Dispose();
-            _enableAfterDelayTimer.Dispose();
+
+            _enableAfterDelayRegistration?.Dispose();
         }
     }
 }

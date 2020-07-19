@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
-using LightBulb.WindowsApi.Internal;
 
-namespace LightBulb.WindowsApi
+namespace LightBulb.WindowsApi.Events
 {
-    public partial class GlobalHotKey : IDisposable
+    internal partial class GlobalHotKey : IDisposable
     {
         private readonly object _lock = new object();
 
@@ -31,10 +30,10 @@ namespace LightBulb.WindowsApi
 
         ~GlobalHotKey() => Dispose();
 
-        private void SpongeWindowOnMessageReceived(object? sender, Message e)
+        private void SpongeWindowOnMessageReceived(object? sender, Message m)
         {
             // Only messages related to this hotkey triggering
-            if (e.Msg != 0x0312 || e.WParam.ToInt32() != Id)
+            if (m.Msg != 0x0312 || m.WParam.ToInt32() != Id)
                 return;
 
             // Throttling
@@ -60,7 +59,7 @@ namespace LightBulb.WindowsApi
         }
     }
 
-    public partial class GlobalHotKey
+    internal partial class GlobalHotKey
     {
         private static readonly TimeSpan ThrottleInterval = TimeSpan.FromSeconds(0.2);
 

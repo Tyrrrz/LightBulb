@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Windows.Forms;
-using LightBulb.WindowsApi.Internal;
 
-namespace LightBulb.WindowsApi
+namespace LightBulb.WindowsApi.Graphics
 {
-    public partial class DeviceContext : IDisposable
+    internal partial class SingleDeviceContext : IDeviceContext
     {
         private int _gammaChannelOffset;
 
         public IntPtr Handle { get; }
 
-        public DeviceContext(IntPtr handle) => Handle = handle;
+        public SingleDeviceContext(IntPtr handle) => Handle = handle;
 
-        ~DeviceContext() => Dispose();
+        ~SingleDeviceContext() => Dispose();
 
         private void SetGammaRamp(GammaRamp ramp)
         {
@@ -63,28 +60,14 @@ namespace LightBulb.WindowsApi
         }
     }
 
-    public partial class DeviceContext
+    internal partial class SingleDeviceContext
     {
-        public static DeviceContext? TryGetFromDeviceName(string deviceName)
+        public static SingleDeviceContext? TryGetFromDeviceName(string deviceName)
         {
             var handle = NativeMethods.CreateDC(deviceName, null, null, IntPtr.Zero);
             return handle != IntPtr.Zero
-                ? new DeviceContext(handle)
+                ? new SingleDeviceContext(handle)
                 : null;
-        }
-
-        public static IReadOnlyList<DeviceContext> GetAllMonitorDeviceContexts()
-        {
-            var result = new List<DeviceContext>();
-
-            foreach (var screen in Screen.AllScreens)
-            {
-                var deviceContext = TryGetFromDeviceName(screen.DeviceName);
-                if (deviceContext != null)
-                    result.Add(deviceContext);
-            }
-
-            return result;
         }
     }
 }

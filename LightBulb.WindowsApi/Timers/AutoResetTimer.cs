@@ -1,30 +1,37 @@
 ﻿using System;
 using System.Threading;
 
-namespace LightBulb.Internal
+namespace LightBulb.WindowsApi.Timers
 {
-    internal class AutoResetTimer : IDisposable
+    internal class AutoResetTimer : ITimer
     {
         private readonly object _lock = new object();
 
-        private readonly Action _tick;
-        private readonly Timer _internalTimer;
+        private readonly Action _handler;
+        private readonly TimeSpan _firstTickInterval;
+        private readonly TimeSpan _interval;
 
+        private readonly System.Threading.Timer _internalTimer;
+
+        private bool _isActive;
         private bool _isBusy;
         private bool _isDisposed;
 
-        public AutoResetTimer(Action tick)
+        public AutoResetTimer(TimeSpan firstTickInterval, TimeSpan interval, Action handler)
         {
-            _tick = tick;
-            _internalTimer = new Timer(
-                _ => HandleTick(),
+            _firstTickInterval = firstTickInterval;
+            _interval = interval;
+            _handler = handler;
+
+            _internalTimer = new System.Threading.Timer(
+                _ => Tick(),
                 null,
                 Timeout.InfiniteTimeSpan,
                 Timeout.InfiniteTimeSpan
             );
         }
 
-        private void HandleTick()
+        private void Tick()
         {
             // Prevent multiple reentry
             if (_isBusy)
@@ -39,7 +46,7 @@ namespace LightBulb.Internal
                 try
                 {
                     _isBusy = true;
-                    _tick();
+                    _handler();
                 }
                 finally
                 {
@@ -48,18 +55,20 @@ namespace LightBulb.Internal
             }
         }
 
-        public AutoResetTimer Start(TimeSpan initialTickDelay, TimeSpan interval)
+        public void Start()
         {
-            _internalTimer.Change(initialTickDelay, interval);
-            return this;
+            if (_isActive) return;
+
+            _internalTimer.Change(_firstTickInterval, _interval);
+            _isActive = true;
         }
 
-        public AutoResetTimer Start(TimeSpan interval) => Start(TimeSpan.Zero, interval);
-
-        public AutoResetTimer Stop()
+        public void Stop()
         {
+            if (!_isActive) return;
+
             _internalTimer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
-            return this;
+            _isActive = false;
         }
 
         public void Dispose()
@@ -67,6 +76,7 @@ namespace LightBulb.Internal
             // Lock so that tick doesn't trigger after dispose (bad idea?)
             lock (_lock)
             {
+                _isActive = false;
                 _isDisposed = true;
                 _internalTimer.Dispose();
             }

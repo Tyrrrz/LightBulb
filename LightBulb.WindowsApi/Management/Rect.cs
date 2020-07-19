@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace LightBulb.WindowsApi.Internal
+namespace LightBulb.WindowsApi.Management
 {
     [StructLayout(LayoutKind.Sequential)]
     internal readonly partial struct Rect

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace LightBulb.WindowsApi.Internal
+namespace LightBulb.WindowsApi.Graphics
 {
     [StructLayout(LayoutKind.Sequential)]
     internal struct GammaRamp

@@ -7,6 +7,7 @@ using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
 using LightBulb.ViewModels.Dialogs;
 using LightBulb.ViewModels.Framework;
+using LightBulb.WindowsApi.Timers;
 using Stylet;
 
 namespace LightBulb.ViewModels
@@ -17,7 +18,7 @@ namespace LightBulb.ViewModels
         private readonly DialogManager _dialogManager;
         private readonly SettingsService _settingsService;
 
-        private readonly AutoResetTimer _checkForUpdatesTimer;
+        private readonly ITimer _checkForUpdatesTimer;
 
         public CoreViewModel Core { get; }
 
@@ -35,7 +36,8 @@ namespace LightBulb.ViewModels
 
             DisplayName = $"{App.Name} v{App.VersionString}";
 
-            _checkForUpdatesTimer = new AutoResetTimer(async () => await updateService.CheckPrepareUpdateAsync());
+            _checkForUpdatesTimer = Timer.Create(TimeSpan.FromHours(3),
+                async () => await updateService.CheckPrepareUpdateAsync());
         }
 
         private async Task ShowGammaRangePromptAsync()
@@ -100,7 +102,7 @@ Press OK to open settings.".Trim();
             _settingsService.Load();
             Refresh();
 
-            _checkForUpdatesTimer.Start(TimeSpan.FromHours(3));
+            _checkForUpdatesTimer.Start();
         }
 
         // This is a custom event that fires when the dialog host is loaded

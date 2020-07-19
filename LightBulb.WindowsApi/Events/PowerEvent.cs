@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
-using LightBulb.WindowsApi.Internal;
 
-namespace LightBulb.WindowsApi
+namespace LightBulb.WindowsApi.Events
 {
-    public partial class PowerSettingEvent
+    internal partial class PowerEvent : IDisposable
     {
         public IntPtr Handle { get; }
 
@@ -13,7 +12,7 @@ namespace LightBulb.WindowsApi
 
         public Action Handler { get; }
 
-        public PowerSettingEvent(IntPtr handle, Guid id, Action handler)
+        public PowerEvent(IntPtr handle, Guid id, Action handler)
         {
             Handle = handle;
             Id = id;
@@ -22,7 +21,7 @@ namespace LightBulb.WindowsApi
             SpongeWindow.Instance.MessageReceived += SpongeWindowOnMessageReceived;
         }
 
-        ~PowerSettingEvent() => Dispose();
+        ~PowerEvent() => Dispose();
 
         private void SpongeWindowOnMessageReceived(object? sender, Message m)
         {
@@ -44,13 +43,15 @@ namespace LightBulb.WindowsApi
         }
     }
 
-    public partial class PowerSettingEvent
+    internal partial class PowerEvent
     {
-        public static PowerSettingEvent? TryRegister(Guid id, Action handler)
+        public static Guid DisplayStateChangedId { get; } = Guid.Parse("6FE69556-704A-47A0-8F24-C28D936FDA47");
+
+        public static PowerEvent? TryRegister(Guid id, Action handler)
         {
             var handle = NativeMethods.RegisterPowerSettingNotification(SpongeWindow.Instance.Handle, ref id, 0);
             return handle != IntPtr.Zero
-                ? new PowerSettingEvent(handle, id, handler)
+                ? new PowerEvent(handle, id, handler)
                 : null;
         }
     }
