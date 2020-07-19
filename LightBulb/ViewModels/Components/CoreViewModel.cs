@@ -300,7 +300,7 @@ namespace LightBulb.ViewModels.Components
         public void DisableCyclePreview() => IsCyclePreviewEnabled = false;
 
         public bool CanResetColorConfigurationOffset =>
-            Math.Abs(ColorConfigurationTemperatureOffset) + Math.Abs(ColorConfigurationBrightnessOffset) > 0.01;
+            Math.Abs(ColorConfigurationTemperatureOffset) + Math.Abs(ColorConfigurationBrightnessOffset) >= 0.01;
 
         public void ResetColorConfigurationOffset()
         {
