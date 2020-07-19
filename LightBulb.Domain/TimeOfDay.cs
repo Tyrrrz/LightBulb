@@ -10,17 +10,14 @@ namespace LightBulb.Domain
 
         public double DayFraction => _offset.TotalDays;
 
-        public TimeOfDay(TimeSpan offset) => _offset = offset;
+        public TimeOfDay(TimeSpan offset) =>
+            _offset = WrapOffsetWithinDayDuration(offset);
 
         public TimeOfDay(DateTimeOffset date) : this(date.TimeOfDay) {}
 
         public TimeOfDay(int hours, int minutes, int seconds = 0) : this(new TimeSpan(hours, minutes, seconds)) {}
 
-        public TimeOfDay Add(TimeSpan time)
-        {
-            var ms = (_offset + time).TotalMilliseconds % DayDuration.TotalMilliseconds;
-            return new TimeOfDay(TimeSpan.FromMilliseconds(ms));
-        }
+        public TimeOfDay Add(TimeSpan time) => new TimeOfDay(_offset + time);
 
         public DateTimeOffset NextAfter(DateTimeOffset anchor) =>
             anchor.TimeOfDay <= _offset
@@ -44,6 +41,9 @@ namespace LightBulb.Domain
     public partial struct TimeOfDay
     {
         private static TimeSpan DayDuration { get; } = TimeSpan.FromDays(1);
+
+        private static TimeSpan WrapOffsetWithinDayDuration(TimeSpan offset) =>
+            TimeSpan.FromMilliseconds(offset.TotalMilliseconds % DayDuration.TotalMilliseconds);
 
         public static TimeOfDay? TryParse(string? value, IFormatProvider? formatProvider = null)
         {
