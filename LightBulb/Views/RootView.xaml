@@ -57,7 +57,7 @@
                                     Text="LightBulb" />
 
                                 <!--  Status  -->
-                                <TextBlock Text="{Binding Core.CurrentColorConfiguration}" Visibility="{Binding IsActive, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
+                                <TextBlock Text="{Binding Core.CurrentConfiguration}" Visibility="{Binding IsActive, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
                                 <TextBlock Text="Disabled" Visibility="{Binding Core.IsActive, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}" />
                             </StackPanel>
                         </Border>

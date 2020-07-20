@@ -139,7 +139,7 @@
                 Width="120"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
-                HotKey="{Binding ResetOffsetHotKey}"
+                HotKey="{Binding ResetConfigurationOffsetHotKey}"
                 Style="{DynamicResource MaterialDesignTextBox}"
                 TextAlignment="Center" />
         </Grid>

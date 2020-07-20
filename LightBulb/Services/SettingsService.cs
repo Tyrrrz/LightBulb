@@ -37,6 +37,8 @@ namespace LightBulb.Services
 
         public TimeSpan ConfigurationTransitionDuration { get; set; } = TimeSpan.FromMinutes(30);
 
+        public double ConfigurationTransitionOffset { get; set; }
+
         // Location
 
         public bool IsManualSunriseSunsetEnabled { get; set; } = true;
@@ -82,7 +84,7 @@ namespace LightBulb.Services
 
         public HotKey DecreaseBrightnessOffsetHotKey { get; set; }
 
-        public HotKey ResetOffsetHotKey { get; set; }
+        public HotKey ResetConfigurationOffsetHotKey { get; set; }
 
         // Events
 

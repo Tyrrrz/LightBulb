@@ -110,7 +110,7 @@
                     Text="{Binding LocationQuery, UpdateSourceTrigger=PropertyChanged}">
                     <TextBox.ToolTip>
                         <TextBlock>
-                            <Run Text="You can enter coordinates directly or specify a search query." />
+                            <Run Text="You can enter coordinates directly or specify a search query" />
                             <LineBreak />
                             <LineBreak />
                             <Run Text="Examples of valid values:" />

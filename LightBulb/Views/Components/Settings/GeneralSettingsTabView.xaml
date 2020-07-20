@@ -113,7 +113,7 @@
         <StackPanel
             Margin="6"
             Orientation="Horizontal"
-            ToolTip="Duration of time it takes to switch between day-time and night-time gamma at sunrise and sunset">
+            ToolTip="Duration of time it takes to switch between day-time and night-time configurations">
             <TextBlock VerticalAlignment="Center" Text="Transition duration:" />
             <TextBox
                 MinWidth="50"
@@ -130,5 +130,27 @@
             Minimum="0"
             SmallChange="0.08"
             Value="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
+
+        <!--  Configuration transition offset  -->
+        <StackPanel
+            Margin="6"
+            Orientation="Horizontal"
+            ToolTip="Offset that specifies how early or late the transition starts relatively to sunrise and sunset">
+            <TextBlock VerticalAlignment="Center" Text="Transition offset:" />
+            <TextBox
+                MinWidth="30"
+                Margin="8,0"
+                Padding="0"
+                VerticalAlignment="Center"
+                BorderBrush="{DynamicResource DividerBrush}"
+                Text="{Binding ConfigurationTransitionOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
+        </StackPanel>
+        <Slider
+            Margin="8,0,8,6"
+            LargeChange="0.05"
+            Maximum="1"
+            Minimum="0"
+            SmallChange="0.01"
+            Value="{Binding ConfigurationTransitionOffset}" />
     </StackPanel>
 </UserControl>

@@ -61,6 +61,12 @@ namespace LightBulb.ViewModels.Components.Settings
             set => SettingsService.ConfigurationTransitionDuration = value.Clamp(TimeSpan.Zero, TimeSpan.FromHours(5));
         }
 
+        public double ConfigurationTransitionOffset
+        {
+            get => SettingsService.ConfigurationTransitionOffset;
+            set => SettingsService.ConfigurationTransitionOffset = value.Clamp(0, 1);
+        }
+
         public GeneralSettingsTabViewModel(SettingsService settingsService)
             : base(settingsService, 0, "General")
         {

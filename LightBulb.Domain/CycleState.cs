@@ -1,4 +1,4 @@
-﻿namespace LightBulb.Domain
+namespace LightBulb.Domain
 {
     public enum CycleState
     {

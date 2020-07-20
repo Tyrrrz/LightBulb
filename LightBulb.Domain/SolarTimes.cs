@@ -42,9 +42,11 @@ namespace LightBulb.Domain
             var sunMeanAnomaly = 0.9856 * timeApproxDays - 3.289;
 
             // Calculate Sun's true longitude
-            var sunLng = sunMeanAnomaly + 282.634 +
-                         1.916 * Math.Sin(DegreesToRadians(sunMeanAnomaly)) +
-                         0.020 * Math.Sin(2 * DegreesToRadians(sunMeanAnomaly));
+            var sunLng =
+                sunMeanAnomaly + 282.634 +
+                1.916 * Math.Sin(DegreesToRadians(sunMeanAnomaly)) +
+                0.020 * Math.Sin(2 * DegreesToRadians(sunMeanAnomaly));
+
             sunLng = Wrap(sunLng, 0, 360);
 
             // Calculate Sun's right ascension

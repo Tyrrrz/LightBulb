@@ -4,7 +4,7 @@ using Xunit;
 
 namespace LightBulb.Domain.Tests
 {
-    public class ColorConfigurationSpecs
+    public class CycleSpecs
     {
         [Fact]
         public void Color_configuration_is_calculated_correctly_during_day_time()
@@ -12,21 +12,25 @@ namespace LightBulb.Domain.Tests
             // Arrange
             var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
             var transitionDuration = new TimeSpan(01, 30, 00);
+            var transitionOffset = 0;
             var dayConfiguration = new ColorConfiguration(6600, 1);
             var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
             var instant = new DateTimeOffset(
                 2019, 01, 01,
                 14, 00, 00,
-                TimeSpan.Zero);
+                TimeSpan.Zero
+            );
 
             // Act
-            var configuration = ColorConfiguration.Calculate(
+            var configuration = Cycle.InterpolateConfiguration(
                 solarTimes,
                 dayConfiguration,
                 nightConfiguration,
                 transitionDuration,
-                instant);
+                transitionOffset,
+                instant
+            );
 
             // Assert
             configuration.Should().Be(dayConfiguration);
@@ -38,21 +42,25 @@ namespace LightBulb.Domain.Tests
             // Arrange
             var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
             var transitionDuration = new TimeSpan(01, 30, 00);
+            var transitionOffset = 0;
             var dayConfiguration = new ColorConfiguration(6600, 1);
             var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
             var instant = new DateTimeOffset(
                 2019, 01, 01,
                 02, 00, 00,
-                TimeSpan.Zero);
+                TimeSpan.Zero
+            );
 
             // Act
-            var configuration = ColorConfiguration.Calculate(
+            var configuration = Cycle.InterpolateConfiguration(
                 solarTimes,
                 dayConfiguration,
                 nightConfiguration,
                 transitionDuration,
-                instant);
+                transitionOffset,
+                instant
+            );
 
             // Assert
             configuration.Should().Be(nightConfiguration);
@@ -64,21 +72,25 @@ namespace LightBulb.Domain.Tests
             // Arrange
             var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
             var transitionDuration = new TimeSpan(01, 30, 00);
+            var transitionOffset = 0;
             var dayConfiguration = new ColorConfiguration(6600, 1);
             var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
             var instant = new DateTimeOffset(
                 2019, 01, 01,
                 18, 30, 00,
-                TimeSpan.Zero);
+                TimeSpan.Zero
+            );
 
             // Act
-            var configuration = ColorConfiguration.Calculate(
+            var configuration = Cycle.InterpolateConfiguration(
                 solarTimes,
                 dayConfiguration,
                 nightConfiguration,
                 transitionDuration,
-                instant);
+                transitionOffset,
+                instant
+            );
 
             // Assert
             configuration.Temperature.Should().BeLessThan(dayConfiguration.Temperature);
@@ -93,21 +105,25 @@ namespace LightBulb.Domain.Tests
             // Arrange
             var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
             var transitionDuration = new TimeSpan(01, 30, 00);
+            var transitionOffset = 0;
             var dayConfiguration = new ColorConfiguration(6600, 1);
             var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
             var instant = new DateTimeOffset(
                 2019, 01, 01,
                 18, 30, 00,
-                TimeSpan.Zero);
+                TimeSpan.Zero
+            );
 
             // Act
-            var configuration = ColorConfiguration.Calculate(
+            var configuration = Cycle.InterpolateConfiguration(
                 solarTimes,
                 dayConfiguration,
                 nightConfiguration,
                 transitionDuration,
-                instant);
+                transitionOffset,
+                instant
+            );
 
             // Assert
             configuration.Temperature.Should().BeLessThan(dayConfiguration.Temperature);
@@ -122,33 +138,40 @@ namespace LightBulb.Domain.Tests
             // Arrange
             var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
             var transitionDuration = new TimeSpan(01, 30, 00);
+            var transitionOffset = 0;
             var dayConfiguration = new ColorConfiguration(6600, 1);
             var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
             var instant1 = new DateTimeOffset(
                 2019, 01, 01,
                 00, 00, 00,
-                TimeSpan.Zero);
+                TimeSpan.Zero
+            );
 
             var instant2 = new DateTimeOffset(
                 2019, 01, 01,
                 23, 59, 59,
-                TimeSpan.Zero);
+                TimeSpan.Zero
+            );
 
             // Act
-            var configuration1 = ColorConfiguration.Calculate(
+            var configuration1 = Cycle.InterpolateConfiguration(
                 solarTimes,
                 dayConfiguration,
                 nightConfiguration,
                 transitionDuration,
-                instant1);
+                transitionOffset,
+                instant1
+            );
 
-            var configuration2 = ColorConfiguration.Calculate(
+            var configuration2 = Cycle.InterpolateConfiguration(
                 solarTimes,
                 dayConfiguration,
                 nightConfiguration,
                 transitionDuration,
-                instant2);
+                transitionOffset,
+                instant2
+            );
 
             // Assert
             configuration1.Should().Be(configuration2);
@@ -160,6 +183,7 @@ namespace LightBulb.Domain.Tests
             // Arrange
             var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
             var transitionDuration = new TimeSpan(01, 30, 00);
+            var transitionOffset = 0;
             var dayConfiguration = new ColorConfiguration(6600, 1);
             var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
@@ -172,14 +196,17 @@ namespace LightBulb.Domain.Tests
                 var instant = new DateTimeOffset(
                     2019, 01, 01,
                     instantTime.Hours, instantTime.Minutes, instantTime.Seconds,
-                    TimeSpan.Zero);
+                    TimeSpan.Zero
+                );
 
-                var configuration = ColorConfiguration.Calculate(
+                var configuration = Cycle.InterpolateConfiguration(
                     solarTimes,
                     dayConfiguration,
                     nightConfiguration,
                     transitionDuration,
-                    instant);
+                    transitionOffset,
+                    instant
+                );
 
                 // Assert
                 var isHarshJump =

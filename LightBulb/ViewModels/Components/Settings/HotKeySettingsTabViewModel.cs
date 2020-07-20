@@ -35,10 +35,10 @@ namespace LightBulb.ViewModels.Components.Settings
             set => SettingsService.DecreaseBrightnessOffsetHotKey = value;
         }
 
-        public HotKey ResetOffsetHotKey
+        public HotKey ResetConfigurationOffsetHotKey
         {
-            get => SettingsService.ResetOffsetHotKey;
-            set => SettingsService.ResetOffsetHotKey = value;
+            get => SettingsService.ResetConfigurationOffsetHotKey;
+            set => SettingsService.ResetConfigurationOffsetHotKey = value;
         }
 
         public HotKeySettingsTabViewModel(SettingsService settingsService)

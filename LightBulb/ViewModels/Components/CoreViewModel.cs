@@ -37,50 +37,69 @@ namespace LightBulb.ViewModels.Components
                 ? SolarTimes.Calculate(_settingsService.Location.Value, Instant)
                 : new SolarTimes(_settingsService.ManualSunrise, _settingsService.ManualSunset);
 
-        public TimeOfDay SunriseStart =>
-            SolarTimes.Sunrise - _settingsService.ConfigurationTransitionDuration;
+        public TimeOfDay SunriseStart => Cycle.GetSunriseStart(
+            SolarTimes.Sunrise,
+            _settingsService.ConfigurationTransitionDuration,
+            _settingsService.ConfigurationTransitionOffset
+        );
 
-        public TimeOfDay SunsetEnd =>
-            SolarTimes.Sunset + _settingsService.ConfigurationTransitionDuration;
+        public TimeOfDay SunriseEnd => Cycle.GetSunriseEnd(
+            SolarTimes.Sunrise,
+            _settingsService.ConfigurationTransitionDuration,
+            _settingsService.ConfigurationTransitionOffset
+        );
 
-        public double ColorConfigurationTemperatureOffset { get; set; }
+        public TimeOfDay SunsetStart => Cycle.GetSunsetStart(
+            SolarTimes.Sunset,
+            _settingsService.ConfigurationTransitionDuration,
+            _settingsService.ConfigurationTransitionOffset
+        );
 
-        public double ColorConfigurationBrightnessOffset { get; set; }
+        public TimeOfDay SunsetEnd => Cycle.GetSunsetEnd(
+            SolarTimes.Sunset,
+            _settingsService.ConfigurationTransitionDuration,
+            _settingsService.ConfigurationTransitionOffset
+        );
 
-        public ColorConfiguration TargetColorConfiguration => IsActive
-            ? ColorConfiguration
-                .Calculate(
+        public double TemperatureOffset { get; set; }
+
+        public double BrightnessOffset { get; set; }
+
+        public ColorConfiguration TargetConfiguration => IsActive
+            ? Cycle
+                .InterpolateConfiguration(
                     SolarTimes,
                     _settingsService.DayConfiguration,
                     _settingsService.NightConfiguration,
                     _settingsService.ConfigurationTransitionDuration,
+                    _settingsService.ConfigurationTransitionOffset,
                     Instant)
                 .WithOffset(
-                    ColorConfigurationTemperatureOffset,
-                    ColorConfigurationBrightnessOffset)
+                    TemperatureOffset,
+                    BrightnessOffset)
             : _settingsService.IsDefaultToDayConfigurationEnabled
                 ? _settingsService.DayConfiguration
                 : ColorConfiguration.Default;
 
-        public ColorConfiguration CurrentColorConfiguration { get; set; } = ColorConfiguration.Default;
+        public ColorConfiguration CurrentConfiguration { get; set; } = ColorConfiguration.Default;
 
         public ColorConfiguration AdjustedDayConfiguration => _settingsService.DayConfiguration.WithOffset(
-            ColorConfigurationTemperatureOffset,
-            ColorConfigurationBrightnessOffset
+            TemperatureOffset,
+            BrightnessOffset
         );
 
         public ColorConfiguration AdjustedNightConfiguration => _settingsService.NightConfiguration.WithOffset(
-            ColorConfigurationTemperatureOffset,
-            ColorConfigurationBrightnessOffset
+            TemperatureOffset,
+            BrightnessOffset
         );
 
         public CycleState CycleState => this switch
         {
-            _ when CurrentColorConfiguration != TargetColorConfiguration => CycleState.Transition,
+            _ when CurrentConfiguration != TargetConfiguration => CycleState.Transition,
             _ when !IsEnabled => CycleState.Disabled,
             _ when IsPaused => CycleState.Paused,
-            _ when CurrentColorConfiguration == AdjustedDayConfiguration => CycleState.Day,
-            _ when CurrentColorConfiguration == AdjustedNightConfiguration => CycleState.Night,
+            _ when CurrentConfiguration == AdjustedDayConfiguration => CycleState.Day,
+            _ when CurrentConfiguration == AdjustedNightConfiguration => CycleState.Night,
             _ => CycleState.Transition
         };
 
@@ -139,8 +158,8 @@ namespace LightBulb.ViewModels.Components
                     const double delta = +100;
 
                     // Avoid changing offset when it's already at its limit
-                    if (TargetColorConfiguration.WithOffset(delta, 0) != TargetColorConfiguration)
-                        ColorConfigurationTemperatureOffset += delta;
+                    if (TargetConfiguration.WithOffset(delta, 0) != TargetConfiguration)
+                        TemperatureOffset += delta;
                 });
             }
 
@@ -151,8 +170,8 @@ namespace LightBulb.ViewModels.Components
                     const double delta = -100;
 
                     // Avoid changing offset when it's already at its limit
-                    if (TargetColorConfiguration.WithOffset(delta, 0) != TargetColorConfiguration)
-                        ColorConfigurationTemperatureOffset += delta;
+                    if (TargetConfiguration.WithOffset(delta, 0) != TargetConfiguration)
+                        TemperatureOffset += delta;
                 });
             }
 
@@ -163,8 +182,8 @@ namespace LightBulb.ViewModels.Components
                     const double delta = +0.05;
 
                     // Avoid changing offset when it's already at its limit
-                    if (TargetColorConfiguration.WithOffset(0, delta) != TargetColorConfiguration)
-                        ColorConfigurationBrightnessOffset += delta;
+                    if (TargetConfiguration.WithOffset(0, delta) != TargetConfiguration)
+                        BrightnessOffset += delta;
                 });
             }
 
@@ -175,14 +194,14 @@ namespace LightBulb.ViewModels.Components
                     const double delta = -0.05;
 
                     // Avoid changing offset when it's already at its limit
-                    if (TargetColorConfiguration.WithOffset(0, delta) != TargetColorConfiguration)
-                        ColorConfigurationBrightnessOffset += delta;
+                    if (TargetConfiguration.WithOffset(0, delta) != TargetConfiguration)
+                        BrightnessOffset += delta;
                 });
             }
 
-            if (_settingsService.ResetOffsetHotKey != HotKey.None)
+            if (_settingsService.ResetConfigurationOffsetHotKey != HotKey.None)
             {
-                _hotKeyService.RegisterHotKey(_settingsService.ResetOffsetHotKey, ResetColorConfigurationOffset);
+                _hotKeyService.RegisterHotKey(_settingsService.ResetConfigurationOffsetHotKey, ResetConfigurationOffset);
             }
         }
 
@@ -209,11 +228,11 @@ namespace LightBulb.ViewModels.Components
         {
             var isSmooth = _settingsService.IsConfigurationSmoothingEnabled && !IsCyclePreviewEnabled;
 
-            CurrentColorConfiguration = isSmooth
-                ? CurrentColorConfiguration.StepTo(TargetColorConfiguration, 30, 0.008)
-                : TargetColorConfiguration;
+            CurrentConfiguration = isSmooth
+                ? CurrentConfiguration.StepTo(TargetConfiguration, 30, 0.008)
+                : TargetConfiguration;
 
-            _gammaService.SetGamma(CurrentColorConfiguration);
+            _gammaService.SetGamma(CurrentConfiguration);
         }
 
         private void UpdateIsPaused()
@@ -252,13 +271,13 @@ namespace LightBulb.ViewModels.Components
 
         public void DisableCyclePreview() => IsCyclePreviewEnabled = false;
 
-        public bool CanResetColorConfigurationOffset =>
-            Math.Abs(ColorConfigurationTemperatureOffset) + Math.Abs(ColorConfigurationBrightnessOffset) >= 0.01;
+        public bool CanResetConfigurationOffset =>
+            Math.Abs(TemperatureOffset) + Math.Abs(BrightnessOffset) >= 0.01;
 
-        public void ResetColorConfigurationOffset()
+        public void ResetConfigurationOffset()
         {
-            ColorConfigurationTemperatureOffset = 0;
-            ColorConfigurationBrightnessOffset = 0;
+            TemperatureOffset = 0;
+            BrightnessOffset = 0;
         }
 
         public void Dispose()

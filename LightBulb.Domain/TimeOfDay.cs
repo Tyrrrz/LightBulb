@@ -73,6 +73,10 @@ namespace LightBulb.Domain
 
         public static TimeOfDay operator +(TimeOfDay left, TimeSpan right) => left.Add(right);
 
+        public static TimeOfDay operator +(TimeSpan left, TimeOfDay right) => right + left;
+
         public static TimeOfDay operator -(TimeOfDay left, TimeSpan right) => left + right.Negate();
+
+        public static TimeOfDay operator -(TimeSpan left, TimeOfDay right) => left.Negate() + right;
     }
 }

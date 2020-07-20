@@ -4,7 +4,7 @@ using Xunit;
 
 namespace LightBulb.Domain.Tests
 {
-    public class GeoLocationSpecs
+    public class LocationSpecs
     {
         public static IEnumerable<object?[]> GetTestCases()
         {
@@ -12,12 +12,12 @@ namespace LightBulb.Domain.Tests
 
             yield return new object?[]
             {
-                "41.25 -120.9762", new GeoLocation(41.25, -120.9762),
+                "41.25 -120.9762", new GeoLocation(41.25, -120.9762)
             };
 
             yield return new object?[]
             {
-                "41.25, -120.9762", new GeoLocation(41.25, -120.9762),
+                "41.25, -120.9762", new GeoLocation(41.25, -120.9762)
             };
 
             yield return new object?[]
