@@ -35,7 +35,7 @@ namespace LightBulb.Services
 
         public ColorConfiguration DayConfiguration { get; set; } = new ColorConfiguration(6600, 1);
 
-        public TimeSpan ConfigurationTransitionDuration { get; set; } = TimeSpan.FromMinutes(30);
+        public TimeSpan ConfigurationTransitionDuration { get; set; } = TimeSpan.FromMinutes(40);
 
         public double ConfigurationTransitionOffset { get; set; }
 
