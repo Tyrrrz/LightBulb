@@ -17,7 +17,7 @@ namespace LightBulb.Converters
 
         public object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
             value is string stringValue
-                ? TimeOfDay.TryParse(stringValue)
+                ? TimeOfDay.TryParse(stringValue, culture)
                 : default(TimeOfDay);
     }
 }
