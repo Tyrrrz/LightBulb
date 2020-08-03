@@ -1,3 +1,14 @@
+### v2.2 (03-Aug-2020)
+
+- Added configuration transition offset that lets you change how early or late a transition starts relative to the corresponding sunrise or sunset. You can change the offset using a slider in settings, which ranges from 0% (default) to 100% (inverse). The offset defaults to 0%, which resembles the same exact behavior as in previous versions of LightBulb. To understand how exactly the offset affects transitions, please [read this short wiki page](https://github.com/Tyrrrz/LightBulb/wiki/How-the-transition-offset-works).
+- Added hotkeys that let you temporarily change current temperature and brightness on the fly using offsets. Once enabled in settings, you can use these hotkeys to increase or decrease current temperature or brightness relative to the projected color configuration. Current offsets are reflected on the main screen of the UI, where you can also instantly reset them. Additionally, you can set up another hotkey to reset the offsets from anywhere. Offsets are not persisted between sessions and will be reset automatically when you exit LightBulb or shut down your computer.
+- Improved the update loop performance slightly by eliminating a superfluous timer and synchronization lock.
+- Changed minimum temperature configurable from the UI to 500K. In order to set temperature lower than what the slider lets you, type in the value in the text box manually.
+- Changed the behavior responsible for discarding insignificant gamma changes, so that the target color configuration is still reflected on the UI regardless of whether the gamma was updated or not.
+- Fixed an issue where the UI sometimes locked up for over a second when opening the settings window.
+- Fixed an issue where the non-portable version of the application changed storage directory for settings when launched with administrator privileges. This caused settings to reset when launching the application from the installer, as it's usually running in an administrative context.
+- Fixed an issue where the current locale wasn't correctly used when parsing user-provided time values in settings. 
+
 ### v2.1 (19-Apr-2020)
 
 - Added gamma polling option. When enabled, LightBulb will force-refresh gamma every few seconds to make sure it's in sync. In most cases, you should not need to enable it, but if you're experiencing issues then this option may help.
