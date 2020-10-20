@@ -19,7 +19,13 @@ namespace LightBulb.WindowsApi.Events
         {
             if (type == SystemEventType.DisplayStateChanged)
             {
-                return PowerEvent.TryRegister(PowerEvent.DisplayStateChangedId, handler);
+                return Disposable.Aggregate(
+                    PowerEvent.TryRegister(PowerEvent.ConsoleDisplayStateId, handler),
+                    PowerEvent.TryRegister(PowerEvent.MonitorPowerOnId, handler),
+                    PowerEvent.TryRegister(PowerEvent.PowerSavingStatusId, handler),
+                    PowerEvent.TryRegister(PowerEvent.SessionDisplayStatusId, handler),
+                    PowerEvent.TryRegister(PowerEvent.AwayModeId, handler)
+                );
             }
 
             if (type == SystemEventType.DisplaySettingsChanged)

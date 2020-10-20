@@ -45,7 +45,15 @@ namespace LightBulb.WindowsApi.Events
 
     internal partial class PowerEvent
     {
-        public static Guid DisplayStateChangedId { get; } = Guid.Parse("6FE69556-704A-47A0-8F24-C28D936FDA47");
+        public static Guid ConsoleDisplayStateId { get; } = Guid.Parse("6FE69556-704A-47A0-8F24-C28D936FDA47");
+
+        public static Guid MonitorPowerOnId { get; } = Guid.Parse("02731015-4510-4526-99E6-E5A17EBD1AEA");
+
+        public static Guid PowerSavingStatusId { get; } = Guid.Parse("E00958C0-C213-4ACE-AC77-FECCED2EEEA5");
+
+        public static Guid SessionDisplayStatusId { get; } = Guid.Parse("2B84C20E-AD23-4ddf-93DB-05FFBD7EFCA5");
+
+        public static Guid AwayModeId { get; } = Guid.Parse("98A7F580-01F7-48AA-9C0F-44352C29E5C0");
 
         public static PowerEvent? TryRegister(Guid id, Action handler)
         {
