@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading;
 
-namespace LightBulb.WindowsApi.Timers
+namespace LightBulb.WindowsApi
 {
-    internal class AutoResetTimer : ITimer
+    public partial class Timer : IDisposable
     {
         private readonly object _lock = new object();
 
-        private readonly Action _handler;
+        private readonly Action _callback;
         private readonly TimeSpan _firstTickInterval;
         private readonly TimeSpan _interval;
 
@@ -17,11 +17,11 @@ namespace LightBulb.WindowsApi.Timers
         private bool _isBusy;
         private bool _isDisposed;
 
-        public AutoResetTimer(TimeSpan firstTickInterval, TimeSpan interval, Action handler)
+        public Timer(TimeSpan firstTickInterval, TimeSpan interval, Action callback)
         {
             _firstTickInterval = firstTickInterval;
             _interval = interval;
-            _handler = handler;
+            _callback = callback;
 
             _internalTimer = new System.Threading.Timer(
                 _ => Tick(),
@@ -29,6 +29,11 @@ namespace LightBulb.WindowsApi.Timers
                 Timeout.InfiniteTimeSpan,
                 Timeout.InfiniteTimeSpan
             );
+        }
+
+        public Timer(TimeSpan interval, Action callback)
+            : this(TimeSpan.Zero, interval, callback)
+        {
         }
 
         private void Tick()
@@ -46,7 +51,7 @@ namespace LightBulb.WindowsApi.Timers
                 try
                 {
                     _isBusy = true;
-                    _handler();
+                    _callback();
                 }
                 finally
                 {
@@ -80,6 +85,17 @@ namespace LightBulb.WindowsApi.Timers
                 _isDisposed = true;
                 _internalTimer.Dispose();
             }
+        }
+    }
+
+    public partial class Timer
+    {
+        public static IDisposable QueueDelayedAction(TimeSpan delay, Action callback)
+        {
+            var timer = new Timer(delay, Timeout.InfiniteTimeSpan, callback);
+            timer.Start();
+
+            return timer;
         }
     }
 }

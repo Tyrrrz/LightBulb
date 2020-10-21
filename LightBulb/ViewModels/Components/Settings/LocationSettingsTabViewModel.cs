@@ -6,7 +6,7 @@ namespace LightBulb.ViewModels.Components.Settings
 {
     public class LocationSettingsTabViewModel : SettingsTabViewModelBase
     {
-        private readonly LocationService _locationService;
+        private readonly GeoLocationProvider _locationProvider = new GeoLocationProvider();
 
         public bool IsBusy { get; private set; }
 
@@ -38,11 +38,9 @@ namespace LightBulb.ViewModels.Components.Settings
 
         public string? LocationQuery { get; set; }
 
-        public LocationSettingsTabViewModel(SettingsService settingsService, LocationService locationService)
+        public LocationSettingsTabViewModel(SettingsService settingsService)
             : base(settingsService, 1, "Location")
         {
-            _locationService = locationService;
-
             // Bind string representation of location to the actual value
             settingsService.BindAndInvoke(o => o.Location, (sender, args) => LocationQuery = Location?.ToString());
         }
@@ -56,7 +54,7 @@ namespace LightBulb.ViewModels.Components.Settings
 
             try
             {
-                Location = await _locationService.GetLocationAsync();
+                Location = await _locationProvider.GetLocationAsync();
             }
             catch
             {
@@ -85,7 +83,7 @@ namespace LightBulb.ViewModels.Components.Settings
             {
                 Location =
                     GeoLocation.TryParse(LocationQuery) ??
-                    await _locationService.GetLocationAsync(LocationQuery);
+                    await _locationProvider.GetLocationAsync(LocationQuery);
             }
             catch
             {

@@ -45,7 +45,6 @@ namespace LightBulb
         {
             base.ConfigureIoC(builder);
 
-            builder.Bind<LocationService>().ToSelf().InSingletonScope();
             builder.Bind<SettingsService>().ToSelf().InSingletonScope();
             builder.Bind<GammaService>().ToSelf().InSingletonScope();
             builder.Bind<HotKeyService>().ToSelf().InSingletonScope();

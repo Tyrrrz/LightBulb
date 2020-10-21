@@ -2,29 +2,44 @@
 using System.Collections.Generic;
 using System.IO;
 using LightBulb.Models;
-using LightBulb.WindowsApi.Management;
+using LightBulb.WindowsApi;
 
 namespace LightBulb.Services
 {
     public class ExternalApplicationService
     {
+        // Applications that we don't to show to the user
+        private readonly HashSet<string> _ignoredApplicationNames =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "explorer"
+            };
+
         public IEnumerable<ExternalApplication> GetAllRunningApplications()
         {
             foreach (var window in SystemWindow.GetAllWindows())
             {
-                // Ignore invisible and system windows
                 if (!window.IsVisible() || window.IsSystemWindow())
+                {
                     continue;
+                }
 
                 using var process = window.TryGetProcess();
+
                 var executableFilePath = process?.TryGetExecutableFilePath();
+                var executableFileName = Path.GetFileNameWithoutExtension(executableFilePath);
 
-                // Ignore explorer
-                if (string.Equals(Path.GetFileNameWithoutExtension(executableFilePath), "explorer", StringComparison.OrdinalIgnoreCase))
+                if (string.IsNullOrWhiteSpace(executableFilePath) || string.IsNullOrWhiteSpace(executableFileName))
+                {
                     continue;
+                }
 
-                if (!string.IsNullOrWhiteSpace(executableFilePath))
-                    yield return new ExternalApplication(executableFilePath);
+                if (_ignoredApplicationNames.Contains(executableFileName))
+                {
+                    continue;
+                }
+
+                yield return new ExternalApplication(executableFilePath);
             }
         }
 
@@ -43,6 +58,7 @@ namespace LightBulb.Services
         public bool IsForegroundApplicationFullScreen()
         {
             var window = SystemWindow.TryGetForegroundWindow();
+
             return
                 window != null &&
                 window.IsVisible() &&

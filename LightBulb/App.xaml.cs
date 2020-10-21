@@ -29,6 +29,9 @@ namespace LightBulb
 
         public static string HiddenOnLaunchArgument { get; } = "--start-hidden";
 
-        public static bool IsHiddenOnLaunch { get; } = CommandLineArgs.Contains(HiddenOnLaunchArgument, StringComparer.OrdinalIgnoreCase);
+        public static bool IsHiddenOnLaunch { get; } = CommandLineArgs.Contains(
+            HiddenOnLaunchArgument,
+            StringComparer.OrdinalIgnoreCase
+        );
     }
 }

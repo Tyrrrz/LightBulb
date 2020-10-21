@@ -7,7 +7,7 @@ namespace LightBulb.Domain.Tests
     public class CycleSpecs
     {
         [Fact]
-        public void Color_configuration_is_calculated_correctly_during_day_time()
+        public void Color_configuration_is_set_to_day_configuration_during_day_time()
         {
             // Arrange
             var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
@@ -23,7 +23,7 @@ namespace LightBulb.Domain.Tests
             );
 
             // Act
-            var configuration = Cycle.InterpolateConfiguration(
+            var configuration = Cycle.GetInterpolatedConfiguration(
                 solarTimes,
                 dayConfiguration,
                 nightConfiguration,
@@ -37,7 +37,7 @@ namespace LightBulb.Domain.Tests
         }
 
         [Fact]
-        public void Color_configuration_is_calculated_correctly_during_night_time()
+        public void Color_configuration_is_set_to_night_configuration_during_night_time()
         {
             // Arrange
             var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
@@ -53,7 +53,7 @@ namespace LightBulb.Domain.Tests
             );
 
             // Act
-            var configuration = Cycle.InterpolateConfiguration(
+            var configuration = Cycle.GetInterpolatedConfiguration(
                 solarTimes,
                 dayConfiguration,
                 nightConfiguration,
@@ -67,7 +67,7 @@ namespace LightBulb.Domain.Tests
         }
 
         [Fact]
-        public void Color_configuration_is_calculated_correctly_during_transition_to_night_time()
+        public void Color_configuration_is_set_to_intermediate_value_during_transition_to_night_time()
         {
             // Arrange
             var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
@@ -83,7 +83,7 @@ namespace LightBulb.Domain.Tests
             );
 
             // Act
-            var configuration = Cycle.InterpolateConfiguration(
+            var configuration = Cycle.GetInterpolatedConfiguration(
                 solarTimes,
                 dayConfiguration,
                 nightConfiguration,
@@ -100,7 +100,7 @@ namespace LightBulb.Domain.Tests
         }
 
         [Fact]
-        public void Color_configuration_is_calculated_correctly_during_transition_to_day_time()
+        public void Color_configuration_is_set_to_intermediate_value_during_transition_to_day_time()
         {
             // Arrange
             var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
@@ -116,7 +116,7 @@ namespace LightBulb.Domain.Tests
             );
 
             // Act
-            var configuration = Cycle.InterpolateConfiguration(
+            var configuration = Cycle.GetInterpolatedConfiguration(
                 solarTimes,
                 dayConfiguration,
                 nightConfiguration,
@@ -133,7 +133,7 @@ namespace LightBulb.Domain.Tests
         }
 
         [Fact]
-        public void Color_configuration_is_calculated_correctly_around_the_edges()
+        public void Color_configuration_is_the_same_at_the_cycle_boundaries()
         {
             // Arrange
             var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
@@ -155,7 +155,7 @@ namespace LightBulb.Domain.Tests
             );
 
             // Act
-            var configuration1 = Cycle.InterpolateConfiguration(
+            var configuration1 = Cycle.GetInterpolatedConfiguration(
                 solarTimes,
                 dayConfiguration,
                 nightConfiguration,
@@ -164,7 +164,7 @@ namespace LightBulb.Domain.Tests
                 instant1
             );
 
-            var configuration2 = Cycle.InterpolateConfiguration(
+            var configuration2 = Cycle.GetInterpolatedConfiguration(
                 solarTimes,
                 dayConfiguration,
                 nightConfiguration,
@@ -178,7 +178,7 @@ namespace LightBulb.Domain.Tests
         }
 
         [Fact]
-        public void Color_configuration_is_calculated_smoothly_throughout_the_whole_cycle()
+        public void Color_configuration_does_not_change_abruptly_throughout_the_whole_cycle()
         {
             // Arrange
             var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
@@ -199,7 +199,7 @@ namespace LightBulb.Domain.Tests
                     TimeSpan.Zero
                 );
 
-                var configuration = Cycle.InterpolateConfiguration(
+                var configuration = Cycle.GetInterpolatedConfiguration(
                     solarTimes,
                     dayConfiguration,
                     nightConfiguration,

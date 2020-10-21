@@ -4,7 +4,7 @@ using LightBulb.Domain;
 using LightBulb.Internal.Extensions;
 using LightBulb.Models;
 using LightBulb.Services;
-using LightBulb.WindowsApi.Timers;
+using LightBulb.WindowsApi;
 using Stylet;
 
 namespace LightBulb.ViewModels.Components
@@ -16,9 +16,9 @@ namespace LightBulb.ViewModels.Components
         private readonly HotKeyService _hotKeyService;
         private readonly ExternalApplicationService _externalApplicationService;
 
-        private readonly ITimer _updateInstantTimer;
-        private readonly ITimer _updateConfigurationTimer;
-        private readonly ITimer _updateIsPausedTimer;
+        private readonly Timer _updateInstantTimer;
+        private readonly Timer _updateConfigurationTimer;
+        private readonly Timer _updateIsPausedTimer;
 
         private IDisposable? _enableAfterDelayRegistration;
 
@@ -67,7 +67,7 @@ namespace LightBulb.ViewModels.Components
 
         public ColorConfiguration TargetConfiguration => IsActive
             ? Cycle
-                .InterpolateConfiguration(
+                .GetInterpolatedConfiguration(
                     SolarTimes,
                     _settingsService.DayConfiguration,
                     _settingsService.NightConfiguration,
@@ -114,9 +114,20 @@ namespace LightBulb.ViewModels.Components
             _hotKeyService = hotKeyService;
             _externalApplicationService = externalApplicationService;
 
-            _updateConfigurationTimer = Timer.Create(TimeSpan.FromMilliseconds(50), UpdateConfiguration);
-            _updateInstantTimer = Timer.Create(TimeSpan.FromMilliseconds(50), UpdateInstant);
-            _updateIsPausedTimer = Timer.Create(TimeSpan.FromSeconds(1), UpdateIsPaused);
+            _updateConfigurationTimer = new Timer(
+                TimeSpan.FromMilliseconds(50),
+                UpdateConfiguration
+            );
+
+            _updateInstantTimer = new Timer(
+                TimeSpan.FromMilliseconds(50),
+                UpdateInstant
+            );
+
+            _updateIsPausedTimer = new Timer(
+                TimeSpan.FromSeconds(1),
+                UpdateIsPaused
+            );
 
             // Cancel 'disable temporarily' when switching to enabled
             this.Bind(o => o.IsEnabled, (sender, args) =>

@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace LightBulb.Internal.Extensions
+namespace LightBulb.Domain.Internal.Extensions
 {
     internal static class HttpClientExtensions
     {

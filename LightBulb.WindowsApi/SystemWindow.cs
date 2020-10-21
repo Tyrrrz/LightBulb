@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
+using LightBulb.WindowsApi.Internal;
 
-namespace LightBulb.WindowsApi.Management
+namespace LightBulb.WindowsApi
 {
     public partial class SystemWindow
     {
@@ -66,10 +67,11 @@ namespace LightBulb.WindowsApi.Management
             // Check if the window covers up screen bounds
             var screenRect = Screen.FromHandle(Handle).Bounds;
 
-            return absoluteWindowClientRect.Left <= 0 &&
-                   absoluteWindowClientRect.Top <= 0 &&
-                   absoluteWindowClientRect.Right >= screenRect.Right &&
-                   absoluteWindowClientRect.Bottom >= screenRect.Bottom;
+            return
+                absoluteWindowClientRect.Left <= 0 &&
+                absoluteWindowClientRect.Top <= 0 &&
+                absoluteWindowClientRect.Right >= screenRect.Right &&
+                absoluteWindowClientRect.Bottom >= screenRect.Bottom;
         }
 
         public SystemProcess? TryGetProcess()

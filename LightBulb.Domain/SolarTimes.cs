@@ -29,7 +29,11 @@ namespace LightBulb.Domain
                 ? to - (from - value) % (to - from)
                 : from + (value - from) % (to - from);
 
-        private static TimeOfDay CalculateSolarTime(GeoLocation location, DateTimeOffset date, double zenith, bool isSunrise)
+        private static TimeOfDay CalculateSolarTime(
+            GeoLocation location,
+            DateTimeOffset date,
+            double zenith,
+            bool isSunrise)
         {
             // Based on https://edwilliams.org/sunrise_sunset_algorithm.htm
 
@@ -101,9 +105,11 @@ namespace LightBulb.Domain
 
     public partial struct SolarTimes : IEquatable<SolarTimes>
     {
-        public bool Equals(SolarTimes other) => Sunrise.Equals(other.Sunrise) && Sunset.Equals(other.Sunset);
+        public bool Equals(SolarTimes other) =>
+            Sunrise.Equals(other.Sunrise) && Sunset.Equals(other.Sunset);
 
-        public override bool Equals(object? obj) => obj is SolarTimes other && Equals(other);
+        public override bool Equals(object? obj) =>
+            obj is SolarTimes other && Equals(other);
 
         public override int GetHashCode() => HashCode.Combine(Sunrise, Sunset);
 

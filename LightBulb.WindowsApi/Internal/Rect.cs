@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace LightBulb.WindowsApi.Management
+namespace LightBulb.WindowsApi.Internal
 {
     [StructLayout(LayoutKind.Sequential)]
     internal readonly partial struct Rect
@@ -32,7 +32,11 @@ namespace LightBulb.WindowsApi.Management
 
     internal partial struct Rect : IEquatable<Rect>
     {
-        public bool Equals(Rect other) => Left == other.Left && Top == other.Top && Right == other.Right && Bottom == other.Bottom;
+        public bool Equals(Rect other) =>
+            Left == other.Left &&
+            Top == other.Top &&
+            Right == other.Right &&
+            Bottom == other.Bottom;
 
         public override bool Equals(object? obj) => obj is Rect other && Equals(other);
 

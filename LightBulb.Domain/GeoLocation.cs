@@ -74,9 +74,11 @@ namespace LightBulb.Domain
 
     public partial struct GeoLocation : IEquatable<GeoLocation>
     {
-        public bool Equals(GeoLocation other) => Latitude.Equals(other.Latitude) && Longitude.Equals(other.Longitude);
+        public bool Equals(GeoLocation other) =>
+            Latitude.Equals(other.Latitude) && Longitude.Equals(other.Longitude);
 
-        public override bool Equals(object? obj) => obj is GeoLocation other && Equals(other);
+        public override bool Equals(object? obj) =>
+            obj is GeoLocation other && Equals(other);
 
         public override int GetHashCode() => HashCode.Combine(Latitude, Longitude);
 

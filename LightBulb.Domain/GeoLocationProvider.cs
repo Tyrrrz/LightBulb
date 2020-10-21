@@ -1,24 +1,20 @@
-﻿using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using LightBulb.Domain;
-using LightBulb.Internal.Extensions;
+using LightBulb.Domain.Internal;
+using LightBulb.Domain.Internal.Extensions;
 
-namespace LightBulb.Services
+namespace LightBulb.Domain
 {
-    public class LocationService : IDisposable
+    public class GeoLocationProvider
     {
-        private readonly HttpClient _httpClient = new HttpClient();
+        private readonly HttpClient _httpClient;
 
-        public LocationService()
-        {
-            _httpClient.DefaultRequestHeaders.Add("User-Agent",
-                $"{App.Name} v{App.VersionString} ({App.GitHubProjectUrl})");
-            _httpClient.DefaultRequestHeaders.Add("X-User-Agent-Purpose",
-                $"{App.Name} is using your API to identify location of a user.");
-        }
+        public GeoLocationProvider(HttpClient httpClient) => _httpClient = httpClient;
+
+        public GeoLocationProvider()
+            : this(Singleton.HttpClient) {}
 
         public async Task<GeoLocation> GetLocationAsync()
         {
@@ -45,7 +41,5 @@ namespace LightBulb.Services
 
             return new GeoLocation(latitude, longitude);
         }
-
-        public void Dispose() => _httpClient.Dispose();
     }
 }

@@ -4,7 +4,7 @@ using System.IO;
 using LightBulb.Domain;
 using LightBulb.Internal;
 using LightBulb.Models;
-using LightBulb.WindowsApi.Registry;
+using LightBulb.WindowsApi;
 using Newtonsoft.Json;
 using Tyrrrz.Settings;
 
@@ -126,8 +126,8 @@ namespace LightBulb.Services
             base.Load();
 
             // Get the actual values from registry because it may be out of sync with saved settings
-            IsExtendedGammaRangeUnlocked = _extendedGammaRangeSwitch.IsEnabled();
-            IsAutoStartEnabled = _autoStartSwitch.IsEnabled();
+            IsExtendedGammaRangeUnlocked = _extendedGammaRangeSwitch.IsSet;
+            IsAutoStartEnabled = _autoStartSwitch.IsSet;
         }
 
         public override void Save()
@@ -140,8 +140,8 @@ namespace LightBulb.Services
             base.Save();
 
             // Update values in the registry
-            _extendedGammaRangeSwitch.SetEnabled(IsExtendedGammaRangeUnlocked);
-            _autoStartSwitch.SetEnabled(IsAutoStartEnabled);
+            _extendedGammaRangeSwitch.IsSet = IsExtendedGammaRangeUnlocked;
+            _autoStartSwitch.IsSet = IsAutoStartEnabled;
 
             SettingsSaved?.Invoke(this, EventArgs.Empty);
         }

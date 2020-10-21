@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using LightBulb.Internal.Extensions;
 
 namespace LightBulb.Internal
 {
@@ -15,15 +16,14 @@ namespace LightBulb.Internal
 
     internal partial class Disposable
     {
+        public static IDisposable Null { get; } = Create(() => { });
+
         public static IDisposable Create(Action dispose) => new Disposable(dispose);
 
-        public static IDisposable Aggregate(IReadOnlyList<IDisposable?> disposables) => Create(() =>
-        {
-            foreach (var i in disposables)
-                i?.Dispose();
-        });
+        public static IDisposable Aggregate(IReadOnlyList<IDisposable> disposables) =>
+            Create(disposables.DisposeAll);
 
-        public static IDisposable Aggregate(params IDisposable?[] disposables) =>
-            Aggregate((IReadOnlyList<IDisposable?>) disposables);
+        public static IDisposable Aggregate(params IDisposable[] disposables) =>
+            Aggregate((IReadOnlyList<IDisposable>) disposables);
     }
 }

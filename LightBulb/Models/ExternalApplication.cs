@@ -9,7 +9,7 @@ namespace LightBulb.Models
         public string ExecutableFilePath { get; }
 
         [Ignore]
-        public string Name => Path.GetFileNameWithoutExtension(ExecutableFilePath) ?? ExecutableFilePath;
+        public string Name => Path.GetFileNameWithoutExtension(ExecutableFilePath);
 
         public ExternalApplication(string executableFilePath) => ExecutableFilePath = executableFilePath;
 
@@ -48,8 +48,8 @@ namespace LightBulb.Models
 
         public override int GetHashCode() => HashCode.Combine(NormalizeFilePath(ExecutableFilePath));
 
-        public static bool operator ==(ExternalApplication a, ExternalApplication b) => a?.Equals(b) ?? b is null;
+        public static bool operator ==(ExternalApplication? a, ExternalApplication? b) => a?.Equals(b) ?? false;
 
-        public static bool operator !=(ExternalApplication a, ExternalApplication b) => !(a == b);
+        public static bool operator !=(ExternalApplication? a, ExternalApplication? b) => !(a == b);
     }
 }

@@ -7,7 +7,7 @@ using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
 using LightBulb.ViewModels.Dialogs;
 using LightBulb.ViewModels.Framework;
-using LightBulb.WindowsApi.Timers;
+using LightBulb.WindowsApi;
 using Stylet;
 
 namespace LightBulb.ViewModels
@@ -18,7 +18,7 @@ namespace LightBulb.ViewModels
         private readonly DialogManager _dialogManager;
         private readonly SettingsService _settingsService;
 
-        private readonly ITimer _checkForUpdatesTimer;
+        private readonly Timer _checkForUpdatesTimer;
 
         public CoreViewModel Core { get; }
 
@@ -36,8 +36,10 @@ namespace LightBulb.ViewModels
 
             DisplayName = $"{App.Name} v{App.VersionString}";
 
-            _checkForUpdatesTimer = Timer.Create(TimeSpan.FromHours(3),
-                async () => await updateService.CheckPrepareUpdateAsync());
+            _checkForUpdatesTimer = new Timer(
+                TimeSpan.FromHours(3),
+                async () => await updateService.CheckPrepareUpdateAsync()
+            );
         }
 
         private async Task ShowGammaRangePromptAsync()

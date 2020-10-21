@@ -1,19 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using LightBulb.Domain;
 using LightBulb.Internal;
-using LightBulb.WindowsApi.Events;
-using LightBulb.WindowsApi.Graphics;
+using LightBulb.Internal.Extensions;
+using LightBulb.WindowsApi;
 
 namespace LightBulb.Services
 {
     public partial class GammaService : IDisposable
     {
+        private readonly IDisposable _eventRegistration;
+
         private readonly SettingsService _settingsService;
 
-        private readonly IDisposable _systemEventRegistration;
-
-        private IDeviceContext _deviceContext = DeviceContext.GetVirtualMonitor();
-        private bool _isDeviceContextValid = true;
+        private IReadOnlyList<DeviceContext> _deviceContexts = Array.Empty<DeviceContext>();
+        private bool _isDeviceContextsValid;
+        private bool _isGammaValid;
 
         private ColorConfiguration? _lastConfiguration;
         private DateTimeOffset _lastUpdateTimestamp = DateTimeOffset.MinValue;
@@ -22,59 +24,75 @@ namespace LightBulb.Services
         {
             _settingsService = settingsService;
 
-            // If display settings change, invalidate the device context
-            _systemEventRegistration = Disposable.Aggregate(
-                SystemEvent.TryRegister(SystemEventType.DisplaySettingsChanged, () => _isDeviceContextValid = false),
-                SystemEvent.TryRegister(SystemEventType.DisplayStateChanged, () => _isDeviceContextValid = false)
+            // Register for all system events that may indicate that device context has changed
+            _eventRegistration = Disposable.Aggregate(
+                PowerSettingNotification.TryRegister(PowerSettingNotification.ConsoleDisplayStateId,
+                    InvalidateGamma) ?? Disposable.Null,
+                PowerSettingNotification.TryRegister(PowerSettingNotification.PowerSavingStatusId,
+                    InvalidateGamma) ?? Disposable.Null,
+                PowerSettingNotification.TryRegister(PowerSettingNotification.SessionDisplayStatusId,
+                    InvalidateGamma) ?? Disposable.Null,
+                PowerSettingNotification.TryRegister(PowerSettingNotification.MonitorPowerOnId,
+                    InvalidateGamma) ?? Disposable.Null,
+                PowerSettingNotification.TryRegister(PowerSettingNotification.AwayModeId,
+                    InvalidateGamma) ?? Disposable.Null,
+                SystemEvent.Register(SystemEvent.DisplayChangedId, InvalidateDeviceContext),
+                SystemEvent.Register(SystemEvent.PaletteChangedId, InvalidateDeviceContext),
+                SystemEvent.Register(SystemEvent.SettingsChangedId, InvalidateDeviceContext),
+                SystemEvent.Register(SystemEvent.SystemColorsChangedId, InvalidateDeviceContext)
             );
         }
 
-        private void EnsureDeviceContextIsValid()
+        private void InvalidateDeviceContext() => _isDeviceContextsValid = false;
+
+        private void InvalidateGamma() => _isGammaValid = false;
+
+        private void EnsureValidDeviceContext()
         {
-            if (_isDeviceContextValid)
+            if (_isDeviceContextsValid)
                 return;
 
-            _isDeviceContextValid = true;
+            _isDeviceContextsValid = true;
 
-            _deviceContext.Dispose();
-            _deviceContext = DeviceContext.GetVirtualMonitor();
+            _deviceContexts.DisposeAll();
+            _deviceContexts = DeviceContext.FromAllMonitors();
 
             _lastConfiguration = null;
         }
 
-        // We want to avoid insignificant changes to gamma as it causes stutters
         private bool IsSignificantChange(ColorConfiguration configuration) =>
             _lastConfiguration == null ||
             Math.Abs(configuration.Temperature - _lastConfiguration.Value.Temperature) > 25 ||
             Math.Abs(configuration.Brightness - _lastConfiguration.Value.Brightness) > 0.01;
 
-        // If enabled in settings, gamma becomes stale after X seconds, forcing a refresh regardless of the color configuration changes
         private bool IsGammaStale() =>
+            !_isGammaValid ||
             _settingsService.IsGammaPollingEnabled &&
             (DateTimeOffset.Now - _lastUpdateTimestamp).Duration() > TimeSpan.FromSeconds(1);
 
         public void SetGamma(ColorConfiguration configuration)
         {
-            // Skip if gamma doesn't need refreshing and color configuration didn't change much since last time
+            // Avoid unnecessary changes as updating too often will cause stutters
             if (!IsGammaStale() && !IsSignificantChange(configuration))
                 return;
 
-            EnsureDeviceContextIsValid();
+            EnsureValidDeviceContext();
 
-            _deviceContext.SetGamma(
+            _deviceContexts.ForEach(i => i.SetGamma(
                 GetRed(configuration) * configuration.Brightness,
                 GetGreen(configuration) * configuration.Brightness,
                 GetBlue(configuration) * configuration.Brightness
-            );
+            ));
 
+            _isGammaValid = true;
             _lastConfiguration = configuration;
             _lastUpdateTimestamp = DateTimeOffset.Now;
         }
 
         public void Dispose()
         {
-            _deviceContext.Dispose();
-            _systemEventRegistration.Dispose();
+            _eventRegistration.Dispose();
+            _deviceContexts.DisposeAll();
         }
     }
 

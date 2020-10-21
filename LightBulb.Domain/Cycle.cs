@@ -97,7 +97,7 @@ namespace LightBulb.Domain
             return nightValue;
         }
 
-        public static ColorConfiguration InterpolateConfiguration(
+        public static ColorConfiguration GetInterpolatedConfiguration(
             SolarTimes solarTimes,
             ColorConfiguration dayConfiguration,
             ColorConfiguration nightConfiguration,
