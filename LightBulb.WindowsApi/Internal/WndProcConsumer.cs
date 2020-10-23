@@ -20,7 +20,7 @@ namespace LightBulb.WindowsApi.Internal
 
             protected override void WndProc(ref Message m)
             {
-                Debug.WriteLine($"Handling wndproc message for event '{m.Msg}'.");
+                Debug.WriteLine($"Handling wndproc message for event {m.Msg}.");
                 MessageReceived?.Invoke(this, m);
                 base.WndProc(ref m);
             }
@@ -43,12 +43,12 @@ namespace LightBulb.WindowsApi.Internal
             }
 
             DefaultConsumer.MessageReceived += MessageReceivedHandler;
-            Debug.WriteLine($"Added wndproc listener for event '{messageId}'.");
+            Debug.WriteLine($"Added wndproc listener for event {messageId}.");
 
             return Disposable.Create(() =>
             {
                 DefaultConsumer.MessageReceived -= MessageReceivedHandler;
-                Debug.WriteLine($"Removed wndproc listener for event '{messageId}'.");
+                Debug.WriteLine($"Removed wndproc listener for event {messageId}.");
             });
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using LightBulb.Domain;
 using LightBulb.Internal;
 using LightBulb.Internal.Extensions;
@@ -43,9 +44,17 @@ namespace LightBulb.Services
             );
         }
 
-        private void InvalidateDeviceContext() => _isDeviceContextsValid = false;
+        private void InvalidateDeviceContext()
+        {
+            _isDeviceContextsValid = false;
+            Debug.WriteLine("Device context invalidated.");
+        }
 
-        private void InvalidateGamma() => _isGammaValid = false;
+        private void InvalidateGamma()
+        {
+            _isGammaValid = false;
+            Debug.WriteLine("Gamma invalidated.");
+        }
 
         private void EnsureValidDeviceContext()
         {
@@ -90,6 +99,7 @@ namespace LightBulb.Services
             _isGammaValid = true;
             _lastConfiguration = configuration;
             _lastUpdateTimestamp = DateTimeOffset.Now;
+            Debug.WriteLine($"Updated gamma to {configuration}.");
         }
 
         public void Dispose()
