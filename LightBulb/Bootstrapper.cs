@@ -66,6 +66,10 @@ namespace LightBulb
             // Finalize pending updates (and restart) before launching the app
             GetInstance<UpdateService>().FinalizePendingUpdates();
 
+            // Stylet/WPF is slow, so we preload all dialogs, including descendants, for smoother UX
+            _ = GetInstance<DialogManager>().GetViewForDialogScreen(GetInstance<SettingsViewModel>());
+            _ = GetInstance<DialogManager>().GetViewForDialogScreen(GetInstance<MessageBoxViewModel>());
+
             base.Launch();
         }
 

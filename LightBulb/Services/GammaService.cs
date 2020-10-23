@@ -78,11 +78,14 @@ namespace LightBulb.Services
 
             EnsureValidDeviceContext();
 
-            _deviceContexts.ForEach(i => i.SetGamma(
-                GetRed(configuration) * configuration.Brightness,
-                GetGreen(configuration) * configuration.Brightness,
-                GetBlue(configuration) * configuration.Brightness
-            ));
+            foreach (var deviceContext in _deviceContexts)
+            {
+                deviceContext.SetGamma(
+                    GetRed(configuration) * configuration.Brightness,
+                    GetGreen(configuration) * configuration.Brightness,
+                    GetBlue(configuration) * configuration.Brightness
+                );
+            }
 
             _isGammaValid = true;
             _lastConfiguration = configuration;
