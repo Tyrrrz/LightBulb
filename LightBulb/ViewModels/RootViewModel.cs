@@ -101,9 +101,6 @@ Press OK to open settings.".Trim();
         {
             base.OnViewLoaded();
 
-            _settingsService.Load();
-            Refresh();
-
             _checkForUpdatesTimer.Start();
         }
 
