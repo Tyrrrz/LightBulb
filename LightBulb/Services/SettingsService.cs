@@ -154,13 +154,20 @@ namespace LightBulb.Services
         {
             public override bool CanConvert(Type objectType) => objectType == typeof(TimeOfDay);
 
-            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+            public override void WriteJson(
+                JsonWriter writer,
+                object value,
+                JsonSerializer serializer)
             {
                 if (value is TimeOfDay timeOfDay)
                     writer.WriteValue(timeOfDay.AsTimeSpan());
             }
 
-            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+            public override object ReadJson(
+                JsonReader reader,
+                Type objectType,
+                object existingValue,
+                JsonSerializer serializer)
             {
                 var raw = (string) reader.Value;
                 return TimeOfDay.TryParse(raw) ?? default;

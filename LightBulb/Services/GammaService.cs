@@ -25,22 +25,45 @@ namespace LightBulb.Services
         {
             _settingsService = settingsService;
 
-            // Register for all system events that may indicate that device context has changed
+            // Register for all system events that may indicate that device context or gamma has changed from outside
             _eventRegistration = Disposable.Aggregate(
-                PowerSettingNotification.TryRegister(PowerSettingNotification.ConsoleDisplayStateId,
-                    InvalidateGamma) ?? Disposable.Null,
-                PowerSettingNotification.TryRegister(PowerSettingNotification.PowerSavingStatusId,
-                    InvalidateGamma) ?? Disposable.Null,
-                PowerSettingNotification.TryRegister(PowerSettingNotification.SessionDisplayStatusId,
-                    InvalidateGamma) ?? Disposable.Null,
-                PowerSettingNotification.TryRegister(PowerSettingNotification.MonitorPowerOnId,
-                    InvalidateGamma) ?? Disposable.Null,
-                PowerSettingNotification.TryRegister(PowerSettingNotification.AwayModeId,
-                    InvalidateGamma) ?? Disposable.Null,
-                SystemEvent.Register(SystemEvent.DisplayChangedId, InvalidateDeviceContext),
-                SystemEvent.Register(SystemEvent.PaletteChangedId, InvalidateDeviceContext),
-                SystemEvent.Register(SystemEvent.SettingsChangedId, InvalidateDeviceContext),
-                SystemEvent.Register(SystemEvent.SystemColorsChangedId, InvalidateDeviceContext)
+                PowerSettingNotification.TryRegister(
+                    PowerSettingNotification.ConsoleDisplayStateId,
+                    InvalidateGamma
+                ) ?? Disposable.Null,
+                PowerSettingNotification.TryRegister(
+                    PowerSettingNotification.PowerSavingStatusId,
+                    InvalidateGamma
+                ) ?? Disposable.Null,
+                PowerSettingNotification.TryRegister(
+                    PowerSettingNotification.SessionDisplayStatusId,
+                    InvalidateGamma
+                ) ?? Disposable.Null,
+                PowerSettingNotification.TryRegister(
+                    PowerSettingNotification.MonitorPowerOnId,
+                    InvalidateGamma
+                ) ?? Disposable.Null,
+                PowerSettingNotification.TryRegister(
+                    PowerSettingNotification.AwayModeId,
+                    InvalidateGamma
+                ) ?? Disposable.Null,
+
+                SystemEvent.Register(
+                    SystemEvent.DisplayChangedId,
+                    InvalidateDeviceContext
+                ),
+                SystemEvent.Register(
+                    SystemEvent.PaletteChangedId,
+                    InvalidateDeviceContext
+                ),
+                SystemEvent.Register(
+                    SystemEvent.SettingsChangedId,
+                    InvalidateDeviceContext
+                ),
+                SystemEvent.Register(
+                    SystemEvent.SystemColorsChangedId,
+                    InvalidateDeviceContext
+                )
             );
         }
 
