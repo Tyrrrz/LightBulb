@@ -36,8 +36,8 @@ namespace LightBulb.Domain
 
             var firstLocationJson = json.EnumerateArray().First();
 
-            var latitude = firstLocationJson.GetProperty("lat").GetDouble();
-            var longitude = firstLocationJson.GetProperty("lon").GetDouble();
+            var latitude = firstLocationJson.GetProperty("lat").GetDoubleOrCoerce();
+            var longitude = firstLocationJson.GetProperty("lon").GetDoubleOrCoerce();
 
             return new GeoLocation(latitude, longitude);
         }

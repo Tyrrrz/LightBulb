@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace LightBulb.Domain.Internal
 {
@@ -15,7 +16,20 @@ namespace LightBulb.Domain.Internal
 
             handler.UseCookies = false;
 
-            return new HttpClient(handler, true);
+            return new HttpClient(handler, true)
+            {
+                DefaultRequestHeaders =
+                {
+                    // Required by some of the services we're using
+                    UserAgent =
+                    {
+                        new ProductInfoHeaderValue(
+                            "LightBulb",
+                            typeof(Singleton).Assembly.GetName().Version?.ToString()
+                        )
+                    }
+                }
+            };
         });
 
         public static HttpClient HttpClient { get; } = LazyHttpClient.Value;
