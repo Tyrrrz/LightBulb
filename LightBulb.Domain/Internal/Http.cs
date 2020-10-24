@@ -5,9 +5,9 @@ using System.Net.Http.Headers;
 
 namespace LightBulb.Domain.Internal
 {
-    internal static class Singleton
+    internal static class Http
     {
-        private static readonly Lazy<HttpClient> LazyHttpClient = new Lazy<HttpClient>(() =>
+        private static readonly Lazy<HttpClient> ClientLazy = new Lazy<HttpClient>(() =>
         {
             var handler = new HttpClientHandler();
 
@@ -25,13 +25,13 @@ namespace LightBulb.Domain.Internal
                     {
                         new ProductInfoHeaderValue(
                             "LightBulb",
-                            typeof(Singleton).Assembly.GetName().Version?.ToString()
+                            typeof(Http).Assembly.GetName().Version?.ToString()
                         )
                     }
                 }
             };
         });
 
-        public static HttpClient HttpClient { get; } = LazyHttpClient.Value;
+        public static HttpClient Client => ClientLazy.Value;
     }
 }

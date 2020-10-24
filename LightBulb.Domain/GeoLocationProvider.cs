@@ -14,7 +14,7 @@ namespace LightBulb.Domain
         public GeoLocationProvider(HttpClient httpClient) => _httpClient = httpClient;
 
         public GeoLocationProvider()
-            : this(Singleton.HttpClient) {}
+            : this(Http.Client) {}
 
         public async Task<GeoLocation> GetLocationAsync()
         {
