@@ -24,7 +24,7 @@
                 Margin="8,0"
                 Padding="0"
                 VerticalAlignment="Center"
-                BorderBrush="{DynamicResource DividerBrush}"
+                BorderBrush="{DynamicResource MaterialDesignDivider}"
                 Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </StackPanel>
         <Slider
@@ -48,7 +48,7 @@
                 Margin="8,0"
                 Padding="0"
                 VerticalAlignment="Center"
-                BorderBrush="{DynamicResource DividerBrush}"
+                BorderBrush="{DynamicResource MaterialDesignDivider}"
                 Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </StackPanel>
         <Slider
@@ -72,7 +72,7 @@
                 Margin="8,0"
                 Padding="0"
                 VerticalAlignment="Center"
-                BorderBrush="{DynamicResource DividerBrush}"
+                BorderBrush="{DynamicResource MaterialDesignDivider}"
                 Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </StackPanel>
         <Slider
@@ -96,7 +96,7 @@
                 Margin="8,0"
                 Padding="0"
                 VerticalAlignment="Center"
-                BorderBrush="{DynamicResource DividerBrush}"
+                BorderBrush="{DynamicResource MaterialDesignDivider}"
                 Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </StackPanel>
         <Slider
@@ -120,7 +120,7 @@
                 Margin="8,0"
                 Padding="0"
                 VerticalAlignment="Center"
-                BorderBrush="{DynamicResource DividerBrush}"
+                BorderBrush="{DynamicResource MaterialDesignDivider}"
                 Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </StackPanel>
         <Slider
@@ -142,7 +142,7 @@
                 Margin="8,0"
                 Padding="0"
                 VerticalAlignment="Center"
-                BorderBrush="{DynamicResource DividerBrush}"
+                BorderBrush="{DynamicResource MaterialDesignDivider}"
                 Text="{Binding ConfigurationTransitionOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </StackPanel>
         <Slider

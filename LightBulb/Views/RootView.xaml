@@ -53,7 +53,6 @@
                                 <TextBlock
                                     FontSize="15"
                                     FontWeight="Medium"
-                                    Foreground="{DynamicResource PrimaryTextBrush}"
                                     Text="LightBulb" />
 
                                 <!--  Status  -->
@@ -184,7 +183,7 @@
                     Padding="8,12"
                     Background="{DynamicResource PrimaryHueMidBrush}"
                     MouseDown="Header_OnMouseDown"
-                    TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
+                    TextElement.Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -197,7 +196,6 @@
                         <ToggleButton
                             Grid.Column="0"
                             VerticalAlignment="Center"
-                            Foreground="{DynamicResource SecondaryTextBrush}"
                             IsChecked="{Binding Core.IsEnabled}"
                             Style="{DynamicResource MaterialDesignActionAccentToggleButton}"
                             ToolTip="Switch LightBulb on/off">
@@ -218,9 +216,8 @@
                             <Run
                                 FontSize="19"
                                 FontWeight="Medium"
-                                Foreground="{DynamicResource PrimaryInverseTextBrush}"
                                 Text="{x:Static lightBulb:App.Name}" />
-                            <Run Text="v" /><Run Text="{x:Static lightBulb:App.VersionString}" />
+                            <Run FontWeight="Light" Text="v" /><Run FontWeight="Light" Text="{x:Static lightBulb:App.VersionString}" />
                         </TextBlock>
 
                         <!--  Close button  -->

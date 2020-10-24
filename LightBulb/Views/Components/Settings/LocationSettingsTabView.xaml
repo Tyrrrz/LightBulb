@@ -45,7 +45,7 @@
                     Margin="8,0"
                     Padding="0"
                     VerticalAlignment="Center"
-                    BorderBrush="{DynamicResource DividerBrush}"
+                    BorderBrush="{DynamicResource MaterialDesignDivider}"
                     Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
             </StackPanel>
             <Slider
@@ -64,7 +64,7 @@
                     Margin="8,0"
                     Padding="0"
                     VerticalAlignment="Center"
-                    BorderBrush="{DynamicResource DividerBrush}"
+                    BorderBrush="{DynamicResource MaterialDesignDivider}"
                     Text="{Binding ManualSunset, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
             </StackPanel>
             <Slider

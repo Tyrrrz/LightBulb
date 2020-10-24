@@ -28,6 +28,7 @@
             VerticalAlignment="Center"
             Background="Transparent"
             FontSize="19"
+            FontWeight="Light"
             TextAlignment="Center">
             <TextBlock.ToolTip>
                 <TextBlock>
@@ -40,7 +41,7 @@
 
             <Run Text="Sunset" />
             <LineBreak />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SolarTimes.Sunset, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+            <Run FontWeight="Medium" Text="{Binding SolarTimes.Sunset, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
         </TextBlock>
 
         <!--  Sundial  -->
@@ -130,7 +131,8 @@
                 <TextBlock
                     Margin="8,0,0,0"
                     VerticalAlignment="Center"
-                    FontSize="20">
+                    FontSize="20"
+                    FontWeight="Light">
                     <Run Text="{Binding CurrentConfiguration.Temperature, StringFormat=\{0:F0\} K, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
                     <LineBreak />
                     <Run Text="{Binding CurrentConfiguration.Brightness, StringFormat=\{0:P0\}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
@@ -150,6 +152,7 @@
                 <TextBlock
                     Margin="4,0,0,0"
                     FontSize="14"
+                    FontWeight="Light"
                     Text="{Binding Instant, StringFormat=\{0:t\}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
             </StackPanel>
         </Grid>
@@ -161,6 +164,7 @@
             VerticalAlignment="Center"
             Background="Transparent"
             FontSize="19"
+            FontWeight="Light"
             TextAlignment="Center">
             <TextBlock.ToolTip>
                 <TextBlock>
@@ -173,7 +177,7 @@
 
             <Run Text="Sunrise" />
             <LineBreak />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding SolarTimes.Sunrise, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+            <Run FontWeight="Medium" Text="{Binding SolarTimes.Sunrise, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
         </TextBlock>
     </Grid>
 </UserControl>

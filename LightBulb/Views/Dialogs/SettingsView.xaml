@@ -24,7 +24,7 @@
             Grid.Column="0"
             Background="{DynamicResource PrimaryHueMidBrush}"
             ItemsSource="{Binding Tabs}"
-            TextElement.Foreground="{DynamicResource SecondaryInverseTextBrush}">
+            TextElement.Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Border BorderThickness="0,0,2,0">
@@ -100,7 +100,7 @@
                 Height="1"
                 Margin="12,0"
                 HorizontalAlignment="Stretch"
-                Fill="{DynamicResource DividerBrush}" />
+                Fill="{DynamicResource MaterialDesignDivider}" />
 
             <!--  Buttons  -->
             <StackPanel

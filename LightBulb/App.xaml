@@ -35,47 +35,6 @@
             <SolidColorBrush x:Key="SecondaryAccentBrush" Color="{DynamicResource AccentColor}" />
             <SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="{DynamicResource TextColor}" />
 
-            <SolidColorBrush
-                x:Key="PrimaryTextBrush"
-                Opacity="0.87"
-                Color="{DynamicResource TextColor}" />
-            <SolidColorBrush
-                x:Key="SecondaryTextBrush"
-                Opacity="0.64"
-                Color="{DynamicResource TextColor}" />
-            <SolidColorBrush
-                x:Key="DimTextBrush"
-                Opacity="0.45"
-                Color="{DynamicResource TextColor}" />
-            <SolidColorBrush
-                x:Key="PrimaryInverseTextBrush"
-                Opacity="1"
-                Color="{DynamicResource InverseTextColor}" />
-            <SolidColorBrush
-                x:Key="SecondaryInverseTextBrush"
-                Opacity="0.7"
-                Color="{DynamicResource InverseTextColor}" />
-            <SolidColorBrush
-                x:Key="DimInverseTextBrush"
-                Opacity="0.52"
-                Color="{DynamicResource InverseTextColor}" />
-            <SolidColorBrush
-                x:Key="AccentTextBrush"
-                Opacity="1"
-                Color="{DynamicResource AccentColor}" />
-            <SolidColorBrush
-                x:Key="AccentDarkTextBrush"
-                Opacity="1"
-                Color="{DynamicResource AccentDarkColor}" />
-            <SolidColorBrush
-                x:Key="DividerBrush"
-                Opacity="0.12"
-                Color="{DynamicResource TextColor}" />
-            <SolidColorBrush
-                x:Key="InverseDividerBrush"
-                Opacity="0.12"
-                Color="{DynamicResource InverseTextColor}" />
-
             <!--  Styles  -->
             <Style x:Key="MaterialDesignRoot" TargetType="{x:Type FrameworkElement}">
                 <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
@@ -83,7 +42,6 @@
                 <Setter Property="TextElement.FontFamily" Value="{DynamicResource MaterialDesignFont}" />
                 <Setter Property="TextElement.FontSize" Value="13" />
                 <Setter Property="TextElement.FontWeight" Value="Regular" />
-                <Setter Property="TextElement.Foreground" Value="{DynamicResource SecondaryTextBrush}" />
                 <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
                 <Setter Property="TextOptions.TextRenderingMode" Value="Auto" />
                 <Setter Property="UseLayoutRounding" Value="True" />
@@ -99,13 +57,9 @@
                 <Setter Property="Minimum" Value="0" />
             </Style>
 
-            <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="{x:Type TextBox}">
-                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
-            </Style>
+            <Style BasedOn="{StaticResource MaterialDesignTextBox}" TargetType="{x:Type TextBox}" />
 
-            <Style BasedOn="{StaticResource MaterialDesignComboBox}" TargetType="{x:Type ComboBox}">
-                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
-            </Style>
+            <Style BasedOn="{StaticResource MaterialDesignComboBox}" TargetType="{x:Type ComboBox}" />
 
             <Style
                 x:Key="MaterialDesignFlatDarkButton"
