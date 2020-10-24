@@ -44,13 +44,16 @@
                     TrayLeftMouseUp="TaskbarIcon_OnTrayLeftMouseUp">
                     <tb:TaskbarIcon.TrayToolTip>
                         <Border
+                            Padding="8"
                             Background="{DynamicResource MaterialDesignBackground}"
                             BorderBrush="{DynamicResource PrimaryHueLightBrush}"
                             BorderThickness="1"
-                            Style="{DynamicResource MaterialDesignRoot}">
-                            <StackPanel Margin="4" Orientation="Vertical">
+                            Style="{DynamicResource MaterialDesignRoot}"
+                            TextElement.Foreground="{DynamicResource PrimaryHueMidBrush}">
+                            <StackPanel Orientation="Vertical">
                                 <!--  Title  -->
                                 <TextBlock
+                                    Margin="0,0,0,2"
                                     FontSize="15"
                                     FontWeight="Medium"
                                     Text="LightBulb" />
