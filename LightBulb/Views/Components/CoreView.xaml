@@ -33,15 +33,15 @@
             <TextBlock.ToolTip>
                 <TextBlock>
                     <Run Text="Sunset transition starts at" />
-                    <Run Text="{Binding SunsetStart, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+                    <Run FontWeight="SemiBold" Text="{Binding SunsetStart, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
                     <Run Text="and ends at" />
-                    <Run Text="{Binding SunsetEnd, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+                    <Run FontWeight="SemiBold" Text="{Binding SunsetEnd, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
                 </TextBlock>
             </TextBlock.ToolTip>
 
             <Run Text="Sunset" />
             <LineBreak />
-            <Run FontWeight="Medium" Text="{Binding SolarTimes.Sunset, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+            <Run Text="{Binding SolarTimes.Sunset, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
         </TextBlock>
 
         <!--  Sundial  -->
@@ -127,7 +127,8 @@
                 <materialDesign:PackIcon
                     Width="48"
                     Height="48"
-                    Kind="{Binding CycleState, Converter={x:Static converters:CycleStateToPackIconKindConverter.Instance}, Mode=OneWay}" />
+                    Kind="{Binding CycleState, Converter={x:Static converters:CycleStateToPackIconKindConverter.Instance}, Mode=OneWay}"
+                    Opacity="0.8" />
                 <TextBlock
                     Margin="8,0,0,0"
                     VerticalAlignment="Center"
@@ -169,15 +170,15 @@
             <TextBlock.ToolTip>
                 <TextBlock>
                     <Run Text="Sunrise transition starts at" />
-                    <Run Text="{Binding SunriseStart, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+                    <Run FontWeight="SemiBold" Text="{Binding SunriseStart, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
                     <Run Text="and ends at" />
-                    <Run Text="{Binding SunriseEnd, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+                    <Run FontWeight="SemiBold" Text="{Binding SunriseEnd, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
                 </TextBlock>
             </TextBlock.ToolTip>
 
             <Run Text="Sunrise" />
             <LineBreak />
-            <Run FontWeight="Medium" Text="{Binding SolarTimes.Sunrise, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+            <Run Text="{Binding SolarTimes.Sunrise, Converter={x:Static converters:TimeOfDayToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
         </TextBlock>
     </Grid>
 </UserControl>
