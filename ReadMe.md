@@ -14,6 +14,7 @@ Have questions or need help? Check out the [wiki](https://github.com/Tyrrrz/Ligh
 ## Download
 
 - **[Latest release](https://github.com/Tyrrrz/LightBulb/releases/latest)**
+- [WinGet](https://github.com/microsoft/winget-cli): `winget install Tyrrrz.LightBulb`
 - [CI build](https://github.com/Tyrrrz/LightBulb/actions)
 
 Note: This application requires .NET Core Desktop Runtime: [x64](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-3.1.0-windows-x64-installer) | [x86](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-3.1.0-windows-x86-installer).
