@@ -94,7 +94,7 @@ namespace LightBulb.Services
 
         private bool IsSignificantChange(ColorConfiguration configuration) =>
             _lastConfiguration == null ||
-            Math.Abs(configuration.Temperature - _lastConfiguration.Value.Temperature) > 25 ||
+            Math.Abs(configuration.Temperature - _lastConfiguration.Value.Temperature) > 15 ||
             Math.Abs(configuration.Brightness - _lastConfiguration.Value.Brightness) > 0.01;
 
         private bool IsGammaStale() =>
