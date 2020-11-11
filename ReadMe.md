@@ -17,8 +17,7 @@ Have questions or need help? Check out the [wiki](https://github.com/Tyrrrz/Ligh
 - [WinGet](https://github.com/microsoft/winget-cli): `winget install Tyrrrz.LightBulb`
 - [CI build](https://github.com/Tyrrrz/LightBulb/actions)
 
-Note: This application requires .NET Core Desktop Runtime: [x64](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-3.1.0-windows-x64-installer) | [x86](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-3.1.0-windows-x86-installer).
-If you're using the installer, it should take care of this for you.
+Note: This application requires .NET v3.1 Desktop Runtime, which you can [download here](https://dotnet.microsoft.com/download/dotnet/3.1/runtime). The required dependency will be installed automatically, unless you're using the portable distribution.
 
 Supported operating system: Windows 7 or higher.
 
