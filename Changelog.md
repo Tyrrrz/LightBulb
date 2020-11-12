@@ -1,3 +1,11 @@
+### v2.3 (12-Nov-2020)
+
+- Fixed an issue where the gamma would sometimes get reset when waking up from sleep or in certain other situations, on latest Windows 10 builds.
+- Fixed an issue where opening the settings dialog would hang the UI for 0.5-1s. Also changed the whitelist settings tab to refresh the list of running applications only on user's request, instead of each time it's loaded.
+- Fixed an issue where searching for location using a query sometimes didn't work, due to unexpected breaking changes in OpenStreetMap.org.
+- Reduced the threshold for minimum gamma changes. This should make the transition period more smooth by performing gamma updates a bit more often.
+- Minor UI improvements.
+
 ### v2.2 (03-Aug-2020)
 
 - Added configuration transition offset that lets you change how early or late a transition starts relative to the corresponding sunrise or sunset. You can change the offset using a slider in settings, which ranges from 0% (default) to 100% (inverse). The offset defaults to 0%, which resembles the same exact behavior as in previous versions of LightBulb. To understand how exactly the offset affects transitions, please [read this short wiki page](https://github.com/Tyrrrz/LightBulb/wiki/How-the-transition-offset-works).
