@@ -15,8 +15,8 @@ namespace LightBulb.Services
         private readonly SettingsService _settingsService;
 
         private IReadOnlyList<DeviceContext> _deviceContexts = Array.Empty<DeviceContext>();
-        private bool _isDeviceContextsValid;
-        private bool _isGammaValid;
+        private bool _isValidDeviceContextHandle;
+        private DateTimeOffset _lastGammaInvalidationTimestamp = DateTimeOffset.MinValue;
 
         private ColorConfiguration? _lastConfiguration;
         private DateTimeOffset _lastUpdateTimestamp = DateTimeOffset.MinValue;
@@ -67,24 +67,26 @@ namespace LightBulb.Services
             );
         }
 
-        private void InvalidateDeviceContext()
-        {
-            _isDeviceContextsValid = false;
-            Debug.WriteLine("Device context invalidated.");
-        }
-
         private void InvalidateGamma()
         {
-            _isGammaValid = false;
+            _lastGammaInvalidationTimestamp = DateTimeOffset.Now;
             Debug.WriteLine("Gamma invalidated.");
+        }
+
+        private void InvalidateDeviceContext()
+        {
+            _isValidDeviceContextHandle = false;
+            Debug.WriteLine("Device context invalidated.");
+
+            InvalidateGamma();
         }
 
         private void EnsureValidDeviceContext()
         {
-            if (_isDeviceContextsValid)
+            if (_isValidDeviceContextHandle)
                 return;
 
-            _isDeviceContextsValid = true;
+            _isValidDeviceContextHandle = true;
 
             _deviceContexts.DisposeAll();
             _deviceContexts = DeviceContext.FromAllMonitors();
@@ -92,15 +94,41 @@ namespace LightBulb.Services
             _lastConfiguration = null;
         }
 
-        private bool IsSignificantChange(ColorConfiguration configuration) =>
-            _lastConfiguration == null ||
-            Math.Abs(configuration.Temperature - _lastConfiguration.Value.Temperature) > 15 ||
-            Math.Abs(configuration.Brightness - _lastConfiguration.Value.Brightness) > 0.01;
+        private bool IsSignificantChange(ColorConfiguration configuration)
+        {
+            // Nothing to compare to
+            if (_lastConfiguration == null)
+            {
+                return true;
+            }
 
-        private bool IsGammaStale() =>
-            !_isGammaValid ||
-            _settingsService.IsGammaPollingEnabled &&
-            (DateTimeOffset.Now - _lastUpdateTimestamp).Duration() > TimeSpan.FromSeconds(1);
+            return
+                Math.Abs(configuration.Temperature - _lastConfiguration.Value.Temperature) > 15 ||
+                Math.Abs(configuration.Brightness - _lastConfiguration.Value.Brightness) > 0.01;
+        }
+
+        private bool IsGammaStale()
+        {
+            var instant = DateTimeOffset.Now;
+
+            // If gamma has been invalidated in the last X seconds, assume the gamma is still stale.
+            // This is done because, even though we refresh gamma when it gets invalidated, sometimes
+            // we may refresh too fast.
+            if ((instant - _lastGammaInvalidationTimestamp).Duration() > TimeSpan.FromSeconds(1))
+            {
+                return true;
+            }
+
+            // If polling is enabled, the gamma is assumed stale after X seconds has passed since the
+            // last time it was updated.
+            if (_settingsService.IsGammaPollingEnabled &&
+                (instant - _lastUpdateTimestamp).Duration() > TimeSpan.FromSeconds(1))
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         public void SetGamma(ColorConfiguration configuration)
         {
@@ -119,7 +147,6 @@ namespace LightBulb.Services
                 );
             }
 
-            _isGammaValid = true;
             _lastConfiguration = configuration;
             _lastUpdateTimestamp = DateTimeOffset.Now;
             Debug.WriteLine($"Updated gamma to {configuration}.");
