@@ -2,6 +2,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using JsonExtensions.Http;
 using LightBulb.Domain.Internal;
 using LightBulb.Domain.Internal.Extensions;
 
