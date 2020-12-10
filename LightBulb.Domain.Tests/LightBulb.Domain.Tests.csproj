@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="../LightBulb.props" />
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>

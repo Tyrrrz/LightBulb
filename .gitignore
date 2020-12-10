@@ -17,5 +17,8 @@ bld/
 [Bb]in/
 [Oo]bj/
 
+# Installer binary sources
+Installer/Source
+
 # Coverage
 *.opencover.xml
