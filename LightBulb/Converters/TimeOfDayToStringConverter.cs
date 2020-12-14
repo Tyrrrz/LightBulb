@@ -8,7 +8,7 @@ namespace LightBulb.Converters
     [ValueConversion(typeof(TimeOfDay), typeof(string))]
     public class TimeOfDayToStringConverter : IValueConverter
     {
-        public static TimeOfDayToStringConverter Instance { get; } = new TimeOfDayToStringConverter();
+        public static TimeOfDayToStringConverter Instance { get; } = new();
 
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
             value is TimeOfDay timeOfDay

@@ -29,7 +29,7 @@ namespace LightBulb.WindowsApi.Internal
 
     internal static partial class WndProc
     {
-        private static WndProcConsumer DefaultConsumer { get; } = new WndProcConsumer();
+        private static WndProcConsumer DefaultConsumer { get; } = new();
 
         public static IntPtr Handle => DefaultConsumer.Handle;
 

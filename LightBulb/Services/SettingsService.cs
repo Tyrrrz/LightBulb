@@ -12,13 +12,13 @@ namespace LightBulb.Services
 {
     public partial class SettingsService : SettingsManager
     {
-        private readonly RegistrySwitch _extendedGammaRangeSwitch = new RegistrySwitch(
+        private readonly RegistrySwitch _extendedGammaRangeSwitch = new(
             "HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\ICM",
             "GdiICMGammaRange",
             256
         );
 
-        private readonly RegistrySwitch _autoStartSwitch = new RegistrySwitch(
+        private readonly RegistrySwitch _autoStartSwitch = new(
             "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
             App.Name,
             $"\"{App.ExecutableFilePath}\" {App.HiddenOnLaunchArgument}"
@@ -31,9 +31,9 @@ namespace LightBulb.Services
 
         // General
 
-        public ColorConfiguration NightConfiguration { get; set; } = new ColorConfiguration(3900, 0.85);
+        public ColorConfiguration NightConfiguration { get; set; } = new(3900, 0.85);
 
-        public ColorConfiguration DayConfiguration { get; set; } = new ColorConfiguration(6600, 1);
+        public ColorConfiguration DayConfiguration { get; set; } = new(6600, 1);
 
         public TimeSpan ConfigurationTransitionDuration { get; set; } = TimeSpan.FromMinutes(40);
 
@@ -44,10 +44,10 @@ namespace LightBulb.Services
         public bool IsManualSunriseSunsetEnabled { get; set; } = true;
 
         [JsonProperty("ManualSunriseTime"), JsonConverter(typeof(TimeOfDayJsonConverter))]
-        public TimeOfDay ManualSunrise { get; set; } = new TimeOfDay(07, 20);
+        public TimeOfDay ManualSunrise { get; set; } = new(07, 20);
 
         [JsonProperty("ManualSunsetTime"), JsonConverter(typeof(TimeOfDayJsonConverter))]
-        public TimeOfDay ManualSunset { get; set; } = new TimeOfDay(16, 30);
+        public TimeOfDay ManualSunset { get; set; } = new(16, 30);
 
         public GeoLocation? Location { get; set; }
 

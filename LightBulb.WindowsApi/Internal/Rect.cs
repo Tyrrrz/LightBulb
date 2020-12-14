@@ -27,7 +27,7 @@ namespace LightBulb.WindowsApi.Internal
 
     internal partial struct Rect
     {
-        public static Rect Empty { get; } = new Rect();
+        public static Rect Empty { get; } = new();
     }
 
     internal partial struct Rect : IEquatable<Rect>

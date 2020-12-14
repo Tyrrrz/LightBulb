@@ -15,7 +15,7 @@ namespace LightBulb.Domain
             Brightness = brightness.Clamp(MinBrightness, MaxBrightness);
         }
 
-        public ColorConfiguration WithOffset(double temperatureOffset, double brightnessOffset) => new ColorConfiguration(
+        public ColorConfiguration WithOffset(double temperatureOffset, double brightnessOffset) => new(
             Temperature + temperatureOffset,
             Brightness + brightnessOffset
         );
@@ -33,7 +33,7 @@ namespace LightBulb.Domain
 
         public static double MaxBrightness { get; } = 1;
 
-        public static ColorConfiguration Default { get; } = new ColorConfiguration(6600, 1);
+        public static ColorConfiguration Default { get; } = new(6600, 1);
     }
 
     public partial struct ColorConfiguration : IEquatable<ColorConfiguration>

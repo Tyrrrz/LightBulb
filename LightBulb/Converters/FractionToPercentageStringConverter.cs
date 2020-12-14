@@ -7,7 +7,7 @@ namespace LightBulb.Converters
     [ValueConversion(typeof(double), typeof(string))]
     public class FractionToPercentageStringConverter : IValueConverter
     {
-        public static FractionToPercentageStringConverter Instance { get; } = new FractionToPercentageStringConverter();
+        public static FractionToPercentageStringConverter Instance { get; } = new();
 
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
             value is double doubleValue

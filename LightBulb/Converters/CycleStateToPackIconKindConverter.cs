@@ -9,7 +9,7 @@ namespace LightBulb.Converters
     [ValueConversion(typeof(CycleState), typeof(PackIconKind))]
     public class CycleStateToPackIconKindConverter : IValueConverter
     {
-        public static CycleStateToPackIconKindConverter Instance { get; } = new CycleStateToPackIconKindConverter();
+        public static CycleStateToPackIconKindConverter Instance { get; } = new();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value switch
         {

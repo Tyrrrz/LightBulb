@@ -8,7 +8,7 @@ namespace LightBulb.Converters
     [ValueConversion(typeof(TimeOfDay), typeof(double))]
     public class TimeOfDayToHoursConverter : IValueConverter
     {
-        public static TimeOfDayToHoursConverter Instance { get; } = new TimeOfDayToHoursConverter();
+        public static TimeOfDayToHoursConverter Instance { get; } = new();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
             value is TimeOfDay timeOfDayValue

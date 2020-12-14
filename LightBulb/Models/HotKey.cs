@@ -40,7 +40,7 @@ namespace LightBulb.Models
 
     public partial struct HotKey
     {
-        public static HotKey None { get; } = new HotKey();
+        public static HotKey None { get; } = new();
     }
 
     public partial struct HotKey : IEquatable<HotKey>

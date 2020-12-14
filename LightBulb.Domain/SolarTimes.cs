@@ -97,7 +97,7 @@ namespace LightBulb.Domain
             return new TimeOfDay(TimeSpan.FromHours(localHours));
         }
 
-        public static SolarTimes Calculate(GeoLocation location, DateTimeOffset date) => new SolarTimes(
+        public static SolarTimes Calculate(GeoLocation location, DateTimeOffset date) => new(
             CalculateSolarTime(location, date, 90.83, true),
             CalculateSolarTime(location, date, 90.83, false)
         );

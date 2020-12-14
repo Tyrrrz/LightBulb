@@ -19,7 +19,7 @@ namespace LightBulb.Domain
         public TimeOfDay(int hours, int minutes, int seconds = 0)
             : this(new TimeSpan(hours, minutes, seconds)) {}
 
-        public TimeOfDay Add(TimeSpan time) => new TimeOfDay(_offset + time);
+        public TimeOfDay Add(TimeSpan time) => new(_offset + time);
 
         public DateTimeOffset NextAfter(DateTimeOffset anchor) =>
             anchor.TimeOfDay <= _offset

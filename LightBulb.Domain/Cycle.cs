@@ -103,9 +103,8 @@ namespace LightBulb.Domain
             ColorConfiguration nightConfiguration,
             TimeSpan transitionDuration,
             double transitionOffset,
-            DateTimeOffset instant)
-        {
-            return new ColorConfiguration(
+            DateTimeOffset instant) =>
+            new(
                 Interpolate(
                     solarTimes,
                     dayConfiguration.Temperature,
@@ -121,6 +120,5 @@ namespace LightBulb.Domain
                     transitionOffset,
                     instant)
             );
-        }
     }
 }

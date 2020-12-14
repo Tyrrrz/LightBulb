@@ -10,7 +10,7 @@ namespace LightBulb.ViewModels.Framework
     public class DialogManager
     {
         // Cache and re-use dialog screen views, as creating them is incredibly slow
-        private readonly Dictionary<Type, UIElement> _dialogScreenViewCache = new Dictionary<Type, UIElement>();
+        private readonly Dictionary<Type, UIElement> _dialogScreenViewCache = new();
 
         private readonly IViewManager _viewManager;
 

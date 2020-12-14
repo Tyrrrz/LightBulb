@@ -5,7 +5,7 @@ namespace LightBulb.WindowsApi
 {
     public partial class Timer : IDisposable
     {
-        private readonly object _lock = new object();
+        private readonly object _lock = new();
 
         private readonly Action _callback;
         private readonly TimeSpan _firstTickInterval;

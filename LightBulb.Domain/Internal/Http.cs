@@ -5,7 +5,7 @@ namespace LightBulb.Domain.Internal
 {
     internal static class Http
     {
-        public static HttpClient Client { get; } = new HttpClient
+        public static HttpClient Client { get; } = new()
         {
             DefaultRequestHeaders =
             {

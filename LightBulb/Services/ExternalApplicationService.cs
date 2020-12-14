@@ -9,11 +9,10 @@ namespace LightBulb.Services
     public class ExternalApplicationService
     {
         // Applications that we don't to show to the user
-        private readonly HashSet<string> _ignoredApplicationNames =
-            new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-            {
-                "explorer"
-            };
+        private readonly HashSet<string> _ignoredApplicationNames = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "explorer"
+        };
 
         public IEnumerable<ExternalApplication> GetAllRunningApplications()
         {

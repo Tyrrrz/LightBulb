@@ -6,7 +6,7 @@ namespace LightBulb.ViewModels.Components.Settings
 {
     public class LocationSettingsTabViewModel : SettingsTabViewModelBase
     {
-        private readonly GeoLocationProvider _locationProvider = new GeoLocationProvider();
+        private readonly GeoLocationProvider _locationProvider = new();
 
         public bool IsBusy { get; private set; }
 

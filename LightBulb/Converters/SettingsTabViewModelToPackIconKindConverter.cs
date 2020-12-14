@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
 using MaterialDesignThemes.Wpf;
 
@@ -10,7 +9,7 @@ namespace LightBulb.Converters
     [ValueConversion(typeof(ISettingsTabViewModel), typeof(PackIconKind))]
     public class SettingsTabViewModelToPackIconKindConverter : IValueConverter
     {
-        public static SettingsTabViewModelToPackIconKindConverter Instance { get; } = new SettingsTabViewModelToPackIconKindConverter();
+        public static SettingsTabViewModelToPackIconKindConverter Instance { get; } = new();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value switch
         {

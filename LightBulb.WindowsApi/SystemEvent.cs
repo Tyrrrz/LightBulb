@@ -39,7 +39,6 @@ namespace LightBulb.WindowsApi
 
         public static int SettingsChangedId { get; } = 26;
 
-        public static SystemEvent Register(int eventId, Action callback) =>
-            new SystemEvent(eventId, callback);
+        public static SystemEvent Register(int eventId, Action callback) => new(eventId, callback);
     }
 }

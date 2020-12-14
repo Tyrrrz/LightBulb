@@ -7,7 +7,7 @@ namespace LightBulb.Converters
     [ValueConversion(typeof(double), typeof(double))]
     public class FractionToDegreesConverter : IValueConverter
     {
-        public static FractionToDegreesConverter Instance { get; } = new FractionToDegreesConverter();
+        public static FractionToDegreesConverter Instance { get; } = new();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
             value is double doubleValue

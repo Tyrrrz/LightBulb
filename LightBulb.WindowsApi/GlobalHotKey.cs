@@ -6,7 +6,7 @@ namespace LightBulb.WindowsApi
 {
     public partial class GlobalHotKey : IDisposable
     {
-        private readonly object _lock = new object();
+        private readonly object _lock = new();
         private readonly IDisposable _wndProcRegistration;
 
         private DateTimeOffset _lastTriggerTimestamp = DateTimeOffset.MinValue;

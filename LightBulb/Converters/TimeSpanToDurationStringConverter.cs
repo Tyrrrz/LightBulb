@@ -7,7 +7,7 @@ namespace LightBulb.Converters
     [ValueConversion(typeof(TimeSpan), typeof(string))]
     public class TimeSpanToDurationStringConverter : IValueConverter
     {
-        public static TimeSpanToDurationStringConverter Instance { get; } = new TimeSpanToDurationStringConverter();
+        public static TimeSpanToDurationStringConverter Instance { get; } = new();
 
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
             value is TimeSpan timeSpanValue
