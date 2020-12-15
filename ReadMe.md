@@ -9,17 +9,24 @@
 
 LightBulb is an application that reduces eyestrain produced by staring at a computer screen when working late hours. As the day goes on, it continuously adjusts gamma, transitioning the display color temperature from cold blue in the afternoon to warm yellow during the night. Its primary objective is to match the color of the screen to the light sources of your surrounding environment - typically, sunlight during the day and artificial light during the night. LightBulb has minimal impact on performance and offers many customization options.
 
-Have questions or need help? Check out the [wiki](https://github.com/Tyrrrz/LightBulb/wiki).
+**If you have questions or issues, please check out the [wiki](https://github.com/Tyrrrz/LightBulb/wiki).
 
 ## Download
 
-- **[Latest release](https://github.com/Tyrrrz/LightBulb/releases/latest)**
-- [WinGet](https://github.com/microsoft/winget-cli): `winget install Tyrrrz.LightBulb`
-- [CI build](https://github.com/Tyrrrz/LightBulb/actions)
+LightBulb provides an installer (`LightBulb-Installer.exe`), a portable distribution (`LightBulb.zip`), and is also available as a package on WinGet.
 
-Note: This application requires .NET v3.1 Desktop Runtime, which you can [download here](https://dotnet.microsoft.com/download/dotnet/3.1/runtime). The required dependency will be installed automatically, unless you're using the portable distribution.
+- Recommended: [Download `LightBulb-Installer.exe` from latest release](https://github.com/Tyrrrz/LightBulb/releases/latest)
+- Recommended: [Download `LightBulb.zip` from latest release](https://github.com/Tyrrrz/LightBulb/releases/latest) [requires .NET runtime]
+- [Download `LightBulb-Installer.exe` from latest CI build](https://github.com/Tyrrrz/LightBulb/actions?query=workflow%3ACI)
+- [Download `LightBulb.zip` from latest CI build](https://github.com/Tyrrrz/LightBulb/actions?query=workflow%3ACI) [requires .NET runtime]
+- [Install from WinGet](https://github.com/microsoft/winget-cli): `winget install Tyrrrz.LightBulb` [community-maintained]
 
-Supported operating system: Windows 7 or higher.
+**Important**: This application requires **.NET Core v3.1** runtime in order to run. Some download options come with the runtime pre-packaged, but those marked with `[requires .NET runtime]` do not. To install the runtime, find the suitable download option below:
+
+- [Windows x64](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-3.1.10-windows-x64-installer)
+- [Windows x86](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-3.1.10-windows-x86-installer)
+
+Note: All download options are compatible with Windows 7 or higher. Other operating systems are not supported.
 
 ## Features
 
