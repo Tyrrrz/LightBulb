@@ -9,35 +9,31 @@
 
 LightBulb is an application that reduces eyestrain produced by staring at a computer screen when working late hours. As the day goes on, it continuously adjusts gamma, transitioning the display color temperature from cold blue in the afternoon to warm yellow during the night. Its primary objective is to match the color of the screen to the light sources of your surrounding environment - typically, sunlight during the day and artificial light during the night. LightBulb has minimal impact on performance and offers many customization options.
 
-❓ **If you have questions or issues, please check out the [wiki](https://github.com/Tyrrrz/LightBulb/wiki)**.
+❓ **If you have questions or issues, please refer to the [wiki](https://github.com/Tyrrrz/LightBulb/wiki)**.
 
 ## Download
 
-LightBulb provides an installer (`LightBulb-Installer.exe`), a portable distribution (`LightBulb.zip`), and is also available as a package on WinGet.
+> Note that LightBulb only works on Windows 7 and higher.
+Other operating systems are not supported.
 
-- Recommended: [Download `LightBulb-Installer.exe` from latest release](https://github.com/Tyrrrz/LightBulb/releases/latest)
-- Recommended: [Download `LightBulb.zip` from latest release](https://github.com/Tyrrrz/LightBulb/releases/latest) [requires .NET runtime]
-- [Download `LightBulb-Installer.exe` from latest CI build](https://github.com/Tyrrrz/LightBulb/actions?query=workflow%3ACI)
-- [Download `LightBulb.zip` from latest CI build](https://github.com/Tyrrrz/LightBulb/actions?query=workflow%3ACI) [requires .NET runtime]
-- [Install from WinGet](https://github.com/microsoft/winget-cli): `winget install Tyrrrz.LightBulb` [community-maintained]
+- 🟢 [**Stable release**](https://github.com/Tyrrrz/LightBulb/releases)
+- 🟠 [CI build](https://github.com/Tyrrrz/LightBulb/releases)
+- 📦 [WinGet](https://github.com/microsoft/winget-cli): `winget install Tyrrrz.LightBulb` (community-maintained)
 
-**Important**: This application requires **.NET Core v3.1** runtime in order to run. Some download options come with the runtime pre-packaged, but those marked with `[requires .NET runtime]` do not. To install the runtime, find the suitable download option below:
+⚠️ If you are using LightBulb's portable distribution (i.e. `zip` archive), you will also need to install **.NET v3.1 Desktop Runtime** for it to work:
 
-- [Windows x64](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-3.1.10-windows-x64-installer)
-- [Windows x86](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-3.1.10-windows-x86-installer)
-
-Note: All download options are compatible with Windows 7 or higher. Other operating systems are not supported.
+- [.NET Runtime for Windows **x64**](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-3.1.10-windows-x64-installer)
+- [.NET Runtime for Windows **x86**](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-3.1.10-windows-x86-installer)
 
 ## Features
 
 - Extensive customization options
-- Automatically calculate sunrise & sunset times based on configured location
-- Manually set desired sunrise & sunset times
-- Smooth gamma transitions that give time for eyes to adjust
-- Avoid changing gamma in games or other full-screen applications
-- Application whitelist for color-sensitive applications
-- Global hotkey to toggle the application from anywhere
-- Absolutely minimal impact on performance
+- Location-based sunrise and sunset times
+- Manual sunrise and sunset times
+- Whitelist for color-sensitive applications
+- Global hotkeys for adjusting on the fly
+- Smooth gamma transitions
+- Minimal performance impact
 - Works without internet connection
 
 ## Screenshots
