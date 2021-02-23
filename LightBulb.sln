@@ -15,9 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBulb.Domain.Tests", "LightBulb.Domain.Tests\LightBulb.Domain.Tests.csproj", "{6DE898D9-0BAF-4C96-B19A-FCFCF8CE046F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBulb.Core.Tests", "LightBulb.Core.Tests\LightBulb.Core.Tests.csproj", "{6DE898D9-0BAF-4C96-B19A-FCFCF8CE046F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBulb.Domain", "LightBulb.Domain\LightBulb.Domain.csproj", "{B94DBC3C-8FA4-4590-8D59-DC90A4B6C42A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBulb.Core", "LightBulb.Core\LightBulb.Core.csproj", "{B94DBC3C-8FA4-4590-8D59-DC90A4B6C42A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

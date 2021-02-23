@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
-using LightBulb.WindowsApi.Internal;
+using LightBulb.WindowsApi.Native;
+using LightBulb.WindowsApi.Utils;
 
 namespace LightBulb.WindowsApi
 {
@@ -39,8 +40,8 @@ namespace LightBulb.WindowsApi
                 ramp.Blue[i] = (ushort) (i * 255 * blueMultiplier);
             }
 
-            // Some drivers will ignore request to change gamma if the ramp is the same as the last time,
-            // even if it was reset somehow in-between (for example, by screen going to sleep).
+            // Some drivers will ignore requests to change gamma if the specified ramp is the same as last time,
+            // even if the actual gamma has been changed in-between (for example, by screen going to sleep).
             // In order to work around this, we add a small random deviation to each ramp to make sure
             // they're always unique, forcing the drivers to refresh the device context every time.
             _gammaChannelOffset = ++_gammaChannelOffset % 5;

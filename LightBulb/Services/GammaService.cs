@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using LightBulb.Domain;
-using LightBulb.Internal;
-using LightBulb.Internal.Extensions;
+using LightBulb.Core;
+using LightBulb.Utils;
+using LightBulb.Utils.Extensions;
 using LightBulb.WindowsApi;
 
 namespace LightBulb.Services

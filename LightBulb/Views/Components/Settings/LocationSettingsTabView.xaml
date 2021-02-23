@@ -92,6 +92,7 @@
                     Grid.Column="0"
                     Margin="2"
                     Padding="4"
+                    VerticalAlignment="Center"
                     Command="{s:Action AutoDetectLocation}"
                     Style="{DynamicResource MaterialDesignFlatButton}"
                     ToolTip="Try to detect location automatically based on your IP">
@@ -105,6 +106,7 @@
                 <TextBox
                     Grid.Column="1"
                     Margin="8,0,8,6"
+                    VerticalAlignment="Center"
                     FontSize="14"
                     IsEnabled="{Binding IsBusy, Converter={x:Static converters:InverseBoolConverter.Instance}}"
                     Text="{Binding LocationQuery, UpdateSourceTrigger=PropertyChanged}">
@@ -131,6 +133,7 @@
                     Grid.Column="2"
                     Margin="2"
                     Padding="4"
+                    VerticalAlignment="Center"
                     Command="{s:Action SetLocation}"
                     IsDefault="True"
                     Style="{DynamicResource MaterialDesignFlatButton}"

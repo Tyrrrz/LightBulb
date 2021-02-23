@@ -8,7 +8,7 @@ namespace LightBulb.Services
 {
     public class ExternalApplicationService
     {
-        // Applications that we don't to show to the user
+        // Applications that we don't want to show to the user
         private readonly HashSet<string> _ignoredApplicationNames = new(StringComparer.OrdinalIgnoreCase)
         {
             "explorer"

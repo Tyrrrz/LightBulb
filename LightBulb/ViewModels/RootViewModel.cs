@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
-using LightBulb.Internal;
 using LightBulb.Services;
+using LightBulb.Utils;
 using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
 using LightBulb.ViewModels.Dialogs;
@@ -20,7 +20,7 @@ namespace LightBulb.ViewModels
 
         private readonly Timer _checkForUpdatesTimer;
 
-        public CoreViewModel Core { get; }
+        public DashboardViewModel Dashboard { get; }
 
         public RootViewModel(
             IViewModelFactory viewModelFactory,
@@ -32,7 +32,7 @@ namespace LightBulb.ViewModels
             _dialogManager = dialogManager;
             _settingsService = settingsService;
 
-            Core = viewModelFactory.CreateCoreViewModel();
+            Dashboard = viewModelFactory.CreateDashboardViewModel();
 
             DisplayName = $"{App.Name} v{App.VersionString}";
 

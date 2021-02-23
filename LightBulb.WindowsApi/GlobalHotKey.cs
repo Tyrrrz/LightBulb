@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
-using LightBulb.WindowsApi.Internal;
+using LightBulb.WindowsApi.Native;
+using LightBulb.WindowsApi.Utils;
 
 namespace LightBulb.WindowsApi
 {
@@ -32,7 +33,7 @@ namespace LightBulb.WindowsApi
                 if (m.WParam.ToInt32() != Id)
                     return;
 
-                // Throttling
+                // Throttle triggers
                 lock (_lock)
                 {
                     if ((DateTimeOffset.Now - _lastTriggerTimestamp).Duration().TotalSeconds < 0.2)

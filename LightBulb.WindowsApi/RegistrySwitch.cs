@@ -1,4 +1,5 @@
-﻿using LightBulb.WindowsApi.Internal;
+﻿using System.Collections.Generic;
+using LightBulb.WindowsApi.Native;
 
 namespace LightBulb.WindowsApi
 {
@@ -13,14 +14,18 @@ namespace LightBulb.WindowsApi
             get
             {
                 var actualValue = RegistryEx.GetValueOrDefault(_path, _entryName);
-                return Equals(_enabledValue, actualValue);
+                return EqualityComparer<object>.Default.Equals(_enabledValue, actualValue);
             }
             set
             {
                 if (value && !IsSet)
+                {
                     RegistryEx.SetValue(_path, _entryName, _enabledValue);
+                }
                 else if (!value && IsSet)
+                {
                     RegistryEx.DeleteValue(_path, _entryName);
+                }
             }
         }
 

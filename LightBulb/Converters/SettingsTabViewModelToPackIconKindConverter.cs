@@ -13,11 +13,11 @@ namespace LightBulb.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value switch
         {
-            GeneralSettingsTabViewModel _ => PackIconKind.Settings,
-            LocationSettingsTabViewModel _ => PackIconKind.Globe,
-            AdvancedSettingsTabViewModel _ => PackIconKind.CheckboxesMarked,
-            ApplicationWhitelistSettingsTabViewModel _ => PackIconKind.Apps,
-            HotKeySettingsTabViewModel _ => PackIconKind.Keyboard,
+            GeneralSettingsTabViewModel => PackIconKind.Settings,
+            LocationSettingsTabViewModel => PackIconKind.Globe,
+            AdvancedSettingsTabViewModel => PackIconKind.CheckboxesMarked,
+            ApplicationWhitelistSettingsTabViewModel => PackIconKind.Apps,
+            HotKeySettingsTabViewModel => PackIconKind.Keyboard,
             _ => PackIconKind.QuestionMark // shouldn't happen
         };
 

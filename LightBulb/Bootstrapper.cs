@@ -55,7 +55,7 @@ namespace LightBulb
             builder.Bind<IViewModelFactory>().ToAbstractFactory();
 
             builder.Bind<RootViewModel>().ToSelf().InSingletonScope();
-            builder.Bind<CoreViewModel>().ToSelf().InSingletonScope();
+            builder.Bind<DashboardViewModel>().ToSelf().InSingletonScope();
             builder.Bind<MessageBoxViewModel>().ToSelf().InSingletonScope();
             builder.Bind<SettingsViewModel>().ToSelf().InSingletonScope();
             builder.Bind<ISettingsTabViewModel>().ToAllImplementations().InSingletonScope();

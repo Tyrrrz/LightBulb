@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
-using LightBulb.WindowsApi.Internal;
+using LightBulb.WindowsApi.Native;
+using LightBulb.WindowsApi.Utils;
 
 namespace LightBulb.WindowsApi
 {

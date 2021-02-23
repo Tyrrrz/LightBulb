@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Input;
-using LightBulb.Internal.Extensions;
 using LightBulb.Models;
+using LightBulb.Utils.Extensions;
 using LightBulb.WindowsApi;
 
 namespace LightBulb.Services

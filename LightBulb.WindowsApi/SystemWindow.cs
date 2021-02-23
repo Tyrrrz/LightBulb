@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
-using LightBulb.WindowsApi.Internal;
+using LightBulb.WindowsApi.Native;
+using LightBulb.WindowsApi.Utils;
 
 namespace LightBulb.WindowsApi
 {
@@ -26,6 +27,7 @@ namespace LightBulb.WindowsApi
         public string? TryGetClassName()
         {
             var buffer = new StringBuilder(256);
+
             return NativeMethods.GetClassName(Handle, buffer, buffer.Capacity) >= 0
                 ? buffer.ToString()
                 : null;

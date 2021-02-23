@@ -59,8 +59,8 @@
                                     Text="LightBulb" />
 
                                 <!--  Status  -->
-                                <TextBlock Text="{Binding Core.CurrentConfiguration}" Visibility="{Binding IsActive, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
-                                <TextBlock Text="Disabled" Visibility="{Binding Core.IsActive, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}" />
+                                <TextBlock Text="{Binding Dashboard.CurrentConfiguration}" Visibility="{Binding IsActive, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
+                                <TextBlock Text="Disabled" Visibility="{Binding Dashboard.IsActive, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}" />
                             </StackPanel>
                         </Border>
                     </tb:TaskbarIcon.TrayToolTip>
@@ -75,19 +75,19 @@
                                 </MenuItem.Icon>
                             </MenuItem>
                             <MenuItem
-                                s:View.ActionTarget="{Binding Core}"
+                                s:View.ActionTarget="{Binding Dashboard}"
                                 Command="{s:Action Enable}"
                                 Header="Enable"
-                                Visibility="{Binding Core.IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}">
+                                Visibility="{Binding Dashboard.IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Kind="Power" />
                                 </MenuItem.Icon>
                             </MenuItem>
                             <MenuItem
-                                s:View.ActionTarget="{Binding Core}"
+                                s:View.ActionTarget="{Binding Dashboard}"
                                 Command="{s:Action Disable}"
                                 Header="Disable"
-                                Visibility="{Binding Core.IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                                Visibility="{Binding Dashboard.IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Kind="Power" />
                                 </MenuItem.Icon>
@@ -97,11 +97,11 @@
                                     <materialDesign:PackIcon Kind="PowerSettings" />
                                 </MenuItem.Icon>
                                 <MenuItem
-                                    s:View.ActionTarget="{Binding Core}"
+                                    s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarilyUntilSunrise}"
                                     Header="Until sunrise" />
                                 <MenuItem
-                                    s:View.ActionTarget="{Binding Core}"
+                                    s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarily}"
                                     Header="1 day">
                                     <MenuItem.CommandParameter>
@@ -109,7 +109,7 @@
                                     </MenuItem.CommandParameter>
                                 </MenuItem>
                                 <MenuItem
-                                    s:View.ActionTarget="{Binding Core}"
+                                    s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarily}"
                                     Header="12 hours">
                                     <MenuItem.CommandParameter>
@@ -117,7 +117,7 @@
                                     </MenuItem.CommandParameter>
                                 </MenuItem>
                                 <MenuItem
-                                    s:View.ActionTarget="{Binding Core}"
+                                    s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarily}"
                                     Header="6 hours">
                                     <MenuItem.CommandParameter>
@@ -125,7 +125,7 @@
                                     </MenuItem.CommandParameter>
                                 </MenuItem>
                                 <MenuItem
-                                    s:View.ActionTarget="{Binding Core}"
+                                    s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarily}"
                                     Header="3 hours">
                                     <MenuItem.CommandParameter>
@@ -133,7 +133,7 @@
                                     </MenuItem.CommandParameter>
                                 </MenuItem>
                                 <MenuItem
-                                    s:View.ActionTarget="{Binding Core}"
+                                    s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarily}"
                                     Header="1 hour">
                                     <MenuItem.CommandParameter>
@@ -141,7 +141,7 @@
                                     </MenuItem.CommandParameter>
                                 </MenuItem>
                                 <MenuItem
-                                    s:View.ActionTarget="{Binding Core}"
+                                    s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarily}"
                                     Header="30 minutes">
                                     <MenuItem.CommandParameter>
@@ -149,7 +149,7 @@
                                     </MenuItem.CommandParameter>
                                 </MenuItem>
                                 <MenuItem
-                                    s:View.ActionTarget="{Binding Core}"
+                                    s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarily}"
                                     Header="5 minutes">
                                     <MenuItem.CommandParameter>
@@ -157,7 +157,7 @@
                                     </MenuItem.CommandParameter>
                                 </MenuItem>
                                 <MenuItem
-                                    s:View.ActionTarget="{Binding Core}"
+                                    s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarily}"
                                     Header="1 minute">
                                     <MenuItem.CommandParameter>
@@ -199,7 +199,7 @@
                         <ToggleButton
                             Grid.Column="0"
                             VerticalAlignment="Center"
-                            IsChecked="{Binding Core.IsEnabled}"
+                            IsChecked="{Binding Dashboard.IsEnabled}"
                             Style="{DynamicResource MaterialDesignActionAccentToggleButton}"
                             ToolTip="Switch LightBulb on/off">
                             <materialDesign:ToggleButtonAssist.OnContent>
@@ -244,7 +244,7 @@
                 <ContentControl
                     Grid.Row="1"
                     Margin="0,8,0,0"
-                    s:View.Model="{Binding Core}" />
+                    s:View.Model="{Binding Dashboard}" />
 
                 <!--  Buttons  -->
                 <StackPanel
@@ -254,11 +254,11 @@
                     <!--  Start cycle preview  -->
                     <Button
                         Margin="8"
-                        s:View.ActionTarget="{Binding Core}"
+                        s:View.ActionTarget="{Binding Dashboard}"
                         Command="{s:Action EnableCyclePreview}"
                         Style="{DynamicResource MaterialDesignFlatButton}"
                         ToolTip="Preview 24-hour cycle"
-                        Visibility="{Binding Core.IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}">
+                        Visibility="{Binding Dashboard.IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon
                                 Width="24"
@@ -274,11 +274,11 @@
                     <!--  Stop cycle preview  -->
                     <Button
                         Margin="8"
-                        s:View.ActionTarget="{Binding Core}"
+                        s:View.ActionTarget="{Binding Dashboard}"
                         Command="{s:Action DisableCyclePreview}"
                         Style="{DynamicResource MaterialDesignFlatButton}"
                         ToolTip="Stop preview"
-                        Visibility="{Binding Core.IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
+                        Visibility="{Binding Dashboard.IsCyclePreviewEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon
                                 Width="24"

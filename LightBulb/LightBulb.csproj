@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LightBulb.Domain\LightBulb.Domain.csproj" />
+    <ProjectReference Include="..\LightBulb.Core\LightBulb.Core.csproj" />
     <ProjectReference Include="..\LightBulb.WindowsApi\LightBulb.WindowsApi.csproj" />
   </ItemGroup>
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using LightBulb.Domain;
-using LightBulb.Internal;
+using LightBulb.Core;
 using LightBulb.Models;
+using LightBulb.Utils;
 using LightBulb.WindowsApi;
 using Newtonsoft.Json;
 using Tyrrrz.Settings;

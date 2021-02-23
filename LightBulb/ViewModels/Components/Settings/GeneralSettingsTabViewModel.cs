@@ -1,5 +1,5 @@
 ﻿using System;
-using LightBulb.Domain;
+using LightBulb.Core;
 using LightBulb.Services;
 using Tyrrrz.Extensions;
 

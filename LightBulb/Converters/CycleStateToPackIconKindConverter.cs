@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using LightBulb.Domain;
+using LightBulb.Core;
 using MaterialDesignThemes.Wpf;
 
 namespace LightBulb.Converters
