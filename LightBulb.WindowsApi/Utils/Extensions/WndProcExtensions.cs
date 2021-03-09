@@ -8,7 +8,7 @@ namespace LightBulb.WindowsApi.Utils.Extensions
         {
             var value = message.GetLParam(typeof(T));
 
-            return value != null
+            return value is not null
                 ? (T) value
                 : default!;
         }

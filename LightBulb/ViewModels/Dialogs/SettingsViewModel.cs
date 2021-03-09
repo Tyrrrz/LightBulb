@@ -21,14 +21,14 @@ namespace LightBulb.ViewModels.Dialogs
 
             // Pre-select first tab
             var firstTab = Tabs.FirstOrDefault();
-            if (firstTab != null)
+            if (firstTab is not null)
                 ActivateTab(firstTab);
         }
 
         public void ActivateTab(ISettingsTabViewModel settingsTab)
         {
             // Deactivate previously selected tab
-            if (ActiveTab != null)
+            if (ActiveTab is not null)
                 ActiveTab.IsActive = false;
 
             ActiveTab = settingsTab;
@@ -39,7 +39,7 @@ namespace LightBulb.ViewModels.Dialogs
         public void ActivateTabByType<T>() where T : ISettingsTabViewModel
         {
             var tab = Tabs.OfType<T>().FirstOrDefault();
-            if (tab != null)
+            if (tab is not null)
                 ActivateTab(tab);
         }
 

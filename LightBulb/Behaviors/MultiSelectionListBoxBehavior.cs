@@ -20,7 +20,7 @@ namespace LightBulb.Behaviors
             var behavior = (MultiSelectionListBoxBehavior<T>) sender;
             if (behavior._modelHandled) return;
 
-            if (behavior.AssociatedObject == null)
+            if (behavior.AssociatedObject is null)
                 return;
 
             behavior._modelHandled = true;
@@ -43,7 +43,7 @@ namespace LightBulb.Behaviors
             _viewHandled = true;
 
             AssociatedObject.SelectedItems.Clear();
-            if (SelectedItems != null)
+            if (SelectedItems is not null)
             {
                 foreach (var item in SelectedItems)
                 {
@@ -58,7 +58,7 @@ namespace LightBulb.Behaviors
         private void OnListBoxSelectionChanged(object? sender, SelectionChangedEventArgs args)
         {
             if (_viewHandled) return;
-            if (AssociatedObject.Items.SourceCollection == null) return;
+            if (AssociatedObject.Items.SourceCollection is null) return;
 
             SelectedItems = AssociatedObject.SelectedItems.Cast<T>().ToArray();
         }
@@ -67,7 +67,7 @@ namespace LightBulb.Behaviors
         private void OnListBoxItemsChanged(object? sender, NotifyCollectionChangedEventArgs args)
         {
             if (_viewHandled) return;
-            if (AssociatedObject.Items.SourceCollection == null) return;
+            if (AssociatedObject.Items.SourceCollection is null) return;
             SelectItems();
         }
 
@@ -84,7 +84,7 @@ namespace LightBulb.Behaviors
         {
             base.OnDetaching();
 
-            if (AssociatedObject != null)
+            if (AssociatedObject is not null)
             {
                 AssociatedObject.SelectionChanged -= OnListBoxSelectionChanged;
                 ((INotifyCollectionChanged) AssociatedObject.Items).CollectionChanged -= OnListBoxItemsChanged;

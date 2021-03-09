@@ -31,7 +31,7 @@ namespace LightBulb.Services
             try
             {
                 var check = await _updateManager.CheckForUpdatesAsync();
-                if (!check.CanUpdate || check.LastVersion == null)
+                if (!check.CanUpdate || check.LastVersion is null)
                     return;
 
                 if (check.LastVersion != TryGetLastPreparedUpdate())
@@ -51,7 +51,7 @@ namespace LightBulb.Services
             try
             {
                 var lastPreparedUpdate = TryGetLastPreparedUpdate();
-                if (lastPreparedUpdate == null)
+                if (lastPreparedUpdate is null)
                     return;
 
                 if (lastPreparedUpdate <= _updateManager.Updatee.Version)

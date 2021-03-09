@@ -97,7 +97,7 @@ namespace LightBulb.Services
         private bool IsSignificantChange(ColorConfiguration configuration)
         {
             // Nothing to compare to
-            if (_lastConfiguration == null)
+            if (_lastConfiguration is null)
             {
                 return true;
             }

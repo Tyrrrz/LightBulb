@@ -33,7 +33,7 @@ namespace LightBulb.ViewModels.Components
         public DateTimeOffset Instant { get; private set; } = DateTimeOffset.Now;
 
         public SolarTimes SolarTimes =>
-            !_settingsService.IsManualSunriseSunsetEnabled && _settingsService.Location != null
+            !_settingsService.IsManualSunriseSunsetEnabled && _settingsService.Location is not null
                 ? SolarTimes.Calculate(_settingsService.Location.Value, Instant)
                 : new SolarTimes(_settingsService.ManualSunrise, _settingsService.ManualSunset);
 
@@ -252,7 +252,7 @@ namespace LightBulb.ViewModels.Components
                 _settingsService.IsPauseWhenFullScreenEnabled && _externalApplicationService.IsForegroundApplicationFullScreen();
 
             bool IsPausedByWhitelistedApplication() =>
-                _settingsService.IsApplicationWhitelistEnabled && _settingsService.WhitelistedApplications != null &&
+                _settingsService.IsApplicationWhitelistEnabled && _settingsService.WhitelistedApplications is not null &&
                 _settingsService.WhitelistedApplications.Contains(_externalApplicationService.TryGetForegroundApplication());
 
             IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();

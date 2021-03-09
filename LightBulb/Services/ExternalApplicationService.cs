@@ -59,7 +59,7 @@ namespace LightBulb.Services
             var window = SystemWindow.TryGetForegroundWindow();
 
             return
-                window != null &&
+                window is not null &&
                 window.IsVisible() &&
                 !window.IsSystemWindow() &&
                 window.IsFullScreen();

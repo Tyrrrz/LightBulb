@@ -20,7 +20,7 @@ namespace LightBulb.Services
 
             var hotKeyRegistration = GlobalHotKey.TryRegister(virtualKey, modifiers, callback);
 
-            if (hotKeyRegistration != null)
+            if (hotKeyRegistration is not null)
                 _hotKeyRegistrations.Add(hotKeyRegistration);
             else
                 Debug.WriteLine("Failed to register hotkey.");

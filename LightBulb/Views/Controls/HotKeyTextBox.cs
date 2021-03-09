@@ -32,7 +32,7 @@ namespace LightBulb.Views.Controls
             IsReadOnlyCaretVisible = false;
             IsUndoEnabled = false;
 
-            if (ContextMenu != null)
+            if (ContextMenu is not null)
                 ContextMenu.Visibility = Visibility.Collapsed;
 
             Text = HotKey.ToString();

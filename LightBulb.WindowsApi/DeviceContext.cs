@@ -81,7 +81,7 @@ namespace LightBulb.WindowsApi
             foreach (var screen in Screen.AllScreens)
             {
                 var deviceContext = TryGetFromDeviceName(screen.DeviceName);
-                if (deviceContext != null)
+                if (deviceContext is not null)
                     result.Add(deviceContext);
             }
 
