@@ -16,7 +16,9 @@ jobs:
         dotnet-version: 3.1.x
 
     - name: Build & test
-      run: dotnet test --configuration Release --logger GitHubActions
+      run: |
+        dotnet nuget locals all --clear
+        dotnet test --configuration Release --logger GitHubActions
 
     - name: Build & publish
       run: dotnet publish LightBulb/ -o LightBulb/bin/Publish/ --configuration Release
