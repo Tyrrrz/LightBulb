@@ -1,3 +1,7 @@
+### v2.3.1 (21-Mar-2021)
+
+- Improved the approach used to refresh gamma after it had been reset by another process. Now, instead of simply re-uploading the last gamma ramp, LightBulb will enter a temporary gamma polling state, causing it to repeatedly force-refresh gamma for a short period of time. This takes care of many remaining cases where gamma would sometimes go out of sync on latest versions of Windows 10.
+
 ### v2.3 (12-Nov-2020)
 
 - Fixed an issue where the gamma would sometimes get reset when waking up from sleep or in certain other situations, on latest Windows 10 builds.
