@@ -10,9 +10,10 @@ namespace LightBulb.Services
 {
     public partial class GammaService : IDisposable
     {
+        private readonly SettingsService _settingsService;
         private readonly IDisposable _eventRegistration;
 
-        private readonly SettingsService _settingsService;
+        private bool _isUpdatingGamma;
 
         private IReadOnlyList<DeviceContext> _deviceContexts = Array.Empty<DeviceContext>();
         private bool _isValidDeviceContextHandle;
@@ -69,6 +70,11 @@ namespace LightBulb.Services
 
         private void InvalidateGamma()
         {
+            // Don't invalidate gamma when we're in the process of changing it ourselves,
+            // to avoid an infinite loop.
+            if (_isUpdatingGamma)
+                return;
+
             _lastGammaInvalidationTimestamp = DateTimeOffset.Now;
             Debug.WriteLine("Gamma invalidated.");
         }
@@ -113,13 +119,13 @@ namespace LightBulb.Services
 
             // If gamma has been invalidated in the last X seconds, assume the gamma is still stale.
             // This is done because, even though we refresh gamma when it gets invalidated, sometimes
-            // we may refresh too fast.
-            if ((instant - _lastGammaInvalidationTimestamp).Duration() > TimeSpan.FromSeconds(1))
+            // we may refresh too early.
+            if ((instant - _lastGammaInvalidationTimestamp).Duration() > TimeSpan.FromSeconds(0.5))
             {
                 return true;
             }
 
-            // If polling is enabled, the gamma is assumed stale after X seconds has passed since the
+            // If polling is enabled, then gamma is assumed stale after X seconds has passed since the
             // last time it was updated.
             if (_settingsService.IsGammaPollingEnabled &&
                 (instant - _lastUpdateTimestamp).Duration() > TimeSpan.FromSeconds(1))
@@ -138,6 +144,8 @@ namespace LightBulb.Services
 
             EnsureValidDeviceContext();
 
+            _isUpdatingGamma = true;
+
             foreach (var deviceContext in _deviceContexts)
             {
                 deviceContext.SetGamma(
@@ -146,6 +154,8 @@ namespace LightBulb.Services
                     GetBlue(configuration) * configuration.Brightness
                 );
             }
+
+            _isUpdatingGamma = false;
 
             _lastConfiguration = configuration;
             _lastUpdateTimestamp = DateTimeOffset.Now;
