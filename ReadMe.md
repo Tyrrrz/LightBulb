@@ -20,7 +20,7 @@ LightBulb has minimal impact on performance and offers many customization option
 Other operating systems are not supported.
 
 - 🟢 [**Stable release**](https://github.com/Tyrrrz/LightBulb/releases)
-- 🟠 [CI build](https://github.com/Tyrrrz/LightBulb/releases)
+- 🟠 [CI build](https://github.com/Tyrrrz/LightBulb/actions?query=workflow%3ACI)
 - 📦 [WinGet](https://github.com/microsoft/winget-cli): `winget install Tyrrrz.LightBulb` (community-maintained)
 
 ⚠️ If you are using LightBulb's portable distribution (i.e. `zip` archive), you will also need to install **.NET v3.1 Desktop Runtime** for it to work:
