@@ -44,7 +44,7 @@ namespace LightBulb.ViewModels.Framework
             }
         }
 
-        public async Task<T> ShowDialogAsync<T>(DialogScreen<T> dialogScreen)
+        public async Task<T?> ShowDialogAsync<T>(DialogScreen<T> dialogScreen)
         {
             var view = GetViewForDialogScreen(dialogScreen);
 
