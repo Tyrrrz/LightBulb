@@ -32,8 +32,8 @@
             <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="{DynamicResource InverseTextColor}" />
             <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="{DynamicResource PrimaryDarkColor}" />
             <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="{DynamicResource InverseTextColor}" />
-            <SolidColorBrush x:Key="SecondaryAccentBrush" Color="{DynamicResource AccentColor}" />
-            <SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="{DynamicResource TextColor}" />
+            <SolidColorBrush x:Key="SecondaryHueMidBrush" Color="{DynamicResource AccentColor}" />
+            <SolidColorBrush x:Key="SecondaryHueMidForegroundBrush" Color="{DynamicResource TextColor}" />
 
             <!--  Styles  -->
             <Style x:Key="MaterialDesignRoot" TargetType="{x:Type FrameworkElement}">
@@ -52,7 +52,7 @@
 
             <Style BasedOn="{StaticResource MaterialDesignLinearProgressBar}" TargetType="{x:Type ProgressBar}">
                 <Setter Property="BorderThickness" Value="0" />
-                <Setter Property="Foreground" Value="{DynamicResource SecondaryAccentBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource SecondaryHueMidBrush}" />
                 <Setter Property="Height" Value="2" />
                 <Setter Property="Maximum" Value="1" />
                 <Setter Property="Minimum" Value="0" />

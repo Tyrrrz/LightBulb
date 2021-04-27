@@ -32,7 +32,7 @@
                             <Style TargetType="{x:Type Border}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsActive}" Value="True">
-                                        <Setter Property="BorderBrush" Value="{DynamicResource SecondaryAccentBrush}" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource SecondaryHueMidBrush}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
