@@ -120,7 +120,7 @@ namespace LightBulb.Services
             // If gamma has been invalidated in the last X seconds, assume the gamma is still stale.
             // This is done because, even though we refresh gamma when it gets invalidated, sometimes
             // we may refresh too early.
-            if ((instant - _lastGammaInvalidationTimestamp).Duration() > TimeSpan.FromSeconds(0.5))
+            if ((instant - _lastGammaInvalidationTimestamp).Duration() <= TimeSpan.FromSeconds(0.5))
             {
                 return true;
             }
