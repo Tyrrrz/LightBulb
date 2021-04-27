@@ -9,12 +9,12 @@ namespace LightBulb.Services
 {
     public class UpdateService : IDisposable
     {
+        private readonly SettingsService _settingsService;
+        
         private readonly IUpdateManager _updateManager = new UpdateManager(
             new GithubPackageResolver("Tyrrrz", "LightBulb", "LightBulb.zip"),
             new ZipPackageExtractor()
         );
-
-        private readonly SettingsService _settingsService;
 
         public UpdateService(SettingsService settingsService)
         {

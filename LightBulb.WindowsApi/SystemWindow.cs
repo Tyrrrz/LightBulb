@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 using LightBulb.WindowsApi.Native;
-using LightBulb.WindowsApi.Utils;
 
 namespace LightBulb.WindowsApi
 {
@@ -99,7 +98,7 @@ namespace LightBulb.WindowsApi
         {
             var result = new List<SystemWindow>();
 
-            var callback = new NativeMethods.EnumWindowsProc((hWnd, lParam) =>
+            var callback = new NativeMethods.EnumWindowsProc((hWnd, _) =>
             {
                 if (hWnd != IntPtr.Zero)
                 {

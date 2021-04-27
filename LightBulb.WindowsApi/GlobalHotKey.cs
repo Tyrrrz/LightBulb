@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using LightBulb.WindowsApi.Native;
-using LightBulb.WindowsApi.Utils;
 
 namespace LightBulb.WindowsApi
 {

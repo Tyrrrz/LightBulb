@@ -42,7 +42,7 @@ namespace LightBulb.ViewModels.Components.Settings
             : base(settingsService, 1, "Location")
         {
             // Bind string representation of location to the actual value
-            settingsService.BindAndInvoke(o => o.Location, (sender, args) => LocationQuery = Location?.ToString());
+            settingsService.BindAndInvoke(o => o.Location, (_, _) => LocationQuery = Location?.ToString());
         }
 
         public bool CanAutoDetectLocation => !IsBusy;

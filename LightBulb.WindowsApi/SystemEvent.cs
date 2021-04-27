@@ -1,6 +1,5 @@
 using System;
 using LightBulb.WindowsApi.Native;
-using LightBulb.WindowsApi.Utils;
 
 namespace LightBulb.WindowsApi
 {
@@ -17,7 +16,7 @@ namespace LightBulb.WindowsApi
             EventId = eventId;
             Callback = callback;
 
-            _wndProcRegistration = WndProc.Listen(eventId, m => callback());
+            _wndProcRegistration = WndProc.Listen(eventId, _ => callback());
         }
 
         // There are no native resources, but it's pretty important to unregister from wndproc
@@ -32,13 +31,13 @@ namespace LightBulb.WindowsApi
 
     public partial class SystemEvent
     {
-        public static int DisplayChangedId { get; } = 126;
+        public static int DisplayChangedId => 126;
 
-        public static int PaletteChangedId { get; } = 785;
+        public static int PaletteChangedId => 785;
 
-        public static int SystemColorsChangedId { get; } = 12;
+        public static int SystemColorsChangedId => 21;
 
-        public static int SettingsChangedId { get; } = 26;
+        public static int SettingsChangedId => 26;
 
         public static SystemEvent Register(int eventId, Action callback) => new(eventId, callback);
     }

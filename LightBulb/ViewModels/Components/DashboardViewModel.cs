@@ -130,14 +130,14 @@ namespace LightBulb.ViewModels.Components
             );
 
             // Cancel 'disable temporarily' when switching to enabled
-            this.Bind(o => o.IsEnabled, (sender, args) =>
+            this.Bind(o => o.IsEnabled, (_, _) =>
             {
                 if (IsEnabled)
                     _enableAfterDelayRegistration?.Dispose();
             });
 
             // Handle settings changes
-            _settingsService.SettingsSaved += (sender, args) =>
+            _settingsService.SettingsSaved += (_, _) =>
             {
                 Refresh();
                 RegisterHotKeys();
@@ -249,10 +249,12 @@ namespace LightBulb.ViewModels.Components
         private void UpdateIsPaused()
         {
             bool IsPausedByFullScreen() =>
-                _settingsService.IsPauseWhenFullScreenEnabled && _externalApplicationService.IsForegroundApplicationFullScreen();
+                _settingsService.IsPauseWhenFullScreenEnabled &&
+                _externalApplicationService.IsForegroundApplicationFullScreen();
 
             bool IsPausedByWhitelistedApplication() =>
-                _settingsService.IsApplicationWhitelistEnabled && _settingsService.WhitelistedApplications is not null &&
+                _settingsService.IsApplicationWhitelistEnabled &&
+                _settingsService.WhitelistedApplications is not null &&
                 _settingsService.WhitelistedApplications.Contains(_externalApplicationService.TryGetForegroundApplication());
 
             IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
