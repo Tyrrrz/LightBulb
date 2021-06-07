@@ -30,7 +30,6 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Source: ".installed"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\License.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Source\*"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Install-Dotnet.ps1"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\LightBulb.exe"
@@ -45,18 +44,3 @@ Filename: "{app}\LightBulb.exe"; Description: "{cm:LaunchProgram,{#StringChange(
 
 [UninstallDelete]
 Name: "{userappdata}\LightBulb"; Type: filesandordirs
-
-[Code]
-procedure InstallDotnet();
-var
-  ErrorCode: Integer;
-begin
-  ShellExec('', 'powershell',
-    '-NoProfile -ExecutionPolicy Unrestricted -File "' + ExpandConstant('{app}') + '\Install-Dotnet.ps1"',
-    '', SW_SHOW, ewWaitUntilTerminated, ErrorCode);  
-end;
-
-procedure CurStepChanged(CurStep: TSetupStep);
-begin
-  if CurStep = ssPostInstall then InstallDotnet();
-end;
