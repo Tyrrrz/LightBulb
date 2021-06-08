@@ -1,3 +1,9 @@
+### v2.3.2 (09-Jun-2021)
+
+- Application will now detect if the required .NET Runtime or any of its prerequisites are missing and prompt the user to download and install them automatically. **Experimental feature, please test it out and report any issues you may find!**
+- Fixed performance degradations introduced by the last release.
+- Fixed an issue where the application icon was not showing properly in "Programs and Features" window. (Thanks [@derech1e](https://github.com/derech1e))
+
 ### v2.3.1 (21-Mar-2021)
 
 - Improved the approach used to refresh gamma after it had been reset by another process. Now, instead of simply re-uploading the last gamma ramp, LightBulb will enter a temporary gamma polling state, causing it to repeatedly force-refresh gamma for a short period of time. This takes care of many remaining cases where gamma would sometimes go out of sync on latest versions of Windows 10.

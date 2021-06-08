@@ -1,5 +1,5 @@
 ﻿#define AppName "LightBulb"
-#define AppVersion "2.3.1"
+#define AppVersion "2.3.2"
 
 [Setup]
 AppId={{892F745F-A497-42ED-B503-8D74936D0BEB}
