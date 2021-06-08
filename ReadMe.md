@@ -23,11 +23,6 @@ Other operating systems are not supported.
 - 🟠 [CI build](https://github.com/Tyrrrz/LightBulb/actions?query=workflow%3ACI)
 - 📦 [WinGet](https://github.com/microsoft/winget-cli): `winget install Tyrrrz.LightBulb` (community-maintained)
 
-⚠️ If you are using LightBulb's portable distribution (i.e. `zip` archive), you will also need to install **.NET v3.1 Desktop Runtime** for it to work:
-
-- [.NET Runtime for Windows **x64**](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-3.1.10-windows-x64-installer)
-- [.NET Runtime for Windows **x86**](https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-3.1.10-windows-x86-installer)
-
 ## Features
 
 - Extensive customization options
