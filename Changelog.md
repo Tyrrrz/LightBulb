@@ -1,3 +1,8 @@
+### v2.3.3 (15-Jun-2021)
+
+- Fixed an issue where the list of missing components, reported by the prerequisite check at application startup, included Windows updates that were not applicable to the user's system due to the fact that other superseding updates have already been installed. This issue only affected users running LightBulb on Windows 7.
+- Fixed a few other minor issues related to the prerequisite installation window.
+
 ### v2.3.2 (09-Jun-2021)
 
 - Application will now detect if the required .NET Runtime or any of its prerequisites are missing and prompt the user to download and install them automatically. **Experimental feature, please test it out and report any issues you may find!**
