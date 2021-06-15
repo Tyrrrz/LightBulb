@@ -3,8 +3,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using JsonExtensions.Http;
+using JsonExtensions.Reading;
 using LightBulb.Core.Utils;
-using LightBulb.Core.Utils.Extensions;
 
 namespace LightBulb.Core
 {
@@ -37,8 +37,8 @@ namespace LightBulb.Core
 
             var firstLocationJson = json.EnumerateArray().First();
 
-            var latitude = firstLocationJson.GetProperty("lat").GetDoubleOrCoerce();
-            var longitude = firstLocationJson.GetProperty("lon").GetDoubleOrCoerce();
+            var latitude = firstLocationJson.GetProperty("lat").GetDoubleCoerced();
+            var longitude = firstLocationJson.GetProperty("lon").GetDoubleCoerced();
 
             return new GeoLocation(latitude, longitude);
         }
