@@ -164,6 +164,12 @@ namespace LightBulb.Services
 
         public void Dispose()
         {
+            // Reset gamma on all contexts
+            foreach (var deviceContext in _deviceContexts)
+            {
+                deviceContext.ResetGamma();
+            }
+
             _eventRegistration.Dispose();
             _deviceContexts.DisposeAll();
         }

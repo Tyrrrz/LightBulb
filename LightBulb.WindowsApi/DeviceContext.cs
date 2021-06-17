@@ -51,11 +51,10 @@ namespace LightBulb.WindowsApi
             SetGammaRamp(ramp);
         }
 
+        public void ResetGamma() => SetGamma(1, 1, 1);
+
         public void Dispose()
         {
-            // Reset gamma
-            SetGamma(1, 1, 1);
-
             if (!NativeMethods.DeleteDC(Handle))
                 Debug.WriteLine("Could not dispose device context.");
 
