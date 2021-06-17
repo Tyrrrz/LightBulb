@@ -30,6 +30,8 @@ namespace LightBulb.WindowsApi.Native
         [DllImport(User32, SetLastError = true)]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
+        public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
         [DllImport(User32, SetLastError = true)]
         public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
 

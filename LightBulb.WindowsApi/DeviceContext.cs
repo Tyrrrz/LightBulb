@@ -55,6 +55,11 @@ namespace LightBulb.WindowsApi
 
         public void Dispose()
         {
+            // Don't reset gamma during dispose because this method
+            // is also called whenever device context gets invalidated.
+            // Resetting gamma in such cases will cause unwanted flickering.
+            // https://github.com/Tyrrrz/LightBulb/issues/206
+
             if (!NativeMethods.DeleteDC(Handle))
                 Debug.WriteLine("Could not dispose device context.");
 
