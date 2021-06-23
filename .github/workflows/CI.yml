@@ -23,6 +23,11 @@ jobs:
     - name: Build & test
       run: dotnet test --configuration Release --logger GitHubActions
 
+    - name: Upload coverage
+      uses: codecov/codecov-action@v1.0.5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+
     - name: Build & publish
       run: dotnet publish LightBulb/ -o LightBulb/bin/Publish/ --configuration Release
 
