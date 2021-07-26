@@ -69,3 +69,9 @@ jobs:
         asset_path: Installer/bin/LightBulb-Installer.exe
         asset_name: LightBulb-Installer.exe
         asset_content_type: application/octet-stream
+
+    - name: Notify Discord
+      run: |
+        curl '${{ secrets.DISCORD_WEBHOOK }}' \
+          --data-raw '{"content":"[**LightBulb** ver. ${{ github.ref }} released](https://github.com/Tyrrrz/LightBulb/releases/latest)"}' \
+          -H 'content-type: application/json'
