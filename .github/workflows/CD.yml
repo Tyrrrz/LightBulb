@@ -76,6 +76,6 @@ jobs:
          -Uri "${{ secrets.DISCORD_WEBHOOK }}" `
          -Method "POST" `
          -ContentType "application/json; charset=UTF-8" `
-         -Body "{`"content`":`"[**LightBulb** ver. ${{ github.ref }} released](https://github.com/Tyrrrz/LightBulb/releases/latest)`"}" `
+         -Body '{"content":"**LightBulb** new version released!\nRef: `${{ github.ref }}`\nChangelog: <https://github.com/Tyrrrz/LightBulb/blob/${{ github.sha }}/Changelog.md>"}' `
          -UseBasicParsing
       shell: pwsh
