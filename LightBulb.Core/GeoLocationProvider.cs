@@ -19,6 +19,7 @@ namespace LightBulb.Core
 
         public async Task<GeoLocation> GetLocationAsync()
         {
+            // HTTPS isn't supported by this endpoint
             const string url = "http://ip-api.com/json";
             var json = await _httpClient.GetJsonAsync(url);
 

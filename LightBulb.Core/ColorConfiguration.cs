@@ -25,13 +25,13 @@ namespace LightBulb.Core
 
     public partial struct ColorConfiguration
     {
-        public static double MinTemperature { get; } = 500;
+        public static double MinTemperature => 500;
 
-        public static double MaxTemperature { get; } = 20_000;
+        public static double MaxTemperature => 20_000;
 
-        public static double MinBrightness { get; } = 0.1;
+        public static double MinBrightness => 0.1;
 
-        public static double MaxBrightness { get; } = 1;
+        public static double MaxBrightness => 1;
 
         public static ColorConfiguration Default { get; } = new(6600, 1);
     }

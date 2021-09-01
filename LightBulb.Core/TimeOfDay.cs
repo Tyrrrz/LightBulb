@@ -50,7 +50,7 @@ namespace LightBulb.Core
         public static TimeOfDay? TryParse(string? value, IFormatProvider? formatProvider = null) =>
             DateTimeOffset.TryParse(value, formatProvider, DateTimeStyles.None, out var date)
                 ? new TimeOfDay(date)
-                : (TimeOfDay?) null;
+                : null;
     }
 
     public partial struct TimeOfDay : IFormattable

@@ -16,12 +16,12 @@ namespace LightBulb.WindowsApi
         private Rect? TryGetRect() =>
             NativeMethods.GetWindowRect(Handle, out var rect)
                 ? rect
-                : (Rect?) null;
+                : null;
 
         private Rect? TryGetClientRect() =>
             NativeMethods.GetClientRect(Handle, out var rect)
                 ? rect
-                : (Rect?) null;
+                : null;
 
         public string? TryGetClassName()
         {
