@@ -94,7 +94,11 @@ namespace LightBulb.Services
 
         public SettingsService()
         {
-            var installerMarker = Path.Combine(AppDomain.CurrentDomain.BaseDirectory ?? Directory.GetCurrentDirectory(), ".installed");
+            var installerMarker = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory ?? Directory.GetCurrentDirectory(),
+                ".installed"
+            );
+
             var isInstalled = File.Exists(installerMarker);
 
             // Prefer storing settings in appdata when installed or when current directory is write-protected

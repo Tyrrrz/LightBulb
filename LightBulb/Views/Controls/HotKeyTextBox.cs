@@ -8,9 +8,16 @@ namespace LightBulb.Views.Controls
 {
     public class HotKeyTextBox : TextBox
     {
-        public static readonly DependencyProperty HotKeyProperty =
-            DependencyProperty.Register(nameof(HotKey), typeof(HotKey), typeof(HotKeyTextBox),
-                new FrameworkPropertyMetadata(default(HotKey), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, HotKeyChanged));
+        public static readonly DependencyProperty HotKeyProperty = DependencyProperty.Register(
+            nameof(HotKey),
+            typeof(HotKey),
+            typeof(HotKeyTextBox),
+            new FrameworkPropertyMetadata(
+                default(HotKey),
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                HotKeyChanged
+            )
+        );
 
         private static void HotKeyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
