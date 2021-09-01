@@ -181,15 +181,15 @@ namespace LightBulb.Core.Tests
         public void Color_configuration_does_not_change_abruptly_throughout_the_whole_cycle()
         {
             // Arrange
-            var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
+            var solarTimes = new SolarTimes(new TimeOfDay(07, 20), new TimeOfDay(23, 35));
             var transitionDuration = new TimeSpan(01, 30, 00);
             var transitionOffset = 0;
             var dayConfiguration = new ColorConfiguration(6600, 1);
             var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
             // Act
-            var lastInstantTime = TimeSpan.Zero;
-            var lastConfiguration = nightConfiguration;
+            var lastInstantTime = default(TimeSpan?);
+            var lastConfiguration = default(ColorConfiguration?);
 
             for (var instantTime = TimeSpan.Zero; instantTime < TimeSpan.FromDays(1); instantTime += TimeSpan.FromMinutes(1))
             {
@@ -210,13 +210,18 @@ namespace LightBulb.Core.Tests
 
                 // Assert
                 var isHarshJump =
-                    Math.Abs(configuration.Temperature - lastConfiguration.Temperature) >=
-                    Math.Abs(dayConfiguration.Temperature - nightConfiguration.Temperature) / 2
-                    ||
-                    Math.Abs(configuration.Brightness - lastConfiguration.Brightness) >=
-                    Math.Abs(dayConfiguration.Brightness - nightConfiguration.Brightness) / 2;
+                    lastInstantTime is not null &&
+                    lastConfiguration is not null &&
+                    (
+                        Math.Abs(configuration.Temperature - lastConfiguration.Value.Temperature) >=
+                        Math.Abs(dayConfiguration.Temperature - nightConfiguration.Temperature) / 2
+                        ||
+                        Math.Abs(configuration.Brightness - lastConfiguration.Value.Brightness) >=
+                        Math.Abs(dayConfiguration.Brightness - nightConfiguration.Brightness) / 2
+                    );
 
-                Assert.False(isHarshJump,
+                Assert.False(
+                    isHarshJump,
                     $"Detected harsh jump in color configuration from {lastInstantTime} to {instantTime}: " +
                     $"{lastConfiguration} -> {configuration}."
                 );

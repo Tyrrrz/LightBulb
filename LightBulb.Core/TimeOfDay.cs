@@ -31,7 +31,7 @@ namespace LightBulb.Core
         public DateTimeOffset PreviousBefore(DateTimeOffset anchor) =>
             anchor.TimeOfDay > _offset
                 ? anchor.AtTimeOfDay(_offset)
-                : anchor.AddDays(1).AtTimeOfDay(_offset);
+                : anchor.AddDays(-1).AtTimeOfDay(_offset);
 
         public DateTimeOffset Previous() => PreviousBefore(DateTimeOffset.Now);
 
