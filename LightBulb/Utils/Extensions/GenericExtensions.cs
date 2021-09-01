@@ -11,8 +11,8 @@ namespace LightBulb.Utils.Extensions
             absStep = Math.Abs(absStep);
 
             return target >= value
-                ? (value + absStep).ClampMax(target)
-                : (value - absStep).ClampMin(target);
+                ? Math.Min(value + absStep, target)
+                : Math.Max(value - absStep, target);
         }
 
         public static DateTimeOffset StepTo(this DateTimeOffset value, DateTimeOffset target, TimeSpan absStep)

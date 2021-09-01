@@ -1,5 +1,4 @@
 ﻿using System;
-using Tyrrrz.Extensions;
 
 namespace LightBulb.Core
 {
@@ -11,8 +10,8 @@ namespace LightBulb.Core
 
         public ColorConfiguration(double temperature, double brightness)
         {
-            Temperature = temperature.Clamp(MinTemperature, MaxTemperature);
-            Brightness = brightness.Clamp(MinBrightness, MaxBrightness);
+            Temperature = Math.Clamp(temperature, MinTemperature, MaxTemperature);
+            Brightness = Math.Clamp(brightness, MinBrightness, MaxBrightness);
         }
 
         public ColorConfiguration WithOffset(double temperatureOffset, double brightnessOffset) => new(

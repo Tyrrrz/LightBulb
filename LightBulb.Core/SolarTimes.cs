@@ -1,5 +1,4 @@
 ﻿using System;
-using Tyrrrz.Extensions;
 
 namespace LightBulb.Core
 {
@@ -74,7 +73,7 @@ namespace LightBulb.Core
 
             // This value may be invalid in case the Sun never reaches zenith
             // so we clamp to get the closest highest point instead
-            sunLocalHoursCos = sunLocalHoursCos.Clamp(-1, 1);
+            sunLocalHoursCos = Math.Clamp(sunLocalHoursCos, -1, 1);
 
             // Calculate local time of Sun's highest point
             var sunLocalHours = isSunrise
