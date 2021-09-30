@@ -20,7 +20,7 @@ LightBulb has minimal impact on performance and offers many customization option
 
 ## Download
 
-> ⚠️ Note that LightBulb only works on Windows 7 and higher.
+> ⚠️ LightBulb only works on Windows 7 and higher.
 Other operating systems are not supported.
 
 - 🟢 [**Stable release**](https://github.com/Tyrrrz/LightBulb/releases)
