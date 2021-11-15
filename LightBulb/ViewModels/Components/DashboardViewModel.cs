@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using LightBulb.Core;
+using LightBulb.Core.Utils.Extensions;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.Utils.Extensions;
@@ -37,25 +38,25 @@ namespace LightBulb.ViewModels.Components
                 ? SolarTimes.Calculate(_settingsService.Location.Value, Instant)
                 : new SolarTimes(_settingsService.ManualSunrise, _settingsService.ManualSunset);
 
-        public TimeOfDay SunriseStart => Cycle.GetSunriseStart(
+        public TimeOnly SunriseStart => Cycle.GetSunriseStart(
             SolarTimes.Sunrise,
             _settingsService.ConfigurationTransitionDuration,
             _settingsService.ConfigurationTransitionOffset
         );
 
-        public TimeOfDay SunriseEnd => Cycle.GetSunriseEnd(
+        public TimeOnly SunriseEnd => Cycle.GetSunriseEnd(
             SolarTimes.Sunrise,
             _settingsService.ConfigurationTransitionDuration,
             _settingsService.ConfigurationTransitionOffset
         );
 
-        public TimeOfDay SunsetStart => Cycle.GetSunsetStart(
+        public TimeOnly SunsetStart => Cycle.GetSunsetStart(
             SolarTimes.Sunset,
             _settingsService.ConfigurationTransitionDuration,
             _settingsService.ConfigurationTransitionOffset
         );
 
-        public TimeOfDay SunsetEnd => Cycle.GetSunsetEnd(
+        public TimeOnly SunsetEnd => Cycle.GetSunsetEnd(
             SolarTimes.Sunset,
             _settingsService.ConfigurationTransitionDuration,
             _settingsService.ConfigurationTransitionOffset
@@ -73,10 +74,18 @@ namespace LightBulb.ViewModels.Components
                     _settingsService.NightConfiguration,
                     _settingsService.ConfigurationTransitionDuration,
                     _settingsService.ConfigurationTransitionOffset,
-                    Instant)
+                    Instant
+                )
                 .WithOffset(
                     TemperatureOffset,
-                    BrightnessOffset)
+                    BrightnessOffset
+                )
+                .Clamp(
+                    _settingsService.MinimumTemperature,
+                    _settingsService.MaximumTemperature,
+                    _settingsService.MinimumBrightness,
+                    _settingsService.MaximumBrightness
+                )
             : _settingsService.IsDefaultToDayConfigurationEnabled
                 ? _settingsService.DayConfiguration
                 : ColorConfiguration.Default;
@@ -166,11 +175,8 @@ namespace LightBulb.ViewModels.Components
             {
                 _hotKeyService.RegisterHotKey(_settingsService.IncreaseTemperatureOffsetHotKey, () =>
                 {
-                    const double delta = +100;
-
-                    // Avoid changing offset when it's already at its limit
-                    if (TargetConfiguration.WithOffset(delta, 0) != TargetConfiguration)
-                        TemperatureOffset += delta;
+                    TemperatureOffset +=
+                        Math.Min(100, _settingsService.MaximumTemperature - TargetConfiguration.Temperature);
                 });
             }
 
@@ -178,11 +184,8 @@ namespace LightBulb.ViewModels.Components
             {
                 _hotKeyService.RegisterHotKey(_settingsService.DecreaseTemperatureOffsetHotKey, () =>
                 {
-                    const double delta = -100;
-
-                    // Avoid changing offset when it's already at its limit
-                    if (TargetConfiguration.WithOffset(delta, 0) != TargetConfiguration)
-                        TemperatureOffset += delta;
+                    TemperatureOffset +=
+                        Math.Max(-100, _settingsService.MinimumTemperature - TargetConfiguration.Temperature);
                 });
             }
 
@@ -190,11 +193,8 @@ namespace LightBulb.ViewModels.Components
             {
                 _hotKeyService.RegisterHotKey(_settingsService.IncreaseBrightnessOffsetHotKey, () =>
                 {
-                    const double delta = +0.05;
-
-                    // Avoid changing offset when it's already at its limit
-                    if (TargetConfiguration.WithOffset(0, delta) != TargetConfiguration)
-                        BrightnessOffset += delta;
+                    BrightnessOffset +=
+                        Math.Min(0.05, _settingsService.MaximumBrightness - TargetConfiguration.Brightness);
                 });
             }
 
@@ -202,17 +202,17 @@ namespace LightBulb.ViewModels.Components
             {
                 _hotKeyService.RegisterHotKey(_settingsService.DecreaseBrightnessOffsetHotKey, () =>
                 {
-                    const double delta = -0.05;
-
-                    // Avoid changing offset when it's already at its limit
-                    if (TargetConfiguration.WithOffset(0, delta) != TargetConfiguration)
-                        BrightnessOffset += delta;
+                    BrightnessOffset +=
+                        Math.Min(-0.05, _settingsService.MinimumBrightness - TargetConfiguration.Brightness);
                 });
             }
 
             if (_settingsService.ResetConfigurationOffsetHotKey != HotKey.None)
             {
-                _hotKeyService.RegisterHotKey(_settingsService.ResetConfigurationOffsetHotKey, ResetConfigurationOffset);
+                _hotKeyService.RegisterHotKey(
+                    _settingsService.ResetConfigurationOffsetHotKey,
+                    ResetConfigurationOffset
+                );
             }
         }
 
@@ -274,7 +274,8 @@ namespace LightBulb.ViewModels.Components
         public void DisableTemporarilyUntilSunrise()
         {
             // Use real time here instead of Instant, because that's what the user likely wants
-            var timeUntilSunrise = SolarTimes.Sunrise.Next() - DateTimeOffset.Now;
+            var now = DateTimeOffset.Now;
+            var timeUntilSunrise = SolarTimes.Sunrise.NextAfter(now) - now;
             DisableTemporarily(timeUntilSunrise);
         }
 

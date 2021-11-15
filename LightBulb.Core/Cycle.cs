@@ -1,11 +1,12 @@
 using System;
+using LightBulb.Core.Utils.Extensions;
 
 namespace LightBulb.Core
 {
     public static class Cycle
     {
-        public static TimeOfDay GetSunriseStart(
-            TimeOfDay sunrise,
+        public static TimeOnly GetSunriseStart(
+            TimeOnly sunrise,
             TimeSpan transitionDuration,
             double transitionOffset)
         {
@@ -14,11 +15,11 @@ namespace LightBulb.Core
             // Offset = 1; Start at (sunrise)
 
             var shift = transitionDuration * (1 - transitionOffset);
-            return sunrise - shift;
+            return sunrise.Add(-shift);
         }
 
-        public static TimeOfDay GetSunriseEnd(
-            TimeOfDay sunrise,
+        public static TimeOnly GetSunriseEnd(
+            TimeOnly sunrise,
             TimeSpan transitionDuration,
             double transitionOffset)
         {
@@ -27,11 +28,11 @@ namespace LightBulb.Core
             // Offset = 1; End at (sunrise + transition)
 
             var shift = transitionDuration * transitionOffset;
-            return sunrise + shift;
+            return sunrise.Add(shift);
         }
 
-        public static TimeOfDay GetSunsetStart(
-            TimeOfDay sunset,
+        public static TimeOnly GetSunsetStart(
+            TimeOnly sunset,
             TimeSpan transitionDuration,
             double transitionOffset)
         {
@@ -40,11 +41,11 @@ namespace LightBulb.Core
             // Offset = 1; Start at (sunset - transition)
 
             var shift = transitionDuration * transitionOffset;
-            return sunset - shift;
+            return sunset.Add(-shift);
         }
 
-        public static TimeOfDay GetSunsetEnd(
-            TimeOfDay sunset,
+        public static TimeOnly GetSunsetEnd(
+            TimeOnly sunset,
             TimeSpan transitionDuration,
             double transitionOffset)
         {
@@ -53,7 +54,7 @@ namespace LightBulb.Core
             // Offset = 1; End at (sunset)
 
             var shift = transitionDuration * (1 - transitionOffset);
-            return sunset + shift;
+            return sunset.Add(shift);
         }
 
         private static double Interpolate(

@@ -10,7 +10,7 @@ namespace LightBulb.Core.Tests
         public void Color_configuration_is_set_to_day_configuration_during_day_time()
         {
             // Arrange
-            var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
+            var solarTimes = new SolarTimes(new TimeOnly(07, 00), new TimeOnly(18, 00));
             var transitionDuration = new TimeSpan(01, 30, 00);
             var transitionOffset = 0;
             var dayConfiguration = new ColorConfiguration(6600, 1);
@@ -40,7 +40,7 @@ namespace LightBulb.Core.Tests
         public void Color_configuration_is_set_to_night_configuration_during_night_time()
         {
             // Arrange
-            var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
+            var solarTimes = new SolarTimes(new TimeOnly(07, 00), new TimeOnly(18, 00));
             var transitionDuration = new TimeSpan(01, 30, 00);
             var transitionOffset = 0;
             var dayConfiguration = new ColorConfiguration(6600, 1);
@@ -70,7 +70,7 @@ namespace LightBulb.Core.Tests
         public void Color_configuration_is_set_to_intermediate_value_during_transition_to_night_time()
         {
             // Arrange
-            var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
+            var solarTimes = new SolarTimes(new TimeOnly(07, 00), new TimeOnly(18, 00));
             var transitionDuration = new TimeSpan(01, 30, 00);
             var transitionOffset = 0;
             var dayConfiguration = new ColorConfiguration(6600, 1);
@@ -103,7 +103,7 @@ namespace LightBulb.Core.Tests
         public void Color_configuration_is_set_to_intermediate_value_during_transition_to_day_time()
         {
             // Arrange
-            var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
+            var solarTimes = new SolarTimes(new TimeOnly(07, 00), new TimeOnly(18, 00));
             var transitionDuration = new TimeSpan(01, 30, 00);
             var transitionOffset = 0;
             var dayConfiguration = new ColorConfiguration(6600, 1);
@@ -136,7 +136,7 @@ namespace LightBulb.Core.Tests
         public void Color_configuration_is_the_same_at_the_cycle_boundaries()
         {
             // Arrange
-            var solarTimes = new SolarTimes(new TimeOfDay(07, 00), new TimeOfDay(18, 00));
+            var solarTimes = new SolarTimes(new TimeOnly(07, 00), new TimeOnly(18, 00));
             var transitionDuration = new TimeSpan(01, 30, 00);
             var transitionOffset = 0;
             var dayConfiguration = new ColorConfiguration(6600, 1);
@@ -181,7 +181,7 @@ namespace LightBulb.Core.Tests
         public void Color_configuration_does_not_change_abruptly_throughout_the_whole_cycle()
         {
             // Arrange
-            var solarTimes = new SolarTimes(new TimeOfDay(07, 20), new TimeOfDay(23, 35));
+            var solarTimes = new SolarTimes(new TimeOnly(07, 20), new TimeOnly(23, 35));
             var transitionDuration = new TimeSpan(01, 30, 00);
             var transitionOffset = 0;
             var dayConfiguration = new ColorConfiguration(6600, 1);

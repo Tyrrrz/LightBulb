@@ -1,21 +1,10 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Windows.Input;
 
 namespace LightBulb.Models
 {
-    public readonly partial struct HotKey
+    public readonly partial record struct HotKey(Key Key, ModifierKeys Modifiers = ModifierKeys.None)
     {
-        public Key Key { get; }
-
-        public ModifierKeys Modifiers { get; }
-
-        public HotKey(Key key, ModifierKeys modifiers = ModifierKeys.None)
-        {
-            Key = key;
-            Modifiers = modifiers;
-        }
-
         public override string ToString()
         {
             if (Key == Key.None && Modifiers == ModifierKeys.None)
@@ -38,21 +27,8 @@ namespace LightBulb.Models
         }
     }
 
-    public partial struct HotKey
+    public partial record struct HotKey
     {
         public static HotKey None { get; } = new();
-    }
-
-    public partial struct HotKey : IEquatable<HotKey>
-    {
-        public bool Equals(HotKey other) => Key == other.Key && Modifiers == other.Modifiers;
-
-        public override bool Equals(object? obj) => obj is HotKey other && Equals(other);
-
-        public override int GetHashCode() => HashCode.Combine(Key, Modifiers);
-
-        public static bool operator ==(HotKey a, HotKey b) => a.Equals(b);
-
-        public static bool operator !=(HotKey a, HotKey b) => !(a == b);
     }
 }

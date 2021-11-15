@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security;
 using Microsoft.Win32;
-using Tyrrrz.Extensions;
 
 namespace LightBulb.WindowsApi.Native
 {
     internal static class RegistryEx
     {
-        public static RegistryKey GetRegistryKeyFromHiveName(string hiveName)
+        private static (string hiveName, string relativePath) DeconstructPath(string entryName)
+        {
+            var separatorIndex = entryName.IndexOf('\\');
+            return (entryName[..separatorIndex], entryName[(separatorIndex + 1)..]);
+        }
+
+        private static RegistryKey GetRegistryKeyFromHiveName(string hiveName)
         {
             if (string.Equals(hiveName, "HKLM", StringComparison.OrdinalIgnoreCase) ||
                 string.Equals(hiveName, "HKEY_LOCAL_MACHINE", StringComparison.OrdinalIgnoreCase))
@@ -27,7 +32,7 @@ namespace LightBulb.WindowsApi.Native
             throw new NotSupportedException($"Unsupported or invalid hive '{hiveName}'.");
         }
 
-        public static string GetRegistryValueType(Type type)
+        private static string GetRegistryValueType(Type type)
         {
             if (type == typeof(int))
                 return "REG_DWORD";
@@ -39,11 +44,12 @@ namespace LightBulb.WindowsApi.Native
             throw new NotSupportedException($"Unsupported registry value type '{type}'.");
         }
 
-        public static void RunRegistryCli(IReadOnlyList<string> arguments, bool asAdmin = false)
+        private static void RunRegistryCli(IReadOnlyList<string> arguments, bool asAdmin = false)
         {
             var processInfo = new ProcessStartInfo("reg");
 
-            processInfo.ArgumentList.AddRange(arguments);
+            foreach (var arg in arguments)
+                processInfo.ArgumentList.Add(arg);
 
             if (asAdmin)
             {
@@ -59,8 +65,7 @@ namespace LightBulb.WindowsApi.Native
 
         public static object? GetValueOrDefault(string path, string entryName)
         {
-            var hiveName = path.SubstringUntil("\\");
-            var relativePath = path.SubstringAfter("\\");
+            var (hiveName, relativePath) = DeconstructPath(path);
 
             using var registryKey = GetRegistryKeyFromHiveName(hiveName).OpenSubKey(relativePath, false);
             return registryKey?.GetValue(entryName);
@@ -72,13 +77,12 @@ namespace LightBulb.WindowsApi.Native
         {
             try
             {
-                var hiveName = path.SubstringUntil("\\");
-                var relativePath = path.SubstringAfter("\\");
+                var (hiveName, relativePath) = DeconstructPath(path);
 
                 using var registryKey = GetRegistryKeyFromHiveName(hiveName).CreateSubKey(relativePath, true);
                 registryKey.SetValue(entryName, entryValue);
             }
-            catch (Exception ex) when (ex is SecurityException || ex is UnauthorizedAccessException)
+            catch (Exception ex) when (ex is SecurityException or UnauthorizedAccessException)
             {
                 RunRegistryCli(new[]
                 {
@@ -95,13 +99,12 @@ namespace LightBulb.WindowsApi.Native
         {
             try
             {
-                var hiveName = path.SubstringUntil("\\");
-                var relativePath = path.SubstringAfter("\\");
+                var (hiveName, relativePath) = DeconstructPath(path);
 
                 using var registryKey = GetRegistryKeyFromHiveName(hiveName).OpenSubKey(relativePath, true);
                 registryKey?.DeleteValue(entryName, false);
             }
-            catch (Exception ex) when (ex is SecurityException || ex is UnauthorizedAccessException)
+            catch (Exception ex) when (ex is SecurityException or UnauthorizedAccessException)
             {
                 RunRegistryCli(new[]
                 {

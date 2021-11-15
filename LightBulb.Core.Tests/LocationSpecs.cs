@@ -6,7 +6,7 @@ namespace LightBulb.Core.Tests
 {
     public class LocationSpecs
     {
-        public static TheoryData<string?, GeoLocation?> GeoLocationParseTestCases => new()
+        public static TheoryData<string?, GeoLocation?> LocationParseTestCases => new()
         {
             // Valid
 
@@ -36,7 +36,7 @@ namespace LightBulb.Core.Tests
         };
 
         [Theory]
-        [MemberData(nameof(GeoLocationParseTestCases))]
+        [MemberData(nameof(LocationParseTestCases))]
         public void Location_can_be_resolved_from_coordinates(string? str, GeoLocation? expectedResult)
         {
             // Act & assert
@@ -46,11 +46,8 @@ namespace LightBulb.Core.Tests
         [Fact]
         public async Task Location_can_be_resolved_from_IP()
         {
-            // Arrange
-            var locationProvider = new GeoLocationProvider();
-
             // Act
-            var location = await locationProvider.GetLocationAsync();
+            var location = await GeoLocation.GetCurrentAsync();
 
             // Assert
             location.Latitude.Should().NotBe(default);
@@ -60,15 +57,12 @@ namespace LightBulb.Core.Tests
         [Fact]
         public async Task Location_can_be_resolved_using_a_search_query()
         {
-            // Arrange
-            var locationProvider = new GeoLocationProvider();
-
             // Act
-            var location = await locationProvider.GetLocationAsync("Kyiv, Ukraine");
+            var location = await GeoLocation.GetAsync("Kyiv, Ukraine");
 
             // Assert
-            location.Latitude.Should().BeApproximately(50.4547, 0.01);
-            location.Longitude.Should().BeApproximately(30.5238, 0.01);
+            location.Latitude.Should().BeApproximately(50.4500, 0.0001);
+            location.Longitude.Should().BeApproximately(30.5241, 0.0001);
         }
     }
 }

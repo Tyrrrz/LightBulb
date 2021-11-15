@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using LightBulb.Core;
 using LightBulb.Models;
@@ -31,6 +32,18 @@ namespace LightBulb.Services
 
         // General
 
+        [Ignore] // not configurable
+        public double MinimumTemperature => 500;
+
+        [Ignore] // not configurable
+        public double MaximumTemperature => 20_000;
+
+        [Ignore] // not configurable
+        public double MinimumBrightness => 0.1;
+
+        [Ignore] // not configurable
+        public double MaximumBrightness => 1;
+
         public ColorConfiguration NightConfiguration { get; set; } = new(3900, 0.85);
 
         public ColorConfiguration DayConfiguration { get; set; } = new(6600, 1);
@@ -43,11 +56,11 @@ namespace LightBulb.Services
 
         public bool IsManualSunriseSunsetEnabled { get; set; } = true;
 
-        [JsonProperty("ManualSunriseTime"), JsonConverter(typeof(TimeOfDayJsonConverter))]
-        public TimeOfDay ManualSunrise { get; set; } = new(07, 20);
+        [JsonProperty("ManualSunriseTime"), JsonConverter(typeof(TimeOnlyJsonConverter))]
+        public TimeOnly ManualSunrise { get; set; } = new(07, 20);
 
-        [JsonProperty("ManualSunsetTime"), JsonConverter(typeof(TimeOfDayJsonConverter))]
-        public TimeOfDay ManualSunset { get; set; } = new(16, 30);
+        [JsonProperty("ManualSunsetTime"), JsonConverter(typeof(TimeOnlyJsonConverter))]
+        public TimeOnly ManualSunset { get; set; } = new(16, 30);
 
         public GeoLocation? Location { get; set; }
 
@@ -153,29 +166,28 @@ namespace LightBulb.Services
 
     public partial class SettingsService
     {
-        // Converter to handle (de-)serialization of TimeOfDay
-        private class TimeOfDayJsonConverter : JsonConverter
+        // Converter to handle (de-)serialization of TimeOnly
+        private class TimeOnlyJsonConverter : JsonConverter
         {
-            public override bool CanConvert(Type objectType) => objectType == typeof(TimeOfDay);
+            public override bool CanConvert(Type objectType) => objectType == typeof(TimeOnly);
 
             public override void WriteJson(
                 JsonWriter writer,
                 object value,
                 JsonSerializer serializer)
             {
-                if (value is TimeOfDay timeOfDay)
-                    writer.WriteValue(timeOfDay.AsTimeSpan());
+                if (value is TimeOnly timeOfDay)
+                    writer.WriteValue(timeOfDay.ToTimeSpan());
             }
 
             public override object ReadJson(
                 JsonReader reader,
                 Type objectType,
                 object existingValue,
-                JsonSerializer serializer)
-            {
-                var raw = (string) reader.Value;
-                return TimeOfDay.TryParse(raw) ?? default;
-            }
+                JsonSerializer serializer) =>
+                TimeOnly.TryParse((string) reader.Value, CultureInfo.InvariantCulture, DateTimeStyles.None, out var result)
+                    ? result
+                    : default;
         }
     }
 }

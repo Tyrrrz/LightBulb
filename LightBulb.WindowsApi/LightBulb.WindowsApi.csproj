@@ -4,8 +4,4 @@
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Tyrrrz.Extensions" Version="1.6.5" />
-  </ItemGroup>
-
 </Project>

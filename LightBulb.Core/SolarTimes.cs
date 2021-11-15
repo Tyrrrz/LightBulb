@@ -2,22 +2,7 @@
 
 namespace LightBulb.Core
 {
-    public readonly partial struct SolarTimes
-    {
-        public TimeOfDay Sunrise { get; }
-
-        public TimeOfDay Sunset { get; }
-
-        public SolarTimes(TimeOfDay sunrise, TimeOfDay sunset)
-        {
-            Sunrise = sunrise;
-            Sunset = sunset;
-        }
-
-        public override string ToString() => $"Sunrise: {Sunrise}, Sunset: {Sunset}";
-    }
-
-    public partial struct SolarTimes
+    public readonly record struct SolarTimes(TimeOnly Sunrise, TimeOnly Sunset)
     {
         private static double DegreesToRadians(double degree) => degree * (Math.PI / 180);
 
@@ -28,7 +13,7 @@ namespace LightBulb.Core
                 ? to - (from - value) % (to - from)
                 : from + (value - from) % (to - from);
 
-        private static TimeOfDay CalculateSolarTime(
+        private static TimeOnly CalculateSolarTime(
             GeoLocation location,
             DateTimeOffset date,
             double zenith,
@@ -93,27 +78,12 @@ namespace LightBulb.Core
             var localHours = utcHours + date.Offset.TotalHours;
             localHours = Wrap(localHours, 0, 24);
 
-            return new TimeOfDay(TimeSpan.FromHours(localHours));
+            return TimeOnly.FromTimeSpan(TimeSpan.FromHours(localHours));
         }
 
         public static SolarTimes Calculate(GeoLocation location, DateTimeOffset date) => new(
             CalculateSolarTime(location, date, 90.83, true),
             CalculateSolarTime(location, date, 90.83, false)
         );
-    }
-
-    public partial struct SolarTimes : IEquatable<SolarTimes>
-    {
-        public bool Equals(SolarTimes other) =>
-            Sunrise.Equals(other.Sunrise) && Sunset.Equals(other.Sunset);
-
-        public override bool Equals(object? obj) =>
-            obj is SolarTimes other && Equals(other);
-
-        public override int GetHashCode() => HashCode.Combine(Sunrise, Sunset);
-
-        public static bool operator ==(SolarTimes left, SolarTimes right) => Equals(left, right);
-
-        public static bool operator !=(SolarTimes left, SolarTimes right) => !(left == right);
     }
 }

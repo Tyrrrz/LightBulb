@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using LightBulb.Core;
 
 namespace LightBulb.Converters
 {
-    [ValueConversion(typeof(TimeOfDay), typeof(string))]
-    public class TimeOfDayToStringConverter : IValueConverter
+    [ValueConversion(typeof(TimeOnly), typeof(string))]
+    public class TimeOnlyToStringConverter : IValueConverter
     {
-        public static TimeOfDayToStringConverter Instance { get; } = new();
+        public static TimeOnlyToStringConverter Instance { get; } = new();
 
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
-            value is TimeOfDay timeOfDay
+            value is TimeOnly timeOfDay
                 ? timeOfDay.ToString(null, culture)
                 : default;
 
         public object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
-            value is string stringValue
-                ? TimeOfDay.TryParse(stringValue, culture)
-                : default(TimeOfDay);
+            value is string stringValue && TimeOnly.TryParse(stringValue, culture, DateTimeStyles.None, out var result)
+                ? result
+                : default;
     }
 }

@@ -1,27 +1,27 @@
 ﻿using System;
 using LightBulb.Core;
-using Tyrrrz.Extensions;
 
 namespace LightBulb.Utils.Extensions
 {
     internal static class GenericExtensions
     {
-        public static double StepTo(this double value, double target, double absStep)
-        {
-            absStep = Math.Abs(absStep);
-
-            return target >= value
-                ? Math.Min(value + absStep, target)
-                : Math.Max(value - absStep, target);
-        }
+        public static double StepTo(this double value, double target, double absStep) =>
+            target >= value
+                ? Math.Min(value + Math.Abs(absStep), target)
+                : Math.Max(value - Math.Abs(absStep), target);
 
         public static DateTimeOffset StepTo(this DateTimeOffset value, DateTimeOffset target, TimeSpan absStep)
         {
-            absStep = absStep.Duration();
-
-            return target >= value
-                ? (value + absStep).ClampMax(target)
-                : (value - absStep).ClampMin(target);
+            if (target >= value)
+            {
+                var result = value + absStep.Duration();
+                return result <= target ? result : target;
+            }
+            else
+            {
+                var result = value - absStep.Duration();
+                return result >= target ? result : target;
+            }
         }
 
         public static ColorConfiguration StepTo(

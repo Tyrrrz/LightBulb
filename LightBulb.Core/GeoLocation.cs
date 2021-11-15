@@ -1,26 +1,22 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using JsonExtensions.Http;
+using JsonExtensions.Reading;
+using LightBulb.Core.Utils;
 
 namespace LightBulb.Core
 {
-    public readonly partial struct GeoLocation
+    public readonly partial record struct GeoLocation(double Latitude, double Longitude)
     {
-        public double Latitude { get; }
-
-        public double Longitude { get; }
-
-        public GeoLocation(double latitude, double longitude)
-        {
-            Latitude = latitude;
-            Longitude = longitude;
-        }
-
         public override string ToString() =>
             $"{Latitude.ToString(CultureInfo.InvariantCulture)}, {Longitude.ToString(CultureInfo.InvariantCulture)}";
     }
 
-    public partial struct GeoLocation
+    public partial record struct GeoLocation
     {
         private static GeoLocation? TryParseSigned(string value)
         {
@@ -70,20 +66,32 @@ namespace LightBulb.Core
                 TryParseSigned(value) ??
                 TryParseSuffixed(value);
         }
-    }
 
-    public partial struct GeoLocation : IEquatable<GeoLocation>
-    {
-        public bool Equals(GeoLocation other) =>
-            Latitude.Equals(other.Latitude) && Longitude.Equals(other.Longitude);
+        public static async Task<GeoLocation> GetCurrentAsync()
+        {
+            // HTTPS isn't supported by this endpoint
+            const string url = "http://ip-api.com/json";
+            var json = await Http.Client.GetJsonAsync(url);
 
-        public override bool Equals(object? obj) =>
-            obj is GeoLocation other && Equals(other);
+            var latitude = json.GetProperty("lat").GetDouble();
+            var longitude = json.GetProperty("lon").GetDouble();
 
-        public override int GetHashCode() => HashCode.Combine(Latitude, Longitude);
+            return new GeoLocation(latitude, longitude);
+        }
 
-        public static bool operator ==(GeoLocation a, GeoLocation b) => a.Equals(b);
+        public static async Task<GeoLocation> GetAsync(string query)
+        {
+            var queryEncoded = WebUtility.UrlEncode(query);
 
-        public static bool operator !=(GeoLocation a, GeoLocation b) => !(a == b);
+            var url = $"https://nominatim.openstreetmap.org/search?q={queryEncoded}&format=json";
+            var json = await Http.Client.GetJsonAsync(url);
+
+            var firstLocationJson = json.EnumerateArray().First();
+
+            var latitude = firstLocationJson.GetProperty("lat").GetDoubleCoerced();
+            var longitude = firstLocationJson.GetProperty("lon").GetDoubleCoerced();
+
+            return new GeoLocation(latitude, longitude);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using LightBulb.Core;
+﻿using System;
+using LightBulb.Core;
 using LightBulb.Services;
 using Stylet;
 
@@ -6,8 +7,6 @@ namespace LightBulb.ViewModels.Components.Settings
 {
     public class LocationSettingsTabViewModel : SettingsTabViewModelBase
     {
-        private readonly GeoLocationProvider _locationProvider = new();
-
         public bool IsBusy { get; private set; }
 
         public bool IsManualSunriseSunsetEnabled
@@ -16,13 +15,13 @@ namespace LightBulb.ViewModels.Components.Settings
             set => SettingsService.IsManualSunriseSunsetEnabled = value;
         }
 
-        public TimeOfDay ManualSunrise
+        public TimeOnly ManualSunrise
         {
             get => SettingsService.ManualSunrise;
             set => SettingsService.ManualSunrise = value;
         }
 
-        public TimeOfDay ManualSunset
+        public TimeOnly ManualSunset
         {
             get => SettingsService.ManualSunset;
             set => SettingsService.ManualSunset = value;
@@ -54,7 +53,7 @@ namespace LightBulb.ViewModels.Components.Settings
 
             try
             {
-                Location = await _locationProvider.GetLocationAsync();
+                Location = await GeoLocation.GetCurrentAsync();
             }
             catch
             {
@@ -83,7 +82,7 @@ namespace LightBulb.ViewModels.Components.Settings
             {
                 Location =
                     GeoLocation.TryParse(LocationQuery) ??
-                    await _locationProvider.GetLocationAsync(LocationQuery);
+                    await GeoLocation.GetAsync(LocationQuery);
             }
             catch
             {
