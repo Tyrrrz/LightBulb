@@ -103,6 +103,8 @@ namespace LightBulb.Services
 
         public event EventHandler? SettingsReset;
 
+        public event EventHandler? SettingsLoaded;
+
         public event EventHandler? SettingsSaved;
 
         public SettingsService()
@@ -145,6 +147,8 @@ namespace LightBulb.Services
             // Get the actual values from registry because it may be out of sync with saved settings
             IsExtendedGammaRangeUnlocked = _extendedGammaRangeSwitch.IsSet;
             IsAutoStartEnabled = _autoStartSwitch.IsSet;
+
+            SettingsLoaded?.Invoke(this, EventArgs.Empty);
         }
 
         public override void Save()

@@ -20,6 +20,8 @@ namespace LightBulb.ViewModels.Components.Settings
             DisplayName = displayName;
 
             SettingsService.SettingsReset += (_, _) => Refresh();
+            SettingsService.SettingsLoaded += (_, _) => Refresh();
+            SettingsService.SettingsSaved += (_, _) => Refresh();
         }
     }
 }
