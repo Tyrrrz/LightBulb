@@ -138,6 +138,9 @@ namespace LightBulb.Services
         {
             base.Reset();
             SettingsReset?.Invoke(this, EventArgs.Empty);
+
+            // Don't reset first-time experience
+            IsFirstTimeExperienceEnabled = false;
         }
 
         public override void Load()
