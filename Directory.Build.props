@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
-    <Version>2.3.3</Version>
+    <Version>2.4</Version>
     <Company>Tyrrrz</Company>
     <Copyright>Copyright (C) Alexey Golub</Copyright>
     <LangVersion>preview</LangVersion>

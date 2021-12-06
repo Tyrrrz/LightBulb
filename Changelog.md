@@ -1,3 +1,11 @@
+### v2.4 (06-Dec-2021)
+
+- Changed target runtime to .NET 6. You don't need to take any action as the application should download and install new prerequisites automatically. In the event it doesn't happen for whatever reason, you can get the runtime here: [Windows x64](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-6.0.0-windows-x64-installer) | [Windows x86](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-6.0.0-windows-x86-installer).
+- Fixed an issue which caused yellow-green color glitches on the monitor when the color temperature was set to 500K.
+- Fixed an issue which caused color configuration to transition incorrectly to night time if it happened over midnight (00:00).
+- Fixed an issue which caused monitor to flicker whenever LightBulb's gamma state went out of sync with the monitor. This happened whenever monitor settings were changed, for example during a transition in wallpaper slideshow.
+- Fixed a multitude of issues related to the bootstrapper (prerequisite installer).
+
 ### v2.3.3 (15-Jun-2021)
 
 - Fixed an issue where the list of missing components, reported by the prerequisite check at application startup, included Windows updates that were not applicable to the user's system due to the fact that other superseding updates have already been installed. This issue only affected users running LightBulb on Windows 7.
