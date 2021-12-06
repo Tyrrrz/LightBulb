@@ -35,7 +35,7 @@ namespace LightBulb.WindowsApi
                 // Throttle triggers
                 lock (_lock)
                 {
-                    if ((DateTimeOffset.Now - _lastTriggerTimestamp).Duration().TotalSeconds < 0.2)
+                    if ((DateTimeOffset.Now - _lastTriggerTimestamp).Duration().TotalSeconds < 0.05)
                         return;
 
                     _lastTriggerTimestamp = DateTimeOffset.Now;
