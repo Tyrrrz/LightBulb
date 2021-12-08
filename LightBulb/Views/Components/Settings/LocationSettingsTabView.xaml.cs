@@ -1,10 +1,9 @@
-﻿namespace LightBulb.Views.Components.Settings
+﻿namespace LightBulb.Views.Components.Settings;
+
+public partial class LocationSettingsTabView
 {
-    public partial class LocationSettingsTabView
+    public LocationSettingsTabView()
     {
-        public LocationSettingsTabView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -1,10 +1,9 @@
-﻿namespace LightBulb.Views.Components.Settings
+﻿namespace LightBulb.Views.Components.Settings;
+
+public partial class HotKeySettingsTabView
 {
-    public partial class HotKeySettingsTabView
+    public HotKeySettingsTabView()
     {
-        public HotKeySettingsTabView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -1,11 +1,10 @@
-﻿namespace LightBulb.ViewModels.Components.Settings
+﻿namespace LightBulb.ViewModels.Components.Settings;
+
+public interface ISettingsTabViewModel
 {
-    public interface ISettingsTabViewModel
-    {
-        int Order { get; }
+    int Order { get; }
 
-        string DisplayName { get; }
+    string DisplayName { get; }
 
-        bool IsActive { get; set; }
-    }
+    bool IsActive { get; set; }
 }

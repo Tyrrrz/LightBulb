@@ -1,10 +1,9 @@
-﻿namespace LightBulb.Views.Dialogs
+﻿namespace LightBulb.Views.Dialogs;
+
+public partial class SettingsView
 {
-    public partial class SettingsView
+    public SettingsView()
     {
-        public SettingsView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -1,25 +1,24 @@
 ﻿using System;
 using System.IO;
 
-namespace LightBulb.Utils
+namespace LightBulb.Utils;
+
+internal static class DirectoryEx
 {
-    internal static class DirectoryEx
+    public static bool CheckWriteAccess(string dirPath)
     {
-        public static bool CheckWriteAccess(string dirPath)
+        var testFilePath = Path.Combine(dirPath, Guid.NewGuid().ToString());
+
+        try
         {
-            var testFilePath = Path.Combine(dirPath, Guid.NewGuid().ToString());
+            File.WriteAllText(testFilePath, "");
+            File.Delete(testFilePath);
 
-            try
-            {
-                File.WriteAllText(testFilePath, "");
-                File.Delete(testFilePath);
-
-                return true;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return false;
-            }
+            return true;
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return false;
         }
     }
 }

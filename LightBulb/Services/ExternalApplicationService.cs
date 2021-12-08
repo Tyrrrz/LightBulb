@@ -4,65 +4,64 @@ using System.IO;
 using LightBulb.Models;
 using LightBulb.WindowsApi;
 
-namespace LightBulb.Services
+namespace LightBulb.Services;
+
+public class ExternalApplicationService
 {
-    public class ExternalApplicationService
+    // Applications that we don't want to show to the user
+    private readonly HashSet<string> _ignoredApplicationNames = new(StringComparer.OrdinalIgnoreCase)
     {
-        // Applications that we don't want to show to the user
-        private readonly HashSet<string> _ignoredApplicationNames = new(StringComparer.OrdinalIgnoreCase)
-        {
-            "explorer"
-        };
+        "explorer"
+    };
 
-        public IEnumerable<ExternalApplication> GetAllRunningApplications()
+    public IEnumerable<ExternalApplication> GetAllRunningApplications()
+    {
+        foreach (var window in SystemWindow.GetAllWindows())
         {
-            foreach (var window in SystemWindow.GetAllWindows())
+            if (!window.IsVisible() || window.IsSystemWindow())
             {
-                if (!window.IsVisible() || window.IsSystemWindow())
-                {
-                    continue;
-                }
-
-                using var process = window.TryGetProcess();
-
-                var executableFilePath = process?.TryGetExecutableFilePath();
-                var executableFileName = Path.GetFileNameWithoutExtension(executableFilePath);
-
-                if (string.IsNullOrWhiteSpace(executableFilePath) || string.IsNullOrWhiteSpace(executableFileName))
-                {
-                    continue;
-                }
-
-                if (_ignoredApplicationNames.Contains(executableFileName))
-                {
-                    continue;
-                }
-
-                yield return new ExternalApplication(executableFilePath);
+                continue;
             }
-        }
 
-        public ExternalApplication? TryGetForegroundApplication()
-        {
-            var window = SystemWindow.TryGetForegroundWindow();
-            using var process = window?.TryGetProcess();
+            using var process = window.TryGetProcess();
 
             var executableFilePath = process?.TryGetExecutableFilePath();
+            var executableFileName = Path.GetFileNameWithoutExtension(executableFilePath);
 
-            return !string.IsNullOrWhiteSpace(executableFilePath)
-                ? new ExternalApplication(executableFilePath)
-                : null;
+            if (string.IsNullOrWhiteSpace(executableFilePath) || string.IsNullOrWhiteSpace(executableFileName))
+            {
+                continue;
+            }
+
+            if (_ignoredApplicationNames.Contains(executableFileName))
+            {
+                continue;
+            }
+
+            yield return new ExternalApplication(executableFilePath);
         }
+    }
 
-        public bool IsForegroundApplicationFullScreen()
-        {
-            var window = SystemWindow.TryGetForegroundWindow();
+    public ExternalApplication? TryGetForegroundApplication()
+    {
+        var window = SystemWindow.TryGetForegroundWindow();
+        using var process = window?.TryGetProcess();
 
-            return
-                window is not null &&
-                window.IsVisible() &&
-                !window.IsSystemWindow() &&
-                window.IsFullScreen();
-        }
+        var executableFilePath = process?.TryGetExecutableFilePath();
+
+        return !string.IsNullOrWhiteSpace(executableFilePath)
+            ? new ExternalApplication(executableFilePath)
+            : null;
+    }
+
+    public bool IsForegroundApplicationFullScreen()
+    {
+        var window = SystemWindow.TryGetForegroundWindow();
+
+        return
+            window is not null &&
+            window.IsVisible() &&
+            !window.IsSystemWindow() &&
+            window.IsFullScreen();
     }
 }

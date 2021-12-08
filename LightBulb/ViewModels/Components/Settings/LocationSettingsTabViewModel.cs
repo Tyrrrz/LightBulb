@@ -3,95 +3,94 @@ using LightBulb.Core;
 using LightBulb.Services;
 using Stylet;
 
-namespace LightBulb.ViewModels.Components.Settings
+namespace LightBulb.ViewModels.Components.Settings;
+
+public class LocationSettingsTabViewModel : SettingsTabViewModelBase
 {
-    public class LocationSettingsTabViewModel : SettingsTabViewModelBase
+    public bool IsBusy { get; private set; }
+
+    public bool IsManualSunriseSunsetEnabled
     {
-        public bool IsBusy { get; private set; }
+        get => SettingsService.IsManualSunriseSunsetEnabled;
+        set => SettingsService.IsManualSunriseSunsetEnabled = value;
+    }
 
-        public bool IsManualSunriseSunsetEnabled
+    public TimeOnly ManualSunrise
+    {
+        get => SettingsService.ManualSunrise;
+        set => SettingsService.ManualSunrise = value;
+    }
+
+    public TimeOnly ManualSunset
+    {
+        get => SettingsService.ManualSunset;
+        set => SettingsService.ManualSunset = value;
+    }
+
+    public GeoLocation? Location
+    {
+        get => SettingsService.Location;
+        set => SettingsService.Location = value;
+    }
+
+    public bool IsLocationError { get; private set; }
+
+    public string? LocationQuery { get; set; }
+
+    public LocationSettingsTabViewModel(SettingsService settingsService)
+        : base(settingsService, 1, "Location")
+    {
+        // Bind string representation of location to the actual value
+        settingsService.BindAndInvoke(o => o.Location, (_, _) => LocationQuery = Location?.ToString());
+    }
+
+    public bool CanAutoDetectLocation => !IsBusy;
+
+    public async void AutoDetectLocation()
+    {
+        IsBusy = true;
+        IsLocationError = false;
+
+        try
         {
-            get => SettingsService.IsManualSunriseSunsetEnabled;
-            set => SettingsService.IsManualSunriseSunsetEnabled = value;
+            Location = await GeoLocation.GetCurrentAsync();
         }
-
-        public TimeOnly ManualSunrise
+        catch
         {
-            get => SettingsService.ManualSunrise;
-            set => SettingsService.ManualSunrise = value;
+            IsLocationError = true;
         }
-
-        public TimeOnly ManualSunset
+        finally
         {
-            get => SettingsService.ManualSunset;
-            set => SettingsService.ManualSunset = value;
+            IsBusy = false;
         }
+    }
 
-        public GeoLocation? Location
+    public bool CanSetLocation =>
+        !IsBusy &&
+        !string.IsNullOrWhiteSpace(LocationQuery) &&
+        LocationQuery != Location?.ToString();
+
+    public async void SetLocation()
+    {
+        if (string.IsNullOrWhiteSpace(LocationQuery))
+            return;
+
+        IsBusy = true;
+        IsLocationError = false;
+
+        try
         {
-            get => SettingsService.Location;
-            set => SettingsService.Location = value;
+            Location =
+                GeoLocation.TryParse(LocationQuery) ??
+                await GeoLocation.GetAsync(LocationQuery);
         }
-
-        public bool IsLocationError { get; private set; }
-
-        public string? LocationQuery { get; set; }
-
-        public LocationSettingsTabViewModel(SettingsService settingsService)
-            : base(settingsService, 1, "Location")
+        catch
         {
-            // Bind string representation of location to the actual value
-            settingsService.BindAndInvoke(o => o.Location, (_, _) => LocationQuery = Location?.ToString());
+            IsLocationError = true;
         }
-
-        public bool CanAutoDetectLocation => !IsBusy;
-
-        public async void AutoDetectLocation()
+        finally
         {
-            IsBusy = true;
-            IsLocationError = false;
-
-            try
-            {
-                Location = await GeoLocation.GetCurrentAsync();
-            }
-            catch
-            {
-                IsLocationError = true;
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-        public bool CanSetLocation =>
-            !IsBusy &&
-            !string.IsNullOrWhiteSpace(LocationQuery) &&
-            LocationQuery != Location?.ToString();
-
-        public async void SetLocation()
-        {
-            if (string.IsNullOrWhiteSpace(LocationQuery))
-                return;
-
-            IsBusy = true;
-            IsLocationError = false;
-
-            try
-            {
-                Location =
-                    GeoLocation.TryParse(LocationQuery) ??
-                    await GeoLocation.GetAsync(LocationQuery);
-            }
-            catch
-            {
-                IsLocationError = true;
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            IsBusy = false;
         }
     }
 }

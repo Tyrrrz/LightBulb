@@ -1,27 +1,26 @@
 ﻿using LightBulb.Services;
 using Stylet;
 
-namespace LightBulb.ViewModels.Components.Settings
+namespace LightBulb.ViewModels.Components.Settings;
+
+public abstract class SettingsTabViewModelBase : PropertyChangedBase, ISettingsTabViewModel
 {
-    public abstract class SettingsTabViewModelBase : PropertyChangedBase, ISettingsTabViewModel
+    protected SettingsService SettingsService { get; }
+
+    public int Order { get; }
+
+    public string DisplayName { get; }
+
+    public bool IsActive { get; set; }
+
+    protected SettingsTabViewModelBase(SettingsService settingsService, int order, string displayName)
     {
-        protected SettingsService SettingsService { get; }
+        SettingsService = settingsService;
+        Order = order;
+        DisplayName = displayName;
 
-        public int Order { get; }
-
-        public string DisplayName { get; }
-
-        public bool IsActive { get; set; }
-
-        protected SettingsTabViewModelBase(SettingsService settingsService, int order, string displayName)
-        {
-            SettingsService = settingsService;
-            Order = order;
-            DisplayName = displayName;
-
-            SettingsService.SettingsReset += (_, _) => Refresh();
-            SettingsService.SettingsLoaded += (_, _) => Refresh();
-            SettingsService.SettingsSaved += (_, _) => Refresh();
-        }
+        SettingsService.SettingsReset += (_, _) => Refresh();
+        SettingsService.SettingsLoaded += (_, _) => Refresh();
+        SettingsService.SettingsSaved += (_, _) => Refresh();
     }
 }

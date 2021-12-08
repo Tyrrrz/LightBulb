@@ -1,10 +1,9 @@
-﻿namespace LightBulb.Views.Components.Settings
+﻿namespace LightBulb.Views.Components.Settings;
+
+public partial class ApplicationWhitelistSettingsTabView
 {
-    public partial class ApplicationWhitelistSettingsTabView
+    public ApplicationWhitelistSettingsTabView()
     {
-        public ApplicationWhitelistSettingsTabView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

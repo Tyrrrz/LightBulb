@@ -1,10 +1,9 @@
-﻿namespace LightBulb.Views.Components.Settings
+﻿namespace LightBulb.Views.Components.Settings;
+
+public partial class GeneralSettingsTabView
 {
-    public partial class GeneralSettingsTabView
+    public GeneralSettingsTabView()
     {
-        public GeneralSettingsTabView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

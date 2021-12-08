@@ -1,10 +1,9 @@
-﻿namespace LightBulb.Views.Components
+﻿namespace LightBulb.Views.Components;
+
+public partial class DashboardView
 {
-    public partial class DashboardView
+    public DashboardView()
     {
-        public DashboardView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

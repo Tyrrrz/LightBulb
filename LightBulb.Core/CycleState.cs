@@ -1,11 +1,10 @@
-namespace LightBulb.Core
+namespace LightBulb.Core;
+
+public enum CycleState
 {
-    public enum CycleState
-    {
-        Disabled,
-        Paused,
-        Day,
-        Night,
-        Transition
-    }
+    Disabled,
+    Paused,
+    Day,
+    Night,
+    Transition
 }

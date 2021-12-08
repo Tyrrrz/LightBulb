@@ -1,101 +1,100 @@
 ﻿using System;
 using System.Threading;
 
-namespace LightBulb.WindowsApi
+namespace LightBulb.WindowsApi;
+
+public partial class Timer : IDisposable
 {
-    public partial class Timer : IDisposable
+    private readonly object _lock = new();
+
+    private readonly Action _callback;
+    private readonly TimeSpan _firstTickInterval;
+    private readonly TimeSpan _interval;
+
+    private readonly System.Threading.Timer _internalTimer;
+
+    private bool _isActive;
+    private bool _isBusy;
+    private bool _isDisposed;
+
+    public Timer(TimeSpan firstTickInterval, TimeSpan interval, Action callback)
     {
-        private readonly object _lock = new();
+        _firstTickInterval = firstTickInterval;
+        _interval = interval;
+        _callback = callback;
 
-        private readonly Action _callback;
-        private readonly TimeSpan _firstTickInterval;
-        private readonly TimeSpan _interval;
+        _internalTimer = new System.Threading.Timer(
+            _ => Tick(),
+            null,
+            Timeout.InfiniteTimeSpan,
+            Timeout.InfiniteTimeSpan
+        );
+    }
 
-        private readonly System.Threading.Timer _internalTimer;
+    public Timer(TimeSpan interval, Action callback)
+        : this(TimeSpan.Zero, interval, callback)
+    {
+    }
 
-        private bool _isActive;
-        private bool _isBusy;
-        private bool _isDisposed;
+    private void Tick()
+    {
+        // Prevent multiple reentry
+        if (_isBusy)
+            return;
 
-        public Timer(TimeSpan firstTickInterval, TimeSpan interval, Action callback)
+        lock (_lock)
         {
-            _firstTickInterval = firstTickInterval;
-            _interval = interval;
-            _callback = callback;
-
-            _internalTimer = new System.Threading.Timer(
-                _ => Tick(),
-                null,
-                Timeout.InfiniteTimeSpan,
-                Timeout.InfiniteTimeSpan
-            );
-        }
-
-        public Timer(TimeSpan interval, Action callback)
-            : this(TimeSpan.Zero, interval, callback)
-        {
-        }
-
-        private void Tick()
-        {
-            // Prevent multiple reentry
-            if (_isBusy)
+            // Prevent executing when already disposed (race condition)
+            if (_isDisposed)
                 return;
 
-            lock (_lock)
+            try
             {
-                // Prevent executing when already disposed (race condition)
-                if (_isDisposed)
-                    return;
-
-                try
-                {
-                    _isBusy = true;
-                    _callback();
-                }
-                finally
-                {
-                    _isBusy = false;
-                }
+                _isBusy = true;
+                _callback();
             }
-        }
-
-        public void Start()
-        {
-            if (_isActive) return;
-
-            _internalTimer.Change(_firstTickInterval, _interval);
-            _isActive = true;
-        }
-
-        public void Stop()
-        {
-            if (!_isActive) return;
-
-            _internalTimer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
-            _isActive = false;
-        }
-
-        public void Dispose()
-        {
-            // Lock so that tick doesn't trigger after dispose (bad idea?)
-            lock (_lock)
+            finally
             {
-                _isActive = false;
-                _isDisposed = true;
-                _internalTimer.Dispose();
+                _isBusy = false;
             }
         }
     }
 
-    public partial class Timer
+    public void Start()
     {
-        public static IDisposable QueueDelayedAction(TimeSpan delay, Action callback)
-        {
-            var timer = new Timer(delay, Timeout.InfiniteTimeSpan, callback);
-            timer.Start();
+        if (_isActive) return;
 
-            return timer;
+        _internalTimer.Change(_firstTickInterval, _interval);
+        _isActive = true;
+    }
+
+    public void Stop()
+    {
+        if (!_isActive) return;
+
+        _internalTimer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+        _isActive = false;
+    }
+
+    public void Dispose()
+    {
+        // Lock so that tick doesn't trigger after dispose (bad idea?)
+        lock (_lock)
+        {
+            _isActive = false;
+            _isDisposed = true;
+            _internalTimer.Dispose();
         }
+    }
+}
+
+public partial class Timer
+{
+    public static IDisposable QueueDelayedAction(TimeSpan delay, Action callback)
+    {
+        var timer = new Timer(delay, Timeout.InfiniteTimeSpan, callback);
+        timer.Start();
+
+        return timer;
     }
 }

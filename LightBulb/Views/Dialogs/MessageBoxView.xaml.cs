@@ -1,10 +1,9 @@
-﻿namespace LightBulb.Views.Dialogs
+﻿namespace LightBulb.Views.Dialogs;
+
+public partial class MessageBoxView
 {
-    public partial class MessageBoxView
+    public MessageBoxView()
     {
-        public MessageBoxView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
