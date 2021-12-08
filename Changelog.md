@@ -1,3 +1,7 @@
+### v2.4.1 (08-Dec-2021)
+
+- Fixed an issue which caused the decrease brightness hotkey to set the brightness to its lowest value.
+
 ### v2.4 (06-Dec-2021)
 
 - Changed target runtime to .NET 6. You don't need to take any action as the application should download and install new prerequisites automatically. In the event it doesn't happen for whatever reason, you can get the runtime here: [Windows x64](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-6.0.0-windows-x64-installer) | [Windows x86](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-6.0.0-windows-x86-installer).
