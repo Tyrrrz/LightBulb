@@ -203,7 +203,7 @@ public class DashboardViewModel : PropertyChangedBase, IDisposable
             _hotKeyService.RegisterHotKey(_settingsService.DecreaseBrightnessOffsetHotKey, () =>
             {
                 BrightnessOffset +=
-                    Math.Min(-0.05, _settingsService.MinimumBrightness - TargetConfiguration.Brightness);
+                    Math.Max(-0.05, _settingsService.MinimumBrightness - TargetConfiguration.Brightness);
             });
         }
 
