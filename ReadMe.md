@@ -7,7 +7,7 @@
 [![Discord](https://img.shields.io/discord/869237470565392384?label=discord)](https://discord.gg/2SUWKFnHSm)
 [![Donate](https://img.shields.io/badge/donate-$$$-purple.svg)](https://tyrrrz.me/donate)
 
-⚠️ **Project status: maintenance mode**. [What does it mean?](https://github.com/Tyrrrz/shared/blob/master/docs/project-status.md)
+⚠️ **Project status: maintenance mode**. [What does it mean?](https://github.com/Tyrrrz/.github/blob/master/docs/project-status.md)
 
 **LightBulb** is an application that reduces eyestrain produced by staring at a computer screen when working late hours.
 As the day goes on, it continuously adjusts gamma, transitioning the display color temperature from cold blue in the afternoon to warm yellow during the night.
