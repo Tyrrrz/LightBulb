@@ -28,10 +28,8 @@ public class HotKeyService : IDisposable
 
     public void UnregisterAllHotKeys()
     {
-        var hotKeyRegistrationsCopy = _hotKeyRegistrations.ToArray();
+        _hotKeyRegistrations.DisposeAll();
         _hotKeyRegistrations.Clear();
-
-        hotKeyRegistrationsCopy.DisposeAll();
     }
 
     public void Dispose() => UnregisterAllHotKeys();

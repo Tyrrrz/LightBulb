@@ -51,8 +51,7 @@ public partial class SystemWindow
     public bool IsFullScreen()
     {
         // Get window rect
-        var windowRect = TryGetRect() ?? Rect.Empty;
-        if (windowRect == Rect.Empty)
+        if (TryGetRect() is not { } windowRect)
             return false;
 
         // Calculate absolute window client rect (not relative to window)
@@ -98,7 +97,7 @@ public partial class SystemWindow
     {
         var result = new List<SystemWindow>();
 
-        var callback = new NativeMethods.EnumWindowsProc((hWnd, _) =>
+        bool EnumWindows(IntPtr hWnd, IntPtr _)
         {
             if (hWnd != IntPtr.Zero)
             {
@@ -107,9 +106,9 @@ public partial class SystemWindow
             }
 
             return true;
-        });
+        }
 
-        if (!NativeMethods.EnumWindows(callback, IntPtr.Zero))
+        if (!NativeMethods.EnumWindows(EnumWindows, IntPtr.Zero))
             Debug.WriteLine("Failed to enumerate windows.");
 
         return result;
