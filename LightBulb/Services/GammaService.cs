@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reactive.Disposables;
 using LightBulb.Core;
-using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
 using LightBulb.WindowsApi;
 
@@ -27,27 +27,28 @@ public partial class GammaService : IDisposable
         _settingsService = settingsService;
 
         // Register for all system events that may indicate that device context or gamma has changed from outside
-        _eventRegistration = Disposable.Aggregate(
+        _eventRegistration = new[]
+        {
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.ConsoleDisplayStateId,
                 InvalidateGamma
-            ) ?? Disposable.Null,
+            ) ?? Disposable.Empty,
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.PowerSavingStatusId,
                 InvalidateGamma
-            ) ?? Disposable.Null,
+            ) ?? Disposable.Empty,
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.SessionDisplayStatusId,
                 InvalidateGamma
-            ) ?? Disposable.Null,
+            ) ?? Disposable.Empty,
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.MonitorPowerOnId,
                 InvalidateGamma
-            ) ?? Disposable.Null,
+            ) ?? Disposable.Empty,
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.AwayModeId,
                 InvalidateGamma
-            ) ?? Disposable.Null,
+            ) ?? Disposable.Empty,
 
             SystemEvent.Register(
                 SystemEvent.DisplayChangedId,
@@ -65,7 +66,7 @@ public partial class GammaService : IDisposable
                 SystemEvent.SystemColorsChangedId,
                 InvalidateDeviceContext
             )
-        );
+        }.Aggregate();
     }
 
     private void InvalidateGamma()
@@ -103,14 +104,12 @@ public partial class GammaService : IDisposable
     private bool IsSignificantChange(ColorConfiguration configuration)
     {
         // Nothing to compare to
-        if (_lastConfiguration is null)
-        {
+        if (_lastConfiguration is not { } lastConfiguration)
             return true;
-        }
 
         return
-            Math.Abs(configuration.Temperature - _lastConfiguration.Value.Temperature) > 15 ||
-            Math.Abs(configuration.Brightness - _lastConfiguration.Value.Brightness) > 0.01;
+            Math.Abs(configuration.Temperature - lastConfiguration.Temperature) > 15 ||
+            Math.Abs(configuration.Brightness - lastConfiguration.Brightness) > 0.01;
     }
 
     private bool IsGammaStale()

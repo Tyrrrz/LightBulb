@@ -34,8 +34,8 @@ public class DashboardViewModel : PropertyChangedBase, IDisposable
     public DateTimeOffset Instant { get; private set; } = DateTimeOffset.Now;
 
     public SolarTimes SolarTimes =>
-        !_settingsService.IsManualSunriseSunsetEnabled && _settingsService.Location is not null
-            ? SolarTimes.Calculate(_settingsService.Location.Value, Instant)
+        !_settingsService.IsManualSunriseSunsetEnabled && _settingsService.Location is { } location
+            ? SolarTimes.Calculate(location, Instant)
             : new SolarTimes(_settingsService.ManualSunrise, _settingsService.ManualSunset);
 
     public TimeOnly SunriseStart => Cycle.GetSunriseStart(
