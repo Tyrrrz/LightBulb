@@ -7,13 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
     d:DataContext="{d:DesignInstance Type=settings:HotKeySettingsTabViewModel}"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
     Style="{DynamicResource MaterialDesignRoot}"
     mc:Ignorable="d">
-    <StackPanel Orientation="Vertical">
+    <StackPanel Margin="0,8" Orientation="Vertical">
         <!--  Toggle hotkey  -->
-        <Grid Margin="6">
+        <Grid Margin="16,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -35,7 +33,7 @@
         </Grid>
 
         <!--  Increase temperature offset hotkey  -->
-        <Grid Margin="6">
+        <Grid Margin="16,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -44,7 +42,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Temperature offset +"
+                Text="Temperature offset ↑"
                 ToolTip="Global hotkey to increase current temperature offset" />
             <controls:HotKeyTextBox
                 Grid.Column="1"
@@ -57,7 +55,7 @@
         </Grid>
 
         <!--  Decrease temperature offset hotkey  -->
-        <Grid Margin="6">
+        <Grid Margin="16,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -66,7 +64,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Temperature offset -"
+                Text="Temperature offset ↓"
                 ToolTip="Global hotkey to decrease current temperature offset" />
             <controls:HotKeyTextBox
                 Grid.Column="1"
@@ -79,7 +77,7 @@
         </Grid>
 
         <!--  Increase brightness offset hotkey  -->
-        <Grid Margin="6">
+        <Grid Margin="16,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -88,7 +86,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Brightness offset +"
+                Text="Brightness offset ↑"
                 ToolTip="Global hotkey to increase current brightness offset" />
             <controls:HotKeyTextBox
                 Grid.Column="1"
@@ -101,7 +99,7 @@
         </Grid>
 
         <!--  Decrease brightness offset hotkey  -->
-        <Grid Margin="6">
+        <Grid Margin="16,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -110,7 +108,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Brightness offset -"
+                Text="Brightness offset ↓"
                 ToolTip="Global hotkey to decrease current brightness offset" />
             <controls:HotKeyTextBox
                 Grid.Column="1"
@@ -123,7 +121,7 @@
         </Grid>
 
         <!--  Reset offset hotkey  -->
-        <Grid Margin="6">
+        <Grid Margin="16,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />

@@ -1,156 +1,160 @@
 ﻿<UserControl
-    Style="{DynamicResource MaterialDesignRoot}"
-    d:DataContext="{d:DesignInstance Type=settings:GeneralSettingsTabViewModel}"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
-    mc:Ignorable="d"
     x:Class="LightBulb.Views.Components.Settings.GeneralSettingsTabView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:globalization="clr-namespace:System.Globalization;assembly=System.Runtime"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <StackPanel Orientation="Vertical">
+    d:DataContext="{d:DesignInstance Type=settings:GeneralSettingsTabViewModel}"
+    Style="{DynamicResource MaterialDesignRoot}"
+    mc:Ignorable="d">
+    <StackPanel Margin="0,8" Orientation="Vertical">
         <!--  Day temperature  -->
         <StackPanel
-            Margin="6"
+            Margin="16,8"
             Orientation="Horizontal"
             ToolTip="Color temperature during the day">
-            <TextBlock Text="Day-time color temperature:" VerticalAlignment="Center" />
+            <TextBlock VerticalAlignment="Center" Text="Day-time color temperature:" />
             <TextBox
-                BorderBrush="{DynamicResource MaterialDesignDivider}"
-                Margin="8,0"
                 MinWidth="30"
+                Margin="8,0"
                 Padding="0"
-                Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                BorderBrush="{DynamicResource MaterialDesignDivider}"
+                Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </StackPanel>
         <Slider
+            Margin="16,0,16,6"
             IsSnapToTickEnabled="True"
             LargeChange="500"
-            Margin="8,0,8,6"
             Maximum="6600"
             Minimum="2500"
             SmallChange="100"
+            Style="{DynamicResource MaterialDesignThinSlider}"
             TickFrequency="20"
             Value="{Binding DayTemperature}" />
 
         <!--  Night temperature  -->
         <StackPanel
-            Margin="6"
+            Margin="16,8"
             Orientation="Horizontal"
             ToolTip="Color temperature during the night">
-            <TextBlock Text="Night-time color temperature:" VerticalAlignment="Center" />
+            <TextBlock VerticalAlignment="Center" Text="Night-time color temperature:" />
             <TextBox
-                BorderBrush="{DynamicResource MaterialDesignDivider}"
-                Margin="8,0"
                 MinWidth="30"
+                Margin="8,0"
                 Padding="0"
-                Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                BorderBrush="{DynamicResource MaterialDesignDivider}"
+                Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </StackPanel>
         <Slider
+            Margin="16,0,16,6"
             IsSnapToTickEnabled="True"
             LargeChange="500"
-            Margin="8,0,8,6"
             Maximum="6600"
             Minimum="2500"
             SmallChange="100"
+            Style="{DynamicResource MaterialDesignThinSlider}"
             TickFrequency="20"
             Value="{Binding NightTemperature}" />
 
         <!--  Day brightness  -->
         <StackPanel
-            Margin="6"
+            Margin="16,8"
             Orientation="Horizontal"
             ToolTip="Brightness during the day">
-            <TextBlock Text="Day-time brightness:" VerticalAlignment="Center" />
+            <TextBlock VerticalAlignment="Center" Text="Day-time brightness:" />
             <TextBox
-                BorderBrush="{DynamicResource MaterialDesignDivider}"
-                Margin="8,0"
                 MinWidth="30"
+                Margin="8,0"
                 Padding="0"
-                Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                BorderBrush="{DynamicResource MaterialDesignDivider}"
+                Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </StackPanel>
         <Slider
+            Margin="16,0,16,6"
             IsSnapToTickEnabled="True"
             LargeChange="0.1"
-            Margin="8,0,8,6"
             Maximum="1"
             Minimum="0.1"
             SmallChange="0.01"
+            Style="{DynamicResource MaterialDesignThinSlider}"
             TickFrequency="0.01"
             Value="{Binding DayBrightness}" />
 
         <!--  Night brightness  -->
         <StackPanel
-            Margin="6"
+            Margin="16,8"
             Orientation="Horizontal"
             ToolTip="Brightness during the night">
-            <TextBlock Text="Night-time brightness:" VerticalAlignment="Center" />
+            <TextBlock VerticalAlignment="Center" Text="Night-time brightness:" />
             <TextBox
-                BorderBrush="{DynamicResource MaterialDesignDivider}"
-                Margin="8,0"
                 MinWidth="30"
+                Margin="8,0"
                 Padding="0"
-                Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                BorderBrush="{DynamicResource MaterialDesignDivider}"
+                Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </StackPanel>
         <Slider
+            Margin="16,0,16,6"
             IsSnapToTickEnabled="True"
             LargeChange="0.1"
-            Margin="8,0,8,6"
             Maximum="1"
             Minimum="0.1"
             SmallChange="0.01"
+            Style="{DynamicResource MaterialDesignThinSlider}"
             TickFrequency="0.01"
             Value="{Binding NightBrightness}" />
 
         <!--  Configuration transition duration  -->
         <StackPanel
-            Margin="6"
+            Margin="16,8"
             Orientation="Horizontal"
             ToolTip="Duration of time it takes to switch between day-time and night-time configurations">
-            <TextBlock Text="Transition duration:" VerticalAlignment="Center" />
+            <TextBlock VerticalAlignment="Center" Text="Transition duration:" />
             <TextBox
-                BorderBrush="{DynamicResource MaterialDesignDivider}"
-                Margin="8,0"
                 MinWidth="50"
+                Margin="8,0"
                 Padding="0"
-                Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                BorderBrush="{DynamicResource MaterialDesignDivider}"
+                Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </StackPanel>
         <Slider
+            Margin="16,0,16,6"
             LargeChange="0.5"
-            Margin="8,0,8,6"
             Maximum="3"
             Minimum="0"
             SmallChange="0.08"
+            Style="{DynamicResource MaterialDesignThinSlider}"
             Value="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToHoursConverter.Instance}}" />
 
         <!--  Configuration transition offset  -->
         <StackPanel
-            Margin="6"
+            Margin="16,8"
             Orientation="Horizontal"
             ToolTip="Offset that specifies how early or late the transition starts relatively to sunrise and sunset">
-            <TextBlock Text="Transition offset:" VerticalAlignment="Center" />
+            <TextBlock VerticalAlignment="Center" Text="Transition offset:" />
             <TextBox
-                BorderBrush="{DynamicResource MaterialDesignDivider}"
-                Margin="8,0"
                 MinWidth="30"
+                Margin="8,0"
                 Padding="0"
-                Text="{Binding ConfigurationTransitionOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                BorderBrush="{DynamicResource MaterialDesignDivider}"
+                Text="{Binding ConfigurationTransitionOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
         </StackPanel>
         <Slider
+            Margin="16,0,16,6"
             LargeChange="0.05"
-            Margin="8,0,8,6"
             Maximum="1"
             Minimum="0"
             SmallChange="0.01"
+            Style="{DynamicResource MaterialDesignThinSlider}"
             Value="{Binding ConfigurationTransitionOffset}" />
     </StackPanel>
 </UserControl>

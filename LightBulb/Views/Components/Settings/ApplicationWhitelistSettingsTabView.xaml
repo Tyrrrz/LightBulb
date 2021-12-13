@@ -9,14 +9,12 @@
     xmlns:s="https://github.com/canton7/Stylet"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
     d:DataContext="{d:DesignInstance Type=settings:ApplicationWhitelistSettingsTabViewModel}"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
     Loaded="{s:Action OnViewLoaded}"
     Style="{DynamicResource MaterialDesignRoot}"
     mc:Ignorable="d">
-    <StackPanel Orientation="Vertical">
+    <StackPanel Margin="0,8" Orientation="Vertical">
         <!--  Is enabled  -->
-        <Grid Margin="6" ToolTip="Pause LightBulb when any of the selected applications are in foreground">
+        <Grid Margin="16,8" ToolTip="Pause LightBulb when any of the selected applications are in foreground">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -34,7 +32,7 @@
         </Grid>
 
         <!--  Refresh list  -->
-        <TextBlock Margin="6,0" ToolTip="Refresh the list of available applications">
+        <TextBlock Margin="16,0" ToolTip="Refresh the list of available applications">
             <Hyperlink Command="{s:Action PullAvailableApplications}">Refresh</Hyperlink>
         </TextBlock>
 
@@ -55,7 +53,7 @@
             <ListView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource {x:Type ListViewItem}}" TargetType="{x:Type ListViewItem}">
                     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                    <Setter Property="Padding" Value="8,4,8,4" />
+                    <Setter Property="Padding" Value="16,4,16,4" />
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>

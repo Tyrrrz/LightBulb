@@ -23,18 +23,24 @@
             Grid.Row="0"
             Margin="8,16"
             FontSize="19"
-            FontWeight="SemiBold"
+            FontWeight="Light"
             Text="{Binding Title}"
             TextTrimming="CharacterEllipsis"
             ToolTip="{Binding Title}" />
 
         <!--  Message  -->
-        <TextBlock
+        <Border
             Grid.Row="1"
-            Margin="8,0,8,8"
-            FontSize="15"
-            Text="{Binding Message}"
-            TextWrapping="Wrap" />
+            Padding="0,8"
+            BorderBrush="{DynamicResource MaterialDesignDivider}"
+            BorderThickness="0,1">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <TextBlock
+                    Margin="16,0,16,16"
+                    Text="{Binding Message}"
+                    TextWrapping="Wrap" />
+            </ScrollViewer>
+        </Border>
 
         <StackPanel
             Grid.Row="2"
@@ -55,11 +61,12 @@
 
             <!--  Cancel  -->
             <Button
-                Margin="8"
+                Margin="16"
+                HorizontalAlignment="Stretch"
                 Command="{s:Action Close}"
                 Content="{Binding CancelButtonText}"
                 IsCancel="True"
-                Style="{DynamicResource MaterialDesignFlatButton}"
+                Style="{DynamicResource MaterialDesignOutlinedButton}"
                 Visibility="{Binding IsCancelButtonVisible, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
         </StackPanel>
     </Grid>

@@ -6,13 +6,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
     d:DataContext="{d:DesignInstance Type=settings:AdvancedSettingsTabViewModel}"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
     Style="{DynamicResource MaterialDesignRoot}"
     mc:Ignorable="d">
-    <StackPanel Orientation="Vertical">
+    <StackPanel Margin="0,8" Orientation="Vertical">
         <!--  Auto start  -->
-        <Grid Margin="6" ToolTip="Launch LightBulb at Windows startup">
+        <Grid Margin="16,8" ToolTip="Launch LightBulb at Windows startup">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -30,7 +28,7 @@
         </Grid>
 
         <!--  Auto update  -->
-        <Grid Margin="6" ToolTip="Keep LightBulb updated by automatically installing new versions as they become available">
+        <Grid Margin="16,8" ToolTip="Keep LightBulb updated by automatically installing new versions as they become available">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -48,7 +46,7 @@
         </Grid>
 
         <!--  Default to day time  -->
-        <Grid Margin="6" ToolTip="When LightBulb is disabled or paused, restore configured day-time temperature and brightness instead of default monitor gamma">
+        <Grid Margin="16,8" ToolTip="When LightBulb is disabled or paused, restore configured day-time temperature and brightness instead of default monitor gamma">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -66,7 +64,7 @@
         </Grid>
 
         <!--  Pause when full screen  -->
-        <Grid Margin="6" ToolTip="Pause LightBulb when any fullscreen window is in foreground">
+        <Grid Margin="16,8" ToolTip="Pause LightBulb when any fullscreen window is in foreground">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -84,7 +82,7 @@
         </Grid>
 
         <!--  Configuration smoothing  -->
-        <Grid Margin="6" ToolTip="Transition slowly when enabling or disabling LightBulb to give time for eyes to adjust">
+        <Grid Margin="16,8" ToolTip="Transition slowly when enabling or disabling LightBulb to give time for eyes to adjust">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -102,7 +100,7 @@
         </Grid>
 
         <!--  Gamma polling  -->
-        <Grid Margin="6" ToolTip="Force-refresh gamma at regular intervals to make sure it doesn't get overriden by other programs">
+        <Grid Margin="16,8" ToolTip="Force-refresh gamma at regular intervals to make sure it doesn't get overriden by other programs">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
