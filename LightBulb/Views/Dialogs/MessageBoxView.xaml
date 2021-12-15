@@ -21,7 +21,7 @@
         <!--  Title  -->
         <TextBlock
             Grid.Row="0"
-            Margin="8,16"
+            Margin="16"
             FontSize="19"
             FontWeight="Light"
             Text="{Binding Title}"
@@ -36,23 +36,23 @@
             BorderThickness="0,1">
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <TextBlock
-                    Margin="16,0,16,16"
+                    Margin="16,8"
                     Text="{Binding Message}"
                     TextWrapping="Wrap" />
             </ScrollViewer>
         </Border>
 
-        <StackPanel
+        <UniformGrid
             Grid.Row="2"
+            Margin="16"
             HorizontalAlignment="Right"
-            Orientation="Horizontal">
+            Columns="2">
             <!--  OK  -->
             <Button
-                Margin="8"
                 Command="{s:Action Close}"
                 Content="{Binding OkButtonText}"
                 IsDefault="True"
-                Style="{DynamicResource MaterialDesignFlatButton}"
+                Style="{DynamicResource MaterialDesignOutlinedButton}"
                 Visibility="{Binding IsOkButtonVisible, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
                 <Button.CommandParameter>
                     <sys:Boolean>True</sys:Boolean>
@@ -61,13 +61,13 @@
 
             <!--  Cancel  -->
             <Button
-                Margin="16"
+                Margin="8,0,0,0"
                 HorizontalAlignment="Stretch"
                 Command="{s:Action Close}"
                 Content="{Binding CancelButtonText}"
                 IsCancel="True"
                 Style="{DynamicResource MaterialDesignOutlinedButton}"
                 Visibility="{Binding IsCancelButtonVisible, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
-        </StackPanel>
+        </UniformGrid>
     </Grid>
 </UserControl>

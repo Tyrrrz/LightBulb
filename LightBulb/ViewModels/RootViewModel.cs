@@ -49,10 +49,10 @@ public class RootViewModel : Screen, IDisposable
 
         var dialog = _viewModelFactory.CreateMessageBoxViewModel(
             "Limited gamma range", $@"
-{App.Name} has detected that this computer doesn't have the extended gamma range unlocked.
-This may cause the app to work incorrectly for some color configurations.
+{App.Name} has detected that extended gamma range has not yet been unlocked on this computer.
+This may cause some color configurations to not display properly.
 
-Press OK to unlock gamma range.".Trim(),
+Press OK to unlock gamma range. Administrator privileges may be required.".Trim(),
             "OK", "CANCEL"
         );
 
@@ -71,7 +71,7 @@ Press OK to unlock gamma range.".Trim(),
         var dialog = _viewModelFactory.CreateMessageBoxViewModel(
             "Welcome!", $@"
 Thank you for installing {App.Name}!
-To get the most personalized experience, configure your location in settings.
+To get the most personalized experience, please set your preferred solar configuration.
 
 Press OK to open settings.".Trim(),
             "OK", "CANCEL"

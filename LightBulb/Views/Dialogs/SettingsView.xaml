@@ -99,7 +99,6 @@
             <Rectangle
                 Grid.Row="1"
                 Height="1"
-                Margin="12,0"
                 HorizontalAlignment="Stretch"
                 Fill="{DynamicResource MaterialDesignDivider}" />
 
