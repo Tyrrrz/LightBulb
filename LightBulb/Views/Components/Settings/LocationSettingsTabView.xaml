@@ -49,7 +49,7 @@
             <Slider
                 Margin="16,0,16,6"
                 LargeChange="0.5"
-                Maximum="24"
+                Maximum="23.99999"
                 Minimum="0"
                 SmallChange="0.25"
                 Style="{DynamicResource MaterialDesignThinSlider}"
@@ -69,7 +69,7 @@
             <Slider
                 Margin="16,0,16,6"
                 LargeChange="0.5"
-                Maximum="24"
+                Maximum="23.99999"
                 Minimum="0"
                 SmallChange="0.25"
                 Style="{DynamicResource MaterialDesignThinSlider}"
