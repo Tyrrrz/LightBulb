@@ -8,16 +8,25 @@
 [![Donate](https://img.shields.io/badge/donate-$$$-purple.svg)](https://tyrrrz.me/donate)
 [![Fuck Russia](https://img.shields.io/badge/fuck-russia-black.svg)](https://twitter.com/Tyrrrz/status/1495972128977571848)
 
-⚠️ **Project status: maintenance mode**. [What does it mean?](https://github.com/Tyrrrz/.github/blob/master/docs/project-status.md)
+⚠️ **Project status: maintenance mode**<sup>[[?]](https://github.com/Tyrrrz/.github/blob/master/docs/project-status.md)</sup>
 
 **LightBulb** is an application that reduces eyestrain produced by staring at a computer screen when working late hours.
 As the day goes on, it continuously adjusts gamma, transitioning the display color temperature from cold blue in the afternoon to warm yellow during the night.
 Its primary objective is to match the color of the screen to the light sources of your surrounding environment - sunlight during the day and artificial light during the night.
 **LightBulb** has minimal impact on performance and offers many customization options.
 
-❓ **If you have questions or issues, please refer to the [wiki](https://github.com/Tyrrrz/LightBulb/wiki)**.
+❓ **If you have questions or issues, please refer to the [wiki](https://github.com/Tyrrrz/LightBulb/wiki)**
 
-💬 **If you want to chat, join my [Discord server](https://discord.gg/2SUWKFnHSm)**.
+## Terms of use
+
+By using this project or its source code, for any purpose and in any shape or form, you grant your **implicit agreement** to all the following statements:
+
+- You **condemn Russia and its military aggression against Ukraine**
+- You **recognize that Russia is an occupant that unlawfully invaded a sovereign state**
+- You **support Ukraine's territorial integrity, including its claims over temporarily occupied territories of Crimea and Donbas**
+- You **reject false narratives perpetuated by Russian state propaganda**
+
+To learn more about the war and how you can help, [click here](https://tyrrrz.me). Glory to Ukraine! 🇺🇦
 
 ## Download
 
