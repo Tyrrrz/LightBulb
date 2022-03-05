@@ -61,7 +61,7 @@ public class LocationSpecs
         var location = await GeoLocation.GetAsync("Kyiv, Ukraine");
 
         // Assert
-        location.Latitude.Should().BeApproximately(50.4500, 0.0001);
-        location.Longitude.Should().BeApproximately(30.5241, 0.0001);
+        location.Latitude.Should().BeApproximately(50.4500, 0.01);
+        location.Longitude.Should().BeApproximately(30.5241, 0.01);
     }
 }
