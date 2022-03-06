@@ -1,3 +1,9 @@
+### v2.4.2 (06-Mar-2022)
+
+- Added message about war in Ukraine.
+- Improved the user interface.
+- Fixed an issue where manually setting sunrise or sunset time to midnight caused the application to crash.
+
 ### v2.4.1 (08-Dec-2021)
 
 - Fixed an issue which caused the decrease brightness hotkey to set the brightness to its lowest value.
