@@ -28,11 +28,4 @@
     <PackageReference Include="DotnetRuntimeBootstrapper" Version="2.0.2" PrivateAssets="all" />
   </ItemGroup>
 
-  <!-- Workaround for https://github.com/dotnet/core/issues/7176 -->
-  <ItemGroup>
-    <FrameworkReference
-      Update="Microsoft.WindowsDesktop.App;Microsoft.WindowsDesktop.App.WPF;Microsoft.WindowsDesktop.App.WindowsForms"
-      TargetingPackVersion="6.0.0" />
-  </ItemGroup>
-
 </Project>
