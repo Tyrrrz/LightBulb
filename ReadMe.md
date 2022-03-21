@@ -1,12 +1,13 @@
 # LightBulb 💡
 
-[![Build](https://github.com/Tyrrrz/LightBulb/workflows/CI/badge.svg?branch=master)](https://github.com/Tyrrrz/LightBulb/actions)
-[![Coverage](https://codecov.io/gh/Tyrrrz/LightBulb/branch/master/graph/badge.svg)](https://codecov.io/gh/Tyrrrz/LightBulb)
+[![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://vshymanskyy.github.io/StandWithUkraine)
+[![Build](https://img.shields.io/github/workflow/status/Tyrrrz/LightBulb/CI/master)](https://github.com/Tyrrrz/LightBulb/actions)
+[![Coverage](https://img.shields.io/codecov/c/github/Tyrrrz/LightBulb/master)](https://codecov.io/gh/Tyrrrz/LightBulb)
 [![Release](https://img.shields.io/github/release/Tyrrrz/LightBulb.svg)](https://github.com/Tyrrrz/LightBulb/releases)
 [![Downloads](https://img.shields.io/github/downloads/Tyrrrz/LightBulb/total.svg)](https://github.com/Tyrrrz/LightBulb/releases)
 [![Discord](https://img.shields.io/discord/869237470565392384?label=discord)](https://discord.gg/2SUWKFnHSm)
-[![Donate](https://img.shields.io/badge/donate-$$$-purple.svg)](https://tyrrrz.me/donate)
-[![Fuck Russia](https://img.shields.io/badge/fuck-russia-black.svg)](https://twitter.com/Tyrrrz/status/1495972128977571848)
+[![Donate](https://img.shields.io/badge/donate-$$$-8a2be2.svg)](https://tyrrrz.me/donate)
+[![Fuck Russia](https://img.shields.io/badge/fuck-russia-e4181c.svg?labelColor=000000)](https://twitter.com/tyrrrz/status/1495972128977571848)
 
 ⚠️ **Project status: maintenance mode**<sup>[[?]](https://github.com/Tyrrrz/.github/blob/master/docs/project-status.md)</sup>
 
