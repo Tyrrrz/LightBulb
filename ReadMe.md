@@ -9,14 +9,14 @@
 [![Donate](https://img.shields.io/badge/donate-$$$-8a2be2.svg)](https://tyrrrz.me/donate)
 [![Fuck Russia](https://img.shields.io/badge/fuck-russia-e4181c.svg?labelColor=000000)](https://twitter.com/tyrrrz/status/1495972128977571848)
 
-⚠️ **Project status: maintenance mode**<sup>[[?]](https://github.com/Tyrrrz/.github/blob/master/docs/project-status.md)</sup>
+> 🟡 **Project status**: maintenance mode<sup>[[?]](https://github.com/Tyrrrz/.github/blob/master/docs/project-status.md)</sup>
 
 **LightBulb** is an application that reduces eyestrain produced by staring at a computer screen when working late hours.
 As the day goes on, it continuously adjusts gamma, transitioning the display color temperature from cold blue in the afternoon to warm yellow during the night.
 Its primary objective is to match the color of the screen to the light sources of your surrounding environment - sunlight during the day and artificial light during the night.
 **LightBulb** has minimal impact on performance and offers many customization options.
 
-❓ **If you have questions or issues, please refer to the [wiki](https://github.com/Tyrrrz/LightBulb/wiki)**
+> ❔ If you have questions or issues, **please refer to the [wiki](https://github.com/Tyrrrz/LightBulb/wiki)**.
 
 ## Terms of use
 
