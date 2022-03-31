@@ -94,7 +94,7 @@ Press OK to open settings.".Trim(),
     private async Task ShowWarInUkraineMessageAsync()
     {
         var dialog = _viewModelFactory.CreateMessageBoxViewModel(
-            "Ukraine is at war!", $@"
+            "Ukraine is at war!", @"
 My country, Ukraine, has been invaded by Russian military forces in an act of aggression that can only be described as genocide.
 Be on the right side of history! Consider supporting Ukraine in its fight for freedom.
 

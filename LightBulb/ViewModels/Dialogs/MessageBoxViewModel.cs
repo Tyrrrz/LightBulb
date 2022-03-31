@@ -15,6 +15,10 @@ public class MessageBoxViewModel : DialogScreen
     public bool IsCancelButtonVisible { get; set; }
 
     public string? CancelButtonText { get; set; }
+    
+    public int ButtonsCount =>
+        (IsOkButtonVisible ? 1 : 0) +
+        (IsCancelButtonVisible ? 1 : 0);
 }
 
 public static class MessageBoxViewModelExtensions

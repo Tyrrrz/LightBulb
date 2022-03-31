@@ -46,7 +46,7 @@
             Grid.Row="2"
             Margin="16"
             HorizontalAlignment="Right"
-            Columns="2">
+            Columns="{Binding ButtonsCount}">
             <!--  OK  -->
             <Button
                 Command="{s:Action Close}"
