@@ -10,17 +10,18 @@ public class MessageBoxViewModel : DialogScreen
 
     public bool IsOkButtonVisible { get; set; } = true;
 
-    public string? OkButtonText { get; set; } = "OK";
+    public string? OkButtonText { get; set; }
 
-    public bool IsCancelButtonVisible { get; set; } = false;
+    public bool IsCancelButtonVisible { get; set; }
 
-    public string? CancelButtonText { get; set; } = "CANCEL";
+    public string? CancelButtonText { get; set; }
 }
 
 public static class MessageBoxViewModelExtensions
 {
-    public static MessageBoxViewModel CreateMessageBoxViewModel(this IViewModelFactory factory,
-        string? title, string? message,
+    public static MessageBoxViewModel CreateMessageBoxViewModel(
+        this IViewModelFactory factory,
+        string title, string message,
         string? okButtonText, string? cancelButtonText)
     {
         var viewModel = factory.CreateMessageBoxViewModel();
