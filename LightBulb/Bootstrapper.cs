@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using LightBulb.Services;
 using LightBulb.ViewModels;
 using LightBulb.ViewModels.Components;
@@ -11,6 +10,7 @@ using StyletIoC;
 using MessageBoxViewModel = LightBulb.ViewModels.Dialogs.MessageBoxViewModel;
 
 #if !DEBUG
+using System;
 using System.Windows;
 using System.Windows.Threading;
 #endif
@@ -34,8 +34,10 @@ namespace LightBulb
             // Ensure only one instance of the app is running at a time
             if (!_isOnlyRunningInstance)
             {
+#if !DEBUG
                 Environment.Exit(0);
                 return;
+#endif
             }
 
             base.Start(args);
