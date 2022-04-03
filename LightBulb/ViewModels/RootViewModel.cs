@@ -31,15 +31,15 @@ public class RootViewModel : Screen, IDisposable
         _viewModelFactory = viewModelFactory;
         _dialogManager = dialogManager;
         _settingsService = settingsService;
-
-        Dashboard = viewModelFactory.CreateDashboardViewModel();
-
-        DisplayName = $"{App.Name} v{App.VersionString}";
-
+        
         _checkForUpdatesTimer = new Timer(
             TimeSpan.FromHours(3),
             async () => await updateService.CheckPrepareUpdateAsync()
         );
+
+        Dashboard = viewModelFactory.CreateDashboardViewModel();
+
+        DisplayName = $"{App.Name} v{App.VersionString}";
     }
 
     private async Task ShowGammaRangePromptAsync()
