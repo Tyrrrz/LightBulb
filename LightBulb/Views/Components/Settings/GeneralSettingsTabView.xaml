@@ -62,10 +62,17 @@
             Value="{Binding NightTemperature}" />
 
         <!--  Day brightness  -->
-        <StackPanel
-            Margin="16,8"
-            Orientation="Horizontal"
-            ToolTip="Brightness during the day">
+        <StackPanel Margin="16,8" Orientation="Horizontal">
+            <StackPanel.ToolTip>
+                <TextBlock>
+                    <Run Text="Brightness during the day" />
+                    <LineBreak />
+                    <LineBreak />
+                    <Run Text="Note that this brightness setting applies to the color gamma, not to the actual brightness of the monitor." />
+                    <LineBreak />
+                    <Run Text="If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops), it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
+                </TextBlock>
+            </StackPanel.ToolTip>
             <TextBlock VerticalAlignment="Center" Text="Day-time brightness:" />
             <TextBox
                 MinWidth="30"
@@ -87,10 +94,17 @@
             Value="{Binding DayBrightness}" />
 
         <!--  Night brightness  -->
-        <StackPanel
-            Margin="16,8"
-            Orientation="Horizontal"
-            ToolTip="Brightness during the night">
+        <StackPanel Margin="16,8" Orientation="Horizontal">
+            <StackPanel.ToolTip>
+                <TextBlock>
+                    <Run Text="Brightness during the night" />
+                    <LineBreak />
+                    <LineBreak />
+                    <Run Text="Note that this brightness setting applies to the color gamma, not to the actual brightness of the monitor." />
+                    <LineBreak />
+                    <Run Text="If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops), it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
+                </TextBlock>
+            </StackPanel.ToolTip>
             <TextBlock VerticalAlignment="Center" Text="Night-time brightness:" />
             <TextBox
                 MinWidth="30"
