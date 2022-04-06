@@ -7,41 +7,41 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2.3.3
+      - name: Checkout
+        uses: actions/checkout@v2.3.3
 
-    - name: Install .NET
-      uses: actions/setup-dotnet@v1.7.2
-      with:
-        # Fixed version, workaround for https://github.com/dotnet/core/issues/7176
-        dotnet-version: 6.0.100
+      - name: Install .NET
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          # Fixed version, workaround for https://github.com/dotnet/core/issues/7176
+          dotnet-version: 6.0.100
 
-    - name: Build & test
-      run: dotnet test --configuration Release --logger GitHubActions
+      - name: Build & test
+        run: dotnet test --configuration Release --logger GitHubActions --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
-    - name: Upload coverage
-      uses: codecov/codecov-action@v1.0.5
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Upload coverage
+        uses: codecov/codecov-action@v1.0.5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
-    - name: Build & publish
-      run: dotnet publish LightBulb/ -o LightBulb/bin/Publish/ --configuration Release
+      - name: Build & publish
+        run: dotnet publish LightBulb/ -o LightBulb/bin/Publish/ --configuration Release
 
-    - name: Create installer
-      run: |
-        choco install innosetup --no-progress
-        Copy-Item -Path LightBulb/bin/Publish/ -Recurse -Destination Installer/Source/
-        & "c:\Program Files (x86)\Inno Setup 6\ISCC.exe" Installer/Installer.iss
-      shell: pwsh
+      - name: Create installer
+        run: |
+          choco install innosetup --no-progress
+          Copy-Item -Path LightBulb/bin/Publish/ -Recurse -Destination Installer/Source/
+          & "c:\Program Files (x86)\Inno Setup 6\ISCC.exe" Installer/Installer.iss
+        shell: pwsh
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v1
-      with:
-        name: LightBulb
-        path: LightBulb/bin/Publish/
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: LightBulb
+          path: LightBulb/bin/Publish/
 
-    - name: Upload build artifact (installer)
-      uses: actions/upload-artifact@v1
-      with:
-        name: LightBulb-Installer
-        path: Installer/bin/LightBulb-Installer.exe
+      - name: Upload build artifact (installer)
+        uses: actions/upload-artifact@v1
+        with:
+          name: LightBulb-Installer
+          path: Installer/bin/LightBulb-Installer.exe
