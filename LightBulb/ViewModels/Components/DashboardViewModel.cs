@@ -153,7 +153,7 @@ public class DashboardViewModel : PropertyChangedBase, IDisposable
         };
     }
 
-    public void OnViewFullyLoaded()
+    public void OnViewLoaded()
     {
         _updateInstantTimer.Start();
         _updateConfigurationTimer.Start();
