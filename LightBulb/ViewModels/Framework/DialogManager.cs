@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using MaterialDesignThemes.Wpf;
@@ -7,12 +8,13 @@ using Stylet;
 
 namespace LightBulb.ViewModels.Framework;
 
-public class DialogManager
+public class DialogManager : IDisposable
 {
+    private readonly IViewManager _viewManager;
+
     // Cache and re-use dialog screen views, as creating them is incredibly slow
     private readonly Dictionary<Type, UIElement> _dialogScreenViewCache = new();
-
-    private readonly IViewManager _viewManager;
+    private readonly SemaphoreSlim _dialogLock = new(1, 1);
 
     public DialogManager(IViewManager viewManager)
     {
@@ -59,8 +61,20 @@ public class DialogManager
             dialogScreen.Closed += OnScreenClosed;
         }
 
-        await DialogHost.Show(view, OnDialogOpened);
+        await _dialogLock.WaitAsync();
+        try
+        {
+            await DialogHost.Show(view, OnDialogOpened);
+            return dialogScreen.DialogResult;
+        }
+        finally
+        {
+            _dialogLock.Release();
+        }
+    }
 
-        return dialogScreen.DialogResult;
+    public void Dispose()
+    {
+        _dialogLock.Dispose();
     }
 }
