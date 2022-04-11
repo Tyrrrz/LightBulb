@@ -9,22 +9,34 @@ public class RegistrySwitch
     private readonly string _entryName;
     private readonly object _enabledValue;
 
+    private readonly object _lock = new();
+
     public bool IsSet
     {
         get
         {
-            var actualValue = RegistryEx.GetValueOrDefault(_path, _entryName);
-            return EqualityComparer<object>.Default.Equals(_enabledValue, actualValue);
+            lock (_lock)
+            {
+                var actualValue = RegistryEx.GetValueOrDefault(_path, _entryName);
+                return EqualityComparer<object>.Default.Equals(_enabledValue, actualValue);
+            }
         }
         set
         {
-            if (value && !IsSet)
+            lock (_lock)
             {
-                RegistryEx.SetValue(_path, _entryName, _enabledValue);
-            }
-            else if (!value && IsSet)
-            {
-                RegistryEx.DeleteValue(_path, _entryName);
+                // Avoid unnecessary changes
+                if (IsSet == value)
+                    return;
+
+                if (value)
+                {
+                    RegistryEx.SetValue(_path, _entryName, _enabledValue);
+                }
+                else
+                {
+                    RegistryEx.DeleteValue(_path, _entryName);
+                }
             }
         }
     }

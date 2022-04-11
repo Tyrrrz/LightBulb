@@ -19,9 +19,7 @@ public class ExternalApplicationService
         foreach (var window in SystemWindow.GetAllWindows())
         {
             if (!window.IsVisible() || window.IsSystemWindow())
-            {
                 continue;
-            }
 
             using var process = window.TryGetProcess();
 
@@ -29,14 +27,10 @@ public class ExternalApplicationService
             var executableFileName = Path.GetFileNameWithoutExtension(executableFilePath);
 
             if (string.IsNullOrWhiteSpace(executableFilePath) || string.IsNullOrWhiteSpace(executableFileName))
-            {
                 continue;
-            }
 
             if (_ignoredApplicationNames.Contains(executableFileName))
-            {
                 continue;
-            }
 
             yield return new ExternalApplication(executableFilePath);
         }

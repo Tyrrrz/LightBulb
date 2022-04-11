@@ -7,15 +7,8 @@ public partial class SystemEvent : IDisposable
 {
     private readonly IDisposable _wndProcRegistration;
 
-    public int EventId { get; }
-
-    public Action Callback { get; }
-
-    public SystemEvent(int eventId, Action callback)
+    private SystemEvent(int eventId, Action callback)
     {
-        EventId = eventId;
-        Callback = callback;
-
         _wndProcRegistration = WndProc.Listen(eventId, _ => callback());
     }
 
@@ -31,13 +24,16 @@ public partial class SystemEvent : IDisposable
 
 public partial class SystemEvent
 {
-    public static int DisplayChangedId => 126;
-
-    public static int PaletteChangedId => 785;
-
-    public static int SystemColorsChangedId => 21;
-
-    public static int SettingsChangedId => 26;
-
     public static SystemEvent Register(int eventId, Action callback) => new(eventId, callback);
+}
+
+public partial class SystemEvent
+{
+    public static class Ids
+    {
+        public static int DisplayChanged => 126;
+        public static int PaletteChanged => 785;
+        public static int SystemColorsChanged => 21;
+        public static int SettingsChanged => 26;
+    }
 }

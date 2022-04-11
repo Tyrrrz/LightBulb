@@ -21,7 +21,7 @@ internal static partial class WndProc
 
         protected override void WndProc(ref Message m)
         {
-            Debug.WriteLine($"Handling wndproc message for event {m.Msg}.");
+            Debug.WriteLine($"Handling wndproc message (ID: {m.Msg}).");
             MessageReceived?.Invoke(this, m);
             base.WndProc(ref m);
         }
@@ -34,7 +34,6 @@ internal static partial class WndProc
 
     public static IntPtr Handle => DefaultConsumer.Handle;
 
-    // List of event IDs: https://wiki.winehq.org/List_Of_Windows_Messages
     public static IDisposable Listen(int messageId, Action<Message> callback)
     {
         void MessageReceivedHandler(object? sender, Message message)
@@ -44,12 +43,22 @@ internal static partial class WndProc
         }
 
         DefaultConsumer.MessageReceived += MessageReceivedHandler;
-        Debug.WriteLine($"Added wndproc listener for event {messageId}.");
+        Debug.WriteLine($"Added wndproc listener (message ID: {messageId}).");
 
         return Disposable.Create(() =>
         {
             DefaultConsumer.MessageReceived -= MessageReceivedHandler;
-            Debug.WriteLine($"Removed wndproc listener for event {messageId}.");
+            Debug.WriteLine($"Removed wndproc listener (message ID: {messageId}).");
         });
+    }
+}
+
+internal static partial class WndProc
+{
+    // List of message IDs: https://wiki.winehq.org/List_Of_Windows_Messages
+    public static class Ids
+    {
+        public static int PowerSettingMessage => 536;
+        public static int GlobalHotkeyMessage => 786;
     }
 }

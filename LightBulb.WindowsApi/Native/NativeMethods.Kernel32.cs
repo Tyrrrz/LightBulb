@@ -15,7 +15,7 @@ internal static partial class NativeMethods
         uint processId
     );
 
-    [DllImport(Kernel32, SetLastError = true)]
+    [DllImport(Kernel32, CharSet = CharSet.Auto, SetLastError = true)]
     public static extern bool QueryFullProcessImageName(
         IntPtr hPrc,
         uint dwFlags,

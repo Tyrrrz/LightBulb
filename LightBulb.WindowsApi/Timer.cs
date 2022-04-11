@@ -5,12 +5,11 @@ namespace LightBulb.WindowsApi;
 
 public partial class Timer : IDisposable
 {
-    private readonly object _lock = new();
-
     private readonly Action _callback;
     private readonly TimeSpan _firstTickInterval;
     private readonly TimeSpan _interval;
 
+    private readonly object _lock = new();
     private readonly System.Threading.Timer _internalTimer;
 
     private bool _isActive;

@@ -8,18 +8,18 @@ namespace LightBulb.WindowsApi;
 
 public partial class DeviceContext : IDisposable
 {
+    private readonly IntPtr _handle;
+
     private int _gammaChannelOffset;
 
-    public IntPtr Handle { get; }
-
-    public DeviceContext(IntPtr handle) => Handle = handle;
+    private DeviceContext(IntPtr handle) => _handle = handle;
 
     ~DeviceContext() => Dispose();
 
     private void SetGammaRamp(GammaRamp ramp)
     {
-        if (!NativeMethods.SetDeviceGammaRamp(Handle, ref ramp))
-            Debug.WriteLine("Could not set gamma ramp.");
+        if (!NativeMethods.SetDeviceGammaRamp(_handle, ref ramp))
+            Debug.WriteLine($"Failed to set gamma ramp (handle: ${_handle}).");
     }
 
     public void SetGamma(double redMultiplier, double greenMultiplier, double blueMultiplier)
@@ -60,8 +60,8 @@ public partial class DeviceContext : IDisposable
         // Resetting gamma in such cases will cause unwanted flickering.
         // https://github.com/Tyrrrz/LightBulb/issues/206
 
-        if (!NativeMethods.DeleteDC(Handle))
-            Debug.WriteLine("Could not dispose device context.");
+        if (!NativeMethods.DeleteDC(_handle))
+            Debug.WriteLine($"Failed to dispose device context (handle: {_handle}).");
 
         GC.SuppressFinalize(this);
     }
@@ -72,9 +72,14 @@ public partial class DeviceContext
     public static DeviceContext? TryGetFromDeviceName(string deviceName)
     {
         var handle = NativeMethods.CreateDC(deviceName, null, null, IntPtr.Zero);
-        return handle != IntPtr.Zero
-            ? new DeviceContext(handle)
-            : null;
+
+        if (handle == IntPtr.Zero)
+        {
+            Debug.WriteLine($"Failed to retrieve device context (device: '{deviceName}').");
+            return null;
+        }
+
+        return new DeviceContext(handle);
     }
 
     public static IReadOnlyList<DeviceContext> FromAllMonitors()

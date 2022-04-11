@@ -20,7 +20,7 @@ internal static partial class NativeMethods
     [DllImport(User32, SetLastError = true)]
     public static extern bool IsWindowVisible(IntPtr hWnd);
 
-    [DllImport(User32, CharSet = CharSet.Unicode, SetLastError = true)]
+    [DllImport(User32, CharSet = CharSet.Auto, SetLastError = true)]
     public static extern int GetClassName(
         IntPtr hWnd,
         StringBuilder lpClassName,
@@ -44,10 +44,34 @@ internal static partial class NativeMethods
     [DllImport(User32, SetLastError = true)]
     public static extern IntPtr RegisterPowerSettingNotification(
         IntPtr hRecipient,
-        ref Guid powerSettingGuid,
+        Guid powerSettingGuid,
         int flags
     );
 
     [DllImport(User32, SetLastError = true)]
     public static extern bool UnregisterPowerSettingNotification(IntPtr handle);
+
+    public delegate void WinEventProc(
+        IntPtr hWinEventHook,
+        uint idEvent,
+        IntPtr hWnd,
+        int idObject,
+        int idChild,
+        uint idEventThread,
+        uint dwmsEventTime
+    );
+
+    [DllImport(User32, SetLastError = true)]
+    public static extern IntPtr SetWinEventHook(
+        uint eventMin,
+        uint eventMax,
+        IntPtr hmodWinEventProc,
+        WinEventProc pfnWinEventProc,
+        uint idProcess,
+        uint idThread,
+        uint dwFlags
+    );
+
+    [DllImport(User32, SetLastError = true)]
+    public static extern bool UnhookWinEvent(IntPtr hWinEventHook);
 }

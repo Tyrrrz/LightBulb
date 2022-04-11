@@ -9,17 +9,17 @@ namespace LightBulb.WindowsApi;
 
 public partial class SystemWindow
 {
-    public IntPtr Handle { get; }
+    private readonly IntPtr _handle;
 
-    public SystemWindow(IntPtr handle) => Handle = handle;
+    private SystemWindow(IntPtr handle) => _handle = handle;
 
     private Rect? TryGetRect() =>
-        NativeMethods.GetWindowRect(Handle, out var rect)
+        NativeMethods.GetWindowRect(_handle, out var rect)
             ? rect
             : null;
 
     private Rect? TryGetClientRect() =>
-        NativeMethods.GetClientRect(Handle, out var rect)
+        NativeMethods.GetClientRect(_handle, out var rect)
             ? rect
             : null;
 
@@ -27,7 +27,7 @@ public partial class SystemWindow
     {
         var buffer = new StringBuilder(256);
 
-        return NativeMethods.GetClassName(Handle, buffer, buffer.Capacity) >= 0
+        return NativeMethods.GetClassName(_handle, buffer, buffer.Capacity) >= 0
             ? buffer.ToString()
             : null;
     }
@@ -46,7 +46,7 @@ public partial class SystemWindow
             string.Equals(className, "ApplicationManager_DesktopShellWindow", StringComparison.OrdinalIgnoreCase);
     }
 
-    public bool IsVisible() => NativeMethods.IsWindowVisible(Handle);
+    public bool IsVisible() => NativeMethods.IsWindowVisible(_handle);
 
     public bool IsFullScreen()
     {
@@ -65,7 +65,7 @@ public partial class SystemWindow
         );
 
         // Check if the window covers up screen bounds
-        var screenRect = Screen.FromHandle(Handle).Bounds;
+        var screenRect = Screen.FromHandle(_handle).Bounds;
 
         return
             absoluteWindowClientRect.Left <= 0 &&
@@ -76,10 +76,15 @@ public partial class SystemWindow
 
     public SystemProcess? TryGetProcess()
     {
-        NativeMethods.GetWindowThreadProcessId(Handle, out var processId);
-        return processId != 0
-            ? SystemProcess.TryOpen(processId)
-            : null;
+        _ = NativeMethods.GetWindowThreadProcessId(_handle, out var processId);
+
+        if (processId == 0)
+        {
+            Debug.WriteLine($"Failed to retrieve process ID for window (handle: {_handle}).");
+            return null;
+        }
+
+        return SystemProcess.TryOpen((int) processId);
     }
 }
 
@@ -88,9 +93,14 @@ public partial class SystemWindow
     public static SystemWindow? TryGetForegroundWindow()
     {
         var handle = NativeMethods.GetForegroundWindow();
-        return handle != IntPtr.Zero
-            ? new SystemWindow(handle)
-            : null;
+
+        if (handle == IntPtr.Zero)
+        {
+            Debug.WriteLine("Failed to retrieve foreground window.");
+            return null;
+        }
+
+        return new SystemWindow(handle);
     }
 
     public static IReadOnlyList<SystemWindow> GetAllWindows()

@@ -26,44 +26,50 @@ public partial class GammaService : IDisposable
     {
         _settingsService = settingsService;
 
-        // Register for all system events that may indicate that device context or gamma has changed from outside
+        // Register for all system events that may indicate that device context or gamma was changed from outside
         _eventRegistration = new[]
         {
+            // https://github.com/Tyrrrz/LightBulb/issues/223
+            SystemHook.TryRegister(
+                SystemHook.ForegroundWindowChanged,
+                InvalidateGamma
+            ) ?? Disposable.Empty,
+
             PowerSettingNotification.TryRegister(
-                PowerSettingNotification.ConsoleDisplayStateId,
+                PowerSettingNotification.Ids.ConsoleDisplayStateChanged,
                 InvalidateGamma
             ) ?? Disposable.Empty,
             PowerSettingNotification.TryRegister(
-                PowerSettingNotification.PowerSavingStatusId,
+                PowerSettingNotification.Ids.PowerSavingStatusChanged,
                 InvalidateGamma
             ) ?? Disposable.Empty,
             PowerSettingNotification.TryRegister(
-                PowerSettingNotification.SessionDisplayStatusId,
+                PowerSettingNotification.Ids.SessionDisplayStatusChanged,
                 InvalidateGamma
             ) ?? Disposable.Empty,
             PowerSettingNotification.TryRegister(
-                PowerSettingNotification.MonitorPowerOnId,
+                PowerSettingNotification.Ids.MonitorPowerStateChanged,
                 InvalidateGamma
             ) ?? Disposable.Empty,
             PowerSettingNotification.TryRegister(
-                PowerSettingNotification.AwayModeId,
+                PowerSettingNotification.Ids.AwayModeChanged,
                 InvalidateGamma
             ) ?? Disposable.Empty,
 
             SystemEvent.Register(
-                SystemEvent.DisplayChangedId,
+                SystemEvent.Ids.DisplayChanged,
                 InvalidateDeviceContext
             ),
             SystemEvent.Register(
-                SystemEvent.PaletteChangedId,
+                SystemEvent.Ids.PaletteChanged,
                 InvalidateDeviceContext
             ),
             SystemEvent.Register(
-                SystemEvent.SettingsChangedId,
+                SystemEvent.Ids.SettingsChanged,
                 InvalidateDeviceContext
             ),
             SystemEvent.Register(
-                SystemEvent.SystemColorsChangedId,
+                SystemEvent.Ids.SystemColorsChanged,
                 InvalidateDeviceContext
             )
         }.Aggregate();
@@ -101,6 +107,26 @@ public partial class GammaService : IDisposable
         _lastConfiguration = null;
     }
 
+    private bool IsGammaStale()
+    {
+        var instant = DateTimeOffset.Now;
+
+        // Assume gamma continues to be stale for some time after it has been invalidated
+        if ((instant - _lastGammaInvalidationTimestamp).Duration() <= TimeSpan.FromSeconds(0.5))
+        {
+            return true;
+        }
+
+        // If polling is enabled, assume gamma is stale after some time has passed since last update
+        if (_settingsService.IsGammaPollingEnabled &&
+            (instant - _lastUpdateTimestamp).Duration() > TimeSpan.FromSeconds(1))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     private bool IsSignificantChange(ColorConfiguration configuration)
     {
         // Nothing to compare to
@@ -110,29 +136,6 @@ public partial class GammaService : IDisposable
         return
             Math.Abs(configuration.Temperature - lastConfiguration.Temperature) > 15 ||
             Math.Abs(configuration.Brightness - lastConfiguration.Brightness) > 0.01;
-    }
-
-    private bool IsGammaStale()
-    {
-        var instant = DateTimeOffset.Now;
-
-        // If gamma has been invalidated in the last X seconds, assume the gamma is still stale.
-        // This is done because, even though we refresh gamma when it gets invalidated, sometimes
-        // we may refresh too early.
-        if ((instant - _lastGammaInvalidationTimestamp).Duration() <= TimeSpan.FromSeconds(0.5))
-        {
-            return true;
-        }
-
-        // If polling is enabled, then gamma is assumed stale after X seconds has passed since the
-        // last time it was updated.
-        if (_settingsService.IsGammaPollingEnabled &&
-            (instant - _lastUpdateTimestamp).Duration() > TimeSpan.FromSeconds(1))
-        {
-            return true;
-        }
-
-        return false;
     }
 
     public void SetGamma(ColorConfiguration configuration)
@@ -165,9 +168,7 @@ public partial class GammaService : IDisposable
     {
         // Reset gamma on all contexts
         foreach (var deviceContext in _deviceContexts)
-        {
             deviceContext.ResetGamma();
-        }
 
         _eventRegistration.Dispose();
         _deviceContexts.DisposeAll();

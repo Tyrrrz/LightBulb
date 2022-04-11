@@ -1,35 +1,27 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using LightBulb.WindowsApi.Native;
 
 namespace LightBulb.WindowsApi;
 
 public partial class GlobalHotKey : IDisposable
 {
+    private readonly int _id;
+
     private readonly object _lock = new();
     private readonly IDisposable _wndProcRegistration;
 
     private DateTimeOffset _lastTriggerTimestamp = DateTimeOffset.MinValue;
 
-    public int Id { get; }
-
-    public int VirtualKey { get; }
-
-    public int Modifiers { get; }
-
-    public Action Callback { get; }
-
-    public GlobalHotKey(int id, int virtualKey, int modifiers, Action callback)
+    private GlobalHotKey(int id, Action callback)
     {
-        Id = id;
-        VirtualKey = virtualKey;
-        Modifiers = modifiers;
-        Callback = callback;
+        _id = id;
 
-        _wndProcRegistration = WndProc.Listen(786, m =>
+        _wndProcRegistration = WndProc.Listen(WndProc.Ids.GlobalHotkeyMessage, m =>
         {
             // Filter out other hotkey events
-            if (m.WParam.ToInt32() != Id)
+            if (m.WParam.ToInt32() != _id)
                 return;
 
             // Throttle triggers
@@ -41,7 +33,7 @@ public partial class GlobalHotKey : IDisposable
                 _lastTriggerTimestamp = DateTimeOffset.Now;
             }
 
-            Callback();
+            callback();
         });
     }
 
@@ -51,8 +43,8 @@ public partial class GlobalHotKey : IDisposable
     {
         _wndProcRegistration.Dispose();
 
-        if (!NativeMethods.UnregisterHotKey(WndProc.Handle, Id))
-            Debug.WriteLine("Could not dispose global hotkey.");
+        if (!NativeMethods.UnregisterHotKey(WndProc.Handle, _id))
+            Debug.WriteLine($"Failed to dispose global hotkey (ID: {_id}).");
 
         GC.SuppressFinalize(this);
     }
@@ -64,9 +56,14 @@ public partial class GlobalHotKey
 
     public static GlobalHotKey? TryRegister(int virtualKey, int modifiers, Action callback)
     {
-        var id = _lastHotKeyId++;
-        return NativeMethods.RegisterHotKey(WndProc.Handle, id, modifiers, virtualKey)
-            ? new GlobalHotKey(id, virtualKey, modifiers, callback)
-            : null;
+        var id = Interlocked.Increment(ref _lastHotKeyId);
+
+        if (!NativeMethods.RegisterHotKey(WndProc.Handle, id, modifiers, virtualKey))
+        {
+            Debug.WriteLine($"Failed to register global hotkey (key: {virtualKey}, mods: {modifiers}).");
+            return null;
+        }
+
+        return new GlobalHotKey(id, callback);
     }
 }

@@ -7,9 +7,9 @@ namespace LightBulb.WindowsApi;
 
 public partial class SystemProcess : IDisposable
 {
-    public IntPtr Handle { get; }
+    private readonly IntPtr _handle;
 
-    public SystemProcess(IntPtr handle) => Handle = handle;
+    private SystemProcess(IntPtr handle) => _handle = handle;
 
     ~SystemProcess() => Dispose();
 
@@ -18,15 +18,15 @@ public partial class SystemProcess : IDisposable
         var buffer = new StringBuilder(1024);
         var bufferSize = (uint) buffer.Capacity + 1;
 
-        return NativeMethods.QueryFullProcessImageName(Handle, 0, buffer, ref bufferSize)
+        return NativeMethods.QueryFullProcessImageName(_handle, 0, buffer, ref bufferSize)
             ? buffer.ToString()
             : null;
     }
 
     public void Dispose()
     {
-        if (!NativeMethods.CloseHandle(Handle))
-            Debug.WriteLine("Could not dispose process.");
+        if (!NativeMethods.CloseHandle(_handle))
+            Debug.WriteLine($"Failed to dispose process (handle: {_handle}).");
 
         GC.SuppressFinalize(this);
     }
@@ -34,11 +34,16 @@ public partial class SystemProcess : IDisposable
 
 public partial class SystemProcess
 {
-    public static SystemProcess? TryOpen(uint processId)
+    public static SystemProcess? TryOpen(int processId)
     {
-        var handle = NativeMethods.OpenProcess(ProcessAccessFlags.QueryLimitedInformation, false, processId);
-        return handle != IntPtr.Zero
-            ? new SystemProcess(handle)
-            : null;
+        var handle = NativeMethods.OpenProcess(ProcessAccessFlags.QueryLimitedInformation, false, (uint) processId);
+
+        if (handle == IntPtr.Zero)
+        {
+            Debug.WriteLine($"Failed to open process (ID: {processId}).");
+            return null;
+        }
+
+        return new SystemProcess(handle);
     }
 }
