@@ -1,3 +1,9 @@
+### v2.4.5 (14-Apr-2022)
+
+- Updated the gamma invalidation strategy to consider gamma stale if the foreground window changed within the last 500 milliseconds. This works around issues where switching to specific windows (for example, Windows Action Center) causes gamma to reset.
+- Extended tooltips on brightness sliders to clarify what effect they have.
+- Fixed an issue which caused LightBulb to crash occasionally when clicking on its tray icon.
+
 ### v2.4.4 (07-Mar-2022)
 
 - Actually fixed it this time.
