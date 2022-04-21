@@ -1,7 +1,7 @@
 # LightBulb 💡
 
 [![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://vshymanskyy.github.io/StandWithUkraine)
-[![Build](https://img.shields.io/github/workflow/status/Tyrrrz/LightBulb/CI/master)](https://github.com/Tyrrrz/LightBulb/actions)
+[![Build](https://img.shields.io/github/workflow/status/Tyrrrz/LightBulb/main/master)](https://github.com/Tyrrrz/LightBulb/actions)
 [![Coverage](https://img.shields.io/codecov/c/github/Tyrrrz/LightBulb/master)](https://codecov.io/gh/Tyrrrz/LightBulb)
 [![Release](https://img.shields.io/github/release/Tyrrrz/LightBulb.svg)](https://github.com/Tyrrrz/LightBulb/releases)
 [![Downloads](https://img.shields.io/github/downloads/Tyrrrz/LightBulb/total.svg)](https://github.com/Tyrrrz/LightBulb/releases)
@@ -35,7 +35,7 @@ To learn more about the war and how you can help, [click here](https://tyrrrz.me
 Other operating systems are not supported.
 
 - 🟢 [**Stable release**](https://github.com/Tyrrrz/LightBulb/releases)
-- 🟠 [CI build](https://github.com/Tyrrrz/LightBulb/actions?query=workflow%3ACI)
+- 🟠 [CI build](https://github.com/Tyrrrz/LightBulb/actions/workflows/main.yml)
 - 📦 [WinGet](https://github.com/microsoft/winget-cli): `winget install Tyrrrz.LightBulb` (community-maintained)
 
 ## Features
