@@ -51,5 +51,5 @@ Other operating systems are not supported.
 
 ## Screenshots
 
-![dashboard](.screenshots/dashboard.png)
-![settings](.screenshots/settings.png)
+![dashboard](.assets/dashboard.png)
+![settings](.assets/settings.png)
