@@ -112,7 +112,7 @@ public partial class GammaService : IDisposable
         var instant = DateTimeOffset.Now;
 
         // Assume gamma continues to be stale for some time after it has been invalidated
-        if ((instant - _lastGammaInvalidationTimestamp).Duration() <= TimeSpan.FromSeconds(0.5))
+        if ((instant - _lastGammaInvalidationTimestamp).Duration() <= TimeSpan.FromSeconds(0.3))
         {
             return true;
         }
