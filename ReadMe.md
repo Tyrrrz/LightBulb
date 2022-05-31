@@ -18,7 +18,7 @@ Its primary objective is to match the color of the screen to the light sources o
 
 > ❔ If you have questions or issues, **please refer to the [wiki](https://github.com/Tyrrrz/LightBulb/wiki)**.
 
-## Terms of use
+## Terms of use<sup>[[?]](https://github.com/Tyrrrz/.github/blob/master/docs/why-so-political.md)</sup>
 
 By using this project or its source code, for any purpose and in any shape or form, you grant your **implicit agreement** to all the following statements:
 
@@ -31,8 +31,9 @@ To learn more about the war and how you can help, [click here](https://tyrrrz.me
 
 ## Download
 
-> ⚠️ **LightBulb** only works on Windows 7 and higher.
-Other operating systems are not supported.
+> **Warning**:
+> **LightBulb** only works on Windows 7 and higher.
+> Other operating systems are not supported.
 
 - 🟢 [**Stable release**](https://github.com/Tyrrrz/LightBulb/releases)
 - 🟠 [CI build](https://github.com/Tyrrrz/LightBulb/actions/workflows/main.yml)
