@@ -10,6 +10,7 @@
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:tb="http://www.hardcodet.net/taskbar"
     xmlns:viewModels="clr-namespace:LightBulb.ViewModels"
+    xmlns:converters="clr-namespace:LightBulb.Converters"
     Width="450"
     Height="350"
     d:DataContext="{d:DesignInstance Type=viewModels:RootViewModel}"
@@ -24,10 +25,11 @@
     mc:Ignorable="d">
     <Border BorderBrush="{DynamicResource PrimaryHueLightBrush}" BorderThickness="1">
         <materialDesign:DialogHost
+            x:Name="DialogHost"
             CloseOnClickAway="False"
             Loaded="{s:Action OnViewFullyLoaded}"
             Style="{DynamicResource MaterialDesignEmbeddedDialogHost}">
-            <Grid>
+            <Grid IsEnabled="{Binding IsOpen, ElementName=DialogHost, Converter={x:Static converters:InverseBoolConverter.Instance}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
