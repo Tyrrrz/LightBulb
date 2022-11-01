@@ -31,7 +31,7 @@ public class RootViewModel : Screen, IDisposable
         _viewModelFactory = viewModelFactory;
         _dialogManager = dialogManager;
         _settingsService = settingsService;
-        
+
         _checkForUpdatesTimer = new Timer(
             TimeSpan.FromHours(3),
             async () => await updateService.CheckPrepareUpdateAsync()
@@ -104,7 +104,7 @@ Press LEARN MORE to find ways that you can help.".Trim(),
 
         if (await _dialogManager.ShowDialogAsync(dialog) == true)
         {
-            ProcessEx.StartShellExecute("https://tyrrrz.me");
+            ProcessEx.StartShellExecute("https://tyrrrz.me/ukraine?source=lightbulb");
         }
     }
 
