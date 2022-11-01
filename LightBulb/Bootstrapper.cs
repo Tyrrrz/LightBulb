@@ -15,83 +15,87 @@ using System.Windows;
 using System.Windows.Threading;
 #endif
 
-namespace LightBulb
+namespace LightBulb;
+
+public class Bootstrapper : Bootstrapper<RootViewModel>
 {
-    public class Bootstrapper : Bootstrapper<RootViewModel>
+    private readonly Mutex _identityMutex;
+    private readonly bool _isOnlyRunningInstance;
+
+    public Bootstrapper()
     {
-        private readonly Mutex _identityMutex;
-        private readonly bool _isOnlyRunningInstance;
+        _identityMutex = new Mutex(true, "LightBulb_Identity", out _isOnlyRunningInstance);
+    }
 
-        public Bootstrapper()
+    private T GetInstance<T>() => (T) base.GetInstance(typeof(T));
+
+    public override void Start(string[] args)
+    {
+        // Ensure only one instance of the app is running at a time
+        if (!_isOnlyRunningInstance)
         {
-            _identityMutex = new Mutex(true, "LightBulb_Identity", out _isOnlyRunningInstance);
-        }
-
-        private T GetInstance<T>() => (T) base.GetInstance(typeof(T));
-
-        public override void Start(string[] args)
-        {
-            // Ensure only one instance of the app is running at a time
-            if (!_isOnlyRunningInstance)
-            {
 #if !DEBUG
-                Environment.Exit(0);
-                return;
+            Environment.Exit(0);
+            return;
 #endif
-            }
-
-            base.Start(args);
         }
 
-        protected override void ConfigureIoC(IStyletIoCBuilder builder)
-        {
-            base.ConfigureIoC(builder);
+        base.Start(args);
+    }
 
-            builder.Bind<SettingsService>().ToSelf().InSingletonScope();
-            builder.Bind<GammaService>().ToSelf().InSingletonScope();
-            builder.Bind<HotKeyService>().ToSelf().InSingletonScope();
-            builder.Bind<ExternalApplicationService>().ToSelf().InSingletonScope();
-            builder.Bind<UpdateService>().ToSelf().InSingletonScope();
+    protected override void ConfigureIoC(IStyletIoCBuilder builder)
+    {
+        base.ConfigureIoC(builder);
 
-            builder.Bind<DialogManager>().ToSelf().InSingletonScope();
-            builder.Bind<IViewModelFactory>().ToAbstractFactory();
+        builder.Bind<SettingsService>().ToSelf().InSingletonScope();
+        builder.Bind<GammaService>().ToSelf().InSingletonScope();
+        builder.Bind<HotKeyService>().ToSelf().InSingletonScope();
+        builder.Bind<ExternalApplicationService>().ToSelf().InSingletonScope();
+        builder.Bind<UpdateService>().ToSelf().InSingletonScope();
 
-            builder.Bind<RootViewModel>().ToSelf().InSingletonScope();
-            builder.Bind<DashboardViewModel>().ToSelf().InSingletonScope();
-            builder.Bind<MessageBoxViewModel>().ToSelf().InSingletonScope();
-            builder.Bind<SettingsViewModel>().ToSelf().InSingletonScope();
-            builder.Bind<ISettingsTabViewModel>().ToAllImplementations().InSingletonScope();
-        }
+        builder.Bind<DialogManager>().ToSelf().InSingletonScope();
+        builder.Bind<IViewModelFactory>().ToAbstractFactory();
 
-        protected override void Launch()
-        {
-            // Finalize pending updates (and restart) before launching the app
-            GetInstance<UpdateService>().FinalizePendingUpdates();
+        builder.Bind<RootViewModel>().ToSelf().InSingletonScope();
+        builder.Bind<DashboardViewModel>().ToSelf().InSingletonScope();
+        builder.Bind<MessageBoxViewModel>().ToSelf().InSingletonScope();
+        builder.Bind<SettingsViewModel>().ToSelf().InSingletonScope();
+        builder.Bind<ISettingsTabViewModel>().ToAllImplementations().InSingletonScope();
+    }
 
-            // Load settings (this has to come before any view is loaded because bindings are not updated)
-            GetInstance<SettingsService>().Load();
+    protected override void Launch()
+    {
+        // Finalize pending updates (and restart) before launching the app
+        GetInstance<UpdateService>().FinalizePendingUpdates();
 
-            // Stylet/WPF is slow, so we preload all dialogs, including descendants, for smoother UX
-            _ = GetInstance<DialogManager>().GetViewForDialogScreen(GetInstance<SettingsViewModel>());
-            _ = GetInstance<DialogManager>().GetViewForDialogScreen(GetInstance<MessageBoxViewModel>());
+        // Load settings (this has to come before any view is loaded because bindings are not updated)
+        GetInstance<SettingsService>().Load();
 
-            base.Launch();
-        }
+        // Stylet/WPF is slow, so we preload all dialogs, including descendants, for smoother UX
+        _ = GetInstance<DialogManager>().GetViewForDialogScreen(GetInstance<SettingsViewModel>());
+        _ = GetInstance<DialogManager>().GetViewForDialogScreen(GetInstance<MessageBoxViewModel>());
+
+        base.Launch();
+    }
 
 #if !DEBUG
-        protected override void OnUnhandledException(DispatcherUnhandledExceptionEventArgs e)
-        {
-            base.OnUnhandledException(e);
+    protected override void OnUnhandledException(DispatcherUnhandledExceptionEventArgs e)
+    {
+        base.OnUnhandledException(e);
 
-            MessageBox.Show(e.Exception.ToString(), "Error occured", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        MessageBox.Show(
+            e.Exception.ToString(),
+            "Error occured",
+            MessageBoxButton.OK,
+            MessageBoxImage.Error
+        );
+    }
 #endif
 
-        public override void Dispose()
-        {
-            _identityMutex.Dispose();
+    public override void Dispose()
+    {
+        _identityMutex.Dispose();
 
-            base.Dispose();
-        }
+        base.Dispose();
     }
 }
