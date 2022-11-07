@@ -11,10 +11,12 @@
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
     d:DataContext="{d:DesignInstance Type=settings:LocationSettingsTabViewModel}"
     Style="{DynamicResource MaterialDesignRoot}"
+    xmlns:resources="clr-namespace:LightBulb.Resources"
+    resources:Translation.ResourceManager="{x:Static resources:Localization.ResourceManager}"
     mc:Ignorable="d">
     <StackPanel Margin="0,8" Orientation="Vertical">
         <!--  Manual/location-based configuration  -->
-        <TextBlock Margin="16,8" Text="Solar configuration:" />
+        <TextBlock Margin="16,8" Text="{resources:Loc Solar_configuration}" />
         <Grid Margin="16,0,16,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -23,12 +25,12 @@
 
             <RadioButton
                 Grid.Column="0"
-                Content="Manual"
+                Content="{resources:Loc Manual}"
                 IsChecked="{Binding IsManualSunriseSunsetEnabled}"
-                ToolTip="Configure sunrise and sunset manually" />
+                ToolTip="{resources:Loc Manual_ToolTip}" />
             <RadioButton
                 Grid.Column="1"
-                Content="Location-based"
+                Content="{resources:Loc Location_based}"
                 IsChecked="{Binding IsManualSunriseSunsetEnabled, Converter={x:Static converters:InverseBoolConverter.Instance}}"
                 ToolTip="Configure location and use it to automatically calculate sunrise and sunset" />
         </Grid>
@@ -37,7 +39,7 @@
         <StackPanel Orientation="Vertical" Visibility="{Binding IsManualSunriseSunsetEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
             <!--  Sunrise time  -->
             <StackPanel Margin="16,8" Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Text="Sunrise:" />
+                <TextBlock VerticalAlignment="Center" Text="{resources:Loc Sunrise_colon}" ></TextBlock>
                 <TextBox
                     MinWidth="30"
                     Margin="8,0"
@@ -57,7 +59,7 @@
 
             <!--  Sunset time  -->
             <StackPanel Margin="16,8" Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Text="Sunset:" />
+                <TextBlock VerticalAlignment="Center" Text="{resources:Loc Sunset_colon}" />
                 <TextBox
                     MinWidth="30"
                     Margin="8,0"
@@ -79,7 +81,7 @@
         <!--  Location-based  -->
         <StackPanel Orientation="Vertical" Visibility="{Binding IsManualSunriseSunsetEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}">
             <!--  Location  -->
-            <TextBlock Margin="16,8" Text="Your location:" />
+            <TextBlock Margin="16,8" Text="{resources:Loc Your_location}" />
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -95,7 +97,7 @@
                     VerticalAlignment="Center"
                     Command="{s:Action AutoDetectLocation}"
                     Style="{DynamicResource MaterialDesignFlatButton}"
-                    ToolTip="Try to detect location automatically based on your IP">
+                    ToolTip="{resources:Loc Autodetect_ToolTip}">
                     <materialDesign:PackIcon
                         Width="24"
                         Height="24"
@@ -112,10 +114,10 @@
                     Text="{Binding LocationQuery, UpdateSourceTrigger=PropertyChanged}">
                     <TextBox.ToolTip>
                         <TextBlock>
-                            <Run Text="You can enter coordinates directly or specify a search query" />
+                            <Run Text="{resources:Loc Location_query_ToolTip1}" />
                             <LineBreak />
                             <LineBreak />
-                            <Run Text="Examples of valid values:" />
+                            <Run Text="{resources:Loc Location_query_ToolTip2}" />
                             <LineBreak />
                             <Run FontWeight="SemiBold" Text="41.25, -120.9762" />
                             <LineBreak />
@@ -137,7 +139,7 @@
                     Command="{s:Action SetLocation}"
                     IsDefault="True"
                     Style="{DynamicResource MaterialDesignFlatButton}"
-                    ToolTip="Set location">
+                    ToolTip="{resources:Loc Set_location}">
                     <materialDesign:PackIcon
                         Width="24"
                         Height="24"
@@ -156,7 +158,7 @@
             <TextBlock
                 Margin="16,8"
                 Foreground="DarkRed"
-                Text="There was an error resolving location"
+                Text="{resources:Loc Location_error}"
                 Visibility="{Binding IsLocationError, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
         </StackPanel>
     </StackPanel>

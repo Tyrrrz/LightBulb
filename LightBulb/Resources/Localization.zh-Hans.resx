@@ -1,0 +1,366 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ABOUT" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="PREVIEW" xml:space="preserve">
+    <value>预览</value>
+  </data>
+  <data name="RESET" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="SETTINGS" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="STOP" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="CANCEL" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="SAVE" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Sunset" xml:space="preserve">
+    <value>日落</value>
+  </data>
+  <data name="Sunset_transition_starts_at" xml:space="preserve">
+    <value>日落过渡开始于</value>
+  </data>
+  <data name="and_ends_at" xml:space="preserve">
+    <value>结束于</value>
+  </data>
+  <data name="Current_temperature_and_brightness_values_are_adjusted_by_an_offset" xml:space="preserve">
+    <value>当前的色温和亮度值会有一个偏移:</value>
+  </data>
+  <data name="Temperature_offset" xml:space="preserve">
+    <value>色温偏移</value>
+  </data>
+  <data name="Brightness_offset" xml:space="preserve">
+    <value>亮度偏移:</value>
+  </data>
+  <data name="Click_to_reset" xml:space="preserve">
+    <value>点击重置</value>
+  </data>
+  <data name="offset" xml:space="preserve">
+    <value>偏移</value>
+  </data>
+  <data name="Sunrise_transition_starts_at" xml:space="preserve">
+    <value>日出过渡开始于</value>
+  </data>
+  <data name="Sunrise" xml:space="preserve">
+    <value>日出</value>
+  </data>
+  <data name="Start_with_Windows" xml:space="preserve">
+    <value>开机启动</value>
+  </data>
+  <data name="Auto_update" xml:space="preserve">
+    <value>自动更新</value>
+  </data>
+  <data name="Default_to_day_time_configuration" xml:space="preserve">
+    <value>默认为日间配置
+</value>
+  </data>
+  <data name="Pause_when_fullscreen" xml:space="preserve">
+    <value>暂停时全屏</value>
+  </data>
+  <data name="Gamma_smoothing" xml:space="preserve">
+    <value>伽马平滑</value>
+  </data>
+  <data name="Gamma_polling" xml:space="preserve">
+    <value>伽玛轮询</value>
+  </data>
+  <data name="Application_whitelist" xml:space="preserve">
+    <value>应用白名单</value>
+  </data>
+  <data name="Refresh_the_list_of_available_applications" xml:space="preserve">
+    <value>刷新可用应用程序列表</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="Day_time_color_temperature" xml:space="preserve">
+    <value>白天色温:</value>
+  </data>
+  <data name="Night_time_color_temperature" xml:space="preserve">
+    <value>夜间色温:</value>
+  </data>
+  <data name="Color_temperature_during_the_night" xml:space="preserve">
+    <value>夜间的色温</value>
+  </data>
+  <data name="Color_temperature_during_the_day" xml:space="preserve">
+    <value>白天的色温</value>
+  </data>
+  <data name="Day_time_brightness" xml:space="preserve">
+    <value>白天的亮度</value>
+  </data>
+  <data name="Day_brightness_ToolTip1" xml:space="preserve">
+    <value>白天的亮度</value>
+  </data>
+  <data name="Day_brightness_ToolTip2" xml:space="preserve">
+    <value>请注意，该亮度设置适用于色彩伽马，而不是显示器的实际亮度。</value>
+  </data>
+  <data name="Day_brightness_ToolTip3" xml:space="preserve">
+    <value>如果你的电脑已经能够根据照明条件自动调整屏幕亮度（对笔记本电脑来说很常见），建议禁用LightBulb的亮度控制，将两个亮度设置都保持在100%。</value>
+  </data>
+  <data name="Night_brightness_ToolTip1" xml:space="preserve">
+    <value>晚上的亮度</value>
+  </data>
+  <data name="Night_brightness_ToolTip2" xml:space="preserve">
+    <value>
+请注意，该亮度设置适用于色彩伽马，而不是显示器的实际亮度。
+</value>
+  </data>
+  <data name="Night_brightness_ToolTip3" xml:space="preserve">
+    <value>如果你的电脑已经能够根据照明条件自动调整屏幕亮度（对笔记本电脑来说很常见），建议禁用LightBulb的亮度控制，将两个亮度设置都保持在100%。</value>
+  </data>
+  <data name="Night_time_brightness" xml:space="preserve">
+    <value>夜间的亮度:</value>
+  </data>
+  <data name="Transition_duration" xml:space="preserve">
+    <value>过渡时间:</value>
+  </data>
+  <data name="Transition_duration_ToolTip" xml:space="preserve">
+    <value>在日间和夜间配置之间切换所需的时间长度</value>
+  </data>
+  <data name="Transition_offset" xml:space="preserve">
+    <value>过渡偏移:</value>
+  </data>
+  <data name="Transition_offset_ToolTip" xml:space="preserve">
+    <value>偏移，指定相对于日出和日落的过渡开始时间的早晚。</value>
+  </data>
+  <data name="Toggle_LightBulb" xml:space="preserve">
+    <value>切换LightBulb</value>
+  </data>
+  <data name="Toggle_LightBulb_ToolTip" xml:space="preserve">
+    <value>全局热键，用于打开/关闭LightBulb</value>
+  </data>
+  <data name="Temperature_offset_up" xml:space="preserve">
+    <value>色温偏移 ↑</value>
+  </data>
+  <data name="Temperature_offset_up_ToolTip" xml:space="preserve">
+    <value>增加当前色温偏移的全局热键</value>
+  </data>
+  <data name="Temperature_offset_down" xml:space="preserve">
+    <value>色温偏移 ↓</value>
+  </data>
+  <data name="Temperature_offset_down_ToolTip" xml:space="preserve">
+    <value>减少当前色温偏移的全局热键</value>
+  </data>
+  <data name="Brightness_offset_up" xml:space="preserve">
+    <value>亮度偏移 ↑</value>
+  </data>
+  <data name="Brightness_offset_up_ToolTip" xml:space="preserve">
+    <value>增加当前亮度偏移的全局热键</value>
+  </data>
+  <data name="Brightness_offset_down" xml:space="preserve">
+    <value>亮度偏移 ↓</value>
+  </data>
+  <data name="Brightness_offset_down_ToolTip" xml:space="preserve">
+    <value>全局热键，减少当前亮度偏移</value>
+  </data>
+  <data name="Reset_offset" xml:space="preserve">
+    <value>重置偏移量</value>
+  </data>
+  <data name="Reset_offset_ToolTip" xml:space="preserve">
+    <value>全局热键可重置当前温度和亮度偏移</value>
+  </data>
+  <data name="Solar_configuration" xml:space="preserve">
+    <value>朝夕配置</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>手动</value>
+  </data>
+  <data name="Manual_ToolTip" xml:space="preserve">
+    <value>手动配置日出和日落</value>
+  </data>
+  <data name="Location_based" xml:space="preserve">
+    <value>基于位置</value>
+  </data>
+  <data name="Sunrise_colon" xml:space="preserve">
+    <value>日出:</value>
+  </data>
+  <data name="Sunset_colon" xml:space="preserve">
+    <value>日落:</value>
+  </data>
+  <data name="Your_location" xml:space="preserve">
+    <value>您的位置</value>
+  </data>
+  <data name="Autodetect_ToolTip" xml:space="preserve">
+    <value>尝试根据您的 IP 自动检测位置</value>
+  </data>
+  <data name="Location_query_ToolTip1" xml:space="preserve">
+    <value>你可以直接输入坐标或指定一个搜索查询</value>
+  </data>
+  <data name="Location_query_ToolTip2" xml:space="preserve">
+    <value>有效的例子:</value>
+  </data>
+  <data name="Set_location" xml:space="preserve">
+    <value>设置位置</value>
+  </data>
+  <data name="Location_error" xml:space="preserve">
+    <value>解决位置问题时出现了错误</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="About_Menu" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="minute_1" xml:space="preserve">
+    <value>1 分钟</value>
+  </data>
+  <data name="minutes_5" xml:space="preserve">
+    <value>5 分钟</value>
+  </data>
+  <data name="minutes_30" xml:space="preserve">
+    <value>30 分钟</value>
+  </data>
+  <data name="hour_1" xml:space="preserve">
+    <value>1 小时</value>
+  </data>
+  <data name="hours_3" xml:space="preserve">
+    <value>3 小时</value>
+  </data>
+  <data name="hours_6" xml:space="preserve">
+    <value>6 小时</value>
+  </data>
+  <data name="hours_12" xml:space="preserve">
+    <value>12 小时</value>
+  </data>
+  <data name="day_1" xml:space="preserve">
+    <value>1 天</value>
+  </data>
+  <data name="Until_sunrise" xml:space="preserve">
+    <value>直到日出</value>
+  </data>
+  <data name="Disable_for" xml:space="preserve">
+    <value>禁用...</value>
+  </data>
+  <data name="Disable" xml:space="preserve">
+    <value>禁用</value>
+  </data>
+  <data name="Enable" xml:space="preserve">
+    <value>启用</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>打开</value>
+  </data>
+</root>

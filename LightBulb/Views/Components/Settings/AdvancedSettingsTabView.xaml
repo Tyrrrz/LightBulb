@@ -5,6 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
+    xmlns:resources="clr-namespace:LightBulb.Resources"
+    resources:Translation.ResourceManager="{x:Static resources:Localization.ResourceManager}"
     d:DataContext="{d:DesignInstance Type=settings:AdvancedSettingsTabViewModel}"
     Style="{DynamicResource MaterialDesignRoot}"
     mc:Ignorable="d">
@@ -19,7 +21,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Start with Windows" />
+                Text="{resources:Loc Start_with_Windows}"  />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"
@@ -37,7 +39,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Auto-update" />
+                Text="{resources:Loc Auto_update}" />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"
@@ -55,7 +57,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Default to day-time configuration" />
+                Text="{resources:Loc Default_to_day_time_configuration}"  />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"
@@ -73,7 +75,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Pause when fullscreen" />
+                Text="{resources:Loc Pause_when_fullscreen}" />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"
@@ -91,7 +93,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Gamma smoothing" />
+                Text="{resources:Loc Gamma_smoothing}" />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"
@@ -109,7 +111,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Gamma polling" />
+                Text="{resources:Loc Gamma_polling}" />
             <ToggleButton
                 Grid.Column="1"
                 HorizontalAlignment="Right"

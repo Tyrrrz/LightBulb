@@ -8,6 +8,8 @@
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
     d:DataContext="{d:DesignInstance Type=settings:HotKeySettingsTabViewModel}"
     Style="{DynamicResource MaterialDesignRoot}"
+    xmlns:resources="clr-namespace:LightBulb.Resources"
+    resources:Translation.ResourceManager="{x:Static resources:Localization.ResourceManager}"
     mc:Ignorable="d">
     <StackPanel Margin="0,8" Orientation="Vertical">
         <!--  Toggle hotkey  -->
@@ -20,8 +22,8 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Toggle LightBulb"
-                ToolTip="Global hotkey to switch LightBulb on/off" />
+                Text="{resources:Loc Toggle_LightBulb}"
+                ToolTip="{resources:Loc Toggle_LightBulb_ToolTip}" />
             <controls:HotKeyTextBox
                 Grid.Column="1"
                 Width="120"
@@ -42,8 +44,8 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Temperature offset ↑"
-                ToolTip="Global hotkey to increase current temperature offset" />
+                Text="{resources:Loc Temperature_offset_up}"
+                ToolTip="{resources:Loc Temperature_offset_up_ToolTip}" />
             <controls:HotKeyTextBox
                 Grid.Column="1"
                 Width="120"
@@ -64,8 +66,8 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Temperature offset ↓"
-                ToolTip="Global hotkey to decrease current temperature offset" />
+                Text="{resources:Loc Temperature_offset_down}"
+                ToolTip="{resources:Loc Temperature_offset_down_ToolTip}" />
             <controls:HotKeyTextBox
                 Grid.Column="1"
                 Width="120"
@@ -86,8 +88,8 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Brightness offset ↑"
-                ToolTip="Global hotkey to increase current brightness offset" />
+                Text="{resources:Loc Brightness_offset_up}"
+                ToolTip="{resources:Loc Brightness_offset_up_ToolTip}" />
             <controls:HotKeyTextBox
                 Grid.Column="1"
                 Width="120"
@@ -108,8 +110,8 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Brightness offset ↓"
-                ToolTip="Global hotkey to decrease current brightness offset" />
+                Text="{resources:Loc Brightness_offset_down}"
+                ToolTip="{resources:Loc Brightness_offset_down_ToolTip}" />
             <controls:HotKeyTextBox
                 Grid.Column="1"
                 Width="120"
@@ -130,8 +132,8 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Reset offset"
-                ToolTip="Global hotkey to reset current temperature and brightness offset" />
+                Text="{resources:Loc Reset_offset}"
+                ToolTip="{resources:Loc Reset_offset_ToolTip}" />
             <controls:HotKeyTextBox
                 Grid.Column="1"
                 Width="120"

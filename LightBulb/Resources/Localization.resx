@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ABOUT" xml:space="preserve">
+    <value>ABOUT</value>
+  </data>
+  <data name="PREVIEW" xml:space="preserve">
+    <value>PREVIEW</value>
+  </data>
+  <data name="SETTINGS" xml:space="preserve">
+    <value>SETTINGS</value>
+  </data>
+  <data name="STOP" xml:space="preserve">
+    <value>STOP</value>
+  </data>
+  <data name="RESET" xml:space="preserve">
+    <value>RESET</value>
+  </data>
+  <data name="CANCEL" xml:space="preserve">
+    <value>CANCEL</value>
+  </data>
+  <data name="SAVE" xml:space="preserve">
+    <value>SAVE</value>
+  </data>
+  <data name="Sunset" xml:space="preserve">
+    <value>Sunset</value>
+  </data>
+  <data name="Sunset_transition_starts_at" xml:space="preserve">
+    <value>Sunset transition starts at</value>
+  </data>
+  <data name="and_ends_at" xml:space="preserve">
+    <value>and ends at</value>
+  </data>
+  <data name="Current_temperature_and_brightness_values_are_adjusted_by_an_offset" xml:space="preserve">
+    <value>Current temperature and brightness values are adjusted by an offset:</value>
+  </data>
+  <data name="Temperature_offset" xml:space="preserve">
+    <value>Temperature offset</value>
+  </data>
+  <data name="Brightness_offset" xml:space="preserve">
+    <value>Brightness offset:</value>
+  </data>
+  <data name="Click_to_reset" xml:space="preserve">
+    <value>Click to reset</value>
+  </data>
+  <data name="offset" xml:space="preserve">
+    <value>offset</value>
+  </data>
+  <data name="Sunrise_transition_starts_at" xml:space="preserve">
+    <value>Sunrise transition starts at</value>
+  </data>
+  <data name="Sunrise" xml:space="preserve">
+    <value>Sunrise</value>
+  </data>
+  <data name="Start_with_Windows" xml:space="preserve">
+    <value>Start with Windows</value>
+  </data>
+  <data name="Auto_update" xml:space="preserve">
+    <value>Auto-update</value>
+  </data>
+  <data name="Default_to_day_time_configuration" xml:space="preserve">
+    <value>Default to day-time configuration</value>
+  </data>
+  <data name="Pause_when_fullscreen" xml:space="preserve">
+    <value>Pause when fullscreen</value>
+  </data>
+  <data name="Gamma_smoothing" xml:space="preserve">
+    <value>Gamma smoothing</value>
+  </data>
+  <data name="Gamma_polling" xml:space="preserve">
+    <value>Gamma polling</value>
+  </data>
+  <data name="Application_whitelist" xml:space="preserve">
+    <value>Application whitelist</value>
+  </data>
+  <data name="Refresh_the_list_of_available_applications" xml:space="preserve">
+    <value>Refresh the list of available applications</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Day_time_color_temperature" xml:space="preserve">
+    <value>Day-time color temperature:</value>
+  </data>
+  <data name="Night_time_color_temperature" xml:space="preserve">
+    <value>Night-time color temperature:</value>
+  </data>
+  <data name="Color_temperature_during_the_night" xml:space="preserve">
+    <value>Color temperature during the night</value>
+  </data>
+  <data name="Color_temperature_during_the_day" xml:space="preserve">
+    <value>Color temperature during the day</value>
+  </data>
+  <data name="Day_time_brightness" xml:space="preserve">
+    <value>Day-time brightness:</value>
+  </data>
+  <data name="Day_brightness_ToolTip1" xml:space="preserve">
+    <value>Brightness during the day</value>
+  </data>
+  <data name="Day_brightness_ToolTip2" xml:space="preserve">
+    <value>Note that this brightness setting applies to the color gamma, not to the actual brightness of the monitor.</value>
+  </data>
+  <data name="Day_brightness_ToolTip3" xml:space="preserve">
+    <value>If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops), it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%.</value>
+  </data>
+  <data name="Night_brightness_ToolTip1" xml:space="preserve">
+    <value>Brightness during the night</value>
+  </data>
+  <data name="Night_brightness_ToolTip2" xml:space="preserve">
+    <value>Note that this brightness setting applies to the color gamma, not to the actual brightness of the monitor.</value>
+  </data>
+  <data name="Night_brightness_ToolTip3" xml:space="preserve">
+    <value>If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops), it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%.</value>
+  </data>
+  <data name="Night-time brightness" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Night_time_brightness" xml:space="preserve">
+    <value>Night-time brightness:</value>
+  </data>
+  <data name="Transition_duration" xml:space="preserve">
+    <value>Transition duration:</value>
+  </data>
+  <data name="Transition_duration_ToolTip" xml:space="preserve">
+    <value>Duration of time it takes to switch between day-time and night-time configurations</value>
+  </data>
+  <data name="Transition_offset" xml:space="preserve">
+    <value>Transition offset:</value>
+  </data>
+  <data name="Transition_offset_ToolTip" xml:space="preserve">
+    <value>Offset that specifies how early or late the transition starts relatively to sunrise and sunset</value>
+  </data>
+  <data name="Toggle_LightBulb" xml:space="preserve">
+    <value>Toggle LightBulb</value>
+  </data>
+  <data name="Toggle_LightBulb_ToolTip" xml:space="preserve">
+    <value>Global hotkey to switch LightBulb on/off</value>
+  </data>
+  <data name="Temperature_offset_up" xml:space="preserve">
+    <value>Temperature offset ↑</value>
+  </data>
+  <data name="Temperature_offset_up_ToolTip" xml:space="preserve">
+    <value>Global hotkey to increase current temperature offset</value>
+  </data>
+  <data name="Temperature_offset_down" xml:space="preserve">
+    <value>Temperature offset ↓</value>
+  </data>
+  <data name="Temperature_offset_down_ToolTip" xml:space="preserve">
+    <value>Global hotkey to decrease current temperature offset</value>
+  </data>
+  <data name="Brightness_offset_up" xml:space="preserve">
+    <value>Brightness offset ↑</value>
+  </data>
+  <data name="Brightness_offset_up_ToolTip" xml:space="preserve">
+    <value>Global hotkey to increase current brightness offset</value>
+  </data>
+  <data name="Brightness_offset_down" xml:space="preserve">
+    <value>Brightness offset ↓</value>
+  </data>
+  <data name="Brightness_offset_down_ToolTip" xml:space="preserve">
+    <value>Global hotkey to decrease current brightness offset</value>
+  </data>
+  <data name="Reset_offset" xml:space="preserve">
+    <value>Reset offset</value>
+  </data>
+  <data name="Reset_offset_ToolTip" xml:space="preserve">
+    <value>Global hotkey to reset current temperature and brightness offset</value>
+  </data>
+  <data name="Solar_configuration" xml:space="preserve">
+    <value>Solar configuration:</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="Manual_ToolTip" xml:space="preserve">
+    <value>Configure sunrise and sunset manually</value>
+  </data>
+  <data name="Location_based" xml:space="preserve">
+    <value>Location-based</value>
+  </data>
+  <data name="Sunrise_colon" xml:space="preserve">
+    <value>Sunrise:</value>
+  </data>
+  <data name="Sunset_colon" xml:space="preserve">
+    <value>Sunset:</value>
+  </data>
+  <data name="Your_location" xml:space="preserve">
+    <value>Your location:</value>
+  </data>
+  <data name="Autodetect_ToolTip" xml:space="preserve">
+    <value>Try to detect location automatically based on your IP</value>
+  </data>
+  <data name="Location_query_ToolTip1" xml:space="preserve">
+    <value>You can enter coordinates directly or specify a search query</value>
+  </data>
+  <data name="Location_query_ToolTip2" xml:space="preserve">
+    <value>Examples of valid values:</value>
+  </data>
+  <data name="Location_query_ToolTip3" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Location_query_ToolTip4" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Set_location" xml:space="preserve">
+    <value>Set location</value>
+  </data>
+  <data name="Location_error" xml:space="preserve">
+    <value>There was an error resolving location</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="About_Menu" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="minute_1" xml:space="preserve">
+    <value>1 minute</value>
+  </data>
+  <data name="minutes_5" xml:space="preserve">
+    <value>5 minutes</value>
+  </data>
+  <data name="minutes_30" xml:space="preserve">
+    <value>30 minutes</value>
+  </data>
+  <data name="hour_1" xml:space="preserve">
+    <value>1 hour</value>
+  </data>
+  <data name="hours_3" xml:space="preserve">
+    <value>3 hours</value>
+  </data>
+  <data name="hours_6" xml:space="preserve">
+    <value>6 hours</value>
+  </data>
+  <data name="hours_12" xml:space="preserve">
+    <value>12 hours</value>
+  </data>
+  <data name="day_1" xml:space="preserve">
+    <value>1 day</value>
+  </data>
+  <data name="Until_sunrise" xml:space="preserve">
+    <value>Until sunrise</value>
+  </data>
+  <data name="Disable_for" xml:space="preserve">
+    <value>Disable for...</value>
+  </data>
+  <data name="Disable" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="Enable" xml:space="preserve">
+    <value>Enable</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+</root>

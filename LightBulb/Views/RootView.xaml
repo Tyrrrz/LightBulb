@@ -11,6 +11,9 @@
     xmlns:tb="http://www.hardcodet.net/taskbar"
     xmlns:viewModels="clr-namespace:LightBulb.ViewModels"
     xmlns:converters="clr-namespace:LightBulb.Converters"
+    
+    xmlns:resx="clr-namespace:LightBulb.Resources"
+    resx:Translation.ResourceManager="{x:Static resx:Localization.ResourceManager}"
     Width="450"
     Height="350"
     d:DataContext="{d:DesignInstance Type=viewModels:RootViewModel}"
@@ -75,7 +78,7 @@
                             <MenuItem
                                 x:Name="ShowWindowMenuItem"
                                 Click="ShowWindowMenuItem_OnClick"
-                                Header="Open">
+                                Header="{resx:Loc Open}">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Kind="WindowMaximize" />
                                 </MenuItem.Icon>
@@ -83,7 +86,7 @@
                             <MenuItem
                                 s:View.ActionTarget="{Binding Dashboard}"
                                 Command="{s:Action Enable}"
-                                Header="Enable"
+                                Header="{resx:Loc Enable}"
                                 Visibility="{Binding Dashboard.IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.InverseInstance}}">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Kind="Power" />
@@ -92,24 +95,24 @@
                             <MenuItem
                                 s:View.ActionTarget="{Binding Dashboard}"
                                 Command="{s:Action Disable}"
-                                Header="Disable"
+                                Header="{resx:Loc Disable}"
                                 Visibility="{Binding Dashboard.IsEnabled, Converter={x:Static s:BoolToVisibilityConverter.Instance}}">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Kind="Power" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Header="Disable for...">
+                            <MenuItem Header="{resx:Loc Disable_for}">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Kind="PowerSettings" />
                                 </MenuItem.Icon>
                                 <MenuItem
                                     s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarilyUntilSunrise}"
-                                    Header="Until sunrise" />
+                                    Header="{resx:Loc Until_sunrise}" />
                                 <MenuItem
                                     s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarily}"
-                                    Header="1 day">
+                                    Header="{resx:Loc day_1}">
                                     <MenuItem.CommandParameter>
                                         <system:TimeSpan>24:0:0</system:TimeSpan>
                                     </MenuItem.CommandParameter>
@@ -117,7 +120,7 @@
                                 <MenuItem
                                     s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarily}"
-                                    Header="12 hours">
+                                    Header="{resx:Loc hours_12}">
                                     <MenuItem.CommandParameter>
                                         <system:TimeSpan>12:0:0</system:TimeSpan>
                                     </MenuItem.CommandParameter>
@@ -125,7 +128,7 @@
                                 <MenuItem
                                     s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarily}"
-                                    Header="6 hours">
+                                    Header="{resx:Loc hours_6}">
                                     <MenuItem.CommandParameter>
                                         <system:TimeSpan>6:0:0</system:TimeSpan>
                                     </MenuItem.CommandParameter>
@@ -133,7 +136,7 @@
                                 <MenuItem
                                     s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarily}"
-                                    Header="3 hours">
+                                    Header="{resx:Loc hours_3}">
                                     <MenuItem.CommandParameter>
                                         <system:TimeSpan>3:0:0</system:TimeSpan>
                                     </MenuItem.CommandParameter>
@@ -141,7 +144,7 @@
                                 <MenuItem
                                     s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarily}"
-                                    Header="1 hour">
+                                    Header="{resx:Loc hour_1}">
                                     <MenuItem.CommandParameter>
                                         <system:TimeSpan>1:0:0</system:TimeSpan>
                                     </MenuItem.CommandParameter>
@@ -149,7 +152,7 @@
                                 <MenuItem
                                     s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarily}"
-                                    Header="30 minutes">
+                                    Header="{resx:Loc minutes_30}">
                                     <MenuItem.CommandParameter>
                                         <system:TimeSpan>0:30:0</system:TimeSpan>
                                     </MenuItem.CommandParameter>
@@ -157,7 +160,7 @@
                                 <MenuItem
                                     s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarily}"
-                                    Header="5 minutes">
+                                    Header="{resx:Loc minutes_5}">
                                     <MenuItem.CommandParameter>
                                         <system:TimeSpan>0:5:0</system:TimeSpan>
                                     </MenuItem.CommandParameter>
@@ -165,18 +168,18 @@
                                 <MenuItem
                                     s:View.ActionTarget="{Binding Dashboard}"
                                     Command="{s:Action DisableTemporarily}"
-                                    Header="1 minute">
+                                    Header="{resx:Loc minute_1}">
                                     <MenuItem.CommandParameter>
                                         <system:TimeSpan>0:1:0</system:TimeSpan>
                                     </MenuItem.CommandParameter>
                                 </MenuItem>
                             </MenuItem>
-                            <MenuItem Command="{s:Action ShowAbout}" Header="About">
+                            <MenuItem Command="{s:Action ShowAbout}" Header="{resx:Loc About_Menu}">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Kind="Web" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Command="{s:Action Exit}" Header="Exit">
+                            <MenuItem Command="{s:Action Exit}" Header="{resx:Loc Exit}">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Kind="Close" />
                                 </MenuItem.Icon>
@@ -273,7 +276,8 @@
                             <TextBlock
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
-                                Text="PREVIEW" />
+                                Text="{resx:Loc PREVIEW}"
+                                 />
                         </StackPanel>
                     </Button>
 
@@ -293,7 +297,7 @@
                             <TextBlock
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
-                                Text="STOP" />
+                                Text="{resx:Loc STOP}" />
                         </StackPanel>
                     </Button>
 
@@ -311,7 +315,7 @@
                             <TextBlock
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
-                                Text="SETTINGS" />
+                                Text="{resx:Loc SETTINGS}" />
                         </StackPanel>
                     </Button>
 
@@ -329,7 +333,7 @@
                             <TextBlock
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
-                                Text="ABOUT" />
+                                Text="{resx:Loc ABOUT}" />
                         </StackPanel>
                     </Button>
                 </StackPanel>

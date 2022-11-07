@@ -9,14 +9,16 @@
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
     d:DataContext="{d:DesignInstance Type=settings:GeneralSettingsTabViewModel}"
     Style="{DynamicResource MaterialDesignRoot}"
+    xmlns:resources="clr-namespace:LightBulb.Resources"
+    resources:Translation.ResourceManager="{x:Static resources:Localization.ResourceManager}"
     mc:Ignorable="d">
     <StackPanel Margin="0,8" Orientation="Vertical">
         <!--  Day temperature  -->
         <StackPanel
             Margin="16,8"
             Orientation="Horizontal"
-            ToolTip="Color temperature during the day">
-            <TextBlock VerticalAlignment="Center" Text="Day-time color temperature:" />
+            ToolTip="{resources:Loc Color_temperature_during_the_day}">
+            <TextBlock VerticalAlignment="Center" Text="{resources:Loc Day_time_color_temperature}" />
             <TextBox
                 MinWidth="30"
                 Margin="8,0"
@@ -40,8 +42,8 @@
         <StackPanel
             Margin="16,8"
             Orientation="Horizontal"
-            ToolTip="Color temperature during the night">
-            <TextBlock VerticalAlignment="Center" Text="Night-time color temperature:" />
+            ToolTip="{resources:Loc Color_temperature_during_the_night}">
+            <TextBlock VerticalAlignment="Center" Text="{resources:Loc Night_time_color_temperature}" />
             <TextBox
                 MinWidth="30"
                 Margin="8,0"
@@ -65,15 +67,15 @@
         <StackPanel Margin="16,8" Orientation="Horizontal">
             <StackPanel.ToolTip>
                 <TextBlock>
-                    <Run Text="Brightness during the day" />
+                    <Run Text="{resources:Loc Day_brightness_ToolTip1}" />
                     <LineBreak />
                     <LineBreak />
-                    <Run Text="Note that this brightness setting applies to the color gamma, not to the actual brightness of the monitor." />
+                    <Run Text="{resources:Loc Day_brightness_ToolTip2}" />
                     <LineBreak />
-                    <Run Text="If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops), it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
+                    <Run Text="{resources:Loc Day_brightness_ToolTip3}" />
                 </TextBlock>
             </StackPanel.ToolTip>
-            <TextBlock VerticalAlignment="Center" Text="Day-time brightness:" />
+            <TextBlock VerticalAlignment="Center" Text="{resources:Loc Day_time_brightness}" />
             <TextBox
                 MinWidth="30"
                 Margin="8,0"
@@ -97,15 +99,15 @@
         <StackPanel Margin="16,8" Orientation="Horizontal">
             <StackPanel.ToolTip>
                 <TextBlock>
-                    <Run Text="Brightness during the night" />
+                    <Run Text="{resources:Loc Night_brightness_ToolTip1}" />
                     <LineBreak />
                     <LineBreak />
-                    <Run Text="Note that this brightness setting applies to the color gamma, not to the actual brightness of the monitor." />
+                    <Run Text="{resources:Loc Night_brightness_ToolTip2}" />
                     <LineBreak />
-                    <Run Text="If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops), it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
+                    <Run Text="{resources:Loc Night_brightness_ToolTip3}" />
                 </TextBlock>
             </StackPanel.ToolTip>
-            <TextBlock VerticalAlignment="Center" Text="Night-time brightness:" />
+            <TextBlock VerticalAlignment="Center" Text="{resources:Loc Night_time_brightness}" />
             <TextBox
                 MinWidth="30"
                 Margin="8,0"
@@ -129,8 +131,8 @@
         <StackPanel
             Margin="16,8"
             Orientation="Horizontal"
-            ToolTip="Duration of time it takes to switch between day-time and night-time configurations">
-            <TextBlock VerticalAlignment="Center" Text="Transition duration:" />
+            ToolTip="{resources:Loc Transition_duration_ToolTip}">
+            <TextBlock VerticalAlignment="Center" Text="{resources:Loc Transition_duration}" />
             <TextBox
                 MinWidth="50"
                 Margin="8,0"
@@ -152,8 +154,8 @@
         <StackPanel
             Margin="16,8"
             Orientation="Horizontal"
-            ToolTip="Offset that specifies how early or late the transition starts relatively to sunrise and sunset">
-            <TextBlock VerticalAlignment="Center" Text="Transition offset:" />
+            ToolTip="{resources:Loc Transition_offset_ToolTip}">
+            <TextBlock VerticalAlignment="Center" Text="{resources:Loc Transition_offset}" />
             <TextBox
                 MinWidth="30"
                 Margin="8,0"

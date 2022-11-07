@@ -8,6 +8,8 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:s="https://github.com/canton7/Stylet"
+    xmlns:resx="clr-namespace:LightBulb.Resources"
+    resx:Translation.ResourceManager="{x:Static resx:Localization.ResourceManager}"
     Width="350"
     Height="270"
     d:DataContext="{d:DesignInstance Type=dialogs:SettingsViewModel}"
@@ -111,7 +113,7 @@
                 <Button
                     Margin="8"
                     Command="{s:Action Reset}"
-                    Content="RESET"
+                    Content="{resx:Loc RESET}"
                     Style="{DynamicResource MaterialDesignFlatButton}"
                     ToolTip="Reset all settings to their defaults" />
 
@@ -119,14 +121,14 @@
                 <Button
                     Margin="8"
                     Command="{s:Action Cancel}"
-                    Content="CANCEL"
+                    Content="{resx:Loc CANCEL}"
                     Style="{DynamicResource MaterialDesignFlatButton}" />
 
                 <!--  Save  -->
                 <Button
                     Margin="8"
                     Command="{s:Action Save}"
-                    Content="SAVE"
+                    Content="{resx:Loc SAVE}"
                     Style="{DynamicResource MaterialDesignFlatButton}" />
             </StackPanel>
         </Grid>
