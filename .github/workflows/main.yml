@@ -18,7 +18,7 @@ jobs:
       - name: Install .NET
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 7.0.x
 
       - name: Run tests
         # Tests need access to secrets, so we can't run them against PRs because of limited trust
@@ -46,7 +46,7 @@ jobs:
       - name: Install .NET
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 7.0.x
 
       - name: Publish
         run: dotnet publish LightBulb/ -o LightBulb/bin/Publish/ --configuration Release
