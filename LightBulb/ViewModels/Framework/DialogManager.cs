@@ -54,7 +54,15 @@ public class DialogManager : IDisposable
         {
             void OnScreenClosed(object? closeSender, EventArgs args)
             {
-                openArgs.Session.Close();
+                try
+                {
+                    openArgs.Session.Close();
+                }
+                catch (InvalidOperationException)
+                {
+                    // Race condition: dialog is already being closed
+                }
+
                 dialogScreen.Closed -= OnScreenClosed;
             }
 
