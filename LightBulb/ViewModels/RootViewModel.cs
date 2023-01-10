@@ -48,12 +48,15 @@ public class RootViewModel : Screen, IDisposable
             return;
 
         var dialog = _viewModelFactory.CreateMessageBoxViewModel(
-            "Limited gamma range", $@"
-{App.Name} has detected that extended gamma range has not yet been unlocked on this computer.
-This may cause some color configurations to not display properly.
+            "Limited gamma range",
+            $"""
+            {App.Name} has detected that extended gamma range controls are not enabled on this system.
+            This may cause some color configurations to not work correctly.
 
-Press OK to unlock gamma range. Administrator privileges may be required.".Trim(),
-            "OK", "CANCEL"
+            Press FIX to unlock the gamma range. Administrator privileges may be required.
+            """,
+            "FIX",
+            "CANCEL"
         );
 
         if (await _dialogManager.ShowDialogAsync(dialog) == true)
@@ -69,15 +72,18 @@ Press OK to unlock gamma range. Administrator privileges may be required.".Trim(
             return;
 
         var dialog = _viewModelFactory.CreateMessageBoxViewModel(
-            "Welcome!", $@"
-Thank you for installing {App.Name}!
-To get the most personalized experience, please set your preferred solar configuration.
+            "Welcome!",
+            $"""
+            Thank you for installing {App.Name}!
+            To get the most personalized experience, please set your preferred solar configuration.
 
-Press OK to open settings.".Trim(),
-            "OK", "CANCEL"
+            Press OK to open settings.
+            """,
+            "OK",
+            "CANCEL"
         );
 
-        // Disable first time experience in the future
+        // Disable this message in the future
         _settingsService.IsFirstTimeExperienceEnabled = false;
         _settingsService.IsAutoStartEnabled = true;
         _settingsService.Save();
@@ -91,16 +97,25 @@ Press OK to open settings.".Trim(),
         }
     }
 
-    private async Task ShowWarInUkraineMessageAsync()
+    private async Task ShowUkraineSupportMessageAsync()
     {
-        var dialog = _viewModelFactory.CreateMessageBoxViewModel(
-            "Ukraine is at war!", @"
-My country, Ukraine, has been invaded by Russian military forces in an act of aggression that can only be described as genocide.
-Be on the right side of history! Consider supporting Ukraine in its fight for freedom.
+        if (!_settingsService.IsUkraineSupportMessageEnabled)
+            return;
 
-Press LEARN MORE to find ways that you can help.".Trim(),
-            "LEARN MORE", "CLOSE"
+        var dialog = _viewModelFactory.CreateMessageBoxViewModel(
+            "Thank you for supporting Ukraine!",
+            """
+            As Russia wages a genocidal war against my country, I'm grateful to everyone who continues to stand with Ukraine in our fight for freedom.
+
+            Click LEARN MORE to find ways that you can help.
+            """,
+            "LEARN MORE",
+            "CANCEL"
         );
+
+        // Disable this message in the future
+        _settingsService.IsUkraineSupportMessageEnabled = false;
+        _settingsService.Save();
 
         if (await _dialogManager.ShowDialogAsync(dialog) == true)
         {
@@ -120,7 +135,7 @@ Press LEARN MORE to find ways that you can help.".Trim(),
     {
         await ShowGammaRangePromptAsync();
         await ShowFirstTimeExperienceMessageAsync();
-        await ShowWarInUkraineMessageAsync();
+        await ShowUkraineSupportMessageAsync();
     }
 
     public async void ShowSettings() =>

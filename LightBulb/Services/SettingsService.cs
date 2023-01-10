@@ -27,6 +27,8 @@ public partial class SettingsService : SettingsManager
 
     public bool IsFirstTimeExperienceEnabled { get; set; } = true;
 
+    public bool IsUkraineSupportMessageEnabled { get; set; } = true;
+
     [Ignore] // comes from registry
     public bool IsExtendedGammaRangeUnlocked { get; set; }
 
@@ -141,6 +143,7 @@ public partial class SettingsService : SettingsManager
 
         // Don't reset first-time experience
         IsFirstTimeExperienceEnabled = false;
+        IsUkraineSupportMessageEnabled = false;
     }
 
     public override void Load()
