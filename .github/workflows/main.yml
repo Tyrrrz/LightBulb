@@ -92,37 +92,15 @@ jobs:
         shell: pwsh
 
       - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+          files: |
+            LightBulb.zip
+            LightBulb-Installer.exe
           body: |
             [Changelog](https://github.com/Tyrrrz/LightBulb/blob/master/Changelog.md)
-          draft: false
-          prerelease: false
-
-      - name: Upload release asset (portable)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_name: LightBulb.zip
-          asset_path: LightBulb.zip
-          asset_content_type: application/zip
-
-      - name: Upload release asset (installer)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_name: LightBulb-Installer.exe
-          asset_path: LightBulb-Installer.exe
-          asset_content_type: application/octet-stream
 
   notify:
     needs: deploy
