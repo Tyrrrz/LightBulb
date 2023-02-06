@@ -56,7 +56,7 @@ public class RootViewModel : Screen, IDisposable
             Press FIX to unlock the gamma range. Administrator privileges may be required.
             """,
             "FIX",
-            "CANCEL"
+            "CLOSE"
         );
 
         if (await _dialogManager.ShowDialogAsync(dialog) == true)
@@ -80,7 +80,7 @@ public class RootViewModel : Screen, IDisposable
             Press OK to open settings.
             """,
             "OK",
-            "CANCEL"
+            "CLOSE"
         );
 
         // Disable this message in the future
@@ -110,7 +110,7 @@ public class RootViewModel : Screen, IDisposable
             Click LEARN MORE to find ways that you can help.
             """,
             "LEARN MORE",
-            "CANCEL"
+            "CLOSE"
         );
 
         // Disable this message in the future
