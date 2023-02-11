@@ -8,7 +8,7 @@ namespace LightBulb;
 
 public partial class App
 {
-    private static Assembly Assembly { get; } = typeof(App).Assembly;
+    private static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
 
     public static string Name { get; } = Assembly.GetName().Name!;
 
@@ -16,9 +16,9 @@ public partial class App
 
     public static string VersionString { get; } = Version.ToString(3);
 
-    public static string ExecutableDirPath { get; } = AppDomain.CurrentDomain.BaseDirectory!;
+    public static string ExecutableDirPath { get; } = AppDomain.CurrentDomain.BaseDirectory;
 
-    public static string ExecutableFilePath { get; } = Path.ChangeExtension(typeof(App).Assembly.Location, "exe");
+    public static string ExecutableFilePath { get; } = Path.ChangeExtension(Assembly.Location, "exe");
 
     public static string GitHubProjectUrl { get; } = "https://github.com/Tyrrrz/LightBulb";
 }

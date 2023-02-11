@@ -1,5 +1,6 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 
 namespace LightBulb.Core.Utils;
 
@@ -14,7 +15,7 @@ public static class Http
             {
                 new ProductInfoHeaderValue(
                     "LightBulb",
-                    typeof(Http).Assembly.GetName().Version?.ToString()
+                    Assembly.GetExecutingAssembly().GetName().Version?.ToString()
                 )
             }
         }
