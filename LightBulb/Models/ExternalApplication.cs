@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using Tyrrrz.Settings;
 
 namespace LightBulb.Models;
 
@@ -8,7 +7,6 @@ public partial class ExternalApplication
 {
     public string ExecutableFilePath { get; }
 
-    [Ignore]
     public string Name => Path.GetFileNameWithoutExtension(ExecutableFilePath);
 
     public ExternalApplication(string executableFilePath) => ExecutableFilePath = executableFilePath;
