@@ -118,7 +118,7 @@ jobs:
           method: POST
           headers: |
             ContentType: application/json; charset=UTF-8
-          payload: |
+          body: |
             {
               "content": "**LightBulb** new version released!\nVersion: `${{ steps.get-version.outputs.tag }}`\nChangelog: <https://github.com/Tyrrrz/LightBulb/blob/${{ steps.get-version.outputs.tag }}/Changelog.md>"
             }
