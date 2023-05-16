@@ -98,7 +98,7 @@ public static class Cycle
         return nightValue;
     }
 
-    public static ColorConfiguration GetInterpolatedConfiguration(
+    public static ColorConfiguration InterpolateConfiguration(
         SolarTimes solarTimes,
         ColorConfiguration dayConfiguration,
         ColorConfiguration nightConfiguration,

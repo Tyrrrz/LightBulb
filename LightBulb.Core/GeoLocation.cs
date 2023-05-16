@@ -23,7 +23,10 @@ public partial record struct GeoLocation
         const NumberStyles numberStyles = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
 
         // 41.25, -120.9762
-        var match = Regex.Match(value, @"^([\+\-]?\d+(?:\.\d+)?)\s*[,\s]\s*([\+\-]?\d+(?:\.\d+)?)$");
+        var match = Regex.Match(
+            value,
+            @"^([\+\-]?\d+(?:\.\d+)?)\s*[,\s]\s*([\+\-]?\d+(?:\.\d+)?)$"
+        );
 
         if (match.Success &&
             double.TryParse(match.Groups[1].Value, numberStyles, CultureInfo.InvariantCulture, out var lat) &&
@@ -42,7 +45,10 @@ public partial record struct GeoLocation
         // 41.25°N, 120.9762°W
         // 41.25N, 120.9762W
         // 41.25 N, 120.9762 W
-        var match = Regex.Match(value, @"^(\d+(?:\.\d+)?)\s*°?\s*(\w)\s*[,\s]\s*(\d+(?:\.\d+)?)\s*°?\s*(\w)$");
+        var match = Regex.Match(
+            value,
+            @"^(\d+(?:\.\d+)?)\s*°?\s*(\w)\s*[,\s]\s*(\d+(?:\.\d+)?)\s*°?\s*(\w)$"
+        );
 
         if (match.Success &&
             double.TryParse(match.Groups[1].Value, numberStyles, CultureInfo.InvariantCulture, out var lat) &&

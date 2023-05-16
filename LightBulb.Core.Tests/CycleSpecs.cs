@@ -23,7 +23,7 @@ public class CycleSpecs
         );
 
         // Act
-        var configuration = Cycle.GetInterpolatedConfiguration(
+        var configuration = Cycle.InterpolateConfiguration(
             solarTimes,
             dayConfiguration,
             nightConfiguration,
@@ -53,7 +53,7 @@ public class CycleSpecs
         );
 
         // Act
-        var configuration = Cycle.GetInterpolatedConfiguration(
+        var configuration = Cycle.InterpolateConfiguration(
             solarTimes,
             dayConfiguration,
             nightConfiguration,
@@ -83,7 +83,7 @@ public class CycleSpecs
         );
 
         // Act
-        var configuration = Cycle.GetInterpolatedConfiguration(
+        var configuration = Cycle.InterpolateConfiguration(
             solarTimes,
             dayConfiguration,
             nightConfiguration,
@@ -116,7 +116,7 @@ public class CycleSpecs
         );
 
         // Act
-        var configuration = Cycle.GetInterpolatedConfiguration(
+        var configuration = Cycle.InterpolateConfiguration(
             solarTimes,
             dayConfiguration,
             nightConfiguration,
@@ -155,7 +155,7 @@ public class CycleSpecs
         );
 
         // Act
-        var configuration1 = Cycle.GetInterpolatedConfiguration(
+        var configuration1 = Cycle.InterpolateConfiguration(
             solarTimes,
             dayConfiguration,
             nightConfiguration,
@@ -164,7 +164,7 @@ public class CycleSpecs
             instant1
         );
 
-        var configuration2 = Cycle.GetInterpolatedConfiguration(
+        var configuration2 = Cycle.InterpolateConfiguration(
             solarTimes,
             dayConfiguration,
             nightConfiguration,
@@ -199,7 +199,7 @@ public class CycleSpecs
             var instant1 = startInstant + offset;
             var instant2 = instant1 + TimeSpan.FromMinutes(1);
 
-            var configuration1 = Cycle.GetInterpolatedConfiguration(
+            var configuration1 = Cycle.InterpolateConfiguration(
                 solarTimes,
                 dayConfiguration,
                 nightConfiguration,
@@ -208,7 +208,7 @@ public class CycleSpecs
                 instant1
             );
 
-            var configuration2 = Cycle.GetInterpolatedConfiguration(
+            var configuration2 = Cycle.InterpolateConfiguration(
                 solarTimes,
                 dayConfiguration,
                 nightConfiguration,

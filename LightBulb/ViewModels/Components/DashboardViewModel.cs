@@ -69,7 +69,7 @@ public class DashboardViewModel : PropertyChangedBase, IDisposable
 
     public ColorConfiguration TargetConfiguration => IsActive
         ? Cycle
-            .GetInterpolatedConfiguration(
+            .InterpolateConfiguration(
                 SolarTimes,
                 _settingsService.DayConfiguration,
                 _settingsService.NightConfiguration,
