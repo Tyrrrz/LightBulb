@@ -21,9 +21,13 @@ jobs:
           dotnet-version: 7.0.x
 
       - name: Run tests
-        # Tests need access to secrets, so we can't run them against PRs because of limited trust
-        if: ${{ github.event_name != 'pull_request' }}
-        run: dotnet test --configuration Release --logger GitHubActions --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        run: >
+          dotnet test
+          --configuration Release
+          --logger "GitHubActions;summary.includePassedTests=true;summary.includeSkippedTests=true"
+          --collect:"XPlat Code Coverage"
+          --
+          DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
       - name: Upload coverage
         uses: codecov/codecov-action@v3
@@ -49,20 +53,23 @@ jobs:
           dotnet-version: 7.0.x
 
       - name: Publish
-        run: dotnet publish LightBulb/ -o LightBulb/bin/Publish/ --configuration Release
+        run: >
+          dotnet publish LightBulb
+          --output LightBulb/bin/publish/
+          --configuration Release
 
       - name: Create installer
+        shell: pwsh
         run: |
           choco install innosetup --no-progress
           Copy-Item -Path LightBulb/bin/Publish/ -Recurse -Destination Installer/Source/
           & "c:\Program Files (x86)\Inno Setup 6\ISCC.exe" Installer/Installer.iss
-        shell: pwsh
 
       - name: Upload artifacts (portable)
         uses: actions/upload-artifact@v3
         with:
           name: LightBulb
-          path: LightBulb/bin/Publish/
+          path: LightBulb/bin/publish/
 
       - name: Upload artifacts (installer)
         uses: actions/upload-artifact@v3
@@ -88,8 +95,11 @@ jobs:
           name: LightBulb-Installer
 
       - name: Create package (portable)
-        run: Compress-Archive -Path LightBulb/* -DestinationPath LightBulb.zip -Force
         shell: pwsh
+        run: >
+          Compress-Archive -Path LightBulb/*
+          -DestinationPath LightBulb.zip
+          -Force
 
       - name: Create release
         uses: softprops/action-gh-release@v1
