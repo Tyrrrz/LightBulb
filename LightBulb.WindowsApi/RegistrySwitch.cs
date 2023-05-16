@@ -1,13 +1,18 @@
-﻿using System.Collections.Generic;
-using LightBulb.WindowsApi.Native;
+﻿using System;
+using System.Collections.Generic;
+using System.Security;
+using LightBulb.WindowsApi.Utils;
+using LightBulb.WindowsApi.Utils.Extensions;
+using Microsoft.Win32;
 
 namespace LightBulb.WindowsApi;
 
-public class RegistrySwitch
+public class RegistrySwitch<T> where T : notnull
 {
-    private readonly string _path;
+    private readonly RegistryHive _hive;
+    private readonly string _keyName;
     private readonly string _entryName;
-    private readonly object _enabledValue;
+    private readonly T _enabledValue;
 
     private readonly object _lock = new();
 
@@ -17,8 +22,12 @@ public class RegistrySwitch
         {
             lock (_lock)
             {
-                var actualValue = RegistryEx.GetValueOrDefault(_path, _entryName);
-                return EqualityComparer<object>.Default.Equals(_enabledValue, actualValue);
+                // This should always be accessible without elevation
+                var value = _hive.OpenKey().OpenSubKey(_keyName, false)?.GetValue(_entryName);
+                if (value is null)
+                    return false;
+
+                return EqualityComparer<T>.Default.Equals(_enabledValue, (T)value);
             }
         }
         set
@@ -29,21 +38,31 @@ public class RegistrySwitch
                 if (IsSet == value)
                     return;
 
-                if (value)
+                try
                 {
-                    RegistryEx.SetValue(_path, _entryName, _enabledValue);
+                    var key = _hive.OpenKey().CreateSubKey(_keyName, true);
+
+                    if (value)
+                        key.SetValue(_entryName, _enabledValue);
+                    else
+                        key.DeleteValue(_entryName);
                 }
-                else
+                catch (Exception ex) when (ex is SecurityException or UnauthorizedAccessException)
                 {
-                    RegistryEx.DeleteValue(_path, _entryName);
+                    // Run reg.exe with elevation
+                    if (value)
+                        Reg.SetValue(_hive.GetShortMoniker() + '\\' + _keyName, _entryName, _enabledValue);
+                    else
+                        Reg.DeleteValue(_hive.GetShortMoniker() + '\\' + _keyName, _entryName);
                 }
             }
         }
     }
 
-    public RegistrySwitch(string path, string entryName, object enabledValue)
+    public RegistrySwitch(RegistryHive hive, string keyName, string entryName, T enabledValue)
     {
-        _path = path;
+        _hive = hive;
+        _keyName = keyName;
         _entryName = entryName;
         _enabledValue = enabledValue;
     }

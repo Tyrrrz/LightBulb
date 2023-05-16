@@ -12,7 +12,7 @@ public class DialogManager : IDisposable
 {
     private readonly IViewManager _viewManager;
 
-    // Cache and re-use dialog screen views, as creating them is incredibly slow
+    // Cache and reuse dialog screen views, as creating them is incredibly slow
     private readonly Dictionary<Type, UIElement> _dialogScreenViewCache = new();
     private readonly SemaphoreSlim _dialogLock = new(1, 1);
 

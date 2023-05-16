@@ -1,5 +1,4 @@
 using System;
-using LightBulb.WindowsApi.Native;
 
 namespace LightBulb.WindowsApi;
 
@@ -12,14 +11,7 @@ public partial class SystemEvent : IDisposable
         _wndProcRegistration = WndProc.Listen(eventId, _ => callback());
     }
 
-    // There are no native resources, but it's pretty important to unregister from wndproc
-    ~SystemEvent() => Dispose();
-
-    public void Dispose()
-    {
-        _wndProcRegistration.Dispose();
-        GC.SuppressFinalize(this);
-    }
+    public void Dispose() => _wndProcRegistration.Dispose();
 }
 
 public partial class SystemEvent

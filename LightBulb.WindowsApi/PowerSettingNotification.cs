@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
-using LightBulb.WindowsApi.Native;
+using LightBulb.WindowsApi.Types;
 using LightBulb.WindowsApi.Utils.Extensions;
 
 namespace LightBulb.WindowsApi;
 
-public partial class PowerSettingNotification : IDisposable
+public partial class PowerSettingNotification : NativeResource
 {
-    private readonly IntPtr _handle;
-
     private readonly IDisposable _wndProcRegistration;
 
-    private PowerSettingNotification(IntPtr handle, Guid powerSettingId, Action callback)
+    private PowerSettingNotification(nint handle, Guid powerSettingId, Action callback)
+        : base(handle)
     {
-        _handle = handle;
-
         _wndProcRegistration = WndProc.Listen(WndProc.Ids.PowerSettingMessage, m =>
         {
             // Filter out other power events
@@ -25,16 +22,13 @@ public partial class PowerSettingNotification : IDisposable
         });
     }
 
-    ~PowerSettingNotification() => Dispose();
-
-    public void Dispose()
+    protected override void Dispose(bool disposing)
     {
-        _wndProcRegistration.Dispose();
+        if (disposing)
+            _wndProcRegistration.Dispose();
 
-        if (!NativeMethods.UnregisterPowerSettingNotification(_handle))
-            Debug.WriteLine($"Failed to dispose power setting notification (handle: {_handle}).");
-
-        GC.SuppressFinalize(this);
+        if (!NativeMethods.UnregisterPowerSettingNotification(Handle))
+            Debug.WriteLine($"Failed to dispose power setting notification #{Handle}.");
     }
 }
 
@@ -43,8 +37,7 @@ public partial class PowerSettingNotification
     public static PowerSettingNotification? TryRegister(Guid powerSettingId, Action callback)
     {
         var handle = NativeMethods.RegisterPowerSettingNotification(WndProc.Handle, powerSettingId, 0);
-
-        if (handle == IntPtr.Zero)
+        if (handle == 0)
         {
             Debug.WriteLine($"Failed to register power setting notification (ID: {powerSettingId}).");
             return null;

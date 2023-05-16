@@ -1,25 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
-using LightBulb.WindowsApi.Native;
+using LightBulb.WindowsApi.Types;
 
 namespace LightBulb.WindowsApi;
 
-public partial class DeviceContext : IDisposable
+public partial class DeviceContext : NativeResource
 {
-    private readonly IntPtr _handle;
-
     private int _gammaChannelOffset;
 
-    private DeviceContext(IntPtr handle) => _handle = handle;
-
-    ~DeviceContext() => Dispose();
+    public DeviceContext(nint handle)
+        : base(handle)
+    {
+    }
 
     private void SetGammaRamp(GammaRamp ramp)
     {
-        if (!NativeMethods.SetDeviceGammaRamp(_handle, ref ramp))
-            Debug.WriteLine($"Failed to set gamma ramp (handle: ${_handle}).");
+        if (!NativeMethods.SetDeviceGammaRamp(Handle, ref ramp))
+            Debug.WriteLine($"Failed to set gamma ramp on device context #${Handle}).");
     }
 
     public void SetGamma(double redMultiplier, double greenMultiplier, double blueMultiplier)
@@ -53,42 +51,39 @@ public partial class DeviceContext : IDisposable
 
     public void ResetGamma() => SetGamma(1, 1, 1);
 
-    public void Dispose()
+    protected override void Dispose(bool disposing)
     {
-        // Don't reset gamma during dispose because this method
-        // is also called whenever device context gets invalidated.
+        // Don't reset gamma during dispose because this method is also called whenever
+        // the device context gets invalidated.
         // Resetting gamma in such cases will cause unwanted flickering.
         // https://github.com/Tyrrrz/LightBulb/issues/206
 
-        if (!NativeMethods.DeleteDC(_handle))
-            Debug.WriteLine($"Failed to dispose device context (handle: {_handle}).");
-
-        GC.SuppressFinalize(this);
+        if (!NativeMethods.DeleteDC(Handle))
+            Debug.WriteLine($"Failed to dispose device context #{Handle}.");
     }
 }
 
 public partial class DeviceContext
 {
-    public static DeviceContext? TryGetFromDeviceName(string deviceName)
+    public static DeviceContext? TryGetByName(string deviceName)
     {
-        var handle = NativeMethods.CreateDC(deviceName, null, null, IntPtr.Zero);
-
-        if (handle == IntPtr.Zero)
+        var handle = NativeMethods.CreateDC(deviceName, null, null, 0);
+        if (handle == 0)
         {
-            Debug.WriteLine($"Failed to retrieve device context (device: '{deviceName}').");
+            Debug.WriteLine($"Failed to retrieve device context for '{deviceName}'.");
             return null;
         }
 
         return new DeviceContext(handle);
     }
 
-    public static IReadOnlyList<DeviceContext> FromAllMonitors()
+    public static IReadOnlyList<DeviceContext> GetAllScreens()
     {
         var result = new List<DeviceContext>();
 
         foreach (var screen in Screen.AllScreens)
         {
-            var deviceContext = TryGetFromDeviceName(screen.DeviceName);
+            var deviceContext = TryGetByName(screen.DeviceName);
             if (deviceContext is not null)
                 result.Add(deviceContext);
         }

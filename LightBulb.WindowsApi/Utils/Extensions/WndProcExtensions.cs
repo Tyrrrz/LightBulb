@@ -8,8 +8,8 @@ internal static class WndProcExtensions
     {
         var value = message.GetLParam(typeof(T));
 
-        return value is not null
-            ? (T) value
+        return value is T valueCasted
+            ? valueCasted
             : default;
     }
 }

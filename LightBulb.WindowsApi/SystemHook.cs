@@ -1,32 +1,24 @@
 ﻿using System;
 using System.Diagnostics;
-using LightBulb.WindowsApi.Native;
 
 namespace LightBulb.WindowsApi;
 
-public partial class SystemHook : IDisposable
+public partial class SystemHook : NativeResource
 {
-    private readonly IntPtr _handle;
-
-    // We only need the reference to the delegate to prevent it from
-    // being garbage collected too early.
+    // We only need the reference to the delegate to prevent it from being garbage collected too early
     // ReSharper disable once NotAccessedField.Local
     private readonly NativeMethods.WinEventProc _winEventProc;
 
-    private SystemHook(IntPtr handle, NativeMethods.WinEventProc winEventProc)
+    private SystemHook(nint handle, NativeMethods.WinEventProc winEventProc)
+        : base(handle)
     {
-        _handle = handle;
         _winEventProc = winEventProc;
     }
 
-    ~SystemHook() => Dispose();
-
-    public void Dispose()
+    protected override void Dispose(bool disposing)
     {
-        if (!NativeMethods.UnhookWinEvent(_handle))
-            Debug.WriteLine($"Failed to dispose system hook (handle: {_handle}).");
-
-        GC.SuppressFinalize(this);
+        if (!NativeMethods.UnhookWinEvent(Handle))
+            Debug.WriteLine($"Failed to dispose system hook #{Handle}.");
     }
 }
 
@@ -46,16 +38,11 @@ public partial class SystemHook
         });
 
         var handle = NativeMethods.SetWinEventHook(
-            (uint) hookId,
-            (uint) hookId,
-            IntPtr.Zero,
-            proc,
-            0,
-            0,
-            0
+            (uint) hookId, (uint) hookId, 0,
+            proc, 0, 0, 0
         );
 
-        if (handle == IntPtr.Zero)
+        if (handle == 0)
         {
             Debug.WriteLine($"Failed to register system hook (ID: {hookId}).");
             return null;

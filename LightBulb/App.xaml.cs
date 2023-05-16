@@ -25,7 +25,10 @@ public partial class App
 
 public partial class App
 {
-    private static IReadOnlyList<string> CommandLineArgs { get; } = Environment.GetCommandLineArgs();
+    private static IReadOnlyList<string> CommandLineArgs { get; } = Environment
+        .GetCommandLineArgs()
+        .Skip(1)
+        .ToArray();
 
     public static string HiddenOnLaunchArgument { get; } = "--start-hidden";
 

@@ -11,7 +11,7 @@ public class TimeSpanToDurationStringConverter : IValueConverter
 
     public object? Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
         value is TimeSpan timeSpanValue
-            ? timeSpanValue.ToString("hh\\:mm\\:ss", culture)
+            ? timeSpanValue.ToString(@"hh\:mm\:ss", culture)
             : default;
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>

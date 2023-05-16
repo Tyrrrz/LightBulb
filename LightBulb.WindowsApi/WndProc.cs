@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Windows.Forms;
 
-namespace LightBulb.WindowsApi.Native;
+namespace LightBulb.WindowsApi;
 
 internal static partial class WndProc
 {
@@ -19,11 +19,11 @@ internal static partial class WndProc
             });
         }
 
-        protected override void WndProc(ref Message m)
+        protected override void WndProc(ref Message message)
         {
-            Debug.WriteLine($"Handling wndproc message (ID: {m.Msg}).");
-            MessageReceived?.Invoke(this, m);
-            base.WndProc(ref m);
+            Debug.WriteLine($"Handling wndproc message (ID: {message.Msg}).");
+            MessageReceived?.Invoke(this, message);
+            base.WndProc(ref message);
         }
     }
 }
@@ -32,7 +32,7 @@ internal static partial class WndProc
 {
     private static WndProcConsumer DefaultConsumer { get; } = new();
 
-    public static IntPtr Handle => DefaultConsumer.Handle;
+    public static nint Handle => DefaultConsumer.Handle;
 
     public static IDisposable Listen(int messageId, Action<Message> callback)
     {

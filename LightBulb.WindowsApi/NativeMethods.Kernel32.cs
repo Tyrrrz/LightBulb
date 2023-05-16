@@ -1,15 +1,15 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Text;
+using LightBulb.WindowsApi.Types;
 
-namespace LightBulb.WindowsApi.Native;
+namespace LightBulb.WindowsApi;
 
 internal static partial class NativeMethods
 {
     private const string Kernel32 = "kernel32.dll";
 
     [DllImport(Kernel32, SetLastError = true)]
-    public static extern IntPtr OpenProcess(
+    public static extern nint OpenProcess(
         ProcessAccessFlags processAccess,
         bool bInheritHandle,
         uint processId
@@ -17,12 +17,12 @@ internal static partial class NativeMethods
 
     [DllImport(Kernel32, CharSet = CharSet.Auto, SetLastError = true)]
     public static extern bool QueryFullProcessImageName(
-        IntPtr hPrc,
+        nint hPrc,
         uint dwFlags,
         StringBuilder lpExeName,
         ref uint lpdwSize
     );
 
     [DllImport(Kernel32, SetLastError = true)]
-    public static extern bool CloseHandle(IntPtr hObj);
+    public static extern bool CloseHandle(nint hObj);
 }

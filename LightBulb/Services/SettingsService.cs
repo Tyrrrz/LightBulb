@@ -8,6 +8,7 @@ using LightBulb.Core;
 using LightBulb.Models;
 using LightBulb.Utils;
 using LightBulb.WindowsApi;
+using Microsoft.Win32;
 using PropertyChanged;
 
 namespace LightBulb.Services;
@@ -15,14 +16,16 @@ namespace LightBulb.Services;
 [AddINotifyPropertyChangedInterface]
 public partial class SettingsService : SettingsBase, INotifyPropertyChanged
 {
-    private readonly RegistrySwitch _extendedGammaRangeSwitch = new(
-        "HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\ICM",
+    private readonly RegistrySwitch<int> _extendedGammaRangeSwitch = new(
+        RegistryHive.LocalMachine,
+        @"Software\Microsoft\Windows NT\CurrentVersion\ICM",
         "GdiICMGammaRange",
         256
     );
 
-    private readonly RegistrySwitch _autoStartSwitch = new(
-        "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+    private readonly RegistrySwitch<string> _autoStartSwitch = new(
+        RegistryHive.CurrentUser,
+        @"Software\Microsoft\Windows\CurrentVersion\Run",
         App.Name,
         $"\"{App.ExecutableFilePath}\" {App.HiddenOnLaunchArgument}"
     );
@@ -115,7 +118,7 @@ public partial class SettingsService : SettingsBase, INotifyPropertyChanged
     {
         base.Reset();
 
-        // Don't reset first-time experience
+        // Don't reset the first-time experience
         IsFirstTimeExperienceEnabled = false;
         IsUkraineSupportMessageEnabled = false;
 
@@ -142,7 +145,7 @@ public partial class SettingsService : SettingsBase, INotifyPropertyChanged
     {
         var wasLoaded = base.Load();
 
-        // Get the actual values from registry because it may be out of sync with saved settings
+        // Get values from the registry
         IsExtendedGammaRangeUnlocked = _extendedGammaRangeSwitch.IsSet;
         IsAutoStartEnabled = _autoStartSwitch.IsSet;
 
@@ -158,7 +161,7 @@ public partial class SettingsService
     {
         var isInstalled = File.Exists(Path.Combine(App.ExecutableDirPath, ".installed"));
 
-        // Prefer storing settings in appdata when installed or when current directory is write-protected
+        // Prefer storing settings in appdata when installed or when the current directory is write-protected
         if (isInstalled || !DirectoryEx.CheckWriteAccess(App.ExecutableDirPath))
         {
             return Path.Combine(

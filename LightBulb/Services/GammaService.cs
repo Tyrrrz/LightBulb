@@ -16,7 +16,7 @@ public partial class GammaService : IDisposable
     private bool _isUpdatingGamma;
 
     private IReadOnlyList<DeviceContext> _deviceContexts = Array.Empty<DeviceContext>();
-    private bool _isValidDeviceContextHandle;
+    private bool _areDeviceContextsValid;
     private DateTimeOffset _lastGammaInvalidationTimestamp = DateTimeOffset.MinValue;
 
     private ColorConfiguration? _lastConfiguration;
@@ -26,7 +26,7 @@ public partial class GammaService : IDisposable
     {
         _settingsService = settingsService;
 
-        // Register for all system events that may indicate that device context or gamma was changed from outside
+        // Register for all system events that may indicate that the device context or gamma was changed from outside
         _eventRegistration = new[]
         {
             // https://github.com/Tyrrrz/LightBulb/issues/223
@@ -58,19 +58,19 @@ public partial class GammaService : IDisposable
 
             SystemEvent.Register(
                 SystemEvent.Ids.DisplayChanged,
-                InvalidateDeviceContext
+                InvalidateDeviceContexts
             ),
             SystemEvent.Register(
                 SystemEvent.Ids.PaletteChanged,
-                InvalidateDeviceContext
+                InvalidateDeviceContexts
             ),
             SystemEvent.Register(
                 SystemEvent.Ids.SettingsChanged,
-                InvalidateDeviceContext
+                InvalidateDeviceContexts
             ),
             SystemEvent.Register(
                 SystemEvent.Ids.SystemColorsChanged,
-                InvalidateDeviceContext
+                InvalidateDeviceContexts
             )
         }.Aggregate();
     }
@@ -86,23 +86,23 @@ public partial class GammaService : IDisposable
         Debug.WriteLine("Gamma invalidated.");
     }
 
-    private void InvalidateDeviceContext()
+    private void InvalidateDeviceContexts()
     {
-        _isValidDeviceContextHandle = false;
-        Debug.WriteLine("Device context invalidated.");
+        _areDeviceContextsValid = false;
+        Debug.WriteLine("Device contexts invalidated.");
 
         InvalidateGamma();
     }
 
-    private void EnsureValidDeviceContext()
+    private void EnsureValidDeviceContexts()
     {
-        if (_isValidDeviceContextHandle)
+        if (_areDeviceContextsValid)
             return;
 
-        _isValidDeviceContextHandle = true;
+        _areDeviceContextsValid = true;
 
         _deviceContexts.DisposeAll();
-        _deviceContexts = DeviceContext.FromAllMonitors();
+        _deviceContexts = DeviceContext.GetAllScreens();
 
         _lastConfiguration = null;
     }
@@ -113,16 +113,12 @@ public partial class GammaService : IDisposable
 
         // Assume gamma continues to be stale for some time after it has been invalidated
         if ((instant - _lastGammaInvalidationTimestamp).Duration() <= TimeSpan.FromSeconds(0.3))
-        {
             return true;
-        }
 
-        // If polling is enabled, assume gamma is stale after some time has passed since last update
+        // If polling is enabled, assume gamma is stale after some time has passed since the last update
         if (_settingsService.IsGammaPollingEnabled &&
             (instant - _lastUpdateTimestamp).Duration() > TimeSpan.FromSeconds(1))
-        {
             return true;
-        }
 
         return false;
     }
@@ -144,7 +140,7 @@ public partial class GammaService : IDisposable
         if (!IsGammaStale() && !IsSignificantChange(configuration))
             return;
 
-        EnsureValidDeviceContext();
+        EnsureValidDeviceContexts();
 
         _isUpdatingGamma = true;
 

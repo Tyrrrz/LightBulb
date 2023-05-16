@@ -5,8 +5,8 @@ namespace LightBulb.WindowsApi;
 
 public partial class Timer : IDisposable
 {
-    private readonly Action _callback;
-    private readonly TimeSpan _firstTickInterval;
+    private readonly Action _tick;
+    private readonly TimeSpan _firstTickDelay;
     private readonly TimeSpan _interval;
 
     private readonly object _lock = new();
@@ -16,11 +16,11 @@ public partial class Timer : IDisposable
     private bool _isBusy;
     private bool _isDisposed;
 
-    public Timer(TimeSpan firstTickInterval, TimeSpan interval, Action callback)
+    public Timer(TimeSpan firstTickDelay, TimeSpan interval, Action tick)
     {
-        _firstTickInterval = firstTickInterval;
+        _firstTickDelay = firstTickDelay;
         _interval = interval;
-        _callback = callback;
+        _tick = tick;
 
         _internalTimer = new System.Threading.Timer(
             _ => Tick(),
@@ -50,7 +50,7 @@ public partial class Timer : IDisposable
             try
             {
                 _isBusy = true;
-                _callback();
+                _tick();
             }
             finally
             {
@@ -61,15 +61,17 @@ public partial class Timer : IDisposable
 
     public void Start()
     {
-        if (_isActive) return;
+        if (_isActive)
+            return;
 
-        _internalTimer.Change(_firstTickInterval, _interval);
+        _internalTimer.Change(_firstTickDelay, _interval);
         _isActive = true;
     }
 
     public void Stop()
     {
-        if (!_isActive) return;
+        if (!_isActive)
+            return;
 
         _internalTimer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
         _isActive = false;
@@ -77,7 +79,7 @@ public partial class Timer : IDisposable
 
     public void Dispose()
     {
-        // Lock so that tick doesn't trigger after dispose (bad idea?)
+        // Lock so that the timer doesn't trigger after disposing (bad idea?)
         lock (_lock)
         {
             _isActive = false;
