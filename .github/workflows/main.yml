@@ -62,7 +62,7 @@ jobs:
         shell: pwsh
         run: |
           choco install innosetup --no-progress
-          Copy-Item -Path LightBulb/bin/Publish/ -Recurse -Destination Installer/Source/
+          Copy-Item -Path LightBulb/bin/publish/ -Recurse -Destination Installer/Source/
           & "c:\Program Files (x86)\Inno Setup 6\ISCC.exe" Installer/Installer.iss
 
       - name: Upload artifacts (portable)
@@ -97,7 +97,8 @@ jobs:
       - name: Create package (portable)
         shell: pwsh
         run: >
-          Compress-Archive -Path LightBulb/*
+          Compress-Archive
+          -Path LightBulb/*
           -DestinationPath LightBulb.zip
           -Force
 
