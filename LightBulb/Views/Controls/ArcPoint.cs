@@ -42,14 +42,11 @@ public class ArcPoint : Shape
     {
         get
         {
-            var offsetX = Size;
-            var offsetY = Size;
+            var radiusX = ActualWidth / 2.0 ;
+            var radiusY = ActualHeight / 2.0;
 
-            var radiusX = Math.Max(ActualWidth / 2.0 - offsetX, 0);
-            var radiusY = Math.Max(ActualHeight / 2.0 - offsetY, 0);
-
-            var x = offsetX + radiusX + radiusX * Math.Sin(Angle * Math.PI / 180.0);
-            var y = offsetY + radiusY - radiusY * Math.Cos(Angle * Math.PI / 180.0);
+            var x = radiusX + radiusX * Math.Sin(Angle * Math.PI / 180.0);
+            var y = radiusY - radiusY * Math.Cos(Angle * Math.PI / 180.0);
 
             return new EllipseGeometry(new Point(x, y), Size, Size);
         }

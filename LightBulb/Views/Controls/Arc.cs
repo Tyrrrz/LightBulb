@@ -4,9 +4,9 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace LightBulb.Views.Controls;
-// Modified from an example by Sean Sexton
-// https://wpf.2000things.com/2014/09/11/1156-changing-circular-progress-control-to-be-only-an-arc/
 
+// Modified from an example by Sean Sexton
+// https://wpf.2000things.com/2014/09/11/1156-changing-circular-progress-control-to-be-only-an-arc
 public sealed class Arc : Shape
 {
     private static object CoerceAngle(DependencyObject d, object baseValue) =>
@@ -47,17 +47,14 @@ public sealed class Arc : Shape
             var geometry = new StreamGeometry();
             using var ctx = geometry.Open();
 
-            var offsetX = StrokeThickness / 2.0;
-            var offsetY = StrokeThickness / 2.0;
+            var radiusX = ActualWidth / 2.0;
+            var radiusY = ActualHeight / 2.0;
 
-            var radiusX = Math.Max(ActualWidth / 2.0 - offsetX, 0);
-            var radiusY = Math.Max(ActualHeight / 2.0 - offsetY, 0);
+            var startX = radiusX + radiusX * Math.Sin(StartAngle * Math.PI / 180.0);
+            var startY = radiusY - radiusY * Math.Cos(StartAngle * Math.PI / 180.0);
 
-            var startX = offsetX + radiusX + radiusX * Math.Sin(StartAngle * Math.PI / 180.0);
-            var startY = offsetY + radiusY - radiusY * Math.Cos(StartAngle * Math.PI / 180.0);
-
-            var endX = offsetX + radiusX + radiusX * Math.Sin(EndAngle * Math.PI / 180.0);
-            var endY = offsetY + radiusY - radiusY * Math.Cos(EndAngle * Math.PI / 180.0);
+            var endX = radiusX + radiusX * Math.Sin(EndAngle * Math.PI / 180.0);
+            var endY = radiusY - radiusY * Math.Cos(EndAngle * Math.PI / 180.0);
 
             // This single line took me 2 hours to write
             var isLargeArc =

@@ -249,7 +249,7 @@
                 <!--  Body  -->
                 <ContentControl
                     Grid.Row="1"
-                    Margin="0,8,0,0"
+                    Margin="0,16,0,8"
                     s:View.Model="{Binding Dashboard}" />
 
                 <!--  Buttons  -->

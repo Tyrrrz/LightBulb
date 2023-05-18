@@ -46,46 +46,66 @@
         <!--  Sundial  -->
         <Grid
             Grid.Column="1"
-            Width="220"
-            Height="220">
+            Width="190"
+            Height="190">
             <!--  Night time arc  -->
             <controls:Arc
                 EndAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesConverter.Instance}}"
                 StartAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesConverter.Instance}}"
+                Stroke="#FFAF1A"
+                StrokeThickness="27" />
+            <controls:Arc
+                EndAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesConverter.Instance}}"
+                StartAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesConverter.Instance}}"
                 Stroke="#FFD280"
-                StrokeThickness="24" />
+                StrokeThickness="26" />
 
             <!--  Day time arc  -->
             <controls:Arc
                 EndAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesConverter.Instance}}"
                 StartAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesConverter.Instance}}"
+                Stroke="#8AC0FF"
+                StrokeThickness="27" />
+            <controls:Arc
+                EndAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesConverter.Instance}}"
+                StartAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesConverter.Instance}}"
                 Stroke="#F2F8FF"
-                StrokeThickness="24" />
+                StrokeThickness="26" />
 
             <!--  Sunrise transition  -->
             <controls:Arc
                 EndAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesConverter.Instance}}"
                 StartAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesConverter.Instance}}"
+                Stroke="#FFC766"
+                StrokeThickness="27" />
+            <controls:Arc
+                EndAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesConverter.Instance}}"
+                StartAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesConverter.Instance}}"
                 Stroke="#FFEDCD"
-                StrokeThickness="24" />
+                StrokeThickness="26" />
 
             <!--  Sunset transition  -->
             <controls:Arc
                 EndAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesConverter.Instance}}"
                 StartAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesConverter.Instance}}"
+                Stroke="#FFC766"
+                StrokeThickness="27" />
+            <controls:Arc
+                EndAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesConverter.Instance}}"
+                StartAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesConverter.Instance}}"
                 Stroke="#FFEDCD"
-                StrokeThickness="24" />
+                StrokeThickness="26" />
 
             <!--  Current time position  -->
             <controls:ArcPoint
                 Angle="{Binding Instant.TimeOfDay.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
-                Fill="#C0FF8B50"
-                Size="12"
+                Fill="#FFAB85"
+                Size="13"
                 Stroke="#FF8B50" />
 
             <!--  Configuration offset  -->
             <StackPanel
-                Margin="0,50,0,0"
+                Margin="0,40,0,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 Background="Transparent"
