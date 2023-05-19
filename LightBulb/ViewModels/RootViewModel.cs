@@ -118,9 +118,7 @@ public class RootViewModel : Screen, IDisposable
         _settingsService.Save();
 
         if (await _dialogManager.ShowDialogAsync(dialog) == true)
-        {
             ProcessEx.StartShellExecute("https://tyrrrz.me/ukraine?source=lightbulb");
-        }
     }
 
     protected override void OnViewLoaded()
@@ -145,8 +143,5 @@ public class RootViewModel : Screen, IDisposable
 
     public void Exit() => Application.Current.Shutdown();
 
-    public void Dispose()
-    {
-        _checkForUpdatesTimer.Dispose();
-    }
+    public void Dispose() => _checkForUpdatesTimer.Dispose();
 }
