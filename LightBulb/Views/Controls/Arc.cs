@@ -7,7 +7,7 @@ namespace LightBulb.Views.Controls;
 
 // Modified from an example by Sean Sexton
 // https://wpf.2000things.com/2014/09/11/1156-changing-circular-progress-control-to-be-only-an-arc
-public sealed class Arc : Shape
+public class Arc : Shape
 {
     private static object CoerceAngle(DependencyObject d, object baseValue) =>
         baseValue is double angle
