@@ -1,4 +1,4 @@
-# LightBulb 💡
+# LightBulb
 
 [![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://tyrrrz.me/ukraine)
 [![Build](https://img.shields.io/github/actions/workflow/status/Tyrrrz/LightBulb/main.yml?branch=master)](https://github.com/Tyrrrz/LightBulb/actions)
@@ -10,6 +10,10 @@
 [![Fuck Russia](https://img.shields.io/badge/fuck-russia-e4181c.svg?labelColor=000000)](https://twitter.com/tyrrrz/status/1495972128977571848)
 
 > 🟡 **Project status**: maintenance mode<sup>[[?]](https://github.com/Tyrrrz/.github/blob/master/docs/project-status.md)</sup>
+
+<p align="center">
+    <img src="favicon.png" alt="Icon" />
+</p>
 
 **LightBulb** is an application that reduces eyestrain produced by staring at a computer screen when working late hours.
 As the day goes on, it continuously adjusts gamma, transitioning the display color temperature from cold blue in the afternoon to warm yellow during the night.
