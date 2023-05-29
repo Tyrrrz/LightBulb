@@ -29,6 +29,7 @@ jobs:
           --logger "GitHubActions;summary.includePassedTests=true;summary.includeSkippedTests=true"
           --collect:"XPlat Code Coverage"
           --
+          RunConfiguration.CollectSourceInformation=true
           DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
       - name: Upload coverage
