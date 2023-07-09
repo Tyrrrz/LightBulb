@@ -14,17 +14,12 @@ public class HotKeyTextBox : TextBox
         new FrameworkPropertyMetadata(
             default(HotKey),
             FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-            HotKeyChanged
-        )
+            (sender, _) =>
+            {
+                var control = (HotKeyTextBox)sender;
+                control.Text = control.HotKey.ToString();
+            })
     );
-
-    private static void HotKeyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-    {
-        if (sender is HotKeyTextBox control)
-        {
-            control.Text = control.HotKey.ToString();
-        }
-    }
 
     public HotKey HotKey
     {
@@ -56,13 +51,13 @@ public class HotKeyTextBox : TextBox
         Key.OemMinus or Key.DeadCharProcessed or Key.Oem1 or Key.Oem5 or Key.Oem7 or Key.OemPeriod or
         Key.OemComma or Key.Add or Key.Divide or Key.Multiply or Key.Subtract or Key.Oem102 or Key.Decimal;
 
-    protected override void OnPreviewKeyDown(KeyEventArgs e)
+    protected override void OnPreviewKeyDown(KeyEventArgs args)
     {
-        e.Handled = true;
+        args.Handled = true;
 
         // Get modifiers and key data
         var modifiers = Keyboard.Modifiers;
-        var key = e.Key;
+        var key = args.Key;
 
         // If nothing was pressed - return
         if (key == Key.None)
@@ -70,7 +65,7 @@ public class HotKeyTextBox : TextBox
 
         // If Alt is used as modifier - the key needs to be extracted from SystemKey
         if (key == Key.System)
-            key = e.SystemKey;
+            key = args.SystemKey;
 
         // If Delete/Backspace/Escape is pressed without modifiers - clear current value and return
         if (key is Key.Delete or Key.Back or Key.Escape && modifiers == ModifierKeys.None)

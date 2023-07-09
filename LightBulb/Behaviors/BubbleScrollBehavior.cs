@@ -6,11 +6,11 @@ namespace LightBulb.Behaviors;
 
 public class BubbleScrollBehavior : Behavior<UIElement>
 {
-    private void AssociatedObject_OnPreviewMouseWheel(object? sender, MouseWheelEventArgs e)
+    private void AssociatedObject_OnPreviewMouseWheel(object? sender, MouseWheelEventArgs args)
     {
-        e.Handled = true;
+        args.Handled = true;
 
-        AssociatedObject.RaiseEvent(new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta)
+        AssociatedObject.RaiseEvent(new MouseWheelEventArgs(args.MouseDevice, args.Timestamp, args.Delta)
         {
             RoutedEvent = UIElement.MouseWheelEvent
         });
