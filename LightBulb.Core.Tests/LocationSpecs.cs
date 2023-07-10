@@ -121,7 +121,7 @@ public class LocationSpecs
     public async Task I_can_configure_my_location_using_a_geographic_address()
     {
         // Act
-        var location = await GeoLocation.GetAsync("Kyiv, Ukraine");
+        var location = await GeoLocation.SearchAsync("Kyiv, Ukraine");
 
         // Assert
         location.Latitude.Should().BeApproximately(50.4500, 0.01);

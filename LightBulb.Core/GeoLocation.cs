@@ -85,7 +85,7 @@ public partial record struct GeoLocation
         return new GeoLocation(latitude, longitude);
     }
 
-    public static async Task<GeoLocation> GetAsync(string query)
+    public static async Task<GeoLocation> SearchAsync(string query)
     {
         var queryEncoded = WebUtility.UrlEncode(query);
 
