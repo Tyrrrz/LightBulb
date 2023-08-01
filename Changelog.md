@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.4.6 (01-Aug-2023)
+
+- Changed the target runtime to .NET 7.
+- Updated the application icon.
+- Fixed minor issues.
+
 ## v2.4.5 (14-Apr-2022)
 
 - Updated the gamma invalidation strategy to consider gamma stale if the foreground window changed within the last 500 milliseconds. This works around issues where switching to specific windows (for example, Windows Action Center) causes gamma to reset.
