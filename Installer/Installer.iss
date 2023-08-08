@@ -19,7 +19,6 @@ DisableProgramGroupPage=no
 DisableReadyPage=yes
 SetupIconFile=..\favicon.ico
 UninstallDisplayIcon={app}\LightBulb.exe
-LicenseFile=..\License.txt
 OutputDir=bin\
 OutputBaseFilename=LightBulb-Installer
 
