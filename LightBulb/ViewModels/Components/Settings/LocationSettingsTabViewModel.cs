@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using LightBulb.Core;
 using LightBulb.Services;
 using Stylet;
@@ -47,9 +48,9 @@ public class LocationSettingsTabViewModel : SettingsTabViewModelBase
         );
     }
 
-    public bool CanAutoDetectLocation => !IsBusy;
+    public bool CanAutoDetectLocationAsync => !IsBusy;
 
-    public async void AutoDetectLocation()
+    public async Task AutoDetectLocationAsync()
     {
         IsBusy = true;
         IsLocationError = false;
@@ -68,12 +69,12 @@ public class LocationSettingsTabViewModel : SettingsTabViewModelBase
         }
     }
 
-    public bool CanSetLocation =>
+    public bool CanSetLocationAsync =>
         !IsBusy &&
         !string.IsNullOrWhiteSpace(LocationQuery) &&
         LocationQuery != Location?.ToString();
 
-    public async void SetLocation()
+    public async Task SetLocationAsync()
     {
         if (string.IsNullOrWhiteSpace(LocationQuery))
             return;
