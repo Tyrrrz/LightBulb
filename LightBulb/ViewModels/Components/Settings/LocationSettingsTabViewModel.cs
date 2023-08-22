@@ -70,9 +70,9 @@ public class LocationSettingsTabViewModel : SettingsTabViewModelBase
     }
 
     public bool CanSetLocationAsync =>
-        !IsBusy &&
-        !string.IsNullOrWhiteSpace(LocationQuery) &&
-        LocationQuery != Location?.ToString();
+        !IsBusy
+        && !string.IsNullOrWhiteSpace(LocationQuery)
+        && LocationQuery != Location?.ToString();
 
     public async Task SetLocationAsync()
     {
@@ -85,8 +85,7 @@ public class LocationSettingsTabViewModel : SettingsTabViewModelBase
         try
         {
             Location =
-                GeoLocation.TryParse(LocationQuery) ??
-                await GeoLocation.SearchAsync(LocationQuery);
+                GeoLocation.TryParse(LocationQuery) ?? await GeoLocation.SearchAsync(LocationQuery);
         }
         catch
         {

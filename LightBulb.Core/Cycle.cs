@@ -8,7 +8,8 @@ public static class Cycle
     public static TimeOnly GetSunriseStart(
         TimeOnly sunrise,
         TimeSpan transitionDuration,
-        double transitionOffset)
+        double transitionOffset
+    )
     {
         // Offset = 0; Start at (sunrise - transition)
         // Offset = 0.5; Start at (sunrise - transition/2)
@@ -21,7 +22,8 @@ public static class Cycle
     public static TimeOnly GetSunriseEnd(
         TimeOnly sunrise,
         TimeSpan transitionDuration,
-        double transitionOffset)
+        double transitionOffset
+    )
     {
         // Offset = 0; End at (sunrise)
         // Offset = 0.5; End at (sunrise + transition/2)
@@ -34,7 +36,8 @@ public static class Cycle
     public static TimeOnly GetSunsetStart(
         TimeOnly sunset,
         TimeSpan transitionDuration,
-        double transitionOffset)
+        double transitionOffset
+    )
     {
         // Offset = 0; Start at (sunset)
         // Offset = 0.5; Start at (sunset - transition/2)
@@ -47,7 +50,8 @@ public static class Cycle
     public static TimeOnly GetSunsetEnd(
         TimeOnly sunset,
         TimeSpan transitionDuration,
-        double transitionOffset)
+        double transitionOffset
+    )
     {
         // Offset = 0; End at (sunset + transition)
         // Offset = 0.5; End at (sunset + transition/2)
@@ -63,9 +67,14 @@ public static class Cycle
         double nightValue,
         TimeSpan transitionDuration,
         double transitionOffset,
-        DateTimeOffset instant)
+        DateTimeOffset instant
+    )
     {
-        var sunriseStart = GetSunriseStart(solarTimes.Sunrise, transitionDuration, transitionOffset);
+        var sunriseStart = GetSunriseStart(
+            solarTimes.Sunrise,
+            transitionDuration,
+            transitionOffset
+        );
         var sunriseEnd = GetSunriseEnd(solarTimes.Sunrise, transitionDuration, transitionOffset);
         var sunsetStart = GetSunsetStart(solarTimes.Sunset, transitionDuration, transitionOffset);
         var sunsetEnd = GetSunsetEnd(solarTimes.Sunset, transitionDuration, transitionOffset);
@@ -104,7 +113,8 @@ public static class Cycle
         ColorConfiguration nightConfiguration,
         TimeSpan transitionDuration,
         double transitionOffset,
-        DateTimeOffset instant) =>
+        DateTimeOffset instant
+    ) =>
         new(
             Interpolate(
                 solarTimes,
@@ -112,13 +122,15 @@ public static class Cycle
                 nightConfiguration.Temperature,
                 transitionDuration,
                 transitionOffset,
-                instant),
+                instant
+            ),
             Interpolate(
                 solarTimes,
                 dayConfiguration.Brightness,
                 nightConfiguration.Brightness,
                 transitionDuration,
                 transitionOffset,
-                instant)
+                instant
+            )
         );
 }

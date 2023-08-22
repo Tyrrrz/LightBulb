@@ -26,7 +26,8 @@ public class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewModelBase
 
     public ApplicationWhitelistSettingsTabViewModel(
         SettingsService settingsService,
-        ExternalApplicationService externalApplicationService)
+        ExternalApplicationService externalApplicationService
+    )
         : base(settingsService, 3, "Application whitelist")
     {
         _externalApplicationService = externalApplicationService;

@@ -42,7 +42,5 @@ public class HotKeySettingsTabViewModel : SettingsTabViewModelBase
     }
 
     public HotKeySettingsTabViewModel(SettingsService settingsService)
-        : base(settingsService, 4, "Hotkeys")
-    {
-    }
+        : base(settingsService, 4, "Hotkeys") { }
 }

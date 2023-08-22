@@ -30,11 +30,8 @@ public partial class GammaService : IDisposable
         _eventRegistration = new[]
         {
             // https://github.com/Tyrrrz/LightBulb/issues/223
-            SystemHook.TryRegister(
-                SystemHook.ForegroundWindowChanged,
-                InvalidateGamma
-            ) ?? Disposable.Empty,
-
+            SystemHook.TryRegister(SystemHook.ForegroundWindowChanged, InvalidateGamma)
+                ?? Disposable.Empty,
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.ConsoleDisplayStateChanged,
                 InvalidateGamma
@@ -55,23 +52,10 @@ public partial class GammaService : IDisposable
                 PowerSettingNotification.Ids.AwayModeChanged,
                 InvalidateGamma
             ) ?? Disposable.Empty,
-
-            SystemEvent.Register(
-                SystemEvent.Ids.DisplayChanged,
-                InvalidateDeviceContexts
-            ),
-            SystemEvent.Register(
-                SystemEvent.Ids.PaletteChanged,
-                InvalidateDeviceContexts
-            ),
-            SystemEvent.Register(
-                SystemEvent.Ids.SettingsChanged,
-                InvalidateDeviceContexts
-            ),
-            SystemEvent.Register(
-                SystemEvent.Ids.SystemColorsChanged,
-                InvalidateDeviceContexts
-            )
+            SystemEvent.Register(SystemEvent.Ids.DisplayChanged, InvalidateDeviceContexts),
+            SystemEvent.Register(SystemEvent.Ids.PaletteChanged, InvalidateDeviceContexts),
+            SystemEvent.Register(SystemEvent.Ids.SettingsChanged, InvalidateDeviceContexts),
+            SystemEvent.Register(SystemEvent.Ids.SystemColorsChanged, InvalidateDeviceContexts)
         }.Aggregate();
     }
 
@@ -116,8 +100,10 @@ public partial class GammaService : IDisposable
             return true;
 
         // If polling is enabled, assume gamma is stale after some time has passed since the last update
-        if (_settingsService.IsGammaPollingEnabled &&
-            (instant - _lastUpdateTimestamp).Duration() > TimeSpan.FromSeconds(1))
+        if (
+            _settingsService.IsGammaPollingEnabled
+            && (instant - _lastUpdateTimestamp).Duration() > TimeSpan.FromSeconds(1)
+        )
             return true;
 
         return false;
@@ -129,9 +115,8 @@ public partial class GammaService : IDisposable
         if (_lastConfiguration is not { } lastConfiguration)
             return true;
 
-        return
-            Math.Abs(configuration.Temperature - lastConfiguration.Temperature) > 15 ||
-            Math.Abs(configuration.Brightness - lastConfiguration.Brightness) > 0.01;
+        return Math.Abs(configuration.Temperature - lastConfiguration.Temperature) > 15
+            || Math.Abs(configuration.Brightness - lastConfiguration.Brightness) > 0.01;
     }
 
     public void SetGamma(ColorConfiguration configuration)
@@ -181,7 +166,8 @@ public partial class GammaService
         {
             return Math.Clamp(
                 Math.Pow(configuration.Temperature / 100 - 60, -0.1332047592) * 329.698727446 / 255,
-                0, 1
+                0,
+                1
             );
         }
 
@@ -195,14 +181,18 @@ public partial class GammaService
         if (configuration.Temperature > 6600)
         {
             return Math.Clamp(
-                Math.Pow(configuration.Temperature / 100 - 60, -0.0755148492) * 288.1221695283 / 255,
-                0, 1
+                Math.Pow(configuration.Temperature / 100 - 60, -0.0755148492)
+                    * 288.1221695283
+                    / 255,
+                0,
+                1
             );
         }
 
         return Math.Clamp(
             (Math.Log(configuration.Temperature / 100) * 99.4708025861 - 161.1195681661) / 255,
-            0, 1
+            0,
+            1
         );
     }
 
@@ -217,8 +207,10 @@ public partial class GammaService
             return 0;
 
         return Math.Clamp(
-            (Math.Log(configuration.Temperature / 100 - 10) * 138.5177312231 - 305.0447927307) / 255,
-            0, 1
+            (Math.Log(configuration.Temperature / 100 - 10) * 138.5177312231 - 305.0447927307)
+                / 255,
+            0,
+            1
         );
     }
 }

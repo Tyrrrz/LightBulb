@@ -31,9 +31,7 @@ public partial class Timer : IDisposable
     }
 
     public Timer(TimeSpan interval, Action callback)
-        : this(TimeSpan.Zero, interval, callback)
-    {
-    }
+        : this(TimeSpan.Zero, interval, callback) { }
 
     private void Tick()
     {

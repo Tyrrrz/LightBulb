@@ -27,7 +27,7 @@ public class Bootstrapper : Bootstrapper<RootViewModel>
         _identityMutex = new Mutex(true, "LightBulb_Identity", out _isOnlyRunningInstance);
     }
 
-    private T GetInstance<T>() => (T) base.GetInstance(typeof(T));
+    private T GetInstance<T>() => (T)base.GetInstance(typeof(T));
 
     public override void Start(string[] args)
     {
@@ -66,10 +66,12 @@ public class Bootstrapper : Bootstrapper<RootViewModel>
     protected override void Launch()
     {
         // Finalize pending updates (and restart) before launching the app
-        GetInstance<UpdateService>().FinalizePendingUpdates();
+        GetInstance<UpdateService>()
+            .FinalizePendingUpdates();
 
         // Load settings (this has to come before any view is loaded because bindings are not updated)
-        GetInstance<SettingsService>().Load();
+        GetInstance<SettingsService>()
+            .Load();
 
         // Stylet/WPF is slow, so we preload all dialogs, including descendants, for smoother UX
         _ = GetInstance<DialogManager>().GetViewForDialogScreen(GetInstance<SettingsViewModel>());

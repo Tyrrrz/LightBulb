@@ -18,7 +18,8 @@ public class HotKeyTextBox : TextBox
             {
                 var control = (HotKeyTextBox)sender;
                 control.Text = control.HotKey.ToString();
-            })
+            }
+        )
     );
 
     public HotKey HotKey
@@ -39,17 +40,40 @@ public class HotKeyTextBox : TextBox
         Text = HotKey.ToString();
     }
 
-    private static bool HasKeyChar(Key key) => key is
-        // A - Z
-        >= Key.A and <= Key.Z or
-        // 0 - 9
-        >= Key.D0 and <= Key.D9 or
-        // Numpad 0 - 9
-        >= Key.NumPad0 and <= Key.NumPad9 or
-        // The rest
-        Key.OemQuestion or Key.OemQuotes or Key.OemPlus or Key.OemOpenBrackets or Key.OemCloseBrackets or
-        Key.OemMinus or Key.DeadCharProcessed or Key.Oem1 or Key.Oem5 or Key.Oem7 or Key.OemPeriod or
-        Key.OemComma or Key.Add or Key.Divide or Key.Multiply or Key.Subtract or Key.Oem102 or Key.Decimal;
+    private static bool HasKeyChar(Key key) =>
+        key
+            is
+                // A - Z
+                >= Key.A
+                and <= Key.Z
+                or
+                // 0 - 9
+                >= Key.D0
+                and <= Key.D9
+                or
+                // Numpad 0 - 9
+                >= Key.NumPad0
+                and <= Key.NumPad9
+                or
+                // The rest
+                Key.OemQuestion
+                or Key.OemQuotes
+                or Key.OemPlus
+                or Key.OemOpenBrackets
+                or Key.OemCloseBrackets
+                or Key.OemMinus
+                or Key.DeadCharProcessed
+                or Key.Oem1
+                or Key.Oem5
+                or Key.Oem7
+                or Key.OemPeriod
+                or Key.OemComma
+                or Key.Add
+                or Key.Divide
+                or Key.Multiply
+                or Key.Subtract
+                or Key.Oem102
+                or Key.Decimal;
 
     protected override void OnPreviewKeyDown(KeyEventArgs args)
     {
@@ -75,10 +99,20 @@ public class HotKeyTextBox : TextBox
         }
 
         // If the only key pressed is one of the modifier keys - return
-        if (key is
-            Key.LeftCtrl or Key.RightCtrl or Key.LeftAlt or Key.RightAlt or
-            Key.LeftShift or Key.RightShift or Key.LWin or Key.RWin or
-            Key.Clear or Key.OemClear or Key.Apps)
+        if (
+            key
+            is Key.LeftCtrl
+                or Key.RightCtrl
+                or Key.LeftAlt
+                or Key.RightAlt
+                or Key.LeftShift
+                or Key.RightShift
+                or Key.LWin
+                or Key.RWin
+                or Key.Clear
+                or Key.OemClear
+                or Key.Apps
+        )
             return;
 
         // If Enter/Space/Tab is pressed without modifiers - return

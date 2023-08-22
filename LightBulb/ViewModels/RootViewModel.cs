@@ -26,7 +26,8 @@ public class RootViewModel : Screen, IDisposable
         IViewModelFactory viewModelFactory,
         DialogManager dialogManager,
         SettingsService settingsService,
-        UpdateService updateService)
+        UpdateService updateService
+    )
     {
         _viewModelFactory = viewModelFactory;
         _dialogManager = dialogManager;

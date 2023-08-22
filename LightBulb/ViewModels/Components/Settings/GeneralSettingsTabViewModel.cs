@@ -12,7 +12,11 @@ public class GeneralSettingsTabViewModel : SettingsTabViewModelBase
         set
         {
             SettingsService.NightConfiguration = new ColorConfiguration(
-                Math.Clamp(value, SettingsService.MinimumTemperature, SettingsService.MaximumTemperature),
+                Math.Clamp(
+                    value,
+                    SettingsService.MinimumTemperature,
+                    SettingsService.MaximumTemperature
+                ),
                 NightBrightness
             );
 
@@ -27,7 +31,11 @@ public class GeneralSettingsTabViewModel : SettingsTabViewModelBase
         set
         {
             SettingsService.DayConfiguration = new ColorConfiguration(
-                Math.Clamp(value, SettingsService.MinimumTemperature, SettingsService.MaximumTemperature),
+                Math.Clamp(
+                    value,
+                    SettingsService.MinimumTemperature,
+                    SettingsService.MaximumTemperature
+                ),
                 DayBrightness
             );
 
@@ -43,7 +51,11 @@ public class GeneralSettingsTabViewModel : SettingsTabViewModelBase
         {
             SettingsService.NightConfiguration = new ColorConfiguration(
                 NightTemperature,
-                Math.Clamp(value, SettingsService.MinimumBrightness, SettingsService.MaximumBrightness)
+                Math.Clamp(
+                    value,
+                    SettingsService.MinimumBrightness,
+                    SettingsService.MaximumBrightness
+                )
             );
 
             if (NightBrightness > DayBrightness)
@@ -58,7 +70,11 @@ public class GeneralSettingsTabViewModel : SettingsTabViewModelBase
         {
             SettingsService.DayConfiguration = new ColorConfiguration(
                 DayTemperature,
-                Math.Clamp(value, SettingsService.MinimumBrightness, SettingsService.MaximumBrightness)
+                Math.Clamp(
+                    value,
+                    SettingsService.MinimumBrightness,
+                    SettingsService.MaximumBrightness
+                )
             );
 
             if (DayBrightness < NightBrightness)
@@ -69,8 +85,10 @@ public class GeneralSettingsTabViewModel : SettingsTabViewModelBase
     public TimeSpan ConfigurationTransitionDuration
     {
         get => SettingsService.ConfigurationTransitionDuration;
-        set => SettingsService.ConfigurationTransitionDuration =
-            TimeSpan.FromHours(Math.Clamp(value.TotalHours, 0, 5));
+        set =>
+            SettingsService.ConfigurationTransitionDuration = TimeSpan.FromHours(
+                Math.Clamp(value.TotalHours, 0, 5)
+            );
     }
 
     public double ConfigurationTransitionOffset
@@ -80,7 +98,5 @@ public class GeneralSettingsTabViewModel : SettingsTabViewModelBase
     }
 
     public GeneralSettingsTabViewModel(SettingsService settingsService)
-        : base(settingsService, 0, "General")
-    {
-    }
+        : base(settingsService, 0, "General") { }
 }

@@ -16,11 +16,7 @@ public class CycleSpecs
         var dayConfiguration = new ColorConfiguration(6600, 1);
         var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
-        var instant = new DateTimeOffset(
-            2019, 01, 01,
-            14, 00, 00,
-            TimeSpan.Zero
-        );
+        var instant = new DateTimeOffset(2019, 01, 01, 14, 00, 00, TimeSpan.Zero);
 
         // Act
         var configuration = Cycle.InterpolateConfiguration(
@@ -46,11 +42,7 @@ public class CycleSpecs
         var dayConfiguration = new ColorConfiguration(6600, 1);
         var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
-        var instant = new DateTimeOffset(
-            2019, 01, 01,
-            02, 00, 00,
-            TimeSpan.Zero
-        );
+        var instant = new DateTimeOffset(2019, 01, 01, 02, 00, 00, TimeSpan.Zero);
 
         // Act
         var configuration = Cycle.InterpolateConfiguration(
@@ -76,11 +68,7 @@ public class CycleSpecs
         var dayConfiguration = new ColorConfiguration(6600, 1);
         var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
-        var instant = new DateTimeOffset(
-            2019, 01, 01,
-            18, 30, 00,
-            TimeSpan.Zero
-        );
+        var instant = new DateTimeOffset(2019, 01, 01, 18, 30, 00, TimeSpan.Zero);
 
         // Act
         var configuration = Cycle.InterpolateConfiguration(
@@ -109,11 +97,7 @@ public class CycleSpecs
         var dayConfiguration = new ColorConfiguration(6600, 1);
         var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
-        var instant = new DateTimeOffset(
-            2019, 01, 01,
-            18, 30, 00,
-            TimeSpan.Zero
-        );
+        var instant = new DateTimeOffset(2019, 01, 01, 18, 30, 00, TimeSpan.Zero);
 
         // Act
         var configuration = Cycle.InterpolateConfiguration(
@@ -142,17 +126,9 @@ public class CycleSpecs
         var dayConfiguration = new ColorConfiguration(6600, 1);
         var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
-        var instant1 = new DateTimeOffset(
-            2019, 01, 01,
-            00, 00, 00,
-            TimeSpan.Zero
-        );
+        var instant1 = new DateTimeOffset(2019, 01, 01, 00, 00, 00, TimeSpan.Zero);
 
-        var instant2 = new DateTimeOffset(
-            2019, 01, 01,
-            23, 59, 59,
-            TimeSpan.Zero
-        );
+        var instant2 = new DateTimeOffset(2019, 01, 01, 23, 59, 59, TimeSpan.Zero);
 
         // Act
         var configuration1 = Cycle.InterpolateConfiguration(
@@ -188,13 +164,13 @@ public class CycleSpecs
         var nightConfiguration = new ColorConfiguration(3600, 0.85);
 
         // Act
-        var startInstant = new DateTimeOffset(
-            2019, 01, 01,
-            00, 00, 00,
-            TimeSpan.Zero
-        );
+        var startInstant = new DateTimeOffset(2019, 01, 01, 00, 00, 00, TimeSpan.Zero);
 
-        for (var offset = TimeSpan.Zero; offset < TimeSpan.FromDays(1); offset += TimeSpan.FromMinutes(1))
+        for (
+            var offset = TimeSpan.Zero;
+            offset < TimeSpan.FromDays(1);
+            offset += TimeSpan.FromMinutes(1)
+        )
         {
             var instant1 = startInstant + offset;
             var instant2 = instant1 + TimeSpan.FromMinutes(1);
@@ -219,17 +195,15 @@ public class CycleSpecs
 
             // Assert
             var isHarshJump =
-                Math.Abs(configuration1.Temperature - configuration2.Temperature) >=
-                Math.Abs(dayConfiguration.Temperature - nightConfiguration.Temperature) / 2
-                ||
-                Math.Abs(configuration1.Brightness - configuration2.Brightness) >=
-                Math.Abs(dayConfiguration.Brightness - nightConfiguration.Brightness) / 2
-            ;
+                Math.Abs(configuration1.Temperature - configuration2.Temperature)
+                    >= Math.Abs(dayConfiguration.Temperature - nightConfiguration.Temperature) / 2
+                || Math.Abs(configuration1.Brightness - configuration2.Brightness)
+                    >= Math.Abs(dayConfiguration.Brightness - nightConfiguration.Brightness) / 2;
 
             Assert.False(
                 isHarshJump,
-                $"Detected a harsh jump in color configuration from {instant1} to {instant2}: " +
-                $"{configuration1} -> {configuration2}."
+                $"Detected a harsh jump in color configuration from {instant1} to {instant2}: "
+                    + $"{configuration1} -> {configuration2}."
             );
         }
     }

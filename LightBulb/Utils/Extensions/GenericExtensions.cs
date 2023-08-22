@@ -10,7 +10,11 @@ internal static class GenericExtensions
             ? Math.Min(value + Math.Abs(absStep), target)
             : Math.Max(value - Math.Abs(absStep), target);
 
-    public static DateTimeOffset StepTo(this DateTimeOffset value, DateTimeOffset target, TimeSpan absStep)
+    public static DateTimeOffset StepTo(
+        this DateTimeOffset value,
+        DateTimeOffset target,
+        TimeSpan absStep
+    )
     {
         if (target >= value)
         {
@@ -25,8 +29,11 @@ internal static class GenericExtensions
     }
 
     public static ColorConfiguration StepTo(
-        this ColorConfiguration value, ColorConfiguration target,
-        double temperatureMaxAbsStep, double brightnessMaxAbsStep)
+        this ColorConfiguration value,
+        ColorConfiguration target,
+        double temperatureMaxAbsStep,
+        double brightnessMaxAbsStep
+    )
     {
         var temperatureAbsDelta = Math.Abs(target.Temperature - value.Temperature);
         var brightnessAbsDelta = Math.Abs(target.Brightness - value.Brightness);
@@ -34,13 +41,15 @@ internal static class GenericExtensions
         var temperatureSteps = temperatureAbsDelta / temperatureMaxAbsStep;
         var brightnessSteps = brightnessAbsDelta / brightnessMaxAbsStep;
 
-        var temperatureAdjustedStep = temperatureSteps >= brightnessSteps
-            ? temperatureMaxAbsStep
-            : temperatureAbsDelta / brightnessSteps;
+        var temperatureAdjustedStep =
+            temperatureSteps >= brightnessSteps
+                ? temperatureMaxAbsStep
+                : temperatureAbsDelta / brightnessSteps;
 
-        var brightnessAdjustedStep = brightnessSteps >= temperatureSteps
-            ? brightnessMaxAbsStep
-            : brightnessAbsDelta / temperatureSteps;
+        var brightnessAdjustedStep =
+            brightnessSteps >= temperatureSteps
+                ? brightnessMaxAbsStep
+                : brightnessAbsDelta / temperatureSteps;
 
         return new ColorConfiguration(
             value.Temperature.StepTo(target.Temperature, temperatureAdjustedStep),

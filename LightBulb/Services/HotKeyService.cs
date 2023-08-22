@@ -16,7 +16,7 @@ public class HotKeyService : IDisposable
     {
         // Convert WPF key/modifiers to Windows API virtual key/modifiers
         var virtualKey = KeyInterop.VirtualKeyFromKey(hotKey.Key);
-        var modifiers = (int) hotKey.Modifiers;
+        var modifiers = (int)hotKey.Modifiers;
 
         var hotKeyRegistration = GlobalHotKey.TryRegister(virtualKey, modifiers, callback);
 

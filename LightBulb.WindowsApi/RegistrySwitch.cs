@@ -7,7 +7,8 @@ using Microsoft.Win32;
 
 namespace LightBulb.WindowsApi;
 
-public class RegistrySwitch<T> where T : notnull
+public class RegistrySwitch<T>
+    where T : notnull
 {
     private readonly RegistryHive _hive;
     private readonly string _keyName;
@@ -51,7 +52,11 @@ public class RegistrySwitch<T> where T : notnull
                 {
                     // Run reg.exe with elevation
                     if (value)
-                        Reg.SetValue(_hive.GetShortMoniker() + '\\' + _keyName, _entryName, _enabledValue);
+                        Reg.SetValue(
+                            _hive.GetShortMoniker() + '\\' + _keyName,
+                            _entryName,
+                            _enabledValue
+                        );
                     else
                         Reg.DeleteValue(_hive.GetShortMoniker() + '\\' + _keyName, _entryName);
                 }

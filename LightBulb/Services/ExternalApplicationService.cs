@@ -9,10 +9,8 @@ namespace LightBulb.Services;
 public class ExternalApplicationService
 {
     // Applications that we don't want to show to the user
-    private readonly HashSet<string> _ignoredApplicationNames = new(StringComparer.OrdinalIgnoreCase)
-    {
-        "explorer"
-    };
+    private readonly HashSet<string> _ignoredApplicationNames =
+        new(StringComparer.OrdinalIgnoreCase) { "explorer" };
 
     public IEnumerable<ExternalApplication> GetAllRunningApplications()
     {
@@ -28,7 +26,10 @@ public class ExternalApplicationService
             var executableFilePath = process?.TryGetExecutableFilePath();
             var executableFileName = Path.GetFileNameWithoutExtension(executableFilePath);
 
-            if (string.IsNullOrWhiteSpace(executableFilePath) || string.IsNullOrWhiteSpace(executableFileName))
+            if (
+                string.IsNullOrWhiteSpace(executableFilePath)
+                || string.IsNullOrWhiteSpace(executableFileName)
+            )
                 continue;
 
             if (_ignoredApplicationNames.Contains(executableFileName))
@@ -54,10 +55,9 @@ public class ExternalApplicationService
     {
         using var window = SystemWindow.TryGetForeground();
 
-        return
-            window is not null &&
-            window.IsVisible() &&
-            !window.IsSystemWindow() &&
-            window.IsFullScreen();
+        return window is not null
+            && window.IsVisible()
+            && !window.IsSystemWindow()
+            && window.IsFullScreen();
     }
 }

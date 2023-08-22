@@ -10,13 +10,21 @@ public class DoubleToStringConverter : IValueConverter
     public static DoubleToStringConverter Instance { get; } = new();
 
     public object? Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
-        value is double doubleValue
-            ? doubleValue.ToString(culture)
-            : default;
+        value is double doubleValue ? doubleValue.ToString(culture) : default;
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
-        value is string stringValue &&
-        double.TryParse(stringValue, NumberStyles.Float | NumberStyles.AllowThousands, culture, out var result)
+    public object ConvertBack(
+        object value,
+        Type targetType,
+        object parameter,
+        CultureInfo culture
+    ) =>
+        value is string stringValue
+        && double.TryParse(
+            stringValue,
+            NumberStyles.Float | NumberStyles.AllowThousands,
+            culture,
+            out var result
+        )
             ? result
             : default;
 }

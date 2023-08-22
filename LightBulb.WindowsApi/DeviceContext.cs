@@ -10,9 +10,7 @@ public partial class DeviceContext : NativeResource
     private int _gammaChannelOffset;
 
     public DeviceContext(nint handle)
-        : base(handle)
-    {
-    }
+        : base(handle) { }
 
     private void SetGammaRamp(GammaRamp ramp)
     {
@@ -32,9 +30,9 @@ public partial class DeviceContext : NativeResource
         // Create linear ramps for each color
         for (var i = 0; i < 256; i++)
         {
-            ramp.Red[i] = (ushort) (i * 255 * redMultiplier);
-            ramp.Green[i] = (ushort) (i * 255 * greenMultiplier);
-            ramp.Blue[i] = (ushort) (i * 255 * blueMultiplier);
+            ramp.Red[i] = (ushort)(i * 255 * redMultiplier);
+            ramp.Green[i] = (ushort)(i * 255 * greenMultiplier);
+            ramp.Blue[i] = (ushort)(i * 255 * blueMultiplier);
         }
 
         // Some drivers will ignore requests to change gamma if the specified ramp is the same as last time,
@@ -42,9 +40,9 @@ public partial class DeviceContext : NativeResource
         // In order to work around this, we add a small random deviation to each ramp to make sure
         // they're always unique, forcing the drivers to refresh the device context every time.
         _gammaChannelOffset = ++_gammaChannelOffset % 5;
-        ramp.Red[255] = (ushort) (ramp.Red[255] + _gammaChannelOffset);
-        ramp.Green[255] = (ushort) (ramp.Green[255] + _gammaChannelOffset);
-        ramp.Blue[255] = (ushort) (ramp.Blue[255] + _gammaChannelOffset);
+        ramp.Red[255] = (ushort)(ramp.Red[255] + _gammaChannelOffset);
+        ramp.Green[255] = (ushort)(ramp.Green[255] + _gammaChannelOffset);
+        ramp.Blue[255] = (ushort)(ramp.Blue[255] + _gammaChannelOffset);
 
         SetGammaRamp(ramp);
     }

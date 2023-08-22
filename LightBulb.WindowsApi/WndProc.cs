@@ -13,10 +13,7 @@ internal static partial class WndProc
 
         public WndProcConsumer()
         {
-            CreateHandle(new CreateParams
-            {
-                Caption = "LightBulb WndProc Consumer"
-            });
+            CreateHandle(new CreateParams { Caption = "LightBulb WndProc Consumer" });
         }
 
         protected override void WndProc(ref Message message)

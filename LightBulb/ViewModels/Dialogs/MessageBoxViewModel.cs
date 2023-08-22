@@ -16,9 +16,7 @@ public class MessageBoxViewModel : DialogScreen
 
     public string? CancelButtonText { get; set; }
 
-    public int ButtonsCount =>
-        (IsOkButtonVisible ? 1 : 0) +
-        (IsCancelButtonVisible ? 1 : 0);
+    public int ButtonsCount => (IsOkButtonVisible ? 1 : 0) + (IsCancelButtonVisible ? 1 : 0);
 }
 
 public static class MessageBoxViewModelExtensions
@@ -28,7 +26,8 @@ public static class MessageBoxViewModelExtensions
         string title,
         string message,
         string? okButtonText,
-        string? cancelButtonText)
+        string? cancelButtonText
+    )
     {
         var viewModel = factory.CreateMessageBoxViewModel();
 

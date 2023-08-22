@@ -10,10 +10,12 @@ public class BubbleScrollBehavior : Behavior<UIElement>
     {
         args.Handled = true;
 
-        AssociatedObject.RaiseEvent(new MouseWheelEventArgs(args.MouseDevice, args.Timestamp, args.Delta)
-        {
-            RoutedEvent = UIElement.MouseWheelEvent
-        });
+        AssociatedObject.RaiseEvent(
+            new MouseWheelEventArgs(args.MouseDevice, args.Timestamp, args.Delta)
+            {
+                RoutedEvent = UIElement.MouseWheelEvent
+            }
+        );
     }
 
     protected override void OnAttached()

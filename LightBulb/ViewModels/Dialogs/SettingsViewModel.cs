@@ -14,7 +14,10 @@ public class SettingsViewModel : DialogScreen
 
     public ISettingsTabViewModel? ActiveTab { get; private set; }
 
-    public SettingsViewModel(SettingsService settingsService, IEnumerable<ISettingsTabViewModel> tabs)
+    public SettingsViewModel(
+        SettingsService settingsService,
+        IEnumerable<ISettingsTabViewModel> tabs
+    )
     {
         _settingsService = settingsService;
         Tabs = tabs.OrderBy(t => t.Order).ToArray();
@@ -36,7 +39,8 @@ public class SettingsViewModel : DialogScreen
     }
 
     // This should just be an overload, but Stylet gets confused when there are two methods with the same name
-    public void ActivateTabByType<T>() where T : ISettingsTabViewModel
+    public void ActivateTabByType<T>()
+        where T : ISettingsTabViewModel
     {
         var tab = Tabs.OfType<T>().FirstOrDefault();
         if (tab is not null)

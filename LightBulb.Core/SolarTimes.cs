@@ -13,7 +13,8 @@ public readonly record struct SolarTimes(TimeOnly Sunrise, TimeOnly Sunset)
         GeoLocation location,
         DateTimeOffset date,
         double zenith,
-        bool isSunrise)
+        bool isSunrise
+    )
     {
         // Based on https://edwilliams.org/sunrise_sunset_algorithm.htm
 
@@ -27,15 +28,15 @@ public readonly record struct SolarTimes(TimeOnly Sunrise, TimeOnly Sunset)
 
         // Calculate Sun's true longitude
         var sunLng = (
-            sunMeanAnomaly + 282.634 +
-            1.916 * Math.Sin(DegreesToRadians(sunMeanAnomaly)) +
-            0.020 * Math.Sin(2 * DegreesToRadians(sunMeanAnomaly))
+            sunMeanAnomaly
+            + 282.634
+            + 1.916 * Math.Sin(DegreesToRadians(sunMeanAnomaly))
+            + 0.020 * Math.Sin(2 * DegreesToRadians(sunMeanAnomaly))
         ).Wrap(0, 360);
 
         // Calculate Sun's right ascension
-        var sunRightAsc = RadiansToDegrees(
-            Math.Atan(0.91764 * Math.Tan(DegreesToRadians(sunLng)))
-        ).Wrap(0, 360);
+        var sunRightAsc = RadiansToDegrees(Math.Atan(0.91764 * Math.Tan(DegreesToRadians(sunLng))))
+            .Wrap(0, 360);
 
         // Right ascension value needs to be in the same quadrant as true longitude
         var sunLngQuad = Math.Floor(sunLng / 90) * 90;
@@ -48,19 +49,23 @@ public readonly record struct SolarTimes(TimeOnly Sunrise, TimeOnly Sunset)
 
         // Calculate Sun's zenith local hour
         var sunLocalHoursCos = Math.Clamp(
-            (Math.Cos(DegreesToRadians(zenith)) - sinDec * Math.Sin(DegreesToRadians(location.Latitude))) /
-            (cosDec * Math.Cos(DegreesToRadians(location.Latitude))),
+            (
+                Math.Cos(DegreesToRadians(zenith))
+                - sinDec * Math.Sin(DegreesToRadians(location.Latitude))
+            ) / (cosDec * Math.Cos(DegreesToRadians(location.Latitude))),
             // The result may be invalid in case the Sun never reaches zenith,
             // so we clamp to get the closest point instead.
-            -1, 1
+            -1,
+            1
         );
 
         // Calculate the local time of Sun's highest point
-        var sunLocalHours = (
-            isSunrise
-                ? 360 - RadiansToDegrees(Math.Acos(sunLocalHoursCos))
-                : RadiansToDegrees(Math.Acos(sunLocalHoursCos))
-        ) / 15;
+        var sunLocalHours =
+            (
+                isSunrise
+                    ? 360 - RadiansToDegrees(Math.Acos(sunLocalHoursCos))
+                    : RadiansToDegrees(Math.Acos(sunLocalHoursCos))
+            ) / 15;
 
         // Calculate the mean time of the event
         var meanHours = sunLocalHours + sunRightAscHours - 0.06571 * timeApproxDays - 6.622;
@@ -75,8 +80,9 @@ public readonly record struct SolarTimes(TimeOnly Sunrise, TimeOnly Sunset)
         return TimeOnly.FromTimeSpan(TimeSpan.FromHours(localHours));
     }
 
-    public static SolarTimes Calculate(GeoLocation location, DateTimeOffset date) => new(
-        CalculateSolarTime(location, date, 90.83, true),
-        CalculateSolarTime(location, date, 90.83, false)
-    );
+    public static SolarTimes Calculate(GeoLocation location, DateTimeOffset date) =>
+        new(
+            CalculateSolarTime(location, date, 90.83, true),
+            CalculateSolarTime(location, date, 90.83, false)
+        );
 }

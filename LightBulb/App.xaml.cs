@@ -18,22 +18,19 @@ public partial class App
 
     public static string ExecutableDirPath { get; } = AppDomain.CurrentDomain.BaseDirectory;
 
-    public static string ExecutableFilePath { get; } = Path.ChangeExtension(Assembly.Location, "exe");
+    public static string ExecutableFilePath { get; } =
+        Path.ChangeExtension(Assembly.Location, "exe");
 
     public static string GitHubProjectUrl { get; } = "https://github.com/Tyrrrz/LightBulb";
 }
 
 public partial class App
 {
-    private static IReadOnlyList<string> CommandLineArgs { get; } = Environment
-        .GetCommandLineArgs()
-        .Skip(1)
-        .ToArray();
+    private static IReadOnlyList<string> CommandLineArgs { get; } =
+        Environment.GetCommandLineArgs().Skip(1).ToArray();
 
     public static string HiddenOnLaunchArgument { get; } = "--start-hidden";
 
-    public static bool IsHiddenOnLaunch { get; } = CommandLineArgs.Contains(
-        HiddenOnLaunchArgument,
-        StringComparer.OrdinalIgnoreCase
-    );
+    public static bool IsHiddenOnLaunch { get; } =
+        CommandLineArgs.Contains(HiddenOnLaunchArgument, StringComparer.OrdinalIgnoreCase);
 }

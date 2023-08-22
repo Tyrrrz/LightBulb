@@ -20,7 +20,8 @@ public partial record struct GeoLocation
 {
     private static GeoLocation? TryParseSigned(string value)
     {
-        const NumberStyles numberStyles = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
+        const NumberStyles numberStyles =
+            NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
 
         // 41.25, -120.9762
         var match = Regex.Match(
@@ -28,9 +29,21 @@ public partial record struct GeoLocation
             @"^([\+\-]?\d+(?:\.\d+)?)\s*[,\s]\s*([\+\-]?\d+(?:\.\d+)?)$"
         );
 
-        if (match.Success &&
-            double.TryParse(match.Groups[1].Value, numberStyles, CultureInfo.InvariantCulture, out var lat) &&
-            double.TryParse(match.Groups[2].Value, numberStyles, CultureInfo.InvariantCulture, out var lng))
+        if (
+            match.Success
+            && double.TryParse(
+                match.Groups[1].Value,
+                numberStyles,
+                CultureInfo.InvariantCulture,
+                out var lat
+            )
+            && double.TryParse(
+                match.Groups[2].Value,
+                numberStyles,
+                CultureInfo.InvariantCulture,
+                out var lng
+            )
+        )
         {
             return new GeoLocation(lat, lng);
         }
@@ -40,7 +53,8 @@ public partial record struct GeoLocation
 
     private static GeoLocation? TryParseSuffixed(string value)
     {
-        const NumberStyles numberStyles = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
+        const NumberStyles numberStyles =
+            NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
 
         // 41.25°N, 120.9762°W
         // 41.25N, 120.9762W
@@ -50,12 +64,28 @@ public partial record struct GeoLocation
             @"^(\d+(?:\.\d+)?)\s*°?\s*(\w)\s*[,\s]\s*(\d+(?:\.\d+)?)\s*°?\s*(\w)$"
         );
 
-        if (match.Success &&
-            double.TryParse(match.Groups[1].Value, numberStyles, CultureInfo.InvariantCulture, out var lat) &&
-            double.TryParse(match.Groups[3].Value, numberStyles, CultureInfo.InvariantCulture, out var lng))
+        if (
+            match.Success
+            && double.TryParse(
+                match.Groups[1].Value,
+                numberStyles,
+                CultureInfo.InvariantCulture,
+                out var lat
+            )
+            && double.TryParse(
+                match.Groups[3].Value,
+                numberStyles,
+                CultureInfo.InvariantCulture,
+                out var lng
+            )
+        )
         {
-            var latSign = match.Groups[2].Value.Equals("N", StringComparison.OrdinalIgnoreCase) ? 1 : -1;
-            var lngSign = match.Groups[4].Value.Equals("E", StringComparison.OrdinalIgnoreCase) ? 1 : -1;
+            var latSign = match.Groups[2].Value.Equals("N", StringComparison.OrdinalIgnoreCase)
+                ? 1
+                : -1;
+            var lngSign = match.Groups[4].Value.Equals("E", StringComparison.OrdinalIgnoreCase)
+                ? 1
+                : -1;
 
             return new GeoLocation(lat * latSign, lng * lngSign);
         }
@@ -68,9 +98,7 @@ public partial record struct GeoLocation
         if (string.IsNullOrWhiteSpace(value))
             return null;
 
-        return
-            TryParseSigned(value) ??
-            TryParseSuffixed(value);
+        return TryParseSigned(value) ?? TryParseSuffixed(value);
     }
 
     public static async Task<GeoLocation> GetCurrentAsync()

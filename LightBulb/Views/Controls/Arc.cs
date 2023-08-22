@@ -10,33 +10,41 @@ namespace LightBulb.Views.Controls;
 public class Arc : Shape
 {
     private static object CoerceAngle(DependencyObject d, object baseValue) =>
-        baseValue is double angle
-            ? angle % 360.0
-            : baseValue;
+        baseValue is double angle ? angle % 360.0 : baseValue;
 
     public static readonly DependencyProperty StartAngleProperty = DependencyProperty.Register(
         nameof(StartAngle),
         typeof(double),
         typeof(Arc),
-        new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender, null, CoerceAngle)
+        new FrameworkPropertyMetadata(
+            0.0,
+            FrameworkPropertyMetadataOptions.AffectsRender,
+            null,
+            CoerceAngle
+        )
     );
 
     public static readonly DependencyProperty EndAngleProperty = DependencyProperty.Register(
         nameof(EndAngle),
         typeof(double),
         typeof(Arc),
-        new FrameworkPropertyMetadata(90.0, FrameworkPropertyMetadataOptions.AffectsRender, null, CoerceAngle)
+        new FrameworkPropertyMetadata(
+            90.0,
+            FrameworkPropertyMetadataOptions.AffectsRender,
+            null,
+            CoerceAngle
+        )
     );
 
     public double StartAngle
     {
-        get => (double) GetValue(StartAngleProperty);
+        get => (double)GetValue(StartAngleProperty);
         set => SetValue(StartAngleProperty, value);
     }
 
     public double EndAngle
     {
-        get => (double) GetValue(EndAngleProperty);
+        get => (double)GetValue(EndAngleProperty);
         set => SetValue(EndAngleProperty, value);
     }
 
@@ -58,14 +66,10 @@ public class Arc : Shape
 
             // This single line took me 2 hours to write
             var isLargeArc =
-                StartAngle <= EndAngle && Math.Abs(EndAngle - StartAngle) > 180.0 ||
-                StartAngle > EndAngle && Math.Abs(EndAngle - StartAngle) < 180.0;
+                StartAngle <= EndAngle && Math.Abs(EndAngle - StartAngle) > 180.0
+                || StartAngle > EndAngle && Math.Abs(EndAngle - StartAngle) < 180.0;
 
-            ctx.BeginFigure(
-                new Point(startX, startY),
-                true,
-                false
-            );
+            ctx.BeginFigure(new Point(startX, startY), true, false);
 
             ctx.ArcTo(
                 new Point(endX, endY),

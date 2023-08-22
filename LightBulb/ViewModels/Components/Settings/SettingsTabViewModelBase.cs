@@ -13,7 +13,11 @@ public abstract class SettingsTabViewModelBase : PropertyChangedBase, ISettingsT
 
     public bool IsActive { get; set; }
 
-    protected SettingsTabViewModelBase(SettingsService settingsService, int order, string displayName)
+    protected SettingsTabViewModelBase(
+        SettingsService settingsService,
+        int order,
+        string displayName
+    )
     {
         SettingsService = settingsService;
         Order = order;

@@ -9,10 +9,7 @@ internal static class Reg
 {
     private static void Run(IReadOnlyList<string> arguments, bool isElevated = false)
     {
-        using var process = new Process
-        {
-            StartInfo = new ProcessStartInfo("reg")
-        };
+        using var process = new Process { StartInfo = new ProcessStartInfo("reg") };
 
         foreach (var arg in arguments)
             process.StartInfo.ArgumentList.Add(arg);
@@ -44,26 +41,20 @@ internal static class Reg
             null => "REG_NONE",
             int => "REG_DWORD",
             string => "REG_SZ",
-            _ => throw new NotSupportedException($"Unsupported registry value type '{value.GetType()}'.")
+            _
+                => throw new NotSupportedException(
+                    $"Unsupported registry value type '{value.GetType()}'."
+                )
         };
 
-        Run(new[]
-        {
-            "add", key,
-            "/v", entry,
-            "/d", value?.ToString() ?? "",
-            "/t", entryType,
-            "/f"
-        }, true);
+        Run(
+            new[] { "add", key, "/v", entry, "/d", value?.ToString() ?? "", "/t", entryType, "/f" },
+            true
+        );
     }
 
     public static void DeleteValue(string key, string entry)
     {
-        Run(new[]
-        {
-            "delete", key,
-            "/v", entry,
-            "/f"
-        }, true);
+        Run(new[] { "delete", key, "/v", entry, "/f" }, true);
     }
 }

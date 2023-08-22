@@ -41,7 +41,5 @@ public class AdvancedSettingsTabViewModel : SettingsTabViewModelBase
     }
 
     public AdvancedSettingsTabViewModel(SettingsService settingsService)
-        : base(settingsService, 2, "Advanced")
-    {
-    }
+        : base(settingsService, 2, "Advanced") { }
 }

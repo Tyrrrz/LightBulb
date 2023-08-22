@@ -22,11 +22,7 @@ internal static partial class NativeMethods
     public static extern bool IsWindowVisible(nint hWnd);
 
     [DllImport(User32, CharSet = CharSet.Auto, SetLastError = true)]
-    public static extern int GetClassName(
-        nint hWnd,
-        StringBuilder lpClassName,
-        int nMaxCount
-    );
+    public static extern int GetClassName(nint hWnd, StringBuilder lpClassName, int nMaxCount);
 
     [DllImport(User32, SetLastError = true)]
     public static extern uint GetWindowThreadProcessId(nint hWnd, out uint lpdwProcessId);

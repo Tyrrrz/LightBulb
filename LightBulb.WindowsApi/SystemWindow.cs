@@ -10,19 +10,12 @@ namespace LightBulb.WindowsApi;
 public partial class SystemWindow : NativeResource
 {
     private SystemWindow(nint handle)
-        : base(handle)
-    {
-    }
+        : base(handle) { }
 
-    private Rect? TryGetRect() =>
-        NativeMethods.GetWindowRect(Handle, out var rect)
-            ? rect
-            : null;
+    private Rect? TryGetRect() => NativeMethods.GetWindowRect(Handle, out var rect) ? rect : null;
 
     private Rect? TryGetClientRect() =>
-        NativeMethods.GetClientRect(Handle, out var rect)
-            ? rect
-            : null;
+        NativeMethods.GetClientRect(Handle, out var rect) ? rect : null;
 
     public string? TryGetClassName()
     {
@@ -37,14 +30,17 @@ public partial class SystemWindow : NativeResource
     {
         var className = TryGetClassName();
 
-        return
-            string.Equals(className, "Progman", StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(className, "WorkerW", StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(className, "ImmersiveLauncher", StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(className, "ImmersiveSwitchList", StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(className, "MultitaskingViewFrame", StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(className, "ForegroundStaging", StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(className, "ApplicationManager_DesktopShellWindow", StringComparison.OrdinalIgnoreCase);
+        return string.Equals(className, "Progman", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(className, "WorkerW", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(className, "ImmersiveLauncher", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(className, "ImmersiveSwitchList", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(className, "MultitaskingViewFrame", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(className, "ForegroundStaging", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(
+                className,
+                "ApplicationManager_DesktopShellWindow",
+                StringComparison.OrdinalIgnoreCase
+            );
     }
 
     public bool IsVisible() => NativeMethods.IsWindowVisible(Handle);
@@ -68,11 +64,10 @@ public partial class SystemWindow : NativeResource
         // Check if the window covers up screen bounds
         var screenRect = Screen.FromHandle(Handle).Bounds;
 
-        return
-            absoluteWindowClientRect.Left <= 0 &&
-            absoluteWindowClientRect.Top <= 0 &&
-            absoluteWindowClientRect.Right >= screenRect.Right &&
-            absoluteWindowClientRect.Bottom >= screenRect.Bottom;
+        return absoluteWindowClientRect.Left <= 0
+            && absoluteWindowClientRect.Top <= 0
+            && absoluteWindowClientRect.Right >= screenRect.Right
+            && absoluteWindowClientRect.Bottom >= screenRect.Bottom;
     }
 
     public SystemProcess? TryGetProcess()
@@ -84,7 +79,7 @@ public partial class SystemWindow : NativeResource
             return null;
         }
 
-        return SystemProcess.TryOpen((int) processId);
+        return SystemProcess.TryOpen((int)processId);
     }
 
     protected override void Dispose(bool disposing)

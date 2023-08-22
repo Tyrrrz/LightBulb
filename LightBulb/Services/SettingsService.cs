@@ -16,19 +16,21 @@ namespace LightBulb.Services;
 [AddINotifyPropertyChangedInterface]
 public partial class SettingsService : SettingsBase, INotifyPropertyChanged
 {
-    private readonly RegistrySwitch<int> _extendedGammaRangeSwitch = new(
-        RegistryHive.LocalMachine,
-        @"Software\Microsoft\Windows NT\CurrentVersion\ICM",
-        "GdiICMGammaRange",
-        256
-    );
+    private readonly RegistrySwitch<int> _extendedGammaRangeSwitch =
+        new(
+            RegistryHive.LocalMachine,
+            @"Software\Microsoft\Windows NT\CurrentVersion\ICM",
+            "GdiICMGammaRange",
+            256
+        );
 
-    private readonly RegistrySwitch<string> _autoStartSwitch = new(
-        RegistryHive.CurrentUser,
-        @"Software\Microsoft\Windows\CurrentVersion\Run",
-        App.Name,
-        $"\"{App.ExecutableFilePath}\" {App.HiddenOnLaunchArgument}"
-    );
+    private readonly RegistrySwitch<string> _autoStartSwitch =
+        new(
+            RegistryHive.CurrentUser,
+            @"Software\Microsoft\Windows\CurrentVersion\Run",
+            App.Name,
+            $"\"{App.ExecutableFilePath}\" {App.HiddenOnLaunchArgument}"
+        );
 
     public bool IsFirstTimeExperienceEnabled { get; set; } = true;
 
@@ -110,9 +112,8 @@ public partial class SettingsService : SettingsBase, INotifyPropertyChanged
 
     public event EventHandler? SettingsSaved;
 
-    public SettingsService() : base(GetFilePath())
-    {
-    }
+    public SettingsService()
+        : base(GetFilePath()) { }
 
     public override void Reset()
     {

@@ -14,23 +14,26 @@ public partial class GlobalHotKey : NativeResource
     private GlobalHotKey(nint handle, Action callback)
         : base(handle)
     {
-        _wndProcRegistration = WndProc.Listen(WndProc.Ids.GlobalHotkeyMessage, m =>
-        {
-            // Filter out other hotkey events
-            if (m.WParam != Handle)
-                return;
-
-            // Throttle triggers
-            lock (_lock)
+        _wndProcRegistration = WndProc.Listen(
+            WndProc.Ids.GlobalHotkeyMessage,
+            m =>
             {
-                if ((DateTimeOffset.Now - _lastTriggerTimestamp).Duration().TotalSeconds < 0.05)
+                // Filter out other hotkey events
+                if (m.WParam != Handle)
                     return;
 
-                _lastTriggerTimestamp = DateTimeOffset.Now;
-            }
+                // Throttle triggers
+                lock (_lock)
+                {
+                    if ((DateTimeOffset.Now - _lastTriggerTimestamp).Duration().TotalSeconds < 0.05)
+                        return;
 
-            callback();
-        });
+                    _lastTriggerTimestamp = DateTimeOffset.Now;
+                }
+
+                callback();
+            }
+        );
     }
 
     protected override void Dispose(bool disposing)
@@ -52,7 +55,10 @@ public partial class GlobalHotKey
         var handle = Interlocked.Increment(ref _lastHotKeyHandle);
         if (!NativeMethods.RegisterHotKey(WndProc.Handle, handle, modifiers, virtualKey))
         {
-            Debug.WriteLine($"Failed to register global hotkey (key: {virtualKey}, mods: {modifiers}).");
+            Debug.WriteLine(
+                $"Failed to register global hotkey (key: {virtualKey}, mods: {modifiers})."
+            );
+
             return null;
         }
 
