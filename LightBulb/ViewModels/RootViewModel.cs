@@ -137,7 +137,7 @@ public class RootViewModel : Screen, IDisposable
         await ShowUkraineSupportMessageAsync();
     }
 
-    public async Task ShowSettingsAsync() =>
+    public async void ShowSettings() =>
         await _dialogManager.ShowDialogAsync(_viewModelFactory.CreateSettingsViewModel());
 
     public void ShowAbout() => ProcessEx.StartShellExecute(App.GitHubProjectUrl);

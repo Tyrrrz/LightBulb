@@ -93,7 +93,7 @@
                     Margin="16,0,0,0"
                     Padding="4"
                     VerticalAlignment="Center"
-                    Command="{s:Action AutoDetectLocationAsync}"
+                    Command="{s:Action AutoDetectLocation}"
                     Style="{DynamicResource MaterialDesignFlatButton}"
                     ToolTip="Try to detect location automatically based on your IP">
                     <materialDesign:PackIcon
@@ -134,7 +134,7 @@
                     Margin="0,0,16,0"
                     Padding="4"
                     VerticalAlignment="Center"
-                    Command="{s:Action SetLocationAsync}"
+                    Command="{s:Action SetLocation}"
                     IsDefault="True"
                     Style="{DynamicResource MaterialDesignFlatButton}"
                     ToolTip="Set location">

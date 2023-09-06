@@ -300,7 +300,7 @@
                     <!--  Settings  -->
                     <Button
                         Margin="8"
-                        Command="{s:Action ShowSettingsAsync}"
+                        Command="{s:Action ShowSettings}"
                         Style="{DynamicResource MaterialDesignFlatButton}"
                         ToolTip="Open settings">
                         <StackPanel Orientation="Horizontal">
