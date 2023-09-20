@@ -95,7 +95,7 @@
                     VerticalAlignment="Center"
                     Command="{s:Action AutoDetectLocation}"
                     Style="{DynamicResource MaterialDesignFlatButton}"
-                    ToolTip="Try to detect location automatically based on your IP">
+                    ToolTip="Try to detect the location automatically based on your IP address">
                     <materialDesign:PackIcon
                         Width="24"
                         Height="24"
@@ -112,7 +112,7 @@
                     Text="{Binding LocationQuery, UpdateSourceTrigger=PropertyChanged}">
                     <TextBox.ToolTip>
                         <TextBlock>
-                            <Run Text="You can enter coordinates directly or specify a search query" />
+                            <Run Text="You can enter the coordinates directly or specify a search query" />
                             <LineBreak />
                             <LineBreak />
                             <Run Text="Examples of valid values:" />
