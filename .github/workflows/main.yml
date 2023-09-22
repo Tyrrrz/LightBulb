@@ -38,7 +38,6 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   pack:
-    needs: test
     runs-on: windows-latest
     permissions:
       actions: write
@@ -80,7 +79,9 @@ jobs:
 
   deploy:
     if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
-    needs: pack
+    needs:
+      - test
+      - pack
     runs-on: ubuntu-latest
     permissions:
       actions: read
