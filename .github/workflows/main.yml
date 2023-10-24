@@ -52,7 +52,7 @@ jobs:
         with:
           dotnet-version: 7.0.x
 
-      - name: Publish
+      - name: Publish app
         run: >
           dotnet publish LightBulb
           --output LightBulb/bin/publish/
@@ -79,9 +79,11 @@ jobs:
 
   deploy:
     if: ${{ github.event_name == 'push' && github.ref_type == 'tag' }}
+
     needs:
       - test
       - pack
+
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -92,7 +94,7 @@ jobs:
         uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # 3.0.2
         with:
           name: LightBulb
-          path: LightBulb
+          path: LightBulb/
 
       - name: Download artifacts (installer)
         uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # 3.0.2
@@ -100,12 +102,7 @@ jobs:
           name: LightBulb-Installer
 
       - name: Create package (portable)
-        shell: pwsh
-        run: >
-          Compress-Archive
-          -Path LightBulb/*
-          -DestinationPath LightBulb.zip
-          -Force
+        run: zip -r LightBulb.zip LightBulb/
 
       - name: Create release
         env:
