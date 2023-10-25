@@ -102,7 +102,9 @@ jobs:
           name: LightBulb-Installer
 
       - name: Create package (portable)
-        run: zip -r LightBulb.zip LightBulb/
+        # Change into the artifacts directory to avoid including the directory itself in the zip archive
+        working-directory: LightBulb/
+        run: zip -r ../LightBulb.zip .
 
       - name: Create release
         env:
