@@ -54,12 +54,14 @@ public class LocationSpecs
         var solarTimes = SolarTimes.Calculate(location, instant);
 
         // Assert
-        solarTimes.Sunrise
+        solarTimes
+            .Sunrise
             .ToTimeSpan()
             .Should()
             .BeCloseTo(expectedSolarTimes.Sunrise.ToTimeSpan(), TimeSpan.FromMinutes(3));
 
-        solarTimes.Sunset
+        solarTimes
+            .Sunset
             .ToTimeSpan()
             .Should()
             .BeCloseTo(expectedSolarTimes.Sunset.ToTimeSpan(), TimeSpan.FromMinutes(3));

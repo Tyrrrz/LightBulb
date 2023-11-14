@@ -8,7 +8,6 @@ using LightBulb.ViewModels.Framework;
 using Stylet;
 using StyletIoC;
 using MessageBoxViewModel = LightBulb.ViewModels.Dialogs.MessageBoxViewModel;
-
 #if !DEBUG
 using System;
 using System.Windows;

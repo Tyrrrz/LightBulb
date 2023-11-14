@@ -269,9 +269,9 @@ public class DashboardViewModel : PropertyChangedBase, IDisposable
         bool IsPausedByWhitelistedApplication() =>
             _settingsService.IsApplicationWhitelistEnabled
             && _settingsService.WhitelistedApplications is not null
-            && _settingsService.WhitelistedApplications.Contains(
-                _externalApplicationService.TryGetForegroundApplication()
-            );
+            && _settingsService
+                .WhitelistedApplications
+                .Contains(_externalApplicationService.TryGetForegroundApplication());
 
         IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
     }
