@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.4.7 (16-Nov-2023)
+
+- Changed the target runtime to .NET 8.
+
 ## v2.4.6 (01-Aug-2023)
 
 - Changed the target runtime to .NET 7.
