@@ -140,7 +140,7 @@ public class RootViewModel : Screen, IDisposable
     public async void ShowSettings() =>
         await _dialogManager.ShowDialogAsync(_viewModelFactory.CreateSettingsViewModel());
 
-    public void ShowAbout() => ProcessEx.StartShellExecute(App.GitHubProjectUrl);
+    public void ShowAbout() => ProcessEx.StartShellExecute(App.ProjectUrl);
 
     public void Exit() => Application.Current.Shutdown();
 

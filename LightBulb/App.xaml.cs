@@ -21,7 +21,7 @@ public partial class App
     public static string ExecutableFilePath { get; } =
         Path.ChangeExtension(Assembly.Location, "exe");
 
-    public static string GitHubProjectUrl { get; } = "https://github.com/Tyrrrz/LightBulb";
+    public static string ProjectUrl { get; } = "https://github.com/Tyrrrz/LightBulb";
 }
 
 public partial class App

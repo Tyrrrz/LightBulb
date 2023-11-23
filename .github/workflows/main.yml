@@ -79,12 +79,15 @@ jobs:
       - name: Publish app
         run: >
           dotnet publish LightBulb
+          -p:Version=${{ github.ref_type == 'tag' && github.ref_name || '0.0.0' }}
           -p:CSharpier_Bypass=true
           --output LightBulb/bin/publish/
           --configuration Release
 
       - name: Create installer
         shell: pwsh
+        env:
+          INSTALLER_APP_VERSION: ${{ github.ref_type == 'tag' && github.ref_name || '0.0.0' }}
         run: |
           choco install innosetup --no-progress
           Copy-Item -Path LightBulb/bin/publish/ -Recurse -Destination Installer/Source/
@@ -143,7 +146,7 @@ jobs:
           LightBulb-Installer.exe
           --repo ${{ github.event.repository.full_name }}
           --title ${{ github.ref_name }}
-          --notes "[Changelog](${{ github.event.repository.html_url }}/blob/${{ github.ref_name }}/Changelog.md)"
+          --notes-from-tag
           --verify-tag
 
   notify:
@@ -163,6 +166,6 @@ jobs:
           body: |
             {
               "avatar_url": "https://raw.githubusercontent.com/${{ github.event.repository.full_name }}/${{ github.ref_name }}/favicon.png",
-              "content": "**${{ github.event.repository.name }}** v${{ github.ref_name }} has been released!\n🔗 [Download](<${{ github.event.repository.html_url }}/releases/tag/${{ github.ref_name }}>) • [Changelog](<${{ github.event.repository.html_url }}/blob/${{ github.ref_name }}/Changelog.md>)"
+              "content": "**${{ github.event.repository.name }}** v${{ github.ref_name }} has been released!\n[Download](<${{ github.event.repository.html_url }}/releases/tag/${{ github.ref_name }}>)"
             }
           retry-count: 5
