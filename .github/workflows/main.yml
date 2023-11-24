@@ -13,6 +13,8 @@ env:
 jobs:
   format:
     runs-on: windows-latest
+    timeout-minutes: 10
+
     permissions:
       contents: read
 
@@ -33,6 +35,8 @@ jobs:
 
   test:
     runs-on: windows-latest
+    timeout-minutes: 10
+
     permissions:
       contents: read
 
@@ -63,6 +67,8 @@ jobs:
 
   pack:
     runs-on: windows-latest
+    timeout-minutes: 10
+
     permissions:
       actions: write
       contents: read
@@ -116,6 +122,8 @@ jobs:
       - pack
 
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
     permissions:
       actions: read
       contents: write
@@ -152,6 +160,8 @@ jobs:
   notify:
     needs: deploy
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
     permissions:
       contents: read
 
