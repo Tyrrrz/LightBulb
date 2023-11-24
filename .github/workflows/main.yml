@@ -79,7 +79,7 @@ jobs:
       - name: Publish app
         run: >
           dotnet publish LightBulb
-          -p:Version=${{ github.ref_type == 'tag' && github.ref_name || '0.0.0' }}
+          -p:Version=${{ github.ref_type == 'tag' && github.ref_name || format('999.9.9-ci-{0}', github.sha) }}
           -p:CSharpier_Bypass=true
           --output LightBulb/bin/publish/
           --configuration Release
@@ -87,7 +87,7 @@ jobs:
       - name: Create installer
         shell: pwsh
         env:
-          INSTALLER_APP_VERSION: ${{ github.ref_type == 'tag' && github.ref_name || '0.0.0' }}
+          INSTALLER_APP_VERSION: ${{ github.ref_type == 'tag' && github.ref_name || format('999.9.9-ci-{0}', github.sha) }}
         run: |
           choco install innosetup --no-progress
           Copy-Item -Path LightBulb/bin/publish/ -Recurse -Destination Installer/Source/
