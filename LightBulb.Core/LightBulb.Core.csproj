@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <PackageReference Include="CSharpier.MsBuild" Version="0.26.2" PrivateAssets="all" />
+    <PackageReference Include="CSharpier.MsBuild" Version="0.26.5" PrivateAssets="all" />
     <PackageReference Include="JsonExtensions" Version="1.2.0" />
   </ItemGroup>
 
