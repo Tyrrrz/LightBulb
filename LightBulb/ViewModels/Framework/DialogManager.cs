@@ -8,18 +8,11 @@ using Stylet;
 
 namespace LightBulb.ViewModels.Framework;
 
-public class DialogManager : IDisposable
+public class DialogManager(IViewManager viewManager) : IDisposable
 {
-    private readonly IViewManager _viewManager;
-
     // Cache and reuse dialog screen views, as creating them is incredibly slow
     private readonly Dictionary<Type, UIElement> _dialogScreenViewCache = new();
     private readonly SemaphoreSlim _dialogLock = new(1, 1);
-
-    public DialogManager(IViewManager viewManager)
-    {
-        _viewManager = viewManager;
-    }
 
     public UIElement GetViewForDialogScreen<T>(DialogScreen<T> dialogScreen)
     {
@@ -27,12 +20,12 @@ public class DialogManager : IDisposable
 
         if (_dialogScreenViewCache.TryGetValue(dialogScreenType, out var cachedView))
         {
-            _viewManager.BindViewToModel(cachedView, dialogScreen);
+            viewManager.BindViewToModel(cachedView, dialogScreen);
             return cachedView;
         }
         else
         {
-            var view = _viewManager.CreateAndBindViewForModelIfNecessary(dialogScreen);
+            var view = viewManager.CreateAndBindViewForModelIfNecessary(dialogScreen);
 
             // This warms up the view and triggers all bindings.
             // We need to do this, as the view may have nested model-bound ContentControls

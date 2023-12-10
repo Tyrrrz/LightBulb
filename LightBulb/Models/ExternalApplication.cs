@@ -3,14 +3,11 @@ using System.IO;
 
 namespace LightBulb.Models;
 
-public partial class ExternalApplication
+public partial class ExternalApplication(string executableFilePath)
 {
-    public string ExecutableFilePath { get; }
+    public string ExecutableFilePath { get; } = executableFilePath;
 
     public string Name => Path.GetFileNameWithoutExtension(ExecutableFilePath);
-
-    public ExternalApplication(string executableFilePath) =>
-        ExecutableFilePath = executableFilePath;
 
     public override string ToString() => Name;
 }

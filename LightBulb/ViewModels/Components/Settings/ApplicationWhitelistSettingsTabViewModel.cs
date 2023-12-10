@@ -6,10 +6,11 @@ using LightBulb.Services;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
-public class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewModelBase
+public class ApplicationWhitelistSettingsTabViewModel(
+    SettingsService settingsService,
+    ExternalApplicationService externalApplicationService
+) : SettingsTabViewModelBase(settingsService, 3, "Application whitelist")
 {
-    private readonly ExternalApplicationService _externalApplicationService;
-
     public bool IsApplicationWhitelistEnabled
     {
         get => SettingsService.IsApplicationWhitelistEnabled;
@@ -24,15 +25,6 @@ public class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewModelBase
         set => SettingsService.WhitelistedApplications = value;
     }
 
-    public ApplicationWhitelistSettingsTabViewModel(
-        SettingsService settingsService,
-        ExternalApplicationService externalApplicationService
-    )
-        : base(settingsService, 3, "Application whitelist")
-    {
-        _externalApplicationService = externalApplicationService;
-    }
-
     public void OnViewLoaded() => PullAvailableApplications();
 
     public void PullAvailableApplications()
@@ -45,7 +37,7 @@ public class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewModelBase
             applications.Add(application);
 
         // Add all running applications
-        foreach (var application in _externalApplicationService.GetAllRunningApplications())
+        foreach (var application in externalApplicationService.GetAllRunningApplications())
             applications.Add(application);
 
         AvailableApplications = applications.ToArray();

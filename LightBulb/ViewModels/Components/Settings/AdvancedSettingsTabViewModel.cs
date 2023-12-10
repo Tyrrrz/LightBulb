@@ -2,7 +2,8 @@
 
 namespace LightBulb.ViewModels.Components.Settings;
 
-public class AdvancedSettingsTabViewModel : SettingsTabViewModelBase
+public class AdvancedSettingsTabViewModel(SettingsService settingsService)
+    : SettingsTabViewModelBase(settingsService, 2, "Advanced")
 {
     public bool IsAutoStartEnabled
     {
@@ -39,7 +40,4 @@ public class AdvancedSettingsTabViewModel : SettingsTabViewModelBase
         get => SettingsService.IsGammaPollingEnabled;
         set => SettingsService.IsGammaPollingEnabled = value;
     }
-
-    public AdvancedSettingsTabViewModel(SettingsService settingsService)
-        : base(settingsService, 2, "Advanced") { }
 }

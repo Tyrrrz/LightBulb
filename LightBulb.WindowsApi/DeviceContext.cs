@@ -5,12 +5,9 @@ using LightBulb.WindowsApi.Types;
 
 namespace LightBulb.WindowsApi;
 
-public partial class DeviceContext : NativeResource
+public partial class DeviceContext(nint handle) : NativeResource(handle)
 {
     private int _gammaChannelOffset;
-
-    public DeviceContext(nint handle)
-        : base(handle) { }
 
     private void SetGammaRamp(GammaRamp ramp)
     {

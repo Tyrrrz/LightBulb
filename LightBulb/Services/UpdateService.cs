@@ -7,25 +7,18 @@ using Onova.Services;
 
 namespace LightBulb.Services;
 
-public class UpdateService : IDisposable
+public class UpdateService(SettingsService settingsService) : IDisposable
 {
-    private readonly SettingsService _settingsService;
-
     private readonly IUpdateManager _updateManager = new UpdateManager(
         new GithubPackageResolver("Tyrrrz", "LightBulb", "LightBulb.zip"),
         new ZipPackageExtractor()
     );
 
-    public UpdateService(SettingsService settingsService)
-    {
-        _settingsService = settingsService;
-    }
-
     private Version? TryGetLastPreparedUpdate() => _updateManager.GetPreparedUpdates().Max();
 
     public async Task CheckPrepareUpdateAsync()
     {
-        if (!_settingsService.IsAutoUpdateEnabled)
+        if (!settingsService.IsAutoUpdateEnabled)
             return;
 
         try
@@ -45,7 +38,7 @@ public class UpdateService : IDisposable
 
     public void FinalizePendingUpdates()
     {
-        if (!_settingsService.IsAutoUpdateEnabled)
+        if (!settingsService.IsAutoUpdateEnabled)
             return;
 
         try

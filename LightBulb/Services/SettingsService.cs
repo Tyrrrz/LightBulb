@@ -14,7 +14,7 @@ using PropertyChanged;
 namespace LightBulb.Services;
 
 [AddINotifyPropertyChangedInterface]
-public partial class SettingsService : SettingsBase, INotifyPropertyChanged
+public partial class SettingsService() : SettingsBase(GetFilePath()), INotifyPropertyChanged
 {
     private readonly RegistrySwitch<int> _extendedGammaRangeSwitch =
         new(
@@ -111,9 +111,6 @@ public partial class SettingsService : SettingsBase, INotifyPropertyChanged
     public event EventHandler? SettingsLoaded;
 
     public event EventHandler? SettingsSaved;
-
-    public SettingsService()
-        : base(GetFilePath()) { }
 
     public override void Reset()
     {

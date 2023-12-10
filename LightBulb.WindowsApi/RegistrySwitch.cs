@@ -7,14 +7,9 @@ using Microsoft.Win32;
 
 namespace LightBulb.WindowsApi;
 
-public class RegistrySwitch<T>
+public class RegistrySwitch<T>(RegistryHive hive, string keyName, string entryName, T enabledValue)
     where T : notnull
 {
-    private readonly RegistryHive _hive;
-    private readonly string _keyName;
-    private readonly string _entryName;
-    private readonly T _enabledValue;
-
     private readonly object _lock = new();
 
     public bool IsSet
@@ -24,11 +19,11 @@ public class RegistrySwitch<T>
             lock (_lock)
             {
                 // This should always be accessible without elevation
-                var value = _hive.OpenKey().OpenSubKey(_keyName, false)?.GetValue(_entryName);
+                var value = hive.OpenKey().OpenSubKey(keyName, false)?.GetValue(entryName);
                 if (value is null)
                     return false;
 
-                return EqualityComparer<T>.Default.Equals(_enabledValue, (T)value);
+                return EqualityComparer<T>.Default.Equals(enabledValue, (T)value);
             }
         }
         set
@@ -41,34 +36,26 @@ public class RegistrySwitch<T>
 
                 try
                 {
-                    var key = _hive.OpenKey().CreateSubKey(_keyName, true);
+                    var key = hive.OpenKey().CreateSubKey(keyName, true);
 
                     if (value)
-                        key.SetValue(_entryName, _enabledValue);
+                        key.SetValue(entryName, enabledValue);
                     else
-                        key.DeleteValue(_entryName);
+                        key.DeleteValue(entryName);
                 }
                 catch (Exception ex) when (ex is SecurityException or UnauthorizedAccessException)
                 {
                     // Run reg.exe with elevation
                     if (value)
                         Reg.SetValue(
-                            _hive.GetShortMoniker() + '\\' + _keyName,
-                            _entryName,
-                            _enabledValue
+                            hive.GetShortMoniker() + '\\' + keyName,
+                            entryName,
+                            enabledValue
                         );
                     else
-                        Reg.DeleteValue(_hive.GetShortMoniker() + '\\' + _keyName, _entryName);
+                        Reg.DeleteValue(hive.GetShortMoniker() + '\\' + keyName, entryName);
                 }
             }
         }
-    }
-
-    public RegistrySwitch(RegistryHive hive, string keyName, string entryName, T enabledValue)
-    {
-        _hive = hive;
-        _keyName = keyName;
-        _entryName = entryName;
-        _enabledValue = enabledValue;
     }
 }

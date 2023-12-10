@@ -4,7 +4,8 @@ using LightBulb.Services;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
-public class GeneralSettingsTabViewModel : SettingsTabViewModelBase
+public class GeneralSettingsTabViewModel(SettingsService settingsService)
+    : SettingsTabViewModelBase(settingsService, 0, "General")
 {
     public double NightTemperature
     {
@@ -96,7 +97,4 @@ public class GeneralSettingsTabViewModel : SettingsTabViewModelBase
         get => SettingsService.ConfigurationTransitionOffset;
         set => SettingsService.ConfigurationTransitionOffset = Math.Clamp(value, 0, 1);
     }
-
-    public GeneralSettingsTabViewModel(SettingsService settingsService)
-        : base(settingsService, 0, "General") { }
 }

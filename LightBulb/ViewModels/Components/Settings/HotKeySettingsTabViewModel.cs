@@ -3,7 +3,8 @@ using LightBulb.Services;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
-public class HotKeySettingsTabViewModel : SettingsTabViewModelBase
+public class HotKeySettingsTabViewModel(SettingsService settingsService)
+    : SettingsTabViewModelBase(settingsService, 4, "Hotkeys")
 {
     public HotKey ToggleHotKey
     {
@@ -40,7 +41,4 @@ public class HotKeySettingsTabViewModel : SettingsTabViewModelBase
         get => SettingsService.ResetConfigurationOffsetHotKey;
         set => SettingsService.ResetConfigurationOffsetHotKey = value;
     }
-
-    public HotKeySettingsTabViewModel(SettingsService settingsService)
-        : base(settingsService, 4, "Hotkeys") { }
 }

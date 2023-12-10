@@ -3,11 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace LightBulb.WindowsApi;
 
-public abstract class NativeResource : IDisposable
+public abstract class NativeResource(nint handle) : IDisposable
 {
-    public nint Handle { get; }
-
-    protected NativeResource(nint handle) => Handle = handle;
+    public nint Handle { get; } = handle;
 
     [ExcludeFromCodeCoverage]
     ~NativeResource() => Dispose(false);
