@@ -237,7 +237,7 @@
                             VerticalAlignment="Center"
                             Click="CloseButton_OnClick"
                             Style="{DynamicResource MaterialDesignFlatDarkButton}"
-                            ToolTip="Hide LightBulb to tray">
+                            ToolTip="Hide LightBulb to the system tray">
                             <materialDesign:PackIcon
                                 Width="24"
                                 Height="24"
@@ -320,7 +320,7 @@
                         Margin="8"
                         Command="{s:Action ShowAbout}"
                         Style="{DynamicResource MaterialDesignFlatButton}"
-                        ToolTip="Open project page on GitHub">
+                        ToolTip="Open LightBulb on GitHub">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon
                                 Width="24"

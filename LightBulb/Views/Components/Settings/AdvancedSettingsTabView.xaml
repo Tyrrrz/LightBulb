@@ -46,7 +46,7 @@
         </Grid>
 
         <!--  Default to day time  -->
-        <Grid Margin="16,8" ToolTip="When LightBulb is disabled or paused, restore configured day-time temperature and brightness instead of default monitor gamma">
+        <Grid Margin="16,8" ToolTip="When LightBulb is disabled or paused, restore the configured day-time temperature and brightness instead of the default monitor gamma">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -64,7 +64,7 @@
         </Grid>
 
         <!--  Pause when full screen  -->
-        <Grid Margin="16,8" ToolTip="Pause LightBulb when any fullscreen window is in foreground">
+        <Grid Margin="16,8" ToolTip="Pause LightBulb when any fullscreen window is in the foreground">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />

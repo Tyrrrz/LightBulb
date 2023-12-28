@@ -30,7 +30,7 @@
                 Grid.Column="1"
                 Content="Location-based"
                 IsChecked="{Binding IsManualSunriseSunsetEnabled, Converter={x:Static converters:InverseBoolConverter.Instance}}"
-                ToolTip="Configure location and use it to automatically calculate sunrise and sunset" />
+                ToolTip="Configure your location and use it to automatically calculate the sunrise and sunset times" />
         </Grid>
 
         <!--  Manual  -->
@@ -156,7 +156,7 @@
             <TextBlock
                 Margin="16,8"
                 Foreground="DarkRed"
-                Text="There was an error resolving location"
+                Text="There was an error resolving the location"
                 Visibility="{Binding IsLocationError, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
         </StackPanel>
     </StackPanel>

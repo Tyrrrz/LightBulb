@@ -43,7 +43,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Temperature offset ↑"
-                ToolTip="Global hotkey to increase current temperature offset" />
+                ToolTip="Global hotkey to increase the current temperature offset" />
             <controls:HotKeyTextBox
                 Grid.Column="1"
                 Width="120"
@@ -65,7 +65,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Temperature offset ↓"
-                ToolTip="Global hotkey to decrease current temperature offset" />
+                ToolTip="Global hotkey to decrease the current temperature offset" />
             <controls:HotKeyTextBox
                 Grid.Column="1"
                 Width="120"
@@ -87,7 +87,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Brightness offset ↑"
-                ToolTip="Global hotkey to increase current brightness offset" />
+                ToolTip="Global hotkey to increase the current brightness offset" />
             <controls:HotKeyTextBox
                 Grid.Column="1"
                 Width="120"
@@ -109,7 +109,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Brightness offset ↓"
-                ToolTip="Global hotkey to decrease current brightness offset" />
+                ToolTip="Global hotkey to decrease the current brightness offset" />
             <controls:HotKeyTextBox
                 Grid.Column="1"
                 Width="120"
@@ -131,7 +131,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Reset offset"
-                ToolTip="Global hotkey to reset current temperature and brightness offset" />
+                ToolTip="Global hotkey to reset the current temperature and brightness offsets" />
             <controls:HotKeyTextBox
                 Grid.Column="1"
                 Width="120"

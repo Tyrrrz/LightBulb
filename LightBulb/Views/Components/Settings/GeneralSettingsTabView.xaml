@@ -70,7 +70,7 @@
                     <LineBreak />
                     <Run Text="Note that this brightness setting applies to the color gamma, not to the actual brightness of the monitor." />
                     <LineBreak />
-                    <Run Text="If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops), it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
+                    <Run Text="If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops), then it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
                 </TextBlock>
             </StackPanel.ToolTip>
             <TextBlock VerticalAlignment="Center" Text="Day-time brightness:" />
@@ -102,7 +102,7 @@
                     <LineBreak />
                     <Run Text="Note that this brightness setting applies to the color gamma, not to the actual brightness of the monitor." />
                     <LineBreak />
-                    <Run Text="If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops), it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
+                    <Run Text="If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops), then it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
                 </TextBlock>
             </StackPanel.ToolTip>
             <TextBlock VerticalAlignment="Center" Text="Night-time brightness:" />
@@ -152,7 +152,7 @@
         <StackPanel
             Margin="16,8"
             Orientation="Horizontal"
-            ToolTip="Offset that specifies how early or late the transition starts relatively to sunrise and sunset">
+            ToolTip="Offset that specifies how early or late the transition starts, relative to the sunrise and sunset">
             <TextBlock VerticalAlignment="Center" Text="Transition offset:" />
             <TextBox
                 MinWidth="30"
