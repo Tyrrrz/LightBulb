@@ -47,14 +47,11 @@ internal static class Reg
                 )
         };
 
-        Run(
-            new[] { "add", key, "/v", entry, "/d", value?.ToString() ?? "", "/t", entryType, "/f" },
-            true
-        );
+        Run(["add", key, "/v", entry, "/d", value?.ToString() ?? "", "/t", entryType, "/f"], true);
     }
 
     public static void DeleteValue(string key, string entry)
     {
-        Run(new[] { "delete", key, "/v", entry, "/f" }, true);
+        Run(["delete", key, "/v", entry, "/f"], true);
     }
 }
