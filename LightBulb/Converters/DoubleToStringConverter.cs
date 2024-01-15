@@ -9,13 +9,17 @@ public class DoubleToStringConverter : IValueConverter
 {
     public static DoubleToStringConverter Instance { get; } = new();
 
-    public object? Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
-        value is double doubleValue ? doubleValue.ToString(culture) : default;
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture
+    ) => value is double doubleValue ? doubleValue.ToString(culture) : default;
 
     public object ConvertBack(
-        object value,
+        object? value,
         Type targetType,
-        object parameter,
+        object? parameter,
         CultureInfo culture
     ) =>
         value is string stringValue

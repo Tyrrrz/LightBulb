@@ -9,13 +9,13 @@ public class TimeOnlyToDegreesConverter : IValueConverter
 {
     public static TimeOnlyToDegreesConverter Instance { get; } = new();
 
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         value is TimeOnly timeOfDayValue ? timeOfDayValue.ToTimeSpan().TotalDays * 360.0 : default;
 
     public object ConvertBack(
-        object value,
+        object? value,
         Type targetType,
-        object parameter,
+        object? parameter,
         CultureInfo culture
     ) =>
         value is double doubleValue

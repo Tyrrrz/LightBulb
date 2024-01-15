@@ -9,13 +9,17 @@ public class FractionToPercentageStringConverter : IValueConverter
 {
     public static FractionToPercentageStringConverter Instance { get; } = new();
 
-    public object? Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
-        value is double doubleValue ? doubleValue.ToString("P0", culture) : default;
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture
+    ) => value is double doubleValue ? doubleValue.ToString("P0", culture) : default;
 
     public object ConvertBack(
-        object value,
+        object? value,
         Type targetType,
-        object parameter,
+        object? parameter,
         CultureInfo culture
     ) =>
         value is string stringValue

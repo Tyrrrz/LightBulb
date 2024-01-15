@@ -11,7 +11,7 @@ public class CycleStateToPackIconKindConverter : IValueConverter
 {
     public static CycleStateToPackIconKindConverter Instance { get; } = new();
 
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         value switch
         {
             CycleState.Disabled => PackIconKind.Cancel,
@@ -23,9 +23,9 @@ public class CycleStateToPackIconKindConverter : IValueConverter
         };
 
     public object ConvertBack(
-        object value,
+        object? value,
         Type targetType,
-        object parameter,
+        object? parameter,
         CultureInfo culture
     ) => throw new NotSupportedException();
 }
