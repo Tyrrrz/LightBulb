@@ -64,8 +64,8 @@ public partial class SystemWindow : NativeResource
         // Check if the window covers up screen bounds
         var screenRect = Screen.FromHandle(Handle).Bounds;
 
-        return absoluteWindowClientRect.Left <= 0
-            && absoluteWindowClientRect.Top <= 0
+        return absoluteWindowClientRect.Left <= screenRect.Left
+            && absoluteWindowClientRect.Top <= screenRect.Top
             && absoluteWindowClientRect.Right >= screenRect.Right
             && absoluteWindowClientRect.Bottom >= screenRect.Bottom;
     }
