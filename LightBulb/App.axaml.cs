@@ -29,6 +29,19 @@ public partial class App : Application
             Color.Parse("#F9A825")
         );
     }
+
+    public override void RegisterServices()
+    {
+        base.RegisterServices();
+        
+        // Finalize pending updates (and restart) before launching the app
+        GetInstance<UpdateService>()
+            .FinalizePendingUpdates();
+
+        // Load settings (this has to come before any view is loaded because bindings are not updated)
+        GetInstance<SettingsService>()
+            .Load();
+    }
 }
 
 public partial class App
