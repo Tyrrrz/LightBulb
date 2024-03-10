@@ -1,0 +1,11 @@
+﻿<Application
+    x:Class="LightBulb.App"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles">
+    <Application.Styles>
+        <materialStyles:MaterialTheme />
+        <materialIcons:MaterialIconStyles />
+    </Application.Styles>
+</Application>

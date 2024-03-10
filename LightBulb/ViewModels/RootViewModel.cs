@@ -40,7 +40,7 @@ public class RootViewModel : Screen, IDisposable
 
         Dashboard = viewModelFactory.CreateDashboardViewModel();
 
-        DisplayName = $"{App.Name} v{App.VersionString}";
+        DisplayName = $"LightBulb v{App.VersionString}";
     }
 
     private async Task ShowGammaRangePromptAsync()
@@ -50,8 +50,8 @@ public class RootViewModel : Screen, IDisposable
 
         var dialog = _viewModelFactory.CreateMessageBoxViewModel(
             "Limited gamma range",
-            $"""
-            {App.Name} has detected that extended gamma range controls are not enabled on this system.
+            """
+            LightBulb has detected that extended gamma range controls are not enabled on this system.
             This may cause some color configurations to not work correctly.
 
             Press FIX to unlock the gamma range. Administrator privileges may be required.
@@ -74,8 +74,8 @@ public class RootViewModel : Screen, IDisposable
 
         var dialog = _viewModelFactory.CreateMessageBoxViewModel(
             "Welcome!",
-            $"""
-            Thank you for installing {App.Name}!
+            """
+            Thank you for installing LightBulb!
             To get the most personalized experience, please set your preferred solar configuration.
 
             Press OK to open settings.

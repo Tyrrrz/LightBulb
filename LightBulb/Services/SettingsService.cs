@@ -28,8 +28,8 @@ public partial class SettingsService() : SettingsBase(GetFilePath()), INotifyPro
         new(
             RegistryHive.CurrentUser,
             @"Software\Microsoft\Windows\CurrentVersion\Run",
-            App.Name,
-            $"\"{App.ExecutableFilePath}\" {App.HiddenOnLaunchArgument}"
+            "LightBulb",
+            $"\"{App.ExecutableFilePath}\" {App.StartHiddenArgument}"
         );
 
     public bool IsFirstTimeExperienceEnabled { get; set; } = true;
