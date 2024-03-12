@@ -45,11 +45,8 @@
             ItemsSource="{Binding AvailableApplications}"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
             ScrollViewer.VerticalScrollBarVisibility="Hidden"
+            SelectedItems="{Binding WhitelistedApplications}"
             SelectionMode="Multiple">
-            <b:Interaction.Behaviors>
-                <behaviors:BubbleScrollBehavior />
-                <behaviors:ExternalApplicationMultiSelectionListBoxBehavior SelectedItems="{Binding WhitelistedApplications}" />
-            </b:Interaction.Behaviors>
             <ListView.ItemContainerStyle>
                 <Style BasedOn="{StaticResource {x:Type ListViewItem}}" TargetType="{x:Type ListViewItem}">
                     <Setter Property="FocusVisualStyle" Value="{x:Null}" />

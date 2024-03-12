@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows.Data;
+using Avalonia.Data.Converters;
 
 namespace LightBulb.Converters;
 
-[ValueConversion(typeof(TimeSpan), typeof(double))]
-public class TimeSpanToHoursConverter : IValueConverter
+public class TimeSpanToHoursDoubleConverter : IValueConverter
 {
-    public static TimeSpanToHoursConverter Instance { get; } = new();
+    public static TimeSpanToHoursDoubleConverter Instance { get; } = new();
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         value is TimeSpan timeSpanValue ? timeSpanValue.TotalHours : default;

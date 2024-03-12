@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows.Data;
+using Avalonia.Data.Converters;
 
 namespace LightBulb.Converters;
 
-[ValueConversion(typeof(TimeOnly), typeof(string))]
 public class TimeOnlyToStringConverter : IValueConverter
 {
     public static TimeOnlyToStringConverter Instance { get; } = new();
