@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
+using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Services;
 using LightBulb.Utils;
 using LightBulb.ViewModels.Components;
@@ -8,11 +9,10 @@ using LightBulb.ViewModels.Components.Settings;
 using LightBulb.ViewModels.Dialogs;
 using LightBulb.ViewModels.Framework;
 using LightBulb.WindowsApi;
-using Stylet;
 
 namespace LightBulb.ViewModels;
 
-public class RootViewModel : Screen, IDisposable
+public class MainViewModel : ObservableObject, IDisposable
 {
     private readonly IViewModelFactory _viewModelFactory;
     private readonly DialogManager _dialogManager;
@@ -20,9 +20,11 @@ public class RootViewModel : Screen, IDisposable
 
     private readonly Timer _checkForUpdatesTimer;
 
+    public string Title { get; } = $"LightBulb v{App.VersionString}";
+    
     public DashboardViewModel Dashboard { get; }
 
-    public RootViewModel(
+    public MainViewModel(
         IViewModelFactory viewModelFactory,
         DialogManager dialogManager,
         SettingsService settingsService,
@@ -39,8 +41,6 @@ public class RootViewModel : Screen, IDisposable
         );
 
         Dashboard = viewModelFactory.CreateDashboardViewModel();
-
-        DisplayName = $"LightBulb v{App.VersionString}";
     }
 
     private async Task ShowGammaRangePromptAsync()
@@ -122,22 +122,16 @@ public class RootViewModel : Screen, IDisposable
             ProcessEx.StartShellExecute("https://tyrrrz.me/ukraine?source=lightbulb");
     }
 
-    protected override void OnViewLoaded()
-    {
-        base.OnViewLoaded();
-
-        _checkForUpdatesTimer.Start();
-    }
-
-    // This is a custom event that fires when the dialog host is loaded
-    public async void OnViewFullyLoaded()
+    public async Task InitializeAsync()
     {
         await ShowGammaRangePromptAsync();
         await ShowFirstTimeExperienceMessageAsync();
         await ShowUkraineSupportMessageAsync();
+        
+        _checkForUpdatesTimer.Start();
     }
 
-    public async void ShowSettings() =>
+    public async Task ShowSettingsAsync() =>
         await _dialogManager.ShowDialogAsync(_viewModelFactory.CreateSettingsViewModel());
 
     public void ShowAbout() => ProcessEx.StartShellExecute(App.ProjectUrl);

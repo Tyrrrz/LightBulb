@@ -2,8 +2,13 @@
     x:Class="LightBulb.App"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:framework="clr-namespace:LightBulb.Views.Framework"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles">
+    <Application.DataTemplates>
+        <framework:ViewLocator />
+    </Application.DataTemplates>
+
     <Application.Styles>
         <materialStyles:MaterialTheme />
         <materialIcons:MaterialIconStyles />

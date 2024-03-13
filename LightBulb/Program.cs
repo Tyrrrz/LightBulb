@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Threading;
 using Avalonia;
-using Avalonia.ReactiveUI;
 
 namespace LightBulb;
 
 public static class Program
 {
     public static AppBuilder BuildAvaloniaApp() =>
-        AppBuilder.Configure<App>().UsePlatformDetect().LogToTrace().UseReactiveUI();
+        AppBuilder.Configure<App>().UsePlatformDetect().LogToTrace();
     
     [STAThread]
     public static int Main(string[] args)

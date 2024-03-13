@@ -20,12 +20,12 @@
     <PackageReference Include="Avalonia" Version="11.0.9" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.6" />
     <PackageReference Include="Avalonia.Diagnostics" Version="11.0.6" Condition="'$(Configuration)' == 'Debug'" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.6" />
     <PackageReference Include="Cogwheel" Version="2.0.4" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="CSharpier.MsBuild" Version="0.26.5" PrivateAssets="all" />
     <PackageReference Include="Deorcify" Version="1.0.2" PrivateAssets="all" />
+    <PackageReference Include="DialogHost.Avalonia" Version="0.7.7" />
     <PackageReference Include="DotnetRuntimeBootstrapper" Version="2.5.1" PrivateAssets="all" Condition="$([MSBuild]::IsOsPlatform('Windows'))" />
-    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
     <PackageReference Include="Material.Avalonia" Version="3.4.2" />
     <PackageReference Include="Material.Icons.Avalonia" Version="2.1.0" />
     <PackageReference Include="Onova" Version="2.6.10" Condition="$([MSBuild]::IsOsPlatform('Windows'))" />

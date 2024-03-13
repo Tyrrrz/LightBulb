@@ -1,0 +1,235 @@
+﻿<Window
+    x:Class="LightBulb.Views.MainView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+    xmlns:lightBulb="clr-namespace:LightBulb"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    xmlns:viewModels="clr-namespace:LightBulb.ViewModels"
+    x:Name="MainView"
+    Title="{Binding Title}"
+    Width="450"
+    Height="350"
+    d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
+    Background="{DynamicResource MaterialDesignPaper}"
+    CanResize="False"
+    Closing="MainView_OnClosing"
+    Icon="/favicon.ico"
+    Loaded="MainView_OnLoaded"
+    SystemDecorations="None"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <!--  Tray icon & menu  -->
+    <TrayIcon.Icons>
+        <TrayIcons>
+            <TrayIcon
+                Clicked="TrayIcon_OnClicked"
+                Icon="/favicon.ico"
+                ToolTipText="{Binding Title}">
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem
+                            x:Name="ShowWindowMenuItem"
+                            Click="ShowWindowMenuItem_OnClick"
+                            Header="Open" />
+                        <NativeMenuItem Header="Enabled" IsChecked="{Binding Dashboard.IsEnabled}" />
+                        <NativeMenuItem Header="Disable for...">
+                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="Until sunrise" />
+                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="1 day">
+                                <NativeMenuItem.CommandParameter>
+                                    <system:TimeSpan>24:0:0</system:TimeSpan>
+                                </NativeMenuItem.CommandParameter>
+                            </NativeMenuItem>
+                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="12 hours">
+                                <NativeMenuItem.CommandParameter>
+                                    <system:TimeSpan>12:0:0</system:TimeSpan>
+                                </NativeMenuItem.CommandParameter>
+                            </NativeMenuItem>
+                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="6 hours">
+                                <NativeMenuItem.CommandParameter>
+                                    <system:TimeSpan>6:0:0</system:TimeSpan>
+                                </NativeMenuItem.CommandParameter>
+                            </NativeMenuItem>
+                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="3 hours">
+                                <NativeMenuItem.CommandParameter>
+                                    <system:TimeSpan>3:0:0</system:TimeSpan>
+                                </NativeMenuItem.CommandParameter>
+                            </NativeMenuItem>
+                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="1 hour">
+                                <NativeMenuItem.CommandParameter>
+                                    <system:TimeSpan>1:0:0</system:TimeSpan>
+                                </NativeMenuItem.CommandParameter>
+                            </NativeMenuItem>
+                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="30 minutes">
+                                <NativeMenuItem.CommandParameter>
+                                    <system:TimeSpan>0:30:0</system:TimeSpan>
+                                </NativeMenuItem.CommandParameter>
+                            </NativeMenuItem>
+                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="5 minutes">
+                                <NativeMenuItem.CommandParameter>
+                                    <system:TimeSpan>0:5:0</system:TimeSpan>
+                                </NativeMenuItem.CommandParameter>
+                            </NativeMenuItem>
+                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="1 minute">
+                                <NativeMenuItem.CommandParameter>
+                                    <system:TimeSpan>0:1:0</system:TimeSpan>
+                                </NativeMenuItem.CommandParameter>
+                            </NativeMenuItem>
+                        </NativeMenuItem>
+                        <NativeMenuItem Command="{Binding ShowSettingsAsync, RelativeSource={ResolveByName MainView}}" Header="Settings" />
+                        <NativeMenuItem Command="{Binding ShowAbout, RelativeSource={ResolveByName MainView}}" Header="About" />
+                        <NativeMenuItem Command="{Binding Exit, RelativeSource={ResolveByName MainView}}" Header="Exit" />
+                    </NativeMenu>
+                </TrayIcon.Menu>
+            </TrayIcon>
+        </TrayIcons>
+    </TrayIcon.Icons>
+
+    <!--  Main content  -->
+    <Border BorderBrush="{DynamicResource PrimaryHueLightBrush}" BorderThickness="1">
+        <dialogHostAvalonia:DialogHost
+            x:Name="DialogHost"
+            CloseOnClickAway="False"
+            Loaded="{Binding InitializeAsync}">
+            <Grid IsEnabled="{Binding !IsOpen, ElementName=DialogHost}" RowDefinitions="Auto,*,Auto">
+                <!--  Header  -->
+                <Border
+                    x:Name="Header"
+                    Grid.Row="0"
+                    Padding="8,12"
+                    Background="{DynamicResource PrimaryHueMidBrush}"
+                    PointerPressed="Header_OnPointerPressed"
+                    TextElement.Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">
+                    <Grid ColumnDefinitions="Auto,Auto,*,Auto">
+                        <!--  On/Off button and logo  -->
+                        <ToggleButton
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding Dashboard.IsEnabled}"
+                            ToolTip.Tip="Switch LightBulb on/off">
+                            <ToggleButton.Content>
+                                <materialIcons:MaterialIcon
+                                    Width="24"
+                                    Height="24"
+                                    IsVisible="{Binding IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType=ToggleButton}}"
+                                    Kind="LightbulbOutline" />
+                            </ToggleButton.Content>
+                        </ToggleButton>
+
+                        <!--  Application name and version  -->
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="8,1,0,0"
+                            VerticalAlignment="Center"
+                            FontSize="16">
+                            <Run
+                                FontSize="19"
+                                FontWeight="Medium"
+                                Text="LightBulb" />
+                            <Run FontWeight="Light" Text="v" /><Run FontWeight="Light" Text="{x:Static lightBulb:App.VersionString}" />
+                        </TextBlock>
+
+                        <!--  Hide button  -->
+                        <Button
+                            x:Name="HideButton"
+                            Grid.Column="3"
+                            Padding="4"
+                            VerticalAlignment="Center"
+                            Click="HideButton_OnClick"
+                            ToolTip.Tip="Hide LightBulb to the system tray">
+                            <materialIcons:MaterialIcon
+                                Width="24"
+                                Height="24"
+                                Kind="WindowMinimize" />
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <!--  Body  -->
+                <ContentControl
+                    Grid.Row="1"
+                    Margin="0,16,0,8"
+                    Content="{Binding Dashboard}" />
+
+                <!--  Buttons  -->
+                <StackPanel
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <!--  Start cycle preview  -->
+                    <Button
+                        Margin="8"
+                        Command="{Binding Dashboard.EnableCyclePreview}"
+                        IsVisible="{Binding !Dashboard.IsCyclePreviewEnabled}"
+                        ToolTip.Tip="Preview 24-hour cycle">
+                        <StackPanel Orientation="Horizontal">
+                            <materialIcons:MaterialIcon
+                                Width="24"
+                                Height="24"
+                                Kind="PlayCircleOutline" />
+                            <TextBlock
+                                Margin="4,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="PREVIEW" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  Stop cycle preview  -->
+                    <Button
+                        Margin="8"
+                        Command="{Binding Dashboard.DisableCyclePreview}"
+                        IsVisible="{Binding Dashboard.IsCyclePreviewEnabled}"
+                        ToolTip.Tip="Stop preview">
+                        <StackPanel Orientation="Horizontal">
+                            <materialIcons:MaterialIcon
+                                Width="24"
+                                Height="24"
+                                Kind="StopCircleOutline" />
+                            <TextBlock
+                                Margin="4,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="STOP" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  Settings  -->
+                    <Button
+                        Margin="8"
+                        Command="{Binding ShowSettingsAsync}"
+                        ToolTip.Tip="Open settings">
+                        <StackPanel Orientation="Horizontal">
+                            <materialIcons:MaterialIcon
+                                Width="24"
+                                Height="24"
+                                Kind="Settings" />
+                            <TextBlock
+                                Margin="4,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="SETTINGS" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  About  -->
+                    <Button
+                        Margin="8"
+                        Command="{Binding ShowAbout}"
+                        ToolTip.Tip="Open LightBulb on GitHub">
+                        <StackPanel Orientation="Horizontal">
+                            <materialIcons:MaterialIcon
+                                Width="24"
+                                Height="24"
+                                Kind="Web" />
+                            <TextBlock
+                                Margin="4,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="ABOUT" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </dialogHostAvalonia:DialogHost>
+    </Border>
+</Window>
