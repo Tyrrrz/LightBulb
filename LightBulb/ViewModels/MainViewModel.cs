@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Services;
 using LightBulb.Utils;
@@ -20,8 +19,6 @@ public class MainViewModel : ObservableObject, IDisposable
 
     private readonly Timer _checkForUpdatesTimer;
 
-    public string Title { get; } = $"LightBulb v{App.VersionString}";
-    
     public DashboardViewModel Dashboard { get; }
 
     public MainViewModel(
@@ -135,8 +132,6 @@ public class MainViewModel : ObservableObject, IDisposable
         await _dialogManager.ShowDialogAsync(_viewModelFactory.CreateSettingsViewModel());
 
     public void ShowAbout() => ProcessEx.StartShellExecute(App.ProjectUrl);
-
-    public void Exit() => Application.Current.Shutdown();
 
     public void Dispose() => _checkForUpdatesTimer.Dispose();
 }

@@ -7,6 +7,8 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using LightBulb.Services;
+using LightBulb.Utils.Extensions;
 using Material.Styles.Themes;
 
 namespace LightBulb;
@@ -42,6 +44,18 @@ public partial class App : Application
         GetInstance<SettingsService>()
             .Load();
     }
+    
+    private void TrayIcon_OnClicked(object? sender, EventArgs args)
+    {
+        if (ApplicationLifetime?.TryGetMainWindow() is { } window)
+        {
+            window.Show();
+            window.Activate();
+            window.Focus();
+        }
+    }
+    
+    private void ExitMenuItem_OnClick(object? sender, EventArgs args) => ApplicationLifetime?.TryShutdown();
 }
 
 public partial class App

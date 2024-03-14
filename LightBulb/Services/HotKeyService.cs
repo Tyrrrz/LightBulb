@@ -10,7 +10,7 @@ namespace LightBulb.Services;
 
 public class HotKeyService : IDisposable
 {
-    private readonly List<GlobalHotKey> _hotKeyRegistrations = new();
+    private readonly List<GlobalHotKey> _hotKeyRegistrations = [];
 
     public void RegisterHotKey(HotKey hotKey, Action callback)
     {
