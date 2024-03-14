@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using LightBulb.Services;
 using LightBulb.Utils;
 using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
-using LightBulb.ViewModels.Dialogs;
 using LightBulb.ViewModels.Framework;
 using LightBulb.WindowsApi;
 
 namespace LightBulb.ViewModels;
 
-public class MainViewModel : ObservableObject, IDisposable
+public partial class MainViewModel : ObservableObject, IDisposable
 {
-    private readonly IViewModelFactory _viewModelFactory;
+    private readonly ViewModelLocator _viewModelLocator;
     private readonly DialogManager _dialogManager;
     private readonly SettingsService _settingsService;
 
@@ -22,13 +22,13 @@ public class MainViewModel : ObservableObject, IDisposable
     public DashboardViewModel Dashboard { get; }
 
     public MainViewModel(
-        IViewModelFactory viewModelFactory,
+        ViewModelLocator viewModelLocator,
         DialogManager dialogManager,
         SettingsService settingsService,
         UpdateService updateService
     )
     {
-        _viewModelFactory = viewModelFactory;
+        _viewModelLocator = viewModelLocator;
         _dialogManager = dialogManager;
         _settingsService = settingsService;
 
@@ -37,7 +37,7 @@ public class MainViewModel : ObservableObject, IDisposable
             async () => await updateService.CheckPrepareUpdateAsync()
         );
 
-        Dashboard = viewModelFactory.CreateDashboardViewModel();
+        Dashboard = viewModelLocator.GetDashboardViewModel();
     }
 
     private async Task ShowGammaRangePromptAsync()
@@ -45,7 +45,7 @@ public class MainViewModel : ObservableObject, IDisposable
         if (_settingsService.IsExtendedGammaRangeUnlocked)
             return;
 
-        var dialog = _viewModelFactory.CreateMessageBoxViewModel(
+        var dialog = _viewModelLocator.GetMessageBoxViewModel(
             "Limited gamma range",
             """
             LightBulb has detected that extended gamma range controls are not enabled on this system.
@@ -69,7 +69,7 @@ public class MainViewModel : ObservableObject, IDisposable
         if (!_settingsService.IsFirstTimeExperienceEnabled)
             return;
 
-        var dialog = _viewModelFactory.CreateMessageBoxViewModel(
+        var dialog = _viewModelLocator.GetMessageBoxViewModel(
             "Welcome!",
             """
             Thank you for installing LightBulb!
@@ -88,7 +88,7 @@ public class MainViewModel : ObservableObject, IDisposable
 
         if (await _dialogManager.ShowDialogAsync(dialog) == true)
         {
-            var settingsDialog = _viewModelFactory.CreateSettingsViewModel();
+            var settingsDialog = _viewModelLocator.GetSettingsViewModel();
             settingsDialog.ActivateTabByType<LocationSettingsTabViewModel>();
 
             await _dialogManager.ShowDialogAsync(settingsDialog);
@@ -100,7 +100,7 @@ public class MainViewModel : ObservableObject, IDisposable
         if (!_settingsService.IsUkraineSupportMessageEnabled)
             return;
 
-        var dialog = _viewModelFactory.CreateMessageBoxViewModel(
+        var dialog = _viewModelLocator.GetMessageBoxViewModel(
             "Thank you for supporting Ukraine!",
             """
             As Russia wages a genocidal war against my country, I'm grateful to everyone who continues to stand with Ukraine in our fight for freedom.
@@ -119,7 +119,8 @@ public class MainViewModel : ObservableObject, IDisposable
             ProcessEx.StartShellExecute("https://tyrrrz.me/ukraine?source=lightbulb");
     }
 
-    public async Task InitializeAsync()
+    [RelayCommand]
+    private async Task InitializeAsync()
     {
         await ShowGammaRangePromptAsync();
         await ShowFirstTimeExperienceMessageAsync();
@@ -128,10 +129,12 @@ public class MainViewModel : ObservableObject, IDisposable
         _checkForUpdatesTimer.Start();
     }
 
-    public async Task ShowSettingsAsync() =>
-        await _dialogManager.ShowDialogAsync(_viewModelFactory.CreateSettingsViewModel());
+    [RelayCommand]
+    private async Task ShowSettingsAsync() =>
+        await _dialogManager.ShowDialogAsync(_viewModelLocator.GetSettingsViewModel());
 
-    public void ShowAbout() => ProcessEx.StartShellExecute(App.ProjectUrl);
+    [RelayCommand]
+    private void ShowAbout() => ProcessEx.StartShellExecute(App.ProjectUrl);
 
     public void Dispose() => _checkForUpdatesTimer.Dispose();
 }

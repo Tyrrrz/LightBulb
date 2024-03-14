@@ -9,18 +9,65 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using LightBulb.Services;
 using LightBulb.Utils.Extensions;
+using LightBulb.ViewModels;
+using LightBulb.ViewModels.Components;
+using LightBulb.ViewModels.Components.Settings;
+using LightBulb.ViewModels.Dialogs;
+using LightBulb.ViewModels.Framework;
+using LightBulb.Views;
 using Material.Styles.Themes;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LightBulb;
 
 public partial class App : Application
 {
+    private readonly IServiceProvider _services;
+    
+    public ViewModelLocator ViewModelLocator => _services.GetRequiredService<ViewModelLocator>();
+
+    // These view models are exposed here to set up bindings for the tray icon menu,
+    // which must be defined in the application class.
+    public MainViewModel MainViewModel => ViewModelLocator.GetMainViewModel();
+    public DashboardViewModel DashboardViewModel => ViewModelLocator.GetDashboardViewModel();
+
+    public App()
+    {
+        var services = new ServiceCollection();
+
+        services.AddSingleton<SettingsService>();
+        services.AddSingleton<GammaService>();
+        services.AddSingleton<HotKeyService>();
+        services.AddSingleton<ExternalApplicationService>();
+        services.AddSingleton<UpdateService>();
+        
+        services.AddSingleton<DialogManager>();
+        services.AddSingleton<ViewModelLocator>();
+        
+        services.AddSingleton<MainViewModel>();
+        services.AddSingleton<DashboardViewModel>();
+        services.AddSingleton<MessageBoxViewModel>();
+        services.AddSingleton<SettingsViewModel>();
+        services.AddSingleton<ISettingsTabViewModel, AdvancedSettingsTabViewModel>();
+        services.AddSingleton<ISettingsTabViewModel, ApplicationWhitelistSettingsTabViewModel>();
+        services.AddSingleton<ISettingsTabViewModel, GeneralSettingsTabViewModel>();
+        services.AddSingleton<ISettingsTabViewModel, HotKeySettingsTabViewModel>();
+        services.AddSingleton<ISettingsTabViewModel, LocationSettingsTabViewModel>();
+
+        _services = services.BuildServiceProvider();
+    }
+    
     public override void Initialize() => AvaloniaXamlLoader.Load(this);
 
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            desktop.MainWindow = new MainWindow();
+        {
+            desktop.MainWindow = new MainView
+            {
+                DataContext = ViewModelLocator.GetMainViewModel()
+            };
+        }
 
         base.OnFrameworkInitializationCompleted();
 
@@ -30,19 +77,6 @@ public partial class App : Application
             Color.Parse("#343838"),
             Color.Parse("#F9A825")
         );
-    }
-
-    public override void RegisterServices()
-    {
-        base.RegisterServices();
-        
-        // Finalize pending updates (and restart) before launching the app
-        GetInstance<UpdateService>()
-            .FinalizePendingUpdates();
-
-        // Load settings (this has to come before any view is loaded because bindings are not updated)
-        GetInstance<SettingsService>()
-            .Load();
     }
     
     private void TrayIcon_OnClicked(object? sender, EventArgs args)

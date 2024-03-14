@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using LightBulb.Core;
 using LightBulb.Core.Utils.Extensions;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.Utils.Extensions;
 using LightBulb.WindowsApi;
-using Stylet;
 
 namespace LightBulb.ViewModels.Components;
 
-public class DashboardViewModel : PropertyChangedBase, IDisposable
+public partial class DashboardViewModel : ObservableObject, IDisposable
 {
     private readonly SettingsService _settingsService;
     private readonly GammaService _gammaService;
@@ -276,18 +277,22 @@ public class DashboardViewModel : PropertyChangedBase, IDisposable
         IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
     }
 
-    public void Enable() => IsEnabled = true;
+    [RelayCommand]
+    private void Enable() => IsEnabled = true;
 
-    public void Disable() => IsEnabled = false;
+    [RelayCommand]
+    private void Disable() => IsEnabled = false;
 
-    public void DisableTemporarily(TimeSpan duration)
+    [RelayCommand]
+    private void DisableTemporarily(TimeSpan duration)
     {
         _enableAfterDelayRegistration?.Dispose();
         _enableAfterDelayRegistration = Timer.QueueDelayedAction(duration, Enable);
         IsEnabled = false;
     }
 
-    public void DisableTemporarilyUntilSunrise()
+    [RelayCommand]
+    private void DisableTemporarilyUntilSunrise()
     {
         // Use real time here instead of Instant, because that's what the user likely wants
         var now = DateTimeOffset.Now;
@@ -295,16 +300,19 @@ public class DashboardViewModel : PropertyChangedBase, IDisposable
         DisableTemporarily(timeUntilSunrise);
     }
 
-    public void Toggle() => IsEnabled = !IsEnabled;
+    private void Toggle() => IsEnabled = !IsEnabled;
 
-    public void EnableCyclePreview() => IsCyclePreviewEnabled = true;
+    [RelayCommand]
+    private void EnableCyclePreview() => IsCyclePreviewEnabled = true;
 
-    public void DisableCyclePreview() => IsCyclePreviewEnabled = false;
+    [RelayCommand]
+    private void DisableCyclePreview() => IsCyclePreviewEnabled = false;
 
     public bool CanResetConfigurationOffset =>
         Math.Abs(TemperatureOffset) + Math.Abs(BrightnessOffset) >= 0.01;
 
-    public void ResetConfigurationOffset()
+    [RelayCommand]
+    private void ResetConfigurationOffset()
     {
         TemperatureOffset = 0;
         BrightnessOffset = 0;

@@ -38,6 +38,7 @@
                     <Grid ColumnDefinitions="Auto,Auto,*,Auto">
                         <!--  On/Off button and logo  -->
                         <ToggleButton
+                            x:Name="IsEnabledToggleButton"
                             Grid.Column="0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding Dashboard.IsEnabled}"
@@ -46,7 +47,7 @@
                                 <materialIcons:MaterialIcon
                                     Width="24"
                                     Height="24"
-                                    IsVisible="{Binding IsChecked, RelativeSource={RelativeSource FindAncestor, AncestorType=ToggleButton}}"
+                                    IsVisible="{Binding #IsEnabledToggleButton.IsChecked}"
                                     Kind="LightbulbOutline" />
                             </ToggleButton.Content>
                         </ToggleButton>

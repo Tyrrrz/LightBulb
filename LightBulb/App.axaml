@@ -5,7 +5,8 @@
     xmlns:framework="clr-namespace:LightBulb.Views.Framework"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
-    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    x:Name="Root">
     <Application.DataTemplates>
         <framework:ViewLocator />
     </Application.DataTemplates>
@@ -24,52 +25,52 @@
                 <TrayIcon.Menu>
                     <NativeMenu>
                         <NativeMenuItem Click="TrayIcon_OnClicked" Header="Open" />
-                        <NativeMenuItem Header="Enabled" IsChecked="{Binding Dashboard.IsEnabled}" />
+                        <NativeMenuItem Header="Enabled" IsChecked="{Binding #Root.DashboardViewModel.IsEnabled}" />
                         <NativeMenuItem Header="Disable for...">
-                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="Until sunrise" />
-                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="1 day">
+                            <NativeMenuItem Command="{Binding #Root.DashboardViewModel.DisableTemporarilyUntilSunriseCommand}" Header="Until sunrise" />
+                            <NativeMenuItem Command="{Binding #Root.DashboardViewModel.DisableTemporarilyCommand}" Header="1 day">
                                 <NativeMenuItem.CommandParameter>
                                     <system:TimeSpan>24:0:0</system:TimeSpan>
                                 </NativeMenuItem.CommandParameter>
                             </NativeMenuItem>
-                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="12 hours">
+                            <NativeMenuItem Command="{Binding #Root.DashboardViewModel.DisableTemporarilyCommand}" Header="12 hours">
                                 <NativeMenuItem.CommandParameter>
                                     <system:TimeSpan>12:0:0</system:TimeSpan>
                                 </NativeMenuItem.CommandParameter>
                             </NativeMenuItem>
-                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="6 hours">
+                            <NativeMenuItem Command="{Binding #Root.DashboardViewModel.DisableTemporarilyCommand}" Header="6 hours">
                                 <NativeMenuItem.CommandParameter>
                                     <system:TimeSpan>6:0:0</system:TimeSpan>
                                 </NativeMenuItem.CommandParameter>
                             </NativeMenuItem>
-                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="3 hours">
+                            <NativeMenuItem Command="{Binding #Root.DashboardViewModel.DisableTemporarilyCommand}" Header="3 hours">
                                 <NativeMenuItem.CommandParameter>
                                     <system:TimeSpan>3:0:0</system:TimeSpan>
                                 </NativeMenuItem.CommandParameter>
                             </NativeMenuItem>
-                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="1 hour">
+                            <NativeMenuItem Command="{Binding #Root.DashboardViewModel.DisableTemporarilyCommand}" Header="1 hour">
                                 <NativeMenuItem.CommandParameter>
                                     <system:TimeSpan>1:0:0</system:TimeSpan>
                                 </NativeMenuItem.CommandParameter>
                             </NativeMenuItem>
-                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="30 minutes">
+                            <NativeMenuItem Command="{Binding #Root.DashboardViewModel.DisableTemporarilyCommand}" Header="30 minutes">
                                 <NativeMenuItem.CommandParameter>
                                     <system:TimeSpan>0:30:0</system:TimeSpan>
                                 </NativeMenuItem.CommandParameter>
                             </NativeMenuItem>
-                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="5 minutes">
+                            <NativeMenuItem Command="{Binding #Root.DashboardViewModel.DisableTemporarilyCommand}" Header="5 minutes">
                                 <NativeMenuItem.CommandParameter>
                                     <system:TimeSpan>0:5:0</system:TimeSpan>
                                 </NativeMenuItem.CommandParameter>
                             </NativeMenuItem>
-                            <NativeMenuItem Command="{Binding Dashboard.DisableTemporarily, RelativeSource={ResolveByName MainView}}" Header="1 minute">
+                            <NativeMenuItem Command="{Binding #Root.DashboardViewModel.DisableTemporarilyCommand}" Header="1 minute">
                                 <NativeMenuItem.CommandParameter>
                                     <system:TimeSpan>0:1:0</system:TimeSpan>
                                 </NativeMenuItem.CommandParameter>
                             </NativeMenuItem>
                         </NativeMenuItem>
-                        <NativeMenuItem Command="{Binding ShowSettingsAsync, RelativeSource={ResolveByName MainView}}" Header="Settings" />
-                        <NativeMenuItem Command="{Binding ShowAbout, RelativeSource={ResolveByName MainView}}" Header="About" />
+                        <NativeMenuItem Command="{Binding #Root.MainViewModel.ShowSettingsCommand}" Header="Settings" />
+                        <NativeMenuItem Command="{Binding #Root.MainViewModel.ShowAboutCommand}" Header="About" />
                         <NativeMenuItem
                             x:Name="ExitMenuItem"
                             Click="ExitMenuItem_OnClick"
