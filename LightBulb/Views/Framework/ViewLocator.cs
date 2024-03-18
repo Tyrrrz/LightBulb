@@ -7,6 +7,8 @@ namespace LightBulb.Views.Framework;
 
 public class ViewLocator : IDataTemplate
 {
+    public bool Match(object? data) => data is ObservableObject;
+
     public Control? Build(object? data)
     {
         if (data is null)
@@ -19,12 +21,7 @@ public class ViewLocator : IDataTemplate
 
         if (type is null)
             return new TextBlock { Text = "Not Found: " + name };
-        
-        return (Control)Activator.CreateInstance(type)!;
-    }
 
-    public bool Match(object? data)
-    {
-        return data is ObservableObject;
+        return (Control)Activator.CreateInstance(type)!;
     }
 }

@@ -1,5 +1,4 @@
 ﻿using LightBulb.Services;
-using Stylet;
 
 namespace LightBulb.ViewModels.Components.Settings;
 

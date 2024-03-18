@@ -9,7 +9,6 @@ using LightBulb.Models;
 using LightBulb.Utils;
 using LightBulb.WindowsApi;
 using Microsoft.Win32;
-using PropertyChanged;
 
 namespace LightBulb.Services;
 

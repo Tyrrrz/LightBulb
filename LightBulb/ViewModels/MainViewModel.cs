@@ -125,7 +125,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
         await ShowGammaRangePromptAsync();
         await ShowFirstTimeExperienceMessageAsync();
         await ShowUkraineSupportMessageAsync();
-        
+
         _checkForUpdatesTimer.Start();
     }
 

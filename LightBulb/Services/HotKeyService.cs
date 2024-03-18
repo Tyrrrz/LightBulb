@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Windows.Input;
 using LightBulb.Models;
 using LightBulb.Utils.Extensions;
 using LightBulb.WindowsApi;

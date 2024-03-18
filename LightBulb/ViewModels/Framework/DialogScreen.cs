@@ -1,5 +1,4 @@
 ﻿using System;
-using Stylet;
 
 namespace LightBulb.ViewModels.Framework;
 

@@ -12,7 +12,7 @@ internal static class AvaloniaExtensions
 
         return null;
     }
-    
+
     public static bool TryShutdown(this IApplicationLifetime applicationLifetime, int exitCode = 0)
     {
         if (applicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)

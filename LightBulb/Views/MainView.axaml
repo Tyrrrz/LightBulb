@@ -6,26 +6,23 @@
     xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:lightBulb="clr-namespace:LightBulb"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:LightBulb.ViewModels"
     x:Name="MainView"
     Title="LightBulb"
     Width="450"
     Height="350"
     d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
-    Background="{DynamicResource MaterialDesignPaper}"
     CanResize="False"
     Closing="MainView_OnClosing"
     Icon="/favicon.ico"
     Loaded="MainView_OnLoaded"
     SystemDecorations="None"
-    WindowStartupLocation="CenterScreen"
-    mc:Ignorable="d">
+    WindowStartupLocation="CenterScreen">
     <Border BorderBrush="{DynamicResource PrimaryHueLightBrush}" BorderThickness="1">
         <dialogHostAvalonia:DialogHost
             x:Name="DialogHost"
             CloseOnClickAway="False"
-            Loaded="{Binding InitializeAsync}">
+            Loaded="{Binding InitializeCommand}">
             <Grid IsEnabled="{Binding !#DialogHost.IsOpen}" RowDefinitions="Auto,*,Auto">
                 <!--  Header  -->
                 <Border
@@ -95,7 +92,7 @@
                     <!--  Start cycle preview  -->
                     <Button
                         Margin="8"
-                        Command="{Binding Dashboard.EnableCyclePreview}"
+                        Command="{Binding Dashboard.EnableCyclePreviewCommand}"
                         IsVisible="{Binding !Dashboard.IsCyclePreviewEnabled}"
                         ToolTip.Tip="Preview 24-hour cycle">
                         <StackPanel Orientation="Horizontal">
@@ -113,7 +110,7 @@
                     <!--  Stop cycle preview  -->
                     <Button
                         Margin="8"
-                        Command="{Binding Dashboard.DisableCyclePreview}"
+                        Command="{Binding Dashboard.DisableCyclePreviewCommand}"
                         IsVisible="{Binding Dashboard.IsCyclePreviewEnabled}"
                         ToolTip.Tip="Stop preview">
                         <StackPanel Orientation="Horizontal">
@@ -131,7 +128,7 @@
                     <!--  Settings  -->
                     <Button
                         Margin="8"
-                        Command="{Binding ShowSettingsAsync}"
+                        Command="{Binding ShowSettingsCommand}"
                         ToolTip.Tip="Open settings">
                         <StackPanel Orientation="Horizontal">
                             <materialIcons:MaterialIcon
@@ -148,7 +145,7 @@
                     <!--  About  -->
                     <Button
                         Margin="8"
-                        Command="{Binding ShowAbout}"
+                        Command="{Binding ShowAboutCommand}"
                         ToolTip.Tip="Open LightBulb on GitHub">
                         <StackPanel Orientation="Horizontal">
                             <materialIcons:MaterialIcon

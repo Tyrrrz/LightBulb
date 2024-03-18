@@ -1,62 +1,43 @@
 ﻿using System;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Shapes;
+using Avalonia;
+using Avalonia.Controls.Shapes;
+using Avalonia.Data;
+using Avalonia.Media;
 
 namespace LightBulb.Views.Controls;
 
 public class ArcPoint : Shape
 {
-    private static object CoerceAngle(DependencyObject d, object baseValue) =>
-        baseValue is double angle ? angle % 360.0 : baseValue;
+    public static readonly StyledProperty<double> AngleProperty = AvaloniaProperty.Register<
+        ArcPoint,
+        double
+    >(nameof(Angle), 0.0, false, BindingMode.OneWay, null, (_, baseValue) => baseValue % 360.0);
 
-    public static readonly DependencyProperty AngleProperty = DependencyProperty.Register(
-        nameof(Angle),
-        typeof(double),
-        typeof(ArcPoint),
-        new FrameworkPropertyMetadata(
-            0.0,
-            FrameworkPropertyMetadataOptions.AffectsRender,
-            null,
-            CoerceAngle
-        )
-    );
-
-    public static readonly DependencyProperty SizeProperty = DependencyProperty.Register(
-        nameof(Size),
-        typeof(double),
-        typeof(ArcPoint),
-        new FrameworkPropertyMetadata(
-            2.0,
-            FrameworkPropertyMetadataOptions.AffectsRender,
-            null,
-            CoerceAngle
-        )
-    );
+    public static readonly StyledProperty<double> SizeProperty = AvaloniaProperty.Register<
+        ArcPoint,
+        double
+    >(nameof(Size), 0.0, false, BindingMode.OneWay);
 
     public double Angle
     {
-        get => (double)GetValue(AngleProperty);
+        get => GetValue(AngleProperty);
         set => SetValue(AngleProperty, value);
     }
 
     public double Size
     {
-        get => (double)GetValue(SizeProperty);
+        get => GetValue(SizeProperty);
         set => SetValue(SizeProperty, value);
     }
 
-    protected override Geometry DefiningGeometry
+    protected override Geometry CreateDefiningGeometry()
     {
-        get
-        {
-            var radiusX = ActualWidth / 2.0;
-            var radiusY = ActualHeight / 2.0;
+        var radiusX = Width / 2.0;
+        var radiusY = Height / 2.0;
 
-            var x = radiusX + radiusX * Math.Sin(Angle * Math.PI / 180.0);
-            var y = radiusY - radiusY * Math.Cos(Angle * Math.PI / 180.0);
+        var x = radiusX + radiusX * Math.Sin(Angle * Math.PI / 180.0);
+        var y = radiusY - radiusY * Math.Cos(Angle * Math.PI / 180.0);
 
-            return new EllipseGeometry(new Point(x, y), Size, Size);
-        }
+        return new EllipseGeometry(new Rect(new Point(x, y), new Size(Size, Size)));
     }
 }

@@ -25,7 +25,7 @@ public partial class MainView : Window
         Hide();
     }
 
-    private void Header_OnPointerPressed(object? sender, PointerPressedEventArgs args) => 
+    private void Header_OnPointerPressed(object? sender, PointerPressedEventArgs args) =>
         BeginMoveDrag(args);
 
     private void HideButton_OnClick(object sender, RoutedEventArgs args) => Hide();

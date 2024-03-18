@@ -23,11 +23,11 @@ namespace LightBulb;
 public partial class App : Application
 {
     private readonly IServiceProvider _services;
-    
+
     public ViewModelLocator ViewModelLocator => _services.GetRequiredService<ViewModelLocator>();
 
     // These view models are exposed here to set up bindings for the tray icon menu,
-    // which must be defined in the application class.
+    // which must be defined in the application layout.
     public MainViewModel MainViewModel => ViewModelLocator.GetMainViewModel();
     public DashboardViewModel DashboardViewModel => ViewModelLocator.GetDashboardViewModel();
 
@@ -40,10 +40,10 @@ public partial class App : Application
         services.AddSingleton<HotKeyService>();
         services.AddSingleton<ExternalApplicationService>();
         services.AddSingleton<UpdateService>();
-        
+
         services.AddSingleton<DialogManager>();
         services.AddSingleton<ViewModelLocator>();
-        
+
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<DashboardViewModel>();
         services.AddSingleton<MessageBoxViewModel>();
@@ -56,17 +56,14 @@ public partial class App : Application
 
         _services = services.BuildServiceProvider();
     }
-    
+
     public override void Initialize() => AvaloniaXamlLoader.Load(this);
 
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainView
-            {
-                DataContext = ViewModelLocator.GetMainViewModel()
-            };
+            desktop.MainWindow = new MainView { DataContext = ViewModelLocator.GetMainViewModel() };
         }
 
         base.OnFrameworkInitializationCompleted();
@@ -78,7 +75,7 @@ public partial class App : Application
             Color.Parse("#F9A825")
         );
     }
-    
+
     private void TrayIcon_OnClicked(object? sender, EventArgs args)
     {
         if (ApplicationLifetime?.TryGetMainWindow() is { } window)
@@ -88,8 +85,9 @@ public partial class App : Application
             window.Focus();
         }
     }
-    
-    private void ExitMenuItem_OnClick(object? sender, EventArgs args) => ApplicationLifetime?.TryShutdown();
+
+    private void ExitMenuItem_OnClick(object? sender, EventArgs args) =>
+        ApplicationLifetime?.TryShutdown();
 }
 
 public partial class App
