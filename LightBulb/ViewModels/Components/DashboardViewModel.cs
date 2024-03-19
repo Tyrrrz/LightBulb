@@ -22,6 +22,8 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
     private readonly Timer _updateConfigurationTimer;
     private readonly Timer _updateIsPausedTimer;
 
+    private readonly IDisposable _eventPool;
+
     private IDisposable? _enableAfterDelayRegistration;
 
     public bool IsEnabled { get; set; } = true;
@@ -35,7 +37,7 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
     public DateTimeOffset Instant { get; private set; } = DateTimeOffset.Now;
 
     public SolarTimes SolarTimes =>
-        !_settingsService.IsManualSunriseSunsetEnabled && _settingsService.Location is { } location
+        _settingsService is { IsManualSunriseSunsetEnabled: false, Location: { } location }
             ? SolarTimes.Calculate(location, Instant)
             : new SolarTimes(_settingsService.ManualSunrise, _settingsService.ManualSunset);
 
@@ -127,20 +129,22 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
         _externalApplicationService = externalApplicationService;
 
         _updateConfigurationTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateConfiguration);
-
         _updateInstantTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateInstant);
-
         _updateIsPausedTimer = new Timer(TimeSpan.FromSeconds(1), UpdateIsPaused);
 
-        // Cancel 'disable temporarily' when switching to enabled
-        this.Bind(
-            o => o.IsEnabled,
-            (_, _) =>
-            {
-                if (IsEnabled)
-                    _enableAfterDelayRegistration?.Dispose();
-            }
-        );
+        // Watch property changes on other objects
+        _eventPool = new[]
+        {
+            // Cancel 'disable temporarily' when switching to enabled
+            this.WatchProperty(
+                o => o.IsEnabled,
+                () =>
+                {
+                    if (IsEnabled)
+                        _enableAfterDelayRegistration?.Dispose();
+                }
+            )
+        }.Aggregate();
 
         // Handle settings changes
         _settingsService.SettingsSaved += (_, _) =>
@@ -326,6 +330,8 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
         _updateInstantTimer.Dispose();
         _updateConfigurationTimer.Dispose();
         _updateIsPausedTimer.Dispose();
+
+        _eventPool.Dispose();
 
         _enableAfterDelayRegistration?.Dispose();
     }

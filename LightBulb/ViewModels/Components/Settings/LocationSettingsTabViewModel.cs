@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Core;
 using LightBulb.Services;
+using LightBulb.Utils.Extensions;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
-public partial class LocationSettingsTabViewModel : SettingsTabViewModel
+public partial class LocationSettingsTabViewModel : SettingsTabViewModel, IDisposable
 {
+    private readonly IDisposable _eventPool;
+
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AutoResolveLocationCommand))]
     [NotifyCanExecuteChangedFor(nameof(ResolveLocationCommand))]
@@ -48,11 +52,15 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModel
     public LocationSettingsTabViewModel(SettingsService settingsService)
         : base(settingsService, 1, "Location")
     {
-        // Update the location query when the actual location changes
-        settingsService.BindAndInvoke(
-            o => o.Location,
-            (_, _) => LocationQuery = Location?.ToString()
-        );
+        // Watch property changes on other objects
+        _eventPool = new[]
+        {
+            // Update the location query when the actual location changes
+            settingsService.WatchProperty(
+                o => o.Location,
+                () => LocationQuery = Location?.ToString()
+            )
+        }.Aggregate();
     }
 
     private bool CanAutoResolveLocation() => !IsBusy;
@@ -112,4 +120,6 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModel
             IsBusy = false;
         }
     }
+
+    public void Dispose() => _eventPool.Dispose();
 }
