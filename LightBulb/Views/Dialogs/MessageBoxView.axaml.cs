@@ -1,6 +1,8 @@
-﻿namespace LightBulb.Views.Dialogs;
+﻿using Avalonia.Controls;
 
-public partial class MessageBoxView
+namespace LightBulb.Views.Dialogs;
+
+public partial class MessageBoxView : UserControl
 {
     public MessageBoxView() => InitializeComponent();
 }

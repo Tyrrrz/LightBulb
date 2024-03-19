@@ -6,7 +6,8 @@
     xmlns:controls="clr-namespace:LightBulb.Views.Controls"
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-    Loaded="{Binding InitializeCommand}">
+    x:Name="Root"
+    Loaded="Root_OnLoaded">
     <Design.DataContext>
         <components:DashboardViewModel />
     </Design.DataContext>
@@ -96,6 +97,7 @@
 
             <!--  Configuration offset  -->
             <StackPanel
+                x:Name="ConfigurationOffsetStackPanel"
                 Margin="0,40,0,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
@@ -103,7 +105,7 @@
                 Cursor="Hand"
                 IsVisible="{Binding IsOffsetEnabled}"
                 Orientation="Horizontal"
-                PointerPressed="{Binding ResetConfigurationOffsetCommand}">
+                PointerPressed="ConfigurationOffsetStackPanel_OnPointerPressed">
                 <ToolTip.Tip>
                     <TextBlock>
                         <Run Text="Current temperature and brightness values are adjusted by an offset:" />

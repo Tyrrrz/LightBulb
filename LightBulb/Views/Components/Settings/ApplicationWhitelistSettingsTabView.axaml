@@ -4,7 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
-    Loaded="{Binding PullAvailableApplicationsCommand}">
+    x:Name="Root"
+    Loaded="Root_OnLoaded">
     <Design.DataContext>
         <settings:ApplicationWhitelistSettingsTabViewModel />
     </Design.DataContext>
@@ -49,7 +50,6 @@
             SelectionMode="Multiple">
             <ListBox.ItemContainerTheme>
                 <ControlTheme BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
                     <Setter Property="Padding" Value="16,4,16,4" />
                 </ControlTheme>
             </ListBox.ItemContainerTheme>

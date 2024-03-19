@@ -8,18 +8,18 @@ using LightBulb.ViewModels.Framework;
 
 namespace LightBulb.ViewModels.Dialogs;
 
-public partial class SettingsViewModel : DialogViewModel
+public partial class SettingsViewModel : DialogViewModelBase
 {
     private readonly SettingsService _settingsService;
 
     [ObservableProperty]
-    private ISettingsTabViewModel? _activeTab;
+    private SettingsTabViewModelBase? _activeTab;
 
-    public IReadOnlyList<ISettingsTabViewModel> Tabs { get; }
+    public IReadOnlyList<SettingsTabViewModelBase> Tabs { get; }
 
     public SettingsViewModel(
         SettingsService settingsService,
-        IEnumerable<ISettingsTabViewModel> tabs
+        IEnumerable<SettingsTabViewModelBase> tabs
     )
     {
         _settingsService = settingsService;
@@ -32,7 +32,7 @@ public partial class SettingsViewModel : DialogViewModel
     }
 
     [RelayCommand]
-    private void ActivateTab(ISettingsTabViewModel settingsTab)
+    private void ActivateTab(SettingsTabViewModelBase settingsTab)
     {
         // Deactivate previously selected tab
         if (ActiveTab is not null)
@@ -43,7 +43,7 @@ public partial class SettingsViewModel : DialogViewModel
     }
 
     public void ActivateTab<T>()
-        where T : ISettingsTabViewModel
+        where T : SettingsTabViewModelBase
     {
         var tab = Tabs.OfType<T>().FirstOrDefault();
         if (tab is not null)

@@ -23,12 +23,11 @@
                 <DataTemplate>
                     <Border BorderThickness="0,0,2,0" Classes.active="{Binding IsActive}">
                         <Border.Styles>
-                            <Style Selector="^.active">
+                            <Style Selector="Border.active">
                                 <Setter Property="BorderBrush" Value="{DynamicResource SecondaryHueMidBrush}" />
                             </Style>
                         </Border.Styles>
                         <Button
-                            Height="Auto"
                             Margin="4"
                             Padding="8"
                             Command="{Binding DataContext.ActivateTabCommand, ElementName=Root}"

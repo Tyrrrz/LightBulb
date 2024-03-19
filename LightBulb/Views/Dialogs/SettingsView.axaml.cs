@@ -1,6 +1,8 @@
-﻿namespace LightBulb.Views.Dialogs;
+﻿using Avalonia.Controls;
 
-public partial class SettingsView
+namespace LightBulb.Views.Dialogs;
+
+public partial class SettingsView : UserControl
 {
     public SettingsView() => InitializeComponent();
 }

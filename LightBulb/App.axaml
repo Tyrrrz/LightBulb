@@ -70,10 +70,7 @@
                         </NativeMenuItem>
                         <NativeMenuItem Command="{Binding $parent[Application].MainViewModel.ShowSettingsCommand}" Header="Settings" />
                         <NativeMenuItem Command="{Binding $parent[Application].MainViewModel.ShowAboutCommand}" Header="About" />
-                        <NativeMenuItem
-                            x:Name="ExitMenuItem"
-                            Click="ExitMenuItem_OnClick"
-                            Header="Exit" />
+                        <NativeMenuItem Click="ExitMenuItem_OnClick" Header="Exit" />
                     </NativeMenu>
                 </TrayIcon.Menu>
             </TrayIcon>

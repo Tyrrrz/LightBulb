@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace LightBulb.ViewModels.Framework;
 
-public abstract partial class DialogViewModel<T> : ViewModelBase
+public abstract partial class DialogViewModelBase<T> : ViewModelBase
 {
     [ObservableProperty]
     private T? _dialogResult;
@@ -19,4 +19,4 @@ public abstract partial class DialogViewModel<T> : ViewModelBase
     }
 }
 
-public abstract class DialogViewModel : DialogViewModel<bool?>;
+public abstract class DialogViewModelBase : DialogViewModelBase<bool?>;

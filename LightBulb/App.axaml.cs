@@ -15,6 +15,7 @@ using LightBulb.ViewModels.Components.Settings;
 using LightBulb.ViewModels.Dialogs;
 using LightBulb.ViewModels.Framework;
 using LightBulb.Views;
+using LightBulb.Views.Framework;
 using Material.Styles.Themes;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -35,10 +36,10 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
 
-        services.AddSingleton<SettingsService>();
+        services.AddSingleton<ExternalApplicationService>();
         services.AddSingleton<GammaService>();
         services.AddSingleton<HotKeyService>();
-        services.AddSingleton<ExternalApplicationService>();
+        services.AddSingleton<SettingsService>();
         services.AddSingleton<UpdateService>();
 
         services.AddSingleton<DialogManager>();
@@ -48,11 +49,13 @@ public partial class App : Application
         services.AddSingleton<DashboardViewModel>();
         services.AddSingleton<MessageBoxViewModel>();
         services.AddSingleton<SettingsViewModel>();
-        services.AddSingleton<ISettingsTabViewModel, AdvancedSettingsTabViewModel>();
-        services.AddSingleton<ISettingsTabViewModel, ApplicationWhitelistSettingsTabViewModel>();
-        services.AddSingleton<ISettingsTabViewModel, GeneralSettingsTabViewModel>();
-        services.AddSingleton<ISettingsTabViewModel, HotKeySettingsTabViewModel>();
-        services.AddSingleton<ISettingsTabViewModel, LocationSettingsTabViewModel>();
+        services.AddSingleton<SettingsTabViewModelBase, AdvancedSettingsTabViewModel>();
+        services.AddSingleton<SettingsTabViewModelBase, ApplicationWhitelistSettingsTabViewModel>();
+        services.AddSingleton<SettingsTabViewModelBase, GeneralSettingsTabViewModel>();
+        services.AddSingleton<SettingsTabViewModelBase, HotKeySettingsTabViewModel>();
+        services.AddSingleton<SettingsTabViewModelBase, LocationSettingsTabViewModel>();
+
+        services.AddSingleton<ViewLocator>();
 
         _services = services.BuildServiceProvider();
     }
@@ -77,6 +80,12 @@ public partial class App : Application
             Color.Parse("#343838"),
             Color.Parse("#F9A825")
         );
+
+        // Finalize pending updates (and restart) before launching the app
+        _services.GetRequiredService<UpdateService>().FinalizePendingUpdates();
+
+        // Load settings
+        _services.GetRequiredService<SettingsService>().Load();
     }
 
     private void TrayIcon_OnClicked(object? sender, EventArgs args)

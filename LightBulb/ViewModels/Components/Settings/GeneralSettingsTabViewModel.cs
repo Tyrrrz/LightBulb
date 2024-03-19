@@ -5,7 +5,7 @@ using LightBulb.Services;
 namespace LightBulb.ViewModels.Components.Settings;
 
 public class GeneralSettingsTabViewModel(SettingsService settingsService)
-    : SettingsTabViewModel(settingsService, 0, "General")
+    : SettingsTabViewModelBase(settingsService, 0, "General")
 {
     public double NightTemperature
     {

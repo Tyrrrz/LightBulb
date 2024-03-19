@@ -2,24 +2,25 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using CommunityToolkit.Mvvm.ComponentModel;
+using LightBulb.ViewModels.Framework;
 
 namespace LightBulb.Views.Framework;
 
 public class ViewLocator : IDataTemplate
 {
-    public bool Match(object? data) => data is ObservableObject;
-
-    public Control? Build(object? data)
+    public Control? TryResolveView(ViewModelBase viewModel)
     {
-        if (data is null)
+        var name = viewModel.GetType().FullName!.Replace("ViewModel", "View");
+
+        var type = Type.GetType(name);
+        if (type is null)
             return null;
 
-        var name = data.GetType().FullName!.Replace("ViewModel", "View");
-        var type = Type.GetType(name);
-
-        if (type is null)
-            return new TextBlock { Text = "Not Found: " + name };
-
-        return (Control)Activator.CreateInstance(type)!;
+        return Activator.CreateInstance(type) as Control;
     }
+
+    bool IDataTemplate.Match(object? data) => data is ViewModelBase;
+
+    Control? ITemplate<object?, Control?>.Build(object? data) =>
+        data is ViewModelBase viewModel ? TryResolveView(viewModel) : null;
 }

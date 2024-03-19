@@ -11,7 +11,7 @@ namespace LightBulb.ViewModels.Components.Settings;
 public partial class ApplicationWhitelistSettingsTabViewModel(
     SettingsService settingsService,
     ExternalApplicationService externalApplicationService
-) : SettingsTabViewModel(settingsService, 3, "Application whitelist")
+) : SettingsTabViewModelBase(settingsService, 3, "Application whitelist")
 {
     [ObservableProperty]
     private IReadOnlyList<ExternalApplication>? _availableApplications;

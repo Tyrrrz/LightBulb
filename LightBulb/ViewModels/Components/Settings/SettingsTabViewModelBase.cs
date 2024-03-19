@@ -4,7 +4,7 @@ using LightBulb.ViewModels.Framework;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
-public abstract partial class SettingsTabViewModel : ViewModelBase, ISettingsTabViewModel
+public abstract partial class SettingsTabViewModelBase : ViewModelBase
 {
     [ObservableProperty]
     private bool _isActive;
@@ -15,7 +15,11 @@ public abstract partial class SettingsTabViewModel : ViewModelBase, ISettingsTab
 
     public string DisplayName { get; }
 
-    protected SettingsTabViewModel(SettingsService settingsService, int order, string displayName)
+    protected SettingsTabViewModelBase(
+        SettingsService settingsService,
+        int order,
+        string displayName
+    )
     {
         SettingsService = settingsService;
         Order = order;

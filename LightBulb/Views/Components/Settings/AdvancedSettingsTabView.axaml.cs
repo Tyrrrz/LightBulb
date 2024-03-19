@@ -1,6 +1,8 @@
-﻿namespace LightBulb.Views.Components.Settings;
+﻿using Avalonia.Controls;
 
-public partial class AdvancedSettingsTabView
+namespace LightBulb.Views.Components.Settings;
+
+public partial class AdvancedSettingsTabView : UserControl
 {
     public AdvancedSettingsTabView() => InitializeComponent();
 }

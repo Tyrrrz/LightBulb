@@ -3,7 +3,7 @@ using LightBulb.ViewModels.Framework;
 
 namespace LightBulb.ViewModels.Dialogs;
 
-public partial class MessageBoxViewModel : DialogViewModel
+public partial class MessageBoxViewModel : DialogViewModelBase
 {
     [ObservableProperty]
     private string? _title = "Title";

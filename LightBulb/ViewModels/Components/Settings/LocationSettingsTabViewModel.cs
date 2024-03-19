@@ -9,7 +9,7 @@ using LightBulb.Utils.Extensions;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
-public partial class LocationSettingsTabViewModel : SettingsTabViewModel, IDisposable
+public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase, IDisposable
 {
     private readonly IDisposable _eventPool;
 
