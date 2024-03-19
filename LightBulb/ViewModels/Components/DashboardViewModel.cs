@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Linq;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Core;
 using LightBulb.Core.Utils.Extensions;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.Utils.Extensions;
+using LightBulb.ViewModels.Framework;
 using LightBulb.WindowsApi;
 
 namespace LightBulb.ViewModels.Components;
 
-public partial class DashboardViewModel : ObservableObject, IDisposable
+public partial class DashboardViewModel : ViewModelBase, IDisposable
 {
     private readonly SettingsService _settingsService;
     private readonly GammaService _gammaService;
@@ -67,9 +67,8 @@ public partial class DashboardViewModel : ObservableObject, IDisposable
             _settingsService.ConfigurationTransitionOffset
         );
 
-    public bool IsOffsetEnabled =>
-        Math.Abs(TemperatureOffset) + Math.Abs(BrightnessOffset) >= 0.01;
-    
+    public bool IsOffsetEnabled => Math.Abs(TemperatureOffset) + Math.Abs(BrightnessOffset) >= 0.01;
+
     public double TemperatureOffset { get; set; }
 
     public double BrightnessOffset { get; set; }
@@ -146,7 +145,7 @@ public partial class DashboardViewModel : ObservableObject, IDisposable
         // Handle settings changes
         _settingsService.SettingsSaved += (_, _) =>
         {
-            Refresh();
+            OnAllPropertiesChanged();
             RegisterHotKeys();
         };
     }
@@ -157,7 +156,10 @@ public partial class DashboardViewModel : ObservableObject, IDisposable
 
         if (_settingsService.ToggleHotKey != HotKey.None)
         {
-            _hotKeyService.RegisterHotKey(_settingsService.ToggleHotKey, () => IsEnabled = !IsEnabled);
+            _hotKeyService.RegisterHotKey(
+                _settingsService.ToggleHotKey,
+                () => IsEnabled = !IsEnabled
+            );
         }
 
         if (_settingsService.IncreaseTemperatureOffsetHotKey != HotKey.None)
@@ -270,7 +272,7 @@ public partial class DashboardViewModel : ObservableObject, IDisposable
 
         IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
     }
-    
+
     [RelayCommand]
     private void Initialize()
     {

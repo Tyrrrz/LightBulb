@@ -1,20 +1,29 @@
-﻿using LightBulb.ViewModels.Framework;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using LightBulb.ViewModels.Framework;
 
 namespace LightBulb.ViewModels.Dialogs;
 
-public class MessageBoxViewModelModel : DialogViewModel
+public partial class MessageBoxViewModelModel : DialogViewModel
 {
-    public string? Title { get; set; }
+    [ObservableProperty]
+    private string? _title;
 
-    public string? Message { get; set; }
+    [ObservableProperty]
+    private string? _message;
 
-    public bool IsDefaultButtonVisible { get; set; } = true;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ButtonsCount))]
+    private bool _isDefaultButtonVisible = true;
 
-    public string? DefaultButtonText { get; set; }
+    [ObservableProperty]
+    private string? _defaultButtonText;
 
-    public bool IsCancelButtonVisible { get; set; }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ButtonsCount))]
+    private bool _isCancelButtonVisible;
 
-    public string? CancelButtonText { get; set; }
+    [ObservableProperty]
+    private string? _cancelButtonText;
 
     public int ButtonsCount => (IsDefaultButtonVisible ? 1 : 0) + (IsCancelButtonVisible ? 1 : 0);
 }

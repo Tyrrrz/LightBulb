@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Services;
 using LightBulb.Utils;
@@ -11,9 +10,9 @@ using LightBulb.WindowsApi;
 
 namespace LightBulb.ViewModels;
 
-public partial class MainViewModel : ObservableObject, IDisposable
+public partial class MainViewModel : ViewModelBase, IDisposable
 {
-    private readonly ViewModelLocator _viewModelLocator;
+    private readonly ViewModelProvider _viewModelProvider;
     private readonly DialogManager _dialogManager;
     private readonly SettingsService _settingsService;
 
@@ -22,13 +21,13 @@ public partial class MainViewModel : ObservableObject, IDisposable
     public DashboardViewModel Dashboard { get; }
 
     public MainViewModel(
-        ViewModelLocator viewModelLocator,
+        ViewModelProvider viewModelProvider,
         DialogManager dialogManager,
         SettingsService settingsService,
         UpdateService updateService
     )
     {
-        _viewModelLocator = viewModelLocator;
+        _viewModelProvider = viewModelProvider;
         _dialogManager = dialogManager;
         _settingsService = settingsService;
 
@@ -37,7 +36,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
             async () => await updateService.CheckPrepareUpdateAsync()
         );
 
-        Dashboard = viewModelLocator.GetDashboardViewModel();
+        Dashboard = viewModelProvider.GetDashboardViewModel();
     }
 
     private async Task ShowGammaRangePromptAsync()
@@ -45,7 +44,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
         if (_settingsService.IsExtendedGammaRangeUnlocked)
             return;
 
-        var dialog = _viewModelLocator.GetMessageBoxViewModel(
+        var dialog = _viewModelProvider.GetMessageBoxViewModel(
             "Limited gamma range",
             """
             LightBulb has detected that extended gamma range controls are not enabled on this system.
@@ -69,7 +68,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
         if (!_settingsService.IsFirstTimeExperienceEnabled)
             return;
 
-        var dialog = _viewModelLocator.GetMessageBoxViewModel(
+        var dialog = _viewModelProvider.GetMessageBoxViewModel(
             "Welcome!",
             """
             Thank you for installing LightBulb!
@@ -88,7 +87,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
 
         if (await _dialogManager.ShowDialogAsync(dialog) == true)
         {
-            var settingsDialog = _viewModelLocator.GetSettingsViewModel();
+            var settingsDialog = _viewModelProvider.GetSettingsViewModel();
             settingsDialog.ActivateTab<LocationSettingsTabViewModel>();
 
             await _dialogManager.ShowDialogAsync(settingsDialog);
@@ -100,7 +99,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
         if (!_settingsService.IsUkraineSupportMessageEnabled)
             return;
 
-        var dialog = _viewModelLocator.GetMessageBoxViewModel(
+        var dialog = _viewModelProvider.GetMessageBoxViewModel(
             "Thank you for supporting Ukraine!",
             """
             As Russia wages a genocidal war against my country, I'm grateful to everyone who continues to stand with Ukraine in our fight for freedom.
@@ -131,7 +130,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
 
     [RelayCommand]
     private async Task ShowSettingsAsync() =>
-        await _dialogManager.ShowDialogAsync(_viewModelLocator.GetSettingsViewModel());
+        await _dialogManager.ShowDialogAsync(_viewModelProvider.GetSettingsViewModel());
 
     [RelayCommand]
     private void ShowAbout() => ProcessEx.StartShellExecute(App.ProjectUrl);

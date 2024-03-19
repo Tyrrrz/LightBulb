@@ -1,9 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Services;
+using LightBulb.ViewModels.Framework;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
-public abstract partial class SettingsTabViewModel : ObservableObject, ISettingsTabViewModel
+public abstract partial class SettingsTabViewModel : ViewModelBase, ISettingsTabViewModel
 {
     [ObservableProperty]
     private bool _isActive;
@@ -20,8 +21,8 @@ public abstract partial class SettingsTabViewModel : ObservableObject, ISettings
         Order = order;
         DisplayName = displayName;
 
-        SettingsService.SettingsReset += (_, _) => Refresh();
-        SettingsService.SettingsLoaded += (_, _) => Refresh();
-        SettingsService.SettingsSaved += (_, _) => Refresh();
+        SettingsService.SettingsReset += (_, _) => OnAllPropertiesChanged();
+        SettingsService.SettingsLoaded += (_, _) => OnAllPropertiesChanged();
+        SettingsService.SettingsSaved += (_, _) => OnAllPropertiesChanged();
     }
 }

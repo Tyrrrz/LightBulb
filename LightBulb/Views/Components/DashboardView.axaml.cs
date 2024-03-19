@@ -1,6 +1,8 @@
-﻿namespace LightBulb.Views.Components;
+﻿using Avalonia.Controls;
 
-public partial class DashboardView
+namespace LightBulb.Views.Components;
+
+public partial class DashboardView : Window
 {
     public DashboardView()
     {

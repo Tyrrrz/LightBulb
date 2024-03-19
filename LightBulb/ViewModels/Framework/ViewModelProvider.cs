@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LightBulb.ViewModels.Framework;
 
-public class ViewModelLocator(IServiceProvider services)
+public class ViewModelProvider(IServiceProvider services)
 {
     public MainViewModel GetMainViewModel() => services.GetRequiredService<MainViewModel>();
 

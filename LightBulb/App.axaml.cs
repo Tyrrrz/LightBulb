@@ -24,12 +24,12 @@ public partial class App : Application
 {
     private readonly IServiceProvider _services;
 
-    public ViewModelLocator ViewModelLocator => _services.GetRequiredService<ViewModelLocator>();
+    public ViewModelProvider ViewModelProvider => _services.GetRequiredService<ViewModelProvider>();
 
     // These view models are exposed here to set up bindings for the tray icon menu,
     // which must be defined in the application layout.
-    public MainViewModel MainViewModel => ViewModelLocator.GetMainViewModel();
-    public DashboardViewModel DashboardViewModel => ViewModelLocator.GetDashboardViewModel();
+    public MainViewModel MainViewModel => ViewModelProvider.GetMainViewModel();
+    public DashboardViewModel DashboardViewModel => ViewModelProvider.GetDashboardViewModel();
 
     public App()
     {
@@ -42,7 +42,7 @@ public partial class App : Application
         services.AddSingleton<UpdateService>();
 
         services.AddSingleton<DialogManager>();
-        services.AddSingleton<ViewModelLocator>();
+        services.AddSingleton<ViewModelProvider>();
 
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<DashboardViewModel>();
@@ -63,7 +63,10 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainView { DataContext = ViewModelLocator.GetMainViewModel() };
+            desktop.MainWindow = new MainView
+            {
+                DataContext = ViewModelProvider.GetMainViewModel()
+            };
         }
 
         base.OnFrameworkInitializationCompleted();

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Services;
 using LightBulb.ViewModels.Components.Settings;
@@ -11,9 +12,10 @@ public partial class SettingsViewModelModel : DialogViewModel
 {
     private readonly SettingsService _settingsService;
 
-    public IReadOnlyList<ISettingsTabViewModel> Tabs { get; }
+    [ObservableProperty]
+    private ISettingsTabViewModel? _activeTab;
 
-    public ISettingsTabViewModel? ActiveTab { get; private set; }
+    public IReadOnlyList<ISettingsTabViewModel> Tabs { get; }
 
     public SettingsViewModelModel(
         SettingsService settingsService,
