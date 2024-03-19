@@ -16,7 +16,7 @@ public class ArcPoint : Shape
     public static readonly StyledProperty<double> SizeProperty = AvaloniaProperty.Register<
         ArcPoint,
         double
-    >(nameof(Size), 0.0, false, BindingMode.OneWay);
+    >(nameof(Size));
 
     public double Angle
     {
@@ -32,12 +32,13 @@ public class ArcPoint : Shape
 
     protected override Geometry CreateDefiningGeometry()
     {
-        var radiusX = Width / 2.0;
-        var radiusY = Height / 2.0;
+        var radius = new Size(Width / 2.0, Height / 2.0);
 
-        var x = radiusX + radiusX * Math.Sin(Angle * Math.PI / 180.0);
-        var y = radiusY - radiusY * Math.Cos(Angle * Math.PI / 180.0);
+        var center = new Point(
+            radius.Width + radius.Width * Math.Sin(Angle * Math.PI / 180.0),
+            radius.Height - radius.Height * Math.Cos(Angle * Math.PI / 180.0)
+        );
 
-        return new EllipseGeometry(new Rect(new Point(x, y), new Size(Size, Size)));
+        return new EllipseGeometry(new Rect(center, radius));
     }
 }

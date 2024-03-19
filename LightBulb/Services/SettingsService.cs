@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Text.Json.Serialization;
 using Cogwheel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Core;
 using LightBulb.Models;
 using LightBulb.Utils;
@@ -12,7 +13,7 @@ using Microsoft.Win32;
 
 namespace LightBulb.Services;
 
-[AddINotifyPropertyChangedInterface]
+[INotifyPropertyChanged]
 public partial class SettingsService() : SettingsBase(GetFilePath()), INotifyPropertyChanged
 {
     private readonly RegistrySwitch<int> _extendedGammaRangeSwitch =

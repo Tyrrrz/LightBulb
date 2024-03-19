@@ -89,7 +89,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
         if (await _dialogManager.ShowDialogAsync(dialog) == true)
         {
             var settingsDialog = _viewModelLocator.GetSettingsViewModel();
-            settingsDialog.ActivateTabByType<LocationSettingsTabViewModel>();
+            settingsDialog.ActivateTab<LocationSettingsTabViewModel>();
 
             await _dialogManager.ShowDialogAsync(settingsDialog);
         }

@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CommunityToolkit.Mvvm.Input;
 using LightBulb.Services;
 using LightBulb.ViewModels.Components.Settings;
 using LightBulb.ViewModels.Framework;
 
 namespace LightBulb.ViewModels.Dialogs;
 
-public class SettingsViewModel : DialogScreen
+public partial class SettingsViewModelModel : DialogViewModel
 {
     private readonly SettingsService _settingsService;
 
@@ -14,7 +15,7 @@ public class SettingsViewModel : DialogScreen
 
     public ISettingsTabViewModel? ActiveTab { get; private set; }
 
-    public SettingsViewModel(
+    public SettingsViewModelModel(
         SettingsService settingsService,
         IEnumerable<ISettingsTabViewModel> tabs
     )
@@ -28,7 +29,8 @@ public class SettingsViewModel : DialogScreen
             ActivateTab(firstTab);
     }
 
-    public void ActivateTab(ISettingsTabViewModel settingsTab)
+    [RelayCommand]
+    private void ActivateTab(ISettingsTabViewModel settingsTab)
     {
         // Deactivate previously selected tab
         if (ActiveTab is not null)
@@ -38,8 +40,7 @@ public class SettingsViewModel : DialogScreen
         settingsTab.IsActive = true;
     }
 
-    // This should just be an overload, but Stylet gets confused when there are two methods with the same name
-    public void ActivateTabByType<T>()
+    public void ActivateTab<T>()
         where T : ISettingsTabViewModel
     {
         var tab = Tabs.OfType<T>().FirstOrDefault();
@@ -47,15 +48,18 @@ public class SettingsViewModel : DialogScreen
             ActivateTab(tab);
     }
 
-    public void Reset() => _settingsService.Reset();
+    [RelayCommand]
+    private void Reset() => _settingsService.Reset();
 
-    public void Save()
+    [RelayCommand]
+    private void Save()
     {
         _settingsService.Save();
         Close(true);
     }
 
-    public void Cancel()
+    [RelayCommand]
+    private void Cancel()
     {
         _settingsService.Load();
         Close(false);

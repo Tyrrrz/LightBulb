@@ -1,22 +1,20 @@
-﻿using LightBulb.Services;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using LightBulb.Services;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
-public abstract class SettingsTabViewModelBase : PropertyChangedBase, ISettingsTabViewModel
+public abstract partial class SettingsTabViewModel : ObservableObject, ISettingsTabViewModel
 {
+    [ObservableProperty]
+    private bool _isActive;
+
     protected SettingsService SettingsService { get; }
 
     public int Order { get; }
 
     public string DisplayName { get; }
 
-    public bool IsActive { get; set; }
-
-    protected SettingsTabViewModelBase(
-        SettingsService settingsService,
-        int order,
-        string displayName
-    )
+    protected SettingsTabViewModel(SettingsService settingsService, int order, string displayName)
     {
         SettingsService = settingsService;
         Order = order;

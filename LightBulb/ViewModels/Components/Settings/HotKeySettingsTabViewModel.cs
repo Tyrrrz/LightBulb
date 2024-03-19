@@ -4,7 +4,7 @@ using LightBulb.Services;
 namespace LightBulb.ViewModels.Components.Settings;
 
 public class HotKeySettingsTabViewModel(SettingsService settingsService)
-    : SettingsTabViewModelBase(settingsService, 4, "Hotkeys")
+    : SettingsTabViewModel(settingsService, 4, "Hotkeys")
 {
     public HotKey ToggleHotKey
     {

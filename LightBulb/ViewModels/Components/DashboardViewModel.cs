@@ -67,6 +67,9 @@ public partial class DashboardViewModel : ObservableObject, IDisposable
             _settingsService.ConfigurationTransitionOffset
         );
 
+    public bool IsOffsetEnabled =>
+        Math.Abs(TemperatureOffset) + Math.Abs(BrightnessOffset) >= 0.01;
+    
     public double TemperatureOffset { get; set; }
 
     public double BrightnessOffset { get; set; }
@@ -148,22 +151,13 @@ public partial class DashboardViewModel : ObservableObject, IDisposable
         };
     }
 
-    public void OnViewLoaded()
-    {
-        _updateInstantTimer.Start();
-        _updateConfigurationTimer.Start();
-        _updateIsPausedTimer.Start();
-
-        RegisterHotKeys();
-    }
-
     private void RegisterHotKeys()
     {
         _hotKeyService.UnregisterAllHotKeys();
 
         if (_settingsService.ToggleHotKey != HotKey.None)
         {
-            _hotKeyService.RegisterHotKey(_settingsService.ToggleHotKey, Toggle);
+            _hotKeyService.RegisterHotKey(_settingsService.ToggleHotKey, () => IsEnabled = !IsEnabled);
         }
 
         if (_settingsService.IncreaseTemperatureOffsetHotKey != HotKey.None)
@@ -276,6 +270,16 @@ public partial class DashboardViewModel : ObservableObject, IDisposable
 
         IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
     }
+    
+    [RelayCommand]
+    private void Initialize()
+    {
+        _updateInstantTimer.Start();
+        _updateConfigurationTimer.Start();
+        _updateIsPausedTimer.Start();
+
+        RegisterHotKeys();
+    }
 
     [RelayCommand]
     private void Enable() => IsEnabled = true;
@@ -300,18 +304,15 @@ public partial class DashboardViewModel : ObservableObject, IDisposable
         DisableTemporarily(timeUntilSunrise);
     }
 
-    private void Toggle() => IsEnabled = !IsEnabled;
-
     [RelayCommand]
     private void EnableCyclePreview() => IsCyclePreviewEnabled = true;
 
     [RelayCommand]
     private void DisableCyclePreview() => IsCyclePreviewEnabled = false;
 
-    public bool CanResetConfigurationOffset =>
-        Math.Abs(TemperatureOffset) + Math.Abs(BrightnessOffset) >= 0.01;
+    public bool CanResetConfigurationOffset() => IsOffsetEnabled;
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanResetConfigurationOffset))]
     private void ResetConfigurationOffset()
     {
         TemperatureOffset = 0;

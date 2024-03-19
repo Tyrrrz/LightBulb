@@ -21,7 +21,7 @@ public readonly partial record struct HotKey(
             buffer.Append("Shift + ");
         if (Modifiers.HasFlag(KeyModifiers.Alt))
             buffer.Append("Alt + ");
-        if (Modifiers.HasFlag(KeyModifiers.Windows))
+        if (Modifiers.HasFlag(KeyModifiers.Meta))
             buffer.Append("Win + ");
 
         buffer.Append(Key);

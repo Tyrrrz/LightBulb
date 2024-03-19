@@ -46,8 +46,8 @@ public partial class App : Application
 
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<DashboardViewModel>();
-        services.AddSingleton<MessageBoxViewModel>();
-        services.AddSingleton<SettingsViewModel>();
+        services.AddSingleton<MessageBoxViewModelModel>();
+        services.AddSingleton<SettingsViewModelModel>();
         services.AddSingleton<ISettingsTabViewModel, AdvancedSettingsTabViewModel>();
         services.AddSingleton<ISettingsTabViewModel, ApplicationWhitelistSettingsTabViewModel>();
         services.AddSingleton<ISettingsTabViewModel, GeneralSettingsTabViewModel>();

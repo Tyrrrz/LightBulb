@@ -42,31 +42,26 @@ public class Arc : Shape
     protected override Geometry CreateDefiningGeometry()
     {
         var geometry = new StreamGeometry();
-        using var ctx = geometry.Open();
+        using var context = geometry.Open();
 
-        var radiusX = Width / 2.0;
-        var radiusY = Height / 2.0;
+        var radius = new Size(Width / 2.0, Height / 2.0);
 
-        var startX = radiusX + radiusX * Math.Sin(StartAngle * Math.PI / 180.0);
-        var startY = radiusY - radiusY * Math.Cos(StartAngle * Math.PI / 180.0);
+        var start = new Point(
+            radius.Width + radius.Width * Math.Sin(StartAngle * Math.PI / 180.0),
+            radius.Height - radius.Height * Math.Cos(StartAngle * Math.PI / 180.0)
+        );
 
-        var endX = radiusX + radiusX * Math.Sin(EndAngle * Math.PI / 180.0);
-        var endY = radiusY - radiusY * Math.Cos(EndAngle * Math.PI / 180.0);
+        var end = new Point(
+            radius.Width + radius.Width * Math.Sin(EndAngle * Math.PI / 180.0),
+            radius.Height - radius.Height * Math.Cos(EndAngle * Math.PI / 180.0)
+        );
 
-        // This single line took me 2 hours to write
         var isLargeArc =
             StartAngle <= EndAngle && Math.Abs(EndAngle - StartAngle) > 180.0
             || StartAngle > EndAngle && Math.Abs(EndAngle - StartAngle) < 180.0;
 
-        ctx.BeginFigure(new Point(startX, startY), true);
-
-        ctx.ArcTo(
-            new Point(endX, endY),
-            new Size(radiusX, radiusY),
-            0.0,
-            isLargeArc,
-            SweepDirection.Clockwise
-        );
+        context.BeginFigure(start, true);
+        context.ArcTo(end, radius, 0.0, isLargeArc, SweepDirection.Clockwise);
 
         return geometry;
     }

@@ -1,12 +1,25 @@
 ﻿using System;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using LightBulb.Core;
 using LightBulb.Services;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
-public class LocationSettingsTabViewModel : SettingsTabViewModelBase
+public partial class LocationSettingsTabViewModel : SettingsTabViewModel
 {
-    public bool IsBusy { get; private set; }
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(AutoResolveLocationCommand))]
+    [NotifyCanExecuteChangedFor(nameof(ResolveLocationCommand))]
+    private bool _isBusy;
+
+    [ObservableProperty]
+    private bool _isLocationError;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ResolveLocationCommand))]
+    private string? _locationQuery;
 
     public bool IsManualSunriseSunsetEnabled
     {
@@ -32,10 +45,6 @@ public class LocationSettingsTabViewModel : SettingsTabViewModelBase
         set => SettingsService.Location = value;
     }
 
-    public bool IsLocationError { get; private set; }
-
-    public string? LocationQuery { get; set; }
-
     public LocationSettingsTabViewModel(SettingsService settingsService)
         : base(settingsService, 1, "Location")
     {
@@ -46,10 +55,14 @@ public class LocationSettingsTabViewModel : SettingsTabViewModelBase
         );
     }
 
-    public bool CanAutoDetectLocation => !IsBusy;
+    private bool CanAutoResolveLocation() => !IsBusy;
 
-    public async void AutoDetectLocation()
+    [RelayCommand(CanExecute = nameof(CanAutoResolveLocation))]
+    private async Task AutoResolveLocationAsync()
     {
+        if (IsBusy)
+            return;
+
         IsBusy = true;
         IsLocationError = false;
 
@@ -67,14 +80,19 @@ public class LocationSettingsTabViewModel : SettingsTabViewModelBase
         }
     }
 
-    public bool CanSetLocation =>
+    private bool CanResolveLocation() =>
         !IsBusy
         && !string.IsNullOrWhiteSpace(LocationQuery)
         && LocationQuery != Location?.ToString();
 
-    public async void SetLocation()
+    [RelayCommand(CanExecute = nameof(CanResolveLocation))]
+    private async Task ResolveLocationAsync()
     {
-        if (string.IsNullOrWhiteSpace(LocationQuery))
+        if (
+            IsBusy
+            || string.IsNullOrWhiteSpace(LocationQuery)
+            || LocationQuery == Location?.ToString()
+        )
             return;
 
         IsBusy = true;

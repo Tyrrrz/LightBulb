@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using LightBulb.Models;
 using LightBulb.Services;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
-public class ApplicationWhitelistSettingsTabViewModel(
+public partial class ApplicationWhitelistSettingsTabViewModel(
     SettingsService settingsService,
     ExternalApplicationService externalApplicationService
-) : SettingsTabViewModelBase(settingsService, 3, "Application whitelist")
+) : SettingsTabViewModel(settingsService, 3, "Application whitelist")
 {
+    [ObservableProperty]
+    private IReadOnlyList<ExternalApplication>? _availableApplications;
+
     public bool IsApplicationWhitelistEnabled
     {
         get => SettingsService.IsApplicationWhitelistEnabled;
         set => SettingsService.IsApplicationWhitelistEnabled = value;
     }
-
-    public IReadOnlyList<ExternalApplication>? AvailableApplications { get; private set; }
 
     public IReadOnlyList<ExternalApplication>? WhitelistedApplications
     {
@@ -27,7 +30,8 @@ public class ApplicationWhitelistSettingsTabViewModel(
 
     public void OnViewLoaded() => PullAvailableApplications();
 
-    public void PullAvailableApplications()
+    [RelayCommand]
+    private void PullAvailableApplications()
     {
         var applications = new HashSet<ExternalApplication>();
 

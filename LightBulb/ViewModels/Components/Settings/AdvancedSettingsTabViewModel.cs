@@ -3,7 +3,7 @@
 namespace LightBulb.ViewModels.Components.Settings;
 
 public class AdvancedSettingsTabViewModel(SettingsService settingsService)
-    : SettingsTabViewModelBase(settingsService, 2, "Advanced")
+    : SettingsTabViewModel(settingsService, 2, "Advanced")
 {
     public bool IsAutoStartEnabled
     {

@@ -56,6 +56,8 @@ public class HotKeyTextBox : TextBox
                 or PhysicalKey.AltRight
                 or PhysicalKey.ShiftLeft
                 or PhysicalKey.ShiftRight
+                or PhysicalKey.MetaLeft
+                or PhysicalKey.MetaRight
                 or PhysicalKey.NumPadClear
         )
         {
