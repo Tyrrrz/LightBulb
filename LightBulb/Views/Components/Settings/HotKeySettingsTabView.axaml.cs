@@ -2,8 +2,5 @@
 
 public partial class HotKeySettingsTabView
 {
-    public HotKeySettingsTabView()
-    {
-        InitializeComponent();
-    }
+    public HotKeySettingsTabView() => InitializeComponent();
 }

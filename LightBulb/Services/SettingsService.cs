@@ -14,7 +14,7 @@ using Microsoft.Win32;
 namespace LightBulb.Services;
 
 [INotifyPropertyChanged]
-public partial class SettingsService() : SettingsBase(GetFilePath()), INotifyPropertyChanged
+public partial class SettingsService() : SettingsBase(GetFilePath())
 {
     private readonly RegistrySwitch<int> _extendedGammaRangeSwitch =
         new(

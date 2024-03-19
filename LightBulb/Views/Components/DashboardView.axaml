@@ -5,11 +5,12 @@
     xmlns:components="clr-namespace:LightBulb.ViewModels.Components"
     xmlns:controls="clr-namespace:LightBulb.Views.Controls"
     xmlns:converters="clr-namespace:LightBulb.Converters"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:globalization="clr-namespace:System.Globalization;assembly=System.Runtime"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-    d:DataContext="{d:DesignInstance Type=components:DashboardViewModel}"
     Loaded="{Binding InitializeCommand}">
+    <Design.DataContext>
+        <components:DashboardViewModel />
+    </Design.DataContext>
+
     <Grid ColumnDefinitions="*,Auto,*">
         <!--  Sunset time  -->
         <TextBlock
@@ -20,18 +21,17 @@
             FontSize="19"
             FontWeight="Light"
             TextAlignment="Center">
-            <TextBlock.ToolTip>
+            <ToolTip.Tip>
                 <TextBlock>
                     <Run Text="Sunset transition starts at" />
-                    <Run FontWeight="SemiBold" Text="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+                    <Run FontWeight="SemiBold" Text="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
                     <Run Text="and ends at" />
-                    <Run FontWeight="SemiBold" Text="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+                    <Run FontWeight="SemiBold" Text="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
                 </TextBlock>
-            </TextBlock.ToolTip>
-
-            <Run Text="Sunset" />
+            </ToolTip.Tip>
+            ><Run Text="Sunset" />
             <LineBreak />
-            <Run FontWeight="Regular" Text="{Binding SolarTimes.Sunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}, Mode=OneWay}" />
+            <Run FontWeight="Regular" Text="{Binding SolarTimes.Sunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
         </TextBlock>
 
         <!--  Sundial  -->
@@ -104,7 +104,7 @@
                 IsVisible="{Binding IsOffsetEnabled}"
                 Orientation="Horizontal"
                 PointerPressed="{Binding ResetConfigurationOffsetCommand}">
-                <StackPanel.ToolTip>
+                <ToolTip.Tip>
                     <TextBlock>
                         <Run Text="Current temperature and brightness values are adjusted by an offset:" />
                         <LineBreak />
@@ -117,7 +117,7 @@
                         <LineBreak />
                         <Run FontWeight="SemiBold" Text="Click to reset" />
                     </TextBlock>
-                </StackPanel.ToolTip>
+                </ToolTip.Tip>
                 <materialIcons:MaterialIcon
                     Width="16"
                     Height="16"
@@ -137,7 +137,7 @@
                 <materialIcons:MaterialIcon
                     Width="48"
                     Height="48"
-                    Kind="{Binding CycleState, Converter={x:Static converters:CycleStateToPackIconKindConverter.Instance}, Mode=OneWay}" />
+                    Kind="{Binding CycleState, Converter={x:Static converters:CycleStateToMaterialIconKindConverter.Instance}, Mode=OneWay}" />
                 <TextBlock
                     Margin="8,0,0,0"
                     VerticalAlignment="Center"
@@ -175,14 +175,14 @@
             FontSize="19"
             FontWeight="Light"
             TextAlignment="Center">
-            <TextBlock.ToolTip>
+            <ToolTip.Tip>
                 <TextBlock>
                     <Run Text="Sunrise transition starts at" />
                     <Run FontWeight="SemiBold" Text="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
                     <Run Text="and ends at" />
                     <Run FontWeight="SemiBold" Text="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
                 </TextBlock>
-            </TextBlock.ToolTip>
+            </ToolTip.Tip>
 
             <Run Text="Sunrise" />
             <LineBreak />

@@ -2,8 +2,5 @@
 
 public partial class LocationSettingsTabView
 {
-    public LocationSettingsTabView()
-    {
-        InitializeComponent();
-    }
+    public LocationSettingsTabView() => InitializeComponent();
 }

@@ -12,14 +12,14 @@ public class ViewModelProvider(IServiceProvider services)
     public DashboardViewModel GetDashboardViewModel() =>
         services.GetRequiredService<DashboardViewModel>();
 
-    public MessageBoxViewModelModel GetMessageBoxViewModel(
+    public MessageBoxViewModel GetMessageBoxViewModel(
         string title,
         string message,
         string? okButtonText,
         string? cancelButtonText
     )
     {
-        var viewModel = services.GetRequiredService<MessageBoxViewModelModel>();
+        var viewModel = services.GetRequiredService<MessageBoxViewModel>();
 
         viewModel.Title = title;
         viewModel.Message = message;
@@ -31,6 +31,6 @@ public class ViewModelProvider(IServiceProvider services)
         return viewModel;
     }
 
-    public SettingsViewModelModel GetSettingsViewModel() =>
-        services.GetRequiredService<SettingsViewModelModel>();
+    public SettingsViewModel GetSettingsViewModel() =>
+        services.GetRequiredService<SettingsViewModel>();
 }

@@ -7,10 +7,7 @@ namespace LightBulb.Views;
 
 public partial class MainView : Window
 {
-    public MainView()
-    {
-        InitializeComponent();
-    }
+    public MainView() => InitializeComponent();
 
     private void MainView_OnLoaded(object sender, RoutedEventArgs args)
     {

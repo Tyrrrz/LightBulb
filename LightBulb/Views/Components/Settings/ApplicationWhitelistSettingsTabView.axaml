@@ -1,0 +1,69 @@
+﻿<UserControl
+    x:Class="LightBulb.Views.Components.Settings.ApplicationWhitelistSettingsTabView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
+    Loaded="{Binding PullAvailableApplicationsCommand}">
+    <Design.DataContext>
+        <settings:ApplicationWhitelistSettingsTabViewModel />
+    </Design.DataContext>
+
+    <StackPanel Margin="0,8" Orientation="Vertical">
+        <!--  Is enabled  -->
+        <Grid
+            Margin="16,8"
+            ColumnDefinitions="*,Auto"
+            ToolTip.Tip="Pause LightBulb when any of the selected applications are in the foreground">
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="Application whitelist" />
+            <ToggleButton
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                IsChecked="{Binding IsApplicationWhitelistEnabled}" />
+        </Grid>
+
+        <!--  Refresh list  -->
+        <Button
+            Margin="16,0"
+            Command="{Binding PullAvailableApplicationsCommand}"
+            ToolTip.Tip="Refresh the list of available applications">
+            <materialIcons:MaterialIcon
+                Width="24"
+                Height="24"
+                Kind="Refresh" />
+        </Button>
+
+        <!--  Whitelisted applications  -->
+        <ListBox
+            Margin="0,4,0,0"
+            Padding="8"
+            IsEnabled="{Binding IsApplicationWhitelistEnabled}"
+            ItemsSource="{Binding AvailableApplications}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+            SelectedItems="{Binding WhitelistedApplications}"
+            SelectionMode="Multiple">
+            <ListBox.ItemContainerTheme>
+                <ControlTheme BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                    <Setter Property="Padding" Value="16,4,16,4" />
+                </ControlTheme>
+            </ListBox.ItemContainerTheme>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <!--  HACK: show a checkbox that does nothing but reflects row selection  -->
+                    <Panel Background="Transparent" ToolTip.Tip="{Binding ExecutableFilePath}">
+                        <CheckBox
+                            Content="{Binding Name}"
+                            IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Mode=OneWay}"
+                            IsHitTestVisible="False" />
+                    </Panel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </StackPanel>
+</UserControl>

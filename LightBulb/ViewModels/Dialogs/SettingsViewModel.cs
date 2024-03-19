@@ -8,7 +8,7 @@ using LightBulb.ViewModels.Framework;
 
 namespace LightBulb.ViewModels.Dialogs;
 
-public partial class SettingsViewModelModel : DialogViewModel
+public partial class SettingsViewModel : DialogViewModel
 {
     private readonly SettingsService _settingsService;
 
@@ -17,7 +17,7 @@ public partial class SettingsViewModelModel : DialogViewModel
 
     public IReadOnlyList<ISettingsTabViewModel> Tabs { get; }
 
-    public SettingsViewModelModel(
+    public SettingsViewModel(
         SettingsService settingsService,
         IEnumerable<ISettingsTabViewModel> tabs
     )

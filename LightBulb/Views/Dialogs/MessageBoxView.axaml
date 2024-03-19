@@ -2,11 +2,13 @@
     x:Class="LightBulb.Views.Dialogs.MessageBoxView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialogs="clr-namespace:LightBulb.ViewModels.Dialogs"
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
-    Width="350"
-    d:DataContext="{d:DesignInstance Type=dialogs:MessageBoxViewModelModel}">
+    Width="350">
+    <Design.DataContext>
+        <dialogs:MessageBoxViewModel />
+    </Design.DataContext>
+
     <Grid RowDefinitions="Auto,*,Auto">
         <!--  Title  -->
         <TextBlock

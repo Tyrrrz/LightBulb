@@ -2,7 +2,6 @@
     x:Class="LightBulb.Views.MainView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:lightBulb="clr-namespace:LightBulb"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
@@ -11,13 +10,16 @@
     Title="LightBulb"
     Width="450"
     Height="350"
-    d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
     CanResize="False"
     Closing="MainView_OnClosing"
     Icon="/favicon.ico"
     Loaded="MainView_OnLoaded"
     SystemDecorations="None"
     WindowStartupLocation="CenterScreen">
+    <Design.DataContext>
+        <viewModels:MainViewModel />
+    </Design.DataContext>
+
     <Border BorderBrush="{DynamicResource PrimaryHueLightBrush}" BorderThickness="1">
         <dialogHostAvalonia:DialogHost
             x:Name="DialogHost"

@@ -2,8 +2,5 @@
 
 public partial class AdvancedSettingsTabView
 {
-    public AdvancedSettingsTabView()
-    {
-        InitializeComponent();
-    }
+    public AdvancedSettingsTabView() => InitializeComponent();
 }

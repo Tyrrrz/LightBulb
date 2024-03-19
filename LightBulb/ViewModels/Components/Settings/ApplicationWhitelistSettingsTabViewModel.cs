@@ -28,8 +28,6 @@ public partial class ApplicationWhitelistSettingsTabViewModel(
         set => SettingsService.WhitelistedApplications = value;
     }
 
-    public void OnViewLoaded() => PullAvailableApplications();
-
     [RelayCommand]
     private void PullAvailableApplications()
     {

@@ -2,8 +2,5 @@
 
 public partial class ApplicationWhitelistSettingsTabView
 {
-    public ApplicationWhitelistSettingsTabView()
-    {
-        InitializeComponent();
-    }
+    public ApplicationWhitelistSettingsTabView() => InitializeComponent();
 }

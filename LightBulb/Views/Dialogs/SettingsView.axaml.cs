@@ -2,8 +2,5 @@
 
 public partial class SettingsView
 {
-    public SettingsView()
-    {
-        InitializeComponent();
-    }
+    public SettingsView() => InitializeComponent();
 }

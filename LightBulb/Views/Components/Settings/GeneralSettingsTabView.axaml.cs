@@ -2,8 +2,5 @@
 
 public partial class GeneralSettingsTabView
 {
-    public GeneralSettingsTabView()
-    {
-        InitializeComponent();
-    }
+    public GeneralSettingsTabView() => InitializeComponent();
 }

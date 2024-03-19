@@ -2,8 +2,5 @@
 
 public partial class MessageBoxView
 {
-    public MessageBoxView()
-    {
-        InitializeComponent();
-    }
+    public MessageBoxView() => InitializeComponent();
 }

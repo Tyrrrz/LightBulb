@@ -1,21 +1,18 @@
 ﻿<UserControl
     x:Class="LightBulb.Views.Components.Settings.AdvancedSettingsTabView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
-    d:DataContext="{d:DesignInstance Type=settings:AdvancedSettingsTabViewModel}"
-    Style="{DynamicResource MaterialDesignRoot}"
-    mc:Ignorable="d">
+    xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings">
+    <Design.DataContext>
+        <settings:AdvancedSettingsTabViewModel />
+    </Design.DataContext>
+
     <StackPanel Margin="0,8" Orientation="Vertical">
         <!--  Auto start  -->
-        <Grid Margin="16,8" ToolTip="Launch LightBulb at Windows startup">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
+        <Grid
+            Margin="16,8"
+            ColumnDefinitions="*,Auto"
+            ToolTip.Tip="Launch LightBulb at Windows startup">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -28,12 +25,10 @@
         </Grid>
 
         <!--  Auto update  -->
-        <Grid Margin="16,8" ToolTip="Keep LightBulb updated by automatically installing new versions as they become available">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
+        <Grid
+            Margin="16,8"
+            ColumnDefinitions="*,Auto"
+            ToolTip.Tip="Keep LightBulb updated by automatically installing new versions as they become available">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -46,12 +41,10 @@
         </Grid>
 
         <!--  Default to day time  -->
-        <Grid Margin="16,8" ToolTip="When LightBulb is disabled or paused, restore the configured day-time temperature and brightness instead of the default monitor gamma">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
+        <Grid
+            Margin="16,8"
+            ColumnDefinitions="*,Auto"
+            ToolTip.Tip="When LightBulb is disabled or paused, restore the configured day-time temperature and brightness instead of the default monitor gamma">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -64,12 +57,10 @@
         </Grid>
 
         <!--  Pause when full screen  -->
-        <Grid Margin="16,8" ToolTip="Pause LightBulb when any fullscreen window is in the foreground">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
+        <Grid
+            Margin="16,8"
+            ColumnDefinitions="*,Auto"
+            ToolTip.Tip="Pause LightBulb when any fullscreen window is in the foreground">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -82,12 +73,10 @@
         </Grid>
 
         <!--  Configuration smoothing  -->
-        <Grid Margin="16,8" ToolTip="Transition slowly when enabling or disabling LightBulb to give time for eyes to adjust">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
+        <Grid
+            Margin="16,8"
+            ColumnDefinitions="*,Auto"
+            ToolTip.Tip="Transition slowly when enabling or disabling LightBulb to give time for eyes to adjust">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -100,12 +89,10 @@
         </Grid>
 
         <!--  Gamma polling  -->
-        <Grid Margin="16,8" ToolTip="Force-refresh gamma at regular intervals to make sure it doesn't get overriden by other programs">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
+        <Grid
+            Margin="16,8"
+            ColumnDefinitions="*,Auto"
+            ToolTip.Tip="Force-refresh gamma at regular intervals to make sure it doesn't get overriden by other programs">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
