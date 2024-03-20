@@ -6,14 +6,13 @@
     xmlns:lightBulb="clr-namespace:LightBulb"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:viewModels="clr-namespace:LightBulb.ViewModels"
-    x:Name="Root"
     Title="LightBulb"
     Width="450"
     Height="350"
     CanResize="False"
-    Closing="Root_OnClosing"
+    Closing="Window_OnClosing"
     Icon="/favicon.ico"
-    Loaded="Root_OnLoaded"
+    Loaded="Window_OnLoaded"
     SystemDecorations="None"
     WindowStartupLocation="CenterScreen">
     <Design.DataContext>
@@ -25,7 +24,7 @@
             x:Name="DialogHost"
             CloseOnClickAway="False"
             Loaded="DialogHost_OnLoaded">
-            <Grid IsEnabled="{Binding !#DialogHost.IsOpen}" RowDefinitions="Auto,*,Auto">
+            <Grid IsEnabled="{Binding !$parent[dialogHostAvalonia:DialogHost].IsOpen}" RowDefinitions="Auto,*,Auto">
                 <!--  Header  -->
                 <Border
                     x:Name="Header"

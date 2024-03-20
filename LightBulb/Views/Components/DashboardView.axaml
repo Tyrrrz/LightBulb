@@ -6,8 +6,7 @@
     xmlns:controls="clr-namespace:LightBulb.Views.Controls"
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-    x:Name="Root"
-    Loaded="Root_OnLoaded">
+    Loaded="UserControl_OnLoaded">
     <Design.DataContext>
         <components:DashboardViewModel />
     </Design.DataContext>

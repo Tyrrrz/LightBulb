@@ -4,8 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
-    x:Name="Root"
-    Loaded="Root_OnLoaded">
+    Loaded="UserControl_OnLoaded">
     <Design.DataContext>
         <settings:ApplicationWhitelistSettingsTabViewModel />
     </Design.DataContext>

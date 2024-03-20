@@ -1,8 +1,10 @@
-﻿using Avalonia.Controls;
+﻿using LightBulb.ViewModels.Components.Settings;
+using LightBulb.Views.Framework;
 
 namespace LightBulb.Views.Components.Settings;
 
-public partial class LocationSettingsTabView : UserControl
+public partial class LocationSettingsTabView
+    : ViewModelAwareUserControl<LocationSettingsTabViewModel>
 {
     public LocationSettingsTabView() => InitializeComponent();
 }

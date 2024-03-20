@@ -5,7 +5,6 @@
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:dialogs="clr-namespace:LightBulb.ViewModels.Dialogs"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-    x:Name="Root"
     Width="350"
     Height="270">
     <Design.DataContext>
@@ -30,7 +29,7 @@
                         <Button
                             Margin="4"
                             Padding="8"
-                            Command="{Binding DataContext.ActivateTabCommand, ElementName=Root}"
+                            Command="{Binding $parent[UserControl].DataContext.ActivateTabCommand}"
                             CommandParameter="{Binding}"
                             ToolTip.Tip="{Binding DisplayName}">
                             <materialIcons:MaterialIcon

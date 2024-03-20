@@ -1,15 +1,14 @@
-﻿using Avalonia.Controls;
-using Avalonia.Interactivity;
+﻿using Avalonia.Interactivity;
 using LightBulb.ViewModels.Components.Settings;
+using LightBulb.Views.Framework;
 
 namespace LightBulb.Views.Components.Settings;
 
-public partial class ApplicationWhitelistSettingsTabView : UserControl
+public partial class ApplicationWhitelistSettingsTabView
+    : ViewModelAwareUserControl<ApplicationWhitelistSettingsTabViewModel>
 {
     public ApplicationWhitelistSettingsTabView() => InitializeComponent();
 
-    private void Root_OnLoaded(object? sender, RoutedEventArgs args) =>
-        (DataContext as ApplicationWhitelistSettingsTabViewModel)
-            ?.PullAvailableApplicationsCommand
-            .Execute(null);
+    private void UserControl_OnLoaded(object? sender, RoutedEventArgs args) =>
+        DataContext.PullAvailableApplicationsCommand.Execute(null);
 }
