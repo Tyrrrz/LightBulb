@@ -7,6 +7,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using CommunityToolkit.Mvvm.Input;
 using LightBulb.Services;
 using LightBulb.Utils.Extensions;
 using LightBulb.ViewModels;
@@ -36,25 +37,29 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
 
+        // Services
         services.AddSingleton<ExternalApplicationService>();
         services.AddSingleton<GammaService>();
         services.AddSingleton<HotKeyService>();
         services.AddSingleton<SettingsService>();
         services.AddSingleton<UpdateService>();
 
+        // View model framework
         services.AddSingleton<DialogManager>();
         services.AddSingleton<ViewModelProvider>();
 
-        services.AddSingleton<MainViewModel>();
-        services.AddSingleton<DashboardViewModel>();
-        services.AddSingleton<MessageBoxViewModel>();
-        services.AddSingleton<SettingsViewModel>();
-        services.AddSingleton<SettingsTabViewModelBase, AdvancedSettingsTabViewModel>();
-        services.AddSingleton<SettingsTabViewModelBase, ApplicationWhitelistSettingsTabViewModel>();
-        services.AddSingleton<SettingsTabViewModelBase, GeneralSettingsTabViewModel>();
-        services.AddSingleton<SettingsTabViewModelBase, HotKeySettingsTabViewModel>();
-        services.AddSingleton<SettingsTabViewModelBase, LocationSettingsTabViewModel>();
+        // View models
+        services.AddTransient<MainViewModel>();
+        services.AddTransient<DashboardViewModel>();
+        services.AddTransient<MessageBoxViewModel>();
+        services.AddTransient<SettingsViewModel>();
+        services.AddTransient<SettingsTabViewModelBase, AdvancedSettingsTabViewModel>();
+        services.AddTransient<SettingsTabViewModelBase, ApplicationWhitelistSettingsTabViewModel>();
+        services.AddTransient<SettingsTabViewModelBase, GeneralSettingsTabViewModel>();
+        services.AddTransient<SettingsTabViewModelBase, HotKeySettingsTabViewModel>();
+        services.AddTransient<SettingsTabViewModelBase, LocationSettingsTabViewModel>();
 
+        // View framework
         services.AddSingleton<ViewLocator>();
 
         _services = services.BuildServiceProvider();
@@ -100,13 +105,17 @@ public partial class App : Application
 
     private void ExitMenuItem_OnClick(object? sender, EventArgs args) =>
         ApplicationLifetime?.TryShutdown();
+
+    [RelayCommand]
+    private void ShowSettings() =>
+        ViewModelProvider.GetMainViewModel().ShowSettingsCommand.Execute(null);
 }
 
 public partial class App
 {
     private static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
 
-    public static Version Version { get; } = Assembly.GetName().Version!;
+    public static Version Version { get; } = Assembly.GetName().Version ?? new Version(0, 0, 0);
 
     public static string VersionString { get; } = Version.ToString(3);
 

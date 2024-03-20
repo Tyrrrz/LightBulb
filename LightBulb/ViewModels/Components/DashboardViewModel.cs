@@ -30,15 +30,15 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]
     private bool _isEnabled = true;
-    
+
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]
     private bool _isPaused;
-    
+
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]
     private bool _isCyclePreviewEnabled;
-    
+
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(SolarTimes))]
     [NotifyPropertyChangedFor(nameof(SunriseStart))]
@@ -48,7 +48,7 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
     [NotifyPropertyChangedFor(nameof(TargetConfiguration))]
     [NotifyPropertyChangedFor(nameof(CycleState))]
     private DateTimeOffset _instant = DateTimeOffset.Now;
-    
+
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsOffsetEnabled))]
     [NotifyPropertyChangedFor(nameof(TargetConfiguration))]
@@ -56,7 +56,7 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
     [NotifyPropertyChangedFor(nameof(AdjustedNightConfiguration))]
     [NotifyPropertyChangedFor(nameof(CycleState))]
     private double _temperatureOffset;
-    
+
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsOffsetEnabled))]
     [NotifyPropertyChangedFor(nameof(TargetConfiguration))]
@@ -64,7 +64,7 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
     [NotifyPropertyChangedFor(nameof(AdjustedNightConfiguration))]
     [NotifyPropertyChangedFor(nameof(CycleState))]
     private double _brightnessOffset;
-    
+
     [ObservableProperty]
     private ColorConfiguration _currentConfiguration = ColorConfiguration.Default;
 

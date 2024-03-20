@@ -29,23 +29,24 @@
                     <Run FontWeight="SemiBold" Text="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
                 </TextBlock>
             </ToolTip.Tip>
-            ><Run Text="Sunset" />
+            <Run Text="Sunset" />
             <LineBreak />
             <Run FontWeight="Regular" Text="{Binding SolarTimes.Sunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
         </TextBlock>
 
         <!--  Sundial  -->
-        <Grid
-            Grid.Column="1"
-            Width="190"
-            Height="190">
+        <Panel Grid.Column="1">
             <!--  Night time arc  -->
             <controls:Arc
+                Width="180"
+                Height="180"
                 EndAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 Stroke="#FFAF1A"
-                StrokeThickness="27" />
+                StrokeThickness="28" />
             <controls:Arc
+                Width="180"
+                Height="180"
                 EndAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 Stroke="#FFD280"
@@ -53,11 +54,15 @@
 
             <!--  Day time arc  -->
             <controls:Arc
+                Width="180"
+                Height="180"
                 EndAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 Stroke="#8AC0FF"
-                StrokeThickness="27" />
+                StrokeThickness="28" />
             <controls:Arc
+                Width="180"
+                Height="180"
                 EndAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 Stroke="#F2F8FF"
@@ -65,11 +70,15 @@
 
             <!--  Sunrise transition  -->
             <controls:Arc
+                Width="180"
+                Height="180"
                 EndAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 Stroke="#FFC766"
-                StrokeThickness="27" />
+                StrokeThickness="28" />
             <controls:Arc
+                Width="180"
+                Height="180"
                 EndAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 Stroke="#FFEDCD"
@@ -77,11 +86,15 @@
 
             <!--  Sunset transition  -->
             <controls:Arc
+                Width="180"
+                Height="180"
                 EndAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 Stroke="#FFC766"
-                StrokeThickness="27" />
+                StrokeThickness="28" />
             <controls:Arc
+                Width="180"
+                Height="180"
                 EndAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 Stroke="#FFEDCD"
@@ -89,10 +102,17 @@
 
             <!--  Current time position  -->
             <controls:ArcPoint
+                Width="180"
+                Height="180"
+                Angle="{Binding Instant.TimeOfDay.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                Fill="#FF7733"
+                Size="28" />
+            <controls:ArcPoint
+                Width="180"
+                Height="180"
                 Angle="{Binding Instant.TimeOfDay.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
                 Fill="#FFAB85"
-                Size="13"
-                Stroke="#FF8B50" />
+                Size="26" />
 
             <!--  Configuration offset  -->
             <StackPanel
@@ -165,7 +185,7 @@
                     FontWeight="Light"
                     Text="{Binding Instant, StringFormat=\{0:t\}}" />
             </StackPanel>
-        </Grid>
+        </Panel>
 
         <!--  Sunrise time  -->
         <TextBlock

@@ -11,7 +11,7 @@ public class HotKeyTextBox : TextBox
     public static readonly StyledProperty<HotKey> HotKeyProperty = AvaloniaProperty.Register<
         HotKeyTextBox,
         HotKey
-    >(nameof(HotKey), HotKey.None, false, BindingMode.TwoWay);
+    >(nameof(HotKey), defaultBindingMode: BindingMode.TwoWay);
 
     public HotKey HotKey
     {

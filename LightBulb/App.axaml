@@ -2,6 +2,7 @@
     x:Class="LightBulb.App"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:framework="clr-namespace:LightBulb.Views.Framework"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
@@ -13,8 +14,11 @@
     <Application.Styles>
         <materialStyles:MaterialTheme />
         <materialIcons:MaterialIconStyles />
+        <dialogHostAvalonia:DialogHostStyles />
     </Application.Styles>
 
+    <!--  Doesn't work, idk why  -->
+    <!--
     <TrayIcon.Icons>
         <TrayIcons>
             <TrayIcon
@@ -24,6 +28,8 @@
                 <TrayIcon.Menu>
                     <NativeMenu>
                         <NativeMenuItem Click="TrayIcon_OnClicked" Header="Open" />
+                        <NativeMenuItem Command="{Binding $parent[Application].MainViewModel.ShowSettingsCommand}" Header="Settings" />
+                        <NativeMenuItem Command="{Binding $parent[Application].MainViewModel.ShowAboutCommand}" Header="About" />
                         <NativeMenuItem Header="Enabled" IsChecked="{Binding $parent[Application].DashboardViewModel.IsEnabled}" />
                         <NativeMenuItem Header="Disable for...">
                             <NativeMenuItem Command="{Binding $parent[Application].DashboardViewModel.DisableTemporarilyUntilSunriseCommand}" Header="Until sunrise" />
@@ -68,12 +74,12 @@
                                 </NativeMenuItem.CommandParameter>
                             </NativeMenuItem>
                         </NativeMenuItem>
-                        <NativeMenuItem Command="{Binding $parent[Application].MainViewModel.ShowSettingsCommand}" Header="Settings" />
-                        <NativeMenuItem Command="{Binding $parent[Application].MainViewModel.ShowAboutCommand}" Header="About" />
+
                         <NativeMenuItem Click="ExitMenuItem_OnClick" Header="Exit" />
                     </NativeMenu>
                 </TrayIcon.Menu>
             </TrayIcon>
         </TrayIcons>
     </TrayIcon.Icons>
+    -->
 </Application>

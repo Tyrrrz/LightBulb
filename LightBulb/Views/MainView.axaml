@@ -31,8 +31,7 @@
                     Grid.Row="0"
                     Padding="8,12"
                     Background="{DynamicResource PrimaryHueMidBrush}"
-                    PointerPressed="Header_OnPointerPressed"
-                    TextElement.Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">
+                    PointerPressed="Header_OnPointerPressed">
                     <Grid ColumnDefinitions="Auto,Auto,*,Auto">
                         <!--  On/Off button and logo  -->
                         <ToggleButton

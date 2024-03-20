@@ -13,19 +13,12 @@ public class Arc : Shape
     public static readonly StyledProperty<double> StartAngleProperty = AvaloniaProperty.Register<
         Arc,
         double
-    >(
-        nameof(StartAngle),
-        0.0,
-        false,
-        BindingMode.OneWay,
-        null,
-        (_, baseValue) => baseValue % 360.0
-    );
+    >(nameof(StartAngle), coerce: (_, a) => a % 360.0);
 
     public static readonly StyledProperty<double> EndAngleProperty = AvaloniaProperty.Register<
         Arc,
         double
-    >(nameof(EndAngle), 0.0, false, BindingMode.OneWay, null, (_, baseValue) => baseValue % 360.0);
+    >(nameof(EndAngle), coerce: (_, a) => a % 360.0);
 
     public double StartAngle
     {
@@ -37,6 +30,14 @@ public class Arc : Shape
     {
         get => GetValue(EndAngleProperty);
         set => SetValue(EndAngleProperty, value);
+    }
+
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs args)
+    {
+        base.OnPropertyChanged(args);
+
+        if (args.Property == StartAngleProperty || args.Property == EndAngleProperty)
+            InvalidateGeometry();
     }
 
     protected override Geometry CreateDefiningGeometry()
