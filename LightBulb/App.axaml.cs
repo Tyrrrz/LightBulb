@@ -8,15 +8,14 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.Input;
+using LightBulb.Framework;
 using LightBulb.Services;
 using LightBulb.Utils.Extensions;
 using LightBulb.ViewModels;
 using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
 using LightBulb.ViewModels.Dialogs;
-using LightBulb.ViewModels.Framework;
 using LightBulb.Views;
-using LightBulb.Views.Framework;
 using Material.Styles.Themes;
 using Microsoft.Extensions.DependencyInjection;
 

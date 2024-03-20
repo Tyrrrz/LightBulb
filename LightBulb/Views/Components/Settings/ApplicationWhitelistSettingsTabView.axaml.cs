@@ -1,6 +1,6 @@
 ﻿using Avalonia.Interactivity;
+using LightBulb.Framework;
 using LightBulb.ViewModels.Components.Settings;
-using LightBulb.Views.Framework;
 
 namespace LightBulb.Views.Components.Settings;
 

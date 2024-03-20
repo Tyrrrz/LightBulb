@@ -2,9 +2,9 @@
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using LightBulb.Framework;
 using LightBulb.Services;
 using LightBulb.ViewModels.Components.Settings;
-using LightBulb.ViewModels.Framework;
 
 namespace LightBulb.ViewModels.Dialogs;
 
@@ -32,14 +32,14 @@ public partial class SettingsViewModel : DialogViewModelBase
     }
 
     [RelayCommand]
-    private void ActivateTab(SettingsTabViewModelBase settingsTab)
+    private void ActivateTab(SettingsTabViewModelBase tab)
     {
         // Deactivate the previously selected tab
         if (ActiveTab is not null)
             ActiveTab.IsActive = false;
 
-        ActiveTab = settingsTab;
-        settingsTab.IsActive = true;
+        ActiveTab = tab;
+        tab.IsActive = true;
     }
 
     public void ActivateTab<T>()

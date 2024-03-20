@@ -2,9 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using DialogHostAvalonia;
-using LightBulb.Views.Framework;
 
-namespace LightBulb.ViewModels.Framework;
+namespace LightBulb.Framework;
 
 public class DialogManager(ViewLocator viewLocator) : IDisposable
 {
@@ -20,29 +19,31 @@ public class DialogManager(ViewLocator viewLocator) : IDisposable
             );
         }
 
-        void OnDialogOpened(object? openSender, DialogOpenedEventArgs openArgs)
-        {
-            void OnDialogClosed(object? closeSender, EventArgs args)
-            {
-                try
-                {
-                    openArgs.Session.Close();
-                }
-                catch (InvalidOperationException)
-                {
-                    // Race condition: dialog is already being closed
-                }
-
-                dialog.Closed -= OnDialogClosed;
-            }
-
-            dialog.Closed += OnDialogClosed;
-        }
-
         await _dialogLock.WaitAsync();
         try
         {
-            await DialogHost.Show(view, OnDialogOpened);
+            await DialogHost.Show(
+                view,
+                (object _, DialogOpenedEventArgs openArgs) =>
+                {
+                    void OnClosed(object? _, EventArgs args)
+                    {
+                        try
+                        {
+                            openArgs.Session.Close();
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            // Race condition: dialog is already being closed
+                        }
+
+                        dialog.Closed -= OnClosed;
+                    }
+
+                    dialog.Closed += OnClosed;
+                }
+            );
+
             return dialog.DialogResult;
         }
         finally

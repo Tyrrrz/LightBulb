@@ -1,5 +1,5 @@
-﻿using LightBulb.ViewModels.Dialogs;
-using LightBulb.Views.Framework;
+﻿using LightBulb.Framework;
+using LightBulb.ViewModels.Dialogs;
 
 namespace LightBulb.Views.Dialogs;
 

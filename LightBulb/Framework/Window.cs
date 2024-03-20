@@ -1,7 +1,7 @@
 ﻿using System;
 using Avalonia.Controls;
 
-namespace LightBulb.Views.Framework;
+namespace LightBulb.Framework;
 
 public class Window<TDataContext> : Window
 {

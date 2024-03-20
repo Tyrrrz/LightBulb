@@ -1,7 +1,7 @@
 ﻿using Avalonia.Input;
 using Avalonia.Interactivity;
+using LightBulb.Framework;
 using LightBulb.ViewModels.Components;
-using LightBulb.Views.Framework;
 
 namespace LightBulb.Views.Components;
 

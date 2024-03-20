@@ -35,7 +35,7 @@
                     Margin="8,0"
                     Padding="0"
                     VerticalAlignment="Center"
-                    BorderBrush="{DynamicResource MaterialDesignDivider}"
+                    BorderBrush="{DynamicResource MaterialDividerBrush}"
                     Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
             </StackPanel>
             <Slider
@@ -54,7 +54,7 @@
                     Margin="8,0"
                     Padding="0"
                     VerticalAlignment="Center"
-                    BorderBrush="{DynamicResource MaterialDesignDivider}"
+                    BorderBrush="{DynamicResource MaterialDividerBrush}"
                     Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
             </StackPanel>
             <Slider

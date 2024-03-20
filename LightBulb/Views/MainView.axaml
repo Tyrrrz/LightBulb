@@ -19,7 +19,7 @@
         <viewModels:MainViewModel />
     </Design.DataContext>
 
-    <Border BorderBrush="{DynamicResource PrimaryHueLightBrush}" BorderThickness="1">
+    <Border BorderBrush="{DynamicResource MaterialPrimaryLightBrush}" BorderThickness="1">
         <dialogHostAvalonia:DialogHost
             x:Name="DialogHost"
             CloseOnClickAway="False"
@@ -30,7 +30,7 @@
                     x:Name="Header"
                     Grid.Row="0"
                     Padding="8,12"
-                    Background="{DynamicResource PrimaryHueMidBrush}"
+                    Background="{DynamicResource MaterialPrimaryMidBrush}"
                     PointerPressed="Header_OnPointerPressed">
                     <Grid ColumnDefinitions="Auto,Auto,*,Auto">
                         <!--  On/Off button and logo  -->

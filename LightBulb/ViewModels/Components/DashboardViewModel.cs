@@ -4,10 +4,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Core;
 using LightBulb.Core.Utils.Extensions;
+using LightBulb.Framework;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.Utils.Extensions;
-using LightBulb.ViewModels.Framework;
 using LightBulb.WindowsApi;
 
 namespace LightBulb.ViewModels.Components;

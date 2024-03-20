@@ -1,9 +1,8 @@
 ﻿using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using LightBulb.ViewModels.Framework;
 
-namespace LightBulb.Views.Framework;
+namespace LightBulb.Framework;
 
 public partial class ViewLocator
 {

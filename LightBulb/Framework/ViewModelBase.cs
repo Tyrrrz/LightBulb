@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace LightBulb.ViewModels.Framework;
+namespace LightBulb.Framework;
 
 public abstract class ViewModelBase : ObservableObject
 {

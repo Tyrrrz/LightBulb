@@ -1,9 +1,10 @@
 ﻿using System;
+using LightBulb.ViewModels;
 using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Dialogs;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace LightBulb.ViewModels.Framework;
+namespace LightBulb.Framework;
 
 public class ViewModelProvider(IServiceProvider services)
 {

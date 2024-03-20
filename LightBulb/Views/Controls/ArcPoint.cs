@@ -1,7 +1,6 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.Controls.Shapes;
-using Avalonia.Data;
 using Avalonia.Media;
 
 namespace LightBulb.Views.Controls;

@@ -1,5 +1,5 @@
-﻿using LightBulb.ViewModels.Components.Settings;
-using LightBulb.Views.Framework;
+﻿using LightBulb.Framework;
+using LightBulb.ViewModels.Components.Settings;
 
 namespace LightBulb.Views.Components.Settings;
 

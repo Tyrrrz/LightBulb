@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using LightBulb.Framework;
 using LightBulb.Services;
-using LightBulb.ViewModels.Framework;
 
 namespace LightBulb.ViewModels.Components.Settings;
 

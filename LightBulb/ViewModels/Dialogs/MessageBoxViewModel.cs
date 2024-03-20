@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using LightBulb.ViewModels.Framework;
+using LightBulb.Framework;
 
 namespace LightBulb.ViewModels.Dialogs;
 

@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace LightBulb.ViewModels.Framework;
+namespace LightBulb.Framework;
 
 public abstract partial class DialogViewModelBase<T> : ViewModelBase
 {
