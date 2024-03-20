@@ -44,7 +44,8 @@
                 Command="{Binding CloseCommand}"
                 Content="{Binding DefaultButtonText}"
                 IsDefault="True"
-                IsVisible="{Binding IsDefaultButtonVisible}">
+                IsVisible="{Binding IsDefaultButtonVisible}"
+                Theme="{DynamicResource MaterialOutlineButton}">
                 <Button.CommandParameter>
                     <system:Boolean>True</system:Boolean>
                 </Button.CommandParameter>
@@ -57,7 +58,8 @@
                 Command="{Binding CloseCommand}"
                 Content="{Binding CancelButtonText}"
                 IsCancel="True"
-                IsVisible="{Binding IsCancelButtonVisible}" />
+                IsVisible="{Binding IsCancelButtonVisible}"
+                Theme="{DynamicResource MaterialOutlineButton}" />
         </UniformGrid>
     </Grid>
 </UserControl>

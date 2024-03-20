@@ -34,7 +34,7 @@ public partial class SettingsViewModel : DialogViewModelBase
     [RelayCommand]
     private void ActivateTab(SettingsTabViewModelBase settingsTab)
     {
-        // Deactivate previously selected tab
+        // Deactivate the previously selected tab
         if (ActiveTab is not null)
             ActiveTab.IsActive = false;
 

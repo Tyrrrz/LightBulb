@@ -35,17 +35,27 @@
                     <Grid ColumnDefinitions="Auto,Auto,*,Auto">
                         <!--  On/Off button and logo  -->
                         <ToggleButton
-                            x:Name="IsEnabledToggleButton"
                             Grid.Column="0"
+                            Width="32"
+                            Height="32"
+                            Padding="0"
                             VerticalAlignment="Center"
+                            Background="{DynamicResource MaterialSecondaryMidBrush}"
                             IsChecked="{Binding Dashboard.IsEnabled}"
+                            Theme="{DynamicResource MaterialIconToggleButton}"
                             ToolTip.Tip="Switch LightBulb on/off">
                             <ToggleButton.Content>
                                 <materialIcons:MaterialIcon
                                     Width="24"
                                     Height="24"
-                                    IsVisible="{Binding #IsEnabledToggleButton.IsChecked}"
-                                    Kind="LightbulbOutline" />
+                                    Classes.disabled="{Binding !$parent[ToggleButton].IsChecked}"
+                                    Kind="LightbulbOutline">
+                                    <materialIcons:MaterialIcon.Styles>
+                                        <Style Selector="materialIcons|MaterialIcon.disabled">
+                                            <Setter Property="Opacity" Value="0" />
+                                        </Style>
+                                    </materialIcons:MaterialIcon.Styles>
+                                </materialIcons:MaterialIcon>
                             </ToggleButton.Content>
                         </ToggleButton>
 
@@ -54,7 +64,8 @@
                             Grid.Column="1"
                             Margin="8,1,0,0"
                             VerticalAlignment="Center"
-                            FontSize="16">
+                            FontSize="16"
+                            Foreground="{DynamicResource MaterialPrimaryMidForegroundBrush}">
                             <Run
                                 FontSize="19"
                                 FontWeight="Medium"
@@ -69,6 +80,8 @@
                             Padding="4"
                             VerticalAlignment="Center"
                             Click="HideButton_OnClick"
+                            Foreground="{DynamicResource MaterialPrimaryMidForegroundBrush}"
+                            Theme="{DynamicResource MaterialFlatButton}"
                             ToolTip.Tip="Hide LightBulb to the system tray">
                             <materialIcons:MaterialIcon
                                 Width="24"
@@ -94,6 +107,7 @@
                         Margin="8"
                         Command="{Binding Dashboard.EnableCyclePreviewCommand}"
                         IsVisible="{Binding !Dashboard.IsCyclePreviewEnabled}"
+                        Theme="{DynamicResource MaterialFlatButton}"
                         ToolTip.Tip="Preview 24-hour cycle">
                         <StackPanel Orientation="Horizontal">
                             <materialIcons:MaterialIcon
@@ -112,6 +126,7 @@
                         Margin="8"
                         Command="{Binding Dashboard.DisableCyclePreviewCommand}"
                         IsVisible="{Binding Dashboard.IsCyclePreviewEnabled}"
+                        Theme="{DynamicResource MaterialFlatButton}"
                         ToolTip.Tip="Stop preview">
                         <StackPanel Orientation="Horizontal">
                             <materialIcons:MaterialIcon
@@ -121,7 +136,7 @@
                             <TextBlock
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
-                                Text="STOP" />
+                                Text="PREVIEW" />
                         </StackPanel>
                     </Button>
 
@@ -129,6 +144,7 @@
                     <Button
                         Margin="8"
                         Command="{Binding ShowSettingsCommand}"
+                        Theme="{DynamicResource MaterialFlatButton}"
                         ToolTip.Tip="Open settings">
                         <StackPanel Orientation="Horizontal">
                             <materialIcons:MaterialIcon
@@ -146,6 +162,7 @@
                     <Button
                         Margin="8"
                         Command="{Binding ShowAboutCommand}"
+                        Theme="{DynamicResource MaterialFlatButton}"
                         ToolTip.Tip="Open LightBulb on GitHub">
                         <StackPanel Orientation="Horizontal">
                             <materialIcons:MaterialIcon

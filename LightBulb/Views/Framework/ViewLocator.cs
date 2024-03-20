@@ -19,7 +19,7 @@ public partial class ViewLocator
 
         var type = Type.GetType(name);
         if (type is null)
-            return new TextBlock { Text = "not found" };
+            return null;
 
         return Activator.CreateInstance(type) as Control;
     }

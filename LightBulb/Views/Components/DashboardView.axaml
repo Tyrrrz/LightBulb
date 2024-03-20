@@ -117,7 +117,7 @@
             <!--  Configuration offset  -->
             <StackPanel
                 x:Name="ConfigurationOffsetStackPanel"
-                Margin="0,40,0,0"
+                Margin="0,50,0,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 Background="Transparent"
@@ -171,7 +171,7 @@
 
             <!--  Current time  -->
             <StackPanel
-                Margin="0,0,0,40"
+                Margin="0,0,0,50"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 Orientation="Horizontal">
