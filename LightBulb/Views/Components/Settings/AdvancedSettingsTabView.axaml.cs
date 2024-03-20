@@ -4,7 +4,7 @@ using LightBulb.Views.Framework;
 namespace LightBulb.Views.Components.Settings;
 
 public partial class AdvancedSettingsTabView
-    : ViewModelAwareUserControl<AdvancedSettingsTabViewModel>
+    : UserControl<AdvancedSettingsTabViewModel>
 {
     public AdvancedSettingsTabView() => InitializeComponent();
 }

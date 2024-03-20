@@ -3,7 +3,7 @@ using Avalonia.Controls;
 
 namespace LightBulb.Views.Framework;
 
-public class ViewModelAwareUserControl<TDataContext> : UserControl
+public class UserControl<TDataContext> : UserControl
 {
     public new TDataContext DataContext
     {

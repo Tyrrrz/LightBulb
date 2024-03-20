@@ -1,16 +1,17 @@
 ﻿using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.ViewModels.Framework;
 
 namespace LightBulb.Views.Framework;
 
-public class ViewLocator : IDataTemplate
+public partial class ViewLocator
 {
     public Control? TryResolveView(ViewModelBase viewModel)
     {
-        var name = viewModel.GetType().FullName!.Replace("ViewModel", "View");
+        var name = viewModel.GetType().FullName?.Replace("ViewModel", "View", StringComparison.Ordinal);
+        if (string.IsNullOrWhiteSpace(name))
+            return null;
 
         var type = Type.GetType(name);
         if (type is null)
@@ -18,9 +19,12 @@ public class ViewLocator : IDataTemplate
 
         return Activator.CreateInstance(type) as Control;
     }
+}
 
+public partial class ViewLocator : IDataTemplate
+{
     bool IDataTemplate.Match(object? data) => data is ViewModelBase;
 
     Control? ITemplate<object?, Control?>.Build(object? data) =>
-        data is ViewModelBase viewModel ? TryResolveView(viewModel) : null;
+        data is ViewModelBase viewModel ? TryResolveView(viewModel) : null;   
 }

@@ -3,7 +3,7 @@ using LightBulb.Views.Framework;
 
 namespace LightBulb.Views.Dialogs;
 
-public partial class SettingsView : ViewModelAwareUserControl<SettingsViewModel>
+public partial class SettingsView : UserControl<SettingsViewModel>
 {
     public SettingsView() => InitializeComponent();
 }

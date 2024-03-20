@@ -3,11 +3,13 @@ using Avalonia.Input;
 
 namespace LightBulb.Models;
 
-public readonly partial record struct HotKey(
+public readonly record struct HotKey(
     PhysicalKey Key,
     KeyModifiers Modifiers = KeyModifiers.None
 )
 {
+    public static HotKey None { get; } = new();
+    
     public override string ToString()
     {
         if (Key == PhysicalKey.None && Modifiers == KeyModifiers.None)
@@ -28,9 +30,4 @@ public readonly partial record struct HotKey(
 
         return buffer.ToString();
     }
-}
-
-public partial record struct HotKey
-{
-    public static HotKey None { get; } = new();
 }

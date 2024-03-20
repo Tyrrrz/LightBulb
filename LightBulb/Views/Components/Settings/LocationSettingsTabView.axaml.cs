@@ -4,7 +4,7 @@ using LightBulb.Views.Framework;
 namespace LightBulb.Views.Components.Settings;
 
 public partial class LocationSettingsTabView
-    : ViewModelAwareUserControl<LocationSettingsTabViewModel>
+    : UserControl<LocationSettingsTabViewModel>
 {
     public LocationSettingsTabView() => InitializeComponent();
 }

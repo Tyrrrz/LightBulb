@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Core;
 using LightBulb.Core.Utils.Extensions;
@@ -26,15 +27,48 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
 
     private IDisposable? _enableAfterDelayRegistration;
 
-    public bool IsEnabled { get; set; } = true;
-
-    public bool IsPaused { get; private set; }
-
-    public bool IsCyclePreviewEnabled { get; set; }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsActive))]
+    private bool _isEnabled = true;
+    
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsActive))]
+    private bool _isPaused;
+    
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsActive))]
+    private bool _isCyclePreviewEnabled;
+    
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SolarTimes))]
+    [NotifyPropertyChangedFor(nameof(SunriseStart))]
+    [NotifyPropertyChangedFor(nameof(SunriseEnd))]
+    [NotifyPropertyChangedFor(nameof(SunsetStart))]
+    [NotifyPropertyChangedFor(nameof(SunsetEnd))]
+    [NotifyPropertyChangedFor(nameof(TargetConfiguration))]
+    [NotifyPropertyChangedFor(nameof(CycleState))]
+    private DateTimeOffset _instant = DateTimeOffset.Now;
+    
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsOffsetEnabled))]
+    [NotifyPropertyChangedFor(nameof(TargetConfiguration))]
+    [NotifyPropertyChangedFor(nameof(AdjustedDayConfiguration))]
+    [NotifyPropertyChangedFor(nameof(AdjustedNightConfiguration))]
+    [NotifyPropertyChangedFor(nameof(CycleState))]
+    private double _temperatureOffset;
+    
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsOffsetEnabled))]
+    [NotifyPropertyChangedFor(nameof(TargetConfiguration))]
+    [NotifyPropertyChangedFor(nameof(AdjustedDayConfiguration))]
+    [NotifyPropertyChangedFor(nameof(AdjustedNightConfiguration))]
+    [NotifyPropertyChangedFor(nameof(CycleState))]
+    private double _brightnessOffset;
+    
+    [ObservableProperty]
+    private ColorConfiguration _currentConfiguration = ColorConfiguration.Default;
 
     public bool IsActive => IsEnabled && !IsPaused || IsCyclePreviewEnabled;
-
-    public DateTimeOffset Instant { get; private set; } = DateTimeOffset.Now;
 
     public SolarTimes SolarTimes =>
         _settingsService is { IsManualSunriseSunsetEnabled: false, Location: { } location }
@@ -71,10 +105,6 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
 
     public bool IsOffsetEnabled => Math.Abs(TemperatureOffset) + Math.Abs(BrightnessOffset) >= 0.01;
 
-    public double TemperatureOffset { get; set; }
-
-    public double BrightnessOffset { get; set; }
-
     public ColorConfiguration TargetConfiguration =>
         IsActive
             ? Cycle
@@ -96,8 +126,6 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
             : _settingsService.IsDefaultToDayConfigurationEnabled
                 ? _settingsService.DayConfiguration
                 : ColorConfiguration.Default;
-
-    public ColorConfiguration CurrentConfiguration { get; set; } = ColorConfiguration.Default;
 
     public ColorConfiguration AdjustedDayConfiguration =>
         _settingsService.DayConfiguration.WithOffset(TemperatureOffset, BrightnessOffset);
@@ -233,7 +261,7 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
 
     private void UpdateInstant()
     {
-        // If in cycle preview mode - advance quickly until full cycle
+        // If in cycle preview mode, advance quickly until the full cycle is reached
         if (IsCyclePreviewEnabled)
         {
             // Cycle is supposed to end 1 full day past current real time
@@ -243,7 +271,7 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
             if (Instant >= targetInstant)
                 IsCyclePreviewEnabled = false;
         }
-        // Otherwise - synchronize instant with system clock
+        // Otherwise, synchronize the instant with the system clock
         else
         {
             Instant = DateTimeOffset.Now;
@@ -304,7 +332,6 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
     [RelayCommand]
     private void DisableTemporarilyUntilSunrise()
     {
-        // Use real time here instead of Instant, because that's what the user likely wants
         var now = DateTimeOffset.Now;
         var timeUntilSunrise = SolarTimes.Sunrise.NextAfter(now) - now;
         DisableTemporarily(timeUntilSunrise);
@@ -316,9 +343,7 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
     [RelayCommand]
     private void DisableCyclePreview() => IsCyclePreviewEnabled = false;
 
-    public bool CanResetConfigurationOffset() => IsOffsetEnabled;
-
-    [RelayCommand(CanExecute = nameof(CanResetConfigurationOffset))]
+    [RelayCommand]
     private void ResetConfigurationOffset()
     {
         TemperatureOffset = 0;

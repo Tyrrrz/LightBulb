@@ -5,7 +5,7 @@ using LightBulb.Views.Framework;
 
 namespace LightBulb.Views.Components;
 
-public partial class DashboardView : ViewModelAwareUserControl<DashboardViewModel>
+public partial class DashboardView : UserControl<DashboardViewModel>
 {
     public DashboardView() => InitializeComponent();
 

@@ -6,7 +6,7 @@ using LightBulb.Views.Framework;
 
 namespace LightBulb.Views;
 
-public partial class MainView : ViewModelAwareWindow<MainViewModel>
+public partial class MainView : Window<MainViewModel>
 {
     public MainView() => InitializeComponent();
 
