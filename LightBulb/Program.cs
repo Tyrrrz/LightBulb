@@ -1,35 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Avalonia;
 
 namespace LightBulb;
 
-public static partial class Program
-{
-    public static AppBuilder BuildAvaloniaApp() =>
-        AppBuilder.Configure<App>().UsePlatformDetect().LogToTrace();
-
-    [STAThread]
-    public static int Main(string[] args)
-    {
-        using var identityMutex = new Mutex(
-            true,
-            $"{Name}_Identity",
-            out var isOnlyRunningInstance
-        );
-
-        if (!isOnlyRunningInstance)
-            return 0;
-
-        return BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
-    }
-}
-
-public partial class Program
+public static class Program
 {
     private static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
 
@@ -45,15 +22,35 @@ public partial class Program
         Path.ChangeExtension(Assembly.Location, "exe");
 
     public static string ProjectUrl { get; } = "https://github.com/Tyrrrz/LightBulb";
-}
 
-public partial class Program
-{
-    private static IReadOnlyList<string> CommandLineArgs { get; } =
-        Environment.GetCommandLineArgs().Skip(1).ToArray();
+    public static AppBuilder BuildAvaloniaApp() =>
+        AppBuilder.Configure<App>().UsePlatformDetect().LogToTrace();
 
-    public static string StartHiddenArgument { get; } = "--start-hidden";
+    [STAThread]
+    public static int Main(string[] args)
+    {
+        // Ensure only one instance of the app is running at a time
+        using var identityMutex = new Mutex(
+            true,
+            $"{Name}_Identity",
+            out var isOnlyRunningInstance
+        );
 
-    public static bool IsHiddenOnLaunch { get; } =
-        CommandLineArgs.Contains(StartHiddenArgument, StringComparer.OrdinalIgnoreCase);
+        if (!isOnlyRunningInstance)
+            return 1;
+
+        // Build and run the app
+        var builder = BuildAvaloniaApp();
+
+        try
+        {
+            return builder.StartWithClassicDesktopLifetime(args);
+        }
+        finally
+        {
+            // Clean up after application shutdown
+            if (builder.Instance is IDisposable disposableApp)
+                disposableApp.Dispose();
+        }
+    }
 }

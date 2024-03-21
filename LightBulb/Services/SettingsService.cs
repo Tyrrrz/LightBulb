@@ -28,7 +28,7 @@ public partial class SettingsService() : SettingsBase(GetFilePath())
             RegistryHive.CurrentUser,
             @"Software\Microsoft\Windows\CurrentVersion\Run",
             "LightBulb",
-            $"\"{Program.ExecutableFilePath}\" {Program.StartHiddenArgument}"
+            $"\"{Program.ExecutableFilePath}\" {StartupOptions.IsInitiallyHiddenArgument}"
         );
 
     public bool IsFirstTimeExperienceEnabled { get; set; } = true;

@@ -12,8 +12,7 @@ public partial class MainView : Window<MainViewModel>
 
     private void Window_OnLoaded(object sender, RoutedEventArgs args)
     {
-        // Hide to tray as soon as the window is loaded, if necessary
-        if (Program.IsHiddenOnLaunch)
+        if (StartupOptions.Current.IsInitiallyHidden)
             Hide();
     }
 

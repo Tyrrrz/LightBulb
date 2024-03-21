@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia;
+using LightBulb.Utils.Extensions;
 using Onova;
 using Onova.Exceptions;
 using Onova.Services;
@@ -51,7 +53,9 @@ public class UpdateService(SettingsService settingsService) : IDisposable
                 return;
 
             _updateManager.LaunchUpdater(lastPreparedUpdate);
-            Environment.Exit(0);
+            
+            if (Application.Current?.ApplicationLifetime?.TryShutdown(2) != true)
+                Environment.Exit(2);
         }
         catch (UpdaterAlreadyLaunchedException)
         {

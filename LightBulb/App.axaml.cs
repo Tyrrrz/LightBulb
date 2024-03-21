@@ -16,9 +16,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LightBulb;
 
-public class App : Application
+public class App : Application, IDisposable
 {
-    private readonly IServiceProvider _services;
+    private readonly ServiceProvider _services;
     private readonly MainViewModel _mainViewModel;
 
     public App()
@@ -58,8 +58,8 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            desktop.MainWindow = new MainView { DataContext = _mainViewModel };
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            desktopLifetime.MainWindow = new MainView { DataContext = _mainViewModel };
 
         base.OnFrameworkInitializationCompleted();
 
@@ -77,7 +77,7 @@ public class App : Application
         _services.GetRequiredService<SettingsService>().Load();
     }
 
-    private void TrayIcon_OnClicked(object? sender, EventArgs args)
+    private void ShowMainWindow()
     {
         if (ApplicationLifetime?.TryGetMainWindow() is { } window)
         {
@@ -87,8 +87,13 @@ public class App : Application
         }
     }
 
-    private void ShowSettingsMenuItem_OnClick(object? sender, EventArgs args) =>
+    private void TrayIcon_OnClicked(object? sender, EventArgs args) => ShowMainWindow();
+
+    private void ShowSettingsMenuItem_OnClick(object? sender, EventArgs args)
+    {
+        ShowMainWindow();
         _mainViewModel.ShowSettingsCommand.Execute(null);
+    }
 
     private void AboutMenuItem_OnClick(object? sender, EventArgs args) =>
         _mainViewModel.ShowAboutCommand.Execute(null);
@@ -125,4 +130,6 @@ public class App : Application
 
     private void DisableTemporarily1MinuteMenuItem_OnClick(object? sender, EventArgs args) =>
         _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(1));
+
+    public void Dispose() => _services.Dispose();
 }

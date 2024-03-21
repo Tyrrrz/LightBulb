@@ -5,19 +5,24 @@ namespace LightBulb.Utils.Extensions;
 
 internal static class AvaloniaExtensions
 {
-    public static Window? TryGetMainWindow(this IApplicationLifetime applicationLifetime)
+    public static Window? TryGetMainWindow(this IApplicationLifetime lifetime)
     {
-        if (applicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
-            return lifetime.MainWindow;
+        if (lifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            return desktopLifetime.MainWindow;
 
         return null;
     }
 
-    public static bool TryShutdown(this IApplicationLifetime applicationLifetime, int exitCode = 0)
+    public static bool TryShutdown(this IApplicationLifetime lifetime, int exitCode = 0)
     {
-        if (applicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
+        if (lifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
         {
-            lifetime.Shutdown(exitCode);
+            return desktopLifetime.TryShutdown(exitCode);
+        }
+
+        if (lifetime is IControlledApplicationLifetime controlledLifetime)
+        {
+            controlledLifetime.Shutdown(exitCode);
             return true;
         }
 
