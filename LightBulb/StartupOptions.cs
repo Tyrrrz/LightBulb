@@ -13,10 +13,10 @@ public partial class StartupOptions
 {
     public static string IsInitiallyHiddenArgument { get; } = "--start-hidden";
 
-    public static StartupOptions Parse(IEnumerable<string> commandLineArguments) =>
+    public static StartupOptions Parse(IEnumerable<string> commandLineArgs) =>
         new()
         {
-            IsInitiallyHidden = commandLineArguments.Contains(
+            IsInitiallyHidden = commandLineArgs.Contains(
                 IsInitiallyHiddenArgument,
                 StringComparer.OrdinalIgnoreCase
             )

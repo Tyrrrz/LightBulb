@@ -7,7 +7,7 @@
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles">
     <Application.DataTemplates>
-        <framework:ViewLocator />
+        <framework:ViewBinder />
     </Application.DataTemplates>
 
     <Application.Styles>

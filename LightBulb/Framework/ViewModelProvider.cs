@@ -24,9 +24,7 @@ public class ViewModelProvider(IServiceProvider services)
 
         viewModel.Title = title;
         viewModel.Message = message;
-        viewModel.IsDefaultButtonVisible = !string.IsNullOrWhiteSpace(okButtonText);
         viewModel.DefaultButtonText = okButtonText;
-        viewModel.IsCancelButtonVisible = !string.IsNullOrWhiteSpace(cancelButtonText);
         viewModel.CancelButtonText = cancelButtonText;
 
         return viewModel;

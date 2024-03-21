@@ -48,9 +48,9 @@ public class App : Application, IDisposable
         services.AddTransient<SettingsTabViewModelBase, LocationSettingsTabViewModel>();
 
         // View framework
-        services.AddSingleton<ViewLocator>();
+        services.AddSingleton<ViewBinder>();
 
-        _services = services.BuildServiceProvider();
+        _services = services.BuildServiceProvider(true);
         _mainViewModel = _services.GetRequiredService<MainViewModel>();
     }
 

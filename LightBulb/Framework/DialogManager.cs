@@ -5,13 +5,13 @@ using DialogHostAvalonia;
 
 namespace LightBulb.Framework;
 
-public class DialogManager(ViewLocator viewLocator) : IDisposable
+public class DialogManager(ViewBinder viewBinder) : IDisposable
 {
     private readonly SemaphoreSlim _dialogLock = new(1, 1);
 
     public async Task<T?> ShowDialogAsync<T>(DialogViewModelBase<T> dialog)
     {
-        var view = viewLocator.TryResolveView(dialog);
+        var view = viewBinder.TryBindView(dialog);
         if (view is null)
         {
             throw new InvalidOperationException(

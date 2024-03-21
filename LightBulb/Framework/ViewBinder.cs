@@ -4,9 +4,9 @@ using Avalonia.Controls.Templates;
 
 namespace LightBulb.Framework;
 
-public partial class ViewLocator
+public partial class ViewBinder
 {
-    public Control? TryResolveView(ViewModelBase viewModel)
+    public Control? TryBindView(ViewModelBase viewModel)
     {
         var name = viewModel
             .GetType()
@@ -20,14 +20,19 @@ public partial class ViewLocator
         if (type is null)
             return null;
 
-        return Activator.CreateInstance(type) as Control;
+        if (Activator.CreateInstance(type) is not Control control)
+            return null;
+        
+        control.DataContext ??= viewModel;
+        
+        return control;
     }
 }
 
-public partial class ViewLocator : IDataTemplate
+public partial class ViewBinder : IDataTemplate
 {
     bool IDataTemplate.Match(object? data) => data is ViewModelBase;
 
     Control? ITemplate<object?, Control?>.Build(object? data) =>
-        data is ViewModelBase viewModel ? TryResolveView(viewModel) : null;
+        data is ViewModelBase viewModel ? TryBindView(viewModel) : null;
 }
