@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using CommunityToolkit.Mvvm.Input;
 using LightBulb.Framework;
 using LightBulb.Services;
 using LightBulb.Utils.Extensions;
@@ -21,16 +16,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LightBulb;
 
-public partial class App : Application
+public class App : Application
 {
     private readonly IServiceProvider _services;
-
-    public ViewModelProvider ViewModelProvider => _services.GetRequiredService<ViewModelProvider>();
-
-    // These view models are exposed here to set up bindings for the tray icon menu,
-    // which must be defined in the application layout.
-    public MainViewModel MainViewModel => ViewModelProvider.GetMainViewModel();
-    public DashboardViewModel DashboardViewModel => ViewModelProvider.GetDashboardViewModel();
+    private readonly MainViewModel _mainViewModel;
 
     public App()
     {
@@ -62,6 +51,7 @@ public partial class App : Application
         services.AddSingleton<ViewLocator>();
 
         _services = services.BuildServiceProvider();
+        _mainViewModel = _services.GetRequiredService<MainViewModel>();
     }
 
     public override void Initialize() => AvaloniaXamlLoader.Load(this);
@@ -69,12 +59,7 @@ public partial class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = new MainView
-            {
-                DataContext = ViewModelProvider.GetMainViewModel()
-            };
-        }
+            desktop.MainWindow = new MainView { DataContext = _mainViewModel };
 
         base.OnFrameworkInitializationCompleted();
 
@@ -102,37 +87,42 @@ public partial class App : Application
         }
     }
 
+    private void ShowSettingsMenuItem_OnClick(object? sender, EventArgs args) =>
+        _mainViewModel.ShowSettingsCommand.Execute(null);
+
+    private void AboutMenuItem_OnClick(object? sender, EventArgs args) =>
+        _mainViewModel.ShowAboutCommand.Execute(null);
+
+    private void ToggleMenuItem_OnClick(object? sender, EventArgs args) =>
+        _mainViewModel.Dashboard.IsEnabled = !_mainViewModel.Dashboard.IsEnabled;
+
+    private void DisableUntilSunriseMenuItem_OnClick(object? sender, EventArgs args) =>
+        _mainViewModel.Dashboard.DisableUntilSunriseCommand.Execute(null);
+
     private void ExitMenuItem_OnClick(object? sender, EventArgs args) =>
         ApplicationLifetime?.TryShutdown();
 
-    [RelayCommand]
-    private void ShowSettings() =>
-        ViewModelProvider.GetMainViewModel().ShowSettingsCommand.Execute(null);
-}
+    private void DisableTemporarily1DayMenuItem_OnClick(object? sender, EventArgs args) =>
+        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromDays(1));
 
-public partial class App
-{
-    private static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
+    private void DisableTemporarily12HoursMenuItem_OnClick(object? sender, EventArgs args) =>
+        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(12));
 
-    public static Version Version { get; } = Assembly.GetName().Version ?? new Version(0, 0, 0);
+    private void DisableTemporarily6HoursMenuItem_OnClick(object? sender, EventArgs args) =>
+        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(6));
 
-    public static string VersionString { get; } = Version.ToString(3);
+    private void DisableTemporarily3HoursMenuItem_OnClick(object? sender, EventArgs args) =>
+        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(3));
 
-    public static string ExecutableDirPath { get; } = AppDomain.CurrentDomain.BaseDirectory;
+    private void DisableTemporarily1HourMenuItem_OnClick(object? sender, EventArgs args) =>
+        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(1));
 
-    public static string ExecutableFilePath { get; } =
-        Path.ChangeExtension(Assembly.Location, "exe");
+    private void DisableTemporarily30MinutesMenuItem_OnClick(object? sender, EventArgs args) =>
+        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(30));
 
-    public static string ProjectUrl { get; } = "https://github.com/Tyrrrz/LightBulb";
-}
+    private void DisableTemporarily5MinutesMenuItem_OnClick(object? sender, EventArgs args) =>
+        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(5));
 
-public partial class App
-{
-    private static IReadOnlyList<string> CommandLineArgs { get; } =
-        Environment.GetCommandLineArgs().Skip(1).ToArray();
-
-    public static string StartHiddenArgument { get; } = "--start-hidden";
-
-    public static bool IsHiddenOnLaunch { get; } =
-        CommandLineArgs.Contains(StartHiddenArgument, StringComparer.OrdinalIgnoreCase);
+    private void DisableTemporarily1MinuteMenuItem_OnClick(object? sender, EventArgs args) =>
+        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(1));
 }

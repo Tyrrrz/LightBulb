@@ -69,8 +69,8 @@
                             <Run
                                 FontSize="19"
                                 FontWeight="Medium"
-                                Text="LightBulb" />
-                            <Run FontWeight="Light" Text="v" /><Run FontWeight="Light" Text="{x:Static lightBulb:App.VersionString}" />
+                                Text="{x:Static lightBulb:Program.Name}" />
+                            <Run FontWeight="Light" Text="v" /><Run FontWeight="Light" Text="{x:Static lightBulb:Program.VersionString}" />
                         </TextBlock>
 
                         <!--  Hide button  -->

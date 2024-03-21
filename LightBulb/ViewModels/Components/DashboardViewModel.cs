@@ -330,7 +330,7 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
     }
 
     [RelayCommand]
-    private void DisableTemporarilyUntilSunrise()
+    private void DisableUntilSunrise()
     {
         var now = DateTimeOffset.Now;
         var timeUntilSunrise = SolarTimes.Sunrise.NextAfter(now) - now;

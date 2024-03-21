@@ -13,7 +13,7 @@ public partial class MainView : Window<MainViewModel>
     private void Window_OnLoaded(object sender, RoutedEventArgs args)
     {
         // Hide to tray as soon as the window is loaded, if necessary
-        if (App.IsHiddenOnLaunch)
+        if (Program.IsHiddenOnLaunch)
             Hide();
     }
 

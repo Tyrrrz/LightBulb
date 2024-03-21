@@ -5,8 +5,7 @@
     xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:framework="clr-namespace:LightBulb.Framework"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-    xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
-    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+    xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles">
     <Application.DataTemplates>
         <framework:ViewLocator />
     </Application.DataTemplates>
@@ -17,8 +16,6 @@
         <dialogHostAvalonia:DialogHostStyles />
     </Application.Styles>
 
-    <!--  Doesn't work, idk why  -->
-    <!--
     <TrayIcon.Icons>
         <TrayIcons>
             <TrayIcon
@@ -28,52 +25,25 @@
                 <TrayIcon.Menu>
                     <NativeMenu>
                         <NativeMenuItem Click="TrayIcon_OnClicked" Header="Open" />
-                        <NativeMenuItem Command="{Binding $parent[Application].MainViewModel.ShowSettingsCommand}" Header="Settings" />
-                        <NativeMenuItem Command="{Binding $parent[Application].MainViewModel.ShowAboutCommand}" Header="About" />
-                        <NativeMenuItem Header="Enabled" IsChecked="{Binding $parent[Application].DashboardViewModel.IsEnabled}" />
-                        <NativeMenuItem Header="Disable for...">
-                            <NativeMenuItem Command="{Binding $parent[Application].DashboardViewModel.DisableTemporarilyUntilSunriseCommand}" Header="Until sunrise" />
-                            <NativeMenuItem Command="{Binding $parent[Application].DashboardViewModel.DisableTemporarilyCommand}" Header="1 day">
-                                <NativeMenuItem.CommandParameter>
-                                    <system:TimeSpan>24:0:0</system:TimeSpan>
-                                </NativeMenuItem.CommandParameter>
-                            </NativeMenuItem>
-                            <NativeMenuItem Command="{Binding $parent[Application].DashboardViewModel.DisableTemporarilyCommand}" Header="12 hours">
-                                <NativeMenuItem.CommandParameter>
-                                    <system:TimeSpan>12:0:0</system:TimeSpan>
-                                </NativeMenuItem.CommandParameter>
-                            </NativeMenuItem>
-                            <NativeMenuItem Command="{Binding $parent[Application].DashboardViewModel.DisableTemporarilyCommand}" Header="6 hours">
-                                <NativeMenuItem.CommandParameter>
-                                    <system:TimeSpan>6:0:0</system:TimeSpan>
-                                </NativeMenuItem.CommandParameter>
-                            </NativeMenuItem>
-                            <NativeMenuItem Command="{Binding $parent[Application].DashboardViewModel.DisableTemporarilyCommand}" Header="3 hours">
-                                <NativeMenuItem.CommandParameter>
-                                    <system:TimeSpan>3:0:0</system:TimeSpan>
-                                </NativeMenuItem.CommandParameter>
-                            </NativeMenuItem>
-                            <NativeMenuItem Command="{Binding $parent[Application].DashboardViewModel.DisableTemporarilyCommand}" Header="1 hour">
-                                <NativeMenuItem.CommandParameter>
-                                    <system:TimeSpan>1:0:0</system:TimeSpan>
-                                </NativeMenuItem.CommandParameter>
-                            </NativeMenuItem>
-                            <NativeMenuItem Command="{Binding $parent[Application].DashboardViewModel.DisableTemporarilyCommand}" Header="30 minutes">
-                                <NativeMenuItem.CommandParameter>
-                                    <system:TimeSpan>0:30:0</system:TimeSpan>
-                                </NativeMenuItem.CommandParameter>
-                            </NativeMenuItem>
-                            <NativeMenuItem Command="{Binding $parent[Application].DashboardViewModel.DisableTemporarilyCommand}" Header="5 minutes">
-                                <NativeMenuItem.CommandParameter>
-                                    <system:TimeSpan>0:5:0</system:TimeSpan>
-                                </NativeMenuItem.CommandParameter>
-                            </NativeMenuItem>
-                            <NativeMenuItem Command="{Binding $parent[Application].DashboardViewModel.DisableTemporarilyCommand}" Header="1 minute">
-                                <NativeMenuItem.CommandParameter>
-                                    <system:TimeSpan>0:1:0</system:TimeSpan>
-                                </NativeMenuItem.CommandParameter>
-                            </NativeMenuItem>
+                        <NativeMenuItem Click="ShowSettingsMenuItem_OnClick" Header="Settings" />
+                        <NativeMenuItem Click="AboutMenuItem_OnClick" Header="About" />
+                        <NativeMenuItemSeparator />
+
+                        <NativeMenuItem Click="ToggleMenuItem_OnClick" Header="Toggle" />
+                        <NativeMenuItem Header="Disable...">
+                            <NativeMenu>
+                                <NativeMenuItem Click="DisableUntilSunriseMenuItem_OnClick" Header="Until sunrise" />
+                                <NativeMenuItem Click="DisableTemporarily1DayMenuItem_OnClick" Header="For 1 day" />
+                                <NativeMenuItem Click="DisableTemporarily12HoursMenuItem_OnClick" Header="For 12 hours" />
+                                <NativeMenuItem Click="DisableTemporarily6HoursMenuItem_OnClick" Header="For 6 hours" />
+                                <NativeMenuItem Click="DisableTemporarily3HoursMenuItem_OnClick" Header="For 3 hours" />
+                                <NativeMenuItem Click="DisableTemporarily1HourMenuItem_OnClick" Header="For 1 hour" />
+                                <NativeMenuItem Click="DisableTemporarily30MinutesMenuItem_OnClick" Header="For 30 minutes" />
+                                <NativeMenuItem Click="DisableTemporarily5MinutesMenuItem_OnClick" Header="For 5 minutes" />
+                                <NativeMenuItem Click="DisableTemporarily1MinuteMenuItem_OnClick" Header="For 1 minute" />
+                            </NativeMenu>
                         </NativeMenuItem>
+                        <NativeMenuItemSeparator />
 
                         <NativeMenuItem Click="ExitMenuItem_OnClick" Header="Exit" />
                     </NativeMenu>
@@ -81,5 +51,4 @@
             </TrayIcon>
         </TrayIcons>
     </TrayIcon.Icons>
-    -->
 </Application>

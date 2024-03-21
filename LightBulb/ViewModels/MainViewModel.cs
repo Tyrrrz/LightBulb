@@ -46,8 +46,8 @@ public partial class MainViewModel : ViewModelBase, IDisposable
 
         var dialog = _viewModelProvider.GetMessageBoxViewModel(
             "Limited gamma range",
-            """
-            LightBulb has detected that extended gamma range controls are not enabled on this system.
+            $"""
+            {Program.Name} has detected that extended gamma range controls are not enabled on this system.
             This may cause some color configurations to not work correctly.
 
             Press FIX to unlock the gamma range. Administrator privileges may be required.
@@ -70,8 +70,8 @@ public partial class MainViewModel : ViewModelBase, IDisposable
 
         var dialog = _viewModelProvider.GetMessageBoxViewModel(
             "Welcome!",
-            """
-            Thank you for installing LightBulb!
+            $"""
+            Thank you for installing ${Program.Name}!
             To get the most personalized experience, please set your preferred solar configuration.
 
             Press OK to open settings.
@@ -133,7 +133,7 @@ public partial class MainViewModel : ViewModelBase, IDisposable
         await _dialogManager.ShowDialogAsync(_viewModelProvider.GetSettingsViewModel());
 
     [RelayCommand]
-    private void ShowAbout() => ProcessEx.StartShellExecute(App.ProjectUrl);
+    private void ShowAbout() => ProcessEx.StartShellExecute(Program.ProjectUrl);
 
     public void Dispose() => _checkForUpdatesTimer.Dispose();
 }

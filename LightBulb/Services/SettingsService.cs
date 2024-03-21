@@ -28,7 +28,7 @@ public partial class SettingsService() : SettingsBase(GetFilePath())
             RegistryHive.CurrentUser,
             @"Software\Microsoft\Windows\CurrentVersion\Run",
             "LightBulb",
-            $"\"{App.ExecutableFilePath}\" {App.StartHiddenArgument}"
+            $"\"{Program.ExecutableFilePath}\" {Program.StartHiddenArgument}"
         );
 
     public bool IsFirstTimeExperienceEnabled { get; set; } = true;
@@ -156,10 +156,10 @@ public partial class SettingsService
 {
     private static string GetFilePath()
     {
-        var isInstalled = File.Exists(Path.Combine(App.ExecutableDirPath, ".installed"));
+        var isInstalled = File.Exists(Path.Combine(Program.ExecutableDirPath, ".installed"));
 
         // Prefer storing settings in appdata when installed or when the current directory is write-protected
-        if (isInstalled || !DirectoryEx.CheckWriteAccess(App.ExecutableDirPath))
+        if (isInstalled || !DirectoryEx.CheckWriteAccess(Program.ExecutableDirPath))
         {
             return Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -170,7 +170,7 @@ public partial class SettingsService
         // Otherwise, store them in the current directory
         else
         {
-            return Path.Combine(App.ExecutableDirPath, "Settings.json");
+            return Path.Combine(Program.ExecutableDirPath, "Settings.json");
         }
     }
 }
