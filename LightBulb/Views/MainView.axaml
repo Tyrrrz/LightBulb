@@ -49,10 +49,14 @@
                                     Width="24"
                                     Height="24"
                                     Classes.disabled="{Binding !$parent[ToggleButton].IsChecked}"
-                                    Kind="LightbulbOutline">
+                                    Classes.enabled="{Binding $parent[ToggleButton].IsChecked}">
                                     <materialIcons:MaterialIcon.Styles>
                                         <Style Selector="materialIcons|MaterialIcon.disabled">
-                                            <Setter Property="Opacity" Value="0" />
+                                            <Setter Property="Kind" Value="LightbulbOffOutline" />
+                                            <Setter Property="Opacity" Value="0.5" />
+                                        </Style>
+                                        <Style Selector="materialIcons|MaterialIcon.enabled">
+                                            <Setter Property="Kind" Value="LightbulbOutline" />
                                         </Style>
                                     </materialIcons:MaterialIcon.Styles>
                                 </materialIcons:MaterialIcon>
