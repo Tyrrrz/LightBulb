@@ -24,9 +24,9 @@ public class DialogManager(ViewLocator viewLocator) : IDisposable
         {
             await DialogHost.Show(
                 view,
-                (object _, DialogOpenedEventArgs openArgs) =>
+                (object openSender, DialogOpenedEventArgs openArgs) =>
                 {
-                    void OnClosed(object? _, EventArgs args)
+                    void OnClosed(object? closedSender, EventArgs closedArgs)
                     {
                         try
                         {
