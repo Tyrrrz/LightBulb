@@ -20,12 +20,13 @@ public partial class ViewBinder
         if (type is null)
             return null;
 
-        if (Activator.CreateInstance(type) is not Control control)
+        var view = Activator.CreateInstance(type) as Control;
+        if (view is null)
             return null;
-        
-        control.DataContext ??= viewModel;
-        
-        return control;
+
+        view.DataContext ??= viewModel;
+
+        return view;
     }
 }
 

@@ -8,7 +8,7 @@
         <settings:HotKeySettingsTabViewModel />
     </Design.DataContext>
 
-    <StackPanel Margin="0,8" Orientation="Vertical">
+    <StackPanel Orientation="Vertical">
         <!--  Toggle hotkey  -->
         <Grid Margin="16,8" ColumnDefinitions="*,Auto">
             <TextBlock

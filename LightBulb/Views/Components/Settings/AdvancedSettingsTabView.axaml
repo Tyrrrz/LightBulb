@@ -7,7 +7,7 @@
         <settings:AdvancedSettingsTabViewModel />
     </Design.DataContext>
 
-    <StackPanel Margin="0,8" Orientation="Vertical">
+    <StackPanel Orientation="Vertical">
         <!--  Auto start  -->
         <Grid
             Margin="16,8"
@@ -17,7 +17,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Start with Windows" />
-            <ToggleButton
+            <ToggleSwitch
                 Grid.Column="1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
@@ -33,7 +33,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Auto-update" />
-            <ToggleButton
+            <ToggleSwitch
                 Grid.Column="1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
@@ -49,7 +49,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Default to day-time configuration" />
-            <ToggleButton
+            <ToggleSwitch
                 Grid.Column="1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
@@ -65,7 +65,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Pause when fullscreen" />
-            <ToggleButton
+            <ToggleSwitch
                 Grid.Column="1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
@@ -81,7 +81,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Gamma smoothing" />
-            <ToggleButton
+            <ToggleSwitch
                 Grid.Column="1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
@@ -97,7 +97,7 @@
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="Gamma polling" />
-            <ToggleButton
+            <ToggleSwitch
                 Grid.Column="1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"

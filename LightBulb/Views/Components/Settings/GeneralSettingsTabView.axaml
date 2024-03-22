@@ -8,10 +8,10 @@
         <settings:GeneralSettingsTabViewModel />
     </Design.DataContext>
 
-    <StackPanel Margin="0,8" Orientation="Vertical">
+    <StackPanel Orientation="Vertical">
         <!--  Day temperature  -->
         <StackPanel
-            Margin="16,8"
+            Margin="16,0,16,8"
             Orientation="Horizontal"
             ToolTip.Tip="Color temperature during the day">
             <TextBlock VerticalAlignment="Center" Text="Day-time color temperature:" />

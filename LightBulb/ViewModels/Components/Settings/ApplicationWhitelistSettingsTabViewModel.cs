@@ -28,7 +28,9 @@ public partial class ApplicationWhitelistSettingsTabViewModel(
         set => SettingsService.WhitelistedApplications = value;
     }
 
-    [RelayCommand]
+    private bool CanPullAvailableApplications() => IsApplicationWhitelistEnabled;
+
+    [RelayCommand(CanExecute = nameof(CanPullAvailableApplications))]
     private void PullAvailableApplications()
     {
         var applications = new HashSet<ExternalApplication>();

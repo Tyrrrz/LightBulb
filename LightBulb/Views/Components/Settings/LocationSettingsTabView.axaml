@@ -9,7 +9,7 @@
         <settings:LocationSettingsTabViewModel />
     </Design.DataContext>
 
-    <StackPanel Margin="0,8" Orientation="Vertical">
+    <StackPanel Orientation="Vertical">
         <!--  Manual/location-based configuration  -->
         <TextBlock Margin="16,8" Text="Solar configuration:" />
         <Grid Margin="16,0,16,10" ColumnDefinitions="*,*">
