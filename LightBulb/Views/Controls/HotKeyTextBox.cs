@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Input;
+using Avalonia.Styling;
 using LightBulb.Models;
 
 namespace LightBulb.Views.Controls;

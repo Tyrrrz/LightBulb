@@ -43,7 +43,7 @@
                             Background="{DynamicResource MaterialSecondaryMidBrush}"
                             IsChecked="{Binding Dashboard.IsEnabled}"
                             Theme="{DynamicResource MaterialIconToggleButton}"
-                            ToolTip.Tip="Switch LightBulb on/off">
+                            ToolTip.Tip="Toggle LightBulb on/off">
                             <ToggleButton.Content>
                                 <materialIcons:MaterialIcon
                                     Width="24"

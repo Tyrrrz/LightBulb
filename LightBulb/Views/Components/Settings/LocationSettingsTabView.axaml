@@ -12,34 +12,34 @@
     <StackPanel Orientation="Vertical">
         <!--  Manual/location-based configuration  -->
         <TextBlock Margin="16,8" Text="Solar configuration:" />
-        <Grid Margin="16,0,16,10" ColumnDefinitions="*,*">
+        <DockPanel Margin="16,4,16,16">
             <RadioButton
-                Grid.Column="0"
                 Content="Manual"
+                DockPanel.Dock="Left"
                 IsChecked="{Binding IsManualSunriseSunsetEnabled}"
                 ToolTip.Tip="Configure sunrise and sunset manually" />
             <RadioButton
-                Grid.Column="1"
+                HorizontalAlignment="Right"
                 Content="Location-based"
+                DockPanel.Dock="Right"
                 IsChecked="{Binding !IsManualSunriseSunsetEnabled}"
                 ToolTip.Tip="Configure your location and use it to automatically calculate the sunrise and sunset times" />
-        </Grid>
+        </DockPanel>
 
         <!--  Manual  -->
         <StackPanel IsVisible="{Binding IsManualSunriseSunsetEnabled}" Orientation="Vertical">
             <!--  Sunrise time  -->
-            <StackPanel Margin="16,8" Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Text="Sunrise:" />
+            <DockPanel Margin="16,8">
+                <TextBlock DockPanel.Dock="Left" Text="Sunrise:" />
                 <TextBox
-                    MinWidth="30"
-                    Margin="8,0"
-                    Padding="0"
-                    VerticalAlignment="Center"
+                    MinWidth="24"
+                    HorizontalAlignment="Right"
                     BorderBrush="{DynamicResource MaterialDividerBrush}"
+                    DockPanel.Dock="Right"
                     Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
-            </StackPanel>
+            </DockPanel>
             <Slider
-                Margin="16,0,16,6"
+                Margin="16,6,16,16"
                 LargeChange="0.5"
                 Maximum="23.99999"
                 Minimum="0"
@@ -47,18 +47,17 @@
                 Value="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}" />
 
             <!--  Sunset time  -->
-            <StackPanel Margin="16,8" Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Text="Sunset:" />
+            <DockPanel Margin="16,8">
+                <TextBlock DockPanel.Dock="Left" Text="Sunset:" />
                 <TextBox
-                    MinWidth="30"
-                    Margin="8,0"
-                    Padding="0"
-                    VerticalAlignment="Center"
+                    MinWidth="24"
+                    HorizontalAlignment="Right"
                     BorderBrush="{DynamicResource MaterialDividerBrush}"
+                    DockPanel.Dock="Right"
                     Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
-            </StackPanel>
+            </DockPanel>
             <Slider
-                Margin="16,0,16,6"
+                Margin="16,6,16,16"
                 LargeChange="0.5"
                 Maximum="23.99999"
                 Minimum="0"

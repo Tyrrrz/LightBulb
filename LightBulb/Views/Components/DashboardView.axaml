@@ -17,7 +17,6 @@
             Grid.Column="0"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Background="Transparent"
             FontSize="19"
             FontWeight="Light"
             TextAlignment="Center">
@@ -120,7 +119,6 @@
                 Margin="0,50,0,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
-                Background="Transparent"
                 Cursor="Hand"
                 IsVisible="{Binding IsOffsetEnabled}"
                 Orientation="Horizontal"
@@ -153,16 +151,12 @@
             <StackPanel
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Background="Transparent"
                 Orientation="Horizontal">
                 <materialIcons:MaterialIcon
                     Width="48"
                     Height="48"
                     Kind="{Binding CycleState, Converter={x:Static converters:CycleStateToMaterialIconKindConverter.Instance}, Mode=OneWay}" />
-                <TextBlock
-                    Margin="8,0,0,0"
-                    VerticalAlignment="Center"
-                    FontSize="20">
+                <TextBlock Margin="8,0,0,0" FontSize="20">
                     <Run Text="{Binding CurrentConfiguration.Temperature, StringFormat=\{0:F0\} K, Mode=OneWay}" />
                     <LineBreak />
                     <Run Text="{Binding CurrentConfiguration.Brightness, StringFormat=\{0:P0\}, Mode=OneWay}" />
@@ -192,7 +186,6 @@
             Grid.Column="2"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Background="Transparent"
             FontSize="19"
             FontWeight="Light"
             TextAlignment="Center">

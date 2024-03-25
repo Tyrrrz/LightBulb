@@ -9,99 +9,81 @@
 
     <StackPanel Orientation="Vertical">
         <!--  Auto start  -->
-        <Grid
-            Margin="16,8"
-            ColumnDefinitions="*,Auto"
-            ToolTip.Tip="Launch LightBulb at Windows startup">
+        <DockPanel Margin="16,8" ToolTip.Tip="Launch LightBulb at Windows startup">
             <TextBlock
-                Grid.Column="0"
                 VerticalAlignment="Center"
+                DockPanel.Dock="Left"
                 Text="Start with Windows" />
             <ToggleSwitch
-                Grid.Column="1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
+                DockPanel.Dock="Right"
                 IsChecked="{Binding IsAutoStartEnabled}" />
-        </Grid>
+        </DockPanel>
 
         <!--  Auto update  -->
-        <Grid
-            Margin="16,8"
-            ColumnDefinitions="*,Auto"
-            ToolTip.Tip="Keep LightBulb updated by automatically installing new versions as they become available">
+        <DockPanel Margin="16,8" ToolTip.Tip="Keep LightBulb updated by automatically installing new versions as they become available">
             <TextBlock
-                Grid.Column="0"
                 VerticalAlignment="Center"
+                DockPanel.Dock="Left"
                 Text="Auto-update" />
             <ToggleSwitch
-                Grid.Column="1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
+                DockPanel.Dock="Right"
                 IsChecked="{Binding IsAutoUpdateEnabled}" />
-        </Grid>
+        </DockPanel>
 
         <!--  Default to day time  -->
-        <Grid
-            Margin="16,8"
-            ColumnDefinitions="*,Auto"
-            ToolTip.Tip="When LightBulb is disabled or paused, restore the configured day-time temperature and brightness instead of the default monitor gamma">
+        <DockPanel Margin="16,8" ToolTip.Tip="When LightBulb is disabled or paused, restore the configured day-time temperature and brightness instead of the default monitor gamma">
             <TextBlock
-                Grid.Column="0"
                 VerticalAlignment="Center"
+                DockPanel.Dock="Left"
                 Text="Default to day-time configuration" />
             <ToggleSwitch
-                Grid.Column="1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
+                DockPanel.Dock="Right"
                 IsChecked="{Binding IsDefaultToDayConfigurationEnabled}" />
-        </Grid>
+        </DockPanel>
 
         <!--  Pause when full screen  -->
-        <Grid
-            Margin="16,8"
-            ColumnDefinitions="*,Auto"
-            ToolTip.Tip="Pause LightBulb when any fullscreen window is in the foreground">
+        <DockPanel Margin="16,8" ToolTip.Tip="Pause LightBulb when any fullscreen window is in the foreground">
             <TextBlock
-                Grid.Column="0"
                 VerticalAlignment="Center"
+                DockPanel.Dock="Left"
                 Text="Pause when fullscreen" />
             <ToggleSwitch
-                Grid.Column="1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
+                DockPanel.Dock="Right"
                 IsChecked="{Binding IsPauseWhenFullScreenEnabled}" />
-        </Grid>
+        </DockPanel>
 
         <!--  Configuration smoothing  -->
-        <Grid
-            Margin="16,8"
-            ColumnDefinitions="*,Auto"
-            ToolTip.Tip="Transition slowly when enabling or disabling LightBulb to give time for eyes to adjust">
+        <DockPanel Margin="16,8" ToolTip.Tip="Transition slowly when enabling or disabling LightBulb to give time for eyes to adjust">
             <TextBlock
-                Grid.Column="0"
                 VerticalAlignment="Center"
+                DockPanel.Dock="Left"
                 Text="Gamma smoothing" />
             <ToggleSwitch
-                Grid.Column="1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
+                DockPanel.Dock="Right"
                 IsChecked="{Binding IsConfigurationSmoothingEnabled}" />
-        </Grid>
+        </DockPanel>
 
         <!--  Gamma polling  -->
-        <Grid
-            Margin="16,8"
-            ColumnDefinitions="*,Auto"
-            ToolTip.Tip="Force-refresh gamma at regular intervals to make sure it doesn't get overriden by other programs">
+        <DockPanel Margin="16,8" ToolTip.Tip="Force-refresh gamma at regular intervals to make sure it doesn't get overriden by other programs">
             <TextBlock
-                Grid.Column="0"
                 VerticalAlignment="Center"
+                DockPanel.Dock="Left"
                 Text="Gamma polling" />
             <ToggleSwitch
-                Grid.Column="1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
+                DockPanel.Dock="Right"
                 IsChecked="{Binding IsGammaPollingEnabled}" />
-        </Grid>
+        </DockPanel>
     </StackPanel>
 </UserControl>

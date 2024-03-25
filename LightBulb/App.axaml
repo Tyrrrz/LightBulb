@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:framework="clr-namespace:LightBulb.Framework"
+    xmlns:materialAssists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles">
     <Application.DataTemplates>
@@ -20,6 +21,14 @@
             <Setter Property="DialogMargin" Value="0" />
         </Style>
 
+        <!--  Radio button  -->
+        <Style Selector="RadioButton">
+            <Style Selector="^ Ellipse#PART_HoverEffect">
+                <Setter Property="Width" Value="32" />
+                <Setter Property="Height" Value="32" />
+            </Style>
+        </Style>
+
         <!--  Slider  -->
         <Style Selector="Slider">
             <Style Selector="^ Border#PART_InactiveState">
@@ -27,14 +36,38 @@
             </Style>
 
             <Style Selector="^ Border#PART_HoverEffect">
-                <Setter Property="Width" Value="28" />
-                <Setter Property="Height" Value="28" />
+                <Setter Property="Width" Value="32" />
+                <Setter Property="Height" Value="32" />
             </Style>
 
             <Style Selector="^ Border#PART_ThumbGrip">
                 <Setter Property="Width" Value="16" />
                 <Setter Property="Height" Value="16" />
             </Style>
+        </Style>
+
+        <!--  Text box  -->
+        <Style Selector="TextBox">
+            <Style Selector="^ Panel#PART_TextFieldPanel">
+                <Setter Property="MinHeight" Value="0" />
+            </Style>
+
+            <Style Selector="^ Panel#PART_TextContainer">
+                <Setter Property="Margin" Value="0" />
+            </Style>
+        </Style>
+
+        <!--  Tooltip  -->
+        <Style Selector="ToolTip">
+            <Setter Property="TextElement.FontSize" Value="13" />
+            <Setter Property="TextElement.FontWeight" Value="Normal" />
+            <Setter Property="TextElement.FontStyle" Value="Normal" />
+            <Setter Property="TextElement.FontStretch" Value="Normal" />
+        </Style>
+
+        <!--  Toggle switch  -->
+        <Style Selector="ToggleSwitch">
+            <Setter Property="materialAssists:ToggleSwitchAssist.SwitchThumbOffBackground" Value="{DynamicResource MaterialBackgroundBrush}" />
         </Style>
     </Application.Styles>
 
@@ -48,7 +81,6 @@
                     <NativeMenu>
                         <NativeMenuItem Click="TrayIcon_OnClicked" Header="Open" />
                         <NativeMenuItem Click="ShowSettingsMenuItem_OnClick" Header="Settings" />
-                        <NativeMenuItem Click="AboutMenuItem_OnClick" Header="About" />
                         <NativeMenuItemSeparator />
 
                         <NativeMenuItem Click="ToggleMenuItem_OnClick" Header="Toggle" />

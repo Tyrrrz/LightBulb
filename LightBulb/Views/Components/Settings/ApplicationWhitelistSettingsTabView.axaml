@@ -50,7 +50,7 @@
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
             ScrollViewer.VerticalScrollBarVisibility="Hidden"
             SelectedItems="{Binding WhitelistedApplications}"
-            SelectionMode="Multiple">
+            SelectionMode="Multiple, Toggle">
             <ListBox.ItemContainerTheme>
                 <ControlTheme BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
                     <Setter Property="Padding" Value="0,4" />
@@ -58,8 +58,8 @@
             </ListBox.ItemContainerTheme>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <!--  HACK: show a checkbox that does nothing but reflects row selection  -->
                     <Panel Background="Transparent" ToolTip.Tip="{Binding ExecutableFilePath}">
+                        <!--  HACK: show a checkbox that does nothing but reflects row selection  -->
                         <CheckBox
                             Content="{Binding Name}"
                             IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Mode=OneWay}"

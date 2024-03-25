@@ -95,9 +95,6 @@ public class App : Application, IDisposable
         _mainViewModel.ShowSettingsCommand.Execute(null);
     }
 
-    private void AboutMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.ShowAboutCommand.Execute(null);
-
     private void ToggleMenuItem_OnClick(object? sender, EventArgs args) =>
         _mainViewModel.Dashboard.IsEnabled = !_mainViewModel.Dashboard.IsEnabled;
 
