@@ -25,7 +25,7 @@ public partial class MainView : Window<MainViewModel>
     private void DialogHost_OnLoaded(object? sender, RoutedEventArgs args) =>
         DataContext.InitializeCommand.Execute(null);
 
-    private void Header_OnPointerPressed(object? sender, PointerPressedEventArgs args) =>
+    private void HeaderBorder_OnPointerPressed(object? sender, PointerPressedEventArgs args) =>
         BeginMoveDrag(args);
 
     private void HideButton_OnClick(object sender, RoutedEventArgs args) => Hide();

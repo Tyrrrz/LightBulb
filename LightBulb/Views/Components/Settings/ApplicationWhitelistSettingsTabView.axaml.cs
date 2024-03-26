@@ -35,6 +35,9 @@ public partial class ApplicationWhitelistSettingsTabView
         );
     }
 
+    private void UserControl_OnUnloaded(object? sender, RoutedEventArgs args) =>
+        _disposablePool.Dispose();
+
     // This hack is required to avoid having to use an ObservableCollection<T> on the view model
     private void WhitelistedApplicationsListBox_OnSelectionChanged(
         object? sender,

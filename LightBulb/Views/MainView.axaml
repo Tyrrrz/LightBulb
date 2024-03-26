@@ -20,18 +20,15 @@
     </Design.DataContext>
 
     <Border BorderBrush="{DynamicResource MaterialPrimaryLightBrush}" BorderThickness="1">
-        <dialogHostAvalonia:DialogHost
-            x:Name="DialogHost"
-            CloseOnClickAway="False"
-            Loaded="DialogHost_OnLoaded">
+        <dialogHostAvalonia:DialogHost CloseOnClickAway="False" Loaded="DialogHost_OnLoaded">
             <Grid IsEnabled="{Binding !$parent[dialogHostAvalonia:DialogHost].IsOpen}" RowDefinitions="Auto,*,Auto">
                 <!--  Header  -->
                 <Border
-                    x:Name="Header"
+                    x:Name="HeaderBorder"
                     Grid.Row="0"
                     Padding="8,12"
                     Background="{DynamicResource MaterialPrimaryMidBrush}"
-                    PointerPressed="Header_OnPointerPressed">
+                    PointerPressed="HeaderBorder_OnPointerPressed">
                     <Grid ColumnDefinitions="Auto,Auto,*,Auto">
                         <!--  On/Off button and logo  -->
                         <ToggleButton
