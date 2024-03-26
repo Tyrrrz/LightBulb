@@ -56,7 +56,7 @@
                 Background="{DynamicResource MaterialCardBackgroundBrush}"
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto">
-                <ContentControl Margin="16,16,24,24" Content="{Binding ActiveTab}" />
+                <ContentControl Margin="0,0,8,16" Content="{Binding ActiveTab}" />
             </ScrollViewer>
 
             <!--  Separator  -->

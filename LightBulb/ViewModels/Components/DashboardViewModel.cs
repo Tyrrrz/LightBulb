@@ -7,12 +7,13 @@ using LightBulb.Core.Utils.Extensions;
 using LightBulb.Framework;
 using LightBulb.Models;
 using LightBulb.Services;
+using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
 using LightBulb.WindowsApi;
 
 namespace LightBulb.ViewModels.Components;
 
-public partial class DashboardViewModel : ViewModelBase, IDisposable
+public partial class DashboardViewModel : ViewModelBase
 {
     private readonly SettingsService _settingsService;
     private readonly GammaService _gammaService;
@@ -23,7 +24,7 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
     private readonly Timer _updateConfigurationTimer;
     private readonly Timer _updateIsPausedTimer;
 
-    private readonly IDisposable _eventPool;
+    private readonly DisposablePool _disposablePool = new();
 
     private IDisposable? _enableAfterDelayRegistration;
 
@@ -161,8 +162,7 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
         _updateIsPausedTimer = new Timer(TimeSpan.FromSeconds(1), UpdateIsPaused);
 
         // Watch property changes on other objects
-        _eventPool = new[]
-        {
+        _disposablePool.Add(
             // Cancel 'disable temporarily' when switching to enabled
             this.WatchProperty(
                 o => o.IsEnabled,
@@ -172,14 +172,7 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
                         _enableAfterDelayRegistration?.Dispose();
                 }
             )
-        }.Aggregate();
-
-        // Handle settings changes
-        _settingsService.SettingsSaved += (_, _) =>
-        {
-            OnAllPropertiesChanged();
-            RegisterHotKeys();
-        };
+        );
     }
 
     private void RegisterHotKeys()
@@ -350,14 +343,19 @@ public partial class DashboardViewModel : ViewModelBase, IDisposable
         BrightnessOffset = 0;
     }
 
-    public void Dispose()
+    protected override void Dispose(bool disposing)
     {
-        _updateInstantTimer.Dispose();
-        _updateConfigurationTimer.Dispose();
-        _updateIsPausedTimer.Dispose();
+        if (disposing)
+        {
+            _updateInstantTimer.Dispose();
+            _updateConfigurationTimer.Dispose();
+            _updateIsPausedTimer.Dispose();
 
-        _eventPool.Dispose();
+            _disposablePool.Dispose();
 
-        _enableAfterDelayRegistration?.Dispose();
+            _enableAfterDelayRegistration?.Dispose();
+        }
+
+        base.Dispose(disposing);
     }
 }

@@ -9,10 +9,10 @@
         <settings:LocationSettingsTabViewModel />
     </Design.DataContext>
 
-    <StackPanel Orientation="Vertical">
+    <StackPanel Margin="16" Orientation="Vertical">
         <!--  Manual/location-based configuration  -->
         <TextBlock Text="Solar configuration:" />
-        <DockPanel Margin="0,4,0,0">
+        <DockPanel Margin="0,8,0,0">
             <RadioButton
                 Content="Manual"
                 DockPanel.Dock="Left"
@@ -28,14 +28,13 @@
 
         <!--  Manual  -->
         <StackPanel
-            Margin="0,16,0,0"
+            Margin="0,24,0,0"
             IsVisible="{Binding IsManualSunriseSunsetEnabled}"
             Orientation="Vertical">
             <!--  Sunrise time  -->
             <DockPanel>
                 <TextBlock DockPanel.Dock="Left" Text="Sunrise:" />
                 <TextBox
-                    Height="20"
                     MinWidth="24"
                     HorizontalAlignment="Right"
                     BorderBrush="{DynamicResource MaterialDividerBrush}"
@@ -43,7 +42,7 @@
                     Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
             </DockPanel>
             <Slider
-                Margin="0,8,0,0"
+                Margin="0,12,0,0"
                 LargeChange="0.5"
                 Maximum="23.99999"
                 Minimum="0"
@@ -54,7 +53,6 @@
             <DockPanel Margin="0,16,0,0">
                 <TextBlock DockPanel.Dock="Left" Text="Sunset:" />
                 <TextBox
-                    Height="20"
                     MinWidth="24"
                     HorizontalAlignment="Right"
                     BorderBrush="{DynamicResource MaterialDividerBrush}"
@@ -62,7 +60,7 @@
                     Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
             </DockPanel>
             <Slider
-                Margin="0,8,0,0"
+                Margin="0,12,0,0"
                 LargeChange="0.5"
                 Maximum="23.99999"
                 Minimum="0"
@@ -71,13 +69,31 @@
         </StackPanel>
 
         <!--  Location-based  -->
-        <StackPanel IsVisible="{Binding !IsManualSunriseSunsetEnabled}" Orientation="Vertical">
+        <StackPanel
+            Margin="0,24,0,0"
+            IsVisible="{Binding !IsManualSunriseSunsetEnabled}"
+            Orientation="Vertical">
             <!--  Location  -->
             <TextBlock Text="Your location:" />
-            <Grid Margin="0,0,0,8" ColumnDefinitions="*,Auto,Auto">
+            <Grid Margin="0,8,0,0" ColumnDefinitions="Auto,*,Auto">
+                <!--  Autodetect  -->
+                <Button
+                    Grid.Column="0"
+                    Padding="4"
+                    VerticalAlignment="Center"
+                    Command="{Binding AutoResolveLocationCommand}"
+                    Theme="{DynamicResource MaterialFlatButton}"
+                    ToolTip.Tip="Try to detect the location automatically based on your IP address">
+                    <materialIcons:MaterialIcon
+                        Width="24"
+                        Height="24"
+                        Kind="Location" />
+                </Button>
+
                 <!--  Location query  -->
                 <TextBox
-                    Grid.Column="0"
+                    Grid.Column="1"
+                    Margin="8,0"
                     VerticalAlignment="Center"
                     IsEnabled="{Binding !IsBusy}"
                     Text="{Binding LocationQuery}">
@@ -99,28 +115,14 @@
                     </ToolTip.Tip>
                 </TextBox>
 
-                <!--  Autodetect  -->
-                <Button
-                    Grid.Column="1"
-                    Margin="8,0,0,0"
-                    Padding="4"
-                    VerticalAlignment="Center"
-                    Command="{Binding AutoResolveLocationCommand}"
-                    ToolTip.Tip="Try to detect the location automatically based on your IP address">
-                    <materialIcons:MaterialIcon
-                        Width="24"
-                        Height="24"
-                        Kind="Location" />
-                </Button>
-
                 <!--  Set  -->
                 <Button
                     Grid.Column="2"
-                    Margin="8,0,0,0"
                     Padding="4"
                     VerticalAlignment="Center"
                     Command="{Binding ResolveLocationCommand}"
                     IsDefault="True"
+                    Theme="{DynamicResource MaterialFlatButton}"
                     ToolTip.Tip="Set location">
                     <materialIcons:MaterialIcon
                         Width="24"
@@ -128,13 +130,6 @@
                         Kind="Tick" />
                 </Button>
             </Grid>
-
-            <!--  Location progress  -->
-            <ProgressBar
-                Margin="6,0"
-                Background="Transparent"
-                IsIndeterminate="True"
-                IsVisible="{Binding IsBusy}" />
 
             <!--  Location error  -->
             <TextBlock

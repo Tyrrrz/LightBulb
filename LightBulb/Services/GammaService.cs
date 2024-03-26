@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reactive.Disposables;
 using LightBulb.Core;
+using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
 using LightBulb.WindowsApi;
 
@@ -11,7 +12,7 @@ namespace LightBulb.Services;
 public partial class GammaService : IDisposable
 {
     private readonly SettingsService _settingsService;
-    private readonly IDisposable _eventPool;
+    private readonly DisposablePool _disposablePool = new();
 
     private bool _isUpdatingGamma;
 
@@ -27,36 +28,59 @@ public partial class GammaService : IDisposable
         _settingsService = settingsService;
 
         // Register for all system events that may indicate that the device context or gamma was changed from outside
-        _eventPool = new[]
-        {
+        _disposablePool.Add(
             // https://github.com/Tyrrrz/LightBulb/issues/223
             SystemHook.TryRegister(SystemHook.ForegroundWindowChanged, InvalidateGamma)
-                ?? Disposable.Empty,
+                ?? Disposable.Empty
+        );
+
+        _disposablePool.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.ConsoleDisplayStateChanged,
                 InvalidateGamma
-            ) ?? Disposable.Empty,
+            ) ?? Disposable.Empty
+        );
+
+        _disposablePool.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.PowerSavingStatusChanged,
                 InvalidateGamma
-            ) ?? Disposable.Empty,
+            ) ?? Disposable.Empty
+        );
+
+        _disposablePool.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.SessionDisplayStatusChanged,
                 InvalidateGamma
-            ) ?? Disposable.Empty,
+            ) ?? Disposable.Empty
+        );
+
+        _disposablePool.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.MonitorPowerStateChanged,
                 InvalidateGamma
-            ) ?? Disposable.Empty,
+            ) ?? Disposable.Empty
+        );
+
+        _disposablePool.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.AwayModeChanged,
                 InvalidateGamma
-            ) ?? Disposable.Empty,
-            SystemEvent.Register(SystemEvent.Ids.DisplayChanged, InvalidateDeviceContexts),
-            SystemEvent.Register(SystemEvent.Ids.PaletteChanged, InvalidateDeviceContexts),
-            SystemEvent.Register(SystemEvent.Ids.SettingsChanged, InvalidateDeviceContexts),
+            ) ?? Disposable.Empty
+        );
+
+        _disposablePool.Add(
+            SystemEvent.Register(SystemEvent.Ids.DisplayChanged, InvalidateDeviceContexts)
+        );
+        _disposablePool.Add(
+            SystemEvent.Register(SystemEvent.Ids.PaletteChanged, InvalidateDeviceContexts)
+        );
+        _disposablePool.Add(
+            SystemEvent.Register(SystemEvent.Ids.SettingsChanged, InvalidateDeviceContexts)
+        );
+        _disposablePool.Add(
             SystemEvent.Register(SystemEvent.Ids.SystemColorsChanged, InvalidateDeviceContexts)
-        }.Aggregate();
+        );
     }
 
     private void InvalidateGamma()
@@ -151,7 +175,7 @@ public partial class GammaService : IDisposable
         foreach (var deviceContext in _deviceContexts)
             deviceContext.ResetGamma();
 
-        _eventPool.Dispose();
+        _disposablePool.Dispose();
         _deviceContexts.DisposeAll();
     }
 }

@@ -9,9 +9,9 @@
         <settings:ApplicationWhitelistSettingsTabViewModel />
     </Design.DataContext>
 
-    <StackPanel Orientation="Vertical">
+    <StackPanel Margin="16" Orientation="Vertical">
         <!--  Is enabled  -->
-        <Grid Margin="16,8" ColumnDefinitions="*,Auto,Auto">
+        <Grid ColumnDefinitions="*,Auto,Auto">
             <!--  Label  -->
             <TextBlock
                 Grid.Column="0"
@@ -45,13 +45,14 @@
 
         <!--  Whitelisted applications  -->
         <ListBox
-            Margin="16,0"
+            x:Name="WhitelistedApplicationsListBox"
+            Margin="0,8,0,0"
             IsEnabled="{Binding IsApplicationWhitelistEnabled}"
             ItemsSource="{Binding AvailableApplications}"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
             ScrollViewer.VerticalScrollBarVisibility="Hidden"
-            SelectedItems="{Binding WhitelistedApplications}"
-            SelectionMode="Multiple, Toggle">
+            SelectionChanged="WhitelistedApplicationsListBox_OnSelectionChanged"
+            SelectionMode="Multiple,Toggle">
             <ListBox.ItemContainerTheme>
                 <ControlTheme BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
                     <Setter Property="Padding" Value="0,4" />
@@ -60,10 +61,10 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Panel Background="Transparent" ToolTip.Tip="{Binding ExecutableFilePath}">
-                        <!--  HACK: show a checkbox that does nothing but reflects row selection  -->
+                        <!--  HACK: show a checkbox that does nothing but reflects the row selection status  -->
                         <CheckBox
                             Content="{Binding Name}"
-                            IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Mode=OneWay}"
+                            IsChecked="{Binding $parent[ListBoxItem].IsSelected, Mode=OneWay}"
                             IsHitTestVisible="False" />
                     </Panel>
                 </DataTemplate>

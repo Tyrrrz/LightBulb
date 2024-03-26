@@ -10,7 +10,7 @@ using LightBulb.WindowsApi;
 
 namespace LightBulb.ViewModels;
 
-public partial class MainViewModel : ViewModelBase, IDisposable
+public partial class MainViewModel : ViewModelBase
 {
     private readonly ViewModelProvider _viewModelProvider;
     private readonly DialogManager _dialogManager;
@@ -129,11 +129,24 @@ public partial class MainViewModel : ViewModelBase, IDisposable
     }
 
     [RelayCommand]
-    private async Task ShowSettingsAsync() =>
+    private async Task ShowSettingsAsync()
+    {
         await _dialogManager.ShowDialogAsync(_viewModelProvider.GetSettingsViewModel());
+
+        // Re-initialize timers, hotkeys, and other stateful components
+        Dashboard.InitializeCommand.Execute(null);
+    }
 
     [RelayCommand]
     private void ShowAbout() => ProcessEx.StartShellExecute(Program.ProjectUrl);
 
-    public void Dispose() => _checkForUpdatesTimer.Dispose();
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _checkForUpdatesTimer.Dispose();
+        }
+
+        base.Dispose(disposing);
+    }
 }

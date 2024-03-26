@@ -7,9 +7,9 @@
         <settings:AdvancedSettingsTabViewModel />
     </Design.DataContext>
 
-    <StackPanel Orientation="Vertical">
+    <StackPanel Margin="16" Orientation="Vertical">
         <!--  Auto start  -->
-        <DockPanel Margin="16,8" ToolTip.Tip="Launch LightBulb at Windows startup">
+        <DockPanel ToolTip.Tip="Launch LightBulb at Windows startup">
             <TextBlock
                 VerticalAlignment="Center"
                 DockPanel.Dock="Left"
@@ -22,7 +22,7 @@
         </DockPanel>
 
         <!--  Auto update  -->
-        <DockPanel Margin="16,8" ToolTip.Tip="Keep LightBulb updated by automatically installing new versions as they become available">
+        <DockPanel Margin="0,16,0,0" ToolTip.Tip="Keep LightBulb updated by automatically installing new versions as they become available">
             <TextBlock
                 VerticalAlignment="Center"
                 DockPanel.Dock="Left"
@@ -35,7 +35,7 @@
         </DockPanel>
 
         <!--  Default to day time  -->
-        <DockPanel Margin="16,8" ToolTip.Tip="When LightBulb is disabled or paused, restore the configured day-time temperature and brightness instead of the default monitor gamma">
+        <DockPanel Margin="0,16,0,0" ToolTip.Tip="When LightBulb is disabled or paused, restore the configured day-time temperature and brightness instead of the default monitor gamma">
             <TextBlock
                 VerticalAlignment="Center"
                 DockPanel.Dock="Left"
@@ -48,7 +48,7 @@
         </DockPanel>
 
         <!--  Pause when full screen  -->
-        <DockPanel Margin="16,8" ToolTip.Tip="Pause LightBulb when any fullscreen window is in the foreground">
+        <DockPanel Margin="0,16,0,0" ToolTip.Tip="Pause LightBulb when any fullscreen window is in the foreground">
             <TextBlock
                 VerticalAlignment="Center"
                 DockPanel.Dock="Left"
@@ -61,7 +61,7 @@
         </DockPanel>
 
         <!--  Configuration smoothing  -->
-        <DockPanel Margin="16,8" ToolTip.Tip="Transition slowly when enabling or disabling LightBulb to give time for eyes to adjust">
+        <DockPanel Margin="0,16,0,0" ToolTip.Tip="Transition slowly when enabling or disabling LightBulb to give time for eyes to adjust">
             <TextBlock
                 VerticalAlignment="Center"
                 DockPanel.Dock="Left"
@@ -74,7 +74,7 @@
         </DockPanel>
 
         <!--  Gamma polling  -->
-        <DockPanel Margin="16,8" ToolTip.Tip="Force-refresh gamma at regular intervals to make sure it doesn't get overriden by other programs">
+        <DockPanel Margin="0,16,0,0" ToolTip.Tip="Force-refresh gamma at regular intervals to make sure it doesn't get overriden by other programs">
             <TextBlock
                 VerticalAlignment="Center"
                 DockPanel.Dock="Left"

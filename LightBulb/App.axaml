@@ -72,6 +72,7 @@
 
         <!--  Text box  -->
         <Style Selector="TextBox">
+            <Setter Property="Height" Value="20" />
             <Setter Property="FontSize" Value="14" />
 
             <Style Selector="^ Panel#PART_TextFieldPanel">

@@ -127,9 +127,11 @@
                     <TextBlock>
                         <Run Text="Current temperature and brightness values are adjusted by an offset:" />
                         <LineBreak />
+                        <Run Text=" " />
                         <Run Text="Temperature offset:" />
                         <Run Text="{Binding TemperatureOffset, StringFormat=\{0:F0\} K, Mode=OneWay}" />
                         <LineBreak />
+                        <Run Text=" " />
                         <Run Text="Brightness offset:" />
                         <Run Text="{Binding BrightnessOffset, StringFormat=\{0:P0\}, Mode=OneWay}" />
                         <LineBreak />

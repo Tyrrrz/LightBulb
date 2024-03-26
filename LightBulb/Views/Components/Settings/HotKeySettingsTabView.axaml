@@ -8,9 +8,9 @@
         <settings:HotKeySettingsTabViewModel />
     </Design.DataContext>
 
-    <StackPanel Orientation="Vertical">
+    <StackPanel Margin="16" Orientation="Vertical">
         <!--  Toggle hotkey  -->
-        <DockPanel Margin="16,8">
+        <DockPanel>
             <TextBlock
                 DockPanel.Dock="Left"
                 Text="Toggle LightBulb"
@@ -19,12 +19,11 @@
                 Width="120"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                HotKey="{Binding ToggleHotKey}"
-                TextAlignment="Center" />
+                HotKey="{Binding ToggleHotKey}" />
         </DockPanel>
 
         <!--  Increase temperature offset hotkey  -->
-        <DockPanel Margin="16,8">
+        <DockPanel Margin="0,16,0,0">
             <TextBlock
                 DockPanel.Dock="Left"
                 Text="Temperature offset ↑"
@@ -33,12 +32,11 @@
                 Width="120"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                HotKey="{Binding IncreaseTemperatureOffsetHotKey}"
-                TextAlignment="Center" />
+                HotKey="{Binding IncreaseTemperatureOffsetHotKey}" />
         </DockPanel>
 
         <!--  Decrease temperature offset hotkey  -->
-        <DockPanel Margin="16,8">
+        <DockPanel Margin="0,16,0,0">
             <TextBlock
                 DockPanel.Dock="Left"
                 Text="Temperature offset ↓"
@@ -47,12 +45,11 @@
                 Width="120"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                HotKey="{Binding DecreaseTemperatureOffsetHotKey}"
-                TextAlignment="Center" />
+                HotKey="{Binding DecreaseTemperatureOffsetHotKey}" />
         </DockPanel>
 
         <!--  Increase brightness offset hotkey  -->
-        <DockPanel Margin="16,8">
+        <DockPanel Margin="0,16,0,0">
             <TextBlock
                 DockPanel.Dock="Left"
                 Text="Brightness offset ↑"
@@ -61,12 +58,11 @@
                 Width="120"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                HotKey="{Binding IncreaseBrightnessOffsetHotKey}"
-                TextAlignment="Center" />
+                HotKey="{Binding IncreaseBrightnessOffsetHotKey}" />
         </DockPanel>
 
         <!--  Decrease brightness offset hotkey  -->
-        <DockPanel Margin="16,8">
+        <DockPanel Margin="0,16,0,0">
             <TextBlock
                 DockPanel.Dock="Left"
                 Text="Brightness offset ↓"
@@ -75,12 +71,11 @@
                 Width="120"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                HotKey="{Binding DecreaseBrightnessOffsetHotKey}"
-                TextAlignment="Center" />
+                HotKey="{Binding DecreaseBrightnessOffsetHotKey}" />
         </DockPanel>
 
         <!--  Reset offset hotkey  -->
-        <DockPanel Margin="16,8">
+        <DockPanel Margin="0,16,0,0">
             <TextBlock
                 DockPanel.Dock="Left"
                 Text="Reset offset"
@@ -89,8 +84,7 @@
                 Width="120"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                HotKey="{Binding ResetConfigurationOffsetHotKey}"
-                TextAlignment="Center" />
+                HotKey="{Binding ResetConfigurationOffsetHotKey}" />
         </DockPanel>
     </StackPanel>
 </UserControl>

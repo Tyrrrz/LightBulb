@@ -4,13 +4,14 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Core;
 using LightBulb.Services;
+using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
-public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase, IDisposable
+public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
 {
-    private readonly IDisposable _eventPool;
+    private readonly DisposablePool _disposablePool = new();
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AutoResolveLocationCommand))]
@@ -23,6 +24,14 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase, ID
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ResolveLocationCommand))]
     private string? _locationQuery;
+
+    public LocationSettingsTabViewModel(SettingsService settingsService)
+        : base(settingsService, 1, "Location")
+    {
+        _disposablePool.Add(
+            this.WatchProperty(o => o.Location, () => LocationQuery = Location?.ToString())
+        );
+    }
 
     public bool IsManualSunriseSunsetEnabled
     {
@@ -46,20 +55,6 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase, ID
     {
         get => SettingsService.Location;
         set => SettingsService.Location = value;
-    }
-
-    public LocationSettingsTabViewModel(SettingsService settingsService)
-        : base(settingsService, 1, "Location")
-    {
-        // Watch property changes on other objects
-        _eventPool = new[]
-        {
-            // Update the location query when the actual location changes
-            settingsService.WatchProperty(
-                o => o.Location,
-                () => LocationQuery = Location?.ToString()
-            )
-        }.Aggregate();
     }
 
     private bool CanAutoResolveLocation() => !IsBusy;
@@ -120,5 +115,13 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase, ID
         }
     }
 
-    public void Dispose() => _eventPool.Dispose();
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _disposablePool.Dispose();
+        }
+
+        base.Dispose(disposing);
+    }
 }

@@ -2,17 +2,21 @@
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Input;
-using Avalonia.Styling;
 using LightBulb.Models;
 
 namespace LightBulb.Views.Controls;
 
-public class HotKeyTextBox : TextBox
+public partial class HotKeyTextBox : UserControl
 {
     public static readonly StyledProperty<HotKey> HotKeyProperty = AvaloniaProperty.Register<
         HotKeyTextBox,
         HotKey
     >(nameof(HotKey), defaultBindingMode: BindingMode.TwoWay);
+
+    public HotKeyTextBox()
+    {
+        InitializeComponent();
+    }
 
     public HotKey HotKey
     {
@@ -20,15 +24,7 @@ public class HotKeyTextBox : TextBox
         set => SetValue(HotKeyProperty, value);
     }
 
-    public HotKeyTextBox()
-    {
-        IsReadOnly = true;
-        IsUndoEnabled = false;
-
-        Text = HotKey.ToString();
-    }
-
-    protected override void OnKeyDown(KeyEventArgs args)
+    private void TextBox_OnKeyDown(object? sender, KeyEventArgs args)
     {
         args.Handled = true;
 
@@ -77,7 +73,7 @@ public class HotKeyTextBox : TextBox
         // Don't allow character keys to be used as hotkeys without modifiers or with Shift
         if (
             key.ToQwertyKeySymbol() is not null
-            && (modifiers == KeyModifiers.None || modifiers.HasFlag(KeyModifiers.Shift))
+            && modifiers is KeyModifiers.None or KeyModifiers.Shift
         )
         {
             return;

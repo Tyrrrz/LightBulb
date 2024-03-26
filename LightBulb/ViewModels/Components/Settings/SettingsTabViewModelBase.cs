@@ -1,19 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Framework;
 using LightBulb.Services;
+using LightBulb.Utils;
+using LightBulb.Utils.Extensions;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
 public abstract partial class SettingsTabViewModelBase : ViewModelBase
 {
+    private readonly DisposablePool _disposablePool = new();
+
     [ObservableProperty]
     private bool _isActive;
-
-    protected SettingsService SettingsService { get; }
-
-    public int Order { get; }
-
-    public string DisplayName { get; }
 
     protected SettingsTabViewModelBase(
         SettingsService settingsService,
@@ -25,8 +23,26 @@ public abstract partial class SettingsTabViewModelBase : ViewModelBase
         Order = order;
         DisplayName = displayName;
 
-        SettingsService.SettingsReset += (_, _) => OnAllPropertiesChanged();
-        SettingsService.SettingsLoaded += (_, _) => OnAllPropertiesChanged();
-        SettingsService.SettingsSaved += (_, _) => OnAllPropertiesChanged();
+        _disposablePool.Add(
+            // Implementing classes will bind to settings properties through
+            // their own properties, so make sure they stay in sync.
+            SettingsService.WatchAllProperties(OnAllPropertiesChanged)
+        );
+    }
+
+    protected SettingsService SettingsService { get; }
+
+    public int Order { get; }
+
+    public string DisplayName { get; }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _disposablePool.Dispose();
+        }
+
+        base.Dispose(disposing);
     }
 }

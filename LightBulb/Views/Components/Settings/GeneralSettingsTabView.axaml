@@ -8,12 +8,11 @@
         <settings:GeneralSettingsTabViewModel />
     </Design.DataContext>
 
-    <StackPanel Orientation="Vertical">
+    <StackPanel Margin="16" Orientation="Vertical">
         <!--  Day temperature  -->
         <DockPanel ToolTip.Tip="Color temperature during the day">
             <TextBlock DockPanel.Dock="Left" Text="Day-time color temperature:" />
             <TextBox
-                Height="20"
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 BorderBrush="{DynamicResource MaterialDividerBrush}"
@@ -21,7 +20,7 @@
                 Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
         </DockPanel>
         <Slider
-            Margin="0,8,0,8"
+            Margin="0,12,0,0"
             IsSnapToTickEnabled="True"
             LargeChange="500"
             Maximum="6600"
@@ -31,10 +30,9 @@
             Value="{Binding DayTemperature}" />
 
         <!--  Night temperature  -->
-        <DockPanel Margin="0,16,0,0" ToolTip.Tip="Color temperature during the night">
+        <DockPanel Margin="0,24,0,0" ToolTip.Tip="Color temperature during the night">
             <TextBlock DockPanel.Dock="Left" Text="Night-time color temperature:" />
             <TextBox
-                Height="20"
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 BorderBrush="{DynamicResource MaterialDividerBrush}"
@@ -42,7 +40,7 @@
                 Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
         </DockPanel>
         <Slider
-            Margin="0,8,0,0"
+            Margin="0,12,0,0"
             IsSnapToTickEnabled="True"
             LargeChange="500"
             Maximum="6600"
@@ -52,7 +50,7 @@
             Value="{Binding NightTemperature}" />
 
         <!--  Day brightness  -->
-        <DockPanel Margin="0,16,0,0">
+        <DockPanel Margin="0,24,0,0">
             <ToolTip.Tip>
                 <TextBlock>
                     <Run Text="Brightness during the day" />
@@ -62,12 +60,12 @@
                     <LineBreak />
                     <Run Text="If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops)," />
                     <LineBreak />
-                    <Run Text="  then it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
+                    <Run Text=" " />
+                    <Run Text="then it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
                 </TextBlock>
             </ToolTip.Tip>
             <TextBlock DockPanel.Dock="Left" Text="Day-time brightness:" />
             <TextBox
-                Height="20"
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 BorderBrush="{DynamicResource MaterialDividerBrush}"
@@ -75,7 +73,7 @@
                 Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
         </DockPanel>
         <Slider
-            Margin="0,8,0,0"
+            Margin="0,12,0,0"
             IsSnapToTickEnabled="True"
             LargeChange="0.1"
             Maximum="1"
@@ -85,7 +83,7 @@
             Value="{Binding DayBrightness}" />
 
         <!--  Night brightness  -->
-        <DockPanel Margin="0,16,0,0">
+        <DockPanel Margin="0,24,0,0">
             <ToolTip.Tip>
                 <TextBlock>
                     <Run Text="Brightness during the night" />
@@ -95,12 +93,12 @@
                     <LineBreak />
                     <Run Text="If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops)," />
                     <LineBreak />
-                    <Run Text="  then it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
+                    <Run Text=" " />
+                    <Run Text="then it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
                 </TextBlock>
             </ToolTip.Tip>
             <TextBlock DockPanel.Dock="Left" Text="Night-time brightness:" />
             <TextBox
-                Height="20"
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 BorderBrush="{DynamicResource MaterialDividerBrush}"
@@ -108,7 +106,7 @@
                 Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
         </DockPanel>
         <Slider
-            Margin="0,8,0,0"
+            Margin="0,12,0,0"
             IsSnapToTickEnabled="True"
             LargeChange="0.1"
             Maximum="1"
@@ -118,10 +116,9 @@
             Value="{Binding NightBrightness}" />
 
         <!--  Configuration transition duration  -->
-        <DockPanel Margin="0,16,0,0" ToolTip.Tip="Duration of time it takes to switch between day-time and night-time configurations">
+        <DockPanel Margin="0,24,0,0" ToolTip.Tip="Duration of time it takes to switch between day-time and night-time configurations">
             <TextBlock DockPanel.Dock="Left" Text="Transition duration:" />
             <TextBox
-                Height="20"
                 MinWidth="48"
                 HorizontalAlignment="Right"
                 BorderBrush="{DynamicResource MaterialDividerBrush}"
@@ -129,7 +126,7 @@
                 Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}}" />
         </DockPanel>
         <Slider
-            Margin="0,8,0,0"
+            Margin="0,12,0,0"
             LargeChange="0.5"
             Maximum="3"
             Minimum="0"
@@ -137,10 +134,9 @@
             Value="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToHoursDoubleConverter.Instance}}" />
 
         <!--  Configuration transition offset  -->
-        <DockPanel Margin="0,16,0,0" ToolTip.Tip="Offset that specifies how early or late the transition starts, relative to the sunrise and sunset">
+        <DockPanel Margin="0,24,0,0" ToolTip.Tip="Offset that specifies how early or late the transition starts, relative to the sunrise and sunset">
             <TextBlock DockPanel.Dock="Left" Text="Transition offset:" />
             <TextBox
-                Height="20"
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 BorderBrush="{DynamicResource MaterialDividerBrush}"
@@ -148,7 +144,7 @@
                 Text="{Binding ConfigurationTransitionOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
         </DockPanel>
         <Slider
-            Margin="0,8,0,0"
+            Margin="0,12,0,0"
             LargeChange="0.05"
             Maximum="1"
             Minimum="0"
