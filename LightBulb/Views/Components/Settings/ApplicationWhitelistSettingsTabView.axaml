@@ -21,12 +21,12 @@
             <!--  Refresh list  -->
             <Button
                 Grid.Column="1"
-                Margin="8,0"
+                Margin="8,0,0,0"
                 Padding="4"
                 VerticalAlignment="Center"
                 Command="{Binding PullAvailableApplicationsCommand}"
                 Theme="{DynamicResource MaterialFlatButton}"
-                ToolTip.Tip="Refresh the list of available applications">
+                ToolTip.Tip="Refresh running applications">
                 <materialIcons:MaterialIcon
                     Width="24"
                     Height="24"
@@ -36,10 +36,11 @@
             <!--  Toggle  -->
             <ToggleSwitch
                 Grid.Column="2"
+                Margin="8,0,0,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 IsChecked="{Binding IsApplicationWhitelistEnabled}"
-                ToolTip.Tip="Pause LightBulb when any of the selected applications are in the foreground" />
+                ToolTip.Tip="Pause LightBulb when one of the selected applications is in the foreground" />
         </Grid>
 
         <!--  Whitelisted applications  -->

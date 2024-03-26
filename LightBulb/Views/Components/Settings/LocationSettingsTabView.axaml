@@ -11,8 +11,8 @@
 
     <StackPanel Orientation="Vertical">
         <!--  Manual/location-based configuration  -->
-        <TextBlock Margin="16,8" Text="Solar configuration:" />
-        <DockPanel Margin="16,4,16,16">
+        <TextBlock Text="Solar configuration:" />
+        <DockPanel Margin="0,4,0,0">
             <RadioButton
                 Content="Manual"
                 DockPanel.Dock="Left"
@@ -27,11 +27,15 @@
         </DockPanel>
 
         <!--  Manual  -->
-        <StackPanel IsVisible="{Binding IsManualSunriseSunsetEnabled}" Orientation="Vertical">
+        <StackPanel
+            Margin="0,16,0,0"
+            IsVisible="{Binding IsManualSunriseSunsetEnabled}"
+            Orientation="Vertical">
             <!--  Sunrise time  -->
-            <DockPanel Margin="16,8">
+            <DockPanel>
                 <TextBlock DockPanel.Dock="Left" Text="Sunrise:" />
                 <TextBox
+                    Height="20"
                     MinWidth="24"
                     HorizontalAlignment="Right"
                     BorderBrush="{DynamicResource MaterialDividerBrush}"
@@ -39,7 +43,7 @@
                     Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
             </DockPanel>
             <Slider
-                Margin="16,6,16,16"
+                Margin="0,8,0,0"
                 LargeChange="0.5"
                 Maximum="23.99999"
                 Minimum="0"
@@ -47,9 +51,10 @@
                 Value="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}" />
 
             <!--  Sunset time  -->
-            <DockPanel Margin="16,8">
+            <DockPanel Margin="0,16,0,0">
                 <TextBlock DockPanel.Dock="Left" Text="Sunset:" />
                 <TextBox
+                    Height="20"
                     MinWidth="24"
                     HorizontalAlignment="Right"
                     BorderBrush="{DynamicResource MaterialDividerBrush}"
@@ -57,7 +62,7 @@
                     Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
             </DockPanel>
             <Slider
-                Margin="16,6,16,16"
+                Margin="0,8,0,0"
                 LargeChange="0.5"
                 Maximum="23.99999"
                 Minimum="0"
@@ -68,36 +73,20 @@
         <!--  Location-based  -->
         <StackPanel IsVisible="{Binding !IsManualSunriseSunsetEnabled}" Orientation="Vertical">
             <!--  Location  -->
-            <TextBlock Margin="16,8" Text="Your location:" />
-            <Grid ColumnDefinitions="Auto,*,Auto">
-                <!--  Autodetect  -->
-                <Button
-                    Grid.Column="0"
-                    Margin="16,0,0,0"
-                    Padding="4"
-                    VerticalAlignment="Center"
-                    Command="{Binding AutoResolveLocationCommand}"
-                    ToolTip.Tip="Try to detect the location automatically based on your IP address">
-                    <materialIcons:MaterialIcon
-                        Width="24"
-                        Height="24"
-                        Kind="Location" />
-                </Button>
-
+            <TextBlock Text="Your location:" />
+            <Grid Margin="0,0,0,8" ColumnDefinitions="*,Auto,Auto">
                 <!--  Location query  -->
                 <TextBox
-                    Grid.Column="1"
-                    Margin="16,0,16,6"
+                    Grid.Column="0"
                     VerticalAlignment="Center"
-                    FontSize="14"
                     IsEnabled="{Binding !IsBusy}"
                     Text="{Binding LocationQuery}">
                     <ToolTip.Tip>
                         <TextBlock>
-                            <Run Text="You can enter the coordinates directly or specify a search query" />
+                            <Run Text="Specify your location using geographic coordinates or a search query" />
                             <LineBreak />
                             <LineBreak />
-                            <Run Text="Examples of valid values:" />
+                            <Run Text="Examples of valid inputs:" />
                             <LineBreak />
                             <Run FontWeight="SemiBold" Text="41.25, -120.9762" />
                             <LineBreak />
@@ -110,10 +99,24 @@
                     </ToolTip.Tip>
                 </TextBox>
 
+                <!--  Autodetect  -->
+                <Button
+                    Grid.Column="1"
+                    Margin="8,0,0,0"
+                    Padding="4"
+                    VerticalAlignment="Center"
+                    Command="{Binding AutoResolveLocationCommand}"
+                    ToolTip.Tip="Try to detect the location automatically based on your IP address">
+                    <materialIcons:MaterialIcon
+                        Width="24"
+                        Height="24"
+                        Kind="Location" />
+                </Button>
+
                 <!--  Set  -->
                 <Button
                     Grid.Column="2"
-                    Margin="0,0,16,0"
+                    Margin="8,0,0,0"
                     Padding="4"
                     VerticalAlignment="Center"
                     Command="{Binding ResolveLocationCommand}"

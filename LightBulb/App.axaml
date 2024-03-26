@@ -23,31 +23,57 @@
 
         <!--  Radio button  -->
         <Style Selector="RadioButton">
-            <Style Selector="^ Ellipse#PART_HoverEffect">
-                <Setter Property="Width" Value="32" />
-                <Setter Property="Height" Value="32" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="materialAssists:SelectionControlAssist.Size" Value="18" />
+
+            <Style Selector="^:checked, ^:unchecked">
+                <Style Selector="^ Ellipse#PART_HoverEffect">
+                    <Setter Property="Width" Value="32" />
+                    <Setter Property="Height" Value="32" />
+                </Style>
             </Style>
         </Style>
 
         <!--  Slider  -->
         <Style Selector="Slider">
-            <Style Selector="^ Border#PART_InactiveState">
-                <Setter Property="Height" Value="2" />
+            <Style Selector="^ ProgressBar#PART_ProgressLayer">
+                <Style Selector="^:horizontal">
+                    <Style Selector="^ Panel#PART_InnerPanel">
+                        <Setter Property="Height" Value="2" />
+
+                        <Style Selector="^ Border#PART_InactiveState">
+                            <Setter Property="Margin" Value="0" />
+                            <Setter Property="Height" Value="2" />
+                        </Style>
+
+                        <Style Selector="^ Border#PART_Indicator">
+                            <Setter Property="Margin" Value="0" />
+                        </Style>
+                    </Style>
+                </Style>
             </Style>
 
-            <Style Selector="^ Border#PART_HoverEffect">
-                <Setter Property="Width" Value="32" />
-                <Setter Property="Height" Value="32" />
-            </Style>
+            <Style Selector="^ Track#PART_Track">
+                <Style Selector="^:horizontal">
+                    <Setter Property="Margin" Value="4,0" />
+                </Style>
 
-            <Style Selector="^ Border#PART_ThumbGrip">
-                <Setter Property="Width" Value="16" />
-                <Setter Property="Height" Value="16" />
+                <Style Selector="^ Border#PART_HoverEffect">
+                    <Setter Property="Width" Value="24" />
+                    <Setter Property="Height" Value="24" />
+                </Style>
+
+                <Style Selector="^ Border#PART_ThumbGrip">
+                    <Setter Property="Width" Value="12" />
+                    <Setter Property="Height" Value="12" />
+                </Style>
             </Style>
         </Style>
 
         <!--  Text box  -->
         <Style Selector="TextBox">
+            <Setter Property="FontSize" Value="14" />
+
             <Style Selector="^ Panel#PART_TextFieldPanel">
                 <Setter Property="MinHeight" Value="0" />
             </Style>
@@ -59,7 +85,7 @@
 
         <!--  Tooltip  -->
         <Style Selector="ToolTip">
-            <Setter Property="TextElement.FontSize" Value="13" />
+            <Setter Property="TextElement.FontSize" Value="14" />
             <Setter Property="TextElement.FontWeight" Value="Normal" />
             <Setter Property="TextElement.FontStyle" Value="Normal" />
             <Setter Property="TextElement.FontStretch" Value="Normal" />
