@@ -26,7 +26,4 @@ internal static class DisposableExtensions
         if (exceptions?.Any() == true)
             throw new AggregateException(exceptions);
     }
-
-    public static IDisposable Aggregate(this IEnumerable<IDisposable> disposables) =>
-        Disposable.Create(disposables.DisposeAll);
 }
