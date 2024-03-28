@@ -17,11 +17,7 @@
             Grid.Column="0"
             VerticalAlignment="Stretch"
             Background="{DynamicResource MaterialPrimaryMidBrush}">
-            <ItemsControl
-                Margin="0"
-                Padding="0"
-                Background="{DynamicResource MaterialPrimaryMidBrush}"
-                ItemsSource="{Binding Tabs}">
+            <ItemsControl Background="{DynamicResource MaterialPrimaryMidBrush}" ItemsSource="{Binding Tabs}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border BorderThickness="0,0,2,0" Classes.active="{Binding IsActive}">
@@ -41,7 +37,7 @@
                                 <materialIcons:MaterialIcon
                                     Width="24"
                                     Height="24"
-                                    Kind="{Binding Converter={x:Static converters:SettingsTabViewModelToMaterialIconKindConverter.Instance}}" />
+                                    Kind="{Binding Converter={x:Static converters:SettingsTabToMaterialIconKindConverter.Instance}}" />
                             </Button>
                         </Border>
                     </DataTemplate>

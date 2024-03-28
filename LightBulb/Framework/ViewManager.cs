@@ -4,7 +4,7 @@ using Avalonia.Controls.Templates;
 
 namespace LightBulb.Framework;
 
-public partial class ViewBinder
+public partial class ViewManager
 {
     public Control? TryBindView(ViewModelBase viewModel)
     {
@@ -20,8 +20,7 @@ public partial class ViewBinder
         if (type is null)
             return null;
 
-        var view = Activator.CreateInstance(type) as Control;
-        if (view is null)
+        if (Activator.CreateInstance(type) is not Control view)
             return null;
 
         view.DataContext ??= viewModel;
@@ -30,7 +29,7 @@ public partial class ViewBinder
     }
 }
 
-public partial class ViewBinder : IDataTemplate
+public partial class ViewManager : IDataTemplate
 {
     bool IDataTemplate.Match(object? data) => data is ViewModelBase;
 

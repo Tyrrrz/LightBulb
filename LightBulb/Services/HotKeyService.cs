@@ -19,10 +19,10 @@ public class HotKeyService : IDisposable
         var virtualKey = KeyInterop.VirtualKeyFromKey(hotKey.Key.ToQwertyKey());
         var modifiers = (int)hotKey.Modifiers;
 
-        var hotKeyRegistration = GlobalHotKey.TryRegister(virtualKey, modifiers, callback);
+        var registration = GlobalHotKey.TryRegister(virtualKey, modifiers, callback);
 
-        if (hotKeyRegistration is not null)
-            _hotKeyRegistrations.Add(hotKeyRegistration);
+        if (registration is not null)
+            _hotKeyRegistrations.Add(registration);
         else
             Debug.WriteLine("Failed to register hotkey.");
     }

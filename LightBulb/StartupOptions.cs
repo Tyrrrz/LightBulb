@@ -13,7 +13,7 @@ public partial class StartupOptions
 {
     public static string IsInitiallyHiddenArgument { get; } = "--start-hidden";
 
-    public static StartupOptions Parse(IEnumerable<string> commandLineArgs) =>
+    public static StartupOptions Parse(IReadOnlyList<string> commandLineArgs) =>
         new()
         {
             IsInitiallyHidden = commandLineArgs.Contains(
@@ -25,5 +25,6 @@ public partial class StartupOptions
 
 public partial class StartupOptions
 {
-    public static StartupOptions Current { get; } = Parse(Environment.GetCommandLineArgs().Skip(1));
+    public static StartupOptions Current { get; } =
+        Parse(Environment.GetCommandLineArgs().Skip(1).ToArray());
 }

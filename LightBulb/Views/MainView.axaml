@@ -6,6 +6,7 @@
     xmlns:lightBulb="clr-namespace:LightBulb"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:viewModels="clr-namespace:LightBulb.ViewModels"
+    x:Name="Window"
     Title="LightBulb"
     Width="450"
     Height="350"
@@ -20,8 +21,11 @@
     </Design.DataContext>
 
     <Border BorderBrush="{DynamicResource MaterialPrimaryLightBrush}" BorderThickness="1">
-        <dialogHostAvalonia:DialogHost CloseOnClickAway="False" Loaded="DialogHost_OnLoaded">
-            <Grid IsEnabled="{Binding !$parent[dialogHostAvalonia:DialogHost].IsOpen}" RowDefinitions="Auto,*,Auto">
+        <dialogHostAvalonia:DialogHost
+            x:Name="DialogHost"
+            CloseOnClickAway="False"
+            Loaded="DialogHost_OnLoaded">
+            <Grid RowDefinitions="Auto,*,Auto">
                 <!--  Header  -->
                 <Border
                     x:Name="HeaderBorder"
@@ -45,15 +49,17 @@
                                 <materialIcons:MaterialIcon
                                     Width="24"
                                     Height="24"
-                                    Classes.disabled="{Binding !$parent[ToggleButton].IsChecked}"
-                                    Classes.enabled="{Binding $parent[ToggleButton].IsChecked}">
+                                    Classes.checked="{Binding $parent[ToggleButton].IsChecked}"
+                                    Classes.unchecked="{Binding !$parent[ToggleButton].IsChecked}">
                                     <materialIcons:MaterialIcon.Styles>
-                                        <Style Selector="materialIcons|MaterialIcon.disabled">
-                                            <Setter Property="Kind" Value="LightbulbOffOutline" />
-                                            <Setter Property="Opacity" Value="0.5" />
-                                        </Style>
-                                        <Style Selector="materialIcons|MaterialIcon.enabled">
-                                            <Setter Property="Kind" Value="LightbulbOutline" />
+                                        <Style Selector="materialIcons|MaterialIcon">
+                                            <Style Selector="^.unchecked">
+                                                <Setter Property="Kind" Value="LightbulbOffOutline" />
+                                                <Setter Property="Opacity" Value="0.5" />
+                                            </Style>
+                                            <Style Selector="^.checked">
+                                                <Setter Property="Kind" Value="LightbulbOutline" />
+                                            </Style>
                                         </Style>
                                     </materialIcons:MaterialIcon.Styles>
                                 </materialIcons:MaterialIcon>
@@ -103,37 +109,40 @@
                     Grid.Row="2"
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
-                    <!--  Start cycle preview  -->
+                    <!--  Start/stop cycle preview  -->
                     <Button
                         Margin="8"
-                        Command="{Binding Dashboard.EnableCyclePreviewCommand}"
-                        IsVisible="{Binding !Dashboard.IsCyclePreviewEnabled}"
-                        Theme="{DynamicResource MaterialFlatButton}"
-                        ToolTip.Tip="Preview 24-hour cycle">
+                        Classes.start="{Binding !Dashboard.IsCyclePreviewEnabled}"
+                        Classes.stop="{Binding Dashboard.IsCyclePreviewEnabled}"
+                        Command="{Binding Dashboard.ToggleCyclePreviewCommand}"
+                        Theme="{DynamicResource MaterialFlatButton}">
+                        <Button.Styles>
+                            <Style Selector="Button">
+                                <Style Selector="^.start">
+                                    <Setter Property="ToolTip.Tip" Value="Preview 24-hour cycle" />
+                                </Style>
+                                <Style Selector="^.stop">
+                                    <Setter Property="ToolTip.Tip" Value="Stop preview" />
+                                </Style>
+                            </Style>
+                        </Button.Styles>
                         <StackPanel Orientation="Horizontal">
                             <materialIcons:MaterialIcon
                                 Width="24"
                                 Height="24"
-                                Kind="PlayCircleOutline" />
-                            <TextBlock
-                                Margin="4,0,0,0"
-                                VerticalAlignment="Center"
-                                Text="PREVIEW" />
-                        </StackPanel>
-                    </Button>
-
-                    <!--  Stop cycle preview  -->
-                    <Button
-                        Margin="8"
-                        Command="{Binding Dashboard.DisableCyclePreviewCommand}"
-                        IsVisible="{Binding Dashboard.IsCyclePreviewEnabled}"
-                        Theme="{DynamicResource MaterialFlatButton}"
-                        ToolTip.Tip="Stop preview">
-                        <StackPanel Orientation="Horizontal">
-                            <materialIcons:MaterialIcon
-                                Width="24"
-                                Height="24"
-                                Kind="StopCircleOutline" />
+                                Classes.start="{Binding !Dashboard.IsCyclePreviewEnabled}"
+                                Classes.stop="{Binding Dashboard.IsCyclePreviewEnabled}">
+                                <materialIcons:MaterialIcon.Styles>
+                                    <Style Selector="materialIcons|MaterialIcon">
+                                        <Style Selector="^.start">
+                                            <Setter Property="Kind" Value="PlayCircleOutline" />
+                                        </Style>
+                                        <Style Selector="^.stop">
+                                            <Setter Property="Kind" Value="StopCircleOutline" />
+                                        </Style>
+                                    </Style>
+                                </materialIcons:MaterialIcon.Styles>
+                            </materialIcons:MaterialIcon>
                             <TextBlock
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"

@@ -5,42 +5,31 @@ using DialogHostAvalonia;
 
 namespace LightBulb.Framework;
 
-public class DialogManager(ViewBinder viewBinder) : IDisposable
+public class DialogManager : IDisposable
 {
     private readonly SemaphoreSlim _dialogLock = new(1, 1);
 
     public async Task<T?> ShowDialogAsync<T>(DialogViewModelBase<T> dialog)
     {
-        var view = viewBinder.TryBindView(dialog);
-        if (view is null)
-        {
-            throw new InvalidOperationException(
-                $"View not found for dialog view model '{dialog.GetType()}'."
-            );
-        }
-
         await _dialogLock.WaitAsync();
         try
         {
             await DialogHost.Show(
-                view,
-                (object openSender, DialogOpenedEventArgs openArgs) =>
+                dialog,
+                // It's fine to await in a void method here because it's an event handler
+                // ReSharper disable once AsyncVoidLambda
+                async (object _, DialogOpenedEventArgs args) =>
                 {
-                    void OnClosed(object? closedSender, EventArgs closedArgs)
+                    await dialog.WaitForCloseAsync();
+
+                    try
                     {
-                        try
-                        {
-                            openArgs.Session.Close();
-                        }
-                        catch (InvalidOperationException)
-                        {
-                            // Race condition: dialog is already being closed
-                        }
-
-                        dialog.Closed -= OnClosed;
+                        args.Session.Close();
                     }
-
-                    dialog.Closed += OnClosed;
+                    catch (InvalidOperationException)
+                    {
+                        // Dialog host is already processing a close operation
+                    }
                 }
             );
 

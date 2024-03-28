@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
+    x:Name="UserControl"
     Loaded="UserControl_OnLoaded"
     Unloaded="UserControl_OnUnloaded">
     <Design.DataContext>
@@ -19,13 +20,13 @@
                 VerticalAlignment="Center"
                 Text="Application whitelist" />
 
-            <!--  Refresh list  -->
+            <!--  Refresh  -->
             <Button
                 Grid.Column="1"
                 Margin="8,0,0,0"
                 Padding="4"
                 VerticalAlignment="Center"
-                Command="{Binding PullAvailableApplicationsCommand}"
+                Command="{Binding RefreshApplicationsCommand}"
                 Theme="{DynamicResource MaterialFlatButton}"
                 ToolTip.Tip="Refresh running applications">
                 <materialIcons:MaterialIcon
@@ -49,9 +50,9 @@
             x:Name="WhitelistedApplicationsListBox"
             Margin="0,8,0,0"
             IsEnabled="{Binding IsApplicationWhitelistEnabled}"
-            ItemsSource="{Binding AvailableApplications}"
+            ItemsSource="{Binding Applications}"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
             SelectionChanged="WhitelistedApplicationsListBox_OnSelectionChanged"
             SelectionMode="Multiple,Toggle">
             <ListBox.ItemContainerTheme>

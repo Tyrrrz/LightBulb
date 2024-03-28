@@ -37,7 +37,6 @@
                 <TextBox
                     MinWidth="24"
                     HorizontalAlignment="Right"
-                    BorderBrush="{DynamicResource MaterialDividerBrush}"
                     DockPanel.Dock="Right"
                     Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
             </DockPanel>
@@ -55,7 +54,6 @@
                 <TextBox
                     MinWidth="24"
                     HorizontalAlignment="Right"
-                    BorderBrush="{DynamicResource MaterialDividerBrush}"
                     DockPanel.Dock="Right"
                     Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
             </DockPanel>
@@ -133,10 +131,11 @@
 
             <!--  Location error  -->
             <TextBlock
-                Margin="16,8"
+                Margin="0,8,0,0"
+                HorizontalAlignment="Center"
                 Foreground="DarkRed"
                 IsVisible="{Binding IsLocationError}"
-                Text="There was an error resolving the location" />
+                Text="Error resolving location, try again" />
         </StackPanel>
     </StackPanel>
 </UserControl>

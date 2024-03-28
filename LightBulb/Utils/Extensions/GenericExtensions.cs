@@ -5,25 +5,25 @@ namespace LightBulb.Utils.Extensions;
 
 internal static class GenericExtensions
 {
-    public static double StepTo(this double value, double target, double absStep) =>
+    public static double StepTo(this double value, double target, double step) =>
         target >= value
-            ? Math.Min(value + Math.Abs(absStep), target)
-            : Math.Max(value - Math.Abs(absStep), target);
+            ? Math.Min(value + Math.Abs(step), target)
+            : Math.Max(value - Math.Abs(step), target);
 
     public static DateTimeOffset StepTo(
         this DateTimeOffset value,
         DateTimeOffset target,
-        TimeSpan absStep
+        TimeSpan step
     )
     {
         if (target >= value)
         {
-            var result = value + absStep.Duration();
+            var result = value + step.Duration();
             return result <= target ? result : target;
         }
         else
         {
-            var result = value - absStep.Duration();
+            var result = value - step.Duration();
             return result >= target ? result : target;
         }
     }
@@ -31,25 +31,25 @@ internal static class GenericExtensions
     public static ColorConfiguration StepTo(
         this ColorConfiguration value,
         ColorConfiguration target,
-        double temperatureMaxAbsStep,
-        double brightnessMaxAbsStep
+        double temperatureMaxStep,
+        double brightnessMaxStep
     )
     {
-        var temperatureAbsDelta = Math.Abs(target.Temperature - value.Temperature);
-        var brightnessAbsDelta = Math.Abs(target.Brightness - value.Brightness);
+        var temperatureDelta = Math.Abs(target.Temperature - value.Temperature);
+        var brightnessDelta = Math.Abs(target.Brightness - value.Brightness);
 
-        var temperatureSteps = temperatureAbsDelta / temperatureMaxAbsStep;
-        var brightnessSteps = brightnessAbsDelta / brightnessMaxAbsStep;
+        var temperatureSteps = temperatureDelta / temperatureMaxStep;
+        var brightnessSteps = brightnessDelta / brightnessMaxStep;
 
         var temperatureAdjustedStep =
             temperatureSteps >= brightnessSteps
-                ? temperatureMaxAbsStep
-                : temperatureAbsDelta / brightnessSteps;
+                ? temperatureMaxStep
+                : temperatureDelta / brightnessSteps;
 
         var brightnessAdjustedStep =
             brightnessSteps >= temperatureSteps
-                ? brightnessMaxAbsStep
-                : brightnessAbsDelta / temperatureSteps;
+                ? brightnessMaxStep
+                : brightnessDelta / temperatureSteps;
 
         return new ColorConfiguration(
             value.Temperature.StepTo(target.Temperature, temperatureAdjustedStep),

@@ -6,9 +6,9 @@ using Material.Icons;
 
 namespace LightBulb.Converters;
 
-public class SettingsTabViewModelToMaterialIconKindConverter : IValueConverter
+public class SettingsTabToMaterialIconKindConverter : IValueConverter
 {
-    public static SettingsTabViewModelToMaterialIconKindConverter Instance { get; } = new();
+    public static SettingsTabToMaterialIconKindConverter Instance { get; } = new();
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         value switch

@@ -20,11 +20,11 @@ public partial class DashboardViewModel : ViewModelBase
     private readonly HotKeyService _hotKeyService;
     private readonly ExternalApplicationService _externalApplicationService;
 
+    private readonly DisposableCollector _eventRoot = new();
+
     private readonly Timer _updateInstantTimer;
     private readonly Timer _updateConfigurationTimer;
     private readonly Timer _updateIsPausedTimer;
-
-    private readonly DisposablePool _disposablePool = new();
 
     private IDisposable? _enableAfterDelayRegistration;
 
@@ -68,6 +68,35 @@ public partial class DashboardViewModel : ViewModelBase
 
     [ObservableProperty]
     private ColorConfiguration _currentConfiguration = ColorConfiguration.Default;
+
+    public DashboardViewModel(
+        SettingsService settingsService,
+        GammaService gammaService,
+        HotKeyService hotKeyService,
+        ExternalApplicationService externalApplicationService
+    )
+    {
+        _settingsService = settingsService;
+        _gammaService = gammaService;
+        _hotKeyService = hotKeyService;
+        _externalApplicationService = externalApplicationService;
+
+        _eventRoot.Add(
+            // Cancel 'disable temporarily' when switching to enabled
+            this.WatchProperty(
+                o => o.IsEnabled,
+                () =>
+                {
+                    if (IsEnabled)
+                        _enableAfterDelayRegistration?.Dispose();
+                }
+            )
+        );
+
+        _updateConfigurationTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateConfiguration);
+        _updateInstantTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateInstant);
+        _updateIsPausedTimer = new Timer(TimeSpan.FromSeconds(1), UpdateIsPaused);
+    }
 
     public bool IsActive => IsEnabled && !IsPaused || IsCyclePreviewEnabled;
 
@@ -144,36 +173,6 @@ public partial class DashboardViewModel : ViewModelBase
             _ when CurrentConfiguration == AdjustedNightConfiguration => CycleState.Night,
             _ => CycleState.Transition
         };
-
-    public DashboardViewModel(
-        SettingsService settingsService,
-        GammaService gammaService,
-        HotKeyService hotKeyService,
-        ExternalApplicationService externalApplicationService
-    )
-    {
-        _settingsService = settingsService;
-        _gammaService = gammaService;
-        _hotKeyService = hotKeyService;
-        _externalApplicationService = externalApplicationService;
-
-        _updateConfigurationTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateConfiguration);
-        _updateInstantTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateInstant);
-        _updateIsPausedTimer = new Timer(TimeSpan.FromSeconds(1), UpdateIsPaused);
-
-        // Watch property changes on other objects
-        _disposablePool.Add(
-            // Cancel 'disable temporarily' when switching to enabled
-            this.WatchProperty(
-                o => o.IsEnabled,
-                () =>
-                {
-                    if (IsEnabled)
-                        _enableAfterDelayRegistration?.Dispose();
-                }
-            )
-        );
-    }
 
     private void RegisterHotKeys()
     {
@@ -254,10 +253,10 @@ public partial class DashboardViewModel : ViewModelBase
 
     private void UpdateInstant()
     {
-        // If in cycle preview mode, advance quickly until the full cycle is reached
+        // If in cycle preview mode, advance quickly until the full cycle has been reached
         if (IsCyclePreviewEnabled)
         {
-            // Cycle is supposed to end 1 full day past current real time
+            // Cycle is supposed to end 1 full day past the current real time
             var targetInstant = DateTimeOffset.Now + TimeSpan.FromDays(1);
 
             Instant = Instant.StepTo(targetInstant, TimeSpan.FromMinutes(5));
@@ -309,16 +308,10 @@ public partial class DashboardViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void Enable() => IsEnabled = true;
-
-    [RelayCommand]
-    private void Disable() => IsEnabled = false;
-
-    [RelayCommand]
     private void DisableTemporarily(TimeSpan duration)
     {
         _enableAfterDelayRegistration?.Dispose();
-        _enableAfterDelayRegistration = Timer.QueueDelayedAction(duration, Enable);
+        _enableAfterDelayRegistration = Timer.QueueDelayedAction(duration, () => IsEnabled = true);
         IsEnabled = false;
     }
 
@@ -331,10 +324,7 @@ public partial class DashboardViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void EnableCyclePreview() => IsCyclePreviewEnabled = true;
-
-    [RelayCommand]
-    private void DisableCyclePreview() => IsCyclePreviewEnabled = false;
+    private void ToggleCyclePreview() => IsCyclePreviewEnabled = !IsCyclePreviewEnabled;
 
     [RelayCommand]
     private void ResetConfigurationOffset()
@@ -351,7 +341,7 @@ public partial class DashboardViewModel : ViewModelBase
             _updateConfigurationTimer.Dispose();
             _updateIsPausedTimer.Dispose();
 
-            _disposablePool.Dispose();
+            _eventRoot.Dispose();
 
             _enableAfterDelayRegistration?.Dispose();
         }

@@ -6,6 +6,7 @@
     xmlns:controls="clr-namespace:LightBulb.Views.Controls"
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    x:Name="UserControl"
     Loaded="UserControl_OnLoaded">
     <Design.DataContext>
         <components:DashboardViewModel />
@@ -18,7 +19,6 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="19"
-            FontWeight="Light"
             TextAlignment="Center">
             <ToolTip.Tip>
                 <TextBlock>
@@ -28,7 +28,7 @@
                     <Run FontWeight="SemiBold" Text="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
                 </TextBlock>
             </ToolTip.Tip>
-            <Run Text="Sunset" />
+            <Run FontWeight="Light" Text="Sunset" />
             <LineBreak />
             <Run FontWeight="Regular" Text="{Binding SolarTimes.Sunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
         </TextBlock>
@@ -129,11 +129,11 @@
                         <LineBreak />
                         <Run Text=" " />
                         <Run Text="Temperature offset:" />
-                        <Run Text="{Binding TemperatureOffset, StringFormat=\{0:F0\} K, Mode=OneWay}" />
+                        <Run FontWeight="SemiBold" Text="{Binding TemperatureOffset, StringFormat={}{0:F0} K, Mode=OneWay}" />
                         <LineBreak />
                         <Run Text=" " />
                         <Run Text="Brightness offset:" />
-                        <Run Text="{Binding BrightnessOffset, StringFormat=\{0:P0\}, Mode=OneWay}" />
+                        <Run FontWeight="SemiBold" Text="{Binding BrightnessOffset, StringFormat={}{0:P0}, Mode=OneWay}" />
                         <LineBreak />
                         <LineBreak />
                         <Run FontWeight="SemiBold" Text="Click to reset" />
@@ -157,11 +157,11 @@
                 <materialIcons:MaterialIcon
                     Width="48"
                     Height="48"
-                    Kind="{Binding CycleState, Converter={x:Static converters:CycleStateToMaterialIconKindConverter.Instance}, Mode=OneWay}" />
+                    Kind="{Binding CycleState, Converter={x:Static converters:CycleStateToMaterialIconKindConverter.Instance}}" />
                 <TextBlock Margin="8,0,0,0" FontSize="20">
-                    <Run Text="{Binding CurrentConfiguration.Temperature, StringFormat=\{0:F0\} K, Mode=OneWay}" />
+                    <Run Text="{Binding CurrentConfiguration.Temperature, StringFormat={}{0:F0} K, Mode=OneWay}" />
                     <LineBreak />
-                    <Run Text="{Binding CurrentConfiguration.Brightness, StringFormat=\{0:P0\}, Mode=OneWay}" />
+                    <Run Text="{Binding CurrentConfiguration.Brightness, StringFormat={}{0:P0}, Mode=OneWay}" />
                 </TextBlock>
             </StackPanel>
 
@@ -179,7 +179,7 @@
                     Margin="4,0,0,0"
                     FontSize="14"
                     FontWeight="Light"
-                    Text="{Binding Instant, StringFormat=\{0:t\}}" />
+                    Text="{Binding Instant, StringFormat={}{0:t}}" />
             </StackPanel>
         </Panel>
 
@@ -189,7 +189,6 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="19"
-            FontWeight="Light"
             TextAlignment="Center">
             <ToolTip.Tip>
                 <TextBlock>
@@ -200,7 +199,7 @@
                 </TextBlock>
             </ToolTip.Tip>
 
-            <Run Text="Sunrise" />
+            <Run FontWeight="Light" Text="Sunrise" />
             <LineBreak />
             <Run FontWeight="Regular" Text="{Binding SolarTimes.Sunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
         </TextBlock>

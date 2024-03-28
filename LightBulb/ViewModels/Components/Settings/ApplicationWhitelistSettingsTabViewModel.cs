@@ -13,10 +13,10 @@ namespace LightBulb.ViewModels.Components.Settings;
 public partial class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewModelBase
 {
     private readonly ExternalApplicationService _externalApplicationService;
-    private readonly DisposablePool _disposablePool = new();
+    private readonly DisposableCollector _eventRoot = new();
 
     [ObservableProperty]
-    private IReadOnlyList<ExternalApplication>? _availableApplications;
+    private IReadOnlyList<ExternalApplication>? _applications;
 
     public ApplicationWhitelistSettingsTabViewModel(
         SettingsService settingsService,
@@ -26,10 +26,10 @@ public partial class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewM
     {
         _externalApplicationService = externalApplicationService;
 
-        _disposablePool.Add(
+        _eventRoot.Add(
             this.WatchProperty(
                 o => o.IsApplicationWhitelistEnabled,
-                () => PullAvailableApplicationsCommand.NotifyCanExecuteChanged()
+                () => RefreshApplicationsCommand.NotifyCanExecuteChanged()
             )
         );
     }
@@ -46,30 +46,30 @@ public partial class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewM
         set => SettingsService.WhitelistedApplications = value;
     }
 
-    private bool CanPullAvailableApplications() => IsApplicationWhitelistEnabled;
+    private bool CanRefreshApplications() => IsApplicationWhitelistEnabled;
 
-    [RelayCommand(CanExecute = nameof(CanPullAvailableApplications))]
-    private void PullAvailableApplications()
+    [RelayCommand(CanExecute = nameof(CanRefreshApplications))]
+    private void RefreshApplications()
     {
         var applications = new HashSet<ExternalApplication>();
 
         // Add previously whitelisted applications
         // (this has to be done first to preserve references in selected applications)
-        foreach (var application in WhitelistedApplications ?? Array.Empty<ExternalApplication>())
+        foreach (var application in WhitelistedApplications ?? [])
             applications.Add(application);
 
         // Add all running applications
         foreach (var application in _externalApplicationService.GetAllRunningApplications())
             applications.Add(application);
 
-        AvailableApplications = applications.ToArray();
+        Applications = applications.ToArray();
     }
 
     protected override void Dispose(bool disposing)
     {
         if (disposing)
         {
-            _disposablePool.Dispose();
+            _eventRoot.Dispose();
         }
 
         base.Dispose(disposing);

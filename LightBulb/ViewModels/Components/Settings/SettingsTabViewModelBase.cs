@@ -8,7 +8,7 @@ namespace LightBulb.ViewModels.Components.Settings;
 
 public abstract partial class SettingsTabViewModelBase : ViewModelBase
 {
-    private readonly DisposablePool _disposablePool = new();
+    private readonly DisposableCollector _eventRoot = new();
 
     [ObservableProperty]
     private bool _isActive;
@@ -23,9 +23,11 @@ public abstract partial class SettingsTabViewModelBase : ViewModelBase
         Order = order;
         DisplayName = displayName;
 
-        _disposablePool.Add(
+        _eventRoot.Add(
             // Implementing classes will bind to settings properties through
             // their own properties, so make sure they stay in sync.
+            // This is a bit overkill as it triggers a lot of unnecessary events,
+            // but it's a simple and reliable solution.
             SettingsService.WatchAllProperties(OnAllPropertiesChanged)
         );
     }
@@ -40,7 +42,7 @@ public abstract partial class SettingsTabViewModelBase : ViewModelBase
     {
         if (disposing)
         {
-            _disposablePool.Dispose();
+            _eventRoot.Dispose();
         }
 
         base.Dispose(disposing);

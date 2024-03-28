@@ -10,41 +10,24 @@ using LightBulb.WindowsApi;
 
 namespace LightBulb.ViewModels;
 
-public partial class MainViewModel : ViewModelBase
+public partial class MainViewModel(
+    ViewModelManager viewModelManager,
+    DialogManager dialogManager,
+    SettingsService settingsService,
+    UpdateService updateService
+) : ViewModelBase
 {
-    private readonly ViewModelProvider _viewModelProvider;
-    private readonly DialogManager _dialogManager;
-    private readonly SettingsService _settingsService;
+    private readonly Timer _checkForUpdatesTimer =
+        new(TimeSpan.FromHours(3), async () => await updateService.CheckPrepareUpdateAsync());
 
-    private readonly Timer _checkForUpdatesTimer;
-
-    public DashboardViewModel Dashboard { get; }
-
-    public MainViewModel(
-        ViewModelProvider viewModelProvider,
-        DialogManager dialogManager,
-        SettingsService settingsService,
-        UpdateService updateService
-    )
-    {
-        _viewModelProvider = viewModelProvider;
-        _dialogManager = dialogManager;
-        _settingsService = settingsService;
-
-        _checkForUpdatesTimer = new Timer(
-            TimeSpan.FromHours(3),
-            async () => await updateService.CheckPrepareUpdateAsync()
-        );
-
-        Dashboard = viewModelProvider.GetDashboardViewModel();
-    }
+    public DashboardViewModel Dashboard { get; } = viewModelManager.CreateDashboardViewModel();
 
     private async Task ShowGammaRangePromptAsync()
     {
-        if (_settingsService.IsExtendedGammaRangeUnlocked)
+        if (settingsService.IsExtendedGammaRangeUnlocked)
             return;
 
-        var dialog = _viewModelProvider.GetMessageBoxViewModel(
+        var dialog = viewModelManager.CreateMessageBoxViewModel(
             "Limited gamma range",
             $"""
             {Program.Name} has detected that extended gamma range controls are not enabled on this system.
@@ -56,22 +39,22 @@ public partial class MainViewModel : ViewModelBase
             "CLOSE"
         );
 
-        if (await _dialogManager.ShowDialogAsync(dialog) == true)
+        if (await dialogManager.ShowDialogAsync(dialog) == true)
         {
-            _settingsService.IsExtendedGammaRangeUnlocked = true;
-            _settingsService.Save();
+            settingsService.IsExtendedGammaRangeUnlocked = true;
+            settingsService.Save();
         }
     }
 
     private async Task ShowFirstTimeExperienceMessageAsync()
     {
-        if (!_settingsService.IsFirstTimeExperienceEnabled)
+        if (!settingsService.IsFirstTimeExperienceEnabled)
             return;
 
-        var dialog = _viewModelProvider.GetMessageBoxViewModel(
+        var dialog = viewModelManager.CreateMessageBoxViewModel(
             "Welcome!",
             $"""
-            Thank you for installing ${Program.Name}!
+            Thank you for installing {Program.Name}!
             To get the most personalized experience, please set your preferred solar configuration.
 
             Press OK to open settings.
@@ -81,25 +64,25 @@ public partial class MainViewModel : ViewModelBase
         );
 
         // Disable this message in the future
-        _settingsService.IsFirstTimeExperienceEnabled = false;
-        _settingsService.IsAutoStartEnabled = true;
-        _settingsService.Save();
+        settingsService.IsFirstTimeExperienceEnabled = false;
+        settingsService.IsAutoStartEnabled = true;
+        settingsService.Save();
 
-        if (await _dialogManager.ShowDialogAsync(dialog) == true)
+        if (await dialogManager.ShowDialogAsync(dialog) == true)
         {
-            var settingsDialog = _viewModelProvider.GetSettingsViewModel();
+            var settingsDialog = viewModelManager.CreateSettingsViewModel();
             settingsDialog.ActivateTab<LocationSettingsTabViewModel>();
 
-            await _dialogManager.ShowDialogAsync(settingsDialog);
+            await dialogManager.ShowDialogAsync(settingsDialog);
         }
     }
 
     private async Task ShowUkraineSupportMessageAsync()
     {
-        if (!_settingsService.IsUkraineSupportMessageEnabled)
+        if (!settingsService.IsUkraineSupportMessageEnabled)
             return;
 
-        var dialog = _viewModelProvider.GetMessageBoxViewModel(
+        var dialog = viewModelManager.CreateMessageBoxViewModel(
             "Thank you for supporting Ukraine!",
             """
             As Russia wages a genocidal war against my country, I'm grateful to everyone who continues to stand with Ukraine in our fight for freedom.
@@ -111,10 +94,10 @@ public partial class MainViewModel : ViewModelBase
         );
 
         // Disable this message in the future
-        _settingsService.IsUkraineSupportMessageEnabled = false;
-        _settingsService.Save();
+        settingsService.IsUkraineSupportMessageEnabled = false;
+        settingsService.Save();
 
-        if (await _dialogManager.ShowDialogAsync(dialog) == true)
+        if (await dialogManager.ShowDialogAsync(dialog) == true)
             ProcessEx.StartShellExecute("https://tyrrrz.me/ukraine?source=lightbulb");
     }
 
@@ -131,7 +114,7 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async Task ShowSettingsAsync()
     {
-        await _dialogManager.ShowDialogAsync(_viewModelProvider.GetSettingsViewModel());
+        await dialogManager.ShowDialogAsync(viewModelManager.CreateSettingsViewModel());
 
         // Re-initialize timers, hotkeys, and other stateful components
         Dashboard.InitializeCommand.Execute(null);

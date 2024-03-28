@@ -8,7 +8,7 @@
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles">
     <Application.DataTemplates>
-        <framework:ViewBinder />
+        <framework:ViewManager />
     </Application.DataTemplates>
 
     <Application.Styles>
@@ -98,6 +98,7 @@
         </Style>
     </Application.Styles>
 
+    <!--  Tray icon  -->
     <TrayIcon.Icons>
         <TrayIcons>
             <TrayIcon

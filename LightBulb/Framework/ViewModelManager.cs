@@ -6,14 +6,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LightBulb.Framework;
 
-public class ViewModelProvider(IServiceProvider services)
+public class ViewModelManager(IServiceProvider services)
 {
-    public MainViewModel GetMainViewModel() => services.GetRequiredService<MainViewModel>();
+    public MainViewModel CreateMainViewModel() => services.GetRequiredService<MainViewModel>();
 
-    public DashboardViewModel GetDashboardViewModel() =>
+    public DashboardViewModel CreateDashboardViewModel() =>
         services.GetRequiredService<DashboardViewModel>();
 
-    public MessageBoxViewModel GetMessageBoxViewModel(
+    public MessageBoxViewModel CreateMessageBoxViewModel(
         string title,
         string message,
         string? okButtonText,
@@ -30,6 +30,6 @@ public class ViewModelProvider(IServiceProvider services)
         return viewModel;
     }
 
-    public SettingsViewModel GetSettingsViewModel() =>
+    public SettingsViewModel CreateSettingsViewModel() =>
         services.GetRequiredService<SettingsViewModel>();
 }

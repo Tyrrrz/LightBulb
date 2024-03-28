@@ -34,7 +34,7 @@ public class App : Application, IDisposable
 
         // View model framework
         services.AddSingleton<DialogManager>();
-        services.AddSingleton<ViewModelProvider>();
+        services.AddSingleton<ViewModelManager>();
 
         // View models
         services.AddTransient<MainViewModel>();
@@ -48,10 +48,10 @@ public class App : Application, IDisposable
         services.AddTransient<SettingsTabViewModelBase, LocationSettingsTabViewModel>();
 
         // View framework
-        services.AddSingleton<ViewBinder>();
+        services.AddSingleton<ViewManager>();
 
         _services = services.BuildServiceProvider(true);
-        _mainViewModel = _services.GetRequiredService<MainViewModel>();
+        _mainViewModel = _services.GetRequiredService<ViewModelManager>().CreateMainViewModel();
     }
 
     public override void Initialize() => AvaloniaXamlLoader.Load(this);
@@ -101,9 +101,6 @@ public class App : Application, IDisposable
     private void DisableUntilSunriseMenuItem_OnClick(object? sender, EventArgs args) =>
         _mainViewModel.Dashboard.DisableUntilSunriseCommand.Execute(null);
 
-    private void ExitMenuItem_OnClick(object? sender, EventArgs args) =>
-        ApplicationLifetime?.TryShutdown();
-
     private void DisableTemporarily1DayMenuItem_OnClick(object? sender, EventArgs args) =>
         _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromDays(1));
 
@@ -127,6 +124,9 @@ public class App : Application, IDisposable
 
     private void DisableTemporarily1MinuteMenuItem_OnClick(object? sender, EventArgs args) =>
         _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(1));
+
+    private void ExitMenuItem_OnClick(object? sender, EventArgs args) =>
+        ApplicationLifetime?.TryShutdown();
 
     public void Dispose() => _services.Dispose();
 }

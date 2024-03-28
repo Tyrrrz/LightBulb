@@ -11,7 +11,7 @@ namespace LightBulb.ViewModels.Components.Settings;
 
 public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
 {
-    private readonly DisposablePool _disposablePool = new();
+    private readonly DisposableCollector _eventRoot = new();
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AutoResolveLocationCommand))]
@@ -28,7 +28,7 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
     public LocationSettingsTabViewModel(SettingsService settingsService)
         : base(settingsService, 1, "Location")
     {
-        _disposablePool.Add(
+        _eventRoot.Add(
             this.WatchProperty(o => o.Location, () => LocationQuery = Location?.ToString())
         );
     }
@@ -119,7 +119,7 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
     {
         if (disposing)
         {
-            _disposablePool.Dispose();
+            _eventRoot.Dispose();
         }
 
         base.Dispose(disposing);

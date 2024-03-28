@@ -15,15 +15,15 @@ public partial class ApplicationWhitelistSettingsTabView
     : UserControl<ApplicationWhitelistSettingsTabViewModel>,
         IDisposable
 {
-    private readonly DisposablePool _disposablePool = new();
+    private readonly DisposableCollector _eventRoot = new();
 
     public ApplicationWhitelistSettingsTabView() => InitializeComponent();
 
     private void UserControl_OnLoaded(object? sender, RoutedEventArgs args)
     {
-        DataContext.PullAvailableApplicationsCommand.Execute(null);
+        DataContext.RefreshApplicationsCommand.Execute(null);
 
-        _disposablePool.Add(
+        _eventRoot.Add(
             // This hack is required to avoid having to use an ObservableCollection<T> on the view model
             DataContext.WatchProperty(
                 o => o.WhitelistedApplications,
@@ -36,7 +36,7 @@ public partial class ApplicationWhitelistSettingsTabView
     }
 
     private void UserControl_OnUnloaded(object? sender, RoutedEventArgs args) =>
-        _disposablePool.Dispose();
+        _eventRoot.Dispose();
 
     // This hack is required to avoid having to use an ObservableCollection<T> on the view model
     private void WhitelistedApplicationsListBox_OnSelectionChanged(
@@ -48,5 +48,5 @@ public partial class ApplicationWhitelistSettingsTabView
             ?.Cast<ExternalApplication>()
             .ToArray();
 
-    public void Dispose() => _disposablePool.Dispose();
+    public void Dispose() => _eventRoot.Dispose();
 }

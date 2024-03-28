@@ -74,7 +74,7 @@
         </DockPanel>
 
         <!--  Gamma polling  -->
-        <DockPanel Margin="0,16,0,0" ToolTip.Tip="Force-refresh gamma at regular intervals to make sure it doesn't get overriden by other programs">
+        <DockPanel Margin="0,16,0,0" ToolTip.Tip="Force-refresh monitor gamma at regular intervals to prevent other programs from overriding it">
             <TextBlock
                 VerticalAlignment="Center"
                 DockPanel.Dock="Left"

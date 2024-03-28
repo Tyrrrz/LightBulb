@@ -15,8 +15,6 @@ public partial class SettingsViewModel : DialogViewModelBase
     [ObservableProperty]
     private SettingsTabViewModelBase? _activeTab;
 
-    public IReadOnlyList<SettingsTabViewModelBase> Tabs { get; }
-
     public SettingsViewModel(
         SettingsService settingsService,
         IEnumerable<SettingsTabViewModelBase> tabs
@@ -30,6 +28,8 @@ public partial class SettingsViewModel : DialogViewModelBase
         if (firstTab is not null)
             ActivateTab(firstTab);
     }
+
+    public IReadOnlyList<SettingsTabViewModelBase> Tabs { get; }
 
     [RelayCommand]
     private void ActivateTab(SettingsTabViewModelBase tab)

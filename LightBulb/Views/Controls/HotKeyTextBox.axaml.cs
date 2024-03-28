@@ -13,10 +13,7 @@ public partial class HotKeyTextBox : UserControl
         HotKey
     >(nameof(HotKey), defaultBindingMode: BindingMode.TwoWay);
 
-    public HotKeyTextBox()
-    {
-        InitializeComponent();
-    }
+    public HotKeyTextBox() => InitializeComponent();
 
     public HotKey HotKey
     {

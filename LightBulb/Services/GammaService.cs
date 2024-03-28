@@ -12,11 +12,11 @@ namespace LightBulb.Services;
 public partial class GammaService : IDisposable
 {
     private readonly SettingsService _settingsService;
-    private readonly DisposablePool _disposablePool = new();
+    private readonly DisposableCollector _eventRoot = new();
 
     private bool _isUpdatingGamma;
 
-    private IReadOnlyList<DeviceContext> _deviceContexts = Array.Empty<DeviceContext>();
+    private IReadOnlyList<DeviceContext> _deviceContexts = [];
     private bool _areDeviceContextsValid;
     private DateTimeOffset _lastGammaInvalidationTimestamp = DateTimeOffset.MinValue;
 
@@ -27,58 +27,61 @@ public partial class GammaService : IDisposable
     {
         _settingsService = settingsService;
 
-        // Register for all system events that may indicate that the device context or gamma was changed from outside
-        _disposablePool.Add(
+        // Listen to all system events that may indicate that the device context or gamma was changed from the outside
+        _eventRoot.Add(
             // https://github.com/Tyrrrz/LightBulb/issues/223
             SystemHook.TryRegister(SystemHook.ForegroundWindowChanged, InvalidateGamma)
                 ?? Disposable.Empty
         );
 
-        _disposablePool.Add(
+        _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.ConsoleDisplayStateChanged,
                 InvalidateGamma
             ) ?? Disposable.Empty
         );
 
-        _disposablePool.Add(
+        _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.PowerSavingStatusChanged,
                 InvalidateGamma
             ) ?? Disposable.Empty
         );
 
-        _disposablePool.Add(
+        _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.SessionDisplayStatusChanged,
                 InvalidateGamma
             ) ?? Disposable.Empty
         );
 
-        _disposablePool.Add(
+        _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.MonitorPowerStateChanged,
                 InvalidateGamma
             ) ?? Disposable.Empty
         );
 
-        _disposablePool.Add(
+        _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.AwayModeChanged,
                 InvalidateGamma
             ) ?? Disposable.Empty
         );
 
-        _disposablePool.Add(
+        _eventRoot.Add(
             SystemEvent.Register(SystemEvent.Ids.DisplayChanged, InvalidateDeviceContexts)
         );
-        _disposablePool.Add(
+
+        _eventRoot.Add(
             SystemEvent.Register(SystemEvent.Ids.PaletteChanged, InvalidateDeviceContexts)
         );
-        _disposablePool.Add(
+
+        _eventRoot.Add(
             SystemEvent.Register(SystemEvent.Ids.SettingsChanged, InvalidateDeviceContexts)
         );
-        _disposablePool.Add(
+
+        _eventRoot.Add(
             SystemEvent.Register(SystemEvent.Ids.SystemColorsChanged, InvalidateDeviceContexts)
         );
     }
@@ -121,14 +124,18 @@ public partial class GammaService : IDisposable
 
         // Assume gamma continues to be stale for some time after it has been invalidated
         if ((instant - _lastGammaInvalidationTimestamp).Duration() <= TimeSpan.FromSeconds(0.3))
+        {
             return true;
+        }
 
         // If polling is enabled, assume gamma is stale after some time has passed since the last update
         if (
             _settingsService.IsGammaPollingEnabled
             && (instant - _lastUpdateTimestamp).Duration() > TimeSpan.FromSeconds(1)
         )
+        {
             return true;
+        }
 
         return false;
     }
@@ -145,7 +152,7 @@ public partial class GammaService : IDisposable
 
     public void SetGamma(ColorConfiguration configuration)
     {
-        // Avoid unnecessary changes as updating too often will cause stutters
+        // Avoid unnecessary changes as updating too often will cause stuttering
         if (!IsGammaStale() && !IsSignificantChange(configuration))
             return;
 
@@ -175,7 +182,7 @@ public partial class GammaService : IDisposable
         foreach (var deviceContext in _deviceContexts)
             deviceContext.ResetGamma();
 
-        _disposablePool.Dispose();
+        _eventRoot.Dispose();
         _deviceContexts.DisposeAll();
     }
 }
