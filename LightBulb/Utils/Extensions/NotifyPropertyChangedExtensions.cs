@@ -20,7 +20,12 @@ internal static class NotifyPropertyChangedExtensions
     )
         where TOwner : INotifyPropertyChanged
     {
-        if (propertyExpression.Body is not MemberExpression { Member: PropertyInfo property })
+        var memberExpression =
+            propertyExpression.Body as MemberExpression
+            // If the property is not of type object, it will be wrapped in an unary conversion expression
+            ?? (propertyExpression.Body as UnaryExpression)?.Operand as MemberExpression;
+
+        if (memberExpression?.Member is not PropertyInfo property)
             throw new ArgumentException("Provided expression must reference a property.");
 
         void OnPropertyChanged(object? sender, PropertyChangedEventArgs args)
