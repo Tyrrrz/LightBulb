@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using Avalonia;
-using LightBulb.Utils;
+using LightBulb.WindowsApi;
 
 namespace LightBulb;
 
@@ -49,9 +49,7 @@ public static class Program
         }
         catch (Exception ex)
         {
-            if (OperatingSystem.IsWindows())
-                _ = NativeMethods.Windows.MessageBox(0, ex.ToString(), "Fatal Error", 0x10);
-
+            MessageBox.ShowError("Fatal Error", ex.ToString());
             throw;
         }
         finally

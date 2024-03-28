@@ -7,7 +7,7 @@
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:viewModels="clr-namespace:LightBulb.ViewModels"
     x:Name="Window"
-    Title="LightBulb"
+    Title="{x:Static lightBulb:Program.Name}"
     Width="450"
     Height="350"
     CanResize="False"

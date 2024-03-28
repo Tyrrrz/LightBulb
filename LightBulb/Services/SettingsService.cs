@@ -27,7 +27,7 @@ public partial class SettingsService() : SettingsBase(GetFilePath())
         new(
             RegistryHive.CurrentUser,
             @"Software\Microsoft\Windows\CurrentVersion\Run",
-            "LightBulb",
+            Program.Name,
             $"\"{Program.ExecutableFilePath}\" {StartupOptions.IsInitiallyHiddenArgument}"
         );
 
@@ -183,7 +183,7 @@ public partial class SettingsService
         {
             return Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "LightBulb",
+                Program.Name,
                 "Settings.json"
             );
         }
