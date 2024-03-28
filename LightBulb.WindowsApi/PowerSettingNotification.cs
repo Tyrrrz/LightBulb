@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using LightBulb.WindowsApi.Types;
-using LightBulb.WindowsApi.Utils.Extensions;
 
 namespace LightBulb.WindowsApi;
 

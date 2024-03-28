@@ -5,7 +5,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reactive.Disposables;
 using System.Reflection;
 
 namespace LightBulb.Utils.Extensions;

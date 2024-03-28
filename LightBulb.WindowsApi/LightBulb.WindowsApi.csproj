@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <PackageReference Include="CSharpier.MsBuild" Version="0.26.5" PrivateAssets="all" />
-    <PackageReference Include="System.Reactive" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

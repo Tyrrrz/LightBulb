@@ -1,5 +1,3 @@
-using System.Windows.Forms;
-
 namespace LightBulb.WindowsApi.Utils.Extensions;
 
 internal static class WndProcExtensions

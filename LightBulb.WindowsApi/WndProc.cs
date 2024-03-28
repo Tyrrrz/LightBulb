@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Reactive.Disposables;
-using System.Windows.Forms;
+using LightBulb.WindowsApi.Utils;
 
 namespace LightBulb.WindowsApi;
 

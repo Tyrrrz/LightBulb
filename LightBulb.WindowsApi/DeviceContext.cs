@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Windows.Forms;
 using LightBulb.WindowsApi.Types;
 
 namespace LightBulb.WindowsApi;

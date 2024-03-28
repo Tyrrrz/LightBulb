@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Reactive.Disposables;
 using LightBulb.Core;
 using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
@@ -31,42 +30,42 @@ public partial class GammaService : IDisposable
         _eventRoot.Add(
             // https://github.com/Tyrrrz/LightBulb/issues/223
             SystemHook.TryRegister(SystemHook.ForegroundWindowChanged, InvalidateGamma)
-                ?? Disposable.Empty
+                ?? Disposable.Null
         );
 
         _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.ConsoleDisplayStateChanged,
                 InvalidateGamma
-            ) ?? Disposable.Empty
+            ) ?? Disposable.Null
         );
 
         _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.PowerSavingStatusChanged,
                 InvalidateGamma
-            ) ?? Disposable.Empty
+            ) ?? Disposable.Null
         );
 
         _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.SessionDisplayStatusChanged,
                 InvalidateGamma
-            ) ?? Disposable.Empty
+            ) ?? Disposable.Null
         );
 
         _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.MonitorPowerStateChanged,
                 InvalidateGamma
-            ) ?? Disposable.Empty
+            ) ?? Disposable.Null
         );
 
         _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.AwayModeChanged,
                 InvalidateGamma
-            ) ?? Disposable.Empty
+            ) ?? Disposable.Null
         );
 
         _eventRoot.Add(
