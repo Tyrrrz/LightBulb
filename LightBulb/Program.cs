@@ -49,7 +49,7 @@ public static class Program
         }
         catch (Exception ex)
         {
-            if (OperatingSystem.IsWindows()) 
+            if (OperatingSystem.IsWindows())
                 _ = NativeMethods.Windows.MessageBox(0, ex.ToString(), "Fatal Error", 0x10);
 
             throw;
