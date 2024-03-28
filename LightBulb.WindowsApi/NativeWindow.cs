@@ -6,12 +6,9 @@ using LightBulb.WindowsApi.Native;
 
 namespace LightBulb.WindowsApi;
 
-public partial class SystemWindow : NativeResource
+public partial class NativeWindow(nint handle, bool isOwned) : NativeResource(handle)
 {
-    private SystemWindow(nint handle)
-        : base(handle) { }
-
-    public SystemMonitor? TryGetMonitor()
+    public Monitor? TryGetMonitor()
     {
         var monitorHandle = NativeMethods.MonitorFromWindow(Handle, 0);
         if (monitorHandle == 0)
@@ -20,7 +17,7 @@ public partial class SystemWindow : NativeResource
             return null;
         }
 
-        return new SystemMonitor(monitorHandle);
+        return new Monitor(monitorHandle);
     }
 
     private Rect? TryGetRect() => NativeMethods.GetWindowRect(Handle, out var rect) ? rect : null;
@@ -83,7 +80,7 @@ public partial class SystemWindow : NativeResource
             && absoluteWindowClientRect.Bottom >= monitorRect.Bottom;
     }
 
-    public SystemProcess? TryGetProcess()
+    public NativeProcess? TryGetProcess()
     {
         _ = NativeMethods.GetWindowThreadProcessId(Handle, out var processId);
         if (processId == 0)
@@ -92,15 +89,22 @@ public partial class SystemWindow : NativeResource
             return null;
         }
 
-        return SystemProcess.TryOpen((int)processId);
+        return NativeProcess.TryOpen((int)processId);
     }
 
-    protected override void Dispose(bool disposing) { }
+    protected override void Dispose(bool disposing)
+    {
+        if (isOwned)
+        {
+            if (!NativeMethods.DestroyWindow(Handle))
+                Debug.WriteLine($"Failed to destroy window #{Handle}.");
+        }
+    }
 }
 
-public partial class SystemWindow
+public partial class NativeWindow
 {
-    public static SystemWindow? TryGetForeground()
+    public static NativeWindow? TryGetForeground()
     {
         var handle = NativeMethods.GetForegroundWindow();
         if (handle == 0)
@@ -109,12 +113,12 @@ public partial class SystemWindow
             return null;
         }
 
-        return new SystemWindow(handle);
+        return new NativeWindow(handle);
     }
 
-    public static IReadOnlyList<SystemWindow> GetAll()
+    public static IReadOnlyList<NativeWindow> GetAll()
     {
-        var result = new List<SystemWindow>();
+        var result = new List<NativeWindow>();
 
         if (
             !NativeMethods.EnumWindows(
@@ -122,7 +126,7 @@ public partial class SystemWindow
                 {
                     if (hWnd != 0)
                     {
-                        var window = new SystemWindow(hWnd);
+                        var window = new NativeWindow(hWnd);
                         result.Add(window);
                     }
 

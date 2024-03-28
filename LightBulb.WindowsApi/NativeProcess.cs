@@ -4,11 +4,8 @@ using LightBulb.WindowsApi.Native;
 
 namespace LightBulb.WindowsApi;
 
-public partial class SystemProcess : NativeResource
+public partial class NativeProcess(nint handle) : NativeResource(handle)
 {
-    private SystemProcess(nint handle)
-        : base(handle) { }
-
     public string? TryGetExecutableFilePath()
     {
         var buffer = new StringBuilder(1024);
@@ -26,9 +23,9 @@ public partial class SystemProcess : NativeResource
     }
 }
 
-public partial class SystemProcess
+public partial class NativeProcess
 {
-    public static SystemProcess? TryOpen(int processId)
+    public static NativeProcess? TryOpen(int processId)
     {
         var handle = NativeMethods.OpenProcess(
             ProcessAccessFlags.QueryLimitedInformation,
@@ -41,6 +38,6 @@ public partial class SystemProcess
             return null;
         }
 
-        return new SystemProcess(handle);
+        return new NativeProcess(handle);
     }
 }

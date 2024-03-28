@@ -6,7 +6,7 @@ internal static partial class NativeMethods
 {
     private const string Gdi32 = "gdi32.dll";
 
-    [DllImport(Gdi32, CharSet = CharSet.Auto, SetLastError = true)]
+    [DllImport(Gdi32, SetLastError = true)]
     public static extern nint CreateDC(
         string? lpszDriver,
         string? lpszDevice,

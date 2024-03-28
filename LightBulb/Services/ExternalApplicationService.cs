@@ -14,7 +14,7 @@ public class ExternalApplicationService
 
     public IEnumerable<ExternalApplication> GetAllRunningApplications()
     {
-        foreach (var window in SystemWindow.GetAll())
+        foreach (var window in NativeWindow.GetAll())
         {
             using var _ = window;
 
@@ -41,7 +41,7 @@ public class ExternalApplicationService
 
     public ExternalApplication? TryGetForegroundApplication()
     {
-        using var window = SystemWindow.TryGetForeground();
+        using var window = NativeWindow.TryGetForeground();
         using var process = window?.TryGetProcess();
 
         var executableFilePath = process?.TryGetExecutableFilePath();
@@ -53,7 +53,7 @@ public class ExternalApplicationService
 
     public bool IsForegroundApplicationFullScreen()
     {
-        using var window = SystemWindow.TryGetForeground();
+        using var window = NativeWindow.TryGetForeground();
 
         return window is not null
             && window.IsVisible()

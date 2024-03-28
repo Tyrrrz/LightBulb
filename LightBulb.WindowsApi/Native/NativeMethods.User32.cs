@@ -9,7 +9,7 @@ internal static partial class NativeMethods
     private const string User32 = "user32.dll";
 
     [DllImport(User32, SetLastError = true)]
-    public static extern bool GetMonitorInfo(nint hMonitor, out MonitorInfo lpmi);
+    public static extern bool GetMonitorInfo(nint hMonitor, out MonitorInfoEx lpmi);
 
     [DllImport(User32, SetLastError = true)]
     public static extern nint MonitorFromWindow(nint hWnd, uint dwFlags);
@@ -23,6 +23,31 @@ internal static partial class NativeMethods
     );
 
     [DllImport(User32, SetLastError = true)]
+    public static extern nint CreateWindowEx(
+        uint dwExStyle,
+        string lpClassName,
+        string lpWindowName,
+        uint dwStyle,
+        int x,
+        int y,
+        int nWidth,
+        int nHeight,
+        nint hWndParent,
+        nint hMenu,
+        nint hInstance,
+        nint lpParam
+    );
+
+    [DllImport(User32, SetLastError = true)]
+    public static extern bool DestroyWindow(nint hWnd);
+
+    [DllImport(User32, SetLastError = true)]
+    public static extern nint DefWindowProc(nint hWnd, uint msg, nint wParam, nint lParam);
+
+    [DllImport(User32, SetLastError = true)]
+    public static extern bool PostMessage(nint hWnd, uint msg, nint wParam, nint lParam);
+
+    [DllImport(User32, SetLastError = true)]
     public static extern nint GetForegroundWindow();
 
     [DllImport(User32, SetLastError = true)]
@@ -34,7 +59,7 @@ internal static partial class NativeMethods
     [DllImport(User32, SetLastError = true)]
     public static extern bool IsWindowVisible(nint hWnd);
 
-    [DllImport(User32, CharSet = CharSet.Auto, SetLastError = true)]
+    [DllImport(User32, SetLastError = true)]
     public static extern int GetClassName(nint hWnd, StringBuilder lpClassName, int nMaxCount);
 
     [DllImport(User32, SetLastError = true)]
@@ -57,7 +82,7 @@ internal static partial class NativeMethods
     [DllImport(User32, SetLastError = true)]
     public static extern bool UnhookWinEvent(nint hWinEventHook);
 
-    [DllImport(User32, CharSet = CharSet.Auto)]
+    [DllImport(User32, SetLastError = true)]
     public static extern int MessageBox(nint hWnd, string text, string caption, uint type);
 
     [DllImport(User32, SetLastError = true)]

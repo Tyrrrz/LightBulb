@@ -4,7 +4,7 @@ using LightBulb.WindowsApi.Native;
 
 namespace LightBulb.WindowsApi;
 
-public partial class SystemMonitor(nint handle) : NativeResource(handle)
+public partial class Monitor(nint handle) : NativeResource(handle)
 {
     public string? TryGetName()
     {
@@ -34,11 +34,11 @@ public partial class SystemMonitor(nint handle) : NativeResource(handle)
     protected override void Dispose(bool disposing) { }
 }
 
-public partial class SystemMonitor
+public partial class Monitor
 {
-    public static IReadOnlyList<SystemMonitor> GetAll()
+    public static IReadOnlyList<Monitor> GetAll()
     {
-        var monitors = new List<SystemMonitor>();
+        var monitors = new List<Monitor>();
 
         if (
             !NativeMethods.EnumDisplayMonitors(
@@ -46,7 +46,7 @@ public partial class SystemMonitor
                 0,
                 (hMonitor, _, _, _) =>
                 {
-                    monitors.Add(new SystemMonitor(hMonitor));
+                    monitors.Add(new Monitor(hMonitor));
                     return true;
                 },
                 0

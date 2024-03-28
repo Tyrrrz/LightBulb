@@ -4,17 +4,11 @@ using LightBulb.WindowsApi.Native;
 
 namespace LightBulb.WindowsApi;
 
-public partial class SystemHook : NativeResource
+public partial class SystemHook(nint handle, Delegate winEventProc) : NativeResource(handle)
 {
     // We only need the reference to the delegate to prevent it from being garbage collected too early
-    // ReSharper disable once NotAccessedField.Local
-    private readonly WinEventProc _winEventProc;
-
-    private SystemHook(nint handle, WinEventProc winEventProc)
-        : base(handle)
-    {
-        _winEventProc = winEventProc;
-    }
+    // ReSharper disable once UnusedMember.Local
+    private readonly Delegate _winEventProc = winEventProc;
 
     protected override void Dispose(bool disposing)
     {
@@ -41,7 +35,6 @@ public partial class SystemHook
         );
 
         var handle = NativeMethods.SetWinEventHook((uint)hookId, (uint)hookId, 0, proc, 0, 0, 0);
-
         if (handle == 0)
         {
             Debug.WriteLine($"Failed to register system hook (ID: {hookId}).");

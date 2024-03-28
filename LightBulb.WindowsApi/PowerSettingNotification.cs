@@ -4,25 +4,20 @@ using LightBulb.WindowsApi.Native;
 
 namespace LightBulb.WindowsApi;
 
-public partial class PowerSettingNotification : NativeResource
+public partial class PowerSettingNotification(nint handle, Guid powerSettingId, Action callback)
+    : NativeResource(handle)
 {
-    private readonly IDisposable _wndProcRegistration;
+    private readonly IDisposable _wndProcRegistration = WndProc.Listen(
+        WndProc.Ids.PowerSettingMessage,
+        m =>
+        {
+            // Filter out other power events
+            if (m.GetLParam<PowerBroadcastSetting>().PowerSettingId != powerSettingId)
+                return;
 
-    private PowerSettingNotification(nint handle, Guid powerSettingId, Action callback)
-        : base(handle)
-    {
-        _wndProcRegistration = WndProc.Listen(
-            WndProc.Ids.PowerSettingMessage,
-            m =>
-            {
-                // Filter out other power events
-                if (m.GetLParam<PowerBroadcastSetting>().PowerSettingId != powerSettingId)
-                    return;
-
-                callback();
-            }
-        );
-    }
+            callback();
+        }
+    );
 
     protected override void Dispose(bool disposing)
     {

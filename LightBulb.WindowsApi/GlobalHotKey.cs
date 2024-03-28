@@ -12,7 +12,7 @@ public partial class GlobalHotKey : NativeResource
 
     private DateTimeOffset _lastTriggerTimestamp = DateTimeOffset.MinValue;
 
-    private GlobalHotKey(nint handle, Action callback)
+    public GlobalHotKey(nint handle, Action callback)
         : base(handle)
     {
         _wndProcRegistration = WndProc.Listen(

@@ -2,14 +2,9 @@ using System;
 
 namespace LightBulb.WindowsApi;
 
-public partial class SystemEvent : IDisposable
+public partial class SystemEvent(int eventId, Action callback) : IDisposable
 {
-    private readonly IDisposable _wndProcRegistration;
-
-    private SystemEvent(int eventId, Action callback)
-    {
-        _wndProcRegistration = WndProc.Listen(eventId, _ => callback());
-    }
+    private readonly IDisposable _wndProcRegistration = WndProc.Listen(eventId, _ => callback());
 
     public void Dispose() => _wndProcRegistration.Dispose();
 }
