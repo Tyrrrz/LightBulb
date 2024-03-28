@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reactive.Disposables;
 using System.Reflection;
@@ -10,15 +12,20 @@ namespace LightBulb.Utils.Extensions;
 
 internal static class NotifyPropertyChangedExtensions
 {
-    public static IDisposable WatchProperty<TOwner, TProperty>(
+    public static IDisposable WatchProperty<TOwner>(
         this TOwner owner,
-        Expression<Func<TOwner, TProperty>> propertyExpression,
+        Expression<Func<TOwner, object?>> propertyExpression,
         Action handle,
         bool watchInitialValue = true
     )
         where TOwner : INotifyPropertyChanged
     {
-        if (propertyExpression.Body is not MemberExpression { Member: PropertyInfo property })
+        var memberExpression =
+            propertyExpression.Body as MemberExpression
+            // If the property is not of type object, it will be wrapped in an unary conversion expression
+            ?? (propertyExpression.Body as UnaryExpression)?.Operand as MemberExpression;
+
+        if (memberExpression?.Member is not PropertyInfo property)
             throw new ArgumentException("Provided expression must reference a property.");
 
         void OnPropertyChanged(object? sender, PropertyChangedEventArgs args)
@@ -38,6 +45,21 @@ internal static class NotifyPropertyChangedExtensions
             handle();
 
         return Disposable.Create(() => owner.PropertyChanged -= OnPropertyChanged);
+    }
+
+    public static IDisposable WatchProperties<TOwner>(
+        this TOwner owner,
+        IReadOnlyList<Expression<Func<TOwner, object?>>> propertyExpressions,
+        Action handle,
+        bool watchInitialValue = true
+    )
+        where TOwner : INotifyPropertyChanged
+    {
+        var watchers = propertyExpressions
+            .Select(x => WatchProperty(owner, x, handle, watchInitialValue))
+            .ToArray();
+
+        return Disposable.Create(() => watchers.DisposeAll());
     }
 
     public static IDisposable WatchAllProperties<TOwner>(

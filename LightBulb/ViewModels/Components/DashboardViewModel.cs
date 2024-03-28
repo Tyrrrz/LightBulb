@@ -93,6 +93,21 @@ public partial class DashboardViewModel : ViewModelBase
             )
         );
 
+        _eventRoot.Add(
+            // Re-register hotkeys when they get updated
+            settingsService.WatchProperties(
+                [
+                    o => o.ToggleHotKey,
+                    o => o.IncreaseTemperatureOffsetHotKey,
+                    o => o.DecreaseTemperatureOffsetHotKey,
+                    o => o.IncreaseBrightnessOffsetHotKey,
+                    o => o.DecreaseBrightnessOffsetHotKey,
+                    o => o.ResetConfigurationOffsetHotKey
+                ],
+                RegisterHotKeys
+            )
+        );
+
         _updateConfigurationTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateConfiguration);
         _updateInstantTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateInstant);
         _updateIsPausedTimer = new Timer(TimeSpan.FromSeconds(1), UpdateIsPaused);

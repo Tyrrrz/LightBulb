@@ -126,7 +126,7 @@ public class App : Application, IDisposable
         _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(1));
 
     private void ExitMenuItem_OnClick(object? sender, EventArgs args) =>
-        ApplicationLifetime?.TryShutdown();
+        ApplicationLifetime?.Shutdown();
 
     public void Dispose() => _services.Dispose();
 }

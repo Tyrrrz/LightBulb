@@ -13,6 +13,9 @@ public partial class StartupOptions
 {
     public static string IsInitiallyHiddenArgument { get; } = "--start-hidden";
 
+    public static StartupOptions Current { get; } =
+        Parse(Environment.GetCommandLineArgs().Skip(1).ToArray());
+
     public static StartupOptions Parse(IReadOnlyList<string> commandLineArgs) =>
         new()
         {
@@ -21,10 +24,4 @@ public partial class StartupOptions
                 StringComparer.OrdinalIgnoreCase
             )
         };
-}
-
-public partial class StartupOptions
-{
-    public static StartupOptions Current { get; } =
-        Parse(Environment.GetCommandLineArgs().Skip(1).ToArray());
 }

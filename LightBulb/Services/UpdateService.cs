@@ -57,9 +57,7 @@ public class UpdateService(SettingsService settingsService) : IDisposable
                 return;
 
             _updateManager.LaunchUpdater(lastPreparedUpdate);
-
-            if (Application.Current?.ApplicationLifetime?.TryShutdown(2) != true)
-                Environment.Exit(2);
+            Application.Current?.ApplicationLifetime?.Shutdown(2);
         }
         catch (UpdaterAlreadyLaunchedException)
         {

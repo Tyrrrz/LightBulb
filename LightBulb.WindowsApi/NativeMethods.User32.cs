@@ -71,4 +71,7 @@ internal static partial class NativeMethods
 
     [DllImport(User32, SetLastError = true)]
     public static extern bool UnhookWinEvent(nint hWinEventHook);
+
+    [DllImport(User32, CharSet = CharSet.Auto)]
+    public static extern int MessageBox(nint hWnd, string text, string caption, uint type);
 }
