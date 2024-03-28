@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using Avalonia;
+using LightBulb.Utils;
 
 namespace LightBulb;
 
@@ -45,6 +46,13 @@ public static class Program
         try
         {
             return builder.StartWithClassicDesktopLifetime(args);
+        }
+        catch (Exception ex)
+        {
+            if (OperatingSystem.IsWindows()) 
+                _ = NativeMethods.Windows.MessageBox(0, ex.ToString(), "Fatal Error", 0x10);
+
+            throw;
         }
         finally
         {
