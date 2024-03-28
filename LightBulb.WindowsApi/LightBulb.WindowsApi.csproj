@@ -1,10 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <!-- TODO: remove this and replace with P/Invoke bindings -->
-    <UseWindowsForms>true</UseWindowsForms>
-  </PropertyGroup>
-  
   <ItemGroup>
     <PackageReference Include="CSharpier.MsBuild" Version="0.26.5" PrivateAssets="all" />
     <PackageReference Include="System.Reactive" Version="6.0.0" />
