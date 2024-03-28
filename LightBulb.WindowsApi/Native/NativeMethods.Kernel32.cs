@@ -1,8 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
-using LightBulb.WindowsApi.Types;
 
-namespace LightBulb.WindowsApi;
+namespace LightBulb.WindowsApi.Native;
 
 internal static partial class NativeMethods
 {

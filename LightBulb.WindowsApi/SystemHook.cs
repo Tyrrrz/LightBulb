@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using LightBulb.WindowsApi.Native;
 
 namespace LightBulb.WindowsApi;
 
@@ -7,9 +8,9 @@ public partial class SystemHook : NativeResource
 {
     // We only need the reference to the delegate to prevent it from being garbage collected too early
     // ReSharper disable once NotAccessedField.Local
-    private readonly NativeMethods.WinEventProc _winEventProc;
+    private readonly WinEventProc _winEventProc;
 
-    private SystemHook(nint handle, NativeMethods.WinEventProc winEventProc)
+    private SystemHook(nint handle, WinEventProc winEventProc)
         : base(handle)
     {
         _winEventProc = winEventProc;
@@ -28,7 +29,7 @@ public partial class SystemHook
 
     public static SystemHook? TryRegister(int hookId, Action callback)
     {
-        var proc = new NativeMethods.WinEventProc(
+        var proc = new WinEventProc(
             (_, _, _, idObject, _, _, _) =>
             {
                 // Ignore events from non-windows

@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using LightBulb.WindowsApi.Types;
+﻿using System.Diagnostics;
+using LightBulb.WindowsApi.Native;
 
 namespace LightBulb.WindowsApi;
 
@@ -69,19 +68,5 @@ public partial class DeviceContext
         }
 
         return new DeviceContext(handle);
-    }
-
-    public static IReadOnlyList<DeviceContext> GetAllScreens()
-    {
-        var result = new List<DeviceContext>();
-
-        foreach (var screen in Screen.AllScreens)
-        {
-            var deviceContext = TryGetByName(screen.DeviceName);
-            if (deviceContext is not null)
-                result.Add(deviceContext);
-        }
-
-        return result;
     }
 }

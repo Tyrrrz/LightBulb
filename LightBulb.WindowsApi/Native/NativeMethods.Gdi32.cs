@@ -1,7 +1,6 @@
 using System.Runtime.InteropServices;
-using LightBulb.WindowsApi.Types;
 
-namespace LightBulb.WindowsApi;
+namespace LightBulb.WindowsApi.Native;
 
 internal static partial class NativeMethods
 {
@@ -16,11 +15,11 @@ internal static partial class NativeMethods
     );
 
     [DllImport(Gdi32, SetLastError = true)]
-    public static extern bool DeleteDC(nint hDc);
+    public static extern bool DeleteDC(nint hdc);
 
     [DllImport(Gdi32, SetLastError = true)]
-    public static extern bool GetDeviceGammaRamp(nint hDc, out GammaRamp lpRamp);
+    public static extern bool GetDeviceGammaRamp(nint hdc, out GammaRamp lpRamp);
 
     [DllImport(Gdi32, SetLastError = true)]
-    public static extern bool SetDeviceGammaRamp(nint hDc, ref GammaRamp lpRamp);
+    public static extern bool SetDeviceGammaRamp(nint hdc, ref GammaRamp lpRamp);
 }

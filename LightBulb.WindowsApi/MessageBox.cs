@@ -1,4 +1,6 @@
-﻿namespace LightBulb.WindowsApi;
+﻿using LightBulb.WindowsApi.Native;
+
+namespace LightBulb.WindowsApi;
 
 public static class MessageBox
 {

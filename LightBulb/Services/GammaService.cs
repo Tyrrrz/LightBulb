@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using LightBulb.Core;
 using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
@@ -112,7 +113,7 @@ public partial class GammaService : IDisposable
         _areDeviceContextsValid = true;
 
         _deviceContexts.DisposeAll();
-        _deviceContexts = DeviceContext.GetAllScreens();
+        _deviceContexts = SystemMonitor.GetAll().Select(m => m.TryGetDeviceContext()).WhereNotNull().ToArray();
 
         _lastConfiguration = null;
     }

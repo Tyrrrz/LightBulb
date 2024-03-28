@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using LightBulb.WindowsApi.Types;
+using LightBulb.WindowsApi.Native;
 
 namespace LightBulb.WindowsApi;
 
@@ -10,6 +10,18 @@ public partial class SystemWindow : NativeResource
 {
     private SystemWindow(nint handle)
         : base(handle) { }
+
+    public SystemMonitor? TryGetMonitor()
+    {
+        var monitorHandle = NativeMethods.MonitorFromWindow(Handle, 0);
+        if (monitorHandle == 0)
+        {
+            Debug.WriteLine($"Failed to retrieve monitor for window #{Handle}.");
+            return null;
+        }
+
+        return new SystemMonitor(monitorHandle);
+    }
 
     private Rect? TryGetRect() => NativeMethods.GetWindowRect(Handle, out var rect) ? rect : null;
 
@@ -46,11 +58,16 @@ public partial class SystemWindow : NativeResource
 
     public bool IsFullScreen()
     {
-        // Get window rect
+        if (TryGetMonitor() is not { } monitor)
+            return false;
+
+        if (monitor.TryGetBounds() is not { } monitorRect)
+            return false;
+
         if (TryGetRect() is not { } windowRect)
             return false;
 
-        // Calculate absolute window client rect (not relative to window)
+        // Calculate absolute window client rect (not relative to the window)
         var windowClientRect = TryGetClientRect() ?? Rect.Empty;
 
         var absoluteWindowClientRect = new Rect(
@@ -60,13 +77,10 @@ public partial class SystemWindow : NativeResource
             windowRect.Top + windowClientRect.Bottom
         );
 
-        // Check if the window covers up screen bounds
-        var screenRect = Screen.FromHandle(Handle).Bounds;
-
-        return absoluteWindowClientRect.Left <= screenRect.Left
-            && absoluteWindowClientRect.Top <= screenRect.Top
-            && absoluteWindowClientRect.Right >= screenRect.Right
-            && absoluteWindowClientRect.Bottom >= screenRect.Bottom;
+        return absoluteWindowClientRect.Left <= monitorRect.Left
+            && absoluteWindowClientRect.Top <= monitorRect.Top
+            && absoluteWindowClientRect.Right >= monitorRect.Right
+            && absoluteWindowClientRect.Bottom >= monitorRect.Bottom;
     }
 
     public SystemProcess? TryGetProcess()
@@ -81,10 +95,7 @@ public partial class SystemWindow : NativeResource
         return SystemProcess.TryOpen((int)processId);
     }
 
-    protected override void Dispose(bool disposing)
-    {
-        // Doesn't actually need to be disposed, just here for consistency
-    }
+    protected override void Dispose(bool disposing) { }
 }
 
 public partial class SystemWindow
@@ -105,19 +116,24 @@ public partial class SystemWindow
     {
         var result = new List<SystemWindow>();
 
-        bool EnumWindows(nint hWnd, nint _)
+        if (
+            !NativeMethods.EnumWindows(
+                (hWnd, _) =>
+                {
+                    if (hWnd != 0)
+                    {
+                        var window = new SystemWindow(hWnd);
+                        result.Add(window);
+                    }
+
+                    return true;
+                },
+                0
+            )
+        )
         {
-            if (hWnd != 0)
-            {
-                var window = new SystemWindow(hWnd);
-                result.Add(window);
-            }
-
-            return true;
-        }
-
-        if (!NativeMethods.EnumWindows(EnumWindows, 0))
             Debug.WriteLine("Failed to enumerate windows.");
+        }
 
         return result;
     }

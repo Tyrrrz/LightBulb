@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace LightBulb.WindowsApi.Types;
+namespace LightBulb.WindowsApi.Native;
 
 [StructLayout(LayoutKind.Sequential)]
 internal readonly record struct PowerBroadcastSetting(Guid PowerSettingId);

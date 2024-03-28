@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace LightBulb.WindowsApi;
+namespace LightBulb.WindowsApi.Native;
 
 public abstract class NativeResource(nint handle) : IDisposable
 {
