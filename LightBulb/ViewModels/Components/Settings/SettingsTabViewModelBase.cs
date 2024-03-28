@@ -1,17 +1,17 @@
-﻿using LightBulb.Services;
-using Stylet;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using LightBulb.Framework;
+using LightBulb.Services;
+using LightBulb.Utils;
+using LightBulb.Utils.Extensions;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
-public abstract class SettingsTabViewModelBase : PropertyChangedBase, ISettingsTabViewModel
+public abstract partial class SettingsTabViewModelBase : ViewModelBase
 {
-    protected SettingsService SettingsService { get; }
+    private readonly DisposableCollector _eventRoot = new();
 
-    public int Order { get; }
-
-    public string DisplayName { get; }
-
-    public bool IsActive { get; set; }
+    [ObservableProperty]
+    private bool _isActive;
 
     protected SettingsTabViewModelBase(
         SettingsService settingsService,
@@ -23,8 +23,28 @@ public abstract class SettingsTabViewModelBase : PropertyChangedBase, ISettingsT
         Order = order;
         DisplayName = displayName;
 
-        SettingsService.SettingsReset += (_, _) => Refresh();
-        SettingsService.SettingsLoaded += (_, _) => Refresh();
-        SettingsService.SettingsSaved += (_, _) => Refresh();
+        _eventRoot.Add(
+            // Implementing classes will bind to settings properties through
+            // their own properties, so make sure they stay in sync.
+            // This is a bit overkill as it triggers a lot of unnecessary events,
+            // but it's a simple and reliable solution.
+            SettingsService.WatchAllProperties(OnAllPropertiesChanged)
+        );
+    }
+
+    protected SettingsService SettingsService { get; }
+
+    public int Order { get; }
+
+    public string DisplayName { get; }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _eventRoot.Dispose();
+        }
+
+        base.Dispose(disposing);
     }
 }

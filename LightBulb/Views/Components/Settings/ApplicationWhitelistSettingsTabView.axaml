@@ -1,0 +1,76 @@
+﻿<UserControl
+    x:Class="LightBulb.Views.Components.Settings.ApplicationWhitelistSettingsTabView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
+    x:Name="UserControl"
+    Loaded="UserControl_OnLoaded"
+    Unloaded="UserControl_OnUnloaded">
+    <Design.DataContext>
+        <settings:ApplicationWhitelistSettingsTabViewModel />
+    </Design.DataContext>
+
+    <StackPanel Margin="16" Orientation="Vertical">
+        <!--  Is enabled  -->
+        <Grid ColumnDefinitions="*,Auto,Auto">
+            <!--  Label  -->
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="Application whitelist" />
+
+            <!--  Refresh  -->
+            <Button
+                Grid.Column="1"
+                Margin="8,0,0,0"
+                Padding="4"
+                VerticalAlignment="Center"
+                Command="{Binding RefreshApplicationsCommand}"
+                Theme="{DynamicResource MaterialFlatButton}"
+                ToolTip.Tip="Refresh running applications">
+                <materialIcons:MaterialIcon
+                    Width="24"
+                    Height="24"
+                    Kind="Refresh" />
+            </Button>
+
+            <!--  Toggle  -->
+            <ToggleSwitch
+                Grid.Column="2"
+                Margin="8,0,0,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                IsChecked="{Binding IsApplicationWhitelistEnabled}"
+                ToolTip.Tip="Pause LightBulb when one of the selected applications is in the foreground" />
+        </Grid>
+
+        <!--  Whitelisted applications  -->
+        <ListBox
+            x:Name="WhitelistedApplicationsListBox"
+            Margin="0,8,0,0"
+            IsEnabled="{Binding IsApplicationWhitelistEnabled}"
+            ItemsSource="{Binding Applications}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+            SelectionChanged="WhitelistedApplicationsListBox_OnSelectionChanged"
+            SelectionMode="Multiple,Toggle">
+            <ListBox.ItemContainerTheme>
+                <ControlTheme BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Padding" Value="0,4" />
+                </ControlTheme>
+            </ListBox.ItemContainerTheme>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Panel Background="Transparent" ToolTip.Tip="{Binding ExecutableFilePath}">
+                        <!--  HACK: show a checkbox that does nothing but reflects the row selection status  -->
+                        <CheckBox
+                            Content="{Binding Name}"
+                            IsChecked="{Binding $parent[ListBoxItem].IsSelected, Mode=OneWay}"
+                            IsHitTestVisible="False" />
+                    </Panel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </StackPanel>
+</UserControl>

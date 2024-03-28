@@ -1,0 +1,136 @@
+﻿<Application
+    x:Class="LightBulb.App"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+    xmlns:framework="clr-namespace:LightBulb.Framework"
+    xmlns:materialAssists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles">
+    <Application.DataTemplates>
+        <framework:ViewManager />
+    </Application.DataTemplates>
+
+    <Application.Styles>
+        <materialStyles:MaterialTheme />
+        <materialIcons:MaterialIconStyles />
+        <dialogHostAvalonia:DialogHostStyles />
+
+        <!--  Dialog host  -->
+        <Style Selector="dialogHostAvalonia|DialogHost">
+            <Setter Property="DialogMargin" Value="0" />
+        </Style>
+
+        <!--  Radio button  -->
+        <Style Selector="RadioButton">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="materialAssists:SelectionControlAssist.Size" Value="18" />
+
+            <Style Selector="^:checked, ^:unchecked">
+                <Style Selector="^ Ellipse#PART_HoverEffect">
+                    <Setter Property="Width" Value="32" />
+                    <Setter Property="Height" Value="32" />
+                </Style>
+            </Style>
+        </Style>
+
+        <!--  Slider  -->
+        <Style Selector="Slider">
+            <Style Selector="^ ProgressBar#PART_ProgressLayer">
+                <Style Selector="^:horizontal">
+                    <Style Selector="^ Panel#PART_InnerPanel">
+                        <Setter Property="Height" Value="2" />
+
+                        <Style Selector="^ Border#PART_InactiveState">
+                            <Setter Property="Margin" Value="0" />
+                            <Setter Property="Height" Value="2" />
+                        </Style>
+
+                        <Style Selector="^ Border#PART_Indicator">
+                            <Setter Property="Margin" Value="0" />
+                        </Style>
+                    </Style>
+                </Style>
+            </Style>
+
+            <Style Selector="^ Track#PART_Track">
+                <Style Selector="^:horizontal">
+                    <Setter Property="Margin" Value="4,0" />
+                </Style>
+
+                <Style Selector="^ Border#PART_HoverEffect">
+                    <Setter Property="Width" Value="24" />
+                    <Setter Property="Height" Value="24" />
+                </Style>
+
+                <Style Selector="^ Border#PART_ThumbGrip">
+                    <Setter Property="Width" Value="12" />
+                    <Setter Property="Height" Value="12" />
+                </Style>
+            </Style>
+        </Style>
+
+        <!--  Text box  -->
+        <Style Selector="TextBox">
+            <Setter Property="Height" Value="20" />
+            <Setter Property="FontSize" Value="14" />
+
+            <Style Selector="^ Panel#PART_TextFieldPanel">
+                <Setter Property="MinHeight" Value="0" />
+            </Style>
+
+            <Style Selector="^ Panel#PART_TextContainer">
+                <Setter Property="Margin" Value="0" />
+            </Style>
+        </Style>
+
+        <!--  Tooltip  -->
+        <Style Selector="ToolTip">
+            <Setter Property="TextElement.FontSize" Value="14" />
+            <Setter Property="TextElement.FontWeight" Value="Normal" />
+            <Setter Property="TextElement.FontStyle" Value="Normal" />
+            <Setter Property="TextElement.FontStretch" Value="Normal" />
+        </Style>
+
+        <!--  Toggle switch  -->
+        <Style Selector="ToggleSwitch">
+            <Setter Property="materialAssists:ToggleSwitchAssist.SwitchThumbOffBackground" Value="{DynamicResource MaterialBackgroundBrush}" />
+        </Style>
+    </Application.Styles>
+
+    <!--  Tray icon  -->
+    <TrayIcon.Icons>
+        <TrayIcons>
+            <TrayIcon
+                Clicked="TrayIcon_OnClicked"
+                Icon="/favicon.ico"
+                ToolTipText="LightBulb">
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem Click="TrayIcon_OnClicked" Header="Open" />
+                        <NativeMenuItem Click="ShowSettingsMenuItem_OnClick" Header="Settings" />
+                        <NativeMenuItemSeparator />
+
+                        <NativeMenuItem Click="ToggleMenuItem_OnClick" Header="Toggle" />
+                        <NativeMenuItem Header="Disable...">
+                            <NativeMenu>
+                                <NativeMenuItem Click="DisableUntilSunriseMenuItem_OnClick" Header="Until sunrise" />
+                                <NativeMenuItem Click="DisableTemporarily1DayMenuItem_OnClick" Header="For 1 day" />
+                                <NativeMenuItem Click="DisableTemporarily12HoursMenuItem_OnClick" Header="For 12 hours" />
+                                <NativeMenuItem Click="DisableTemporarily6HoursMenuItem_OnClick" Header="For 6 hours" />
+                                <NativeMenuItem Click="DisableTemporarily3HoursMenuItem_OnClick" Header="For 3 hours" />
+                                <NativeMenuItem Click="DisableTemporarily1HourMenuItem_OnClick" Header="For 1 hour" />
+                                <NativeMenuItem Click="DisableTemporarily30MinutesMenuItem_OnClick" Header="For 30 minutes" />
+                                <NativeMenuItem Click="DisableTemporarily5MinutesMenuItem_OnClick" Header="For 5 minutes" />
+                                <NativeMenuItem Click="DisableTemporarily1MinuteMenuItem_OnClick" Header="For 1 minute" />
+                            </NativeMenu>
+                        </NativeMenuItem>
+                        <NativeMenuItemSeparator />
+
+                        <NativeMenuItem Click="ExitMenuItem_OnClick" Header="Exit" />
+                    </NativeMenu>
+                </TrayIcon.Menu>
+            </TrayIcon>
+        </TrayIcons>
+    </TrayIcon.Icons>
+</Application>

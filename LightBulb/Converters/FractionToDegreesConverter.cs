@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows.Data;
+using Avalonia.Data.Converters;
 
 namespace LightBulb.Converters;
 
-[ValueConversion(typeof(double), typeof(double))]
 public class FractionToDegreesConverter : IValueConverter
 {
     public static FractionToDegreesConverter Instance { get; } = new();

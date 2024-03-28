@@ -95,6 +95,7 @@ jobs:
           -p:CSharpier_Bypass=true
           --output LightBulb/bin/publish/
           --configuration Release
+          --use-current-runtime
 
       - name: Create installer
         shell: pwsh

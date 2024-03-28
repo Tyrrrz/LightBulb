@@ -3,6 +3,7 @@ using LightBulb.Core.Utils.Extensions;
 
 namespace LightBulb.Core;
 
+// Times are presented in the current timezone, which is a flimsy convention
 public readonly record struct SolarTimes(TimeOnly Sunrise, TimeOnly Sunset)
 {
     private static double DegreesToRadians(double degree) => degree * (Math.PI / 180);
@@ -11,7 +12,7 @@ public readonly record struct SolarTimes(TimeOnly Sunrise, TimeOnly Sunset)
 
     private static TimeOnly CalculateSolarTime(
         GeoLocation location,
-        DateTimeOffset date,
+        DateTimeOffset instant,
         double zenith,
         bool isSunrise
     )
@@ -21,7 +22,7 @@ public readonly record struct SolarTimes(TimeOnly Sunrise, TimeOnly Sunset)
         // Convert longitude to hour value and calculate an approximate time
         var lngHours = location.Longitude / 15;
         var timeApproxHours = isSunrise ? 6 : 18;
-        var timeApproxDays = date.DayOfYear + (timeApproxHours - lngHours) / 24;
+        var timeApproxDays = instant.DayOfYear + (timeApproxHours - lngHours) / 24;
 
         // Calculate Sun's mean anomaly
         var sunMeanAnomaly = 0.9856 * timeApproxDays - 3.289;
@@ -75,14 +76,14 @@ public readonly record struct SolarTimes(TimeOnly Sunrise, TimeOnly Sunset)
 
         // Adjust UTC time to local time
         // (we use the provided offset because it's impossible to calculate timezone from coordinates)
-        var localHours = (utcHours + date.Offset.TotalHours).Wrap(0, 24);
+        var localHours = (utcHours + instant.Offset.TotalHours).Wrap(0, 24);
 
         return TimeOnly.FromTimeSpan(TimeSpan.FromHours(localHours));
     }
 
-    public static SolarTimes Calculate(GeoLocation location, DateTimeOffset date) =>
+    public static SolarTimes Calculate(GeoLocation location, DateTimeOffset instant) =>
         new(
-            CalculateSolarTime(location, date, 90.83, true),
-            CalculateSolarTime(location, date, 90.83, false)
+            CalculateSolarTime(location, instant, 90.83, true),
+            CalculateSolarTime(location, instant, 90.83, false)
         );
 }

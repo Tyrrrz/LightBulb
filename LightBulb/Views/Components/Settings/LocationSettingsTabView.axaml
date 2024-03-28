@@ -1,0 +1,141 @@
+﻿<UserControl
+    x:Class="LightBulb.Views.Components.Settings.LocationSettingsTabView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:LightBulb.Converters"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings">
+    <Design.DataContext>
+        <settings:LocationSettingsTabViewModel />
+    </Design.DataContext>
+
+    <StackPanel Margin="16" Orientation="Vertical">
+        <!--  Manual/location-based configuration  -->
+        <TextBlock Text="Solar configuration:" />
+        <DockPanel Margin="0,8,0,0">
+            <RadioButton
+                Content="Manual"
+                DockPanel.Dock="Left"
+                IsChecked="{Binding IsManualSunriseSunsetEnabled}"
+                ToolTip.Tip="Configure sunrise and sunset manually" />
+            <RadioButton
+                HorizontalAlignment="Right"
+                Content="Location-based"
+                DockPanel.Dock="Right"
+                IsChecked="{Binding !IsManualSunriseSunsetEnabled}"
+                ToolTip.Tip="Configure your location and use it to automatically calculate the sunrise and sunset times" />
+        </DockPanel>
+
+        <!--  Manual  -->
+        <StackPanel
+            Margin="0,24,0,0"
+            IsVisible="{Binding IsManualSunriseSunsetEnabled}"
+            Orientation="Vertical">
+            <!--  Sunrise time  -->
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Left" Text="Sunrise:" />
+                <TextBox
+                    MinWidth="24"
+                    HorizontalAlignment="Right"
+                    DockPanel.Dock="Right"
+                    Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
+            </DockPanel>
+            <Slider
+                Margin="0,12,0,0"
+                LargeChange="0.5"
+                Maximum="23.99999"
+                Minimum="0"
+                SmallChange="0.25"
+                Value="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}" />
+
+            <!--  Sunset time  -->
+            <DockPanel Margin="0,16,0,0">
+                <TextBlock DockPanel.Dock="Left" Text="Sunset:" />
+                <TextBox
+                    MinWidth="24"
+                    HorizontalAlignment="Right"
+                    DockPanel.Dock="Right"
+                    Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
+            </DockPanel>
+            <Slider
+                Margin="0,12,0,0"
+                LargeChange="0.5"
+                Maximum="23.99999"
+                Minimum="0"
+                SmallChange="0.25"
+                Value="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}" />
+        </StackPanel>
+
+        <!--  Location-based  -->
+        <StackPanel
+            Margin="0,24,0,0"
+            IsVisible="{Binding !IsManualSunriseSunsetEnabled}"
+            Orientation="Vertical">
+            <!--  Location  -->
+            <TextBlock Text="Your location:" />
+            <Grid Margin="0,8,0,0" ColumnDefinitions="Auto,*,Auto">
+                <!--  Autodetect  -->
+                <Button
+                    Grid.Column="0"
+                    Padding="4"
+                    VerticalAlignment="Center"
+                    Command="{Binding AutoResolveLocationCommand}"
+                    Theme="{DynamicResource MaterialFlatButton}"
+                    ToolTip.Tip="Try to detect the location automatically based on your IP address">
+                    <materialIcons:MaterialIcon
+                        Width="24"
+                        Height="24"
+                        Kind="Location" />
+                </Button>
+
+                <!--  Location query  -->
+                <TextBox
+                    Grid.Column="1"
+                    Margin="8,0"
+                    VerticalAlignment="Center"
+                    IsEnabled="{Binding !IsBusy}"
+                    Text="{Binding LocationQuery}">
+                    <ToolTip.Tip>
+                        <TextBlock>
+                            <Run Text="Specify your location using geographic coordinates or a search query" />
+                            <LineBreak />
+                            <LineBreak />
+                            <Run Text="Examples of valid inputs:" />
+                            <LineBreak />
+                            <Run FontWeight="SemiBold" Text="41.25, -120.9762" />
+                            <LineBreak />
+                            <Run FontWeight="SemiBold" Text="41.25°N, 120.9762°W" />
+                            <LineBreak />
+                            <Run FontWeight="SemiBold" Text="New York, USA" />
+                            <LineBreak />
+                            <Run FontWeight="SemiBold" Text="Germany" />
+                        </TextBlock>
+                    </ToolTip.Tip>
+                </TextBox>
+
+                <!--  Set  -->
+                <Button
+                    Grid.Column="2"
+                    Padding="4"
+                    VerticalAlignment="Center"
+                    Command="{Binding ResolveLocationCommand}"
+                    IsDefault="True"
+                    Theme="{DynamicResource MaterialFlatButton}"
+                    ToolTip.Tip="Set location">
+                    <materialIcons:MaterialIcon
+                        Width="24"
+                        Height="24"
+                        Kind="Tick" />
+                </Button>
+            </Grid>
+
+            <!--  Location error  -->
+            <TextBlock
+                Margin="0,8,0,0"
+                HorizontalAlignment="Center"
+                Foreground="DarkRed"
+                IsVisible="{Binding IsLocationError}"
+                Text="Error resolving location, try again" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

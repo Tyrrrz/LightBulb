@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Windows.Input;
+using Avalonia.Input;
+using Avalonia.Win32.Input;
 using LightBulb.Models;
 using LightBulb.Utils.Extensions;
 using LightBulb.WindowsApi;
@@ -10,18 +11,18 @@ namespace LightBulb.Services;
 
 public class HotKeyService : IDisposable
 {
-    private readonly List<GlobalHotKey> _hotKeyRegistrations = new();
+    private readonly List<GlobalHotKey> _hotKeyRegistrations = [];
 
     public void RegisterHotKey(HotKey hotKey, Action callback)
     {
         // Convert WPF key/modifiers to Windows API virtual key/modifiers
-        var virtualKey = KeyInterop.VirtualKeyFromKey(hotKey.Key);
+        var virtualKey = KeyInterop.VirtualKeyFromKey(hotKey.Key.ToQwertyKey());
         var modifiers = (int)hotKey.Modifiers;
 
-        var hotKeyRegistration = GlobalHotKey.TryRegister(virtualKey, modifiers, callback);
+        var registration = GlobalHotKey.TryRegister(virtualKey, modifiers, callback);
 
-        if (hotKeyRegistration is not null)
-            _hotKeyRegistrations.Add(hotKeyRegistration);
+        if (registration is not null)
+            _hotKeyRegistrations.Add(registration);
         else
             Debug.WriteLine("Failed to register hotkey.");
     }

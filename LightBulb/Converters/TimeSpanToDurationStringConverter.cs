@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows.Data;
+using Avalonia.Data.Converters;
 
 namespace LightBulb.Converters;
 
-[ValueConversion(typeof(TimeSpan), typeof(string))]
 public class TimeSpanToDurationStringConverter : IValueConverter
 {
     public static TimeSpanToDurationStringConverter Instance { get; } = new();

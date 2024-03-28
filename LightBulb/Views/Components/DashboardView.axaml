@@ -1,0 +1,207 @@
+﻿<UserControl
+    x:Class="LightBulb.Views.Components.DashboardView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:components="clr-namespace:LightBulb.ViewModels.Components"
+    xmlns:controls="clr-namespace:LightBulb.Views.Controls"
+    xmlns:converters="clr-namespace:LightBulb.Converters"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    x:Name="UserControl"
+    Loaded="UserControl_OnLoaded">
+    <Design.DataContext>
+        <components:DashboardViewModel />
+    </Design.DataContext>
+
+    <Grid ColumnDefinitions="*,Auto,*">
+        <!--  Sunset time  -->
+        <TextBlock
+            Grid.Column="0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="19"
+            TextAlignment="Center">
+            <ToolTip.Tip>
+                <TextBlock>
+                    <Run Text="Sunset transition starts at" />
+                    <Run FontWeight="SemiBold" Text="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
+                    <Run Text="and ends at" />
+                    <Run FontWeight="SemiBold" Text="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
+                </TextBlock>
+            </ToolTip.Tip>
+            <Run FontWeight="Light" Text="Sunset" />
+            <LineBreak />
+            <Run FontWeight="Regular" Text="{Binding SolarTimes.Sunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
+        </TextBlock>
+
+        <!--  Sundial  -->
+        <Panel Grid.Column="1">
+            <!--  Night time arc  -->
+            <controls:Arc
+                Width="180"
+                Height="180"
+                EndAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
+                StartAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
+                Stroke="#FFAF1A"
+                StrokeThickness="28" />
+            <controls:Arc
+                Width="180"
+                Height="180"
+                EndAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
+                StartAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
+                Stroke="#FFD280"
+                StrokeThickness="26" />
+
+            <!--  Day time arc  -->
+            <controls:Arc
+                Width="180"
+                Height="180"
+                EndAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
+                StartAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
+                Stroke="#8AC0FF"
+                StrokeThickness="28" />
+            <controls:Arc
+                Width="180"
+                Height="180"
+                EndAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
+                StartAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
+                Stroke="#F2F8FF"
+                StrokeThickness="26" />
+
+            <!--  Sunrise transition  -->
+            <controls:Arc
+                Width="180"
+                Height="180"
+                EndAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
+                StartAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
+                Stroke="#FFC766"
+                StrokeThickness="28" />
+            <controls:Arc
+                Width="180"
+                Height="180"
+                EndAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
+                StartAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
+                Stroke="#FFEDCD"
+                StrokeThickness="26" />
+
+            <!--  Sunset transition  -->
+            <controls:Arc
+                Width="180"
+                Height="180"
+                EndAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
+                StartAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
+                Stroke="#FFC766"
+                StrokeThickness="28" />
+            <controls:Arc
+                Width="180"
+                Height="180"
+                EndAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
+                StartAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
+                Stroke="#FFEDCD"
+                StrokeThickness="26" />
+
+            <!--  Current time position  -->
+            <controls:ArcPoint
+                Width="180"
+                Height="180"
+                Angle="{Binding Instant.TimeOfDay.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                Fill="#FF7733"
+                Size="28" />
+            <controls:ArcPoint
+                Width="180"
+                Height="180"
+                Angle="{Binding Instant.TimeOfDay.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
+                Fill="#FFAB85"
+                Size="26" />
+
+            <!--  Configuration offset  -->
+            <StackPanel
+                x:Name="ConfigurationOffsetStackPanel"
+                Margin="0,50,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Cursor="Hand"
+                IsVisible="{Binding IsOffsetEnabled}"
+                Orientation="Horizontal"
+                PointerPressed="ConfigurationOffsetStackPanel_OnPointerPressed">
+                <ToolTip.Tip>
+                    <TextBlock>
+                        <Run Text="Current temperature and brightness values are adjusted by an offset:" />
+                        <LineBreak />
+                        <Run Text=" " />
+                        <Run Text="Temperature offset:" />
+                        <Run FontWeight="SemiBold" Text="{Binding TemperatureOffset, StringFormat={}{0:F0} K, Mode=OneWay}" />
+                        <LineBreak />
+                        <Run Text=" " />
+                        <Run Text="Brightness offset:" />
+                        <Run FontWeight="SemiBold" Text="{Binding BrightnessOffset, StringFormat={}{0:P0}, Mode=OneWay}" />
+                        <LineBreak />
+                        <LineBreak />
+                        <Run FontWeight="SemiBold" Text="Click to reset" />
+                    </TextBlock>
+                </ToolTip.Tip>
+                <materialIcons:MaterialIcon
+                    Width="16"
+                    Height="16"
+                    Kind="SwapVertical" />
+                <TextBlock
+                    Margin="4,0,0,0"
+                    FontSize="15"
+                    Text="offset" />
+            </StackPanel>
+
+            <!--  Current temperature and brightness  -->
+            <StackPanel
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <materialIcons:MaterialIcon
+                    Width="48"
+                    Height="48"
+                    Kind="{Binding CycleState, Converter={x:Static converters:CycleStateToMaterialIconKindConverter.Instance}}" />
+                <TextBlock Margin="8,0,0,0" FontSize="20">
+                    <Run Text="{Binding CurrentConfiguration.Temperature, StringFormat={}{0:F0} K, Mode=OneWay}" />
+                    <LineBreak />
+                    <Run Text="{Binding CurrentConfiguration.Brightness, StringFormat={}{0:P0}, Mode=OneWay}" />
+                </TextBlock>
+            </StackPanel>
+
+            <!--  Current time  -->
+            <StackPanel
+                Margin="0,0,0,50"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Orientation="Horizontal">
+                <materialIcons:MaterialIcon
+                    Width="16"
+                    Height="16"
+                    Kind="ClockOutline" />
+                <TextBlock
+                    Margin="4,0,0,0"
+                    FontSize="14"
+                    FontWeight="Light"
+                    Text="{Binding Instant, StringFormat={}{0:t}}" />
+            </StackPanel>
+        </Panel>
+
+        <!--  Sunrise time  -->
+        <TextBlock
+            Grid.Column="2"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="19"
+            TextAlignment="Center">
+            <ToolTip.Tip>
+                <TextBlock>
+                    <Run Text="Sunrise transition starts at" />
+                    <Run FontWeight="SemiBold" Text="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
+                    <Run Text="and ends at" />
+                    <Run FontWeight="SemiBold" Text="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
+                </TextBlock>
+            </ToolTip.Tip>
+
+            <Run FontWeight="Light" Text="Sunrise" />
+            <LineBreak />
+            <Run FontWeight="Regular" Text="{Binding SolarTimes.Sunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
+        </TextBlock>
+    </Grid>
+</UserControl>

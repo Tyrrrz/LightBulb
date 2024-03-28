@@ -1,13 +1,37 @@
 ﻿using System;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using LightBulb.Core;
 using LightBulb.Services;
-using Stylet;
+using LightBulb.Utils;
+using LightBulb.Utils.Extensions;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
-public class LocationSettingsTabViewModel : SettingsTabViewModelBase
+public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
 {
-    public bool IsBusy { get; private set; }
+    private readonly DisposableCollector _eventRoot = new();
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(AutoResolveLocationCommand))]
+    [NotifyCanExecuteChangedFor(nameof(ResolveLocationCommand))]
+    private bool _isBusy;
+
+    [ObservableProperty]
+    private bool _isLocationError;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ResolveLocationCommand))]
+    private string? _locationQuery;
+
+    public LocationSettingsTabViewModel(SettingsService settingsService)
+        : base(settingsService, 1, "Location")
+    {
+        _eventRoot.Add(
+            this.WatchProperty(o => o.Location, () => LocationQuery = Location?.ToString())
+        );
+    }
 
     public bool IsManualSunriseSunsetEnabled
     {
@@ -33,24 +57,14 @@ public class LocationSettingsTabViewModel : SettingsTabViewModelBase
         set => SettingsService.Location = value;
     }
 
-    public bool IsLocationError { get; private set; }
+    private bool CanAutoResolveLocation() => !IsBusy;
 
-    public string? LocationQuery { get; set; }
-
-    public LocationSettingsTabViewModel(SettingsService settingsService)
-        : base(settingsService, 1, "Location")
+    [RelayCommand(CanExecute = nameof(CanAutoResolveLocation))]
+    private async Task AutoResolveLocationAsync()
     {
-        // Update the location query when the actual location changes
-        settingsService.BindAndInvoke(
-            o => o.Location,
-            (_, _) => LocationQuery = Location?.ToString()
-        );
-    }
+        if (IsBusy)
+            return;
 
-    public bool CanAutoDetectLocation => !IsBusy;
-
-    public async void AutoDetectLocation()
-    {
         IsBusy = true;
         IsLocationError = false;
 
@@ -68,14 +82,19 @@ public class LocationSettingsTabViewModel : SettingsTabViewModelBase
         }
     }
 
-    public bool CanSetLocation =>
+    private bool CanResolveLocation() =>
         !IsBusy
         && !string.IsNullOrWhiteSpace(LocationQuery)
         && LocationQuery != Location?.ToString();
 
-    public async void SetLocation()
+    [RelayCommand(CanExecute = nameof(CanResolveLocation))]
+    private async Task ResolveLocationAsync()
     {
-        if (string.IsNullOrWhiteSpace(LocationQuery))
+        if (
+            IsBusy
+            || string.IsNullOrWhiteSpace(LocationQuery)
+            || LocationQuery == Location?.ToString()
+        )
             return;
 
         IsBusy = true;
@@ -94,5 +113,15 @@ public class LocationSettingsTabViewModel : SettingsTabViewModelBase
         {
             IsBusy = false;
         }
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _eventRoot.Dispose();
+        }
+
+        base.Dispose(disposing);
     }
 }

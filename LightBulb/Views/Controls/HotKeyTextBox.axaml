@@ -1,0 +1,12 @@
+﻿<UserControl
+    x:Class="LightBulb.Views.Controls.HotKeyTextBox"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <TextBox
+        x:Name="TextBox"
+        IsReadOnly="True"
+        IsUndoEnabled="False"
+        KeyDown="TextBox_OnKeyDown"
+        Text="{Binding $parent[UserControl].HotKey, Mode=OneWay}"
+        TextAlignment="Center" />
+</UserControl>

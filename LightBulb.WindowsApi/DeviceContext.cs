@@ -12,7 +12,7 @@ public partial class DeviceContext(nint handle) : NativeResource(handle)
     private void SetGammaRamp(GammaRamp ramp)
     {
         if (!NativeMethods.SetDeviceGammaRamp(Handle, ref ramp))
-            Debug.WriteLine($"Failed to set gamma ramp on device context #${Handle}).");
+            Debug.WriteLine($"Failed to set gamma ramp on device context #{Handle}).");
     }
 
     public void SetGamma(double redMultiplier, double greenMultiplier, double blueMultiplier)

@@ -1,0 +1,192 @@
+﻿<Window
+    x:Class="LightBulb.Views.MainView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+    xmlns:lightBulb="clr-namespace:LightBulb"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:viewModels="clr-namespace:LightBulb.ViewModels"
+    x:Name="Window"
+    Title="LightBulb"
+    Width="450"
+    Height="350"
+    CanResize="False"
+    Closing="Window_OnClosing"
+    Icon="/favicon.ico"
+    Loaded="Window_OnLoaded"
+    SystemDecorations="None"
+    WindowStartupLocation="CenterScreen">
+    <Design.DataContext>
+        <viewModels:MainViewModel />
+    </Design.DataContext>
+
+    <Border BorderBrush="{DynamicResource MaterialPrimaryLightBrush}" BorderThickness="1">
+        <dialogHostAvalonia:DialogHost
+            x:Name="DialogHost"
+            CloseOnClickAway="False"
+            Loaded="DialogHost_OnLoaded">
+            <Grid RowDefinitions="Auto,*,Auto">
+                <!--  Header  -->
+                <Border
+                    x:Name="HeaderBorder"
+                    Grid.Row="0"
+                    Padding="8,12"
+                    Background="{DynamicResource MaterialPrimaryMidBrush}"
+                    PointerPressed="HeaderBorder_OnPointerPressed">
+                    <Grid ColumnDefinitions="Auto,Auto,*,Auto">
+                        <!--  On/Off button and logo  -->
+                        <ToggleButton
+                            Grid.Column="0"
+                            Width="32"
+                            Height="32"
+                            Padding="0"
+                            VerticalAlignment="Center"
+                            Background="{DynamicResource MaterialSecondaryMidBrush}"
+                            IsChecked="{Binding Dashboard.IsEnabled}"
+                            Theme="{DynamicResource MaterialIconToggleButton}"
+                            ToolTip.Tip="Toggle LightBulb on/off">
+                            <ToggleButton.Content>
+                                <materialIcons:MaterialIcon
+                                    Width="24"
+                                    Height="24"
+                                    Classes.checked="{Binding $parent[ToggleButton].IsChecked}"
+                                    Classes.unchecked="{Binding !$parent[ToggleButton].IsChecked}">
+                                    <materialIcons:MaterialIcon.Styles>
+                                        <Style Selector="materialIcons|MaterialIcon">
+                                            <Style Selector="^.unchecked">
+                                                <Setter Property="Kind" Value="LightbulbOffOutline" />
+                                                <Setter Property="Opacity" Value="0.5" />
+                                            </Style>
+                                            <Style Selector="^.checked">
+                                                <Setter Property="Kind" Value="LightbulbOutline" />
+                                            </Style>
+                                        </Style>
+                                    </materialIcons:MaterialIcon.Styles>
+                                </materialIcons:MaterialIcon>
+                            </ToggleButton.Content>
+                        </ToggleButton>
+
+                        <!--  Application name and version  -->
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="8,1,0,0"
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Foreground="{DynamicResource MaterialPrimaryMidForegroundBrush}">
+                            <Run
+                                FontSize="19"
+                                FontWeight="Medium"
+                                Text="{x:Static lightBulb:Program.Name}" />
+                            <Run FontWeight="Light" Text="v" /><Run FontWeight="Light" Text="{x:Static lightBulb:Program.VersionString}" />
+                        </TextBlock>
+
+                        <!--  Hide button  -->
+                        <Button
+                            x:Name="HideButton"
+                            Grid.Column="3"
+                            Padding="4"
+                            VerticalAlignment="Center"
+                            Click="HideButton_OnClick"
+                            Foreground="{DynamicResource MaterialPrimaryMidForegroundBrush}"
+                            Theme="{DynamicResource MaterialFlatButton}"
+                            ToolTip.Tip="Hide LightBulb to the system tray">
+                            <materialIcons:MaterialIcon
+                                Width="24"
+                                Height="24"
+                                Kind="WindowMinimize" />
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <!--  Body  -->
+                <ContentControl
+                    Grid.Row="1"
+                    Margin="0,16,0,8"
+                    Content="{Binding Dashboard}" />
+
+                <!--  Buttons  -->
+                <StackPanel
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <!--  Start/stop cycle preview  -->
+                    <Button
+                        Margin="8"
+                        Classes.start="{Binding !Dashboard.IsCyclePreviewEnabled}"
+                        Classes.stop="{Binding Dashboard.IsCyclePreviewEnabled}"
+                        Command="{Binding Dashboard.ToggleCyclePreviewCommand}"
+                        Theme="{DynamicResource MaterialFlatButton}">
+                        <Button.Styles>
+                            <Style Selector="Button">
+                                <Style Selector="^.start">
+                                    <Setter Property="ToolTip.Tip" Value="Preview 24-hour cycle" />
+                                </Style>
+                                <Style Selector="^.stop">
+                                    <Setter Property="ToolTip.Tip" Value="Stop preview" />
+                                </Style>
+                            </Style>
+                        </Button.Styles>
+                        <StackPanel Orientation="Horizontal">
+                            <materialIcons:MaterialIcon
+                                Width="24"
+                                Height="24"
+                                Classes.start="{Binding !Dashboard.IsCyclePreviewEnabled}"
+                                Classes.stop="{Binding Dashboard.IsCyclePreviewEnabled}">
+                                <materialIcons:MaterialIcon.Styles>
+                                    <Style Selector="materialIcons|MaterialIcon">
+                                        <Style Selector="^.start">
+                                            <Setter Property="Kind" Value="PlayCircleOutline" />
+                                        </Style>
+                                        <Style Selector="^.stop">
+                                            <Setter Property="Kind" Value="StopCircleOutline" />
+                                        </Style>
+                                    </Style>
+                                </materialIcons:MaterialIcon.Styles>
+                            </materialIcons:MaterialIcon>
+                            <TextBlock
+                                Margin="4,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="PREVIEW" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  Settings  -->
+                    <Button
+                        Margin="8"
+                        Command="{Binding ShowSettingsCommand}"
+                        Theme="{DynamicResource MaterialFlatButton}"
+                        ToolTip.Tip="Open settings">
+                        <StackPanel Orientation="Horizontal">
+                            <materialIcons:MaterialIcon
+                                Width="24"
+                                Height="24"
+                                Kind="Settings" />
+                            <TextBlock
+                                Margin="4,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="SETTINGS" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  About  -->
+                    <Button
+                        Margin="8"
+                        Command="{Binding ShowAboutCommand}"
+                        Theme="{DynamicResource MaterialFlatButton}"
+                        ToolTip.Tip="Open LightBulb on GitHub">
+                        <StackPanel Orientation="Horizontal">
+                            <materialIcons:MaterialIcon
+                                Width="24"
+                                Height="24"
+                                Kind="Web" />
+                            <TextBlock
+                                Margin="4,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="ABOUT" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </dialogHostAvalonia:DialogHost>
+    </Border>
+</Window>

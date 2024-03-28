@@ -1,22 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using LightBulb.Framework;
 using LightBulb.Services;
 using LightBulb.ViewModels.Components.Settings;
-using LightBulb.ViewModels.Framework;
 
 namespace LightBulb.ViewModels.Dialogs;
 
-public class SettingsViewModel : DialogScreen
+public partial class SettingsViewModel : DialogViewModelBase
 {
     private readonly SettingsService _settingsService;
 
-    public IReadOnlyList<ISettingsTabViewModel> Tabs { get; }
-
-    public ISettingsTabViewModel? ActiveTab { get; private set; }
+    [ObservableProperty]
+    private SettingsTabViewModelBase? _activeTab;
 
     public SettingsViewModel(
         SettingsService settingsService,
-        IEnumerable<ISettingsTabViewModel> tabs
+        IEnumerable<SettingsTabViewModelBase> tabs
     )
     {
         _settingsService = settingsService;
@@ -28,34 +29,39 @@ public class SettingsViewModel : DialogScreen
             ActivateTab(firstTab);
     }
 
-    public void ActivateTab(ISettingsTabViewModel settingsTab)
+    public IReadOnlyList<SettingsTabViewModelBase> Tabs { get; }
+
+    [RelayCommand]
+    private void ActivateTab(SettingsTabViewModelBase tab)
     {
-        // Deactivate previously selected tab
+        // Deactivate the previously selected tab
         if (ActiveTab is not null)
             ActiveTab.IsActive = false;
 
-        ActiveTab = settingsTab;
-        settingsTab.IsActive = true;
+        ActiveTab = tab;
+        tab.IsActive = true;
     }
 
-    // This should just be an overload, but Stylet gets confused when there are two methods with the same name
-    public void ActivateTabByType<T>()
-        where T : ISettingsTabViewModel
+    public void ActivateTab<T>()
+        where T : SettingsTabViewModelBase
     {
         var tab = Tabs.OfType<T>().FirstOrDefault();
         if (tab is not null)
             ActivateTab(tab);
     }
 
-    public void Reset() => _settingsService.Reset();
+    [RelayCommand]
+    private void Reset() => _settingsService.Reset();
 
-    public void Save()
+    [RelayCommand]
+    private void Save()
     {
         _settingsService.Save();
         Close(true);
     }
 
-    public void Cancel()
+    [RelayCommand]
+    private void Cancel()
     {
         _settingsService.Load();
         Close(false);

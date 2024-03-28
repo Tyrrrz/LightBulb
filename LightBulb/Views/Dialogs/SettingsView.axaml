@@ -1,0 +1,94 @@
+﻿<UserControl
+    x:Class="LightBulb.Views.Dialogs.SettingsView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:LightBulb.Converters"
+    xmlns:dialogs="clr-namespace:LightBulb.ViewModels.Dialogs"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    Width="350"
+    Height="270">
+    <Design.DataContext>
+        <dialogs:SettingsViewModel />
+    </Design.DataContext>
+
+    <Grid ColumnDefinitions="Auto,*">
+        <!--  Settings tab selection  -->
+        <Border
+            Grid.Column="0"
+            VerticalAlignment="Stretch"
+            Background="{DynamicResource MaterialPrimaryMidBrush}">
+            <ItemsControl Background="{DynamicResource MaterialPrimaryMidBrush}" ItemsSource="{Binding Tabs}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="0,0,2,0" Classes.active="{Binding IsActive}">
+                            <Border.Styles>
+                                <Style Selector="Border.active">
+                                    <Setter Property="BorderBrush" Value="{DynamicResource MaterialSecondaryMidBrush}" />
+                                </Style>
+                            </Border.Styles>
+                            <Button
+                                Margin="4"
+                                Padding="8"
+                                Command="{Binding $parent[UserControl].DataContext.ActivateTabCommand}"
+                                CommandParameter="{Binding}"
+                                Foreground="{DynamicResource MaterialPrimaryForegroundBrush}"
+                                Theme="{DynamicResource MaterialFlatButton}"
+                                ToolTip.Tip="{Binding DisplayName}">
+                                <materialIcons:MaterialIcon
+                                    Width="24"
+                                    Height="24"
+                                    Kind="{Binding Converter={x:Static converters:SettingsTabToMaterialIconKindConverter.Instance}}" />
+                            </Button>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
+
+        <Grid Grid.Column="1" RowDefinitions="*,Auto,Auto">
+            <!--  Active settings tab  -->
+            <ScrollViewer
+                Grid.Row="0"
+                Background="{DynamicResource MaterialCardBackgroundBrush}"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+                <ContentControl Margin="0,0,8,16" Content="{Binding ActiveTab}" />
+            </ScrollViewer>
+
+            <!--  Separator  -->
+            <Rectangle
+                Grid.Row="1"
+                Height="1"
+                HorizontalAlignment="Stretch"
+                Fill="{DynamicResource MaterialDividerBrush}" />
+
+            <!--  Buttons  -->
+            <StackPanel
+                Grid.Row="2"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <!--  Reset  -->
+                <Button
+                    Margin="8"
+                    Command="{Binding ResetCommand}"
+                    Content="RESET"
+                    Theme="{DynamicResource MaterialFlatButton}"
+                    ToolTip.Tip="Reset all settings to their defaults" />
+
+                <!--  Cancel  -->
+                <Button
+                    Margin="8"
+                    Command="{Binding CancelCommand}"
+                    Content="CANCEL"
+                    Theme="{DynamicResource MaterialFlatButton}" />
+
+                <!--  Save  -->
+                <Button
+                    Margin="8"
+                    Command="{Binding SaveCommand}"
+                    Content="SAVE"
+                    Theme="{DynamicResource MaterialFlatButton}" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,90 @@
+﻿<UserControl
+    x:Class="LightBulb.Views.Components.Settings.HotKeySettingsTabView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:LightBulb.Views.Controls"
+    xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings">
+    <Design.DataContext>
+        <settings:HotKeySettingsTabViewModel />
+    </Design.DataContext>
+
+    <StackPanel Margin="16" Orientation="Vertical">
+        <!--  Toggle hotkey  -->
+        <DockPanel>
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="Toggle LightBulb"
+                ToolTip.Tip="Global hotkey to toggle LightBulb on/off" />
+            <controls:HotKeyTextBox
+                Width="120"
+                HorizontalAlignment="Right"
+                DockPanel.Dock="Right"
+                HotKey="{Binding ToggleHotKey}" />
+        </DockPanel>
+
+        <!--  Increase temperature offset hotkey  -->
+        <DockPanel Margin="0,16,0,0">
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="Temperature offset ↑"
+                ToolTip.Tip="Global hotkey to increase the current temperature offset" />
+            <controls:HotKeyTextBox
+                Width="120"
+                HorizontalAlignment="Right"
+                DockPanel.Dock="Right"
+                HotKey="{Binding IncreaseTemperatureOffsetHotKey}" />
+        </DockPanel>
+
+        <!--  Decrease temperature offset hotkey  -->
+        <DockPanel Margin="0,16,0,0">
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="Temperature offset ↓"
+                ToolTip.Tip="Global hotkey to decrease the current temperature offset" />
+            <controls:HotKeyTextBox
+                Width="120"
+                HorizontalAlignment="Right"
+                DockPanel.Dock="Right"
+                HotKey="{Binding DecreaseTemperatureOffsetHotKey}" />
+        </DockPanel>
+
+        <!--  Increase brightness offset hotkey  -->
+        <DockPanel Margin="0,16,0,0">
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="Brightness offset ↑"
+                ToolTip.Tip="Global hotkey to increase the current brightness offset" />
+            <controls:HotKeyTextBox
+                Width="120"
+                HorizontalAlignment="Right"
+                DockPanel.Dock="Right"
+                HotKey="{Binding IncreaseBrightnessOffsetHotKey}" />
+        </DockPanel>
+
+        <!--  Decrease brightness offset hotkey  -->
+        <DockPanel Margin="0,16,0,0">
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="Brightness offset ↓"
+                ToolTip.Tip="Global hotkey to decrease the current brightness offset" />
+            <controls:HotKeyTextBox
+                Width="120"
+                HorizontalAlignment="Right"
+                DockPanel.Dock="Right"
+                HotKey="{Binding DecreaseBrightnessOffsetHotKey}" />
+        </DockPanel>
+
+        <!--  Reset offset hotkey  -->
+        <DockPanel Margin="0,16,0,0">
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="Reset offset"
+                ToolTip.Tip="Global hotkey to reset the current temperature and brightness offsets" />
+            <controls:HotKeyTextBox
+                Width="120"
+                HorizontalAlignment="Right"
+                DockPanel.Dock="Right"
+                HotKey="{Binding ResetConfigurationOffsetHotKey}" />
+        </DockPanel>
+    </StackPanel>
+</UserControl>

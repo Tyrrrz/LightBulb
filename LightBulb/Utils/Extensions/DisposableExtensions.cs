@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Disposables;
 
 namespace LightBulb.Utils.Extensions;
 
@@ -11,23 +10,19 @@ internal static class DisposableExtensions
     {
         var exceptions = default(List<Exception>);
 
-        foreach (var i in disposables)
+        foreach (var disposable in disposables)
         {
             try
             {
-                i.Dispose();
+                disposable.Dispose();
             }
             catch (Exception ex)
             {
-                exceptions ??= new List<Exception>();
-                exceptions.Add(ex);
+                (exceptions ??= []).Add(ex);
             }
         }
 
         if (exceptions?.Any() == true)
             throw new AggregateException(exceptions);
     }
-
-    public static IDisposable Aggregate(this IEnumerable<IDisposable> disposables) =>
-        Disposable.Create(disposables.DisposeAll);
 }

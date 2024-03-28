@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using LightBulb.Core;
 using LightBulb.Core.Utils.Extensions;
+using LightBulb.Framework;
 using LightBulb.Models;
 using LightBulb.Services;
+using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
 using LightBulb.WindowsApi;
-using Stylet;
 
 namespace LightBulb.ViewModels.Components;
 
-public class DashboardViewModel : PropertyChangedBase, IDisposable
+public partial class DashboardViewModel : ViewModelBase
 {
     private readonly SettingsService _settingsService;
     private readonly GammaService _gammaService;
     private readonly HotKeyService _hotKeyService;
     private readonly ExternalApplicationService _externalApplicationService;
+
+    private readonly DisposableCollector _eventRoot = new();
 
     private readonly Timer _updateInstantTimer;
     private readonly Timer _updateConfigurationTimer;
@@ -23,18 +28,80 @@ public class DashboardViewModel : PropertyChangedBase, IDisposable
 
     private IDisposable? _enableAfterDelayRegistration;
 
-    public bool IsEnabled { get; set; } = true;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsActive))]
+    private bool _isEnabled = true;
 
-    public bool IsPaused { get; private set; }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsActive))]
+    private bool _isPaused;
 
-    public bool IsCyclePreviewEnabled { get; set; }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsActive))]
+    private bool _isCyclePreviewEnabled;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SolarTimes))]
+    [NotifyPropertyChangedFor(nameof(SunriseStart))]
+    [NotifyPropertyChangedFor(nameof(SunriseEnd))]
+    [NotifyPropertyChangedFor(nameof(SunsetStart))]
+    [NotifyPropertyChangedFor(nameof(SunsetEnd))]
+    [NotifyPropertyChangedFor(nameof(TargetConfiguration))]
+    [NotifyPropertyChangedFor(nameof(CycleState))]
+    private DateTimeOffset _instant = DateTimeOffset.Now;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsOffsetEnabled))]
+    [NotifyPropertyChangedFor(nameof(TargetConfiguration))]
+    [NotifyPropertyChangedFor(nameof(AdjustedDayConfiguration))]
+    [NotifyPropertyChangedFor(nameof(AdjustedNightConfiguration))]
+    [NotifyPropertyChangedFor(nameof(CycleState))]
+    private double _temperatureOffset;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsOffsetEnabled))]
+    [NotifyPropertyChangedFor(nameof(TargetConfiguration))]
+    [NotifyPropertyChangedFor(nameof(AdjustedDayConfiguration))]
+    [NotifyPropertyChangedFor(nameof(AdjustedNightConfiguration))]
+    [NotifyPropertyChangedFor(nameof(CycleState))]
+    private double _brightnessOffset;
+
+    [ObservableProperty]
+    private ColorConfiguration _currentConfiguration = ColorConfiguration.Default;
+
+    public DashboardViewModel(
+        SettingsService settingsService,
+        GammaService gammaService,
+        HotKeyService hotKeyService,
+        ExternalApplicationService externalApplicationService
+    )
+    {
+        _settingsService = settingsService;
+        _gammaService = gammaService;
+        _hotKeyService = hotKeyService;
+        _externalApplicationService = externalApplicationService;
+
+        _eventRoot.Add(
+            // Cancel 'disable temporarily' when switching to enabled
+            this.WatchProperty(
+                o => o.IsEnabled,
+                () =>
+                {
+                    if (IsEnabled)
+                        _enableAfterDelayRegistration?.Dispose();
+                }
+            )
+        );
+
+        _updateConfigurationTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateConfiguration);
+        _updateInstantTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateInstant);
+        _updateIsPausedTimer = new Timer(TimeSpan.FromSeconds(1), UpdateIsPaused);
+    }
 
     public bool IsActive => IsEnabled && !IsPaused || IsCyclePreviewEnabled;
 
-    public DateTimeOffset Instant { get; private set; } = DateTimeOffset.Now;
-
     public SolarTimes SolarTimes =>
-        !_settingsService.IsManualSunriseSunsetEnabled && _settingsService.Location is { } location
+        _settingsService is { IsManualSunriseSunsetEnabled: false, Location: { } location }
             ? SolarTimes.Calculate(location, Instant)
             : new SolarTimes(_settingsService.ManualSunrise, _settingsService.ManualSunset);
 
@@ -66,9 +133,7 @@ public class DashboardViewModel : PropertyChangedBase, IDisposable
             _settingsService.ConfigurationTransitionOffset
         );
 
-    public double TemperatureOffset { get; set; }
-
-    public double BrightnessOffset { get; set; }
+    public bool IsOffsetEnabled => Math.Abs(TemperatureOffset) + Math.Abs(BrightnessOffset) >= 0.01;
 
     public ColorConfiguration TargetConfiguration =>
         IsActive
@@ -92,8 +157,6 @@ public class DashboardViewModel : PropertyChangedBase, IDisposable
                 ? _settingsService.DayConfiguration
                 : ColorConfiguration.Default;
 
-    public ColorConfiguration CurrentConfiguration { get; set; } = ColorConfiguration.Default;
-
     public ColorConfiguration AdjustedDayConfiguration =>
         _settingsService.DayConfiguration.WithOffset(TemperatureOffset, BrightnessOffset);
 
@@ -111,58 +174,16 @@ public class DashboardViewModel : PropertyChangedBase, IDisposable
             _ => CycleState.Transition
         };
 
-    public DashboardViewModel(
-        SettingsService settingsService,
-        GammaService gammaService,
-        HotKeyService hotKeyService,
-        ExternalApplicationService externalApplicationService
-    )
-    {
-        _settingsService = settingsService;
-        _gammaService = gammaService;
-        _hotKeyService = hotKeyService;
-        _externalApplicationService = externalApplicationService;
-
-        _updateConfigurationTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateConfiguration);
-
-        _updateInstantTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateInstant);
-
-        _updateIsPausedTimer = new Timer(TimeSpan.FromSeconds(1), UpdateIsPaused);
-
-        // Cancel 'disable temporarily' when switching to enabled
-        this.Bind(
-            o => o.IsEnabled,
-            (_, _) =>
-            {
-                if (IsEnabled)
-                    _enableAfterDelayRegistration?.Dispose();
-            }
-        );
-
-        // Handle settings changes
-        _settingsService.SettingsSaved += (_, _) =>
-        {
-            Refresh();
-            RegisterHotKeys();
-        };
-    }
-
-    public void OnViewLoaded()
-    {
-        _updateInstantTimer.Start();
-        _updateConfigurationTimer.Start();
-        _updateIsPausedTimer.Start();
-
-        RegisterHotKeys();
-    }
-
     private void RegisterHotKeys()
     {
         _hotKeyService.UnregisterAllHotKeys();
 
         if (_settingsService.ToggleHotKey != HotKey.None)
         {
-            _hotKeyService.RegisterHotKey(_settingsService.ToggleHotKey, Toggle);
+            _hotKeyService.RegisterHotKey(
+                _settingsService.ToggleHotKey,
+                () => IsEnabled = !IsEnabled
+            );
         }
 
         if (_settingsService.IncreaseTemperatureOffsetHotKey != HotKey.None)
@@ -232,17 +253,17 @@ public class DashboardViewModel : PropertyChangedBase, IDisposable
 
     private void UpdateInstant()
     {
-        // If in cycle preview mode - advance quickly until full cycle
+        // If in cycle preview mode, advance quickly until the full cycle has been reached
         if (IsCyclePreviewEnabled)
         {
-            // Cycle is supposed to end 1 full day past current real time
+            // Cycle is supposed to end 1 full day past the current real time
             var targetInstant = DateTimeOffset.Now + TimeSpan.FromDays(1);
 
             Instant = Instant.StepTo(targetInstant, TimeSpan.FromMinutes(5));
             if (Instant >= targetInstant)
                 IsCyclePreviewEnabled = false;
         }
-        // Otherwise - synchronize instant with system clock
+        // Otherwise, synchronize the instant with the system clock
         else
         {
             Instant = DateTimeOffset.Now;
@@ -276,46 +297,55 @@ public class DashboardViewModel : PropertyChangedBase, IDisposable
         IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
     }
 
-    public void Enable() => IsEnabled = true;
+    [RelayCommand]
+    private void Initialize()
+    {
+        _updateInstantTimer.Start();
+        _updateConfigurationTimer.Start();
+        _updateIsPausedTimer.Start();
 
-    public void Disable() => IsEnabled = false;
+        RegisterHotKeys();
+    }
 
-    public void DisableTemporarily(TimeSpan duration)
+    [RelayCommand]
+    private void DisableTemporarily(TimeSpan duration)
     {
         _enableAfterDelayRegistration?.Dispose();
-        _enableAfterDelayRegistration = Timer.QueueDelayedAction(duration, Enable);
+        _enableAfterDelayRegistration = Timer.QueueDelayedAction(duration, () => IsEnabled = true);
         IsEnabled = false;
     }
 
-    public void DisableTemporarilyUntilSunrise()
+    [RelayCommand]
+    private void DisableUntilSunrise()
     {
-        // Use real time here instead of Instant, because that's what the user likely wants
         var now = DateTimeOffset.Now;
         var timeUntilSunrise = SolarTimes.Sunrise.NextAfter(now) - now;
         DisableTemporarily(timeUntilSunrise);
     }
 
-    public void Toggle() => IsEnabled = !IsEnabled;
+    [RelayCommand]
+    private void ToggleCyclePreview() => IsCyclePreviewEnabled = !IsCyclePreviewEnabled;
 
-    public void EnableCyclePreview() => IsCyclePreviewEnabled = true;
-
-    public void DisableCyclePreview() => IsCyclePreviewEnabled = false;
-
-    public bool CanResetConfigurationOffset =>
-        Math.Abs(TemperatureOffset) + Math.Abs(BrightnessOffset) >= 0.01;
-
-    public void ResetConfigurationOffset()
+    [RelayCommand]
+    private void ResetConfigurationOffset()
     {
         TemperatureOffset = 0;
         BrightnessOffset = 0;
     }
 
-    public void Dispose()
+    protected override void Dispose(bool disposing)
     {
-        _updateInstantTimer.Dispose();
-        _updateConfigurationTimer.Dispose();
-        _updateIsPausedTimer.Dispose();
+        if (disposing)
+        {
+            _updateInstantTimer.Dispose();
+            _updateConfigurationTimer.Dispose();
+            _updateIsPausedTimer.Dispose();
 
-        _enableAfterDelayRegistration?.Dispose();
+            _eventRoot.Dispose();
+
+            _enableAfterDelayRegistration?.Dispose();
+        }
+
+        base.Dispose(disposing);
     }
 }

@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Text.Json.Serialization;
 using Cogwheel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Core;
 using LightBulb.Models;
 using LightBulb.Utils;
 using LightBulb.WindowsApi;
 using Microsoft.Win32;
-using PropertyChanged;
 
 namespace LightBulb.Services;
 
-[AddINotifyPropertyChangedInterface]
-public partial class SettingsService() : SettingsBase(GetFilePath()), INotifyPropertyChanged
+[INotifyPropertyChanged]
+public partial class SettingsService() : SettingsBase(GetFilePath())
 {
     private readonly RegistrySwitch<int> _extendedGammaRangeSwitch =
         new(
@@ -28,16 +27,19 @@ public partial class SettingsService() : SettingsBase(GetFilePath()), INotifyPro
         new(
             RegistryHive.CurrentUser,
             @"Software\Microsoft\Windows\CurrentVersion\Run",
-            App.Name,
-            $"\"{App.ExecutableFilePath}\" {App.HiddenOnLaunchArgument}"
+            "LightBulb",
+            $"\"{Program.ExecutableFilePath}\" {StartupOptions.IsInitiallyHiddenArgument}"
         );
 
-    public bool IsFirstTimeExperienceEnabled { get; set; } = true;
+    [ObservableProperty]
+    private bool _isFirstTimeExperienceEnabled = true;
 
-    public bool IsUkraineSupportMessageEnabled { get; set; } = true;
+    [ObservableProperty]
+    private bool _isUkraineSupportMessageEnabled = true;
 
-    [JsonIgnore] // comes from registry
-    public bool IsExtendedGammaRangeUnlocked { get; set; }
+    [ObservableProperty]
+    [property: JsonIgnore] // comes from registry
+    private bool _isExtendedGammaRangeUnlocked;
 
     // General
 
@@ -49,68 +51,82 @@ public partial class SettingsService() : SettingsBase(GetFilePath()), INotifyPro
 
     public double MaximumBrightness => 1;
 
-    public ColorConfiguration NightConfiguration { get; set; } = new(3900, 0.85);
+    [ObservableProperty]
+    private ColorConfiguration _nightConfiguration = new(3900, 0.85);
 
-    public ColorConfiguration DayConfiguration { get; set; } = new(6600, 1);
+    [ObservableProperty]
+    private ColorConfiguration _dayConfiguration = new(6600, 1);
 
-    public TimeSpan ConfigurationTransitionDuration { get; set; } = TimeSpan.FromMinutes(40);
+    [ObservableProperty]
+    private TimeSpan _configurationTransitionDuration = TimeSpan.FromMinutes(40);
 
-    public double ConfigurationTransitionOffset { get; set; }
+    [ObservableProperty]
+    private double _configurationTransitionOffset;
 
     // Location
 
-    public bool IsManualSunriseSunsetEnabled { get; set; } = true;
+    [ObservableProperty]
+    private bool _isManualSunriseSunsetEnabled = true;
 
-    [JsonPropertyName("ManualSunriseTime")]
-    public TimeOnly ManualSunrise { get; set; } = new(07, 20);
+    [ObservableProperty]
+    [property: JsonPropertyName("ManualSunriseTime")]
+    private TimeOnly _manualSunrise = new(07, 20);
 
-    [JsonPropertyName("ManualSunsetTime")]
-    public TimeOnly ManualSunset { get; set; } = new(16, 30);
+    [ObservableProperty]
+    [property: JsonPropertyName("ManualSunsetTime")]
+    private TimeOnly _manualSunset = new(16, 30);
 
-    public GeoLocation? Location { get; set; }
+    [ObservableProperty]
+    private GeoLocation? _location;
 
     // Advanced
 
-    [JsonIgnore] // comes from registry
-    public bool IsAutoStartEnabled { get; set; }
+    [ObservableProperty]
+    [property: JsonIgnore] // comes from registry
+    private bool _isAutoStartEnabled;
 
-    public bool IsAutoUpdateEnabled { get; set; } = true;
+    [ObservableProperty]
+    private bool _isAutoUpdateEnabled = true;
 
-    public bool IsDefaultToDayConfigurationEnabled { get; set; }
+    [ObservableProperty]
+    private bool _isDefaultToDayConfigurationEnabled;
 
-    public bool IsConfigurationSmoothingEnabled { get; set; } = true;
+    [ObservableProperty]
+    private bool _isConfigurationSmoothingEnabled = true;
 
-    public bool IsPauseWhenFullScreenEnabled { get; set; }
+    [ObservableProperty]
+    private bool _isPauseWhenFullScreenEnabled;
 
-    public bool IsGammaPollingEnabled { get; set; }
+    [ObservableProperty]
+    private bool _isGammaPollingEnabled;
 
     // Application whitelist
 
-    public bool IsApplicationWhitelistEnabled { get; set; }
+    [ObservableProperty]
+    private bool _isApplicationWhitelistEnabled;
 
-    public IReadOnlyList<ExternalApplication>? WhitelistedApplications { get; set; }
+    [ObservableProperty]
+    private IReadOnlyList<ExternalApplication>? _whitelistedApplications;
 
     // HotKeys
 
-    public HotKey ToggleHotKey { get; set; }
+    [ObservableProperty]
+    private HotKey _toggleHotKey;
 
-    public HotKey IncreaseTemperatureOffsetHotKey { get; set; }
+    [ObservableProperty]
+    private HotKey _increaseTemperatureOffsetHotKey;
 
-    public HotKey DecreaseTemperatureOffsetHotKey { get; set; }
+    [ObservableProperty]
+    private HotKey _decreaseTemperatureOffsetHotKey;
 
-    public HotKey IncreaseBrightnessOffsetHotKey { get; set; }
+    [ObservableProperty]
+    private HotKey _increaseBrightnessOffsetHotKey;
 
-    public HotKey DecreaseBrightnessOffsetHotKey { get; set; }
+    [ObservableProperty]
+    private HotKey _decreaseBrightnessOffsetHotKey;
 
-    public HotKey ResetConfigurationOffsetHotKey { get; set; }
-
-    // Events
-
-    public event EventHandler? SettingsReset;
-
-    public event EventHandler? SettingsLoaded;
-
-    public event EventHandler? SettingsSaved;
+    [ObservableProperty]
+    private HotKey _resetConfigurationOffsetHotKey;
 
     public override void Reset()
     {
@@ -120,7 +136,8 @@ public partial class SettingsService() : SettingsBase(GetFilePath()), INotifyPro
         IsFirstTimeExperienceEnabled = false;
         IsUkraineSupportMessageEnabled = false;
 
-        SettingsReset?.Invoke(this, EventArgs.Empty);
+        // Trigger UI updates
+        OnPropertyChanged(string.Empty);
     }
 
     public override void Save()
@@ -136,7 +153,8 @@ public partial class SettingsService() : SettingsBase(GetFilePath()), INotifyPro
         _extendedGammaRangeSwitch.IsSet = IsExtendedGammaRangeUnlocked;
         _autoStartSwitch.IsSet = IsAutoStartEnabled;
 
-        SettingsSaved?.Invoke(this, EventArgs.Empty);
+        // Trigger UI updates
+        OnPropertyChanged(string.Empty);
     }
 
     public override bool Load()
@@ -147,7 +165,8 @@ public partial class SettingsService() : SettingsBase(GetFilePath()), INotifyPro
         IsExtendedGammaRangeUnlocked = _extendedGammaRangeSwitch.IsSet;
         IsAutoStartEnabled = _autoStartSwitch.IsSet;
 
-        SettingsLoaded?.Invoke(this, EventArgs.Empty);
+        // Trigger UI updates
+        OnPropertyChanged(string.Empty);
 
         return wasLoaded;
     }
@@ -157,10 +176,10 @@ public partial class SettingsService
 {
     private static string GetFilePath()
     {
-        var isInstalled = File.Exists(Path.Combine(App.ExecutableDirPath, ".installed"));
+        var isInstalled = File.Exists(Path.Combine(Program.ExecutableDirPath, ".installed"));
 
         // Prefer storing settings in appdata when installed or when the current directory is write-protected
-        if (isInstalled || !DirectoryEx.CheckWriteAccess(App.ExecutableDirPath))
+        if (isInstalled || !DirectoryEx.CheckWriteAccess(Program.ExecutableDirPath))
         {
             return Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -171,7 +190,7 @@ public partial class SettingsService
         // Otherwise, store them in the current directory
         else
         {
-            return Path.Combine(App.ExecutableDirPath, "Settings.json");
+            return Path.Combine(Program.ExecutableDirPath, "Settings.json");
         }
     }
 }
