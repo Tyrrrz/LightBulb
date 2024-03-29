@@ -28,7 +28,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Files]
 Source: ".installed"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\License.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Source\*"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Source\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\LightBulb.exe"
