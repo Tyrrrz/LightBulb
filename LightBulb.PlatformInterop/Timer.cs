@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace LightBulb.WindowsApi;
+namespace LightBulb.PlatformInterop;
 
 public partial class Timer : IDisposable
 {

@@ -1,6 +1,6 @@
 using System;
 
-namespace LightBulb.WindowsApi.Native;
+namespace LightBulb.PlatformInterop;
 
 [Flags]
 internal enum ProcessAccessFlags : uint

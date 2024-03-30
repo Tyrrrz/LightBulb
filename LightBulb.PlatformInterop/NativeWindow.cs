@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using LightBulb.WindowsApi.Native;
 
-namespace LightBulb.WindowsApi;
+namespace LightBulb.PlatformInterop;
 
 public partial class NativeWindow(nint handle, bool isOwned) : NativeResource(handle)
 {
@@ -20,9 +19,9 @@ public partial class NativeWindow(nint handle, bool isOwned) : NativeResource(ha
         return new Monitor(monitorHandle);
     }
 
-    private Rect? TryGetRect() => NativeMethods.GetWindowRect(Handle, out var rect) ? rect : null;
+    public Rect? TryGetRect() => NativeMethods.GetWindowRect(Handle, out var rect) ? rect : null;
 
-    private Rect? TryGetClientRect() =>
+    public Rect? TryGetClientRect() =>
         NativeMethods.GetClientRect(Handle, out var rect) ? rect : null;
 
     public string? TryGetClassName()
@@ -113,7 +112,7 @@ public partial class NativeWindow
             return null;
         }
 
-        return new NativeWindow(handle);
+        return new NativeWindow(handle, false);
     }
 
     public static IReadOnlyList<NativeWindow> GetAll()
@@ -126,7 +125,7 @@ public partial class NativeWindow
                 {
                     if (hWnd != 0)
                     {
-                        var window = new NativeWindow(hWnd);
+                        var window = new NativeWindow(hWnd, false);
                         result.Add(window);
                     }
 

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
-using LightBulb.WindowsApi.Native;
 
-namespace LightBulb.WindowsApi;
+namespace LightBulb.PlatformInterop;
 
 public partial class GlobalHotKey : NativeResource
 {

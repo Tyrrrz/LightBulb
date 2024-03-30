@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
-using LightBulb.WindowsApi.Native;
 
-namespace LightBulb.WindowsApi;
+namespace LightBulb.PlatformInterop;
 
 public partial class DeviceContext(nint handle) : NativeResource(handle)
 {

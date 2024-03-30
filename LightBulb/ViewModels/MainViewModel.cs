@@ -6,7 +6,7 @@ using LightBulb.Services;
 using LightBulb.Utils;
 using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
-using LightBulb.WindowsApi;
+using LightBulb.PlatformInterop;
 
 namespace LightBulb.ViewModels;
 

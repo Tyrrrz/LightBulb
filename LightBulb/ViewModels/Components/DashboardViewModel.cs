@@ -9,7 +9,7 @@ using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
-using LightBulb.WindowsApi;
+using LightBulb.PlatformInterop;
 
 namespace LightBulb.ViewModels.Components;
 

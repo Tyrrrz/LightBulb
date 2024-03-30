@@ -5,7 +5,7 @@ using Avalonia.Input;
 using Avalonia.Win32.Input;
 using LightBulb.Models;
 using LightBulb.Utils.Extensions;
-using LightBulb.WindowsApi;
+using LightBulb.PlatformInterop;
 
 namespace LightBulb.Services;
 

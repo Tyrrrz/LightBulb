@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
-using LightBulb.WindowsApi.Native;
 
-namespace LightBulb.WindowsApi;
+namespace LightBulb.PlatformInterop;
 
 public partial class NativeProcess(nint handle) : NativeResource(handle)
 {

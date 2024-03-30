@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace LightBulb.WindowsApi.Utils;
+namespace LightBulb.PlatformInterop.Utils;
 
 internal static class Reg
 {

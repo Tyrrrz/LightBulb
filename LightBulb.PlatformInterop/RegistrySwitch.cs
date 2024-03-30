@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security;
-using LightBulb.WindowsApi.Utils;
-using LightBulb.WindowsApi.Utils.Extensions;
+using LightBulb.PlatformInterop.Utils;
+using LightBulb.PlatformInterop.Utils.Extensions;
 using Microsoft.Win32;
 
-namespace LightBulb.WindowsApi;
+namespace LightBulb.PlatformInterop;
 
 public class RegistrySwitch<T>(RegistryHive hive, string keyName, string entryName, T enabledValue)
     where T : notnull

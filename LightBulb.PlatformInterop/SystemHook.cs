@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
-using LightBulb.WindowsApi.Native;
 
-namespace LightBulb.WindowsApi;
+namespace LightBulb.PlatformInterop;
 
 public partial class SystemHook(nint handle, Delegate winEventProc) : NativeResource(handle)
 {

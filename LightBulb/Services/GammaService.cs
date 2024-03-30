@@ -5,7 +5,7 @@ using System.Linq;
 using LightBulb.Core;
 using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
-using LightBulb.WindowsApi;
+using LightBulb.PlatformInterop;
 
 namespace LightBulb.Services;
 

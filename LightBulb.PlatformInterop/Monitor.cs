@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using LightBulb.WindowsApi.Native;
 
-namespace LightBulb.WindowsApi;
+namespace LightBulb.PlatformInterop;
 
 public partial class Monitor(nint handle) : NativeResource(handle)
 {
@@ -17,7 +16,7 @@ public partial class Monitor(nint handle) : NativeResource(handle)
         return monitorInfo.DeviceName;
     }
 
-    internal Rect? TryGetBounds()
+    public Rect? TryGetBounds()
     {
         if (!NativeMethods.GetMonitorInfo(Handle, out var monitorInfo))
         {

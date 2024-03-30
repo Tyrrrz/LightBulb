@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace LightBulb.WindowsApi.Native;
+namespace LightBulb.PlatformInterop;
 
 internal static partial class NativeMethods
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Win32;
 
-namespace LightBulb.WindowsApi.Utils.Extensions;
+namespace LightBulb.PlatformInterop.Utils.Extensions;
 
 internal static class RegistryExtensions
 {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using LightBulb.WindowsApi.Utils;
+using LightBulb.PlatformInterop.Utils;
 
-namespace LightBulb.WindowsApi;
+namespace LightBulb.PlatformInterop;
 
 internal static partial class WndProc
 {

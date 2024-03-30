@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LightBulb.WindowsApi.Utils;
+namespace LightBulb.PlatformInterop.Utils;
 
 internal class Disposable(Action dispose) : IDisposable
 {

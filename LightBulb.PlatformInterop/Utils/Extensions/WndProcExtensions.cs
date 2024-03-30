@@ -1,4 +1,4 @@
-namespace LightBulb.WindowsApi.Utils.Extensions;
+namespace LightBulb.PlatformInterop.Utils.Extensions;
 
 internal static class WndProcExtensions
 {

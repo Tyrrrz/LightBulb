@@ -1,6 +1,6 @@
 using System;
 
-namespace LightBulb.WindowsApi;
+namespace LightBulb.PlatformInterop;
 
 public partial class SystemEvent(int eventId, Action callback) : IDisposable
 {

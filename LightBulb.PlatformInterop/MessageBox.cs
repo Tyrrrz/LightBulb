@@ -1,6 +1,4 @@
-﻿using LightBulb.WindowsApi.Native;
-
-namespace LightBulb.WindowsApi;
+﻿namespace LightBulb.PlatformInterop;
 
 public static class MessageBox
 {

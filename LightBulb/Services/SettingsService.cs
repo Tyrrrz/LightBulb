@@ -7,7 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Core;
 using LightBulb.Models;
 using LightBulb.Utils;
-using LightBulb.WindowsApi;
+using LightBulb.PlatformInterop;
 using Microsoft.Win32;
 
 namespace LightBulb.Services;

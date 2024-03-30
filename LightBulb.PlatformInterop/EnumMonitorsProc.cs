@@ -1,4 +1,4 @@
-﻿namespace LightBulb.WindowsApi.Native;
+﻿namespace LightBulb.PlatformInterop;
 
 internal delegate bool EnumMonitorsProc(
     nint hMonitor,
