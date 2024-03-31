@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
+using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
 
 public partial class PowerSettingNotification(nint handle, Guid powerSettingId, Action callback)
     : NativeResource(handle)
 {
-    private readonly IDisposable _wndProcRegistration = WndProc.Listen(
-        WndProc.Ids.PowerSettingMessage,
+    private readonly IDisposable _wndProcRegistration = WndProc2.Listen(
+        WndProc2.Ids.PowerSettingMessage,
         m =>
         {
             // Filter out other power events
@@ -33,7 +34,7 @@ public partial class PowerSettingNotification
     public static PowerSettingNotification? TryRegister(Guid powerSettingId, Action callback)
     {
         var handle = NativeMethods.RegisterPowerSettingNotification(
-            WndProc.Handle,
+            WndProc2.Handle,
             powerSettingId,
             0
         );

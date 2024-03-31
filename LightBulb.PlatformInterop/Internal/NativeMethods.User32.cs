@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace LightBulb.PlatformInterop;
+namespace LightBulb.PlatformInterop.Internal;
 
 internal static partial class NativeMethods
 {
@@ -10,6 +10,12 @@ internal static partial class NativeMethods
 
     [DllImport(User32, SetLastError = true)]
     public static extern bool GetMonitorInfo(nint hMonitor, out MonitorInfoEx lpmi);
+    
+    [DllImport(User32, SetLastError = true)]
+    public static extern ushort RegisterClassEx(ref WndClassEx lpwcx);
+
+    [DllImport(User32, SetLastError = true)]
+    public static extern bool UnregisterClass(string lpClassName, IntPtr hInstance);
 
     [DllImport(User32, SetLastError = true)]
     public static extern nint MonitorFromWindow(nint hWnd, uint dwFlags);

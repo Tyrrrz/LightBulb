@@ -113,7 +113,7 @@ public partial class GammaService : IDisposable
         _areDeviceContextsValid = true;
 
         _deviceContexts.DisposeAll();
-        _deviceContexts = Monitor.GetAll().Select(m => m.TryGetDeviceContext()).WhereNotNull().ToArray();
+        _deviceContexts = Monitor.GetAll().Select(m => m.TryCreateDeviceContext()).WhereNotNull().ToArray();
 
         _lastConfiguration = null;
     }

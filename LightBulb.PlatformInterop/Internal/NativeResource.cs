@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace LightBulb.PlatformInterop;
+namespace LightBulb.PlatformInterop.Internal;
 
-public abstract class NativeResource(nint handle) : IDisposable
+public abstract class NativeResource<T>(T handle) : IDisposable
 {
-    public nint Handle { get; } = handle;
+    public T Handle { get; } = handle;
 
     [ExcludeFromCodeCoverage]
     ~NativeResource() => Dispose(false);
@@ -18,3 +18,5 @@ public abstract class NativeResource(nint handle) : IDisposable
         GC.SuppressFinalize(this);
     }
 }
+
+public abstract class NativeResource(nint handle) : NativeResource<nint>(handle);

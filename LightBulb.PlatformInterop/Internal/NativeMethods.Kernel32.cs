@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
 
-namespace LightBulb.PlatformInterop;
+namespace LightBulb.PlatformInterop.Internal;
 
 internal static partial class NativeMethods
 {

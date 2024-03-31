@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
+using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
 
-public partial class GlobalHotKey : NativeResource
+public partial class GlobalHotKey : NativeResource<int>
 {
     private readonly object _lock = new();
     private readonly IDisposable _wndProcRegistration;
 
     private DateTimeOffset _lastTriggerTimestamp = DateTimeOffset.MinValue;
 
-    public GlobalHotKey(nint handle, Action callback)
-        : base(handle)
+    public GlobalHotKey(int id, Action callback)
+        : base(id)
     {
-        _wndProcRegistration = WndProc.Listen(
-            WndProc.Ids.GlobalHotkeyMessage,
+        _wndProcRegistration = WndProc2.Listen(
+            WndProc2.Ids.GlobalHotkeyMessage,
             m =>
             {
                 // Filter out other hotkey events
@@ -41,7 +42,7 @@ public partial class GlobalHotKey : NativeResource
         if (disposing)
             _wndProcRegistration.Dispose();
 
-        if (!NativeMethods.UnregisterHotKey(WndProc.Handle, (int)Handle))
+        if (!NativeMethods.UnregisterHotKey(WndProc2.Handle, Handle))
             Debug.WriteLine($"Failed to dispose global hotkey #{Handle}.");
     }
 }
@@ -53,7 +54,7 @@ public partial class GlobalHotKey
     public static GlobalHotKey? TryRegister(int virtualKey, int modifiers, Action callback)
     {
         var handle = Interlocked.Increment(ref _lastHotKeyHandle);
-        if (!NativeMethods.RegisterHotKey(WndProc.Handle, handle, modifiers, virtualKey))
+        if (!NativeMethods.RegisterHotKey(WndProc2.Handle, handle, modifiers, virtualKey))
         {
             Debug.WriteLine(
                 $"Failed to register global hotkey (key: {virtualKey}, mods: {modifiers})."

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
 
@@ -88,7 +89,7 @@ public partial class NativeWindow(nint handle, bool isOwned) : NativeResource(ha
             return null;
         }
 
-        return NativeProcess.TryOpen((int)processId);
+        return NativeProcess.TryGet((int)processId);
     }
 
     protected override void Dispose(bool disposing)
@@ -103,6 +104,32 @@ public partial class NativeWindow(nint handle, bool isOwned) : NativeResource(ha
 
 public partial class NativeWindow
 {
+    public static NativeWindow? TryCreate(NativeWindowClass windowClass, string windowName)
+    {
+        var handle = NativeMethods.CreateWindowEx(
+            0,
+            windowClass.Handle,
+            windowName,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        );
+        
+        if (handle == 0)
+        {
+            Debug.WriteLine($"Failed to create window '{windowName}' of class '{windowClass.Handle}'.");
+            return null;
+        }
+        
+        return new NativeWindow(handle, true);
+    }
+    
     public static NativeWindow? TryGetForeground()
     {
         var handle = NativeMethods.GetForegroundWindow();

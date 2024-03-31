@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,17 +9,17 @@ namespace LightBulb.Utils.Extensions;
 
 internal static class NotifyPropertyChangedExtensions
 {
-    public static IDisposable WatchProperty<TOwner>(
+    public static IDisposable WatchProperty<TOwner, TProperty>(
         this TOwner owner,
-        Expression<Func<TOwner, object?>> propertyExpression,
-        Action handle,
+        Expression<Func<TOwner, TProperty>> propertyExpression,
+        Action handleChange,
         bool watchInitialValue = true
     )
         where TOwner : INotifyPropertyChanged
     {
         var memberExpression =
             propertyExpression.Body as MemberExpression
-            // If the property is not of type object, it will be wrapped in an unary conversion expression
+            // Property value might be boxed inside a conversion expression, if the types don't match
             ?? (propertyExpression.Body as UnaryExpression)?.Operand as MemberExpression;
 
         if (memberExpression?.Member is not PropertyInfo property)
@@ -34,14 +32,14 @@ internal static class NotifyPropertyChangedExtensions
                 || string.Equals(args.PropertyName, property.Name, StringComparison.Ordinal)
             )
             {
-                handle();
+                handleChange();
             }
         }
 
         owner.PropertyChanged += OnPropertyChanged;
 
         if (watchInitialValue)
-            handle();
+            handleChange();
 
         return Disposable.Create(() => owner.PropertyChanged -= OnPropertyChanged);
     }
@@ -49,13 +47,13 @@ internal static class NotifyPropertyChangedExtensions
     public static IDisposable WatchProperties<TOwner>(
         this TOwner owner,
         IReadOnlyList<Expression<Func<TOwner, object?>>> propertyExpressions,
-        Action handle,
+        Action handleChanges,
         bool watchInitialValue = true
     )
         where TOwner : INotifyPropertyChanged
     {
         var watchers = propertyExpressions
-            .Select(x => WatchProperty(owner, x, handle, watchInitialValue))
+            .Select(x => WatchProperty(owner, x, handleChanges, watchInitialValue))
             .ToArray();
 
         return Disposable.Create(() => watchers.DisposeAll());
@@ -63,34 +61,17 @@ internal static class NotifyPropertyChangedExtensions
 
     public static IDisposable WatchAllProperties<TOwner>(
         this TOwner owner,
-        Action handle,
+        Action handleChanges,
         bool watchInitialValues = true
     )
         where TOwner : INotifyPropertyChanged
     {
-        void OnPropertyChanged(object? sender, PropertyChangedEventArgs args) => handle();
-
+        void OnPropertyChanged(object? sender, PropertyChangedEventArgs args) => handleChanges();
         owner.PropertyChanged += OnPropertyChanged;
 
         if (watchInitialValues)
-            handle();
+            handleChanges();
 
         return Disposable.Create(() => owner.PropertyChanged -= OnPropertyChanged);
-    }
-
-    public static IDisposable WatchCollection<T>(
-        this ObservableCollection<T> collection,
-        Action handle,
-        bool watchInitialValues = true
-    )
-    {
-        void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs args) => handle();
-
-        collection.CollectionChanged += OnCollectionChanged;
-
-        if (watchInitialValues)
-            handle();
-
-        return Disposable.Create(() => collection.CollectionChanged -= OnCollectionChanged);
     }
 }

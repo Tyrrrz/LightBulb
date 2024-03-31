@@ -1,4 +1,6 @@
-﻿namespace LightBulb.PlatformInterop;
+﻿using LightBulb.PlatformInterop.Internal;
+
+namespace LightBulb.PlatformInterop;
 
 public static class MessageBox
 {

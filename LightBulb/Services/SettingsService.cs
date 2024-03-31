@@ -28,7 +28,7 @@ public partial class SettingsService() : SettingsBase(GetFilePath())
             RegistryHive.CurrentUser,
             @"Software\Microsoft\Windows\CurrentVersion\Run",
             Program.Name,
-            $"\"{Program.ExecutableFilePath}\" {StartupOptions.IsInitiallyHiddenArgument}"
+            $"\"{Program.ExecutableFilePath}\" {StartOptions.IsInitiallyHiddenArgument}"
         );
 
     [ObservableProperty]

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text;
+using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
 
@@ -24,7 +25,7 @@ public partial class NativeProcess(nint handle) : NativeResource(handle)
 
 public partial class NativeProcess
 {
-    public static NativeProcess? TryOpen(int processId)
+    public static NativeProcess? TryGet(int processId)
     {
         var handle = NativeMethods.OpenProcess(
             ProcessAccessFlags.QueryLimitedInformation,

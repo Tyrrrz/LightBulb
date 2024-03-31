@@ -12,7 +12,7 @@ public partial class MainView : Window<MainViewModel>
 
     private void Window_OnLoaded(object sender, RoutedEventArgs args)
     {
-        if (StartupOptions.Current.IsInitiallyHidden)
+        if (StartOptions.Current.IsInitiallyHidden)
             Hide();
     }
 

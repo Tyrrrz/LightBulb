@@ -1,3 +1,3 @@
-﻿namespace LightBulb.PlatformInterop;
+﻿namespace LightBulb.PlatformInterop.Internal;
 
 internal delegate bool EnumWindowsProc(nint hWnd, nint lParam);

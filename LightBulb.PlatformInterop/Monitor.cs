@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
 
 public partial class Monitor(nint handle) : NativeResource(handle)
 {
-    public string? TryGetName()
+    private MonitorInfoEx? TryGetMonitorInfo()
     {
         if (!NativeMethods.GetMonitorInfo(Handle, out var monitorInfo))
         {
@@ -13,22 +14,21 @@ public partial class Monitor(nint handle) : NativeResource(handle)
             return null;
         }
 
-        return monitorInfo.DeviceName;
+        return monitorInfo;
     }
+    
+    public string? TryGetName() => TryGetMonitorInfo()?.DeviceName;
 
-    public Rect? TryGetBounds()
+    public Rect? TryGetBounds() => TryGetMonitorInfo()?.Monitor;
+
+    public DeviceContext? TryCreateDeviceContext()
     {
-        if (!NativeMethods.GetMonitorInfo(Handle, out var monitorInfo))
-        {
-            Debug.WriteLine($"Failed to retrieve monitor info for monitor #{Handle}.");
+        var name = TryGetName();
+        if (string.IsNullOrWhiteSpace(name))
             return null;
-        }
-
-        return monitorInfo.Monitor;
+        
+        return DeviceContext.TryCreateForDevice(name);
     }
-
-    public DeviceContext? TryGetDeviceContext() =>
-        TryGetName() is { } name ? DeviceContext.TryGetByName(name) : null;
 
     protected override void Dispose(bool disposing) { }
 }
