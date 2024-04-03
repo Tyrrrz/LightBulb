@@ -59,7 +59,7 @@ public partial class GlobalHotKey
     public static GlobalHotKey? TryRegister(int virtualKey, int modifiers, Action callback)
     {
         var handle = Interlocked.Increment(ref _lastHotKeyHandle);
-        
+
         if (
             !NativeMethods.RegisterHotKey(
                 WndProcSponge.Default.Handle,

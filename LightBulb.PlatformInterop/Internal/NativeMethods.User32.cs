@@ -15,7 +15,7 @@ internal static partial class NativeMethods
         EnumMonitorsProc lpfnEnum,
         nint dwData
     );
-    
+
     [DllImport(User32, SetLastError = true)]
     public static extern nint MonitorFromWindow(nint hWnd, uint dwFlags);
 

@@ -67,12 +67,7 @@ internal partial class WndProcSponge
             }
         );
 
-        var classInfo = new WndClassEx
-        {
-            ClassName = ClassName,
-            WndProc = wndProc
-        };
-
+        var classInfo = new WndClassEx { ClassName = ClassName, WndProc = wndProc };
         var classHandle = NativeMethods.RegisterClassEx(ref classInfo);
         if (classHandle == 0)
         {
