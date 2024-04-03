@@ -3,13 +3,15 @@
 namespace LightBulb.PlatformInterop.Internal;
 
 [StructLayout(LayoutKind.Sequential)]
-internal struct MonitorInfoEx
+internal readonly record struct MonitorInfoEx
 {
-    public int Size;
-    public Rect Monitor;
-    public Rect WorkArea;
-    public uint Flags;
+    public MonitorInfoEx() => Size = Marshal.SizeOf(this);
 
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-    public string DeviceName;
+    public int Size { get; }
+    public Rect Monitor { get; init; }
+    public Rect WorkArea { get; init; }
+    public uint Flags { get; init; }
+
+    [field: MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+    public string? DeviceName { get; init; }
 }

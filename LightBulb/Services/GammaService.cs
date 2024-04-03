@@ -30,7 +30,7 @@ public partial class GammaService : IDisposable
         // Listen to all system events that may indicate that the device context or gamma was changed from the outside
         _eventRoot.Add(
             // https://github.com/Tyrrrz/LightBulb/issues/223
-            SystemHook.TryRegister(SystemHook.ForegroundWindowChanged, InvalidateGamma)
+            SystemHook.TryRegister(SystemHook.Ids.ForegroundWindowChanged, InvalidateGamma)
                 ?? Disposable.Null
         );
 

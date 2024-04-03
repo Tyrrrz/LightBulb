@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
@@ -9,7 +8,7 @@ public partial class Monitor(nint handle) : NativeResource(handle)
 {
     private MonitorInfoEx? TryGetMonitorInfo()
     {
-        var monitorInfo = new MonitorInfoEx { Size = Marshal.SizeOf<MonitorInfoEx>() };
+        var monitorInfo = new MonitorInfoEx();
 
         if (!NativeMethods.GetMonitorInfo(Handle, ref monitorInfo))
         {

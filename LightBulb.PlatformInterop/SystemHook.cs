@@ -19,8 +19,6 @@ public partial class SystemHook(nint handle, Delegate winEventProc) : NativeReso
 
 public partial class SystemHook
 {
-    public static int ForegroundWindowChanged => 3;
-
     public static SystemHook? TryRegister(int hookId, Action callback)
     {
         var proc = new WinEventProc((_, _, _, _, _, _, _) => callback());
@@ -33,5 +31,13 @@ public partial class SystemHook
         }
 
         return new SystemHook(handle, proc);
+    }
+}
+
+public partial class SystemHook
+{
+    public static class Ids
+    {
+        public static int ForegroundWindowChanged => 3;
     }
 }

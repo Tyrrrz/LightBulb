@@ -70,7 +70,6 @@ internal partial class WndProcSponge
 
         var classInfo = new WndClassEx
         {
-            Size = (uint)Marshal.SizeOf<WndClassEx>(),
             ClassName = ClassName,
             WndProc = wndProc,
             Instance = Marshal.GetHINSTANCE(typeof(WndProcSponge).Module)

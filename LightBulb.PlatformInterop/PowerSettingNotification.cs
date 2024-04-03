@@ -40,6 +40,7 @@ public partial class PowerSettingNotification
             powerSettingId,
             0
         );
+        
         if (handle == 0)
         {
             Debug.WriteLine($"Failed to register power setting notification #{powerSettingId}.");
