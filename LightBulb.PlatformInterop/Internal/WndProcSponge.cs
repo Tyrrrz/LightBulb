@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using LightBulb.PlatformInterop.Utils;
 
 namespace LightBulb.PlatformInterop.Internal;
@@ -71,8 +70,7 @@ internal partial class WndProcSponge
         var classInfo = new WndClassEx
         {
             ClassName = ClassName,
-            WndProc = wndProc,
-            Instance = Marshal.GetHINSTANCE(typeof(WndProcSponge).Module)
+            WndProc = wndProc
         };
 
         var classHandle = NativeMethods.RegisterClassEx(ref classInfo);

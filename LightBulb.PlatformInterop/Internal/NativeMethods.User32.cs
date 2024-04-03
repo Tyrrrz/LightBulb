@@ -9,6 +9,17 @@ internal static partial class NativeMethods
     private const string User32 = "user32.dll";
 
     [DllImport(User32, SetLastError = true)]
+    public static extern bool EnumDisplayMonitors(
+        nint hdc,
+        nint lprcClip,
+        EnumMonitorsProc lpfnEnum,
+        nint dwData
+    );
+    
+    [DllImport(User32, SetLastError = true)]
+    public static extern nint MonitorFromWindow(nint hWnd, uint dwFlags);
+
+    [DllImport(User32, SetLastError = true)]
     public static extern bool GetMonitorInfo(nint hMonitor, ref MonitorInfoEx lpmi);
 
     [DllImport(User32, SetLastError = true)]
@@ -16,17 +27,6 @@ internal static partial class NativeMethods
 
     [DllImport(User32, SetLastError = true)]
     public static extern bool UnregisterClass(string lpClassName, IntPtr hInstance);
-
-    [DllImport(User32, SetLastError = true)]
-    public static extern nint MonitorFromWindow(nint hWnd, uint dwFlags);
-
-    [DllImport(User32, SetLastError = true)]
-    public static extern bool EnumDisplayMonitors(
-        nint hdc,
-        nint lprcClip,
-        EnumMonitorsProc lpfnEnum,
-        nint dwData
-    );
 
     [DllImport(User32, SetLastError = true)]
     public static extern nint CreateWindowEx(

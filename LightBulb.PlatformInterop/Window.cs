@@ -76,7 +76,7 @@ public partial class Window(nint handle) : NativeResource(handle)
         if (TryGetRect() is not { } windowRect)
             return false;
 
-        // Calculate absolute window client rect (not relative to the window)
+        // Calculate the absolute window client rect (not relative to the window)
         var windowClientRect = TryGetClientRect() ?? Rect.Empty;
 
         var absoluteWindowClientRect = new Rect(
