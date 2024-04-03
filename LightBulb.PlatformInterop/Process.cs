@@ -4,7 +4,7 @@ using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
 
-public partial class NativeProcess(nint handle) : NativeResource(handle)
+public partial class Process(nint handle) : NativeResource(handle)
 {
     public string? TryGetExecutableFilePath()
     {
@@ -23,9 +23,9 @@ public partial class NativeProcess(nint handle) : NativeResource(handle)
     }
 }
 
-public partial class NativeProcess
+public partial class Process
 {
-    public static NativeProcess? TryGet(int processId)
+    public static Process? TryGet(int processId)
     {
         var handle = NativeMethods.OpenProcess(0x1000, false, (uint)processId);
 
@@ -35,6 +35,6 @@ public partial class NativeProcess
             return null;
         }
 
-        return new NativeProcess(handle);
+        return new Process(handle);
     }
 }

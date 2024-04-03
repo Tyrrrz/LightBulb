@@ -6,9 +6,9 @@ using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
 
-public partial class NativeWindow(nint handle) : NativeResource(handle)
+public partial class Window(nint handle) : NativeResource(handle)
 {
-    public NativeProcess? TryGetProcess()
+    public Process? TryGetProcess()
     {
         _ = NativeMethods.GetWindowThreadProcessId(Handle, out var processId);
         if (processId == 0)
@@ -17,7 +17,7 @@ public partial class NativeWindow(nint handle) : NativeResource(handle)
             return null;
         }
 
-        return NativeProcess.TryGet((int)processId);
+        return Process.TryGet((int)processId);
     }
 
     public Monitor? TryGetMonitor()
@@ -95,9 +95,9 @@ public partial class NativeWindow(nint handle) : NativeResource(handle)
     protected override void Dispose(bool disposing) { }
 }
 
-public partial class NativeWindow
+public partial class Window
 {
-    public static NativeWindow? TryGetForeground()
+    public static Window? TryGetForeground()
     {
         var handle = NativeMethods.GetForegroundWindow();
         if (handle == 0)
@@ -106,12 +106,12 @@ public partial class NativeWindow
             return null;
         }
 
-        return new NativeWindow(handle);
+        return new Window(handle);
     }
 
-    public static IReadOnlyList<NativeWindow> GetAll()
+    public static IReadOnlyList<Window> GetAll()
     {
-        var result = new List<NativeWindow>();
+        var result = new List<Window>();
 
         if (
             !NativeMethods.EnumWindows(
@@ -119,7 +119,7 @@ public partial class NativeWindow
                 {
                     if (hWnd != 0)
                     {
-                        var window = new NativeWindow(hWnd);
+                        var window = new Window(hWnd);
                         result.Add(window);
                     }
 

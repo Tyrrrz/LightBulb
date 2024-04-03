@@ -9,7 +9,7 @@ internal static class Reg
 {
     private static void Run(IReadOnlyList<string> arguments, bool isElevated = false)
     {
-        using var process = new Process();
+        using var process = new System.Diagnostics.Process();
         process.StartInfo = new ProcessStartInfo("reg");
 
         foreach (var arg in arguments)
