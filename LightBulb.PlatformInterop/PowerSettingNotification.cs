@@ -7,17 +7,19 @@ namespace LightBulb.PlatformInterop;
 public partial class PowerSettingNotification(nint handle, Guid powerSettingId, Action callback)
     : NativeResource(handle)
 {
-    private readonly IDisposable _wndProcRegistration = WndProc2.Listen(
-        WndProc2.Ids.PowerSettingMessage,
-        m =>
-        {
-            // Filter out other power events
-            if (m.GetLParam<PowerBroadcastSetting>().PowerSettingId != powerSettingId)
-                return;
+    private readonly IDisposable _wndProcRegistration = WndProcSponge
+        .Default
+        .Listen(
+            0x218,
+            m =>
+            {
+                // Filter out other power events
+                if (m.DeserializeLParam<PowerBroadcastSetting>().PowerSettingId != powerSettingId)
+                    return;
 
-            callback();
-        }
-    );
+                callback();
+            }
+        );
 
     protected override void Dispose(bool disposing)
     {
@@ -34,15 +36,13 @@ public partial class PowerSettingNotification
     public static PowerSettingNotification? TryRegister(Guid powerSettingId, Action callback)
     {
         var handle = NativeMethods.RegisterPowerSettingNotification(
-            WndProc2.Handle,
+            WndProcSponge.Default.Handle,
             powerSettingId,
             0
         );
         if (handle == 0)
         {
-            Debug.WriteLine(
-                $"Failed to register power setting notification (ID: {powerSettingId})."
-            );
+            Debug.WriteLine($"Failed to register power setting notification #{powerSettingId}.");
             return null;
         }
 

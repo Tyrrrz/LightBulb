@@ -4,7 +4,8 @@ namespace LightBulb.Utils.Extensions;
 
 internal static class CollectionExtensions
 {
-    public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> source) where T : class
+    public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> source)
+        where T : class
     {
         foreach (var item in source)
         {

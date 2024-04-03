@@ -6,8 +6,20 @@ using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
 
-public partial class NativeWindow(nint handle, bool isOwned) : NativeResource(handle)
+public partial class NativeWindow(nint handle) : NativeResource(handle)
 {
+    public NativeProcess? TryGetProcess()
+    {
+        _ = NativeMethods.GetWindowThreadProcessId(Handle, out var processId);
+        if (processId == 0)
+        {
+            Debug.WriteLine($"Failed to retrieve process ID for window #{Handle}.");
+            return null;
+        }
+
+        return NativeProcess.TryGet((int)processId);
+    }
+
     public Monitor? TryGetMonitor()
     {
         var monitorHandle = NativeMethods.MonitorFromWindow(Handle, 0);
@@ -80,56 +92,11 @@ public partial class NativeWindow(nint handle, bool isOwned) : NativeResource(ha
             && absoluteWindowClientRect.Bottom >= monitorRect.Bottom;
     }
 
-    public NativeProcess? TryGetProcess()
-    {
-        _ = NativeMethods.GetWindowThreadProcessId(Handle, out var processId);
-        if (processId == 0)
-        {
-            Debug.WriteLine($"Failed to retrieve process ID for window #{Handle}.");
-            return null;
-        }
-
-        return NativeProcess.TryGet((int)processId);
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-        if (isOwned)
-        {
-            if (!NativeMethods.DestroyWindow(Handle))
-                Debug.WriteLine($"Failed to destroy window #{Handle}.");
-        }
-    }
+    protected override void Dispose(bool disposing) { }
 }
 
 public partial class NativeWindow
 {
-    public static NativeWindow? TryCreate(NativeWindowClass windowClass, string windowName)
-    {
-        var handle = NativeMethods.CreateWindowEx(
-            0,
-            windowClass.Handle,
-            windowName,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-        );
-        
-        if (handle == 0)
-        {
-            Debug.WriteLine($"Failed to create window '{windowName}' of class '{windowClass.Handle}'.");
-            return null;
-        }
-        
-        return new NativeWindow(handle, true);
-    }
-    
     public static NativeWindow? TryGetForeground()
     {
         var handle = NativeMethods.GetForegroundWindow();
@@ -139,7 +106,7 @@ public partial class NativeWindow
             return null;
         }
 
-        return new NativeWindow(handle, false);
+        return new NativeWindow(handle);
     }
 
     public static IReadOnlyList<NativeWindow> GetAll()
@@ -152,7 +119,7 @@ public partial class NativeWindow
                 {
                     if (hWnd != 0)
                     {
-                        var window = new NativeWindow(hWnd, false);
+                        var window = new NativeWindow(hWnd);
                         result.Add(window);
                     }
 

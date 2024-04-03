@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
@@ -8,26 +9,28 @@ public partial class Monitor(nint handle) : NativeResource(handle)
 {
     private MonitorInfoEx? TryGetMonitorInfo()
     {
-        if (!NativeMethods.GetMonitorInfo(Handle, out var monitorInfo))
+        var monitorInfo = new MonitorInfoEx { Size = Marshal.SizeOf<MonitorInfoEx>() };
+
+        if (!NativeMethods.GetMonitorInfo(Handle, ref monitorInfo))
         {
-            Debug.WriteLine($"Failed to retrieve monitor info for monitor #{Handle}.");
+            Debug.WriteLine($"Failed to retrieve info for monitor #{Handle}.");
             return null;
         }
 
         return monitorInfo;
     }
-    
-    public string? TryGetName() => TryGetMonitorInfo()?.DeviceName;
 
     public Rect? TryGetBounds() => TryGetMonitorInfo()?.Monitor;
 
+    public string? TryGetDeviceName() => TryGetMonitorInfo()?.DeviceName;
+
     public DeviceContext? TryCreateDeviceContext()
     {
-        var name = TryGetName();
+        var name = TryGetDeviceName();
         if (string.IsNullOrWhiteSpace(name))
             return null;
-        
-        return DeviceContext.TryCreateForDevice(name);
+
+        return DeviceContext.TryCreate(name);
     }
 
     protected override void Dispose(bool disposing) { }

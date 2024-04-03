@@ -6,8 +6,8 @@ using Cogwheel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Core;
 using LightBulb.Models;
-using LightBulb.Utils;
 using LightBulb.PlatformInterop;
+using LightBulb.Utils;
 using Microsoft.Win32;
 
 namespace LightBulb.Services;

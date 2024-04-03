@@ -6,10 +6,10 @@ using LightBulb.Core;
 using LightBulb.Core.Utils.Extensions;
 using LightBulb.Framework;
 using LightBulb.Models;
+using LightBulb.PlatformInterop;
 using LightBulb.Services;
 using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
-using LightBulb.PlatformInterop;
 
 namespace LightBulb.ViewModels.Components;
 

@@ -1,10 +1,13 @@
 using System;
+using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
 
 public partial class SystemEvent(int eventId, Action callback) : IDisposable
 {
-    private readonly IDisposable _wndProcRegistration = WndProc2.Listen(eventId, _ => callback());
+    private readonly IDisposable _wndProcRegistration = WndProcSponge
+        .Default
+        .Listen(eventId, _ => callback());
 
     public void Dispose() => _wndProcRegistration.Dispose();
 }

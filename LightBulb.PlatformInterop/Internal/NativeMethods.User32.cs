@@ -9,8 +9,8 @@ internal static partial class NativeMethods
     private const string User32 = "user32.dll";
 
     [DllImport(User32, SetLastError = true)]
-    public static extern bool GetMonitorInfo(nint hMonitor, out MonitorInfoEx lpmi);
-    
+    public static extern bool GetMonitorInfo(nint hMonitor, ref MonitorInfoEx lpmi);
+
     [DllImport(User32, SetLastError = true)]
     public static extern ushort RegisterClassEx(ref WndClassEx lpwcx);
 

@@ -23,21 +23,12 @@ public partial class SystemHook
 
     public static SystemHook? TryRegister(int hookId, Action callback)
     {
-        var proc = new WinEventProc(
-            (_, _, _, idObject, _, _, _) =>
-            {
-                // Ignore events from non-windows
-                if (idObject != 0)
-                    return;
-
-                callback();
-            }
-        );
+        var proc = new WinEventProc((_, _, _, _, _, _, _) => callback());
 
         var handle = NativeMethods.SetWinEventHook((uint)hookId, (uint)hookId, 0, proc, 0, 0, 0);
         if (handle == 0)
         {
-            Debug.WriteLine($"Failed to register system hook (ID: {hookId}).");
+            Debug.WriteLine($"Failed to register system hook #{hookId}.");
             return null;
         }
 

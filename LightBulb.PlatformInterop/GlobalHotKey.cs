@@ -15,26 +15,31 @@ public partial class GlobalHotKey : NativeResource<int>
     public GlobalHotKey(int id, Action callback)
         : base(id)
     {
-        _wndProcRegistration = WndProc2.Listen(
-            WndProc2.Ids.GlobalHotkeyMessage,
-            m =>
-            {
-                // Filter out other hotkey events
-                if (m.WParam != Handle)
-                    return;
-
-                // Throttle triggers
-                lock (_lock)
+        _wndProcRegistration = WndProcSponge
+            .Default
+            .Listen(
+                0x312,
+                m =>
                 {
-                    if ((DateTimeOffset.Now - _lastTriggerTimestamp).Duration().TotalSeconds < 0.05)
+                    // Filter out other hotkey events
+                    if (m.WParam != Handle)
                         return;
 
-                    _lastTriggerTimestamp = DateTimeOffset.Now;
-                }
+                    // Throttle triggers
+                    lock (_lock)
+                    {
+                        if (
+                            (DateTimeOffset.Now - _lastTriggerTimestamp).Duration().TotalSeconds
+                            < 0.05
+                        )
+                            return;
 
-                callback();
-            }
-        );
+                        _lastTriggerTimestamp = DateTimeOffset.Now;
+                    }
+
+                    callback();
+                }
+            );
     }
 
     protected override void Dispose(bool disposing)
@@ -42,7 +47,7 @@ public partial class GlobalHotKey : NativeResource<int>
         if (disposing)
             _wndProcRegistration.Dispose();
 
-        if (!NativeMethods.UnregisterHotKey(WndProc2.Handle, Handle))
+        if (!NativeMethods.UnregisterHotKey(WndProcSponge.Default.Handle, Handle))
             Debug.WriteLine($"Failed to dispose global hotkey #{Handle}.");
     }
 }
@@ -54,7 +59,14 @@ public partial class GlobalHotKey
     public static GlobalHotKey? TryRegister(int virtualKey, int modifiers, Action callback)
     {
         var handle = Interlocked.Increment(ref _lastHotKeyHandle);
-        if (!NativeMethods.RegisterHotKey(WndProc2.Handle, handle, modifiers, virtualKey))
+        if (
+            !NativeMethods.RegisterHotKey(
+                WndProcSponge.Default.Handle,
+                handle,
+                modifiers,
+                virtualKey
+            )
+        )
         {
             Debug.WriteLine(
                 $"Failed to register global hotkey (key: {virtualKey}, mods: {modifiers})."

@@ -3,7 +3,7 @@ using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
 
-public partial class DeviceContext(nint handle, bool isOwned) : NativeResource(handle)
+public partial class DeviceContext(nint handle) : NativeResource(handle)
 {
     private int _gammaChannelOffset;
 
@@ -50,18 +50,14 @@ public partial class DeviceContext(nint handle, bool isOwned) : NativeResource(h
         // the device context gets invalidated.
         // Resetting gamma in such cases will cause unwanted flickering.
         // https://github.com/Tyrrrz/LightBulb/issues/206
-
-        if (isOwned)
-        {
-            if (!NativeMethods.DeleteDC(Handle))
-                Debug.WriteLine($"Failed to dispose device context #{Handle}.");
-        }
+        if (!NativeMethods.DeleteDC(Handle))
+            Debug.WriteLine($"Failed to dispose device context #{Handle}.");
     }
 }
 
 public partial class DeviceContext
 {
-    public static DeviceContext? TryCreateForDevice(string deviceName)
+    public static DeviceContext? TryCreate(string deviceName)
     {
         var handle = NativeMethods.CreateDC(deviceName, null, null, 0);
         if (handle == 0)
@@ -70,6 +66,6 @@ public partial class DeviceContext
             return null;
         }
 
-        return new DeviceContext(handle, true);
+        return new DeviceContext(handle);
     }
 }

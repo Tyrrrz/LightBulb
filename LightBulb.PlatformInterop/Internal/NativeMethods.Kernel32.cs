@@ -8,11 +8,7 @@ internal static partial class NativeMethods
     private const string Kernel32 = "kernel32.dll";
 
     [DllImport(Kernel32, SetLastError = true)]
-    public static extern nint OpenProcess(
-        ProcessAccessFlags processAccess,
-        bool bInheritHandle,
-        uint processId
-    );
+    public static extern nint OpenProcess(uint processAccess, bool bInheritHandle, uint processId);
 
     [DllImport(Kernel32, SetLastError = true)]
     public static extern bool QueryFullProcessImageName(

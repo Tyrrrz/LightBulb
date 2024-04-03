@@ -27,14 +27,11 @@ public partial class NativeProcess
 {
     public static NativeProcess? TryGet(int processId)
     {
-        var handle = NativeMethods.OpenProcess(
-            ProcessAccessFlags.QueryLimitedInformation,
-            false,
-            (uint)processId
-        );
+        var handle = NativeMethods.OpenProcess(0x1000, false, (uint)processId);
+
         if (handle == 0)
         {
-            Debug.WriteLine($"Failed to open process (ID: {processId}).");
+            Debug.WriteLine($"Failed to open process #{processId}.");
             return null;
         }
 
