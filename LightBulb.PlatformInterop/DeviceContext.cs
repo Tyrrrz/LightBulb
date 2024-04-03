@@ -59,7 +59,7 @@ public partial class DeviceContext
 {
     public static DeviceContext? TryCreate(string deviceName)
     {
-        var handle = NativeMethods.CreateDC(deviceName, null, null, 0);
+        var handle = NativeMethods.CreateDC(deviceName, deviceName, null, 0);
         if (handle == 0)
         {
             Debug.WriteLine($"Failed to retrieve device context for '{deviceName}'.");
