@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Reactive.Disposables;
+using System.Linq;
 using LightBulb.Core;
+using LightBulb.PlatformInterop;
 using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
-using LightBulb.WindowsApi;
 
 namespace LightBulb.Services;
 
@@ -30,43 +30,43 @@ public partial class GammaService : IDisposable
         // Listen to all system events that may indicate that the device context or gamma was changed from the outside
         _eventRoot.Add(
             // https://github.com/Tyrrrz/LightBulb/issues/223
-            SystemHook.TryRegister(SystemHook.ForegroundWindowChanged, InvalidateGamma)
-                ?? Disposable.Empty
+            SystemHook.TryRegister(SystemHook.Ids.ForegroundWindowChanged, InvalidateGamma)
+                ?? Disposable.Null
         );
 
         _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.ConsoleDisplayStateChanged,
                 InvalidateGamma
-            ) ?? Disposable.Empty
+            ) ?? Disposable.Null
         );
 
         _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.PowerSavingStatusChanged,
                 InvalidateGamma
-            ) ?? Disposable.Empty
+            ) ?? Disposable.Null
         );
 
         _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.SessionDisplayStatusChanged,
                 InvalidateGamma
-            ) ?? Disposable.Empty
+            ) ?? Disposable.Null
         );
 
         _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.MonitorPowerStateChanged,
                 InvalidateGamma
-            ) ?? Disposable.Empty
+            ) ?? Disposable.Null
         );
 
         _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.AwayModeChanged,
                 InvalidateGamma
-            ) ?? Disposable.Empty
+            ) ?? Disposable.Null
         );
 
         _eventRoot.Add(
@@ -113,7 +113,11 @@ public partial class GammaService : IDisposable
         _areDeviceContextsValid = true;
 
         _deviceContexts.DisposeAll();
-        _deviceContexts = DeviceContext.GetAllScreens();
+        _deviceContexts = Monitor
+            .GetAll()
+            .Select(m => m.TryCreateDeviceContext())
+            .WhereNotNull()
+            .ToArray();
 
         _lastConfiguration = null;
     }

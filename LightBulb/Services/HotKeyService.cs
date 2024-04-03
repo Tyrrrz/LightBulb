@@ -4,8 +4,8 @@ using System.Diagnostics;
 using Avalonia.Input;
 using Avalonia.Win32.Input;
 using LightBulb.Models;
+using LightBulb.PlatformInterop;
 using LightBulb.Utils.Extensions;
-using LightBulb.WindowsApi;
 
 namespace LightBulb.Services;
 

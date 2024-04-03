@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Framework;
+using LightBulb.PlatformInterop;
 using LightBulb.Services;
 using LightBulb.Utils;
 using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
-using LightBulb.WindowsApi;
 
 namespace LightBulb.ViewModels;
 

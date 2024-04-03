@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LightBulb.Core\LightBulb.Core.csproj" />
-    <ProjectReference Include="..\LightBulb.WindowsApi\LightBulb.WindowsApi.csproj" />
+    <ProjectReference Include="..\LightBulb.PlatformInterop\LightBulb.PlatformInterop.csproj" />
   </ItemGroup>
 
   <ItemGroup>

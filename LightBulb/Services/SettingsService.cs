@@ -6,8 +6,8 @@ using Cogwheel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Core;
 using LightBulb.Models;
+using LightBulb.PlatformInterop;
 using LightBulb.Utils;
-using LightBulb.WindowsApi;
 using Microsoft.Win32;
 
 namespace LightBulb.Services;
@@ -28,7 +28,7 @@ public partial class SettingsService() : SettingsBase(GetFilePath())
             RegistryHive.CurrentUser,
             @"Software\Microsoft\Windows\CurrentVersion\Run",
             Program.Name,
-            $"\"{Program.ExecutableFilePath}\" {StartupOptions.IsInitiallyHiddenArgument}"
+            $"\"{Program.ExecutableFilePath}\" {StartOptions.IsInitiallyHiddenArgument}"
         );
 
     [ObservableProperty]

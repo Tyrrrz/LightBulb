@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="CSharpier.MsBuild" Version="0.26.5" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

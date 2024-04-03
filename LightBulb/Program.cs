@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using Avalonia;
-using LightBulb.WindowsApi;
+using LightBulb.PlatformInterop;
 
 namespace LightBulb;
 
