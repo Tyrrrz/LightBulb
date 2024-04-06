@@ -10,8 +10,7 @@ public partial class ViewManager
     {
         var name = viewModel
             .GetType()
-            .FullName
-            ?.Replace("ViewModel", "View", StringComparison.Ordinal);
+            .FullName?.Replace("ViewModel", "View", StringComparison.Ordinal);
 
         if (string.IsNullOrWhiteSpace(name))
             return null;

@@ -7,19 +7,17 @@ namespace LightBulb.PlatformInterop;
 public partial class PowerSettingNotification(nint handle, Guid powerSettingId, Action callback)
     : NativeResource(handle)
 {
-    private readonly IDisposable _wndProcRegistration = WndProcSponge
-        .Default
-        .Listen(
-            0x218,
-            m =>
-            {
-                // Filter out other power events
-                if (m.GetLParam<PowerBroadcastSetting>().PowerSettingId != powerSettingId)
-                    return;
+    private readonly IDisposable _wndProcRegistration = WndProcSponge.Default.Listen(
+        0x218,
+        m =>
+        {
+            // Filter out other power events
+            if (m.GetLParam<PowerBroadcastSetting>().PowerSettingId != powerSettingId)
+                return;
 
-                callback();
-            }
-        );
+            callback();
+        }
+    );
 
     protected override void Dispose(bool disposing)
     {

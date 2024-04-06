@@ -44,8 +44,7 @@ public partial class ApplicationWhitelistSettingsTabView
         SelectionChangedEventArgs args
     ) =>
         DataContext.WhitelistedApplications = WhitelistedApplicationsListBox
-            .SelectedItems
-            ?.Cast<ExternalApplication>()
+            .SelectedItems?.Cast<ExternalApplication>()
             .ToArray();
 
     public void Dispose() => _eventRoot.Dispose();

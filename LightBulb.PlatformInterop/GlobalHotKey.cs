@@ -15,31 +15,26 @@ public partial class GlobalHotKey : NativeResource<int>
     public GlobalHotKey(int id, Action callback)
         : base(id)
     {
-        _wndProcRegistration = WndProcSponge
-            .Default
-            .Listen(
-                0x312,
-                m =>
+        _wndProcRegistration = WndProcSponge.Default.Listen(
+            0x312,
+            m =>
+            {
+                // Filter out other hotkey events
+                if (m.WParam != Handle)
+                    return;
+
+                // Throttle triggers
+                lock (_lock)
                 {
-                    // Filter out other hotkey events
-                    if (m.WParam != Handle)
+                    if ((DateTimeOffset.Now - _lastTriggerTimestamp).Duration().TotalSeconds < 0.05)
                         return;
 
-                    // Throttle triggers
-                    lock (_lock)
-                    {
-                        if (
-                            (DateTimeOffset.Now - _lastTriggerTimestamp).Duration().TotalSeconds
-                            < 0.05
-                        )
-                            return;
-
-                        _lastTriggerTimestamp = DateTimeOffset.Now;
-                    }
-
-                    callback();
+                    _lastTriggerTimestamp = DateTimeOffset.Now;
                 }
-            );
+
+                callback();
+            }
+        );
     }
 
     protected override void Dispose(bool disposing)
