@@ -18,7 +18,7 @@ env:
 
 jobs:
   format:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 10
 
     permissions:
@@ -40,7 +40,7 @@ jobs:
           --configuration Release
 
   test:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 10
 
     permissions:
