@@ -11,5 +11,9 @@ public abstract class ViewModelBase : ObservableObject, IDisposable
 
     protected virtual void Dispose(bool disposing) { }
 
-    public void Dispose() => Dispose(true);
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 }
