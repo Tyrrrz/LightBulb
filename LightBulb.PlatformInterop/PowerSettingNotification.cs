@@ -12,7 +12,7 @@ public partial class PowerSettingNotification(nint handle, Guid powerSettingId, 
         m =>
         {
             // Filter out other power events
-            if (m.GetLParam<PowerBroadcastSetting>().PowerSettingId != powerSettingId)
+            if (m.TryGetLParam<PowerBroadcastSetting>()?.PowerSettingId != powerSettingId)
                 return;
 
             callback();
