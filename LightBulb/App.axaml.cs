@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Linq;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Threading;
 using LightBulb.Framework;
 using LightBulb.Services;
+using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
 using LightBulb.ViewModels;
 using LightBulb.ViewModels.Components;
@@ -18,6 +22,8 @@ namespace LightBulb;
 
 public class App : Application, IDisposable
 {
+    private readonly DisposableCollector _eventRoot = new();
+
     private readonly ServiceProvider _services;
     private readonly MainViewModel _mainViewModel;
 
@@ -52,7 +58,35 @@ public class App : Application, IDisposable
         _mainViewModel = _services.GetRequiredService<ViewModelManager>().CreateMainViewModel();
     }
 
-    public override void Initialize() => AvaloniaXamlLoader.Load(this);
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+
+        // Tray icon does not support binding so we use this hack to update its tooltip
+        _eventRoot.Add(
+            _mainViewModel.Dashboard.WatchProperties(
+                [o => o.IsActive, o => o.CurrentConfiguration],
+                () =>
+                {
+                    var status =
+                        _mainViewModel.Dashboard.CurrentConfiguration.Temperature.ToString("F0")
+                        + " / "
+                        + _mainViewModel.Dashboard.CurrentConfiguration.Brightness.ToString("P0");
+
+                    var tooltip =
+                        "LightBulb"
+                        + Environment.NewLine
+                        + (_mainViewModel.Dashboard.IsActive ? status : "Disabled");
+
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        if (TrayIcon.GetIcons(this)?.FirstOrDefault() is { } trayIcon)
+                            trayIcon.ToolTipText = tooltip;
+                    });
+                }
+            )
+        );
+    }
 
     public override void OnFrameworkInitializationCompleted()
     {
@@ -120,5 +154,9 @@ public class App : Application, IDisposable
     private void ExitMenuItem_OnClick(object? sender, EventArgs args) =>
         ApplicationLifetime?.TryShutdown();
 
-    public void Dispose() => _services.Dispose();
+    public void Dispose()
+    {
+        _eventRoot.Dispose();
+        _services.Dispose();
+    }
 }
