@@ -352,11 +352,11 @@ public partial class DashboardViewModel : ViewModelBase
     {
         if (disposing)
         {
+            _eventRoot.Dispose();
+
             _updateInstantTimer.Dispose();
             _updateConfigurationTimer.Dispose();
             _updateIsPausedTimer.Dispose();
-
-            _eventRoot.Dispose();
 
             _enableAfterDelayRegistration?.Dispose();
         }
