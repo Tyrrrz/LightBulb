@@ -25,16 +25,17 @@ public class App : Application, IDisposable
     {
         var services = new ServiceCollection();
 
+        // Framework
+        services.AddSingleton<DialogManager>();
+        services.AddSingleton<ViewManager>();
+        services.AddSingleton<ViewModelManager>();
+
         // Services
         services.AddSingleton<ExternalApplicationService>();
         services.AddSingleton<GammaService>();
         services.AddSingleton<HotKeyService>();
         services.AddSingleton<SettingsService>();
         services.AddSingleton<UpdateService>();
-
-        // View model framework
-        services.AddSingleton<DialogManager>();
-        services.AddSingleton<ViewModelManager>();
 
         // View models
         services.AddTransient<MainViewModel>();
@@ -46,9 +47,6 @@ public class App : Application, IDisposable
         services.AddTransient<SettingsTabViewModelBase, GeneralSettingsTabViewModel>();
         services.AddTransient<SettingsTabViewModelBase, HotKeySettingsTabViewModel>();
         services.AddTransient<SettingsTabViewModelBase, LocationSettingsTabViewModel>();
-
-        // View framework
-        services.AddSingleton<ViewManager>();
 
         _services = services.BuildServiceProvider(true);
         _mainViewModel = _services.GetRequiredService<ViewModelManager>().CreateMainViewModel();
@@ -69,12 +67,6 @@ public class App : Application, IDisposable
             Color.Parse("#343838"),
             Color.Parse("#F9A825")
         );
-
-        // Finalize pending updates (and restart) before launching the app
-        _services.GetRequiredService<UpdateService>().FinalizePendingUpdates();
-
-        // Load settings
-        _services.GetRequiredService<SettingsService>().Load();
     }
 
     private void ShowMainWindow()
@@ -126,7 +118,7 @@ public class App : Application, IDisposable
         _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(1));
 
     private void ExitMenuItem_OnClick(object? sender, EventArgs args) =>
-        ApplicationLifetime?.Shutdown();
+        ApplicationLifetime?.TryShutdown();
 
     public void Dispose() => _services.Dispose();
 }

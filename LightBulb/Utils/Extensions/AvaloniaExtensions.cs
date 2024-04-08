@@ -1,5 +1,4 @@
-﻿using System;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 
 namespace LightBulb.Utils.Extensions;
@@ -11,20 +10,19 @@ internal static class AvaloniaExtensions
             ? desktopLifetime.MainWindow
             : null;
 
-    public static void Shutdown(this IApplicationLifetime lifetime, int exitCode = 0)
+    public static bool TryShutdown(this IApplicationLifetime lifetime, int exitCode = 0)
     {
         if (lifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
         {
-            desktopLifetime.TryShutdown(exitCode);
-            return;
+            return desktopLifetime.TryShutdown(exitCode);
         }
 
         if (lifetime is IControlledApplicationLifetime controlledLifetime)
         {
             controlledLifetime.Shutdown(exitCode);
-            return;
+            return true;
         }
 
-        Environment.Exit(exitCode);
+        return false;
     }
 }

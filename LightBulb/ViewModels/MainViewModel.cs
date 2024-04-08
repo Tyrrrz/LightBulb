@@ -104,6 +104,12 @@ public partial class MainViewModel(
     [RelayCommand]
     private async Task InitializeAsync()
     {
+        // Finalize pending updates (and restart if necessary)
+        updateService.FinalizePendingUpdates();
+
+        // Load settings
+        settingsService.Load();
+
         await ShowGammaRangePromptAsync();
         await ShowFirstTimeExperienceMessageAsync();
         await ShowUkraineSupportMessageAsync();
