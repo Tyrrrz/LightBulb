@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using LightBulb.Models;
 
 namespace LightBulb.Views.Controls;
@@ -13,7 +14,13 @@ public partial class HotKeyTextBox : UserControl
         HotKey
     >(nameof(HotKey), defaultBindingMode: BindingMode.TwoWay);
 
-    public HotKeyTextBox() => InitializeComponent();
+    public HotKeyTextBox()
+    {
+        InitializeComponent();
+
+        // Bind the event with the tunnel strategy to handle keys that take part in writing text
+        TextBox.AddHandler(KeyDownEvent, TextBox_OnKeyDown, RoutingStrategies.Tunnel);
+    }
 
     public HotKey HotKey
     {
