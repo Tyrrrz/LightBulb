@@ -6,7 +6,6 @@
         x:Name="TextBox"
         IsReadOnly="True"
         IsUndoEnabled="False"
-        KeyDown="TextBox_OnKeyDown"
         Text="{Binding $parent[UserControl].HotKey, Mode=OneWay}"
         TextAlignment="Center" />
 </UserControl>
