@@ -27,7 +27,7 @@
             <Setter Property="materialAssists:SelectionControlAssist.Size" Value="18" />
 
             <Style Selector="^:checked, ^:unchecked">
-                <Style Selector="^ Ellipse#PART_HoverEffect">
+                <Style Selector="^ /template/ Ellipse#PART_HoverEffect">
                     <Setter Property="Width" Value="32" />
                     <Setter Property="Height" Value="32" />
                 </Style>
@@ -36,7 +36,7 @@
 
         <!--  Slider  -->
         <Style Selector="Slider">
-            <Style Selector="^ ProgressBar#PART_ProgressLayer">
+            <Style Selector="^ /template/ ProgressBar#PART_ProgressLayer">
                 <Style Selector="^:horizontal">
                     <Style Selector="^ Panel#PART_InnerPanel">
                         <Setter Property="Height" Value="2" />
@@ -53,7 +53,7 @@
                 </Style>
             </Style>
 
-            <Style Selector="^ Track#PART_Track">
+            <Style Selector="^ /template/ Track#PART_Track">
                 <Style Selector="^:horizontal">
                     <Setter Property="Margin" Value="4,0" />
                 </Style>
@@ -75,11 +75,11 @@
             <Setter Property="Height" Value="20" />
             <Setter Property="FontSize" Value="14" />
 
-            <Style Selector="^ Panel#PART_TextFieldPanel">
+            <Style Selector="^ /template/ Panel#PART_TextFieldPanel">
                 <Setter Property="MinHeight" Value="0" />
             </Style>
 
-            <Style Selector="^ Panel#PART_TextContainer">
+            <Style Selector="^ /template/ Panel#PART_TextContainer">
                 <Setter Property="Margin" Value="0" />
             </Style>
         </Style>
