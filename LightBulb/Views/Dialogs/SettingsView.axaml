@@ -31,7 +31,7 @@
                                 Padding="8"
                                 Command="{Binding $parent[UserControl].DataContext.ActivateTabCommand}"
                                 CommandParameter="{Binding}"
-                                Foreground="{DynamicResource MaterialPrimaryForegroundBrush}"
+                                Foreground="{DynamicResource MaterialDarkForegroundBrush}"
                                 Theme="{DynamicResource MaterialFlatButton}"
                                 ToolTip.Tip="{Binding DisplayName}">
                                 <materialIcons:MaterialIcon

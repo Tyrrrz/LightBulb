@@ -87,7 +87,7 @@
                             Padding="4"
                             VerticalAlignment="Center"
                             Click="HideButton_OnClick"
-                            Foreground="{DynamicResource MaterialPrimaryMidForegroundBrush}"
+                            Foreground="{DynamicResource MaterialDarkForegroundBrush}"
                             Theme="{DynamicResource MaterialFlatButton}"
                             ToolTip.Tip="Hide LightBulb to the system tray">
                             <materialIcons:MaterialIcon
