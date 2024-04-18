@@ -2,6 +2,7 @@
     x:Class="LightBulb.Views.Components.Settings.GeneralSettingsTabView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:LightBulb.Behaviors"
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings">
     <Design.DataContext>
@@ -15,8 +16,11 @@
             <TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
-                DockPanel.Dock="Right"
-                Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
+                DockPanel.Dock="Right">
+                <Interaction.Behaviors>
+                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
+                </Interaction.Behaviors>
+            </TextBox>
         </DockPanel>
         <Slider
             Margin="0,12,0,0"
@@ -34,8 +38,11 @@
             <TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
-                DockPanel.Dock="Right"
-                Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
+                DockPanel.Dock="Right">
+                <Interaction.Behaviors>
+                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
+                </Interaction.Behaviors>
+            </TextBox>
         </DockPanel>
         <Slider
             Margin="0,12,0,0"
@@ -66,8 +73,11 @@
             <TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
-                DockPanel.Dock="Right"
-                Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
+                DockPanel.Dock="Right">
+                <Interaction.Behaviors>
+                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
+                </Interaction.Behaviors>
+            </TextBox>
         </DockPanel>
         <Slider
             Margin="0,12,0,0"
@@ -98,8 +108,11 @@
             <TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
-                DockPanel.Dock="Right"
-                Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
+                DockPanel.Dock="Right">
+                <Interaction.Behaviors>
+                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
+                </Interaction.Behaviors>
+            </TextBox>
         </DockPanel>
         <Slider
             Margin="0,12,0,0"
@@ -117,8 +130,11 @@
             <TextBox
                 MinWidth="48"
                 HorizontalAlignment="Right"
-                DockPanel.Dock="Right"
-                Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}}" />
+                DockPanel.Dock="Right">
+                <Interaction.Behaviors>
+                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}}" />
+                </Interaction.Behaviors>
+            </TextBox>
         </DockPanel>
         <Slider
             Margin="0,12,0,0"
@@ -134,8 +150,11 @@
             <TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
-                DockPanel.Dock="Right"
-                Text="{Binding ConfigurationTransitionOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
+                DockPanel.Dock="Right">
+                <Interaction.Behaviors>
+                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ConfigurationTransitionOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
+                </Interaction.Behaviors>
+            </TextBox>
         </DockPanel>
         <Slider
             Margin="0,12,0,0"
