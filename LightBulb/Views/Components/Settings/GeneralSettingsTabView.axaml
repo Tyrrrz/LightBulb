@@ -163,5 +163,25 @@
             Minimum="0"
             SmallChange="0.01"
             Value="{Binding ConfigurationTransitionOffset}" />
+		
+		<!-- Max settings transition duration-->
+		<DockPanel Margin="0,24,0,0" ToolTip.Tip="Maximum duration a settings change takes, like when moving a slider or enabling/disabling the filter.">
+			<TextBlock DockPanel.Dock="Left" Text="Config-change max duration:" />
+			<TextBox
+                MinWidth="48"
+                HorizontalAlignment="Right"
+                DockPanel.Dock="Right">
+				<Interaction.Behaviors>
+					<behaviors:LostFocusUpdateBindingBehavior Text="{Binding MaxSettingsTransitionDuration, Converter={x:Static converters:TimeSpanToSecondsStringConverter.Instance}}" />
+				</Interaction.Behaviors>
+			</TextBox>
+		</DockPanel>
+		<Slider
+            Margin="0,12,0,0"
+            LargeChange="1"
+            Maximum="15"
+            Minimum="0"
+            SmallChange="0.1"
+            Value="{Binding MaxSettingsTransitionDuration, Converter={x:Static converters:TimeSpanToSecondsDoubleConverter.Instance}}" />
     </StackPanel>
 </UserControl>
