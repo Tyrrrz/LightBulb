@@ -92,6 +92,11 @@
             <Setter Property="TextElement.FontStretch" Value="Normal" />
         </Style>
 
+        <!--  Toggle button  -->
+        <Style Selector="ToggleButton">
+            <Setter Property="TextElement.FontWeight" Value="Medium" />
+        </Style>
+
         <!--  Toggle switch  -->
         <Style Selector="ToggleSwitch">
             <Setter Property="materialAssists:ToggleSwitchAssist.SwitchThumbOffBackground" Value="{DynamicResource MaterialBackgroundBrush}" />

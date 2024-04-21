@@ -339,9 +339,6 @@ public partial class DashboardViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void ToggleCyclePreview() => IsCyclePreviewEnabled = !IsCyclePreviewEnabled;
-
-    [RelayCommand]
     private void ResetConfigurationOffset()
     {
         TemperatureOffset = 0;
