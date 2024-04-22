@@ -92,15 +92,6 @@ public class GeneralSettingsTabViewModel(SettingsService settingsService)
             );
     }
 
-    public TimeSpan MaxSettingsTransitionDuration
-    {
-        get => SettingsService.MaxSettingsTransitionDuration;
-        set =>
-            SettingsService.MaxSettingsTransitionDuration = TimeSpan.FromSeconds(
-                Math.Clamp(value.TotalSeconds, 0, 15)
-            );
-    }
-
     public double ConfigurationTransitionOffset
     {
         get => SettingsService.ConfigurationTransitionOffset;

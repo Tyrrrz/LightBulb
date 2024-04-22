@@ -5,24 +5,24 @@
     xmlns:behaviors="clr-namespace:LightBulb.Behaviors"
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings">
-    <Design.DataContext>
-        <settings:GeneralSettingsTabViewModel />
-    </Design.DataContext>
+	<Design.DataContext>
+		<settings:GeneralSettingsTabViewModel />
+	</Design.DataContext>
 
-    <StackPanel Margin="16" Orientation="Vertical">
-        <!--  Day temperature  -->
-        <DockPanel ToolTip.Tip="Color temperature during the day">
-            <TextBlock DockPanel.Dock="Left" Text="Day-time color temperature:" />
-            <TextBox
+	<StackPanel Margin="16" Orientation="Vertical">
+		<!--  Day temperature  -->
+		<DockPanel ToolTip.Tip="Color temperature during the day">
+			<TextBlock DockPanel.Dock="Left" Text="Day-time color temperature:" />
+			<TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right">
-                <Interaction.Behaviors>
-                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
-                </Interaction.Behaviors>
-            </TextBox>
-        </DockPanel>
-        <Slider
+				<Interaction.Behaviors>
+					<behaviors:LostFocusUpdateBindingBehavior Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
+				</Interaction.Behaviors>
+			</TextBox>
+		</DockPanel>
+		<Slider
             Margin="0,12,0,0"
             IsSnapToTickEnabled="True"
             LargeChange="500"
@@ -32,19 +32,19 @@
             TickFrequency="20"
             Value="{Binding DayTemperature}" />
 
-        <!--  Night temperature  -->
-        <DockPanel Margin="0,24,0,0" ToolTip.Tip="Color temperature during the night">
-            <TextBlock DockPanel.Dock="Left" Text="Night-time color temperature:" />
-            <TextBox
+		<!--  Night temperature  -->
+		<DockPanel Margin="0,24,0,0" ToolTip.Tip="Color temperature during the night">
+			<TextBlock DockPanel.Dock="Left" Text="Night-time color temperature:" />
+			<TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right">
-                <Interaction.Behaviors>
-                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
-                </Interaction.Behaviors>
-            </TextBox>
-        </DockPanel>
-        <Slider
+				<Interaction.Behaviors>
+					<behaviors:LostFocusUpdateBindingBehavior Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
+				</Interaction.Behaviors>
+			</TextBox>
+		</DockPanel>
+		<Slider
             Margin="0,12,0,0"
             IsSnapToTickEnabled="True"
             LargeChange="500"
@@ -54,32 +54,32 @@
             TickFrequency="20"
             Value="{Binding NightTemperature}" />
 
-        <!--  Day brightness  -->
-        <DockPanel Margin="0,24,0,0">
-            <ToolTip.Tip>
-                <TextBlock>
-                    <Run Text="Brightness during the day" />
-                    <LineBreak />
-                    <LineBreak />
-                    <Run Text="Note that this brightness setting applies to the color gamma, not to the actual brightness of the monitor." />
-                    <LineBreak />
-                    <Run Text="If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops)," />
-                    <LineBreak />
-                    <Run Text=" " />
-                    <Run Text="then it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
-                </TextBlock>
-            </ToolTip.Tip>
-            <TextBlock DockPanel.Dock="Left" Text="Day-time brightness:" />
-            <TextBox
+		<!--  Day brightness  -->
+		<DockPanel Margin="0,24,0,0">
+			<ToolTip.Tip>
+				<TextBlock>
+					<Run Text="Brightness during the day" />
+					<LineBreak />
+					<LineBreak />
+					<Run Text="Note that this brightness setting applies to the color gamma, not to the actual brightness of the monitor." />
+					<LineBreak />
+					<Run Text="If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops)," />
+					<LineBreak />
+					<Run Text=" " />
+					<Run Text="then it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
+				</TextBlock>
+			</ToolTip.Tip>
+			<TextBlock DockPanel.Dock="Left" Text="Day-time brightness:" />
+			<TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right">
-                <Interaction.Behaviors>
-                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
-                </Interaction.Behaviors>
-            </TextBox>
-        </DockPanel>
-        <Slider
+				<Interaction.Behaviors>
+					<behaviors:LostFocusUpdateBindingBehavior Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
+				</Interaction.Behaviors>
+			</TextBox>
+		</DockPanel>
+		<Slider
             Margin="0,12,0,0"
             IsSnapToTickEnabled="True"
             LargeChange="0.1"
@@ -89,32 +89,32 @@
             TickFrequency="0.01"
             Value="{Binding DayBrightness}" />
 
-        <!--  Night brightness  -->
-        <DockPanel Margin="0,24,0,0">
-            <ToolTip.Tip>
-                <TextBlock>
-                    <Run Text="Brightness during the night" />
-                    <LineBreak />
-                    <LineBreak />
-                    <Run Text="Note that this brightness setting applies to the color gamma, not to the actual brightness of the monitor." />
-                    <LineBreak />
-                    <Run Text="If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops)," />
-                    <LineBreak />
-                    <Run Text=" " />
-                    <Run Text="then it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
-                </TextBlock>
-            </ToolTip.Tip>
-            <TextBlock DockPanel.Dock="Left" Text="Night-time brightness:" />
-            <TextBox
+		<!--  Night brightness  -->
+		<DockPanel Margin="0,24,0,0">
+			<ToolTip.Tip>
+				<TextBlock>
+					<Run Text="Brightness during the night" />
+					<LineBreak />
+					<LineBreak />
+					<Run Text="Note that this brightness setting applies to the color gamma, not to the actual brightness of the monitor." />
+					<LineBreak />
+					<Run Text="If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops)," />
+					<LineBreak />
+					<Run Text=" " />
+					<Run Text="then it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
+				</TextBlock>
+			</ToolTip.Tip>
+			<TextBlock DockPanel.Dock="Left" Text="Night-time brightness:" />
+			<TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right">
-                <Interaction.Behaviors>
-                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
-                </Interaction.Behaviors>
-            </TextBox>
-        </DockPanel>
-        <Slider
+				<Interaction.Behaviors>
+					<behaviors:LostFocusUpdateBindingBehavior Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
+				</Interaction.Behaviors>
+			</TextBox>
+		</DockPanel>
+		<Slider
             Margin="0,12,0,0"
             IsSnapToTickEnabled="True"
             LargeChange="0.1"
@@ -124,19 +124,19 @@
             TickFrequency="0.01"
             Value="{Binding NightBrightness}" />
 
-        <!--  Configuration transition duration  -->
-        <DockPanel Margin="0,24,0,0" ToolTip.Tip="Duration of time it takes to switch between day-time and night-time configurations">
-            <TextBlock DockPanel.Dock="Left" Text="Transition duration:" />
-            <TextBox
+		<!--  Configuration transition duration  -->
+		<DockPanel Margin="0,24,0,0" ToolTip.Tip="Duration of time it takes to switch between day-time and night-time configurations">
+			<TextBlock DockPanel.Dock="Left" Text="Transition duration:" />
+			<TextBox
                 MinWidth="48"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right">
-                <Interaction.Behaviors>
-                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}}" />
-                </Interaction.Behaviors>
-            </TextBox>
-        </DockPanel>
-        <Slider
+				<Interaction.Behaviors>
+					<behaviors:LostFocusUpdateBindingBehavior Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}}" />
+				</Interaction.Behaviors>
+			</TextBox>
+		</DockPanel>
+		<Slider
             Margin="0,12,0,0"
             LargeChange="0.5"
             Maximum="3"
@@ -144,44 +144,24 @@
             SmallChange="0.08"
             Value="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToHoursDoubleConverter.Instance}}" />
 
-        <!--  Configuration transition offset  -->
-        <DockPanel Margin="0,24,0,0" ToolTip.Tip="Offset that specifies how early or late the transition starts, relative to the sunrise and sunset">
-            <TextBlock DockPanel.Dock="Left" Text="Transition offset:" />
-            <TextBox
+		<!--  Configuration transition offset  -->
+		<DockPanel Margin="0,24,0,0" ToolTip.Tip="Offset that specifies how early or late the transition starts, relative to the sunrise and sunset">
+			<TextBlock DockPanel.Dock="Left" Text="Transition offset:" />
+			<TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right">
-                <Interaction.Behaviors>
-                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ConfigurationTransitionOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
-                </Interaction.Behaviors>
-            </TextBox>
-        </DockPanel>
-        <Slider
+				<Interaction.Behaviors>
+					<behaviors:LostFocusUpdateBindingBehavior Text="{Binding ConfigurationTransitionOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
+				</Interaction.Behaviors>
+			</TextBox>
+		</DockPanel>
+		<Slider
             Margin="0,12,0,0"
             LargeChange="0.05"
             Maximum="1"
             Minimum="0"
             SmallChange="0.01"
             Value="{Binding ConfigurationTransitionOffset}" />
-		
-		<!-- Max settings transition duration-->
-		<DockPanel Margin="0,24,0,0" ToolTip.Tip="Maximum duration a settings change takes, like when moving a slider or enabling/disabling the filter.">
-			<TextBlock DockPanel.Dock="Left" Text="Config-change max duration:" />
-			<TextBox
-                MinWidth="48"
-                HorizontalAlignment="Right"
-                DockPanel.Dock="Right">
-				<Interaction.Behaviors>
-					<behaviors:LostFocusUpdateBindingBehavior Text="{Binding MaxSettingsTransitionDuration, Converter={x:Static converters:TimeSpanToSecondsStringConverter.Instance}}" />
-				</Interaction.Behaviors>
-			</TextBox>
-		</DockPanel>
-		<Slider
-            Margin="0,12,0,0"
-            LargeChange="1"
-            Maximum="15"
-            Minimum="0"
-            SmallChange="0.1"
-            Value="{Binding MaxSettingsTransitionDuration, Converter={x:Static converters:TimeSpanToSecondsDoubleConverter.Instance}}" />
-    </StackPanel>
+	</StackPanel>
 </UserControl>
