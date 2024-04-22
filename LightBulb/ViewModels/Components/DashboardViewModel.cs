@@ -108,10 +108,7 @@ public partial class DashboardViewModel : ViewModelBase
             )
         );
 
-        _updateConfigurationTimer = new Timer(
-            TimeSpan.FromMilliseconds(50),
-            UpdateConfiguration
-        );
+        _updateConfigurationTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateConfiguration);
         _updateInstantTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateInstant);
         _updateIsPausedTimer = new Timer(TimeSpan.FromSeconds(1), UpdateIsPaused);
     }
@@ -306,7 +303,7 @@ public partial class DashboardViewModel : ViewModelBase
         var isSmooth =
             _settingsService.IsConfigurationSmoothingEnabled
             && !IsCyclePreviewEnabled
-            && _settingsService.MaxSettingsTransitionDuration.TotalSeconds >= 0.1;
+            && _settingsService.ConfigurationSmoothingDuration.TotalSeconds >= 0.1;
 
         // If we've changed targets, restart with default settings.
         if (_lastTarget != TargetConfiguration && isSmooth)
@@ -329,7 +326,7 @@ public partial class DashboardViewModel : ViewModelBase
             var goalDuration = Math.Max(expectedTemperatureDuration, expectedBrightnessDuration);
             goalDuration = Math.Min(
                 goalDuration,
-                _settingsService.MaxSettingsTransitionDuration.TotalSeconds
+                _settingsService.ConfigurationSmoothingDuration.TotalSeconds
             );
 
             // Calculate the step-rate needed to reach the goal.

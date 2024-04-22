@@ -64,7 +64,7 @@ public partial class SettingsService() : SettingsBase(GetFilePath())
     private double _configurationTransitionOffset;
 
     [ObservableProperty]
-    private TimeSpan _maxSettingsTransitionDuration = TimeSpan.FromSeconds(15);
+    private TimeSpan _configurationSmoothingDuration = TimeSpan.FromSeconds(15);
 
     // Location
 
