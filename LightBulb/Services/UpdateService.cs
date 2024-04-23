@@ -25,6 +25,9 @@ public class UpdateService(SettingsService settingsService) : IDisposable
 
     public Version? TryGetLastPreparedUpdate()
     {
+        if (!settingsService.IsAutoUpdateEnabled)
+            return null;
+
         var version = _updateManager.GetPreparedUpdates().Max();
         if (version <= _updateManager.Updatee.Version)
             return null;

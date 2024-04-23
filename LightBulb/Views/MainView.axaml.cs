@@ -12,10 +12,9 @@ public partial class MainView : Window<MainViewModel>
 
     private void Window_OnLoaded(object sender, RoutedEventArgs args)
     {
-        if (StartOptions.Current.IsInitiallyHidden)
+        // If the app is set to start hidden, hide the window, unless a dialog is open
+        if (StartOptions.Current.IsInitiallyHidden && !DialogHost.IsOpen)
             Hide();
-
-        DataContext.InitializeCommand.Execute(null);
     }
 
     private void Window_OnClosing(object sender, WindowClosingEventArgs args)
@@ -23,6 +22,9 @@ public partial class MainView : Window<MainViewModel>
         args.Cancel = true;
         Hide();
     }
+
+    private void DialogHost_OnLoaded(object? sender, RoutedEventArgs args) =>
+        DataContext.InitializeCommand.Execute(null);
 
     private void HeaderBorder_OnPointerPressed(object? sender, PointerPressedEventArgs args) =>
         BeginMoveDrag(args);

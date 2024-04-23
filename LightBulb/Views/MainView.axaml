@@ -22,7 +22,10 @@
     </Design.DataContext>
 
     <Border BorderBrush="{DynamicResource MaterialPrimaryLightBrush}" BorderThickness="1">
-        <dialogHostAvalonia:DialogHost CloseOnClickAway="False">
+        <dialogHostAvalonia:DialogHost
+            x:Name="DialogHost"
+            CloseOnClickAway="False"
+            Loaded="DialogHost_OnLoaded">
             <Grid RowDefinitions="Auto,*,Auto">
                 <!--  Header  -->
                 <Border
