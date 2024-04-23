@@ -38,7 +38,8 @@
                 <TextBox
                     MinWidth="24"
                     HorizontalAlignment="Right"
-                    DockPanel.Dock="Right">
+                    DockPanel.Dock="Right"
+                    Theme="{DynamicResource CompactTextBox}">
                     <Interaction.Behaviors>
                         <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
                     </Interaction.Behaviors>
@@ -58,7 +59,8 @@
                 <TextBox
                     MinWidth="24"
                     HorizontalAlignment="Right"
-                    DockPanel.Dock="Right">
+                    DockPanel.Dock="Right"
+                    Theme="{DynamicResource CompactTextBox}">
                     <Interaction.Behaviors>
                         <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
                     </Interaction.Behaviors>
@@ -101,7 +103,8 @@
                     Margin="8,0"
                     VerticalAlignment="Center"
                     IsEnabled="{Binding !IsBusy}"
-                    Text="{Binding LocationQuery}">
+                    Text="{Binding LocationQuery}"
+                    Theme="{DynamicResource CompactTextBox}">
                     <ToolTip.Tip>
                         <TextBlock>
                             <Run Text="Specify your location using geographic coordinates or a search query" />

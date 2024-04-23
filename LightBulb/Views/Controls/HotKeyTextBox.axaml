@@ -7,5 +7,6 @@
         IsReadOnly="True"
         IsUndoEnabled="False"
         Text="{Binding $parent[UserControl].HotKey, Mode=OneWay}"
-        TextAlignment="Center" />
+        TextAlignment="Center"
+        Theme="{DynamicResource CompactTextBox}" />
 </UserControl>
