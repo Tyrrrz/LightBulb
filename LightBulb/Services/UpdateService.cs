@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia;
-using LightBulb.Utils.Extensions;
 using Onova;
 using Onova.Exceptions;
 using Onova.Services;
@@ -16,29 +14,47 @@ public class UpdateService(SettingsService settingsService) : IDisposable
         new ZipPackageExtractor()
     );
 
-    private Version? TryGetLastPreparedUpdate() => _updateManager.GetPreparedUpdates().Max();
+    public async Task<Version?> CheckForUpdatesAsync()
+    {
+        if (!settingsService.IsAutoUpdateEnabled)
+            return null;
 
-    public async Task CheckPrepareUpdateAsync()
+        var check = await _updateManager.CheckForUpdatesAsync();
+        return check.CanUpdate ? check.LastVersion : null;
+    }
+
+    public Version? TryGetLastPreparedUpdate()
+    {
+        var version = _updateManager.GetPreparedUpdates().Max();
+        if (version <= _updateManager.Updatee.Version)
+            return null;
+
+        return version;
+    }
+
+    public async Task PrepareUpdateAsync(Version version)
     {
         if (!settingsService.IsAutoUpdateEnabled)
             return;
 
         try
         {
-            var check = await _updateManager.CheckForUpdatesAsync();
-            if (!check.CanUpdate || check.LastVersion is null)
+            if (version == TryGetLastPreparedUpdate())
                 return;
 
-            if (check.LastVersion != TryGetLastPreparedUpdate())
-                await _updateManager.PrepareUpdateAsync(check.LastVersion);
+            await _updateManager.PrepareUpdateAsync(version);
         }
-        catch
+        catch (UpdaterAlreadyLaunchedException)
         {
-            // Failure to check for updates shouldn't crash the app
+            // Ignore race conditions
+        }
+        catch (LockFileNotAcquiredException)
+        {
+            // Ignore race conditions
         }
     }
 
-    public void FinalizePendingUpdates()
+    public void FinalizeUpdate(Version version)
     {
         if (!settingsService.IsAutoUpdateEnabled)
             return;
@@ -49,17 +65,7 @@ public class UpdateService(SettingsService settingsService) : IDisposable
 
         try
         {
-            var lastPreparedUpdate = TryGetLastPreparedUpdate();
-            if (lastPreparedUpdate is null)
-                return;
-
-            if (lastPreparedUpdate <= _updateManager.Updatee.Version)
-                return;
-
-            _updateManager.LaunchUpdater(lastPreparedUpdate);
-
-            if (Application.Current?.ApplicationLifetime?.TryShutdown(2) != true)
-                Environment.Exit(2);
+            _updateManager.LaunchUpdater(version);
         }
         catch (UpdaterAlreadyLaunchedException)
         {
