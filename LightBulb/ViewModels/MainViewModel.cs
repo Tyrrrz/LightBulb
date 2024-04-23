@@ -32,6 +32,33 @@ public partial class MainViewModel(
 
     public DashboardViewModel Dashboard { get; } = viewModelManager.CreateDashboardViewModel();
 
+    private async Task FinalizePendingUpdateAsync()
+    {
+        var updateVersion = updateService.TryGetLastPreparedUpdate();
+        if (updateVersion is null)
+            return;
+
+        var dialog = viewModelManager.CreateMessageBoxViewModel(
+            "Update available",
+            $"""
+            Update to {Program.Name} v{updateVersion} has been downloaded.
+            Do you want to install it now?
+            """,
+            "INSTALL",
+            "CANCEL"
+        );
+
+        Application.Current?.TryFocusMainWindow();
+
+        if (await dialogManager.ShowDialogAsync(dialog) != true)
+            return;
+
+        updateService.FinalizeUpdate(updateVersion);
+
+        if (Application.Current?.ApplicationLifetime?.TryShutdown(2) != true)
+            Environment.Exit(2);
+    }
+
     private async Task ShowGammaRangePromptAsync()
     {
         if (settingsService.IsExtendedGammaRangeUnlocked)
@@ -113,43 +140,16 @@ public partial class MainViewModel(
         ProcessEx.StartShellExecute("https://tyrrrz.me/ukraine?source=lightbulb");
     }
 
-    private async Task FinalizePendingUpdateAsync()
-    {
-        var updateVersion = updateService.TryGetLastPreparedUpdate();
-        if (updateVersion is null)
-            return;
-
-        var dialog = viewModelManager.CreateMessageBoxViewModel(
-            "Update available",
-            $"""
-            Update to {Program.Name} v{updateVersion} has been downloaded.
-            Do you want to install it now?
-            """,
-            "INSTALL",
-            "CANCEL"
-        );
-
-        Application.Current?.TryFocusMainWindow();
-
-        if (await dialogManager.ShowDialogAsync(dialog) != true)
-            return;
-
-        updateService.FinalizeUpdate(updateVersion);
-
-        if (Application.Current?.ApplicationLifetime?.TryShutdown(2) != true)
-            Environment.Exit(2);
-    }
-
     [RelayCommand]
     private async Task InitializeAsync()
     {
         // Load settings
         settingsService.Load();
 
+        await FinalizePendingUpdateAsync();
         await ShowGammaRangePromptAsync();
         await ShowFirstTimeExperienceMessageAsync();
         await ShowUkraineSupportMessageAsync();
-        await FinalizePendingUpdateAsync();
 
         _checkForUpdatesTimer.Start();
     }

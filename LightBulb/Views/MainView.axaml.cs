@@ -14,6 +14,8 @@ public partial class MainView : Window<MainViewModel>
     {
         if (StartOptions.Current.IsInitiallyHidden)
             Hide();
+
+        DataContext.InitializeCommand.Execute(null);
     }
 
     private void Window_OnClosing(object sender, WindowClosingEventArgs args)
@@ -21,9 +23,6 @@ public partial class MainView : Window<MainViewModel>
         args.Cancel = true;
         Hide();
     }
-
-    private void DialogHost_OnLoaded(object? sender, RoutedEventArgs args) =>
-        DataContext.InitializeCommand.Execute(null);
 
     private void HeaderBorder_OnPointerPressed(object? sender, PointerPressedEventArgs args) =>
         BeginMoveDrag(args);
