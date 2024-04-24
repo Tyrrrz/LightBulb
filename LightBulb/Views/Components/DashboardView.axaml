@@ -119,10 +119,11 @@
                 Margin="0,50,0,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
+                Background="Transparent"
                 Cursor="Hand"
                 IsVisible="{Binding IsOffsetEnabled}"
                 Orientation="Horizontal"
-                PointerPressed="ConfigurationOffsetStackPanel_OnPointerPressed">
+                PointerReleased="ConfigurationOffsetStackPanel_OnPointerReleased">
                 <ToolTip.Tip>
                     <TextBlock>
                         <Run Text="Current temperature and brightness values are adjusted by an offset:" />
