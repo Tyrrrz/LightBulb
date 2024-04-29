@@ -72,7 +72,8 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   pack:
-    runs-on: ubuntu-latest
+    # Needs to run on Windows to create the installer
+    runs-on: windows-latest
     timeout-minutes: 10
 
     permissions:
