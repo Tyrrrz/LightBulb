@@ -72,7 +72,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   pack:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 10
 
     permissions:
@@ -95,7 +95,8 @@ jobs:
           -p:CSharpier_Bypass=true
           --output LightBulb/bin/publish/
           --configuration Release
-          --use-current-runtime
+          --runtime win-x64
+          --self-contained
 
       - name: Create installer
         shell: pwsh
