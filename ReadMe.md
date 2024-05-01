@@ -43,9 +43,8 @@ To learn more about the war and how you can help, [click here](https://tyrrrz.me
 - 🟠 [CI build](https://github.com/Tyrrrz/LightBulb/actions/workflows/main.yml)
 - 📦 [WinGet](https://github.com/microsoft/winget-cli): `winget install Tyrrrz.LightBulb` (community-maintained)
 
-> **Warning**:
-> **LightBulb** only works on Windows 7 and higher.
-> Other operating systems are not supported.
+> **Note**:
+> If you're unsure which build is right for your system, consult with [this page](https://useragent.cc) to determine your OS and CPU architecture.
 
 ## Features
 
