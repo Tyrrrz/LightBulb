@@ -288,15 +288,15 @@ public partial class DashboardViewModel : ViewModelBase
     private const double _brightnessDefaultStep = 0.08;
     private const double _temperatureDefaultStep = 30;
 
-    private double _brightnessMaxStep = _brightnessDefaultStep;
-    private double _temperatureMaxStep = _temperatureDefaultStep;
-
     private ColorConfiguration _lastTarget;
 
     private void UpdateConfiguration()
     {
         if (CurrentConfiguration == TargetConfiguration)
+        {
+            _gammaService.SetGamma(CurrentConfiguration);
             return;
+        }
 
         double stepsPerSecond = 1000 / _updateConfigurationTimer.Interval.TotalMilliseconds;
 
@@ -308,41 +308,42 @@ public partial class DashboardViewModel : ViewModelBase
         // If we've changed targets, restart with default settings.
         if (_lastTarget != TargetConfiguration && isSmooth)
         {
-            _brightnessMaxStep = _brightnessDefaultStep;
-            _temperatureMaxStep = _temperatureDefaultStep;
             _lastTarget = TargetConfiguration;
-
-            var tempDelta = Math.Abs(
-                TargetConfiguration.Temperature - CurrentConfiguration.Temperature
-            );
-            var brightnessDelta = Math.Abs(
-                TargetConfiguration.Brightness - CurrentConfiguration.Brightness
-            );
-            var expectedTemperatureDuration = tempDelta / (_temperatureMaxStep * stepsPerSecond);
-            var expectedBrightnessDuration =
-                brightnessDelta / (_brightnessMaxStep * stepsPerSecond);
-
-            // If the expected durations are longer than our duration limit, we adjust the step amount to stay at the max duration.
-            var goalDuration = Math.Max(expectedTemperatureDuration, expectedBrightnessDuration);
-            goalDuration = Math.Min(
-                goalDuration,
-                _settingsService.ConfigurationSmoothingDuration.TotalSeconds
-            );
-
-            // Calculate the step-rate needed to reach the goal.
-            _brightnessMaxStep = brightnessDelta / (goalDuration * stepsPerSecond);
-            _temperatureMaxStep = tempDelta / (goalDuration * stepsPerSecond);
-
-            // If we ended up slower on either of the durations, speed us up.
-            _brightnessMaxStep = Math.Max(_brightnessMaxStep, _brightnessDefaultStep);
-            _temperatureMaxStep = Math.Max(_temperatureMaxStep, _temperatureDefaultStep);
         }
+
+        double brightnessMaxStep = _brightnessDefaultStep;
+        double temperatureMaxStep = _temperatureDefaultStep;
+
+        // Calculate the step size...
+        var tempDelta = Math.Abs(
+            TargetConfiguration.Temperature - CurrentConfiguration.Temperature
+        );
+        var brightnessDelta = Math.Abs(
+            TargetConfiguration.Brightness - CurrentConfiguration.Brightness
+        );
+        var expectedTemperatureDuration = tempDelta / (temperatureMaxStep * stepsPerSecond);
+        var expectedBrightnessDuration = brightnessDelta / (brightnessMaxStep * stepsPerSecond);
+
+        // If the expected durations are longer than our duration limit, we adjust the step amount to stay at the max duration.
+        var goalDuration = Math.Max(expectedTemperatureDuration, expectedBrightnessDuration);
+        goalDuration = Math.Min(
+            goalDuration,
+            _settingsService.ConfigurationSmoothingDuration.TotalSeconds
+        );
+
+        // Calculate the step-rate needed to reach the goal.
+        brightnessMaxStep = brightnessDelta / (goalDuration * stepsPerSecond);
+        temperatureMaxStep = tempDelta / (goalDuration * stepsPerSecond);
+
+        // If we ended up slower on either of the durations, speed us up.
+        brightnessMaxStep = Math.Max(brightnessMaxStep, _brightnessDefaultStep);
+        temperatureMaxStep = Math.Max(temperatureMaxStep, _temperatureDefaultStep);
 
         CurrentConfiguration = isSmooth
             ? CurrentConfiguration.StepTo(
                 TargetConfiguration,
-                _temperatureMaxStep,
-                _brightnessMaxStep
+                temperatureMaxStep,
+                brightnessMaxStep
             )
             : TargetConfiguration;
 
