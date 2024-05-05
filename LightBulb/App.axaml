@@ -11,8 +11,27 @@
         <framework:ViewManager />
     </Application.DataTemplates>
 
+	<Application.Resources>
+		<!-- Override theme Primary color -->
+		<SolidColorBrush x:Key="MaterialPrimaryLightBrush" Color="#343838"></SolidColorBrush>
+		<SolidColorBrush x:Key="MaterialPrimaryLightForegroundBrush" Color="#343838"></SolidColorBrush>
+		<SolidColorBrush x:Key="MaterialPrimaryMidBrush" Color="#343838"></SolidColorBrush>
+		<SolidColorBrush x:Key="MaterialPrimaryMidForegroundBrush" Color="White"></SolidColorBrush>
+		<SolidColorBrush x:Key="MaterialPrimaryDarkBrush" Color="#343838"></SolidColorBrush>
+		<SolidColorBrush x:Key="MaterialPrimaryForegroundBrush" Color="#343838"></SolidColorBrush>
+
+		<!-- Override theme Secondary color -->
+		<SolidColorBrush x:Key="MaterialSecondaryLightBrush" Color="#F9A825"></SolidColorBrush>
+		<SolidColorBrush x:Key="MaterialSecondaryLightForegroundBrush" Color="#F9A825"></SolidColorBrush>
+		<SolidColorBrush x:Key="MaterialSecondaryMidBrush" Color="#F9A825"></SolidColorBrush>
+		<SolidColorBrush x:Key="MaterialSecondaryMidForegroundBrush" Color="#F9A825"></SolidColorBrush>
+		<SolidColorBrush x:Key="MaterialSecondaryDarkBrush" Color="#F9A825"></SolidColorBrush>
+		<SolidColorBrush x:Key="MaterialSecondaryDarkForegroundBrush" Color="#F9A825"></SolidColorBrush>
+	</Application.Resources>
+	
     <Application.Styles>
-        <materialStyles:MaterialTheme />
+		<!-- Dummy values for foreground colors to initialize properly. All associated brushes are overridden in Application.Resources. -->
+        <materialStyles:MaterialTheme BaseTheme="Light" PrimaryColor="Purple" SecondaryColor="Green"/>
         <materialIcons:MaterialIconStyles />
         <dialogHostAvalonia:DialogHostStyles />
 

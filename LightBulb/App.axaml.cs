@@ -4,7 +4,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
 using Avalonia.Threading;
 using LightBulb.Framework;
 using LightBulb.Services;
@@ -15,7 +14,6 @@ using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
 using LightBulb.ViewModels.Dialogs;
 using LightBulb.Views;
-using Material.Styles.Themes;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LightBulb;
@@ -94,13 +92,6 @@ public class App : Application, IDisposable
             desktopLifetime.MainWindow = new MainView { DataContext = _mainViewModel };
 
         base.OnFrameworkInitializationCompleted();
-
-        // Set custom theme colors
-        this.LocateMaterialTheme<MaterialThemeBase>().CurrentTheme = Theme.Create(
-            Theme.Light,
-            Color.Parse("#343838"),
-            Color.Parse("#F9A825")
-        );
     }
 
     private void ShowMainWindow()
