@@ -69,6 +69,9 @@ public partial class DashboardViewModel : ViewModelBase
     [ObservableProperty]
     private ColorConfiguration _currentConfiguration = ColorConfiguration.Default;
 
+    private ColorConfiguration? _configurationSmoothingSource;
+    private ColorConfiguration? _configurationSmoothingTarget;
+
     public DashboardViewModel(
         SettingsService settingsService,
         GammaService gammaService,
@@ -285,67 +288,62 @@ public partial class DashboardViewModel : ViewModelBase
         }
     }
 
-    private const double _brightnessDefaultStep = 0.08;
-    private const double _temperatureDefaultStep = 30;
-
-    private ColorConfiguration _lastTarget;
-
     private void UpdateConfiguration()
     {
-        if (CurrentConfiguration == TargetConfiguration)
-        {
-            _gammaService.SetGamma(CurrentConfiguration);
-            return;
-        }
-
-        double stepsPerSecond = 1000 / _updateConfigurationTimer.Interval.TotalMilliseconds;
-
         var isSmooth =
-            _settingsService.IsConfigurationSmoothingEnabled
-            && !IsCyclePreviewEnabled
+            !IsCyclePreviewEnabled
+            && CurrentConfiguration != TargetConfiguration
+            && _settingsService.IsConfigurationSmoothingEnabled
             && _settingsService.ConfigurationSmoothingMaxDuration.TotalSeconds >= 0.1;
 
-        // If we've changed targets, restart with default settings.
-        if (_lastTarget != TargetConfiguration && isSmooth)
+        if (isSmooth)
         {
-            _lastTarget = TargetConfiguration;
-        }
-
-        double brightnessMaxStep = _brightnessDefaultStep;
-        double temperatureMaxStep = _temperatureDefaultStep;
-
-        // Calculate the step size...
-        var tempDelta = Math.Abs(
-            TargetConfiguration.Temperature - CurrentConfiguration.Temperature
-        );
-        var brightnessDelta = Math.Abs(
-            TargetConfiguration.Brightness - CurrentConfiguration.Brightness
-        );
-        var expectedTemperatureDuration = tempDelta / (temperatureMaxStep * stepsPerSecond);
-        var expectedBrightnessDuration = brightnessDelta / (brightnessMaxStep * stepsPerSecond);
-
-        // If the expected durations are longer than our duration limit, we adjust the step amount to stay at the max duration.
-        var goalDuration = Math.Max(expectedTemperatureDuration, expectedBrightnessDuration);
-        goalDuration = Math.Min(
-            goalDuration,
-            _settingsService.ConfigurationSmoothingMaxDuration.TotalSeconds
-        );
-
-        // Calculate the step-rate needed to reach the goal.
-        brightnessMaxStep = brightnessDelta / (goalDuration * stepsPerSecond);
-        temperatureMaxStep = tempDelta / (goalDuration * stepsPerSecond);
-
-        // If we ended up slower on either of the durations, speed us up.
-        brightnessMaxStep = Math.Max(brightnessMaxStep, _brightnessDefaultStep);
-        temperatureMaxStep = Math.Max(temperatureMaxStep, _temperatureDefaultStep);
-
-        CurrentConfiguration = isSmooth
-            ? CurrentConfiguration.StepTo(
-                TargetConfiguration,
-                temperatureMaxStep,
-                brightnessMaxStep
+            // Check if the target configuration has changed since the last transition started
+            if (
+                _configurationSmoothingTarget != TargetConfiguration
+                || _configurationSmoothingSource is null
             )
-            : TargetConfiguration;
+            {
+                _configurationSmoothingSource = CurrentConfiguration;
+                _configurationSmoothingTarget = TargetConfiguration;
+            }
+
+            var brightnessDelta = Math.Abs(
+                _configurationSmoothingTarget.Value.Brightness
+                    - _configurationSmoothingSource.Value.Brightness
+            );
+
+            var brightnessStep = Math.Max(
+                brightnessDelta
+                    / _settingsService.ConfigurationSmoothingMaxDuration.TotalSeconds
+                    * _updateConfigurationTimer.Interval.TotalSeconds,
+                0.08
+            );
+
+            var temperatureDelta = Math.Abs(
+                _configurationSmoothingTarget.Value.Temperature
+                    - _configurationSmoothingSource.Value.Temperature
+            );
+
+            var temperatureStep = Math.Max(
+                temperatureDelta
+                    / _settingsService.ConfigurationSmoothingMaxDuration.TotalSeconds
+                    * _updateConfigurationTimer.Interval.TotalSeconds,
+                30
+            );
+
+            CurrentConfiguration = CurrentConfiguration.StepTo(
+                TargetConfiguration,
+                temperatureStep,
+                brightnessStep
+            );
+        }
+        else
+        {
+            CurrentConfiguration = TargetConfiguration;
+            _configurationSmoothingSource = null;
+            _configurationSmoothingTarget = null;
+        }
 
         _gammaService.SetGamma(CurrentConfiguration);
     }
