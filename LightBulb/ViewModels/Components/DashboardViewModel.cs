@@ -303,7 +303,7 @@ public partial class DashboardViewModel : ViewModelBase
         var isSmooth =
             _settingsService.IsConfigurationSmoothingEnabled
             && !IsCyclePreviewEnabled
-            && _settingsService.ConfigurationSmoothingDuration.TotalSeconds >= 0.1;
+            && _settingsService.ConfigurationSmoothingMaxDuration.TotalSeconds >= 0.1;
 
         // If we've changed targets, restart with default settings.
         if (_lastTarget != TargetConfiguration && isSmooth)
@@ -328,7 +328,7 @@ public partial class DashboardViewModel : ViewModelBase
         var goalDuration = Math.Max(expectedTemperatureDuration, expectedBrightnessDuration);
         goalDuration = Math.Min(
             goalDuration,
-            _settingsService.ConfigurationSmoothingDuration.TotalSeconds
+            _settingsService.ConfigurationSmoothingMaxDuration.TotalSeconds
         );
 
         // Calculate the step-rate needed to reach the goal.
