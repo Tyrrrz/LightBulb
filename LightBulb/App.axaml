@@ -10,18 +10,18 @@
     <Application.DataTemplates>
         <framework:ViewManager />
     </Application.DataTemplates>
-	
+    
     <Application.Styles>
-		<Style>
-			<Style.Resources>
-				<ResourceDictionary>
-					<!-- Fix bug with initialization of MaterialPaperBrush using MaterialThemeBase -->
-					<SolidColorBrush x:Key="MaterialPaperBrush" Color="#FF0000"></SolidColorBrush>
-				</ResourceDictionary>
-			</Style.Resources>
-		</Style>
+        <Style>
+            <Style.Resources>
+                <ResourceDictionary>
+                    <!-- Fix bug with initialization of MaterialPaperBrush using MaterialThemeBase -->
+                    <SolidColorBrush x:Key="MaterialPaperBrush" Color="#FF0000"></SolidColorBrush>
+                </ResourceDictionary>
+            </Style.Resources>
+        </Style>
 
-		<materialStyles:MaterialThemeBase />
+        <materialStyles:MaterialThemeBase />
         <materialIcons:MaterialIconStyles />
         <dialogHostAvalonia:DialogHostStyles />
 
