@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
+using Avalonia.Platform;
 using Avalonia.Threading;
 using LightBulb.Framework;
 using LightBulb.Services;
@@ -14,6 +17,8 @@ using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
 using LightBulb.ViewModels.Dialogs;
 using LightBulb.Views;
+using Material.Colors.ColorManipulation;
+using Material.Styles.Themes;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LightBulb;
@@ -92,6 +97,42 @@ public class App : Application, IDisposable
             desktopLifetime.MainWindow = new MainView { DataContext = _mainViewModel };
 
         base.OnFrameworkInitializationCompleted();
+
+        if (PlatformSettings is IPlatformSettings settings)
+        {
+            settings.ColorValuesChanged += PlatformSettings_ColorValuesChanged;
+            SetupTheme(settings.GetColorValues());
+        }
+    }
+
+    private void PlatformSettings_ColorValuesChanged(object? sender, PlatformColorValues colors)
+    {
+        SetupTheme(colors);
+    }
+
+    private void SetupTheme(PlatformColorValues colors)
+    {
+        if (colors.ThemeVariant == PlatformThemeVariant.Dark)
+        {
+            // Set custom theme colors
+            var theme = Theme.Create(
+                Theme.Dark,
+                Color.Parse("#343838").Darken(),
+                Color.Parse("#F9A825")
+            );
+            // Exclusively effects disabled toggle color
+            theme.Background = Color.Parse("#343838").Lighten();
+            this.LocateMaterialTheme<MaterialThemeBase>().CurrentTheme = theme;
+        }
+        else
+        {
+            // Set custom theme colors
+            this.LocateMaterialTheme<MaterialThemeBase>().CurrentTheme = Theme.Create(
+                Theme.Light,
+                Color.Parse("#343838"),
+                Color.Parse("#F9A825")
+            );
+        }
     }
 
     private void ShowMainWindow()
