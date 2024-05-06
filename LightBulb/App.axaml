@@ -6,13 +6,22 @@
     xmlns:framework="clr-namespace:LightBulb.Framework"
     xmlns:materialAssists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-    xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles">
+    xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
+    RequestedThemeVariant="Light">
     <Application.DataTemplates>
         <framework:ViewManager />
     </Application.DataTemplates>
-
     <Application.Styles>
-        <materialStyles:MaterialTheme />
+        <Style>
+            <Style.Resources>
+                <ResourceDictionary>
+                    <!-- Fix bug with initialization of MaterialPaperBrush using MaterialThemeBase -->
+                    <SolidColorBrush x:Key="MaterialPaperBrush" Color="#FF0000"></SolidColorBrush>
+                </ResourceDictionary>
+            </Style.Resources>
+        </Style>
+
+        <materialStyles:MaterialThemeBase />
         <materialIcons:MaterialIconStyles />
         <dialogHostAvalonia:DialogHostStyles />
 
