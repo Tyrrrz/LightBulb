@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -17,7 +16,6 @@ using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
 using LightBulb.ViewModels.Dialogs;
 using LightBulb.Views;
-using Material.Colors.ColorManipulation;
 using Material.Styles.Themes;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -114,19 +112,14 @@ public class App : Application, IDisposable
     {
         if (colors.ThemeVariant == PlatformThemeVariant.Dark)
         {
-            // Set custom theme colors
-            var theme = Theme.Create(
+            this.LocateMaterialTheme<MaterialThemeBase>().CurrentTheme = Theme.Create(
                 Theme.Dark,
-                Color.Parse("#343838").Darken(),
+                Color.Parse("#202222"),
                 Color.Parse("#F9A825")
             );
-            // Exclusively effects disabled toggle color
-            theme.Background = Color.Parse("#343838").Lighten();
-            this.LocateMaterialTheme<MaterialThemeBase>().CurrentTheme = theme;
         }
         else
         {
-            // Set custom theme colors
             this.LocateMaterialTheme<MaterialThemeBase>().CurrentTheme = Theme.Create(
                 Theme.Light,
                 Color.Parse("#343838"),

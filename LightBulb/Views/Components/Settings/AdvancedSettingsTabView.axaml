@@ -18,7 +18,8 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 DockPanel.Dock="Right"
-                IsChecked="{Binding IsAutoStartEnabled}" />
+                IsChecked="{Binding IsAutoStartEnabled}"
+                Classes.accent="{DynamicResource UseAccentControls}" />
         </DockPanel>
 
         <!--  Auto update  -->
@@ -31,7 +32,8 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 DockPanel.Dock="Right"
-                IsChecked="{Binding IsAutoUpdateEnabled}" />
+                IsChecked="{Binding IsAutoUpdateEnabled}"
+                Classes.accent="{DynamicResource UseAccentControls}" />
         </DockPanel>
 
         <!--  Default to day time  -->
@@ -44,7 +46,8 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 DockPanel.Dock="Right"
-                IsChecked="{Binding IsDefaultToDayConfigurationEnabled}" />
+                IsChecked="{Binding IsDefaultToDayConfigurationEnabled}"
+                Classes.accent="{DynamicResource UseAccentControls}" />
         </DockPanel>
 
         <!--  Pause when full screen  -->
@@ -57,7 +60,8 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 DockPanel.Dock="Right"
-                IsChecked="{Binding IsPauseWhenFullScreenEnabled}" />
+                IsChecked="{Binding IsPauseWhenFullScreenEnabled}"
+                Classes.accent="{DynamicResource UseAccentControls}" />
         </DockPanel>
 
         <!--  Configuration smoothing  -->
@@ -70,7 +74,8 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 DockPanel.Dock="Right"
-                IsChecked="{Binding IsConfigurationSmoothingEnabled}" />
+                IsChecked="{Binding IsConfigurationSmoothingEnabled}"
+                Classes.accent="{DynamicResource UseAccentControls}" />
         </DockPanel>
 
         <!--  Gamma polling  -->
@@ -83,7 +88,8 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 DockPanel.Dock="Right"
-                IsChecked="{Binding IsGammaPollingEnabled}" />
+                IsChecked="{Binding IsGammaPollingEnabled}"
+                Classes.accent="{DynamicResource UseAccentControls}" />
         </DockPanel>
     </StackPanel>
 </UserControl>
