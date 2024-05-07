@@ -135,26 +135,25 @@
     </Application.Styles>
 
     <Application.Resources>
-        <!--  Text box  -->
-        <ControlTheme
-            x:Key="CompactTextBox"
-            BasedOn="{StaticResource {x:Type TextBox}}"
-            TargetType="{x:Type TextBox}">
-            <Styles>
-                <Style Selector="TextBox">
-                    <Setter Property="Height" Value="22" />
-
-                    <Style Selector="^ /template/ Panel#PART_TextFieldPanel">
-                        <Setter Property="MinHeight" Value="0" />
-                    </Style>
-                    <Style Selector="^ /template/ Panel#PART_TextContainer">
-                        <Setter Property="Margin" Value="0" />
-                    </Style>
-                </Style>
-            </Styles>
-        </ControlTheme>
-
         <ResourceDictionary>
+            <!--  Text box  -->
+            <ControlTheme
+                x:Key="CompactTextBox"
+                BasedOn="{StaticResource {x:Type TextBox}}"
+                TargetType="{x:Type TextBox}">
+                <Styles>
+                    <Style Selector="TextBox">
+                        <Setter Property="Height" Value="22" />
+
+                        <Style Selector="^ /template/ Panel#PART_TextFieldPanel">
+                            <Setter Property="MinHeight" Value="0" />
+                        </Style>
+                        <Style Selector="^ /template/ Panel#PART_TextContainer">
+                            <Setter Property="Margin" Value="0" />
+                        </Style>
+                    </Style>
+                </Styles>
+            </ControlTheme>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
                     <!-- Sundial brushes -->
