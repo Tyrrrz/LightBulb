@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Avalonia;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Framework;
 using LightBulb.PlatformInterop;
 using LightBulb.Services;
 using LightBulb.Utils;
+using LightBulb.Utils.Extensions;
 using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
 
@@ -18,9 +20,44 @@ public partial class MainViewModel(
 ) : ViewModelBase
 {
     private readonly Timer _checkForUpdatesTimer =
-        new(TimeSpan.FromHours(3), async () => await updateService.CheckPrepareUpdateAsync());
+        new(
+            TimeSpan.FromHours(3),
+            async () =>
+            {
+                var updateVersion = await updateService.CheckForUpdatesAsync();
+                if (updateVersion is not null)
+                    await updateService.PrepareUpdateAsync(updateVersion);
+            }
+        );
 
     public DashboardViewModel Dashboard { get; } = viewModelManager.CreateDashboardViewModel();
+
+    private async Task FinalizePendingUpdateAsync()
+    {
+        var updateVersion = updateService.TryGetLastPreparedUpdate();
+        if (updateVersion is null)
+            return;
+
+        var dialog = viewModelManager.CreateMessageBoxViewModel(
+            "Update available",
+            $"""
+            Update to {Program.Name} v{updateVersion} has been downloaded.
+            Do you want to install it now?
+            """,
+            "INSTALL",
+            "CANCEL"
+        );
+
+        Application.Current?.TryFocusMainWindow();
+
+        if (await dialogManager.ShowDialogAsync(dialog) != true)
+            return;
+
+        updateService.FinalizeUpdate(updateVersion);
+
+        if (Application.Current?.ApplicationLifetime?.TryShutdown(2) != true)
+            Environment.Exit(2);
+    }
 
     private async Task ShowGammaRangePromptAsync()
     {
@@ -39,11 +76,11 @@ public partial class MainViewModel(
             "CLOSE"
         );
 
-        if (await dialogManager.ShowDialogAsync(dialog) == true)
-        {
-            settingsService.IsExtendedGammaRangeUnlocked = true;
-            settingsService.Save();
-        }
+        if (await dialogManager.ShowDialogAsync(dialog) != true)
+            return;
+
+        settingsService.IsExtendedGammaRangeUnlocked = true;
+        settingsService.Save();
     }
 
     private async Task ShowFirstTimeExperienceMessageAsync()
@@ -68,13 +105,13 @@ public partial class MainViewModel(
         settingsService.IsAutoStartEnabled = true;
         settingsService.Save();
 
-        if (await dialogManager.ShowDialogAsync(dialog) == true)
-        {
-            var settingsDialog = viewModelManager.CreateSettingsViewModel();
-            settingsDialog.ActivateTab<LocationSettingsTabViewModel>();
+        if (await dialogManager.ShowDialogAsync(dialog) != true)
+            return;
 
-            await dialogManager.ShowDialogAsync(settingsDialog);
-        }
+        var settingsDialog = viewModelManager.CreateSettingsViewModel();
+        settingsDialog.ActivateTab<LocationSettingsTabViewModel>();
+
+        await dialogManager.ShowDialogAsync(settingsDialog);
     }
 
     private async Task ShowUkraineSupportMessageAsync()
@@ -97,19 +134,19 @@ public partial class MainViewModel(
         settingsService.IsUkraineSupportMessageEnabled = false;
         settingsService.Save();
 
-        if (await dialogManager.ShowDialogAsync(dialog) == true)
-            ProcessEx.StartShellExecute("https://tyrrrz.me/ukraine?source=lightbulb");
+        if (await dialogManager.ShowDialogAsync(dialog) != true)
+            return;
+
+        ProcessEx.StartShellExecute("https://tyrrrz.me/ukraine?source=lightbulb");
     }
 
     [RelayCommand]
     private async Task InitializeAsync()
     {
-        // Finalize pending updates (and restart if necessary)
-        updateService.FinalizePendingUpdates();
-
         // Load settings
         settingsService.Load();
 
+        await FinalizePendingUpdateAsync();
         await ShowGammaRangePromptAsync();
         await ShowFirstTimeExperienceMessageAsync();
         await ShowUkraineSupportMessageAsync();

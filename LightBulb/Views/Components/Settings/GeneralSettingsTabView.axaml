@@ -17,6 +17,7 @@
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
+                Theme="{DynamicResource CompactTextBox}"
                 Classes.accent="{DynamicResource UseAccentControls}">
                 <Interaction.Behaviors>
                     <behaviors:LostFocusUpdateBindingBehavior Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
@@ -41,6 +42,7 @@
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
+                Theme="{DynamicResource CompactTextBox}"
                 Classes.accent="{DynamicResource UseAccentControls}">
                 <Interaction.Behaviors>
                     <behaviors:LostFocusUpdateBindingBehavior Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
@@ -78,6 +80,7 @@
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
+                Theme="{DynamicResource CompactTextBox}"
                 Classes.accent="{DynamicResource UseAccentControls}">
                 <Interaction.Behaviors>
                     <behaviors:LostFocusUpdateBindingBehavior Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
@@ -115,6 +118,7 @@
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
+                Theme="{DynamicResource CompactTextBox}"
                 Classes.accent="{DynamicResource UseAccentControls}">
                 <Interaction.Behaviors>
                     <behaviors:LostFocusUpdateBindingBehavior Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
@@ -139,6 +143,7 @@
                 MinWidth="48"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
+                Theme="{DynamicResource CompactTextBox}"
                 Classes.accent="{DynamicResource UseAccentControls}">
                 <Interaction.Behaviors>
                     <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}}" />
@@ -161,6 +166,7 @@
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
+                Theme="{DynamicResource CompactTextBox}"
                 Classes.accent="{DynamicResource UseAccentControls}">
                 <Interaction.Behaviors>
                     <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ConfigurationTransitionOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />

@@ -41,6 +41,7 @@
                     MinWidth="24"
                     HorizontalAlignment="Right"
                     DockPanel.Dock="Right"
+                    Theme="{DynamicResource CompactTextBox}"
                     Classes.accent="{DynamicResource UseAccentControls}">
                     <Interaction.Behaviors>
                         <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
@@ -63,6 +64,7 @@
                     MinWidth="24"
                     HorizontalAlignment="Right"
                     DockPanel.Dock="Right"
+                    Theme="{DynamicResource CompactTextBox}"
                     Classes.accent="{DynamicResource UseAccentControls}">
                     <Interaction.Behaviors>
                         <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
@@ -108,6 +110,7 @@
                     VerticalAlignment="Center"
                     IsEnabled="{Binding !IsBusy}"
                     Text="{Binding LocationQuery}"
+                    Theme="{DynamicResource CompactTextBox}"
                     Classes.accent="{DynamicResource UseAccentControls}">
                     <ToolTip.Tip>
                         <TextBlock>

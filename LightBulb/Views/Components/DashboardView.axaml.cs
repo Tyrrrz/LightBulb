@@ -12,8 +12,8 @@ public partial class DashboardView : UserControl<DashboardViewModel>
     private void UserControl_OnLoaded(object? sender, RoutedEventArgs args) =>
         DataContext.InitializeCommand.Execute(null);
 
-    private void ConfigurationOffsetStackPanel_OnPointerPressed(
+    private void ConfigurationOffsetStackPanel_OnPointerReleased(
         object? sender,
-        PointerPressedEventArgs args
+        PointerReleasedEventArgs args
     ) => DataContext.ResetConfigurationOffsetCommand.Execute(null);
 }

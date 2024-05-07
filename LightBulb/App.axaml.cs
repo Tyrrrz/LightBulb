@@ -128,21 +128,11 @@ public class App : Application, IDisposable
         }
     }
 
-    private void ShowMainWindow()
-    {
-        if (ApplicationLifetime?.TryGetMainWindow() is { } window)
-        {
-            window.Show();
-            window.Activate();
-            window.Focus();
-        }
-    }
-
-    private void TrayIcon_OnClicked(object? sender, EventArgs args) => ShowMainWindow();
+    private void TrayIcon_OnClicked(object? sender, EventArgs args) => this.TryFocusMainWindow();
 
     private void ShowSettingsMenuItem_OnClick(object? sender, EventArgs args)
     {
-        ShowMainWindow();
+        this.TryFocusMainWindow();
         _mainViewModel.ShowSettingsCommand.Execute(null);
     }
 

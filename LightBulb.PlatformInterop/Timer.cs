@@ -33,6 +33,8 @@ public partial class Timer : IDisposable
     public Timer(TimeSpan interval, Action callback)
         : this(TimeSpan.Zero, interval, callback) { }
 
+    public TimeSpan Interval => _interval;
+
     private void Tick()
     {
         // Prevent multiple reentry

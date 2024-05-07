@@ -12,7 +12,8 @@ public partial class MainView : Window<MainViewModel>
 
     private void Window_OnLoaded(object sender, RoutedEventArgs args)
     {
-        if (StartOptions.Current.IsInitiallyHidden)
+        // If the app is set to start hidden, hide the window, unless a dialog is open
+        if (StartOptions.Current.IsInitiallyHidden && !DialogHost.IsOpen)
             Hide();
     }
 

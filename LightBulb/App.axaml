@@ -13,45 +13,6 @@
         <framework:ViewManager />
     </Application.DataTemplates>
 
-    <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.ThemeDictionaries>
-                <ResourceDictionary x:Key="Light">
-                    <!-- Sundial brushes -->
-                    <SolidColorBrush x:Key="SundialNightBorderBrush" Color="#FFAF1A"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialNightBrush" Color="#FFD280"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialDayBorderBrush" Color="#8AC0FF"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialDayBrush" Color="#F2F8FF"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialSunriseBorderBrush" Color="#FFC766"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialSunriseBrush" Color="#FFEDCD"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialSunsetBorderBrush" Color="#FFC766"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialSunsetBrush" Color="#FFEDCD"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialMarkerBorderBrush" Color="#FF7733"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialMarkerBrush" Color="#FFAB85"></SolidColorBrush>
-                    <!-- Custom style for disabled toggles -->
-                    <SolidColorBrush x:Key="ToggleBackgroundBrush" Color="#FFFFFF"></SolidColorBrush>
-                    <sys:Boolean x:Key="UseAccentControls">false</sys:Boolean>
-                </ResourceDictionary>
-                <ResourceDictionary x:Key="Dark">
-                    <!-- Sundial brushes -->
-                    <SolidColorBrush x:Key="SundialNightBorderBrush" Color="#B18B4E"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialNightBrush" Color="#ECC17E"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialDayBorderBrush" Color="#4E93B1"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialDayBrush" Color="#AAD7EA"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialSunriseBorderBrush" Color="#B18C4E"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialSunriseBrush" Color="#FAEDD6"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialSunsetBorderBrush" Color="#B18C4E"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialSunsetBrush" Color="#FAEDD6"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialMarkerBorderBrush" Color="#B1704E"></SolidColorBrush>
-                    <SolidColorBrush x:Key="SundialMarkerBrush" Color="#E38755"></SolidColorBrush>
-                    <!-- Custom style for disabled toggles -->
-                    <SolidColorBrush x:Key="ToggleBackgroundBrush" Color="#8E8E8E"></SolidColorBrush>
-                    <sys:Boolean x:Key="UseAccentControls">true</sys:Boolean>
-                </ResourceDictionary>
-            </ResourceDictionary.ThemeDictionaries>
-        </ResourceDictionary>
-    </Application.Resources>
-
     <Application.Styles>
         <Style>
             <Style.Resources>
@@ -136,46 +97,100 @@
                 <Setter Property="Background" Value="{DynamicResource MaterialSecondaryMidBrush}" />
             </Style>
         </Style>
-        
-        <!--  Text box  -->
-        <Style Selector="TextBox">
-            <Setter Property="Height" Value="22" />
-            <Setter Property="FontSize" Value="14" />
 
-            <Style Selector="^ /template/ Panel#PART_TextFieldPanel">
-                <Setter Property="MinHeight" Value="0" />
-            </Style>
+		<!--  Text box  -->
+		<Style Selector="TextBox">
+			<Setter Property="FontSize" Value="14" />
+		</Style>
 
-            <Style Selector="^ /template/ Panel#PART_TextContainer">
-                <Setter Property="Margin" Value="0" />
-            </Style>
-        </Style>
+		<!-- Apply TextBox Accent class, since material doesn't do it itself -->
+		<Style Selector="TextBox.accent">
+			<Setter Property="SelectionBrush" Value="{DynamicResource MaterialSecondaryMidBrush}" />
+			<Setter Property="SelectionForegroundBrush" Value="{DynamicResource MaterialSecondaryForegroundBrush}" />
+			<Setter Property="CaretBrush" Value="{DynamicResource MaterialSecondaryMidBrush}" />
+			<Style Selector="^ materialControls|MaterialUnderline">
+				<Setter Property="ActiveBrush" Value="{DynamicResource MaterialSecondaryMidBrush}" />
+			</Style>
+		</Style>
 
-        <!-- Apply TextBox Accent class, since material doesn't do it itself -->
-        <Style Selector="TextBox.accent">
-            <Setter Property="SelectionBrush" Value="{DynamicResource MaterialSecondaryMidBrush}" />
-            <Setter Property="SelectionForegroundBrush" Value="{DynamicResource MaterialSecondaryForegroundBrush}" />
-            <Setter Property="CaretBrush" Value="{DynamicResource MaterialSecondaryMidBrush}" />
-            <Style Selector="^ materialControls|MaterialUnderline">
-                <Setter Property="ActiveBrush" Value="{DynamicResource MaterialSecondaryMidBrush}" />
-            </Style>
-        </Style>
+		<!--  Toggle button  -->
+		<Style Selector="ToggleButton">
+			<Setter Property="TextElement.FontWeight" Value="Medium" />
+		</Style>
 
-        <!--  Tooltip  -->
-        <Style Selector="ToolTip">
-            <Setter Property="TextElement.FontSize" Value="14" />
-            <Setter Property="TextElement.FontWeight" Value="Normal" />
-            <Setter Property="TextElement.FontStyle" Value="Normal" />
-            <Setter Property="TextElement.FontStretch" Value="Normal" />
-        </Style>
+		<!--  Toggle switch  -->
+		<Style Selector="ToggleSwitch">
+			<!-- Apply custom style for disabled toggles, because Material's default is bad.-->
+			<!-- Tracked in https://github.com/AvaloniaCommunity/Material.Avalonia/issues/379 -->
+			<Setter Property="materialAssists:ToggleSwitchAssist.SwitchThumbOffBackground" Value="{DynamicResource ToggleBackgroundBrush}" />
+		</Style>
 
-        <!--  Toggle switch  -->
-        <Style Selector="ToggleSwitch">
-            <!-- Apply custom style for disabled toggles, because Material's default is bad.-->
-            <!-- Tracked in https://github.com/AvaloniaCommunity/Material.Avalonia/issues/379 -->
-            <Setter Property="materialAssists:ToggleSwitchAssist.SwitchThumbOffBackground" Value="{DynamicResource ToggleBackgroundBrush}" />
-        </Style>
+		<!--  Tooltip  -->
+		<Style Selector="ToolTip">
+			<Setter Property="TextElement.FontSize" Value="14" />
+			<Setter Property="TextElement.FontWeight" Value="Normal" />
+			<Setter Property="TextElement.FontStyle" Value="Normal" />
+			<Setter Property="TextElement.FontStretch" Value="Normal" />
+		</Style>
     </Application.Styles>
+
+    <Application.Resources>
+        <!--  Text box  -->
+        <ControlTheme
+            x:Key="CompactTextBox"
+            BasedOn="{StaticResource {x:Type TextBox}}"
+            TargetType="{x:Type TextBox}">
+            <Styles>
+                <Style Selector="TextBox">
+                    <Setter Property="Height" Value="22" />
+
+                    <Style Selector="^ /template/ Panel#PART_TextFieldPanel">
+                        <Setter Property="MinHeight" Value="0" />
+                    </Style>
+                    <Style Selector="^ /template/ Panel#PART_TextContainer">
+                        <Setter Property="Margin" Value="0" />
+                    </Style>
+                </Style>
+            </Styles>
+        </ControlTheme>
+
+		<ResourceDictionary>
+			<ResourceDictionary.ThemeDictionaries>
+				<ResourceDictionary x:Key="Light">
+					<!-- Sundial brushes -->
+					<SolidColorBrush x:Key="SundialNightBorderBrush" Color="#FFAF1A"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialNightBrush" Color="#FFD280"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialDayBorderBrush" Color="#8AC0FF"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialDayBrush" Color="#F2F8FF"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialSunriseBorderBrush" Color="#FFC766"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialSunriseBrush" Color="#FFEDCD"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialSunsetBorderBrush" Color="#FFC766"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialSunsetBrush" Color="#FFEDCD"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialMarkerBorderBrush" Color="#FF7733"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialMarkerBrush" Color="#FFAB85"></SolidColorBrush>
+					<!-- Custom style for disabled toggles -->
+					<SolidColorBrush x:Key="ToggleBackgroundBrush" Color="#FFFFFF"></SolidColorBrush>
+					<sys:Boolean x:Key="UseAccentControls">false</sys:Boolean>
+				</ResourceDictionary>
+				<ResourceDictionary x:Key="Dark">
+					<!-- Sundial brushes -->
+					<SolidColorBrush x:Key="SundialNightBorderBrush" Color="#B18B4E"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialNightBrush" Color="#ECC17E"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialDayBorderBrush" Color="#4E93B1"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialDayBrush" Color="#AAD7EA"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialSunriseBorderBrush" Color="#B18C4E"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialSunriseBrush" Color="#FAEDD6"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialSunsetBorderBrush" Color="#B18C4E"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialSunsetBrush" Color="#FAEDD6"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialMarkerBorderBrush" Color="#B1704E"></SolidColorBrush>
+					<SolidColorBrush x:Key="SundialMarkerBrush" Color="#E38755"></SolidColorBrush>
+					<!-- Custom style for disabled toggles -->
+					<SolidColorBrush x:Key="ToggleBackgroundBrush" Color="#8E8E8E"></SolidColorBrush>
+					<sys:Boolean x:Key="UseAccentControls">true</sys:Boolean>
+				</ResourceDictionary>
+			</ResourceDictionary.ThemeDictionaries>
+		</ResourceDictionary>
+    </Application.Resources>
 
     <!--  Tray icon  -->
     <TrayIcon.Icons>

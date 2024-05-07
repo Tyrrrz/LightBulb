@@ -14,6 +14,7 @@
     Closing="Window_OnClosing"
     Icon="/favicon.ico"
     Loaded="Window_OnLoaded"
+    RenderOptions.BitmapInterpolationMode="HighQuality"
     SystemDecorations="None"
     WindowStartupLocation="CenterScreen">
     <Design.DataContext>
@@ -47,20 +48,14 @@
                             ToolTip.Tip="Toggle LightBulb on/off"
                             Classes="primary">
                             <ToggleButton.Content>
-                                <materialIcons:MaterialIcon
-                                    Width="24"
-                                    Height="24"
-                                    Classes.checked="{Binding $parent[ToggleButton].IsChecked}"
-                                    Classes.unchecked="{Binding !$parent[ToggleButton].IsChecked}">
+                                <materialIcons:MaterialIcon Width="24" Height="24">
                                     <materialIcons:MaterialIcon.Styles>
-                                        <Style Selector="materialIcons|MaterialIcon">
-                                            <Style Selector="^.unchecked">
-                                                <Setter Property="Kind" Value="LightbulbOffOutline" />
-                                                <Setter Property="Opacity" Value="0.5" />
-                                            </Style>
-                                            <Style Selector="^.checked">
-                                                <Setter Property="Kind" Value="LightbulbOutline" />
-                                            </Style>
+                                        <Style Selector="ToggleButton materialIcons|MaterialIcon">
+                                            <Setter Property="Kind" Value="LightbulbOutline" />
+                                        </Style>
+                                        <Style Selector="ToggleButton:unchecked materialIcons|MaterialIcon">
+                                            <Setter Property="Kind" Value="LightbulbOffOutline" />
+                                            <Setter Property="Opacity" Value="0.5" />
                                         </Style>
                                     </materialIcons:MaterialIcon.Styles>
                                 </materialIcons:MaterialIcon>
@@ -111,36 +106,28 @@
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
                     <!--  Start/stop cycle preview  -->
-                    <Button
+                    <ToggleButton
                         Margin="8"
-                        Classes.start="{Binding !Dashboard.IsCyclePreviewEnabled}"
-                        Classes.stop="{Binding Dashboard.IsCyclePreviewEnabled}"
-                        Command="{Binding Dashboard.ToggleCyclePreviewCommand}"
-                        Theme="{DynamicResource MaterialFlatButton}">
+                        IsChecked="{Binding Dashboard.IsCyclePreviewEnabled}"
+                        Theme="{DynamicResource MaterialFlatToggleButton}">
                         <Button.Styles>
-                            <Style Selector="Button">
-                                <Style Selector="^.start">
-                                    <Setter Property="ToolTip.Tip" Value="Preview 24-hour cycle" />
-                                </Style>
-                                <Style Selector="^.stop">
+                            <Style Selector="ToggleButton">
+                                <Style Selector="^:checked">
                                     <Setter Property="ToolTip.Tip" Value="Stop preview" />
+                                </Style>
+                                <Style Selector="^:unchecked">
+                                    <Setter Property="ToolTip.Tip" Value="Preview 24-hour cycle" />
                                 </Style>
                             </Style>
                         </Button.Styles>
                         <StackPanel Orientation="Horizontal">
-                            <materialIcons:MaterialIcon
-                                Width="24"
-                                Height="24"
-                                Classes.start="{Binding !Dashboard.IsCyclePreviewEnabled}"
-                                Classes.stop="{Binding Dashboard.IsCyclePreviewEnabled}">
+                            <materialIcons:MaterialIcon Width="24" Height="24">
                                 <materialIcons:MaterialIcon.Styles>
-                                    <Style Selector="materialIcons|MaterialIcon">
-                                        <Style Selector="^.start">
-                                            <Setter Property="Kind" Value="PlayCircleOutline" />
-                                        </Style>
-                                        <Style Selector="^.stop">
-                                            <Setter Property="Kind" Value="StopCircleOutline" />
-                                        </Style>
+                                    <Style Selector="ToggleButton materialIcons|MaterialIcon">
+                                        <Setter Property="Kind" Value="PlayCircleOutline" />
+                                    </Style>
+                                    <Style Selector="ToggleButton:checked materialIcons|MaterialIcon">
+                                        <Setter Property="Kind" Value="StopCircleOutline" />
                                     </Style>
                                 </materialIcons:MaterialIcon.Styles>
                             </materialIcons:MaterialIcon>
@@ -149,7 +136,7 @@
                                 VerticalAlignment="Center"
                                 Text="PREVIEW" />
                         </StackPanel>
-                    </Button>
+                    </ToggleButton>
 
                     <!--  Settings  -->
                     <Button
