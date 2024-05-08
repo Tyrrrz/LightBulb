@@ -12,6 +12,39 @@
         <components:DashboardViewModel />
     </Design.DataContext>
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <!-- Sundial brushes -->
+                    <SolidColorBrush x:Key="SundialNightBorderBrush" Color="#FFAF1A"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialNightBrush" Color="#FFD280"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialDayBorderBrush" Color="#8AC0FF"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialDayBrush" Color="#F2F8FF"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialSunriseBorderBrush" Color="#FFC766"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialSunriseBrush" Color="#FFEDCD"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialSunsetBorderBrush" Color="#FFC766"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialSunsetBrush" Color="#FFEDCD"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialMarkerBorderBrush" Color="#FF7733"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialMarkerBrush" Color="#FFAB85"></SolidColorBrush>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <!-- Sundial brushes -->
+                    <SolidColorBrush x:Key="SundialNightBorderBrush" Color="#B18B4E"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialNightBrush" Color="#ECC17E"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialDayBorderBrush" Color="#4E93B1"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialDayBrush" Color="#AAD7EA"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialSunriseBorderBrush" Color="#B18C4E"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialSunriseBrush" Color="#FAEDD6"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialSunsetBorderBrush" Color="#B18C4E"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialSunsetBrush" Color="#FAEDD6"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialMarkerBorderBrush" Color="#B1704E"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialMarkerBrush" Color="#E38755"></SolidColorBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid ColumnDefinitions="*,Auto,*">
         <!--  Sunset time  -->
         <TextBlock
