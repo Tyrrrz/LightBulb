@@ -22,8 +22,29 @@
                 Classes.accent="{DynamicResource UseAccentControls}" />
         </DockPanel>
 
+        <!-- Theme -->
+        <DockPanel Margin="0,16,0,0" ToolTip.Tip="LightBulb UI Theme">
+            <TextBlock
+                VerticalAlignment="Center"
+                DockPanel.Dock="Left"
+                Text="Theme" />
+            <ComboBox
+                HorizontalAlignment="Right"
+                DockPanel.Dock="Right"
+                ItemsSource="{Binding ThemeArray}"
+                SelectedItem="{Binding Theme}"
+                Classes.accent="{DynamicResource UseAccentControls}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <!-- Required for correct Material display, via https://github.com/AvaloniaCommunity/Material.Avalonia/issues/269#issuecomment-1738117187-->
+                        <TextBlock Text="{Binding StringFormat='\{0\}'}" VerticalAlignment="Center"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </DockPanel>
+
         <!--  Auto update  -->
-        <DockPanel Margin="0,16,0,0" ToolTip.Tip="Keep LightBulb updated by automatically installing new versions as they become available">
+        <DockPanel Margin="0,14,0,0" ToolTip.Tip="Keep LightBulb updated by automatically installing new versions as they become available">
             <TextBlock
                 VerticalAlignment="Center"
                 DockPanel.Dock="Left"

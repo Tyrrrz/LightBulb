@@ -118,6 +118,20 @@
             <Setter Property="TextElement.FontWeight" Value="Medium" />
         </Style>
 
+        <!-- Combo box -->
+        <Style Selector="ComboBox">
+            <Style Selector="^ /template/ Panel#PART_RootPanel">
+                <Setter Property="Height" Value="22" />
+            </Style>
+        </Style>
+
+        <!-- Apply ComboBox Accent class, since material doesn't do it itself -->
+        <Style Selector="ComboBox.accent">
+            <Style Selector="^ materialControls|MaterialUnderline">
+                <Setter Property="ActiveBrush" Value="{DynamicResource MaterialSecondaryMidBrush}" />
+            </Style>
+        </Style>
+
         <!--  Toggle switch  -->
         <Style Selector="ToggleSwitch">
             <!-- Apply custom style for disabled toggles, because Material's default is bad.-->
