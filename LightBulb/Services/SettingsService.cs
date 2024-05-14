@@ -89,6 +89,9 @@ public partial class SettingsService() : SettingsBase(GetFilePath())
     private bool _isAutoStartEnabled;
 
     [ObservableProperty]
+    private ThemeMode _theme = ThemeMode.System;
+
+    [ObservableProperty]
     private bool _isAutoUpdateEnabled = true;
 
     [ObservableProperty]

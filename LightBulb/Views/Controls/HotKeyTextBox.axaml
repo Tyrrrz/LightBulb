@@ -8,5 +8,6 @@
         IsUndoEnabled="False"
         Text="{Binding $parent[UserControl].HotKey, Mode=OneWay}"
         TextAlignment="Center"
-        Theme="{DynamicResource CompactTextBox}" />
+        Theme="{DynamicResource CompactTextBox}"
+        Classes.accent="{DynamicResource UseAccentControls}" />
 </UserControl>

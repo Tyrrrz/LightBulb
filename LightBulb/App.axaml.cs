@@ -5,8 +5,10 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Platform;
 using Avalonia.Threading;
 using LightBulb.Framework;
+using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
@@ -26,6 +28,7 @@ public class App : Application, IDisposable
 
     private readonly ServiceProvider _services;
     private readonly MainViewModel _mainViewModel;
+    private readonly SettingsService _settingsService;
 
     public App()
     {
@@ -56,6 +59,22 @@ public class App : Application, IDisposable
 
         _services = services.BuildServiceProvider(true);
         _mainViewModel = _services.GetRequiredService<ViewModelManager>().CreateMainViewModel();
+        _settingsService = _services.GetRequiredService<SettingsService>();
+
+        // Load settings
+        _settingsService.Load();
+
+        _settingsService.WatchProperty(
+            o => o.Theme,
+            () =>
+            {
+                if (PlatformSettings is IPlatformSettings settings)
+                {
+                    SetupTheme(settings.GetColorValues());
+                }
+            },
+            false
+        );
     }
 
     public override void Initialize()
@@ -95,12 +114,45 @@ public class App : Application, IDisposable
 
         base.OnFrameworkInitializationCompleted();
 
-        // Set custom theme colors
-        this.LocateMaterialTheme<MaterialThemeBase>().CurrentTheme = Theme.Create(
-            Theme.Light,
-            Color.Parse("#343838"),
-            Color.Parse("#F9A825")
-        );
+        if (PlatformSettings is IPlatformSettings settings)
+        {
+            settings.ColorValuesChanged += PlatformSettings_ColorValuesChanged;
+            SetupTheme(settings.GetColorValues());
+        }
+    }
+
+    private void PlatformSettings_ColorValuesChanged(object? sender, PlatformColorValues colors)
+    {
+        SetupTheme(colors);
+    }
+
+    private void SetupTheme(PlatformColorValues colors)
+    {
+        var themeMode = _settingsService.Theme;
+        if (themeMode == ThemeMode.System)
+        {
+            themeMode =
+                colors.ThemeVariant == PlatformThemeVariant.Dark ? ThemeMode.Dark : ThemeMode.Light;
+        }
+
+        if (themeMode == ThemeMode.Dark)
+        {
+            RequestedThemeVariant = Avalonia.Styling.ThemeVariant.Dark;
+            this.LocateMaterialTheme<MaterialThemeBase>().CurrentTheme = Theme.Create(
+                Theme.Dark,
+                Color.Parse("#202222"),
+                Color.Parse("#F9A825")
+            );
+        }
+        else
+        {
+            RequestedThemeVariant = Avalonia.Styling.ThemeVariant.Light;
+            this.LocateMaterialTheme<MaterialThemeBase>().CurrentTheme = Theme.Create(
+                Theme.Light,
+                Color.Parse("#343838"),
+                Color.Parse("#F9A825")
+            );
+        }
     }
 
     private void TrayIcon_OnClicked(object? sender, EventArgs args) => this.TryFocusMainWindow();

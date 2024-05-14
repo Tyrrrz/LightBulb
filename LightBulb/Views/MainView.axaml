@@ -35,6 +35,7 @@
                     Background="{DynamicResource MaterialPrimaryMidBrush}"
                     PointerPressed="HeaderBorder_OnPointerPressed">
                     <Grid ColumnDefinitions="Auto,Auto,*,Auto">
+                        <Border Background="{DynamicResource MaterialSecondaryMidBrush}" Width="32" Height="32" CornerRadius="32" />
                         <!--  On/Off button and logo  -->
                         <ToggleButton
                             Grid.Column="0"
@@ -42,10 +43,10 @@
                             Height="32"
                             Padding="0"
                             VerticalAlignment="Center"
-                            Background="{DynamicResource MaterialSecondaryMidBrush}"
                             IsChecked="{Binding Dashboard.IsEnabled}"
                             Theme="{DynamicResource MaterialIconToggleButton}"
-                            ToolTip.Tip="Toggle LightBulb on/off">
+                            ToolTip.Tip="Toggle LightBulb on/off"
+                            Classes="primary">
                             <ToggleButton.Content>
                                 <materialIcons:MaterialIcon Width="24" Height="24">
                                     <materialIcons:MaterialIcon.Styles>

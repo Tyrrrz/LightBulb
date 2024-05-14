@@ -12,6 +12,39 @@
         <components:DashboardViewModel />
     </Design.DataContext>
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <!-- Sundial brushes -->
+                    <SolidColorBrush x:Key="SundialNightBorderBrush" Color="#FFAF1A"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialNightBrush" Color="#FFD280"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialDayBorderBrush" Color="#8AC0FF"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialDayBrush" Color="#F2F8FF"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialSunriseBorderBrush" Color="#FFC766"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialSunriseBrush" Color="#FFEDCD"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialSunsetBorderBrush" Color="#FFC766"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialSunsetBrush" Color="#FFEDCD"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialMarkerBorderBrush" Color="#FF7733"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialMarkerBrush" Color="#FFAB85"></SolidColorBrush>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <!-- Sundial brushes -->
+                    <SolidColorBrush x:Key="SundialNightBorderBrush" Color="#B18B4E"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialNightBrush" Color="#ECC17E"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialDayBorderBrush" Color="#4E93B1"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialDayBrush" Color="#AAD7EA"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialSunriseBorderBrush" Color="#B18C4E"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialSunriseBrush" Color="#FAEDD6"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialSunsetBorderBrush" Color="#B18C4E"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialSunsetBrush" Color="#FAEDD6"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialMarkerBorderBrush" Color="#B1704E"></SolidColorBrush>
+                    <SolidColorBrush x:Key="SundialMarkerBrush" Color="#E38755"></SolidColorBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid ColumnDefinitions="*,Auto,*">
         <!--  Sunset time  -->
         <TextBlock
@@ -41,14 +74,14 @@
                 Height="180"
                 EndAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
-                Stroke="#FFAF1A"
+                Stroke="{DynamicResource SundialNightBorderBrush}"
                 StrokeThickness="28" />
             <controls:Arc
                 Width="180"
                 Height="180"
                 EndAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
-                Stroke="#FFD280"
+                Stroke="{DynamicResource SundialNightBrush}"
                 StrokeThickness="26" />
 
             <!--  Day time arc  -->
@@ -57,14 +90,14 @@
                 Height="180"
                 EndAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
-                Stroke="#8AC0FF"
+                Stroke="{DynamicResource SundialDayBorderBrush}"
                 StrokeThickness="28" />
             <controls:Arc
                 Width="180"
                 Height="180"
                 EndAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
-                Stroke="#F2F8FF"
+                Stroke="{DynamicResource SundialDayBrush}"
                 StrokeThickness="26" />
 
             <!--  Sunrise transition  -->
@@ -73,14 +106,14 @@
                 Height="180"
                 EndAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
-                Stroke="#FFC766"
+                Stroke="{DynamicResource SundialSunriseBorderBrush}"
                 StrokeThickness="28" />
             <controls:Arc
                 Width="180"
                 Height="180"
                 EndAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
-                Stroke="#FFEDCD"
+                Stroke="{DynamicResource SundialSunriseBrush}"
                 StrokeThickness="26" />
 
             <!--  Sunset transition  -->
@@ -89,14 +122,14 @@
                 Height="180"
                 EndAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
-                Stroke="#FFC766"
+                Stroke="{DynamicResource SundialSunsetBorderBrush}"
                 StrokeThickness="28" />
             <controls:Arc
                 Width="180"
                 Height="180"
                 EndAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
-                Stroke="#FFEDCD"
+                Stroke="{DynamicResource SundialSunsetBrush}"
                 StrokeThickness="26" />
 
             <!--  Current time position  -->
@@ -104,13 +137,13 @@
                 Width="180"
                 Height="180"
                 Angle="{Binding Instant.TimeOfDay.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
-                Fill="#FF7733"
+                Fill="{DynamicResource SundialMarkerBorderBrush}"
                 Size="28" />
             <controls:ArcPoint
                 Width="180"
                 Height="180"
                 Angle="{Binding Instant.TimeOfDay.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
-                Fill="#FFAB85"
+                Fill="{DynamicResource SundialMarkerBrush}"
                 Size="26" />
 
             <!--  Configuration offset  -->

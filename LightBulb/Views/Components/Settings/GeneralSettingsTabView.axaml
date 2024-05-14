@@ -17,7 +17,8 @@
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                Theme="{DynamicResource CompactTextBox}">
+                Theme="{DynamicResource CompactTextBox}"
+                Classes.accent="{DynamicResource UseAccentControls}">
                 <Interaction.Behaviors>
                     <behaviors:LostFocusUpdateBindingBehavior Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
                 </Interaction.Behaviors>
@@ -31,7 +32,8 @@
             Minimum="2500"
             SmallChange="100"
             TickFrequency="20"
-            Value="{Binding DayTemperature}" />
+            Value="{Binding DayTemperature}"
+            Classes.accent="{DynamicResource UseAccentControls}" />
 
         <!--  Night temperature  -->
         <DockPanel Margin="0,24,0,0" ToolTip.Tip="Color temperature during the night">
@@ -40,7 +42,8 @@
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                Theme="{DynamicResource CompactTextBox}">
+                Theme="{DynamicResource CompactTextBox}"
+                Classes.accent="{DynamicResource UseAccentControls}">
                 <Interaction.Behaviors>
                     <behaviors:LostFocusUpdateBindingBehavior Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
                 </Interaction.Behaviors>
@@ -54,7 +57,8 @@
             Minimum="2500"
             SmallChange="100"
             TickFrequency="20"
-            Value="{Binding NightTemperature}" />
+            Value="{Binding NightTemperature}"
+            Classes.accent="{DynamicResource UseAccentControls}" />
 
         <!--  Day brightness  -->
         <DockPanel Margin="0,24,0,0">
@@ -76,7 +80,8 @@
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                Theme="{DynamicResource CompactTextBox}">
+                Theme="{DynamicResource CompactTextBox}"
+                Classes.accent="{DynamicResource UseAccentControls}">
                 <Interaction.Behaviors>
                     <behaviors:LostFocusUpdateBindingBehavior Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
                 </Interaction.Behaviors>
@@ -90,7 +95,8 @@
             Minimum="0.1"
             SmallChange="0.01"
             TickFrequency="0.01"
-            Value="{Binding DayBrightness}" />
+            Value="{Binding DayBrightness}"
+            Classes.accent="{DynamicResource UseAccentControls}" />
 
         <!--  Night brightness  -->
         <DockPanel Margin="0,24,0,0">
@@ -112,7 +118,8 @@
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                Theme="{DynamicResource CompactTextBox}">
+                Theme="{DynamicResource CompactTextBox}"
+                Classes.accent="{DynamicResource UseAccentControls}">
                 <Interaction.Behaviors>
                     <behaviors:LostFocusUpdateBindingBehavior Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
                 </Interaction.Behaviors>
@@ -126,7 +133,8 @@
             Minimum="0.1"
             SmallChange="0.01"
             TickFrequency="0.01"
-            Value="{Binding NightBrightness}" />
+            Value="{Binding NightBrightness}"
+            Classes.accent="{DynamicResource UseAccentControls}" />
 
         <!--  Configuration transition duration  -->
         <DockPanel Margin="0,24,0,0" ToolTip.Tip="Duration of time it takes to switch between day-time and night-time configurations">
@@ -135,7 +143,8 @@
                 MinWidth="48"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                Theme="{DynamicResource CompactTextBox}">
+                Theme="{DynamicResource CompactTextBox}"
+                Classes.accent="{DynamicResource UseAccentControls}">
                 <Interaction.Behaviors>
                     <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}}" />
                 </Interaction.Behaviors>
@@ -147,7 +156,8 @@
             Maximum="3"
             Minimum="0"
             SmallChange="0.08"
-            Value="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToHoursDoubleConverter.Instance}}" />
+            Value="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToHoursDoubleConverter.Instance}}"
+            Classes.accent="{DynamicResource UseAccentControls}" />
 
         <!--  Configuration transition offset  -->
         <DockPanel Margin="0,24,0,0" ToolTip.Tip="Offset that specifies how early or late the transition starts, relative to the sunrise and sunset">
@@ -156,7 +166,8 @@
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                Theme="{DynamicResource CompactTextBox}">
+                Theme="{DynamicResource CompactTextBox}"
+                Classes.accent="{DynamicResource UseAccentControls}">
                 <Interaction.Behaviors>
                     <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ConfigurationTransitionOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
                 </Interaction.Behaviors>
@@ -168,6 +179,7 @@
             Maximum="1"
             Minimum="0"
             SmallChange="0.01"
-            Value="{Binding ConfigurationTransitionOffset}" />
+            Value="{Binding ConfigurationTransitionOffset}"
+            Classes.accent="{DynamicResource UseAccentControls}" />
     </StackPanel>
 </UserControl>
