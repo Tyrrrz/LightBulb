@@ -42,8 +42,7 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 IsChecked="{Binding IsApplicationWhitelistEnabled}"
-                ToolTip.Tip="Pause LightBulb when one of the selected applications is in the foreground"
-                Classes.accent="{DynamicResource UseAccentControls}" />
+                ToolTip.Tip="Pause LightBulb when one of the selected applications is in the foreground" />
         </Grid>
 
         <!--  Whitelisted applications  -->
@@ -70,8 +69,7 @@
                         <CheckBox
                             Content="{Binding Name}"
                             IsChecked="{Binding $parent[ListBoxItem].IsSelected, Mode=OneWay}"
-                            IsHitTestVisible="False"
-                            Classes.accent="{DynamicResource UseAccentControls}"/>
+                            IsHitTestVisible="False" />
                     </Panel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

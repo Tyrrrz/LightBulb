@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using LightBulb.Models;
+using LightBulb.Framework;
 using LightBulb.Services;
 
 namespace LightBulb.ViewModels.Components.Settings;
@@ -8,18 +8,18 @@ namespace LightBulb.ViewModels.Components.Settings;
 public class AdvancedSettingsTabViewModel(SettingsService settingsService)
     : SettingsTabViewModelBase(settingsService, 2, "Advanced")
 {
+    public IReadOnlyList<ThemeVariant> AvailableThemes { get; } = Enum.GetValues<ThemeVariant>();
+
+    public ThemeVariant Theme
+    {
+        get => SettingsService.Theme;
+        set => SettingsService.Theme = value;
+    }
+
     public bool IsAutoStartEnabled
     {
         get => SettingsService.IsAutoStartEnabled;
         set => SettingsService.IsAutoStartEnabled = value;
-    }
-
-    public IReadOnlyList<ThemeMode> ThemeArray { get; } = Enum.GetValues<ThemeMode>();
-
-    public ThemeMode Theme
-    {
-        get => SettingsService.Theme;
-        set => SettingsService.Theme = value;
     }
 
     public bool IsAutoUpdateEnabled

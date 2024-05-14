@@ -18,15 +18,13 @@
                 Content="Manual"
                 DockPanel.Dock="Left"
                 IsChecked="{Binding IsManualSunriseSunsetEnabled}"
-                ToolTip.Tip="Configure sunrise and sunset manually"
-                Classes.accent="{DynamicResource UseAccentControls}" />
+                ToolTip.Tip="Configure sunrise and sunset manually" />
             <RadioButton
                 HorizontalAlignment="Right"
                 Content="Location-based"
                 DockPanel.Dock="Right"
                 IsChecked="{Binding !IsManualSunriseSunsetEnabled}"
-                ToolTip.Tip="Configure your location and use it to automatically calculate the sunrise and sunset times"
-                Classes.accent="{DynamicResource UseAccentControls}" />
+                ToolTip.Tip="Configure your location and use it to automatically calculate the sunrise and sunset times" />
         </DockPanel>
 
         <!--  Manual  -->
@@ -41,8 +39,7 @@
                     MinWidth="24"
                     HorizontalAlignment="Right"
                     DockPanel.Dock="Right"
-                    Theme="{DynamicResource CompactTextBox}"
-                    Classes.accent="{DynamicResource UseAccentControls}">
+                    Theme="{DynamicResource CompactTextBox}">
                     <Interaction.Behaviors>
                         <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
                     </Interaction.Behaviors>
@@ -54,8 +51,7 @@
                 Maximum="23.99999"
                 Minimum="0"
                 SmallChange="0.25"
-                Value="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}"
-                Classes.accent="{DynamicResource UseAccentControls}" />
+                Value="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}" />
 
             <!--  Sunset time  -->
             <DockPanel Margin="0,16,0,0">
@@ -64,8 +60,7 @@
                     MinWidth="24"
                     HorizontalAlignment="Right"
                     DockPanel.Dock="Right"
-                    Theme="{DynamicResource CompactTextBox}"
-                    Classes.accent="{DynamicResource UseAccentControls}">
+                    Theme="{DynamicResource CompactTextBox}">
                     <Interaction.Behaviors>
                         <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
                     </Interaction.Behaviors>
@@ -77,8 +72,7 @@
                 Maximum="23.99999"
                 Minimum="0"
                 SmallChange="0.25"
-                Value="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}"
-                Classes.accent="{DynamicResource UseAccentControls}" />
+                Value="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}" />
         </StackPanel>
 
         <!--  Location-based  -->
@@ -110,8 +104,7 @@
                     VerticalAlignment="Center"
                     IsEnabled="{Binding !IsBusy}"
                     Text="{Binding LocationQuery}"
-                    Theme="{DynamicResource CompactTextBox}"
-                    Classes.accent="{DynamicResource UseAccentControls}">
+                    Theme="{DynamicResource CompactTextBox}">
                     <ToolTip.Tip>
                         <TextBlock>
                             <Run Text="Specify your location using geographic coordinates or a search query" />

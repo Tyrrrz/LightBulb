@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using Cogwheel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Core;
+using LightBulb.Framework;
 using LightBulb.Models;
 using LightBulb.PlatformInterop;
 using LightBulb.Utils;
@@ -85,11 +86,11 @@ public partial class SettingsService() : SettingsBase(GetFilePath())
     // Advanced
 
     [ObservableProperty]
-    [property: JsonIgnore] // comes from registry
-    private bool _isAutoStartEnabled;
+    private ThemeVariant _theme;
 
     [ObservableProperty]
-    private ThemeMode _theme = ThemeMode.System;
+    [property: JsonIgnore] // comes from registry
+    private bool _isAutoStartEnabled;
 
     [ObservableProperty]
     private bool _isAutoUpdateEnabled = true;

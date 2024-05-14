@@ -21,7 +21,10 @@
         <viewModels:MainViewModel />
     </Design.DataContext>
 
-    <Border BorderBrush="{DynamicResource MaterialPrimaryLightBrush}" BorderThickness="1">
+    <Border
+        Background="{DynamicResource MaterialCardBackgroundBrush}"
+        BorderBrush="{DynamicResource MaterialDividerBrush}"
+        BorderThickness="1">
         <dialogHostAvalonia:DialogHost
             x:Name="DialogHost"
             CloseOnClickAway="False"
@@ -32,10 +35,9 @@
                     x:Name="HeaderBorder"
                     Grid.Row="0"
                     Padding="8,12"
-                    Background="{DynamicResource MaterialPrimaryMidBrush}"
+                    Background="{DynamicResource MaterialDarkBackgroundBrush}"
                     PointerPressed="HeaderBorder_OnPointerPressed">
                     <Grid ColumnDefinitions="Auto,Auto,*,Auto">
-                        <Border Background="{DynamicResource MaterialSecondaryMidBrush}" Width="32" Height="32" CornerRadius="32" />
                         <!--  On/Off button and logo  -->
                         <ToggleButton
                             Grid.Column="0"
@@ -43,10 +45,11 @@
                             Height="32"
                             Padding="0"
                             VerticalAlignment="Center"
+                            Background="{DynamicResource MaterialSecondaryMidBrush}"
+                            Foreground="{DynamicResource MaterialSecondaryMidForegroundBrush}"
                             IsChecked="{Binding Dashboard.IsEnabled}"
                             Theme="{DynamicResource MaterialIconToggleButton}"
-                            ToolTip.Tip="Toggle LightBulb on/off"
-                            Classes="primary">
+                            ToolTip.Tip="Toggle LightBulb on/off">
                             <ToggleButton.Content>
                                 <materialIcons:MaterialIcon Width="24" Height="24">
                                     <materialIcons:MaterialIcon.Styles>
@@ -68,7 +71,7 @@
                             Margin="8,1,0,0"
                             VerticalAlignment="Center"
                             FontSize="16"
-                            Foreground="{DynamicResource MaterialPrimaryMidForegroundBrush}">
+                            Foreground="{DynamicResource MaterialDarkForegroundBrush}">
                             <Run
                                 FontSize="19"
                                 FontWeight="Medium"

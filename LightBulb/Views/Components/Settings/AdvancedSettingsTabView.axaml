@@ -8,109 +8,67 @@
     </Design.DataContext>
 
     <StackPanel Margin="16" Orientation="Vertical">
-        <!--  Auto start  -->
-        <DockPanel ToolTip.Tip="Launch LightBulb at Windows startup">
-            <TextBlock
-                VerticalAlignment="Center"
-                DockPanel.Dock="Left"
-                Text="Start with Windows" />
-            <ToggleSwitch
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
+        <!--  Theme  -->
+        <DockPanel LastChildFill="False" ToolTip.Tip="Preferred user interface theme">
+            <TextBlock DockPanel.Dock="Left" Text="Theme" />
+            <ComboBox
                 DockPanel.Dock="Right"
-                IsChecked="{Binding IsAutoStartEnabled}"
-                Classes.accent="{DynamicResource UseAccentControls}" />
+                ItemsSource="{Binding AvailableThemes}"
+                SelectedItem="{Binding Theme}" />
         </DockPanel>
 
-        <!-- Theme -->
-        <DockPanel Margin="0,16,0,0" ToolTip.Tip="LightBulb UI Theme">
-            <TextBlock
-                VerticalAlignment="Center"
-                DockPanel.Dock="Left"
-                Text="Theme" />
-            <ComboBox
-                HorizontalAlignment="Right"
-                DockPanel.Dock="Right"
-                ItemsSource="{Binding ThemeArray}"
-                SelectedItem="{Binding Theme}"
-                Classes.accent="{DynamicResource UseAccentControls}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <!-- Required for correct Material display, via https://github.com/AvaloniaCommunity/Material.Avalonia/issues/269#issuecomment-1738117187-->
-                        <TextBlock Text="{Binding StringFormat='\{0\}'}" VerticalAlignment="Center"></TextBlock>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
+        <!--  Auto start  -->
+        <DockPanel
+            Margin="0,16,0,0"
+            LastChildFill="False"
+            ToolTip.Tip="Launch LightBulb at Windows startup">
+            <TextBlock DockPanel.Dock="Left" Text="Start with Windows" />
+            <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsAutoStartEnabled}" />
         </DockPanel>
 
         <!--  Auto update  -->
-        <DockPanel Margin="0,14,0,0" ToolTip.Tip="Keep LightBulb updated by automatically installing new versions as they become available">
-            <TextBlock
-                VerticalAlignment="Center"
-                DockPanel.Dock="Left"
-                Text="Auto-update" />
-            <ToggleSwitch
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                DockPanel.Dock="Right"
-                IsChecked="{Binding IsAutoUpdateEnabled}"
-                Classes.accent="{DynamicResource UseAccentControls}" />
+        <DockPanel
+            Margin="0,16,0,0"
+            LastChildFill="False"
+            ToolTip.Tip="Keep LightBulb updated by automatically installing new versions as they become available">
+            <TextBlock DockPanel.Dock="Left" Text="Auto-update" />
+            <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsAutoUpdateEnabled}" />
         </DockPanel>
 
         <!--  Default to day time  -->
-        <DockPanel Margin="0,16,0,0" ToolTip.Tip="When LightBulb is disabled or paused, restore the configured day-time temperature and brightness instead of the default monitor gamma">
-            <TextBlock
-                VerticalAlignment="Center"
-                DockPanel.Dock="Left"
-                Text="Default to day-time configuration" />
-            <ToggleSwitch
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                DockPanel.Dock="Right"
-                IsChecked="{Binding IsDefaultToDayConfigurationEnabled}"
-                Classes.accent="{DynamicResource UseAccentControls}" />
+        <DockPanel
+            Margin="0,16,0,0"
+            LastChildFill="False"
+            ToolTip.Tip="When LightBulb is disabled or paused, restore the configured day-time temperature and brightness instead of the default monitor gamma">
+            <TextBlock DockPanel.Dock="Left" Text="Default to day-time configuration" />
+            <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsDefaultToDayConfigurationEnabled}" />
         </DockPanel>
 
         <!--  Pause when full screen  -->
-        <DockPanel Margin="0,16,0,0" ToolTip.Tip="Pause LightBulb when any fullscreen window is in the foreground">
-            <TextBlock
-                VerticalAlignment="Center"
-                DockPanel.Dock="Left"
-                Text="Pause when fullscreen" />
-            <ToggleSwitch
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                DockPanel.Dock="Right"
-                IsChecked="{Binding IsPauseWhenFullScreenEnabled}"
-                Classes.accent="{DynamicResource UseAccentControls}" />
+        <DockPanel
+            Margin="0,16,0,0"
+            LastChildFill="False"
+            ToolTip.Tip="Pause LightBulb when any fullscreen window is in the foreground">
+            <TextBlock DockPanel.Dock="Left" Text="Pause when fullscreen" />
+            <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsPauseWhenFullScreenEnabled}" />
         </DockPanel>
 
         <!--  Configuration smoothing  -->
-        <DockPanel Margin="0,16,0,0" ToolTip.Tip="Transition slowly when enabling or disabling LightBulb to give time for eyes to adjust">
-            <TextBlock
-                VerticalAlignment="Center"
-                DockPanel.Dock="Left"
-                Text="Gamma smoothing" />
-            <ToggleSwitch
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                DockPanel.Dock="Right"
-                IsChecked="{Binding IsConfigurationSmoothingEnabled}"
-                Classes.accent="{DynamicResource UseAccentControls}" />
+        <DockPanel
+            Margin="0,16,0,0"
+            LastChildFill="False"
+            ToolTip.Tip="Transition slowly when enabling or disabling LightBulb to give time for eyes to adjust">
+            <TextBlock DockPanel.Dock="Left" Text="Gamma smoothing" />
+            <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsConfigurationSmoothingEnabled}" />
         </DockPanel>
 
         <!--  Gamma polling  -->
-        <DockPanel Margin="0,16,0,0" ToolTip.Tip="Force-refresh monitor gamma at regular intervals to prevent other programs from overriding it">
-            <TextBlock
-                VerticalAlignment="Center"
-                DockPanel.Dock="Left"
-                Text="Gamma polling" />
-            <ToggleSwitch
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                DockPanel.Dock="Right"
-                IsChecked="{Binding IsGammaPollingEnabled}"
-                Classes.accent="{DynamicResource UseAccentControls}" />
+        <DockPanel
+            Margin="0,16,0,0"
+            LastChildFill="False"
+            ToolTip.Tip="Force-refresh monitor gamma at regular intervals to prevent other programs from overriding it">
+            <TextBlock DockPanel.Dock="Left" Text="Gamma polling" />
+            <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsGammaPollingEnabled}" />
         </DockPanel>
     </StackPanel>
 </UserControl>

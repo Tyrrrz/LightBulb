@@ -4,28 +4,41 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:framework="clr-namespace:LightBulb.Framework"
-    xmlns:sys="using:System"
     xmlns:materialAssists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
-    xmlns:materialControls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-    xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles">
+    xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
+    ActualThemeVariantChanged="Application_OnActualThemeVariantChanged">
     <Application.DataTemplates>
         <framework:ViewManager />
     </Application.DataTemplates>
-
     <Application.Styles>
-        <Style>
-            <Style.Resources>
-                <ResourceDictionary>
-                    <!-- Fix bug with initialization of MaterialPaperBrush using MaterialThemeBase -->
-                    <SolidColorBrush x:Key="MaterialPaperBrush" Color="#FF0000"></SolidColorBrush>
-                </ResourceDictionary>
-            </Style.Resources>
-        </Style>
-
-        <materialStyles:MaterialThemeBase />
+        <!--  This theme is used as a stub to pre-load default resources, the actual colors are set through code  -->
+        <materialStyles:MaterialTheme
+            BaseTheme="Light"
+            PrimaryColor="Grey"
+            SecondaryColor="DeepOrange" />
         <materialIcons:MaterialIconStyles />
         <dialogHostAvalonia:DialogHostStyles />
+
+        <!--  Combo box  -->
+        <Style Selector="ComboBox">
+            <Setter Property="FontSize" Value="14" />
+
+            <Style Selector="^ /template/ Panel#PART_RootPanel">
+                <Setter Property="Height" Value="22" />
+            </Style>
+
+            <Style Selector="^ /template/ ToggleButton">
+                <Style Selector="^:checked, ^:unchecked">
+                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="CornerRadius" Value="0" />
+
+                    <Style Selector="^ ContentPresenter#contentPresenter">
+                        <Setter Property="Margin" Value="12,8" />
+                    </Style>
+                </Style>
+            </Style>
+        </Style>
 
         <!--  Dialog host  -->
         <Style Selector="dialogHostAvalonia|DialogHost">
@@ -81,36 +94,9 @@
             </Style>
         </Style>
 
-        <!-- Apply Slider Accent class, since Material doesn't do it itself -->
-        <Style Selector="Slider.accent">
-            <Style Selector="^ Border#PART_InactiveState">
-                <Setter Property="Background" Value="{DynamicResource MaterialSecondaryMidBrush}" />
-            </Style>
-            <Style Selector="^ Border#PART_Indicator">
-                <Setter Property="Background" Value="{DynamicResource MaterialSecondaryMidBrush}" />
-            </Style>
-            <Style Selector="^ Border#PART_HoverEffect">
-                <Setter Property="Background" Value="{DynamicResource MaterialSecondaryMidBrush}" />
-            </Style>
-
-            <Style Selector="^ Border#PART_ThumbGrip">
-                <Setter Property="Background" Value="{DynamicResource MaterialSecondaryMidBrush}" />
-            </Style>
-        </Style>
-
         <!--  Text box  -->
         <Style Selector="TextBox">
             <Setter Property="FontSize" Value="14" />
-        </Style>
-
-        <!-- Apply TextBox Accent class, since material doesn't do it itself -->
-        <Style Selector="TextBox.accent">
-            <Setter Property="SelectionBrush" Value="{DynamicResource MaterialSecondaryMidBrush}" />
-            <Setter Property="SelectionForegroundBrush" Value="{DynamicResource MaterialSecondaryForegroundBrush}" />
-            <Setter Property="CaretBrush" Value="{DynamicResource MaterialSecondaryMidBrush}" />
-            <Style Selector="^ materialControls|MaterialUnderline">
-                <Setter Property="ActiveBrush" Value="{DynamicResource MaterialSecondaryMidBrush}" />
-            </Style>
         </Style>
 
         <!--  Toggle button  -->
@@ -118,24 +104,8 @@
             <Setter Property="TextElement.FontWeight" Value="Medium" />
         </Style>
 
-        <!-- Combo box -->
-        <Style Selector="ComboBox">
-            <Style Selector="^ /template/ Panel#PART_RootPanel">
-                <Setter Property="Height" Value="22" />
-            </Style>
-        </Style>
-
-        <!-- Apply ComboBox Accent class, since material doesn't do it itself -->
-        <Style Selector="ComboBox.accent">
-            <Style Selector="^ materialControls|MaterialUnderline">
-                <Setter Property="ActiveBrush" Value="{DynamicResource MaterialSecondaryMidBrush}" />
-            </Style>
-        </Style>
-
         <!--  Toggle switch  -->
         <Style Selector="ToggleSwitch">
-            <!-- Apply custom style for disabled toggles, because Material's default is bad.-->
-            <!-- Tracked in https://github.com/AvaloniaCommunity/Material.Avalonia/issues/379 -->
             <Setter Property="materialAssists:ToggleSwitchAssist.SwitchThumbOffBackground" Value="{DynamicResource ToggleBackgroundBrush}" />
         </Style>
 
@@ -150,6 +120,15 @@
 
     <Application.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                    <SolidColorBrush x:Key="ToggleBackgroundBrush" Color="#FFFFFF" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="ToggleBackgroundBrush" Color="#8E8E8E" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
             <!--  Text box  -->
             <ControlTheme
                 x:Key="CompactTextBox"
@@ -162,24 +141,13 @@
                         <Style Selector="^ /template/ Panel#PART_TextFieldPanel">
                             <Setter Property="MinHeight" Value="0" />
                         </Style>
+
                         <Style Selector="^ /template/ Panel#PART_TextContainer">
                             <Setter Property="Margin" Value="0" />
                         </Style>
                     </Style>
                 </Styles>
             </ControlTheme>
-            <ResourceDictionary.ThemeDictionaries>
-                <ResourceDictionary x:Key="Light">
-                    <!-- Custom style for disabled toggles -->
-                    <SolidColorBrush x:Key="ToggleBackgroundBrush" Color="#FFFFFF"></SolidColorBrush>
-                    <sys:Boolean x:Key="UseAccentControls">false</sys:Boolean>
-                </ResourceDictionary>
-                <ResourceDictionary x:Key="Dark">
-                    <!-- Custom style for disabled toggles -->
-                    <SolidColorBrush x:Key="ToggleBackgroundBrush" Color="#8E8E8E"></SolidColorBrush>
-                    <sys:Boolean x:Key="UseAccentControls">true</sys:Boolean>
-                </ResourceDictionary>
-            </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 
