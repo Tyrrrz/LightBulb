@@ -143,9 +143,6 @@ public partial class MainViewModel(
     [RelayCommand]
     private async Task InitializeAsync()
     {
-        // Load settings
-        settingsService.Load();
-
         await FinalizePendingUpdateAsync();
         await ShowGammaRangePromptAsync();
         await ShowFirstTimeExperienceMessageAsync();

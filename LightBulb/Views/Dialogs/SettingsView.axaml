@@ -16,8 +16,8 @@
         <Border
             Grid.Column="0"
             VerticalAlignment="Stretch"
-            Background="{DynamicResource MaterialPrimaryMidBrush}">
-            <ItemsControl Background="{DynamicResource MaterialPrimaryMidBrush}" ItemsSource="{Binding Tabs}">
+            Background="{DynamicResource MaterialDarkBackgroundBrush}">
+            <ItemsControl ItemsSource="{Binding Tabs}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border BorderThickness="0,0,2,0" Classes.active="{Binding IsActive}">
@@ -45,11 +45,13 @@
             </ItemsControl>
         </Border>
 
-        <Grid Grid.Column="1" RowDefinitions="*,Auto,Auto">
+        <Grid
+            Grid.Column="1"
+            Background="{DynamicResource MaterialCardBackgroundBrush}"
+            RowDefinitions="*,Auto,Auto">
             <!--  Active settings tab  -->
             <ScrollViewer
                 Grid.Row="0"
-                Background="{DynamicResource MaterialCardBackgroundBrush}"
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto">
                 <ContentControl Margin="0,0,8,16" Content="{Binding ActiveTab}" />

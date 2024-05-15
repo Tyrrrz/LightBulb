@@ -69,6 +69,9 @@ public partial class DashboardViewModel : ViewModelBase
     [ObservableProperty]
     private ColorConfiguration _currentConfiguration = ColorConfiguration.Default;
 
+    private ColorConfiguration? _configurationSmoothingSource;
+    private ColorConfiguration? _configurationSmoothingTarget;
+
     public DashboardViewModel(
         SettingsService settingsService,
         GammaService gammaService,
@@ -287,11 +290,60 @@ public partial class DashboardViewModel : ViewModelBase
 
     private void UpdateConfiguration()
     {
-        var isSmooth = _settingsService.IsConfigurationSmoothingEnabled && !IsCyclePreviewEnabled;
+        var isSmooth =
+            !IsCyclePreviewEnabled
+            && CurrentConfiguration != TargetConfiguration
+            && _settingsService.IsConfigurationSmoothingEnabled
+            && _settingsService.ConfigurationSmoothingMaxDuration.TotalSeconds >= 0.1;
 
-        CurrentConfiguration = isSmooth
-            ? CurrentConfiguration.StepTo(TargetConfiguration, 30, 0.008)
-            : TargetConfiguration;
+        if (isSmooth)
+        {
+            // Check if the target configuration has changed since the last transition started
+            if (
+                _configurationSmoothingTarget != TargetConfiguration
+                || _configurationSmoothingSource is null
+            )
+            {
+                _configurationSmoothingSource = CurrentConfiguration;
+                _configurationSmoothingTarget = TargetConfiguration;
+            }
+
+            var brightnessDelta = Math.Abs(
+                _configurationSmoothingTarget.Value.Brightness
+                    - _configurationSmoothingSource.Value.Brightness
+            );
+
+            var brightnessStep = Math.Max(
+                brightnessDelta
+                    / _settingsService.ConfigurationSmoothingMaxDuration.TotalSeconds
+                    * _updateConfigurationTimer.Interval.TotalSeconds,
+                0.08
+            );
+
+            var temperatureDelta = Math.Abs(
+                _configurationSmoothingTarget.Value.Temperature
+                    - _configurationSmoothingSource.Value.Temperature
+            );
+
+            var temperatureStep = Math.Max(
+                temperatureDelta
+                    / _settingsService.ConfigurationSmoothingMaxDuration.TotalSeconds
+                    * _updateConfigurationTimer.Interval.TotalSeconds,
+                30
+            );
+
+            CurrentConfiguration = CurrentConfiguration.StepTo(
+                TargetConfiguration,
+                temperatureStep,
+                brightnessStep
+            );
+        }
+        else
+        {
+            CurrentConfiguration = TargetConfiguration;
+            _configurationSmoothingSource = null;
+            _configurationSmoothingTarget = null;
+        }
 
         _gammaService.SetGamma(CurrentConfiguration);
     }

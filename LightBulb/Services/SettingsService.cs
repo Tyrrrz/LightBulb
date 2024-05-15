@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using Cogwheel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Core;
+using LightBulb.Framework;
 using LightBulb.Models;
 using LightBulb.PlatformInterop;
 using LightBulb.Utils;
@@ -63,6 +64,9 @@ public partial class SettingsService() : SettingsBase(GetFilePath())
     [ObservableProperty]
     private double _configurationTransitionOffset;
 
+    [ObservableProperty]
+    private TimeSpan _configurationSmoothingMaxDuration = TimeSpan.FromSeconds(5);
+
     // Location
 
     [ObservableProperty]
@@ -80,6 +84,9 @@ public partial class SettingsService() : SettingsBase(GetFilePath())
     private GeoLocation? _location;
 
     // Advanced
+
+    [ObservableProperty]
+    private ThemeVariant _theme;
 
     [ObservableProperty]
     [property: JsonIgnore] // comes from registry
