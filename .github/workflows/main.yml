@@ -72,6 +72,14 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   pack:
+    strategy:
+      matrix:
+        rid:
+          - win-arm64
+          - win-x86
+          - win-x64
+
+    # Needs to run on Windows to create the installer
     runs-on: windows-latest
     timeout-minutes: 10
 
@@ -95,7 +103,8 @@ jobs:
           -p:CSharpier_Bypass=true
           --output LightBulb/bin/publish/
           --configuration Release
-          --use-current-runtime
+          --runtime ${{ matrix.rid }}
+          --self-contained
 
       - name: Create installer
         shell: pwsh
@@ -109,24 +118,51 @@ jobs:
       - name: Upload artifacts (portable)
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4.3.0
         with:
-          name: LightBulb
+          name: LightBulb.${{ matrix.rid }}
           path: LightBulb/bin/publish/
           if-no-files-found: error
 
       - name: Upload artifacts (installer)
         uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8 # v4.3.0
         with:
-          name: LightBulb-Installer
+          name: LightBulb-Installer.${{ matrix.rid }}
           path: Installer/bin/LightBulb-Installer.exe
           if-no-files-found: error
 
-  deploy:
+  release:
     if: ${{ github.ref_type == 'tag' }}
 
     needs:
       - format
       - test
       - pack
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          gh release create ${{ github.ref_name }}
+          --repo ${{ github.event.repository.full_name }}
+          --title ${{ github.ref_name }}
+          --generate-notes
+          --verify-tag
+
+  deploy:
+    needs: release
+    
+    strategy:
+      matrix:
+        rid:
+          - win-arm64
+          - win-x86
+          - win-x64
 
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -139,30 +175,27 @@ jobs:
       - name: Download artifacts (portable)
         uses: actions/download-artifact@6b208ae046db98c579e8a3aa621ab581ff575935 # v4.1.1
         with:
-          name: LightBulb
+          name: LightBulb.${{ matrix.rid }}
           path: LightBulb/
 
       - name: Download artifacts (installer)
         uses: actions/download-artifact@6b208ae046db98c579e8a3aa621ab581ff575935 # v4.1.1
         with:
-          name: LightBulb-Installer
+          name: LightBulb-Installer.${{ matrix.rid }}
 
       - name: Create package (portable)
         # Change into the artifacts directory to avoid including the directory itself in the zip archive
         working-directory: LightBulb/
-        run: zip -r ../LightBulb.zip .
+        run: zip -r ../LightBulb.${{ matrix.rid }}.zip .
 
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >
-          gh release create ${{ github.ref_name }}
-          LightBulb.zip
-          LightBulb-Installer.exe
+          gh release upload ${{ github.ref_name }}
+          LightBulb.${{ matrix.rid }}.zip
+          LightBulb-Installer.${{ matrix.rid }}.exe
           --repo ${{ github.event.repository.full_name }}
-          --title ${{ github.ref_name }}
-          --generate-notes
-          --verify-tag
 
   notify:
     needs: deploy

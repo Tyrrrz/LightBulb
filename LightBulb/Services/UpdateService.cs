@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Onova;
 using Onova.Exceptions;
@@ -10,7 +11,15 @@ namespace LightBulb.Services;
 public class UpdateService(SettingsService settingsService) : IDisposable
 {
     private readonly IUpdateManager _updateManager = new UpdateManager(
-        new GithubPackageResolver("Tyrrrz", "LightBulb", "LightBulb.zip"),
+        new GithubPackageResolver(
+            "Tyrrrz",
+            "LightBulb",
+            // Examples:
+            // LightBulb.win-arm64.zip
+            // LightBulb.win-x64.zip
+            // LightBulb.linux-x64.zip
+            $"LightBulb.{RuntimeInformation.RuntimeIdentifier}.zip"
+        ),
         new ZipPackageExtractor()
     );
 
