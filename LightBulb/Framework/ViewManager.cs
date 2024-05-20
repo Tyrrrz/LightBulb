@@ -1,29 +1,40 @@
-﻿using System;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using LightBulb.ViewModels;
+using LightBulb.ViewModels.Components;
+using LightBulb.ViewModels.Components.Settings;
+using LightBulb.ViewModels.Dialogs;
+using LightBulb.Views;
+using LightBulb.Views.Components;
+using LightBulb.Views.Components.Settings;
+using LightBulb.Views.Dialogs;
 
 namespace LightBulb.Framework;
 
 public partial class ViewManager
 {
+    private Control? TryCreateView(ViewModelBase viewModel) =>
+        viewModel switch
+        {
+            MainViewModel => new MainView(),
+            DashboardViewModel => new DashboardView(),
+            MessageBoxViewModel => new MessageBoxView(),
+            SettingsViewModel => new SettingsView(),
+            AdvancedSettingsTabViewModel => new AdvancedSettingsTabView(),
+            ApplicationWhitelistSettingsTabViewModel => new ApplicationWhitelistSettingsTabView(),
+            GeneralSettingsTabViewModel => new GeneralSettingsTabView(),
+            HotKeySettingsTabViewModel => new HotKeySettingsTabView(),
+            LocationSettingsTabViewModel => new LocationSettingsTabView(),
+            _ => null
+        };
+
     public Control? TryBindView(ViewModelBase viewModel)
     {
-        var name = viewModel
-            .GetType()
-            .FullName?.Replace("ViewModel", "View", StringComparison.Ordinal);
-
-        if (string.IsNullOrWhiteSpace(name))
-            return null;
-
-        var type = Type.GetType(name);
-        if (type is null)
-            return null;
-
-        if (Activator.CreateInstance(type) is not Control view)
+        var view = TryCreateView(viewModel);
+        if (view is null)
             return null;
 
         view.DataContext ??= viewModel;
-
         return view;
     }
 }

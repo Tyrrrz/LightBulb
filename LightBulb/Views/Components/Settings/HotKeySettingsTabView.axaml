@@ -3,11 +3,8 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:LightBulb.Views.Controls"
-    xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings">
-    <Design.DataContext>
-        <settings:HotKeySettingsTabViewModel />
-    </Design.DataContext>
-
+    xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
+    x:DataType="settings:HotKeySettingsTabViewModel">
     <StackPanel Margin="16" Orientation="Vertical">
         <!--  Toggle hotkey  -->
         <DockPanel>

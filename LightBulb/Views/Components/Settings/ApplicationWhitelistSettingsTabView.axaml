@@ -5,12 +5,9 @@
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
     x:Name="UserControl"
+    x:DataType="settings:ApplicationWhitelistSettingsTabViewModel"
     Loaded="UserControl_OnLoaded"
     Unloaded="UserControl_OnUnloaded">
-    <Design.DataContext>
-        <settings:ApplicationWhitelistSettingsTabViewModel />
-    </Design.DataContext>
-
     <StackPanel Margin="16" Orientation="Vertical">
         <!--  Is enabled  -->
         <Grid ColumnDefinitions="*,Auto,Auto">
