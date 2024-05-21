@@ -2,11 +2,8 @@
     x:Class="LightBulb.Views.Components.Settings.AdvancedSettingsTabView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings">
-    <Design.DataContext>
-        <settings:AdvancedSettingsTabViewModel />
-    </Design.DataContext>
-
+    xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
+    x:DataType="settings:AdvancedSettingsTabViewModel">
     <StackPanel Margin="16" Orientation="Vertical">
         <!--  Theme  -->
         <DockPanel LastChildFill="False" ToolTip.Tip="Preferred user interface theme">

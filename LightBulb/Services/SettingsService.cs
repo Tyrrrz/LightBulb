@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text.Json.Serialization;
 using Cogwheel;
@@ -53,9 +54,11 @@ public partial class SettingsService() : SettingsBase(GetFilePath())
     public double MaximumBrightness => 1;
 
     [ObservableProperty]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ColorConfiguration))]
     private ColorConfiguration _nightConfiguration = new(3900, 0.85);
 
     [ObservableProperty]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ColorConfiguration))]
     private ColorConfiguration _dayConfiguration = new(6600, 1);
 
     [ObservableProperty]
@@ -81,6 +84,7 @@ public partial class SettingsService() : SettingsBase(GetFilePath())
     private TimeOnly _manualSunset = new(16, 30);
 
     [ObservableProperty]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(GeoLocation))]
     private GeoLocation? _location;
 
     // Advanced
@@ -113,26 +117,33 @@ public partial class SettingsService() : SettingsBase(GetFilePath())
     private bool _isApplicationWhitelistEnabled;
 
     [ObservableProperty]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ExternalApplication))]
     private IReadOnlyList<ExternalApplication>? _whitelistedApplications;
 
     // HotKeys
 
     [ObservableProperty]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(HotKey))]
     private HotKey _toggleHotKey;
 
     [ObservableProperty]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(HotKey))]
     private HotKey _increaseTemperatureOffsetHotKey;
 
     [ObservableProperty]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(HotKey))]
     private HotKey _decreaseTemperatureOffsetHotKey;
 
     [ObservableProperty]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(HotKey))]
     private HotKey _increaseBrightnessOffsetHotKey;
 
     [ObservableProperty]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(HotKey))]
     private HotKey _decreaseBrightnessOffsetHotKey;
 
     [ObservableProperty]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(HotKey))]
     private HotKey _resetConfigurationOffsetHotKey;
 
     public override void Reset()

@@ -6,11 +6,8 @@
     xmlns:dialogs="clr-namespace:LightBulb.ViewModels.Dialogs"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     Width="350"
-    Height="270">
-    <Design.DataContext>
-        <dialogs:SettingsViewModel />
-    </Design.DataContext>
-
+    Height="270"
+    x:DataType="dialogs:SettingsViewModel">
     <Grid ColumnDefinitions="Auto,*">
         <!--  Settings tab selection  -->
         <Border
@@ -29,7 +26,7 @@
                             <Button
                                 Margin="4"
                                 Padding="8"
-                                Command="{Binding $parent[UserControl].DataContext.ActivateTabCommand}"
+                                Command="{Binding $parent[UserControl].((dialogs:SettingsViewModel)DataContext).ActivateTabCommand}"
                                 CommandParameter="{Binding}"
                                 Foreground="{DynamicResource MaterialDarkForegroundBrush}"
                                 Theme="{DynamicResource MaterialFlatButton}"

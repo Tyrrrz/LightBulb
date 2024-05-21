@@ -10,6 +10,7 @@
     Title="{x:Static lightBulb:Program.Name}"
     Width="450"
     Height="350"
+    x:DataType="viewModels:MainViewModel"
     CanResize="False"
     Closing="Window_OnClosing"
     Icon="/favicon.ico"
@@ -17,10 +18,6 @@
     RenderOptions.BitmapInterpolationMode="HighQuality"
     SystemDecorations="None"
     WindowStartupLocation="CenterScreen">
-    <Design.DataContext>
-        <viewModels:MainViewModel />
-    </Design.DataContext>
-
     <Border
         Background="{DynamicResource MaterialCardBackgroundBrush}"
         BorderBrush="{DynamicResource MaterialDividerBrush}"

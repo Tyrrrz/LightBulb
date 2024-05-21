@@ -4,11 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="clr-namespace:LightBulb.Behaviors"
     xmlns:converters="clr-namespace:LightBulb.Converters"
-    xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings">
-    <Design.DataContext>
-        <settings:GeneralSettingsTabViewModel />
-    </Design.DataContext>
-
+    xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
+    x:DataType="settings:GeneralSettingsTabViewModel">
     <StackPanel Margin="16" Orientation="Vertical">
         <!--  Day temperature  -->
         <DockPanel ToolTip.Tip="Color temperature during the day">

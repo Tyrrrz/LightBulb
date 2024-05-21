@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
@@ -29,6 +30,7 @@ public class LostFocusUpdateBindingBehavior : Behavior<TextBox>
         set => SetValue(TextProperty, value);
     }
 
+    [RequiresUnreferencedCode("Inherited")]
     protected override void OnAttached()
     {
         if (AssociatedObject is null)

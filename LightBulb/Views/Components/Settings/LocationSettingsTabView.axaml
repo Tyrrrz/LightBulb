@@ -5,11 +5,8 @@
     xmlns:behaviors="clr-namespace:LightBulb.Behaviors"
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-    xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings">
-    <Design.DataContext>
-        <settings:LocationSettingsTabViewModel />
-    </Design.DataContext>
-
+    xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
+    x:DataType="settings:LocationSettingsTabViewModel">
     <StackPanel Margin="16" Orientation="Vertical">
         <!--  Manual/location-based configuration  -->
         <TextBlock Text="Solar configuration:" />
