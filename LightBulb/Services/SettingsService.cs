@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text.Json.Serialization;
 using Cogwheel;
@@ -14,8 +13,10 @@ using Microsoft.Win32;
 
 namespace LightBulb.Services;
 
+// Can't use [ObservableProperty] here because System.Text.Json's source generator doesn't see
+// the generated properties.
 [INotifyPropertyChanged]
-public partial class SettingsService() : SettingsBase(GetFilePath())
+public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerContext.Default)
 {
     private readonly RegistrySwitch<int> _extendedGammaRangeSwitch =
         new(
@@ -33,15 +34,28 @@ public partial class SettingsService() : SettingsBase(GetFilePath())
             $"\"{Program.ExecutableFilePath}\" {StartOptions.IsInitiallyHiddenArgument}"
         );
 
-    [ObservableProperty]
     private bool _isFirstTimeExperienceEnabled = true;
+    public bool IsFirstTimeExperienceEnabled
+    {
+        get => _isFirstTimeExperienceEnabled;
+        set => SetProperty(ref _isFirstTimeExperienceEnabled, value);
+    }
 
-    [ObservableProperty]
     private bool _isUkraineSupportMessageEnabled = true;
+    public bool IsUkraineSupportMessageEnabled
+    {
+        get => _isUkraineSupportMessageEnabled;
+        set => SetProperty(ref _isUkraineSupportMessageEnabled, value);
+    }
 
-    [ObservableProperty]
-    [property: JsonIgnore] // comes from registry
     private bool _isExtendedGammaRangeUnlocked;
+
+    [JsonIgnore] // comes from registry
+    public bool IsExtendedGammaRangeUnlocked
+    {
+        get => _isExtendedGammaRangeUnlocked;
+        set => SetProperty(ref _isExtendedGammaRangeUnlocked, value);
+    }
 
     // General
 
@@ -53,98 +67,187 @@ public partial class SettingsService() : SettingsBase(GetFilePath())
 
     public double MaximumBrightness => 1;
 
-    [ObservableProperty]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ColorConfiguration))]
     private ColorConfiguration _nightConfiguration = new(3900, 0.85);
+    public ColorConfiguration NightConfiguration
+    {
+        get => _nightConfiguration;
+        set => SetProperty(ref _nightConfiguration, value);
+    }
 
-    [ObservableProperty]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ColorConfiguration))]
     private ColorConfiguration _dayConfiguration = new(6600, 1);
+    public ColorConfiguration DayConfiguration
+    {
+        get => _dayConfiguration;
+        set => SetProperty(ref _dayConfiguration, value);
+    }
 
-    [ObservableProperty]
     private TimeSpan _configurationTransitionDuration = TimeSpan.FromMinutes(40);
+    public TimeSpan ConfigurationTransitionDuration
+    {
+        get => _configurationTransitionDuration;
+        set => SetProperty(ref _configurationTransitionDuration, value);
+    }
 
-    [ObservableProperty]
     private double _configurationTransitionOffset;
+    public double ConfigurationTransitionOffset
+    {
+        get => _configurationTransitionOffset;
+        set => SetProperty(ref _configurationTransitionOffset, value);
+    }
 
-    [ObservableProperty]
     private TimeSpan _configurationSmoothingMaxDuration = TimeSpan.FromSeconds(5);
+    public TimeSpan ConfigurationSmoothingMaxDuration
+    {
+        get => _configurationSmoothingMaxDuration;
+        set => SetProperty(ref _configurationSmoothingMaxDuration, value);
+    }
 
     // Location
 
-    [ObservableProperty]
     private bool _isManualSunriseSunsetEnabled = true;
+    public bool IsManualSunriseSunsetEnabled
+    {
+        get => _isManualSunriseSunsetEnabled;
+        set => SetProperty(ref _isManualSunriseSunsetEnabled, value);
+    }
 
-    [ObservableProperty]
-    [property: JsonPropertyName("ManualSunriseTime")]
     private TimeOnly _manualSunrise = new(07, 20);
 
-    [ObservableProperty]
-    [property: JsonPropertyName("ManualSunsetTime")]
+    [JsonPropertyName("ManualSunriseTime")]
+    public TimeOnly ManualSunrise
+    {
+        get => _manualSunrise;
+        set => SetProperty(ref _manualSunrise, value);
+    }
+
     private TimeOnly _manualSunset = new(16, 30);
 
-    [ObservableProperty]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(GeoLocation))]
+    [JsonPropertyName("ManualSunsetTime")]
+    public TimeOnly ManualSunset
+    {
+        get => _manualSunset;
+        set => SetProperty(ref _manualSunset, value);
+    }
+
     private GeoLocation? _location;
+    public GeoLocation? Location
+    {
+        get => _location;
+        set => SetProperty(ref _location, value);
+    }
 
     // Advanced
 
-    [ObservableProperty]
     private ThemeVariant _theme;
+    public ThemeVariant Theme
+    {
+        get => _theme;
+        set => SetProperty(ref _theme, value);
+    }
 
-    [ObservableProperty]
-    [property: JsonIgnore] // comes from registry
     private bool _isAutoStartEnabled;
 
-    [ObservableProperty]
+    [JsonIgnore] // comes from registry
+    public bool IsAutoStartEnabled
+    {
+        get => _isAutoStartEnabled;
+        set => SetProperty(ref _isAutoStartEnabled, value);
+    }
+
     private bool _isAutoUpdateEnabled = true;
+    public bool IsAutoUpdateEnabled
+    {
+        get => _isAutoUpdateEnabled;
+        set => SetProperty(ref _isAutoUpdateEnabled, value);
+    }
 
-    [ObservableProperty]
     private bool _isDefaultToDayConfigurationEnabled;
+    public bool IsDefaultToDayConfigurationEnabled
+    {
+        get => _isDefaultToDayConfigurationEnabled;
+        set => SetProperty(ref _isDefaultToDayConfigurationEnabled, value);
+    }
 
-    [ObservableProperty]
     private bool _isConfigurationSmoothingEnabled = true;
+    public bool IsConfigurationSmoothingEnabled
+    {
+        get => _isConfigurationSmoothingEnabled;
+        set => SetProperty(ref _isConfigurationSmoothingEnabled, value);
+    }
 
-    [ObservableProperty]
     private bool _isPauseWhenFullScreenEnabled;
+    public bool IsPauseWhenFullScreenEnabled
+    {
+        get => _isPauseWhenFullScreenEnabled;
+        set => SetProperty(ref _isPauseWhenFullScreenEnabled, value);
+    }
 
-    [ObservableProperty]
     private bool _isGammaPollingEnabled;
+    public bool IsGammaPollingEnabled
+    {
+        get => _isGammaPollingEnabled;
+        set => SetProperty(ref _isGammaPollingEnabled, value);
+    }
 
     // Application whitelist
 
-    [ObservableProperty]
     private bool _isApplicationWhitelistEnabled;
+    public bool IsApplicationWhitelistEnabled
+    {
+        get => _isApplicationWhitelistEnabled;
+        set => SetProperty(ref _isApplicationWhitelistEnabled, value);
+    }
 
-    [ObservableProperty]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(ExternalApplication))]
     private IReadOnlyList<ExternalApplication>? _whitelistedApplications;
+    public IReadOnlyList<ExternalApplication>? WhitelistedApplications
+    {
+        get => _whitelistedApplications;
+        set => SetProperty(ref _whitelistedApplications, value);
+    }
 
     // HotKeys
 
-    [ObservableProperty]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(HotKey))]
     private HotKey _toggleHotKey;
+    public HotKey ToggleHotKey
+    {
+        get => _toggleHotKey;
+        set => SetProperty(ref _toggleHotKey, value);
+    }
 
-    [ObservableProperty]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(HotKey))]
     private HotKey _increaseTemperatureOffsetHotKey;
+    public HotKey IncreaseTemperatureOffsetHotKey
+    {
+        get => _increaseTemperatureOffsetHotKey;
+        set => SetProperty(ref _increaseTemperatureOffsetHotKey, value);
+    }
 
-    [ObservableProperty]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(HotKey))]
     private HotKey _decreaseTemperatureOffsetHotKey;
+    public HotKey DecreaseTemperatureOffsetHotKey
+    {
+        get => _decreaseTemperatureOffsetHotKey;
+        set => SetProperty(ref _decreaseTemperatureOffsetHotKey, value);
+    }
 
-    [ObservableProperty]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(HotKey))]
     private HotKey _increaseBrightnessOffsetHotKey;
+    public HotKey IncreaseBrightnessOffsetHotKey
+    {
+        get => _increaseBrightnessOffsetHotKey;
+        set => SetProperty(ref _increaseBrightnessOffsetHotKey, value);
+    }
 
-    [ObservableProperty]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(HotKey))]
     private HotKey _decreaseBrightnessOffsetHotKey;
+    public HotKey DecreaseBrightnessOffsetHotKey
+    {
+        get => _decreaseBrightnessOffsetHotKey;
+        set => SetProperty(ref _decreaseBrightnessOffsetHotKey, value);
+    }
 
-    [ObservableProperty]
-    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(HotKey))]
     private HotKey _resetConfigurationOffsetHotKey;
+    public HotKey ResetConfigurationOffsetHotKey
+    {
+        get => _resetConfigurationOffsetHotKey;
+        set => SetProperty(ref _resetConfigurationOffsetHotKey, value);
+    }
 
     public override void Reset()
     {
@@ -211,4 +314,10 @@ public partial class SettingsService
             return Path.Combine(Program.ExecutableDirPath, "Settings.json");
         }
     }
+}
+
+public partial class SettingsService
+{
+    [JsonSerializable(typeof(SettingsService))]
+    private partial class SerializerContext : JsonSerializerContext;
 }
