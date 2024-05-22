@@ -372,6 +372,9 @@ public partial class DashboardViewModel : ViewModelBase
         _updateIsPausedTimer.Start();
 
         RegisterHotKeys();
+
+        // Hack: feign property changes to refresh the tray icon
+        OnAllPropertiesChanged();
     }
 
     [RelayCommand]
