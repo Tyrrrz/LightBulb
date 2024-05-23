@@ -156,7 +156,7 @@ jobs:
 
   deploy:
     needs: release
-    
+
     strategy:
       matrix:
         rid:
@@ -187,7 +187,7 @@ jobs:
         # Change into the artifacts directory to avoid including the directory itself in the zip archive
         working-directory: LightBulb/
         run: zip -r ../LightBulb.${{ matrix.rid }}.zip .
-        
+
       - name: Create package (installer)
         run: mv LightBulb-Installer.exe LightBulb-Installer.${{ matrix.rid }}.exe
 
