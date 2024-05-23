@@ -5,6 +5,7 @@
     <ApplicationIcon>..\favicon.ico</ApplicationIcon>
     <PublishTrimmed>true</PublishTrimmed>
     <PublishAot Condition="$(RuntimeIdentifier.Contains('x64')) OR $(RuntimeIdentifier.Contains('arm64'))">true</PublishAot>
+    <OptimizationPreference>Size</OptimizationPreference>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
 
