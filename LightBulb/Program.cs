@@ -17,7 +17,7 @@ public static class Program
 
     public static string VersionString { get; } = Version.ToString(3);
 
-    public static string ExecutableDirPath { get; } = AppDomain.CurrentDomain.BaseDirectory;
+    public static string ExecutableDirPath { get; } = AppContext.BaseDirectory;
 
     public static string ExecutableFilePath { get; } =
         Path.ChangeExtension(Assembly.Location, "exe");
