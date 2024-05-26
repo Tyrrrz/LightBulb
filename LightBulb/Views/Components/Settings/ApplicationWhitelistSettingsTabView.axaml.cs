@@ -42,10 +42,25 @@ public partial class ApplicationWhitelistSettingsTabView
     private void WhitelistedApplicationsListBox_OnSelectionChanged(
         object? sender,
         SelectionChangedEventArgs args
-    ) =>
-        DataContext.WhitelistedApplications = WhitelistedApplicationsListBox
+    )
+    {
+        var applications = WhitelistedApplicationsListBox
             .SelectedItems?.Cast<ExternalApplication>()
             .ToArray();
+
+        // Don't update the view model if the list hasn't changed.
+        // This is important to avoid potential infinite loops.
+        if (
+            applications is not null
+            && DataContext.WhitelistedApplications is not null
+            && applications.SequenceEqual(DataContext.WhitelistedApplications)
+        )
+        {
+            return;
+        }
+
+        DataContext.WhitelistedApplications = applications;
+    }
 
     public void Dispose() => _eventRoot.Dispose();
 }
