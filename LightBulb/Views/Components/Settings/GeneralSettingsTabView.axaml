@@ -24,8 +24,8 @@
             Margin="0,12,0,0"
             IsSnapToTickEnabled="True"
             LargeChange="500"
-            Maximum="6600"
-            Minimum="2500"
+            Maximum="{Binding RecommendedMaximumDayTemperature}"
+            Minimum="{Binding RecommendedMinimumDayTemperature}"
             SmallChange="100"
             TickFrequency="20"
             Value="{Binding DayTemperature}" />
@@ -47,8 +47,8 @@
             Margin="0,12,0,0"
             IsSnapToTickEnabled="True"
             LargeChange="500"
-            Maximum="6600"
-            Minimum="2500"
+            Maximum="{Binding RecommendedMaximumNightTemperature}"
+            Minimum="{Binding RecommendedMinimumNightTemperature}"
             SmallChange="100"
             TickFrequency="20"
             Value="{Binding NightTemperature}" />

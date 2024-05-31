@@ -59,7 +59,7 @@ public class LostFocusUpdateBindingBehavior : Behavior<TextBox>
 
     private void OnBindingValueChanged()
     {
-        if (AssociatedObject != null)
+        if (AssociatedObject is not null)
             AssociatedObject.Text = Text;
     }
 }
