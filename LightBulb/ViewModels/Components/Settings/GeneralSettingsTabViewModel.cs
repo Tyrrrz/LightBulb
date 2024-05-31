@@ -7,6 +7,12 @@ namespace LightBulb.ViewModels.Components.Settings;
 public class GeneralSettingsTabViewModel(SettingsService settingsService)
     : SettingsTabViewModelBase(settingsService, 0, "General")
 {
+    // This value is used for slider bounds, but it's not an actual restriction
+    public double RecommendedMaximumDayTemperature => Math.Max(6600, DayTemperature);
+
+    // This value is used for slider bounds, but it's not an actual restriction
+    public double RecommendedMinimumDayTemperature => Math.Min(2500, DayTemperature);
+
     public double DayTemperature
     {
         get => SettingsService.DayConfiguration.Temperature;
@@ -25,6 +31,12 @@ public class GeneralSettingsTabViewModel(SettingsService settingsService)
                 NightTemperature = DayTemperature;
         }
     }
+
+    // This value is used for slider bounds, but it's not an actual restriction
+    public double RecommendedMaximumNightTemperature => Math.Max(6600, NightTemperature);
+
+    // This value is used for slider bounds, but it's not an actual restriction
+    public double RecommendedMinimumNightTemperature => Math.Min(2500, NightTemperature);
 
     public double NightTemperature
     {
