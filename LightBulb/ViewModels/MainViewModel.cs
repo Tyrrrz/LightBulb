@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia;
 using CommunityToolkit.Mvvm.Input;
@@ -59,6 +60,56 @@ public partial class MainViewModel(
             Environment.Exit(2);
     }
 
+    private async Task ShowUkraineSupportMessageAsync()
+    {
+        if (!settingsService.IsUkraineSupportMessageEnabled)
+            return;
+
+        var dialog = viewModelManager.CreateMessageBoxViewModel(
+            "Thank you for supporting Ukraine!",
+            """
+            As Russia wages a genocidal war against my country, I'm grateful to everyone who continues to stand with Ukraine in our fight for freedom.
+
+            Click LEARN MORE to find ways that you can help.
+            """,
+            "LEARN MORE",
+            "CLOSE"
+        );
+
+        // Disable this message in the future
+        settingsService.IsUkraineSupportMessageEnabled = false;
+        settingsService.Save();
+
+        if (await dialogManager.ShowDialogAsync(dialog) != true)
+            return;
+
+        ProcessEx.StartShellExecute("https://tyrrrz.me/ukraine?source=lightbulb");
+    }
+
+    private async Task ShowDevelopmentBuildMessageAsync()
+    {
+        if (!Program.IsDevelopmentBuild)
+            return;
+
+        // If debugging, the user is likely a developer
+        if (Debugger.IsAttached)
+            return;
+
+        var dialog = viewModelManager.CreateMessageBoxViewModel(
+            "Unstable build warning",
+            """
+            You're using a development build of the application. These builds are not thoroughly tested and may contain bugs.
+
+            Auto-updates are disabled for development builds. If you want to switch to a stable release, please download it manually.
+            """,
+            "SEE RELEASES",
+            "CLOSE"
+        );
+
+        if (await dialogManager.ShowDialogAsync(dialog) == true)
+            ProcessEx.StartShellExecute(Program.ProjectReleasesUrl);
+    }
+
     private async Task ShowGammaRangePromptAsync()
     {
         if (settingsService.IsExtendedGammaRangeUnlocked)
@@ -114,39 +165,14 @@ public partial class MainViewModel(
         await dialogManager.ShowDialogAsync(settingsDialog);
     }
 
-    private async Task ShowUkraineSupportMessageAsync()
-    {
-        if (!settingsService.IsUkraineSupportMessageEnabled)
-            return;
-
-        var dialog = viewModelManager.CreateMessageBoxViewModel(
-            "Thank you for supporting Ukraine!",
-            """
-            As Russia wages a genocidal war against my country, I'm grateful to everyone who continues to stand with Ukraine in our fight for freedom.
-
-            Click LEARN MORE to find ways that you can help.
-            """,
-            "LEARN MORE",
-            "CLOSE"
-        );
-
-        // Disable this message in the future
-        settingsService.IsUkraineSupportMessageEnabled = false;
-        settingsService.Save();
-
-        if (await dialogManager.ShowDialogAsync(dialog) != true)
-            return;
-
-        ProcessEx.StartShellExecute("https://tyrrrz.me/ukraine?source=lightbulb");
-    }
-
     [RelayCommand]
     private async Task InitializeAsync()
     {
         await FinalizePendingUpdateAsync();
+        await ShowUkraineSupportMessageAsync();
+        await ShowDevelopmentBuildMessageAsync();
         await ShowGammaRangePromptAsync();
         await ShowFirstTimeExperienceMessageAsync();
-        await ShowUkraineSupportMessageAsync();
 
         _checkForUpdatesTimer.Start();
     }
