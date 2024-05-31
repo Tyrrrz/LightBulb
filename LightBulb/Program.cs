@@ -17,12 +17,16 @@ public static class Program
 
     public static string VersionString { get; } = Version.ToString(3);
 
+    public static bool IsDevelopmentBuild { get; } = Version.Major is <= 0 or >= 999;
+
     public static string ExecutableDirPath { get; } = AppContext.BaseDirectory;
 
     public static string ExecutableFilePath { get; } =
         Path.ChangeExtension(Assembly.Location, "exe");
 
     public static string ProjectUrl { get; } = "https://github.com/Tyrrrz/LightBulb";
+
+    public static string ProjectReleasesUrl { get; } = $"{ProjectUrl}/releases";
 
     public static AppBuilder BuildAvaloniaApp() =>
         AppBuilder.Configure<App>().UsePlatformDetect().LogToTrace();
