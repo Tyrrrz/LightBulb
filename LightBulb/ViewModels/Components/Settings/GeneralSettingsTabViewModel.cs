@@ -7,25 +7,6 @@ namespace LightBulb.ViewModels.Components.Settings;
 public class GeneralSettingsTabViewModel(SettingsService settingsService)
     : SettingsTabViewModelBase(settingsService, 0, "General")
 {
-    public double NightTemperature
-    {
-        get => SettingsService.NightConfiguration.Temperature;
-        set
-        {
-            SettingsService.NightConfiguration = new ColorConfiguration(
-                Math.Clamp(
-                    value,
-                    SettingsService.MinimumTemperature,
-                    SettingsService.MaximumTemperature
-                ),
-                NightBrightness
-            );
-
-            if (NightTemperature > DayTemperature)
-                DayTemperature = NightTemperature;
-        }
-    }
-
     public double DayTemperature
     {
         get => SettingsService.DayConfiguration.Temperature;
@@ -45,22 +26,22 @@ public class GeneralSettingsTabViewModel(SettingsService settingsService)
         }
     }
 
-    public double NightBrightness
+    public double NightTemperature
     {
-        get => SettingsService.NightConfiguration.Brightness;
+        get => SettingsService.NightConfiguration.Temperature;
         set
         {
             SettingsService.NightConfiguration = new ColorConfiguration(
-                NightTemperature,
                 Math.Clamp(
                     value,
-                    SettingsService.MinimumBrightness,
-                    SettingsService.MaximumBrightness
-                )
+                    SettingsService.MinimumTemperature,
+                    SettingsService.MaximumTemperature
+                ),
+                NightBrightness
             );
 
-            if (NightBrightness > DayBrightness)
-                DayBrightness = NightBrightness;
+            if (NightTemperature > DayTemperature)
+                DayTemperature = NightTemperature;
         }
     }
 
@@ -80,6 +61,25 @@ public class GeneralSettingsTabViewModel(SettingsService settingsService)
 
             if (DayBrightness < NightBrightness)
                 NightBrightness = DayBrightness;
+        }
+    }
+
+    public double NightBrightness
+    {
+        get => SettingsService.NightConfiguration.Brightness;
+        set
+        {
+            SettingsService.NightConfiguration = new ColorConfiguration(
+                NightTemperature,
+                Math.Clamp(
+                    value,
+                    SettingsService.MinimumBrightness,
+                    SettingsService.MaximumBrightness
+                )
+            );
+
+            if (NightBrightness > DayBrightness)
+                DayBrightness = NightBrightness;
         }
     }
 

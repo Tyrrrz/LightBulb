@@ -67,18 +67,18 @@ public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerC
 
     public double MaximumBrightness => 1;
 
-    private ColorConfiguration _nightConfiguration = new(3900, 0.85);
-    public ColorConfiguration NightConfiguration
-    {
-        get => _nightConfiguration;
-        set => SetProperty(ref _nightConfiguration, value);
-    }
-
     private ColorConfiguration _dayConfiguration = new(6600, 1);
     public ColorConfiguration DayConfiguration
     {
         get => _dayConfiguration;
         set => SetProperty(ref _dayConfiguration, value);
+    }
+
+    private ColorConfiguration _nightConfiguration = new(3900, 0.85);
+    public ColorConfiguration NightConfiguration
+    {
+        get => _nightConfiguration;
+        set => SetProperty(ref _nightConfiguration, value);
     }
 
     private TimeSpan _configurationTransitionDuration = TimeSpan.FromMinutes(40);
