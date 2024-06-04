@@ -25,9 +25,16 @@ public partial class MainViewModel(
             TimeSpan.FromHours(3),
             async () =>
             {
-                var updateVersion = await updateService.CheckForUpdatesAsync();
-                if (updateVersion is not null)
-                    await updateService.PrepareUpdateAsync(updateVersion);
+                try
+                {
+                    var updateVersion = await updateService.CheckForUpdatesAsync();
+                    if (updateVersion is not null)
+                        await updateService.PrepareUpdateAsync(updateVersion);
+                }
+                catch
+                {
+                    // Failure to update shouldn't crash the application
+                }
             }
         );
 
