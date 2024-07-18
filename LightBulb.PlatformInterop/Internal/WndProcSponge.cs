@@ -37,7 +37,7 @@ internal partial class WndProcSponge(
         if (!NativeMethods.DestroyWindow(windowHandle))
             Debug.WriteLine($"Failed to destroy window #{windowHandle}.");
 
-        if (!NativeMethods.UnregisterClass(ClassName, NativeModule.Handle))
+        if (!NativeMethods.UnregisterClass(ClassName, NativeModule.CurrentHandle))
             Debug.WriteLine($"Failed to unregister window class #{classHandle}.");
     }
 }
@@ -71,7 +71,7 @@ internal partial class WndProcSponge
         {
             ClassName = ClassName,
             WndProc = wndProc,
-            Instance = NativeModule.Handle
+            Instance = NativeModule.CurrentHandle
         };
 
         var classHandle = NativeMethods.RegisterClassEx(ref classInfo);
@@ -99,7 +99,7 @@ internal partial class WndProcSponge
         if (windowHandle == 0)
         {
             Debug.WriteLine("Failed to create window.");
-            NativeMethods.UnregisterClass(ClassName, NativeModule.Handle);
+            NativeMethods.UnregisterClass(ClassName, NativeModule.CurrentHandle);
             return null;
         }
 

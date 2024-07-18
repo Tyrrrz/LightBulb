@@ -4,5 +4,5 @@ namespace LightBulb.PlatformInterop.Internal;
 
 internal static class NativeModule
 {
-    public static nint Handle { get; } = Marshal.GetHINSTANCE(typeof(NativeModule).Module);
+    public static nint CurrentHandle { get; } = Marshal.GetHINSTANCE(typeof(NativeModule).Module);
 }
