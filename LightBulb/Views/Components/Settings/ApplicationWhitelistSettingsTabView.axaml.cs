@@ -30,7 +30,8 @@ public partial class ApplicationWhitelistSettingsTabView
                 () =>
                     WhitelistedApplicationsListBox.SelectedItems = new AvaloniaList<object>(
                         DataContext.WhitelistedApplications ?? []
-                    )
+                    ),
+                true
             )
         );
     }

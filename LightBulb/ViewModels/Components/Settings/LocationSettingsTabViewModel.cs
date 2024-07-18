@@ -29,7 +29,7 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
         : base(settingsService, 1, "Location")
     {
         _eventRoot.Add(
-            this.WatchProperty(o => o.Location, () => LocationQuery = Location?.ToString())
+            this.WatchProperty(o => o.Location, () => LocationQuery = Location?.ToString(), true)
         );
     }
 
@@ -118,9 +118,7 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
     protected override void Dispose(bool disposing)
     {
         if (disposing)
-        {
             _eventRoot.Dispose();
-        }
 
         base.Dispose(disposing);
     }

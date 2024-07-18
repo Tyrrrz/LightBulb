@@ -13,15 +13,11 @@ internal static class NotifyPropertyChangedExtensions
         this TOwner owner,
         Expression<Func<TOwner, TProperty>> propertyExpression,
         Action callback,
-        bool watchInitialValue = true
+        bool watchInitialValue = false
     )
         where TOwner : INotifyPropertyChanged
     {
-        var memberExpression =
-            propertyExpression.Body as MemberExpression
-            // Property value might be boxed inside a conversion expression, if the types don't match
-            ?? (propertyExpression.Body as UnaryExpression)?.Operand as MemberExpression;
-
+        var memberExpression = propertyExpression.Body as MemberExpression;
         if (memberExpression?.Member is not PropertyInfo property)
             throw new ArgumentException("Provided expression must reference a property.");
 
@@ -48,21 +44,51 @@ internal static class NotifyPropertyChangedExtensions
         this TOwner owner,
         IReadOnlyList<Expression<Func<TOwner, object?>>> propertyExpressions,
         Action callback,
-        bool watchInitialValue = true
+        bool watchInitialValue = false
     )
         where TOwner : INotifyPropertyChanged
     {
-        var watchers = propertyExpressions
-            .Select(x => WatchProperty(owner, x, callback, watchInitialValue))
+        var properties = propertyExpressions
+            .Select(expression =>
+            {
+                var memberExpression =
+                    expression.Body as MemberExpression
+                    // Because the expression is typed to return an object, the compiler will
+                    // implicitly wrap it in a conversion unary expression if it's of any other type.
+                    ?? (expression.Body as UnaryExpression)?.Operand as MemberExpression;
+
+                if (memberExpression?.Member is not PropertyInfo property)
+                    throw new ArgumentException("Provided expression must reference a property.");
+
+                return property;
+            })
             .ToArray();
 
-        return Disposable.Create(() => watchers.DisposeAll());
+        void OnPropertyChanged(object? sender, PropertyChangedEventArgs args)
+        {
+            if (
+                string.IsNullOrWhiteSpace(args.PropertyName)
+                || properties.Any(p =>
+                    string.Equals(args.PropertyName, p.Name, StringComparison.Ordinal)
+                )
+            )
+            {
+                callback();
+            }
+        }
+
+        owner.PropertyChanged += OnPropertyChanged;
+
+        if (watchInitialValue)
+            callback();
+
+        return Disposable.Create(() => owner.PropertyChanged -= OnPropertyChanged);
     }
 
     public static IDisposable WatchAllProperties<TOwner>(
         this TOwner owner,
         Action callback,
-        bool watchInitialValues = true
+        bool watchInitialValues = false
     )
         where TOwner : INotifyPropertyChanged
     {

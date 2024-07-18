@@ -67,9 +67,7 @@ public partial class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewM
     protected override void Dispose(bool disposing)
     {
         if (disposing)
-        {
             _eventRoot.Dispose();
-        }
 
         base.Dispose(disposing);
     }

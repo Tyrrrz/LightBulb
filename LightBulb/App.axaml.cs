@@ -74,8 +74,7 @@ public class App : Application, IDisposable
                     };
 
                     InitializeTheme();
-                },
-                false
+                }
             )
         );
 
@@ -105,8 +104,7 @@ public class App : Application, IDisposable
                     }
                     // Ignore exceptions when the application is shutting down
                     catch (OperationCanceledException) { }
-                },
-                false
+                }
             )
         );
     }
