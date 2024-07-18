@@ -207,6 +207,13 @@ public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerC
 
     // HotKeys
 
+    private HotKey _focusWindowHotKey;
+    public HotKey FocusWindowHotKey
+    {
+        get => _focusWindowHotKey;
+        set => SetProperty(ref _focusWindowHotKey, value);
+    }
+
     private HotKey _toggleHotKey;
     public HotKey ToggleHotKey
     {

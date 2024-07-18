@@ -6,6 +6,12 @@ namespace LightBulb.ViewModels.Components.Settings;
 public class HotKeySettingsTabViewModel(SettingsService settingsService)
     : SettingsTabViewModelBase(settingsService, 4, "Hotkeys")
 {
+    public HotKey FocusWindowHotKey
+    {
+        get => SettingsService.FocusWindowHotKey;
+        set => SettingsService.FocusWindowHotKey = value;
+    }
+
     public HotKey ToggleHotKey
     {
         get => SettingsService.ToggleHotKey;
