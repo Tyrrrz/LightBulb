@@ -8,7 +8,6 @@ internal readonly record struct WndClassEx
     public WndClassEx()
     {
         Size = (uint)Marshal.SizeOf(this);
-        Instance = Marshal.GetHINSTANCE(typeof(WndClassEx).Module);
     }
 
     public uint Size { get; }
@@ -16,7 +15,7 @@ internal readonly record struct WndClassEx
     public required WndProc WndProc { get; init; }
     public int ClassExtra { get; init; }
     public int WindowExtra { get; init; }
-    public nint Instance { get; }
+    public nint Instance { get; init; }
     public nint Icon { get; init; }
     public nint Cursor { get; init; }
     public nint Background { get; init; }

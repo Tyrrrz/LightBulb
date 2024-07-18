@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Avalonia;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Core;
@@ -100,6 +101,7 @@ public partial class DashboardViewModel : ViewModelBase
             // Re-register hotkeys when they get updated
             settingsService.WatchProperties(
                 [
+                    o => o.FocusWindowHotKey,
                     o => o.ToggleHotKey,
                     o => o.IncreaseTemperatureOffsetHotKey,
                     o => o.DecreaseTemperatureOffsetHotKey,
@@ -195,6 +197,14 @@ public partial class DashboardViewModel : ViewModelBase
     private void RegisterHotKeys()
     {
         _hotKeyService.UnregisterAllHotKeys();
+
+        if (_settingsService.FocusWindowHotKey != HotKey.None)
+        {
+            _hotKeyService.RegisterHotKey(
+                _settingsService.FocusWindowHotKey,
+                () => Application.Current?.TryFocusMainWindow()
+            );
+        }
 
         if (_settingsService.ToggleHotKey != HotKey.None)
         {
