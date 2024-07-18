@@ -194,9 +194,7 @@ public partial class MainViewModel(
     protected override void Dispose(bool disposing)
     {
         if (disposing)
-        {
             _checkForUpdatesTimer.Dispose();
-        }
 
         base.Dispose(disposing);
     }

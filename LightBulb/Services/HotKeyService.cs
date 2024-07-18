@@ -15,7 +15,7 @@ public class HotKeyService : IDisposable
 
     public void RegisterHotKey(HotKey hotKey, Action callback)
     {
-        // Convert WPF key/modifiers to Windows API virtual key/modifiers
+        // Convert Avalonia key/modifiers to Windows API virtual key/modifiers
         var virtualKey = KeyInterop.VirtualKeyFromKey(hotKey.Key.ToQwertyKey());
         var modifiers = (int)hotKey.Modifiers;
 

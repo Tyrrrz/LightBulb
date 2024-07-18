@@ -41,9 +41,7 @@ public abstract partial class SettingsTabViewModelBase : ViewModelBase
     protected override void Dispose(bool disposing)
     {
         if (disposing)
-        {
             _eventRoot.Dispose();
-        }
 
         base.Dispose(disposing);
     }

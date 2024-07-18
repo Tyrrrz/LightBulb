@@ -74,8 +74,7 @@ public class App : Application, IDisposable
                     };
 
                     InitializeTheme();
-                },
-                false
+                }
             )
         );
 
@@ -95,13 +94,17 @@ public class App : Application, IDisposable
                         + Environment.NewLine
                         + (_mainViewModel.Dashboard.IsActive ? status : "Disabled");
 
-                    Dispatcher.UIThread.Invoke(() =>
+                    try
                     {
-                        if (TrayIcon.GetIcons(this)?.FirstOrDefault() is { } trayIcon)
-                            trayIcon.ToolTipText = tooltip;
-                    });
-                },
-                false
+                        Dispatcher.UIThread.Invoke(() =>
+                        {
+                            if (TrayIcon.GetIcons(this)?.FirstOrDefault() is { } trayIcon)
+                                trayIcon.ToolTipText = tooltip;
+                        });
+                    }
+                    // Ignore exceptions when the application is shutting down
+                    catch (OperationCanceledException) { }
+                }
             )
         );
     }
