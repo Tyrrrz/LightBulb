@@ -119,7 +119,10 @@ public partial class MainViewModel(
 
     private async Task ShowGammaRangePromptAsync()
     {
-        if (settingsService.IsExtendedGammaRangeUnlocked)
+        if (
+            settingsService.IsExtendedGammaRangeUnlocked
+            || settingsService.IsGammaRangePromptDisabled
+        )
             return;
 
         var dialog = viewModelManager.CreateMessageBoxViewModel(
@@ -133,9 +136,17 @@ public partial class MainViewModel(
             "FIX",
             "CLOSE"
         );
+        dialog.IsCheckboxVisible = true;
 
         if (await dialogManager.ShowDialogAsync(dialog) != true)
+        {
+            if (dialog.IsCheckboxChecked)
+            {
+                settingsService.IsGammaRangePromptDisabled = true;
+                settingsService.Save();
+            }
             return;
+        }
 
         settingsService.IsExtendedGammaRangeUnlocked = true;
         settingsService.Save();

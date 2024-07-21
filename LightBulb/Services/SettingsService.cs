@@ -57,6 +57,13 @@ public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerC
         set => SetProperty(ref _isExtendedGammaRangeUnlocked, value);
     }
 
+    private bool _isGammaRangePromptDisabled;
+    public bool IsGammaRangePromptDisabled
+    {
+        get => _isGammaRangePromptDisabled;
+        set => SetProperty(ref _isGammaRangePromptDisabled, value);
+    }
+
     // General
 
     public double MinimumTemperature => 500;

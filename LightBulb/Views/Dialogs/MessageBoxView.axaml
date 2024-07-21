@@ -31,6 +31,19 @@
             </ScrollViewer>
         </Border>
 
+        <CheckBox
+            Grid.Row="2"
+            Margin = "16"
+            IsVisible="{Binding IsCheckboxVisible}"
+            IsChecked="{Binding IsCheckboxChecked}">
+            <CheckBox.Styles>
+                <Style Selector="CheckBox">
+                    <Setter Property="FontSize" Value="12" />
+                </Style>
+            </CheckBox.Styles>
+            Don't show again
+        </CheckBox>
+        
         <UniformGrid
             Grid.Row="2"
             Margin="16"
