@@ -45,6 +45,10 @@
             <Setter Property="DialogMargin" Value="0" />
         </Style>
 
+        <Style Selector="dialogHostAvalonia|DialogOverlayPopupHost">
+            <Setter Property="Background" Value="{DynamicResource MaterialPaperBrush}" />
+        </Style>
+
         <!--  Radio button  -->
         <Style Selector="RadioButton">
             <Setter Property="FontSize" Value="14" />
