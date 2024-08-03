@@ -21,6 +21,20 @@ public partial class MessageBoxViewModel : DialogViewModelBase
     [NotifyPropertyChangedFor(nameof(ButtonsCount))]
     private string? _cancelButtonText = "Cancel";
 
+    private bool _isCheckboxVisible;
+    public bool IsCheckboxVisible
+    {
+        get => _isCheckboxVisible;
+        set => SetProperty(ref _isCheckboxVisible, value);
+    }
+
+    private bool _isCheckboxChecked;
+    public bool IsCheckboxChecked
+    {
+        get => _isCheckboxChecked;
+        set => SetProperty(ref _isCheckboxChecked, value);
+    }
+
     public bool IsDefaultButtonVisible => !string.IsNullOrWhiteSpace(DefaultButtonText);
 
     public bool IsCancelButtonVisible => !string.IsNullOrWhiteSpace(CancelButtonText);
