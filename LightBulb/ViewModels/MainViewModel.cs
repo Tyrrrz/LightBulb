@@ -117,7 +117,7 @@ public partial class MainViewModel(
             ProcessEx.StartShellExecute(Program.ProjectReleasesUrl);
     }
 
-    private async Task ShowGammaRangePromptAsync()
+    private async Task ShowGammaRangeMessageAsync()
     {
         if (settingsService.IsExtendedGammaRangeUnlocked)
             return;
@@ -176,9 +176,10 @@ public partial class MainViewModel(
     private async Task InitializeAsync()
     {
         await FinalizePendingUpdateAsync();
+
         await ShowUkraineSupportMessageAsync();
         await ShowDevelopmentBuildMessageAsync();
-        await ShowGammaRangePromptAsync();
+        await ShowGammaRangeMessageAsync();
         await ShowFirstTimeExperienceMessageAsync();
 
         _checkForUpdatesTimer.Start();
