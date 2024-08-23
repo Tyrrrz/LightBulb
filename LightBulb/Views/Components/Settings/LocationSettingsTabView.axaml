@@ -2,7 +2,6 @@
     x:Class="LightBulb.Views.Components.Settings.LocationSettingsTabView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:behaviors="clr-namespace:LightBulb.Behaviors"
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
@@ -36,11 +35,8 @@
                     MinWidth="24"
                     HorizontalAlignment="Right"
                     DockPanel.Dock="Right"
-                    Theme="{DynamicResource CompactTextBox}">
-                    <Interaction.Behaviors>
-                        <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
-                    </Interaction.Behaviors>
-                </TextBox>
+                    Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                    Theme="{DynamicResource CompactTextBox}" />
             </DockPanel>
             <Slider
                 Margin="0,12,0,0"
@@ -57,11 +53,8 @@
                     MinWidth="24"
                     HorizontalAlignment="Right"
                     DockPanel.Dock="Right"
-                    Theme="{DynamicResource CompactTextBox}">
-                    <Interaction.Behaviors>
-                        <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}}" />
-                    </Interaction.Behaviors>
-                </TextBox>
+                    Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                    Theme="{DynamicResource CompactTextBox}" />
             </DockPanel>
             <Slider
                 Margin="0,12,0,0"

@@ -2,7 +2,6 @@
     x:Class="LightBulb.Views.Components.Settings.GeneralSettingsTabView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:behaviors="clr-namespace:LightBulb.Behaviors"
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
     x:DataType="settings:GeneralSettingsTabViewModel">
@@ -14,11 +13,8 @@
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                Theme="{DynamicResource CompactTextBox}">
-                <Interaction.Behaviors>
-                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
-                </Interaction.Behaviors>
-            </TextBox>
+                Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                Theme="{DynamicResource CompactTextBox}" />
         </DockPanel>
         <Slider
             Margin="0,12,0,0"
@@ -37,11 +33,8 @@
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                Theme="{DynamicResource CompactTextBox}">
-                <Interaction.Behaviors>
-                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}}" />
-                </Interaction.Behaviors>
-            </TextBox>
+                Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                Theme="{DynamicResource CompactTextBox}" />
         </DockPanel>
         <Slider
             Margin="0,12,0,0"
@@ -73,11 +66,8 @@
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                Theme="{DynamicResource CompactTextBox}">
-                <Interaction.Behaviors>
-                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
-                </Interaction.Behaviors>
-            </TextBox>
+                Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                Theme="{DynamicResource CompactTextBox}" />
         </DockPanel>
         <Slider
             Margin="0,12,0,0"
@@ -109,11 +99,8 @@
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                Theme="{DynamicResource CompactTextBox}">
-                <Interaction.Behaviors>
-                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
-                </Interaction.Behaviors>
-            </TextBox>
+                Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                Theme="{DynamicResource CompactTextBox}" />
         </DockPanel>
         <Slider
             Margin="0,12,0,0"
@@ -132,11 +119,8 @@
                 MinWidth="48"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                Theme="{DynamicResource CompactTextBox}">
-                <Interaction.Behaviors>
-                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}}" />
-                </Interaction.Behaviors>
-            </TextBox>
+                Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                Theme="{DynamicResource CompactTextBox}" />
         </DockPanel>
         <Slider
             Margin="0,12,0,0"
@@ -153,11 +137,8 @@
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
-                Theme="{DynamicResource CompactTextBox}">
-                <Interaction.Behaviors>
-                    <behaviors:LostFocusUpdateBindingBehavior Text="{Binding ConfigurationTransitionOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}}" />
-                </Interaction.Behaviors>
-            </TextBox>
+                Text="{Binding ConfigurationTransitionOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                Theme="{DynamicResource CompactTextBox}" />
         </DockPanel>
         <Slider
             Margin="0,12,0,0"

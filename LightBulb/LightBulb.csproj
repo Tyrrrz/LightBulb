@@ -21,7 +21,6 @@
     <PackageReference Include="Avalonia" Version="11.1.1" />
     <PackageReference Include="Avalonia.Desktop" Version="11.1.1" />
     <PackageReference Include="Avalonia.Diagnostics" Version="11.1.1" Condition="'$(Configuration)' == 'Debug'" />
-    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.1.0" />
     <PackageReference Include="Cogwheel" Version="2.1.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="CSharpier.MsBuild" Version="0.28.2" PrivateAssets="all" />
