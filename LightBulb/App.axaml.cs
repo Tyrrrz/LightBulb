@@ -187,8 +187,11 @@ public class App : Application, IDisposable
     private void DisableTemporarily1MinuteMenuItem_OnClick(object? sender, EventArgs args) =>
         _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(1));
 
-    private void ExitMenuItem_OnClick(object? sender, EventArgs args) =>
-        ApplicationLifetime?.TryShutdown();
+    private void ExitMenuItem_OnClick(object? sender, EventArgs args)
+    {
+        if (ApplicationLifetime?.TryShutdown() != true)
+            Environment.Exit(0);
+    }
 
     public void Dispose()
     {
