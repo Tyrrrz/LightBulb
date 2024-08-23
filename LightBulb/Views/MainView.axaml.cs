@@ -19,8 +19,12 @@ public partial class MainView : Window<MainViewModel>
 
     private void Window_OnClosing(object sender, WindowClosingEventArgs args)
     {
-        args.Cancel = true;
-        Hide();
+        // When the user tries to close the window, hide it instead
+        if (args.CloseReason == WindowCloseReason.WindowClosing)
+        {
+            args.Cancel = true;
+            Hide();
+        }
     }
 
     private void DialogHost_OnLoaded(object? sender, RoutedEventArgs args) =>
