@@ -22,6 +22,6 @@ public partial class StartOptions
             IsInitiallyHidden = commandLineArgs.Contains(
                 IsInitiallyHiddenArgument,
                 StringComparer.OrdinalIgnoreCase
-            )
+            ),
         };
 }

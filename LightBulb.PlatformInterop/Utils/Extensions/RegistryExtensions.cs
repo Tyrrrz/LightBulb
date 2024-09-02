@@ -19,6 +19,6 @@ internal static class RegistryExtensions
             RegistryHive.Users => "HKU",
             RegistryHive.PerformanceData => "HKPD",
             RegistryHive.CurrentConfig => "HKCC",
-            _ => throw new ArgumentOutOfRangeException(nameof(hive))
+            _ => throw new ArgumentOutOfRangeException(nameof(hive)),
         };
 }

@@ -19,7 +19,7 @@ public partial class DeviceContext(nint handle) : NativeResource(handle)
         {
             Red = new ushort[256],
             Green = new ushort[256],
-            Blue = new ushort[256]
+            Blue = new ushort[256],
         };
 
         // Create linear ramps for each color

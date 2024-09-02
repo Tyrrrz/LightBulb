@@ -25,7 +25,7 @@ public partial class ViewManager
             GeneralSettingsTabViewModel => new GeneralSettingsTabView(),
             HotKeySettingsTabViewModel => new HotKeySettingsTabView(),
             LocationSettingsTabViewModel => new LocationSettingsTabView(),
-            _ => null
+            _ => null,
         };
 
     public Control? TryBindView(ViewModelBase viewModel)

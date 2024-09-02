@@ -71,7 +71,7 @@ internal partial class WndProcSponge
         {
             ClassName = ClassName,
             WndProc = wndProc,
-            Instance = NativeModule.CurrentHandle
+            Instance = NativeModule.CurrentHandle,
         };
 
         var classHandle = NativeMethods.RegisterClassEx(ref classInfo);

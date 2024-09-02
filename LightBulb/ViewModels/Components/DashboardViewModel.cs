@@ -107,7 +107,7 @@ public partial class DashboardViewModel : ViewModelBase
                     o => o.DecreaseTemperatureOffsetHotKey,
                     o => o.IncreaseBrightnessOffsetHotKey,
                     o => o.DecreaseBrightnessOffsetHotKey,
-                    o => o.ResetConfigurationOffsetHotKey
+                    o => o.ResetConfigurationOffsetHotKey,
                 ],
                 RegisterHotKeys
             )
@@ -173,9 +173,8 @@ public partial class DashboardViewModel : ViewModelBase
                     _settingsService.MinimumBrightness,
                     _settingsService.MaximumBrightness
                 )
-            : _settingsService.IsDefaultToDayConfigurationEnabled
-                ? _settingsService.DayConfiguration
-                : ColorConfiguration.Default;
+        : _settingsService.IsDefaultToDayConfigurationEnabled ? _settingsService.DayConfiguration
+        : ColorConfiguration.Default;
 
     public ColorConfiguration AdjustedDayConfiguration =>
         _settingsService.DayConfiguration.WithOffset(TemperatureOffset, BrightnessOffset);
@@ -191,7 +190,7 @@ public partial class DashboardViewModel : ViewModelBase
             _ when IsPaused => CycleState.Paused,
             _ when CurrentConfiguration == AdjustedDayConfiguration => CycleState.Day,
             _ when CurrentConfiguration == AdjustedNightConfiguration => CycleState.Night,
-            _ => CycleState.Transition
+            _ => CycleState.Transition,
         };
 
     private void RegisterHotKeys()

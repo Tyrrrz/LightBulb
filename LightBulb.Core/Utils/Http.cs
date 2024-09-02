@@ -17,8 +17,8 @@ public static class Http
                     new ProductInfoHeaderValue(
                         "LightBulb",
                         Assembly.GetExecutingAssembly().GetName().Version?.ToString()
-                    )
-                }
-            }
+                    ),
+                },
+            },
         };
 }

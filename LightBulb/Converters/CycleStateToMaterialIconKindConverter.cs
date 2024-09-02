@@ -18,7 +18,8 @@ public class CycleStateToMaterialIconKindConverter : IValueConverter
             CycleState.Day => MaterialIconKind.WhiteBalanceSunny,
             CycleState.Night => MaterialIconKind.MoonAndStars,
             CycleState.Transition => MaterialIconKind.Sync,
-            _ => MaterialIconKind.QuestionMark // shouldn't happen
+            // Shouldn't happen
+            _ => MaterialIconKind.QuestionMark,
         };
 
     public object ConvertBack(

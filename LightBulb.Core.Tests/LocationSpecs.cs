@@ -39,7 +39,7 @@ public class LocationSpecs
                 new GeoLocation(69.6489, 18.9551),
                 new DateTimeOffset(2020, 01, 03, 00, 00, 00, TimeSpan.FromHours(+1)),
                 new SolarTimes(new TimeOnly(11, 48), new TimeOnly(11, 48))
-            }
+            },
         };
 
     [Theory]
@@ -91,7 +91,7 @@ public class LocationSpecs
             { "-41.25 S, 120.9762 E", null },
             { "41.25", null },
             { "", null },
-            { null, null }
+            { null, null },
         };
 
     [Theory]

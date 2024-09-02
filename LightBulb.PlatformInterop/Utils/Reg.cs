@@ -42,10 +42,9 @@ internal static class Reg
             null => "REG_NONE",
             int => "REG_DWORD",
             string => "REG_SZ",
-            _
-                => throw new NotSupportedException(
-                    $"Unsupported registry value type '{value.GetType()}'."
-                )
+            _ => throw new NotSupportedException(
+                $"Unsupported registry value type '{value.GetType()}'."
+            ),
         };
 
         Run(["add", key, "/v", entry, "/d", value?.ToString() ?? "", "/t", entryType, "/f"], true);

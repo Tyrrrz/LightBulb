@@ -6,5 +6,5 @@ public enum CycleState
     Paused,
     Day,
     Night,
-    Transition
+    Transition,
 }
