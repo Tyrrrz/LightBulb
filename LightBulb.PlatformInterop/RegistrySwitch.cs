@@ -47,13 +47,17 @@ public class RegistrySwitch<T>(RegistryHive hive, string keyName, string entryNa
                 {
                     // Run reg.exe with elevation
                     if (value)
+                    {
                         Reg.SetValue(
                             hive.GetShortMoniker() + '\\' + keyName,
                             entryName,
                             enabledValue
                         );
+                    }
                     else
+                    {
                         Reg.DeleteValue(hive.GetShortMoniker() + '\\' + keyName, entryName);
+                    }
                 }
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Text.Json.Serialization;
 using Cogwheel;
@@ -278,8 +279,18 @@ public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerC
         base.Save();
 
         // Update values in the registry
-        _extendedGammaRangeSwitch.IsSet = IsExtendedGammaRangeUnlocked;
-        _autoStartSwitch.IsSet = IsAutoStartEnabled;
+        try
+        {
+            _extendedGammaRangeSwitch.IsSet = IsExtendedGammaRangeUnlocked;
+            _autoStartSwitch.IsSet = IsAutoStartEnabled;
+        }
+        catch (Win32Exception)
+        {
+            // This can happen if the user doesn't have the necessary permissions to update
+            // the corresponding registry keys, and privilege elevation has failed.
+            // Throwing an exception here is very messy, so we'll just ignore it.
+            // https://github.com/Tyrrrz/LightBulb/issues/335
+        }
 
         // Trigger UI updates
         OnPropertyChanged(string.Empty);
