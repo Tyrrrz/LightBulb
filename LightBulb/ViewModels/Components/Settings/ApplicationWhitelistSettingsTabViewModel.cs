@@ -1,21 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using LightBulb.Framework;
 using LightBulb.Models;
 using LightBulb.Services;
-using LightBulb.Utils;
-using LightBulb.Utils.Extensions;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
 public partial class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewModelBase
 {
     private readonly ExternalApplicationService _externalApplicationService;
-    private readonly DisposableCollector _eventRoot = new();
 
     [ObservableProperty]
-    private IReadOnlyList<ExternalApplication>? _applications;
+    private ObservableCollection<ExternalApplicationViewModel> _applications = [];
 
     public ApplicationWhitelistSettingsTabViewModel(
         SettingsService settingsService,
@@ -24,13 +24,7 @@ public partial class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewM
         : base(settingsService, 3, "Application whitelist")
     {
         _externalApplicationService = externalApplicationService;
-
-        _eventRoot.Add(
-            this.WatchProperty(
-                o => o.IsApplicationWhitelistEnabled,
-                () => RefreshApplicationsCommand.NotifyCanExecuteChanged()
-            )
-        );
+        RefreshApplications();
     }
 
     public bool IsApplicationWhitelistEnabled
@@ -39,36 +33,145 @@ public partial class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewM
         set => SettingsService.IsApplicationWhitelistEnabled = value;
     }
 
-    public IReadOnlyList<ExternalApplication>? WhitelistedApplications
+    public bool IsApplicationBlacklistEnabled
     {
-        get => SettingsService.WhitelistedApplications;
-        set => SettingsService.WhitelistedApplications = value;
+        get => SettingsService.IsApplicationBlacklistEnabled;
+        set => SettingsService.IsApplicationBlacklistEnabled = value;
     }
 
-    private bool CanRefreshApplications() => IsApplicationWhitelistEnabled;
-
-    [RelayCommand(CanExecute = nameof(CanRefreshApplications))]
+    [RelayCommand]
     private void RefreshApplications()
     {
-        var applications = new HashSet<ExternalApplication>();
+        Applications.Clear();
 
         // Add previously whitelisted applications
         // (this has to be done first to preserve references in selected applications)
-        foreach (var application in WhitelistedApplications ?? [])
-            applications.Add(application);
+        foreach (var application in SettingsService.WhitelistedApplications ?? [])
+        {
+            var externalAppVm = new ExternalApplicationViewModel(SettingsService)
+            {
+                Application = application,
+                AppExclusionType = AppExclusionType.Whitelist,
+            };
+            Applications.Add(externalAppVm);
+        }
+
+        foreach (var application in SettingsService.BlacklistedApplications ?? [])
+        {
+            // There should not be duplicates at this point, but in case there were, ignore
+            if (Applications.Any(x => x.Application == application))
+            {
+                continue;
+            }
+
+            var externalAppVm = new ExternalApplicationViewModel(SettingsService)
+            {
+                Application = application,
+                AppExclusionType = AppExclusionType.Blacklist,
+            };
+            Applications.Add(externalAppVm);
+        }
 
         // Add all running applications
         foreach (var application in _externalApplicationService.GetAllRunningApplications())
-            applications.Add(application);
+        {
+            if (Applications.Any(x => x.Application == application))
+            {
+                continue;
+            }
 
-        Applications = applications.ToArray();
+            var externalAppVm = new ExternalApplicationViewModel(SettingsService)
+            {
+                Application = application,
+                AppExclusionType = AppExclusionType.None,
+            };
+            Applications.Add(externalAppVm);
+        }
     }
+}
 
-    protected override void Dispose(bool disposing)
+public sealed class ExternalApplicationViewModel : ViewModelBase
+{
+    private readonly SettingsService _settingsService;
+
+    public ExternalApplicationViewModel(SettingsService settingsService)
     {
-        if (disposing)
-            _eventRoot.Dispose();
-
-        base.Dispose(disposing);
+        _settingsService = settingsService;
     }
+
+    public required ExternalApplication Application { get; init; }
+
+    public AppExclusionType AppExclusionType
+    {
+        get;
+        set
+        {
+            var previousValue = field;
+            if (previousValue == value)
+            {
+                return;
+            }
+
+            field = value;
+            switch (value)
+            {
+                case AppExclusionType.None when previousValue is AppExclusionType.Whitelist:
+                    RemoveFromWhitelist();
+                    break;
+                case AppExclusionType.None when previousValue is AppExclusionType.Blacklist:
+                    RemoveFromBlacklist();
+                    break;
+                case AppExclusionType.Whitelist:
+                    RemoveFromBlacklist();
+                    AddToWhitelist();
+                    break;
+                case AppExclusionType.Blacklist:
+                    RemoveFromWhitelist();
+                    AddToBlacklist();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value), value, null);
+            }
+        }
+    }
+
+    public static IReadOnlyList<AppExclusionType> AvailableExclusionTypes { get; } =
+        Enum.GetValues<AppExclusionType>();
+
+    private void RemoveFromWhitelist()
+    {
+        _settingsService.WhitelistedApplications = _settingsService
+            .WhitelistedApplications?.Except([Application])
+            .ToList();
+    }
+
+    private void RemoveFromBlacklist()
+    {
+        _settingsService.BlacklistedApplications = _settingsService
+            .BlacklistedApplications?.Except([Application])
+            .ToList();
+    }
+
+    private void AddToWhitelist()
+    {
+        _settingsService.WhitelistedApplications = _settingsService
+            .WhitelistedApplications?.Concat([Application])
+            .Distinct()
+            .ToList();
+    }
+
+    private void AddToBlacklist()
+    {
+        _settingsService.BlacklistedApplications = _settingsService
+            .BlacklistedApplications?.Concat([Application])
+            .Distinct()
+            .ToList();
+    }
+}
+
+public enum AppExclusionType
+{
+    None,
+    Whitelist,
+    Blacklist,
 }
