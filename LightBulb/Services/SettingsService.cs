@@ -19,21 +19,19 @@ namespace LightBulb.Services;
 [INotifyPropertyChanged]
 public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerContext.Default)
 {
-    private readonly RegistrySwitch<int> _extendedGammaRangeSwitch =
-        new(
-            RegistryHive.LocalMachine,
-            @"Software\Microsoft\Windows NT\CurrentVersion\ICM",
-            "GdiICMGammaRange",
-            256
-        );
+    private readonly RegistrySwitch<int> _extendedGammaRangeSwitch = new(
+        RegistryHive.LocalMachine,
+        @"Software\Microsoft\Windows NT\CurrentVersion\ICM",
+        "GdiICMGammaRange",
+        256
+    );
 
-    private readonly RegistrySwitch<string> _autoStartSwitch =
-        new(
-            RegistryHive.CurrentUser,
-            @"Software\Microsoft\Windows\CurrentVersion\Run",
-            Program.Name,
-            $"\"{Program.ExecutableFilePath}\" {StartOptions.IsInitiallyHiddenArgument}"
-        );
+    private readonly RegistrySwitch<string> _autoStartSwitch = new(
+        RegistryHive.CurrentUser,
+        @"Software\Microsoft\Windows\CurrentVersion\Run",
+        Program.Name,
+        $"\"{Program.ExecutableFilePath}\" {StartOptions.IsInitiallyHiddenArgument}"
+    );
 
     private bool _isFirstTimeExperienceEnabled = true;
     public bool IsFirstTimeExperienceEnabled
@@ -204,6 +202,22 @@ public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerC
     {
         get => _whitelistedApplications;
         set => SetProperty(ref _whitelistedApplications, value);
+    }
+
+    // Application blacklist
+
+    private bool _isApplicationBlacklistEnabled;
+    public bool IsApplicationBlacklistEnabled
+    {
+        get => _isApplicationBlacklistEnabled;
+        set => SetProperty(ref _isApplicationBlacklistEnabled, value);
+    }
+
+    private IReadOnlyList<ExternalApplication>? _blacklistedApplications;
+    public IReadOnlyList<ExternalApplication>? BlacklistedApplications
+    {
+        get => _blacklistedApplications;
+        set => SetProperty(ref _blacklistedApplications, value);
     }
 
     // HotKeys
