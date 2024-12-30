@@ -181,6 +181,9 @@ public class App : Application, IDisposable
     private void DisableTemporarily30MinutesMenuItem_OnClick(object? sender, EventArgs args) =>
         _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(30));
 
+    private void DisableTemporarily15MinutesMenuItem_OnClick(object? sender, EventArgs args) =>
+        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(15));
+
     private void DisableTemporarily5MinutesMenuItem_OnClick(object? sender, EventArgs args) =>
         _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(5));
 

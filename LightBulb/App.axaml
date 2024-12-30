@@ -178,6 +178,7 @@
                                 <NativeMenuItem Click="DisableTemporarily3HoursMenuItem_OnClick" Header="For 3 hours" />
                                 <NativeMenuItem Click="DisableTemporarily1HourMenuItem_OnClick" Header="For 1 hour" />
                                 <NativeMenuItem Click="DisableTemporarily30MinutesMenuItem_OnClick" Header="For 30 minutes" />
+                                <NativeMenuItem Click="DisableTemporarily15MinutesMenuItem_OnClick" Header="For 15 minutes" />
                                 <NativeMenuItem Click="DisableTemporarily5MinutesMenuItem_OnClick" Header="For 5 minutes" />
                                 <NativeMenuItem Click="DisableTemporarily1MinuteMenuItem_OnClick" Header="For 1 minute" />
                             </NativeMenu>
