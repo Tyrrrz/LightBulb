@@ -20,23 +20,22 @@ public partial class MainViewModel(
     UpdateService updateService
 ) : ViewModelBase
 {
-    private readonly Timer _checkForUpdatesTimer =
-        new(
-            TimeSpan.FromHours(3),
-            async () =>
+    private readonly Timer _checkForUpdatesTimer = new(
+        TimeSpan.FromHours(3),
+        async () =>
+        {
+            try
             {
-                try
-                {
-                    var updateVersion = await updateService.CheckForUpdatesAsync();
-                    if (updateVersion is not null)
-                        await updateService.PrepareUpdateAsync(updateVersion);
-                }
-                catch
-                {
-                    // Failure to update shouldn't crash the application
-                }
+                var updateVersion = await updateService.CheckForUpdatesAsync();
+                if (updateVersion is not null)
+                    await updateService.PrepareUpdateAsync(updateVersion);
             }
-        );
+            catch
+            {
+                // Failure to update shouldn't crash the application
+            }
+        }
+    );
 
     public DashboardViewModel Dashboard { get; } = viewModelManager.CreateDashboardViewModel();
 

@@ -19,21 +19,19 @@ namespace LightBulb.Services;
 [INotifyPropertyChanged]
 public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerContext.Default)
 {
-    private readonly RegistrySwitch<int> _extendedGammaRangeSwitch =
-        new(
-            RegistryHive.LocalMachine,
-            @"Software\Microsoft\Windows NT\CurrentVersion\ICM",
-            "GdiICMGammaRange",
-            256
-        );
+    private readonly RegistrySwitch<int> _extendedGammaRangeSwitch = new(
+        RegistryHive.LocalMachine,
+        @"Software\Microsoft\Windows NT\CurrentVersion\ICM",
+        "GdiICMGammaRange",
+        256
+    );
 
-    private readonly RegistrySwitch<string> _autoStartSwitch =
-        new(
-            RegistryHive.CurrentUser,
-            @"Software\Microsoft\Windows\CurrentVersion\Run",
-            Program.Name,
-            $"\"{Program.ExecutableFilePath}\" {StartOptions.IsInitiallyHiddenArgument}"
-        );
+    private readonly RegistrySwitch<string> _autoStartSwitch = new(
+        RegistryHive.CurrentUser,
+        @"Software\Microsoft\Windows\CurrentVersion\Run",
+        Program.Name,
+        $"\"{Program.ExecutableFilePath}\" {StartOptions.IsInitiallyHiddenArgument}"
+    );
 
     private bool _isFirstTimeExperienceEnabled = true;
     public bool IsFirstTimeExperienceEnabled
