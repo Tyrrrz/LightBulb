@@ -56,15 +56,6 @@ jobs:
       pull-requests: write
 
     steps:
-      # Remove label first to avoid hanging labels in case the rest of the job fails
-      - name: Remove label
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: >
-          gh pr edit ${{ github.event.pull_request.number }}
-          --repo ${{ github.event.repository.full_name }}
-          --remove-label format
-
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
@@ -115,3 +106,12 @@ jobs:
           gh pr comment ${{ github.event.pull_request.number }}
           --repo ${{ github.event.repository.full_name }}
           --body "Formatting has been verified and fixed. Please pull the latest changes to avoid conflicts."
+
+      - name: Remove label
+        if: ${{ always() }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          gh pr edit ${{ github.event.pull_request.number }}
+          --repo ${{ github.event.repository.full_name }}
+          --remove-label format
