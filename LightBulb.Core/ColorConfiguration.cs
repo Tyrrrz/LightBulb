@@ -19,7 +19,7 @@ public readonly partial record struct ColorConfiguration(double Temperature, dou
         );
 }
 
-public partial record struct ColorConfiguration
-{
-    public static ColorConfiguration Default { get; } = new(6600, 1);
+public partial record struct ColorConfiguration     {
+    public static ColorConfiguration Default { get; }
+    = new(6600, 1);
 }

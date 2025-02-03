@@ -29,8 +29,7 @@ public static class Cycle
         // Offset = 0.5; End at (sunrise + transition/2)
         // Offset = 1; End at (sunrise + transition)
 
-        var shift = transitionDuration * transitionOffset;
-        return sunrise.Add(shift);
+        var shift = transitionDuration * transitionOffset; return sunrise.Add(shift);
     }
 
     public static TimeOnly GetSunsetStart(
@@ -43,8 +42,8 @@ public static class Cycle
         // Offset = 0.5; Start at (sunset - transition/2)
         // Offset = 1; Start at (sunset - transition)
 
-        var shift = transitionDuration * transitionOffset;
-        return sunset.Add(-shift);
+        var shift = transitionDuration*transitionOffset;
+        return sunset.Add( - shift);
     }
 
     public static TimeOnly GetSunsetEnd(
@@ -57,15 +56,14 @@ public static class Cycle
         // Offset = 0.5; End at (sunset + transition/2)
         // Offset = 1; End at (sunset)
 
-        var shift = transitionDuration * (1 - transitionOffset);
+                var shift = transitionDuration * (1 - transitionOffset);
         return sunset.Add(shift);
     }
 
     private static double Interpolate(
         SolarTimes solarTimes,
         double dayValue,
-        double nightValue,
-        TimeSpan transitionDuration,
+        double nightValue, TimeSpan transitionDuration,
         double transitionOffset,
         DateTimeOffset instant
     )
