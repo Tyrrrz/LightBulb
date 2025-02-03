@@ -23,7 +23,8 @@ env:
 
 jobs:
   verify:
-    if: ${{ github.event_name != 'pull_request' || github.event.action != 'labeled' }}
+    # Don't run both jobs for the same event
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'labeled' || !contains(github.event.label.name, 'format') }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -76,7 +77,18 @@ jobs:
           -t:CSharpierFormat
           --configuration Debug
 
+      - name: Check for changes
+        id: check-for-changes
+        run: | 
+          git diff --exit-code
+          if [ $? -eq 0 ]; then
+            echo "any=false" >> $GITHUB_OUTPUT
+          else
+            echo "any=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Commit changes
+        if: ${{ fromJson(steps.check-for-changes.outputs.any) }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -86,6 +98,15 @@ jobs:
           git commit -m "Fix formatting"
           git push
 
+      - name: Leave comment
+        if: ${{ fromJson(steps.check-for-changes.outputs.any) }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          gh pr comment ${{ github.event.pull_request.number }}
+          --repo ${{ github.event.repository.full_name }}
+          --body "Formatting has been verified and fixed. Please pull the latest changes to avoid conflicts."
+
       - name: Remove label
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -93,11 +114,3 @@ jobs:
           gh pr edit ${{ github.event.pull_request.number }}
           --repo ${{ github.event.repository.full_name }}
           --remove-label format
-
-      - name: Leave comment
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: >
-          gh pr comment ${{ github.event.pull_request.number }}
-          --repo ${{ github.event.repository.full_name }}
-          --body "Formatting has been verified and fixed. Please pull the latest changes to avoid conflicts."
