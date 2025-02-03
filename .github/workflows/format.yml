@@ -79,9 +79,8 @@ jobs:
 
       - name: Check for changes
         id: check-for-changes
-        run: | 
-          git diff --exit-code
-          if [ $? -eq 0 ]; then
+        run: |
+          if git diff --exit-code > /dev/null 2>&1; then
             echo "any=false" >> $GITHUB_OUTPUT
           else
             echo "any=true" >> $GITHUB_OUTPUT
