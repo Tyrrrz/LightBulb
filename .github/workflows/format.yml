@@ -1,0 +1,102 @@
+﻿name: format
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    tags:
+      - "*"
+  pull_request:
+    branches:
+      - master
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - labeled
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  verify:
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'labeled' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Install .NET
+        uses: actions/setup-dotnet@3951f0dfe7a07e2313ec93c75700083e2005cbab # v4.3.0
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Verify formatting
+        run: >
+          dotnet build
+          -t:CSharpierFormat
+          --configuration Release
+
+  fix:
+    if: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'format') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Switch to PR branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          gh pr checkout ${{ github.event.pull_request.number }}
+          --repo ${{ github.event.repository.full_name }}
+
+      - name: Install .NET
+        uses: actions/setup-dotnet@3951f0dfe7a07e2313ec93c75700083e2005cbab # v4.3.0
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Fix formatting
+        run: >
+          dotnet build
+          -t:CSharpierFormat
+          --configuration Debug
+
+      - name: Commit changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add .
+          git commit -m "Fix formatting"
+          git push
+
+      - name: Remove label
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          gh pr edit ${{ github.event.pull_request.number }}
+          --repo ${{ github.event.repository.full_name }}
+          --remove-label format
+
+      - name: Leave comment
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          gh pr comment ${{ github.event.pull_request.number }}
+          --repo ${{ github.event.repository.full_name }}
+          --body "Formatting has been verified and fixed. Please pull the latest changes to avoid conflicts."
