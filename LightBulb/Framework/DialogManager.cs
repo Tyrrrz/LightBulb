@@ -8,11 +8,8 @@ namespace LightBulb.Framework;
 public class DialogManager : IDisposable
 {
     private readonly SemaphoreSlim _dialogLock = new(1, 1);
-
-    public async Task<T?> ShowDialogAsync<T>(DialogViewModelBase<T> dialog)
-    {
-        await _dialogLock.WaitAsync();
-        try
+    public async Task<T?> ShowDialogAsync<T>(DialogViewModelBase<T> dialog) {
+        await _dialogLock.WaitAsync(); try
         {
             await DialogHost.Show(
                 dialog,
