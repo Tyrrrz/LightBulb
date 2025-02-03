@@ -23,6 +23,7 @@ env:
 
 jobs:
   verify:
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'labeled' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -54,6 +55,9 @@ jobs:
 
     steps:
       - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Switch to PR branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >
