@@ -51,7 +51,7 @@ jobs:
     timeout-minutes: 10
 
     permissions:
-      contents: read
+      contents: write
       pull-requests: write
 
     steps:
