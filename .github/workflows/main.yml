@@ -17,6 +17,41 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
+  format:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Install .NET
+        uses: actions/setup-dotnet@3951f0dfe7a07e2313ec93c75700083e2005cbab # v4.3.0
+        with:
+          dotnet-version: 9.0.x
+
+      # Build the project separately to discern between build and format errors
+      - name: Build
+        run: >
+          dotnet build
+          -p:CSharpier_Bypass=true
+          --configuration Release
+
+      - name: Verify formatting
+        id: verify
+        run: >
+          dotnet build
+          -t:CSharpierFormat
+          --configuration Release
+          --no-restore
+
+      - name: Report issues
+        if: ${{ failure() && steps.verify.outcome == 'failure' }}
+        run: echo "::error title=Bad formatting::Formatting issues detected. Please build the solution locally to fix them."
+
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -111,6 +146,7 @@ jobs:
     if: ${{ github.ref_type == 'tag' }}
 
     needs:
+      - format
       - test
       - pack
 
