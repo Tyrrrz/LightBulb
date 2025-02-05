@@ -204,6 +204,22 @@ public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerC
         set => SetProperty(ref _whitelistedApplications, value);
     }
 
+    // Application blacklist
+
+    private bool _isApplicationBlacklistEnabled;
+    public bool IsApplicationBlacklistEnabled
+    {
+        get => _isApplicationBlacklistEnabled;
+        set => SetProperty(ref _isApplicationBlacklistEnabled, value);
+    }
+
+    private IReadOnlyList<ExternalApplication>? _blacklistedApplications;
+    public IReadOnlyList<ExternalApplication>? BlacklistedApplications
+    {
+        get => _blacklistedApplications;
+        set => SetProperty(ref _blacklistedApplications, value);
+    }
+
     // HotKeys
 
     private HotKey _focusWindowHotKey;

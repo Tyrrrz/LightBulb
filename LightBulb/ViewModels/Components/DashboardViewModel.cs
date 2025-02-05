@@ -370,7 +370,16 @@ public partial class DashboardViewModel : ViewModelBase
                 _externalApplicationService.TryGetForegroundApplication()
             );
 
-        IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
+        bool IsUpdateForcedByBlacklist() =>
+            _settingsService.IsApplicationBlacklistEnabled
+            && _settingsService.BlacklistedApplications is not null
+            && _settingsService.BlacklistedApplications.Contains(
+                _externalApplicationService.TryGetForegroundApplication()
+            );
+
+        IsPaused =
+            !IsUpdateForcedByBlacklist()
+            && (IsPausedByFullScreen() || IsPausedByWhitelistedApplication());
     }
 
     [RelayCommand]
