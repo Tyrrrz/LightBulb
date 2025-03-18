@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using JsonExtensions.Http;
@@ -115,7 +114,7 @@ public partial record struct GeoLocation
 
     public static async Task<GeoLocation> SearchAsync(string query)
     {
-        var queryEncoded = WebUtility.UrlEncode(query);
+        var queryEncoded = Uri.EscapeDataString(query);
 
         var url = $"https://nominatim.openstreetmap.org/search?q={queryEncoded}&format=json";
         var json = await Http.Client.GetJsonAsync(url);
