@@ -86,13 +86,18 @@ public partial class DashboardViewModel : ViewModelBase
         _externalApplicationService = externalApplicationService;
 
         _eventRoot.Add(
-            // Cancel 'disable temporarily' when switching to enabled
             this.WatchProperty(
                 o => o.IsEnabled,
                 () =>
                 {
                     if (IsEnabled)
+                    {
+                        // Cancel any activate 'disable temporarily' timers
                         _enableAfterDelayRegistration?.Dispose();
+
+                        // Invalidate device contexts
+                        _gammaService.InvalidateDeviceContexts();
+                    }
                 }
             )
         );

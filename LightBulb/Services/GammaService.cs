@@ -86,25 +86,6 @@ public partial class GammaService : IDisposable
         );
     }
 
-    private void InvalidateGamma()
-    {
-        // Don't invalidate gamma when we're in the process of changing it ourselves,
-        // to avoid an infinite loop.
-        if (_isUpdatingGamma)
-            return;
-
-        _lastGammaInvalidationTimestamp = DateTimeOffset.Now;
-        Debug.WriteLine("Gamma invalidated.");
-    }
-
-    private void InvalidateDeviceContexts()
-    {
-        _areDeviceContextsValid = false;
-        Debug.WriteLine("Device contexts invalidated.");
-
-        InvalidateGamma();
-    }
-
     private void EnsureValidDeviceContexts()
     {
         if (_areDeviceContextsValid)
@@ -152,6 +133,25 @@ public partial class GammaService : IDisposable
 
         return Math.Abs(configuration.Temperature - lastConfiguration.Temperature) > 15
             || Math.Abs(configuration.Brightness - lastConfiguration.Brightness) > 0.01;
+    }
+
+    public void InvalidateGamma()
+    {
+        // Don't invalidate gamma when we're in the process of changing it ourselves,
+        // to avoid an infinite loop.
+        if (_isUpdatingGamma)
+            return;
+
+        _lastGammaInvalidationTimestamp = DateTimeOffset.Now;
+        Debug.WriteLine("Gamma invalidated.");
+    }
+
+    public void InvalidateDeviceContexts()
+    {
+        _areDeviceContextsValid = false;
+        Debug.WriteLine("Device contexts invalidated.");
+
+        InvalidateGamma();
     }
 
     public void SetGamma(ColorConfiguration configuration)
