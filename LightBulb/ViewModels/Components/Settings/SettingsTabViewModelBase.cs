@@ -11,7 +11,7 @@ public abstract partial class SettingsTabViewModelBase : ViewModelBase
     private readonly DisposableCollector _eventRoot = new();
 
     [ObservableProperty]
-    private bool _isActive;
+    public partial bool IsActive { get; set; }
 
     protected SettingsTabViewModelBase(
         SettingsService settingsService,

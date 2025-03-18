@@ -14,9 +14,7 @@ using Microsoft.Win32;
 
 namespace LightBulb.Services;
 
-// Can't use [ObservableProperty] here because System.Text.Json's source generator doesn't see
-// the generated properties.
-[INotifyPropertyChanged]
+[ObservableObject]
 public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerContext.Default)
 {
     private readonly RegistrySwitch<int> _extendedGammaRangeSwitch = new(
@@ -33,28 +31,15 @@ public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerC
         $"\"{Program.ExecutableFilePath}\" {StartOptions.IsInitiallyHiddenArgument}"
     );
 
-    private bool _isFirstTimeExperienceEnabled = true;
-    public bool IsFirstTimeExperienceEnabled
-    {
-        get => _isFirstTimeExperienceEnabled;
-        set => SetProperty(ref _isFirstTimeExperienceEnabled, value);
-    }
+    [ObservableProperty]
+    public partial bool IsFirstTimeExperienceEnabled { get; set; } = true;
 
-    private bool _isUkraineSupportMessageEnabled = true;
-    public bool IsUkraineSupportMessageEnabled
-    {
-        get => _isUkraineSupportMessageEnabled;
-        set => SetProperty(ref _isUkraineSupportMessageEnabled, value);
-    }
+    [ObservableProperty]
+    public partial bool IsUkraineSupportMessageEnabled { get; set; } = true;
 
-    private bool _isExtendedGammaRangeUnlocked;
-
+    [ObservableProperty]
     [JsonIgnore] // comes from registry
-    public bool IsExtendedGammaRangeUnlocked
-    {
-        get => _isExtendedGammaRangeUnlocked;
-        set => SetProperty(ref _isExtendedGammaRangeUnlocked, value);
-    }
+    public partial bool IsExtendedGammaRangeUnlocked { get; set; }
 
     // General
 
@@ -66,194 +51,93 @@ public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerC
 
     public double MaximumBrightness => 1;
 
-    private ColorConfiguration _dayConfiguration = new(6600, 1);
-    public ColorConfiguration DayConfiguration
-    {
-        get => _dayConfiguration;
-        set => SetProperty(ref _dayConfiguration, value);
-    }
+    [ObservableProperty]
+    public partial ColorConfiguration DayConfiguration { get; set; } = new(6600, 1);
 
-    private ColorConfiguration _nightConfiguration = new(3900, 0.85);
-    public ColorConfiguration NightConfiguration
-    {
-        get => _nightConfiguration;
-        set => SetProperty(ref _nightConfiguration, value);
-    }
+    [ObservableProperty]
+    public partial ColorConfiguration NightConfiguration { get; set; } = new(3900, 0.85);
 
-    private TimeSpan _configurationTransitionDuration = TimeSpan.FromMinutes(40);
-    public TimeSpan ConfigurationTransitionDuration
-    {
-        get => _configurationTransitionDuration;
-        set => SetProperty(ref _configurationTransitionDuration, value);
-    }
+    [ObservableProperty]
+    public partial TimeSpan ConfigurationTransitionDuration { get; set; } =
+        TimeSpan.FromMinutes(40);
 
-    private double _configurationTransitionOffset;
-    public double ConfigurationTransitionOffset
-    {
-        get => _configurationTransitionOffset;
-        set => SetProperty(ref _configurationTransitionOffset, value);
-    }
+    [ObservableProperty]
+    public partial double ConfigurationTransitionOffset { get; set; }
 
-    private TimeSpan _configurationSmoothingMaxDuration = TimeSpan.FromSeconds(5);
-    public TimeSpan ConfigurationSmoothingMaxDuration
-    {
-        get => _configurationSmoothingMaxDuration;
-        set => SetProperty(ref _configurationSmoothingMaxDuration, value);
-    }
+    [ObservableProperty]
+    public partial TimeSpan ConfigurationSmoothingMaxDuration { get; set; } =
+        TimeSpan.FromSeconds(5);
 
     // Location
 
-    private bool _isManualSunriseSunsetEnabled = true;
-    public bool IsManualSunriseSunsetEnabled
-    {
-        get => _isManualSunriseSunsetEnabled;
-        set => SetProperty(ref _isManualSunriseSunsetEnabled, value);
-    }
+    [ObservableProperty]
+    public partial bool IsManualSunriseSunsetEnabled { get; set; } = true;
 
-    private TimeOnly _manualSunrise = new(07, 20);
-
+    [ObservableProperty]
     [JsonPropertyName("ManualSunriseTime")]
-    public TimeOnly ManualSunrise
-    {
-        get => _manualSunrise;
-        set => SetProperty(ref _manualSunrise, value);
-    }
+    public partial TimeOnly ManualSunrise { get; set; } = new(07, 20);
 
-    private TimeOnly _manualSunset = new(16, 30);
-
+    [ObservableProperty]
     [JsonPropertyName("ManualSunsetTime")]
-    public TimeOnly ManualSunset
-    {
-        get => _manualSunset;
-        set => SetProperty(ref _manualSunset, value);
-    }
+    public partial TimeOnly ManualSunset { get; set; } = new(16, 30);
 
-    private GeoLocation? _location;
-    public GeoLocation? Location
-    {
-        get => _location;
-        set => SetProperty(ref _location, value);
-    }
+    [ObservableProperty]
+    public partial GeoLocation? Location { get; set; }
 
     // Advanced
 
-    private ThemeVariant _theme;
-    public ThemeVariant Theme
-    {
-        get => _theme;
-        set => SetProperty(ref _theme, value);
-    }
+    [ObservableProperty]
+    public partial ThemeVariant Theme { get; set; }
 
-    private bool _isAutoStartEnabled;
-
+    [ObservableProperty]
     [JsonIgnore] // comes from registry
-    public bool IsAutoStartEnabled
-    {
-        get => _isAutoStartEnabled;
-        set => SetProperty(ref _isAutoStartEnabled, value);
-    }
+    public partial bool IsAutoStartEnabled { get; set; }
 
-    private bool _isAutoUpdateEnabled = true;
-    public bool IsAutoUpdateEnabled
-    {
-        get => _isAutoUpdateEnabled;
-        set => SetProperty(ref _isAutoUpdateEnabled, value);
-    }
+    [ObservableProperty]
+    public partial bool IsAutoUpdateEnabled { get; set; } = true;
 
-    private bool _isDefaultToDayConfigurationEnabled;
-    public bool IsDefaultToDayConfigurationEnabled
-    {
-        get => _isDefaultToDayConfigurationEnabled;
-        set => SetProperty(ref _isDefaultToDayConfigurationEnabled, value);
-    }
+    [ObservableProperty]
+    public partial bool IsDefaultToDayConfigurationEnabled { get; set; }
 
-    private bool _isConfigurationSmoothingEnabled = true;
-    public bool IsConfigurationSmoothingEnabled
-    {
-        get => _isConfigurationSmoothingEnabled;
-        set => SetProperty(ref _isConfigurationSmoothingEnabled, value);
-    }
+    [ObservableProperty]
+    public partial bool IsConfigurationSmoothingEnabled { get; set; } = true;
 
-    private bool _isPauseWhenFullScreenEnabled;
-    public bool IsPauseWhenFullScreenEnabled
-    {
-        get => _isPauseWhenFullScreenEnabled;
-        set => SetProperty(ref _isPauseWhenFullScreenEnabled, value);
-    }
+    [ObservableProperty]
+    public partial bool IsPauseWhenFullScreenEnabled { get; set; }
 
-    private bool _isGammaPollingEnabled;
-    public bool IsGammaPollingEnabled
-    {
-        get => _isGammaPollingEnabled;
-        set => SetProperty(ref _isGammaPollingEnabled, value);
-    }
+    [ObservableProperty]
+    public partial bool IsGammaPollingEnabled { get; set; }
 
     // Application whitelist
 
-    private bool _isApplicationWhitelistEnabled;
-    public bool IsApplicationWhitelistEnabled
-    {
-        get => _isApplicationWhitelistEnabled;
-        set => SetProperty(ref _isApplicationWhitelistEnabled, value);
-    }
+    [ObservableProperty]
+    public partial bool IsApplicationWhitelistEnabled { get; set; }
 
-    private IReadOnlyList<ExternalApplication>? _whitelistedApplications;
-    public IReadOnlyList<ExternalApplication>? WhitelistedApplications
-    {
-        get => _whitelistedApplications;
-        set => SetProperty(ref _whitelistedApplications, value);
-    }
+    [ObservableProperty]
+    public partial IReadOnlyList<ExternalApplication>? WhitelistedApplications { get; set; }
 
     // HotKeys
 
-    private HotKey _focusWindowHotKey;
-    public HotKey FocusWindowHotKey
-    {
-        get => _focusWindowHotKey;
-        set => SetProperty(ref _focusWindowHotKey, value);
-    }
+    [ObservableProperty]
+    public partial HotKey FocusWindowHotKey { get; set; }
 
-    private HotKey _toggleHotKey;
-    public HotKey ToggleHotKey
-    {
-        get => _toggleHotKey;
-        set => SetProperty(ref _toggleHotKey, value);
-    }
+    [ObservableProperty]
+    public partial HotKey ToggleHotKey { get; set; }
 
-    private HotKey _increaseTemperatureOffsetHotKey;
-    public HotKey IncreaseTemperatureOffsetHotKey
-    {
-        get => _increaseTemperatureOffsetHotKey;
-        set => SetProperty(ref _increaseTemperatureOffsetHotKey, value);
-    }
+    [ObservableProperty]
+    public partial HotKey IncreaseTemperatureOffsetHotKey { get; set; }
 
-    private HotKey _decreaseTemperatureOffsetHotKey;
-    public HotKey DecreaseTemperatureOffsetHotKey
-    {
-        get => _decreaseTemperatureOffsetHotKey;
-        set => SetProperty(ref _decreaseTemperatureOffsetHotKey, value);
-    }
+    [ObservableProperty]
+    public partial HotKey DecreaseTemperatureOffsetHotKey { get; set; }
 
-    private HotKey _increaseBrightnessOffsetHotKey;
-    public HotKey IncreaseBrightnessOffsetHotKey
-    {
-        get => _increaseBrightnessOffsetHotKey;
-        set => SetProperty(ref _increaseBrightnessOffsetHotKey, value);
-    }
+    [ObservableProperty]
+    public partial HotKey IncreaseBrightnessOffsetHotKey { get; set; }
 
-    private HotKey _decreaseBrightnessOffsetHotKey;
-    public HotKey DecreaseBrightnessOffsetHotKey
-    {
-        get => _decreaseBrightnessOffsetHotKey;
-        set => SetProperty(ref _decreaseBrightnessOffsetHotKey, value);
-    }
+    [ObservableProperty]
+    public partial HotKey DecreaseBrightnessOffsetHotKey { get; set; }
 
-    private HotKey _resetConfigurationOffsetHotKey;
-    public HotKey ResetConfigurationOffsetHotKey
-    {
-        get => _resetConfigurationOffsetHotKey;
-        set => SetProperty(ref _resetConfigurationOffsetHotKey, value);
-    }
+    [ObservableProperty]
+    public partial HotKey ResetConfigurationOffsetHotKey { get; set; }
 
     public override void Reset()
     {
@@ -324,11 +208,9 @@ public partial class SettingsService
                 "Settings.json"
             );
         }
+
         // Otherwise, store them in the current directory
-        else
-        {
-            return Path.Combine(Program.ExecutableDirPath, "Settings.json");
-        }
+        return Path.Combine(Program.ExecutableDirPath, "Settings.json");
     }
 }
 

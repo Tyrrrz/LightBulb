@@ -16,14 +16,14 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AutoResolveLocationCommand))]
     [NotifyCanExecuteChangedFor(nameof(ResolveLocationCommand))]
-    private bool _isBusy;
+    public partial bool IsBusy { get; set; }
 
     [ObservableProperty]
-    private bool _isLocationError;
+    public partial bool IsLocationError { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ResolveLocationCommand))]
-    private string? _locationQuery;
+    public partial string? LocationQuery { get; set; }
 
     public LocationSettingsTabViewModel(SettingsService settingsService)
         : base(settingsService, 1, "Location")

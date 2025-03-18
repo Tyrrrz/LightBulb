@@ -13,7 +13,7 @@ public partial class SettingsViewModel : DialogViewModelBase
     private readonly SettingsService _settingsService;
 
     [ObservableProperty]
-    private SettingsTabViewModelBase? _activeTab;
+    public partial SettingsTabViewModelBase? ActiveTab { get; set; }
 
     public SettingsViewModel(
         SettingsService settingsService,

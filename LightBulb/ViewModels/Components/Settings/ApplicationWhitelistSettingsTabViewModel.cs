@@ -15,7 +15,7 @@ public partial class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewM
     private readonly DisposableCollector _eventRoot = new();
 
     [ObservableProperty]
-    private IReadOnlyList<ExternalApplication>? _applications;
+    public partial IReadOnlyList<ExternalApplication>? Applications { get; set; }
 
     public ApplicationWhitelistSettingsTabViewModel(
         SettingsService settingsService,
