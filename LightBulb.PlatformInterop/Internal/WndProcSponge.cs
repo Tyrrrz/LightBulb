@@ -46,8 +46,8 @@ internal partial class WndProcSponge
 {
     private const string ClassName = "LightBulb.WndProcSponge";
 
-    private static readonly Lazy<WndProcSponge> DefaultLazy = new(
-        () => TryCreate() ?? throw new InvalidOperationException("Failed to create WndProc sponge.")
+    private static readonly Lazy<WndProcSponge> DefaultLazy = new(() =>
+        TryCreate() ?? throw new InvalidOperationException("Failed to create WndProc sponge.")
     );
 
     public static WndProcSponge Default => DefaultLazy.Value;
