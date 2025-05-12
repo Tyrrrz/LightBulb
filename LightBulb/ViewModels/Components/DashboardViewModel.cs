@@ -31,48 +31,6 @@ public partial class DashboardViewModel : ViewModelBase
     private ColorConfiguration? _configurationSmoothingSource;
     private ColorConfiguration? _configurationSmoothingTarget;
 
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsActive))]
-    public partial bool IsEnabled { get; set; } = true;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsActive))]
-    public partial bool IsPaused { get; set; }
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsActive))]
-    public partial bool IsCyclePreviewEnabled { get; set; }
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(SolarTimes))]
-    [NotifyPropertyChangedFor(nameof(SunriseStart))]
-    [NotifyPropertyChangedFor(nameof(SunriseEnd))]
-    [NotifyPropertyChangedFor(nameof(SunsetStart))]
-    [NotifyPropertyChangedFor(nameof(SunsetEnd))]
-    [NotifyPropertyChangedFor(nameof(TargetConfiguration))]
-    [NotifyPropertyChangedFor(nameof(CycleState))]
-    public partial DateTimeOffset Instant { get; set; } = DateTimeOffset.Now;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsOffsetEnabled))]
-    [NotifyPropertyChangedFor(nameof(TargetConfiguration))]
-    [NotifyPropertyChangedFor(nameof(AdjustedDayConfiguration))]
-    [NotifyPropertyChangedFor(nameof(AdjustedNightConfiguration))]
-    [NotifyPropertyChangedFor(nameof(CycleState))]
-    public partial double TemperatureOffset { get; set; }
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsOffsetEnabled))]
-    [NotifyPropertyChangedFor(nameof(TargetConfiguration))]
-    [NotifyPropertyChangedFor(nameof(AdjustedDayConfiguration))]
-    [NotifyPropertyChangedFor(nameof(AdjustedNightConfiguration))]
-    [NotifyPropertyChangedFor(nameof(CycleState))]
-    public partial double BrightnessOffset { get; set; }
-
-    [ObservableProperty]
-    public partial ColorConfiguration CurrentConfiguration { get; set; } =
-        ColorConfiguration.Default;
-
     public DashboardViewModel(
         SettingsService settingsService,
         GammaService gammaService,
@@ -123,7 +81,49 @@ public partial class DashboardViewModel : ViewModelBase
         _updateIsPausedTimer = new Timer(TimeSpan.FromSeconds(1), UpdateIsPaused);
     }
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsActive))]
+    public partial bool IsEnabled { get; set; } = true;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsActive))]
+    public partial bool IsPaused { get; set; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsActive))]
+    public partial bool IsCyclePreviewEnabled { get; set; }
+
     public bool IsActive => IsEnabled && !IsPaused || IsCyclePreviewEnabled;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SolarTimes))]
+    [NotifyPropertyChangedFor(nameof(SunriseStart))]
+    [NotifyPropertyChangedFor(nameof(SunriseEnd))]
+    [NotifyPropertyChangedFor(nameof(SunsetStart))]
+    [NotifyPropertyChangedFor(nameof(SunsetEnd))]
+    [NotifyPropertyChangedFor(nameof(TargetConfiguration))]
+    [NotifyPropertyChangedFor(nameof(CycleState))]
+    public partial DateTimeOffset Instant { get; set; } = DateTimeOffset.Now;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsOffsetEnabled))]
+    [NotifyPropertyChangedFor(nameof(TargetConfiguration))]
+    [NotifyPropertyChangedFor(nameof(AdjustedDayConfiguration))]
+    [NotifyPropertyChangedFor(nameof(AdjustedNightConfiguration))]
+    [NotifyPropertyChangedFor(nameof(CycleState))]
+    public partial double TemperatureOffset { get; set; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsOffsetEnabled))]
+    [NotifyPropertyChangedFor(nameof(TargetConfiguration))]
+    [NotifyPropertyChangedFor(nameof(AdjustedDayConfiguration))]
+    [NotifyPropertyChangedFor(nameof(AdjustedNightConfiguration))]
+    [NotifyPropertyChangedFor(nameof(CycleState))]
+    public partial double BrightnessOffset { get; set; }
+
+    [ObservableProperty]
+    public partial ColorConfiguration CurrentConfiguration { get; set; } =
+        ColorConfiguration.Default;
 
     public SolarTimes SolarTimes =>
         _settingsService is { IsManualSunriseSunsetEnabled: false, Location: { } location }

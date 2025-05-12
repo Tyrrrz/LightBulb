@@ -13,18 +13,6 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
 {
     private readonly DisposableCollector _eventRoot = new();
 
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(AutoResolveLocationCommand))]
-    [NotifyCanExecuteChangedFor(nameof(ResolveLocationCommand))]
-    public partial bool IsBusy { get; set; }
-
-    [ObservableProperty]
-    public partial bool IsLocationError { get; set; }
-
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(ResolveLocationCommand))]
-    public partial string? LocationQuery { get; set; }
-
     public LocationSettingsTabViewModel(SettingsService settingsService)
         : base(settingsService, 1, "Location")
     {
@@ -32,6 +20,11 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
             this.WatchProperty(o => o.Location, () => LocationQuery = Location?.ToString(), true)
         );
     }
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(AutoResolveLocationCommand))]
+    [NotifyCanExecuteChangedFor(nameof(ResolveLocationCommand))]
+    public partial bool IsBusy { get; set; }
 
     public bool IsManualSunriseSunsetEnabled
     {
@@ -50,6 +43,13 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
         get => SettingsService.ManualSunset;
         set => SettingsService.ManualSunset = value;
     }
+
+    [ObservableProperty]
+    public partial bool IsLocationError { get; set; }
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ResolveLocationCommand))]
+    public partial string? LocationQuery { get; set; }
 
     public GeoLocation? Location
     {

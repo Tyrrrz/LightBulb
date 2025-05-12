@@ -10,9 +10,6 @@ public abstract partial class SettingsTabViewModelBase : ViewModelBase
 {
     private readonly DisposableCollector _eventRoot = new();
 
-    [ObservableProperty]
-    public partial bool IsActive { get; set; }
-
     protected SettingsTabViewModelBase(
         SettingsService settingsService,
         int order,
@@ -33,6 +30,9 @@ public abstract partial class SettingsTabViewModelBase : ViewModelBase
     }
 
     protected SettingsService SettingsService { get; }
+
+    [ObservableProperty]
+    public partial bool IsActive { get; set; }
 
     public int Order { get; }
 
