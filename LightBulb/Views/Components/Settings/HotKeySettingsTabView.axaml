@@ -6,21 +6,8 @@
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
     x:DataType="settings:HotKeySettingsTabViewModel">
     <StackPanel Margin="16" Orientation="Vertical">
-        <!--  Focus window hotkey  -->
-        <DockPanel>
-            <TextBlock
-                DockPanel.Dock="Left"
-                Text="Open LightBulb"
-                ToolTip.Tip="Global hotkey to bring LightBulb's main window to the foreground" />
-            <controls:HotKeyTextBox
-                Width="120"
-                HorizontalAlignment="Right"
-                DockPanel.Dock="Right"
-                HotKey="{Binding FocusWindowHotKey}" />
-        </DockPanel>
-
         <!--  Toggle hotkey  -->
-        <DockPanel Margin="0,16,0,0">
+        <DockPanel>
             <TextBlock
                 DockPanel.Dock="Left"
                 Text="Toggle LightBulb"
@@ -30,6 +17,19 @@
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
                 HotKey="{Binding ToggleHotKey}" />
+        </DockPanel>
+
+        <!--  Toggle window hotkey  -->
+        <DockPanel Margin="0,16,0,0">
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="Toggle window"
+                ToolTip.Tip="Global hotkey to show/hide LightBulb's main window" />
+            <controls:HotKeyTextBox
+                Width="120"
+                HorizontalAlignment="Right"
+                DockPanel.Dock="Right"
+                HotKey="{Binding ToggleWindowHotKey}" />
         </DockPanel>
 
         <!--  Increase temperature offset hotkey  -->

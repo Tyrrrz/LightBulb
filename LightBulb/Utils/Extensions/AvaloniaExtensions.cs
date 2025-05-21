@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 
 namespace LightBulb.Utils.Extensions;
@@ -27,13 +26,18 @@ internal static class AvaloniaExtensions
         return false;
     }
 
-    public static void TryFocusMainWindow(this Application application)
+    public static void ShowActivateFocus(this Window window)
     {
-        if (application.ApplicationLifetime?.TryGetMainWindow() is { } window)
-        {
-            window.Show();
-            window.Activate();
-            window.Focus();
-        }
+        window.Show();
+        window.Activate();
+        window.Focus();
+    }
+
+    public static void Toggle(this Window window)
+    {
+        if (window.IsVisible)
+            window.Hide();
+        else
+            window.ShowActivateFocus();
     }
 }

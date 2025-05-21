@@ -64,8 +64,8 @@ public partial class DashboardViewModel : ViewModelBase
             // Re-register hotkeys when they get updated
             settingsService.WatchProperties(
                 [
-                    o => o.FocusWindowHotKey,
                     o => o.ToggleHotKey,
+                    o => o.ToggleWindowHotKey,
                     o => o.IncreaseTemperatureOffsetHotKey,
                     o => o.DecreaseTemperatureOffsetHotKey,
                     o => o.IncreaseBrightnessOffsetHotKey,
@@ -202,19 +202,19 @@ public partial class DashboardViewModel : ViewModelBase
     {
         _hotKeyService.UnregisterAllHotKeys();
 
-        if (_settingsService.FocusWindowHotKey != HotKey.None)
-        {
-            _hotKeyService.RegisterHotKey(
-                _settingsService.FocusWindowHotKey,
-                () => Application.Current?.TryFocusMainWindow()
-            );
-        }
-
         if (_settingsService.ToggleHotKey != HotKey.None)
         {
             _hotKeyService.RegisterHotKey(
                 _settingsService.ToggleHotKey,
                 () => IsEnabled = !IsEnabled
+            );
+        }
+
+        if (_settingsService.ToggleWindowHotKey != HotKey.None)
+        {
+            _hotKeyService.RegisterHotKey(
+                _settingsService.ToggleWindowHotKey,
+                () => Application.Current?.ApplicationLifetime?.TryGetMainWindow()?.Toggle()
             );
         }
 
