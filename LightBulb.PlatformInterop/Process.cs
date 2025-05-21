@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text;
 using LightBulb.PlatformInterop.Internal;
 
@@ -19,7 +20,11 @@ public partial class Process(nint handle) : NativeResource(handle)
     protected override void Dispose(bool disposing)
     {
         if (!NativeMethods.CloseHandle(Handle))
-            Debug.WriteLine($"Failed to dispose process #{Handle}.");
+        {
+            Debug.WriteLine(
+                $"Failed to dispose process #{Handle}. " + $"Error {Marshal.GetLastWin32Error()}."
+            );
+        }
     }
 }
 
@@ -31,7 +36,10 @@ public partial class Process
 
         if (handle == 0)
         {
-            Debug.WriteLine($"Failed to open process #{processId}.");
+            Debug.WriteLine(
+                $"Failed to open process #{processId}. " + $"Error {Marshal.GetLastWin32Error()}."
+            );
+
             return null;
         }
 

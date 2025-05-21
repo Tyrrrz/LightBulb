@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading;
 using LightBulb.PlatformInterop.Internal;
 
@@ -43,7 +44,12 @@ public partial class GlobalHotKey : NativeResource<int>
             _wndProcRegistration.Dispose();
 
         if (!NativeMethods.UnregisterHotKey(WndProcSponge.Default.Handle, Handle))
-            Debug.WriteLine($"Failed to dispose global hotkey #{Handle}.");
+        {
+            Debug.WriteLine(
+                $"Failed to dispose global hotkey #{Handle}. "
+                    + $"Error {Marshal.GetLastWin32Error()}."
+            );
+        }
     }
 }
 
@@ -65,7 +71,8 @@ public partial class GlobalHotKey
         )
         {
             Debug.WriteLine(
-                $"Failed to register global hotkey (key: {virtualKey}, mods: {modifiers})."
+                $"Failed to register global hotkey (key: {virtualKey}, mods: {modifiers}). "
+                    + $"Error {Marshal.GetLastWin32Error()}."
             );
 
             return null;

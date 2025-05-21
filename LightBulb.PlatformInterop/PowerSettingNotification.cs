@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
@@ -25,7 +26,12 @@ public partial class PowerSettingNotification(nint handle, Guid powerSettingId, 
             _wndProcRegistration.Dispose();
 
         if (!NativeMethods.UnregisterPowerSettingNotification(Handle))
-            Debug.WriteLine($"Failed to dispose power setting notification #{Handle}.");
+        {
+            Debug.WriteLine(
+                $"Failed to dispose power setting notification #{Handle}. "
+                    + $"Error {Marshal.GetLastWin32Error()}."
+            );
+        }
     }
 }
 
@@ -41,7 +47,11 @@ public partial class PowerSettingNotification
 
         if (handle == 0)
         {
-            Debug.WriteLine($"Failed to register power setting notification #{powerSettingId}.");
+            Debug.WriteLine(
+                $"Failed to register power setting notification #{powerSettingId}. "
+                    + $"Error {Marshal.GetLastWin32Error()}."
+            );
+
             return null;
         }
 

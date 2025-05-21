@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
@@ -13,7 +14,12 @@ public partial class SystemHook(nint handle, Delegate winEventProc) : NativeReso
     protected override void Dispose(bool disposing)
     {
         if (!NativeMethods.UnhookWinEvent(Handle))
-            Debug.WriteLine($"Failed to dispose system hook #{Handle}.");
+        {
+            Debug.WriteLine(
+                $"Failed to dispose system hook #{Handle}. "
+                    + $"Error {Marshal.GetLastWin32Error()}."
+            );
+        }
     }
 }
 
@@ -26,7 +32,11 @@ public partial class SystemHook
         var handle = NativeMethods.SetWinEventHook((uint)hookId, (uint)hookId, 0, proc, 0, 0, 0);
         if (handle == 0)
         {
-            Debug.WriteLine($"Failed to register system hook #{hookId}.");
+            Debug.WriteLine(
+                $"Failed to register system hook #{hookId}. "
+                    + $"Error {Marshal.GetLastWin32Error()}."
+            );
+
             return null;
         }
 

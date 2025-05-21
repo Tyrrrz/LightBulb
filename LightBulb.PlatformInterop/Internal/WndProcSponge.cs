@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using LightBulb.PlatformInterop.Utils;
 
 namespace LightBulb.PlatformInterop.Internal;
@@ -35,10 +36,20 @@ internal partial class WndProcSponge(
     public void Dispose()
     {
         if (!NativeMethods.DestroyWindow(windowHandle))
-            Debug.WriteLine($"Failed to destroy window #{windowHandle}.");
+        {
+            Debug.WriteLine(
+                $"Failed to destroy window #{windowHandle}. "
+                    + $"Error {Marshal.GetLastWin32Error()}."
+            );
+        }
 
         if (!NativeMethods.UnregisterClass(ClassName, NativeModule.CurrentHandle))
-            Debug.WriteLine($"Failed to unregister window class #{classHandle}.");
+        {
+            Debug.WriteLine(
+                $"Failed to unregister window class #{classHandle}. "
+                    + $"Error {Marshal.GetLastWin32Error()}."
+            );
+        }
     }
 }
 
@@ -74,7 +85,10 @@ internal partial class WndProcSponge
         var classHandle = NativeMethods.RegisterClassEx(ref classInfo);
         if (classHandle == 0)
         {
-            Debug.WriteLine("Failed to register window class.");
+            Debug.WriteLine(
+                "Failed to register window class. " + $"Error {Marshal.GetLastWin32Error()}."
+            );
+
             return null;
         }
 
@@ -95,7 +109,7 @@ internal partial class WndProcSponge
 
         if (windowHandle == 0)
         {
-            Debug.WriteLine("Failed to create window.");
+            Debug.WriteLine("Failed to create window. " + $"Error {Marshal.GetLastWin32Error()}.");
             NativeMethods.UnregisterClass(ClassName, NativeModule.CurrentHandle);
             return null;
         }

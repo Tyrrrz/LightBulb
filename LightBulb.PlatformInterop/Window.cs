@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text;
 using LightBulb.PlatformInterop.Internal;
 
@@ -13,7 +14,11 @@ public partial class Window(nint handle) : NativeResource(handle)
         _ = NativeMethods.GetWindowThreadProcessId(Handle, out var processId);
         if (processId == 0)
         {
-            Debug.WriteLine($"Failed to retrieve process ID for window #{Handle}.");
+            Debug.WriteLine(
+                $"Failed to retrieve process ID for window #{Handle}. "
+                    + $"Error {Marshal.GetLastWin32Error()}."
+            );
+
             return null;
         }
 
@@ -25,7 +30,11 @@ public partial class Window(nint handle) : NativeResource(handle)
         var monitorHandle = NativeMethods.MonitorFromWindow(Handle, 0);
         if (monitorHandle == 0)
         {
-            Debug.WriteLine($"Failed to retrieve monitor for window #{Handle}.");
+            Debug.WriteLine(
+                $"Failed to retrieve monitor for window #{Handle}. "
+                    + $"Error {Marshal.GetLastWin32Error()}."
+            );
+
             return null;
         }
 
@@ -102,7 +111,10 @@ public partial class Window
         var handle = NativeMethods.GetForegroundWindow();
         if (handle == 0)
         {
-            Debug.WriteLine("Failed to retrieve foreground window.");
+            Debug.WriteLine(
+                "Failed to retrieve foreground window. " + $"Error {Marshal.GetLastWin32Error()}."
+            );
+
             return null;
         }
 
@@ -129,7 +141,9 @@ public partial class Window
             )
         )
         {
-            Debug.WriteLine("Failed to enumerate windows.");
+            Debug.WriteLine(
+                "Failed to enumerate windows. " + $"Error {Marshal.GetLastWin32Error()}."
+            );
         }
 
         return result;

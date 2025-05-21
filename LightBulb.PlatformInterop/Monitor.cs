@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
@@ -12,7 +13,11 @@ public partial class Monitor(nint handle) : NativeResource(handle)
 
         if (!NativeMethods.GetMonitorInfo(Handle, ref monitorInfo))
         {
-            Debug.WriteLine($"Failed to retrieve info for monitor #{Handle}.");
+            Debug.WriteLine(
+                $"Failed to retrieve info for monitor #{Handle}. "
+                    + $"Error {Marshal.GetLastWin32Error()}."
+            );
+
             return null;
         }
 
@@ -54,7 +59,9 @@ public partial class Monitor
             )
         )
         {
-            Debug.WriteLine("Failed to enumerate display monitors.");
+            Debug.WriteLine(
+                "Failed to enumerate display monitors. " + $"Error {Marshal.GetLastWin32Error()}."
+            );
         }
 
         return monitors;

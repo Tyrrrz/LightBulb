@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
@@ -10,7 +11,12 @@ public partial class DeviceContext(nint handle) : NativeResource(handle)
     private void SetGammaRamp(GammaRamp ramp)
     {
         if (!NativeMethods.SetDeviceGammaRamp(Handle, ref ramp))
-            Debug.WriteLine($"Failed to set gamma ramp on device context #{Handle}).");
+        {
+            Debug.WriteLine(
+                $"Failed to set gamma ramp on device context #{Handle}). "
+                    + $"Error {Marshal.GetLastWin32Error()}."
+            );
+        }
     }
 
     public void SetGamma(double redMultiplier, double greenMultiplier, double blueMultiplier)
@@ -51,7 +57,12 @@ public partial class DeviceContext(nint handle) : NativeResource(handle)
         // Resetting gamma in such cases will cause unwanted flickering.
         // https://github.com/Tyrrrz/LightBulb/issues/206
         if (!NativeMethods.DeleteDC(Handle))
-            Debug.WriteLine($"Failed to dispose device context #{Handle}.");
+        {
+            Debug.WriteLine(
+                $"Failed to dispose device context #{Handle}. "
+                    + $"Error {Marshal.GetLastWin32Error()}."
+            );
+        }
     }
 }
 
@@ -62,7 +73,10 @@ public partial class DeviceContext
         var handle = NativeMethods.CreateDC(deviceName, deviceName, null, 0);
         if (handle == 0)
         {
-            Debug.WriteLine($"Failed to retrieve device context for '{deviceName}'.");
+            Debug.WriteLine(
+                $"Failed to retrieve device context for '{deviceName}'. "
+                    + $"Error {Marshal.GetLastWin32Error()}."
+            );
             return null;
         }
 
