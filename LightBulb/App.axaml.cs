@@ -149,11 +149,12 @@ public class App : Application, IDisposable
         // Re-initialize the theme when the system theme changes
         InitializeTheme();
 
-    private void TrayIcon_OnClicked(object? sender, EventArgs args) => this.TryFocusMainWindow();
+    private void TrayIcon_OnClicked(object? sender, EventArgs args) =>
+        ApplicationLifetime?.TryGetMainWindow()?.Toggle();
 
     private void ShowSettingsMenuItem_OnClick(object? sender, EventArgs args)
     {
-        this.TryFocusMainWindow();
+        ApplicationLifetime?.TryGetMainWindow()?.ShowActivateFocus();
         _mainViewModel.ShowSettingsCommand.Execute(null);
     }
 

@@ -119,10 +119,11 @@ public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerC
     // HotKeys
 
     [ObservableProperty]
-    public partial HotKey FocusWindowHotKey { get; set; }
+    public partial HotKey ToggleHotKey { get; set; }
 
     [ObservableProperty]
-    public partial HotKey ToggleHotKey { get; set; }
+    [JsonPropertyName("FocusWindowHotKey")]
+    public partial HotKey ToggleWindowHotKey { get; set; }
 
     [ObservableProperty]
     public partial HotKey IncreaseTemperatureOffsetHotKey { get; set; }

@@ -55,7 +55,8 @@ public partial class MainViewModel(
             "CANCEL"
         );
 
-        Application.Current?.TryFocusMainWindow();
+        // Bring the user's attention to this dialog, even if the app is hidden
+        Application.Current?.ApplicationLifetime?.TryGetMainWindow()?.ShowActivateFocus();
 
         if (await dialogManager.ShowDialogAsync(dialog) != true)
             return;

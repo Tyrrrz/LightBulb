@@ -164,11 +164,11 @@
                 ToolTipText="LightBulb">
                 <TrayIcon.Menu>
                     <NativeMenu>
-                        <NativeMenuItem Click="TrayIcon_OnClicked" Header="Open" />
+                        <NativeMenuItem Click="TrayIcon_OnClicked" Header="Show/hide" />
                         <NativeMenuItem Click="ShowSettingsMenuItem_OnClick" Header="Settings" />
                         <NativeMenuItemSeparator />
 
-                        <NativeMenuItem Click="ToggleMenuItem_OnClick" Header="Toggle" />
+                        <NativeMenuItem Click="ToggleMenuItem_OnClick" Header="Enable/disable" />
                         <NativeMenuItem Header="Disable...">
                             <NativeMenu>
                                 <NativeMenuItem Click="DisableUntilSunriseMenuItem_OnClick" Header="Until sunrise" />
