@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBulb", "LightBulb\Ligh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBulb.PlatformInterop", "LightBulb.PlatformInterop\LightBulb.PlatformInterop.csproj", "{966EE539-7568-40BE-85D7-362D8922DEA8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BE19AEAD-02BC-4F40-AC14-D30082A5E78B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{BE19AEAD-02BC-4F40-AC14-D30082A5E78B}"
 	ProjectSection(SolutionItems) = preProject
 		License.txt = License.txt
 		ReadMe.md = ReadMe.md
