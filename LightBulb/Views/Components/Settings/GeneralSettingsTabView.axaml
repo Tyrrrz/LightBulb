@@ -107,7 +107,7 @@
             IsSnapToTickEnabled="True"
             LargeChange="0.1"
             Maximum="1"
-            Minimum="0.1"
+            Minimum="0.01"
             SmallChange="0.01"
             TickFrequency="0.01"
             Value="{Binding NightBrightness}" />
