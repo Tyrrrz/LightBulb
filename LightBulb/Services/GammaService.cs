@@ -167,10 +167,12 @@ public partial class GammaService : IDisposable
         foreach (var deviceContext in _deviceContexts)
         {
             deviceContext.SetGamma(
-                GetRed(configuration) * configuration.Brightness,
-                GetGreen(configuration) * configuration.Brightness,
-                GetBlue(configuration) * configuration.Brightness
+                GetRed(configuration),
+                GetGreen(configuration),
+                GetBlue(configuration)
             );
+
+            deviceContext.SetBrightness(configuration.Brightness);
         }
 
         _isUpdatingGamma = false;
