@@ -129,14 +129,14 @@ jobs:
           & "c:\Program Files (x86)\Inno Setup 6\ISCC.exe" Installer/Installer.iss
 
       - name: Upload app binaries (portable)
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: LightBulb.${{ matrix.rid }}
           path: LightBulb/bin/publish/
           if-no-files-found: error
 
       - name: Upload app binaries (installer)
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: LightBulb-Installer.${{ matrix.rid }}
           path: Installer/bin/LightBulb-Installer.exe
@@ -186,13 +186,13 @@ jobs:
 
     steps:
       - name: Download app binaries (portable)
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           name: LightBulb.${{ matrix.rid }}
           path: LightBulb/
 
       - name: Download app binaries (installer)
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           name: LightBulb-Installer.${{ matrix.rid }}
 
