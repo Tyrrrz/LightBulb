@@ -30,8 +30,6 @@ jobs:
 
       - name: Install .NET
         uses: actions/setup-dotnet@d4c94342e560b34958eacfc5d055d21461ed1c5d # v5.0.0
-        with:
-          dotnet-version: 9.0.x
 
       # Build the project separately to discern between build and format errors
       - name: Build
@@ -65,8 +63,6 @@ jobs:
 
       - name: Install .NET
         uses: actions/setup-dotnet@d4c94342e560b34958eacfc5d055d21461ed1c5d # v5.0.0
-        with:
-          dotnet-version: 9.0.x
 
       - name: Run tests
         run: >
@@ -106,8 +102,6 @@ jobs:
 
       - name: Install .NET
         uses: actions/setup-dotnet@d4c94342e560b34958eacfc5d055d21461ed1c5d # v5.0.0
-        with:
-          dotnet-version: 9.0.x
 
       - name: Publish app
         run: >
