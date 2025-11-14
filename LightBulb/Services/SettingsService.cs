@@ -9,7 +9,7 @@ using LightBulb.Core;
 using LightBulb.Framework;
 using LightBulb.Models;
 using LightBulb.PlatformInterop;
-using LightBulb.Utils;
+using LightBulb.Utils.Extensions;
 using Microsoft.Win32;
 
 namespace LightBulb.Services;
@@ -201,7 +201,7 @@ public partial class SettingsService
         var isInstalled = File.Exists(Path.Combine(Program.ExecutableDirPath, ".installed"));
 
         // Prefer storing settings in appdata when installed or when the current directory is write-protected
-        if (isInstalled || !DirectoryEx.CheckWriteAccess(Program.ExecutableDirPath))
+        if (isInstalled || !Directory.CheckWriteAccess(Program.ExecutableDirPath))
         {
             return Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),

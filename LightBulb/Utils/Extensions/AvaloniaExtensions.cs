@@ -5,39 +5,45 @@ namespace LightBulb.Utils.Extensions;
 
 internal static class AvaloniaExtensions
 {
-    public static Window? TryGetMainWindow(this IApplicationLifetime lifetime) =>
-        lifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime
-            ? desktopLifetime.MainWindow
-            : null;
-
-    public static bool TryShutdown(this IApplicationLifetime lifetime, int exitCode = 0)
+    extension(IApplicationLifetime lifetime)
     {
-        if (lifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
-        {
-            return desktopLifetime.TryShutdown(exitCode);
-        }
+        public Window? TryGetMainWindow() =>
+            lifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime
+                ? desktopLifetime.MainWindow
+                : null;
 
-        if (lifetime is IControlledApplicationLifetime controlledLifetime)
+        public bool TryShutdown(int exitCode = 0)
         {
-            controlledLifetime.Shutdown(exitCode);
-            return true;
-        }
+            if (lifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            {
+                return desktopLifetime.TryShutdown(exitCode);
+            }
 
-        return false;
+            if (lifetime is IControlledApplicationLifetime controlledLifetime)
+            {
+                controlledLifetime.Shutdown(exitCode);
+                return true;
+            }
+
+            return false;
+        }
     }
 
-    public static void ShowActivateFocus(this Window window)
+    extension(Window window)
     {
-        window.Show();
-        window.Activate();
-        window.Focus();
-    }
+        public void ShowActivateFocus()
+        {
+            window.Show();
+            window.Activate();
+            window.Focus();
+        }
 
-    public static void Toggle(this Window window)
-    {
-        if (window.IsVisible)
-            window.Hide();
-        else
-            window.ShowActivateFocus();
+        public void Toggle()
+        {
+            if (window.IsVisible)
+                window.Hide();
+            else
+                window.ShowActivateFocus();
+        }
     }
 }

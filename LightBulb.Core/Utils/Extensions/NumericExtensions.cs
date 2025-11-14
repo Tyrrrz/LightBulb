@@ -2,6 +2,9 @@
 
 public static class NumericExtensions
 {
-    public static double Wrap(this double value, double min, double max) =>
-        value < min ? max - (min - value) % (max - min) : min + (value - min) % (max - min);
+    extension(double value)
+    {
+        public double Wrap(double min, double max) =>
+            value < min ? max - (min - value) % (max - min) : min + (value - min) % (max - min);
+    }
 }

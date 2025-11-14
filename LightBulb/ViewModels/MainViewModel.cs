@@ -6,10 +6,10 @@ using CommunityToolkit.Mvvm.Input;
 using LightBulb.Framework;
 using LightBulb.PlatformInterop;
 using LightBulb.Services;
-using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
 using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
+using Process = System.Diagnostics.Process;
 
 namespace LightBulb.ViewModels;
 
@@ -90,7 +90,7 @@ public partial class MainViewModel(
         if (await dialogManager.ShowDialogAsync(dialog) != true)
             return;
 
-        ProcessEx.StartShellExecute("https://tyrrrz.me/ukraine?source=lightbulb");
+        Process.StartShellExecute("https://tyrrrz.me/ukraine?source=lightbulb");
     }
 
     private async Task ShowDevelopmentBuildMessageAsync()
@@ -114,7 +114,7 @@ public partial class MainViewModel(
         );
 
         if (await dialogManager.ShowDialogAsync(dialog) == true)
-            ProcessEx.StartShellExecute(Program.ProjectReleasesUrl);
+            Process.StartShellExecute(Program.ProjectReleasesUrl);
     }
 
     private async Task ShowGammaRangeMessageAsync()
@@ -190,7 +190,7 @@ public partial class MainViewModel(
         await dialogManager.ShowDialogAsync(viewModelManager.CreateSettingsViewModel());
 
     [RelayCommand]
-    private void ShowAbout() => ProcessEx.StartShellExecute(Program.ProjectUrl);
+    private void ShowAbout() => Process.StartShellExecute(Program.ProjectUrl);
 
     protected override void Dispose(bool disposing)
     {
