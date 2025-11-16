@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{BE19AEAD-0
 		License.txt = License.txt
 		ReadMe.md = ReadMe.md
 		Directory.Build.props = Directory.Build.props
+		global.json = global.json
+		NuGet.config = NuGet.config
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBulb.Core.Tests", "LightBulb.Core.Tests\LightBulb.Core.Tests.csproj", "{6DE898D9-0BAF-4C96-B19A-FCFCF8CE046F}"
