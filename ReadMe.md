@@ -43,7 +43,7 @@ To learn more about the war and how you can help, [click here](https://tyrrrz.me
 - 🟠 [CI build](https://github.com/Tyrrrz/LightBulb/actions/workflows/main.yml)
 - 📦 [WinGet](https://github.com/microsoft/winget-cli): `winget install Tyrrrz.LightBulb` (community-maintained)
 
-> **Note**:
+> [!NOTE]
 > If you're unsure which build is right for your system, consult with [this page](https://useragent.cc) to determine your OS and CPU architecture.
 
 ## Features
