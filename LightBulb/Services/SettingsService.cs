@@ -47,7 +47,7 @@ public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerC
 
     public double MaximumTemperature => 20_000;
 
-    public double MinimumBrightness => 0.1;
+    public double MinimumBrightness => 0.01;
 
     public double MaximumBrightness => 1;
 
