@@ -61,6 +61,12 @@ public partial class Window(nint handle) : NativeResource(handle)
 
         return string.Equals(className, "Progman", StringComparison.OrdinalIgnoreCase)
             || string.Equals(className, "WorkerW", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(className, "Shell_TrayWnd", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(
+                className,
+                "Shell_SecondaryTrayWnd",
+                StringComparison.OrdinalIgnoreCase
+            )
             || string.Equals(className, "ImmersiveLauncher", StringComparison.OrdinalIgnoreCase)
             || string.Equals(className, "ImmersiveSwitchList", StringComparison.OrdinalIgnoreCase)
             || string.Equals(className, "MultitaskingViewFrame", StringComparison.OrdinalIgnoreCase)

@@ -58,10 +58,18 @@ public class ExternalApplicationService
     public bool IsForegroundApplicationFullScreen()
     {
         using var window = Window.TryGetForeground();
+        if (window is null || !window.IsVisible() || window.IsSystemWindow())
+            return false;
 
-        return window is not null
-            && window.IsVisible()
-            && !window.IsSystemWindow()
-            && window.IsFullScreen();
+        using var process = window.TryGetProcess();
+        var executableFilePath = process?.TryGetExecutableFilePath();
+        var executableFileName = executableFilePath is not null
+            ? Path.GetFileNameWithoutExtension(executableFilePath)
+            : null;
+
+        if (_ignoredApplicationNames.Contains(executableFileName ?? string.Empty))
+            return false;
+
+        return window.IsFullScreen();
     }
 }
