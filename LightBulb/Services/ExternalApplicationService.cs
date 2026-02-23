@@ -14,6 +14,10 @@ public class ExternalApplicationService
     )
     {
         "explorer",
+        // Windows shell experience host (hosts the task switcher, notification center, etc.)
+        "ShellExperienceHost",
+        // Windows start menu experience host
+        "StartMenuExperienceHost",
     };
 
     public IEnumerable<ExternalApplication> GetAllRunningApplications()
