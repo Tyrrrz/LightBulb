@@ -67,7 +67,10 @@ public class ExternalApplicationService
             ? Path.GetFileNameWithoutExtension(executableFilePath)
             : null;
 
-        if (!string.IsNullOrWhiteSpace(executableFileName) && _ignoredApplicationNames.Contains(executableFileName))
+        if (
+            !string.IsNullOrWhiteSpace(executableFileName)
+            && _ignoredApplicationNames.Contains(executableFileName)
+        )
             return false;
 
         return window.IsFullScreen();
