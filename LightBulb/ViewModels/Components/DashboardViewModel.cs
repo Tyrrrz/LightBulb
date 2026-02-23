@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Avalonia;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Core;
@@ -76,9 +77,18 @@ public partial class DashboardViewModel : ViewModelBase
             )
         );
 
-        _updateConfigurationTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateConfiguration);
-        _updateInstantTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateInstant);
-        _updateIsPausedTimer = new Timer(TimeSpan.FromSeconds(1), UpdateIsPaused);
+        _updateConfigurationTimer = new Timer(
+            TimeSpan.FromMilliseconds(50),
+            () => Dispatcher.UIThread.Post(UpdateConfiguration)
+        );
+        _updateInstantTimer = new Timer(
+            TimeSpan.FromMilliseconds(50),
+            () => Dispatcher.UIThread.Post(UpdateInstant)
+        );
+        _updateIsPausedTimer = new Timer(
+            TimeSpan.FromSeconds(1),
+            () => Dispatcher.UIThread.Post(UpdateIsPaused)
+        );
     }
 
     [ObservableProperty]
@@ -393,7 +403,10 @@ public partial class DashboardViewModel : ViewModelBase
     private void DisableTemporarily(TimeSpan duration)
     {
         _enableAfterDelayRegistration?.Dispose();
-        _enableAfterDelayRegistration = Timer.QueueDelayedAction(duration, () => IsEnabled = true);
+        _enableAfterDelayRegistration = Timer.QueueDelayedAction(
+            duration,
+            () => Dispatcher.UIThread.Post(() => IsEnabled = true)
+        );
         IsEnabled = false;
     }
 
