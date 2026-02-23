@@ -167,13 +167,14 @@ public class App : Application, IDisposable
         if (desktopLifetime.MainWindow is { IsVisible: true } existingWindow)
         {
             existingWindow.ShowActivateFocus();
-            return;
         }
-
         // Otherwise, create a new window (the previous one was closed to free resources)
-        var window = new MainView { DataContext = _mainViewModel };
-        desktopLifetime.MainWindow = window;
-        window.ShowActivateFocus();
+        else
+        {
+            var window = new MainView { DataContext = _mainViewModel };
+            desktopLifetime.MainWindow = window;
+            window.ShowActivateFocus();
+        }
     }
 
     private void Application_OnActualThemeVariantChanged(object? sender, EventArgs args) =>
