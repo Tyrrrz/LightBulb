@@ -134,7 +134,20 @@ public class App : Application, IDisposable
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
-            desktopLifetime.MainWindow = new MainView { DataContext = _mainViewModel };
+        {
+            desktopLifetime.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
+            if (!StartOptions.Current.IsInitiallyHidden)
+            {
+                // Show the main window on startup
+                desktopLifetime.MainWindow = new MainView { DataContext = _mainViewModel };
+            }
+            else
+            {
+                // When starting hidden, initialize the backend without showing the UI
+                _mainViewModel.Dashboard.InitializeCommand.Execute(null);
+            }
+        }
 
         base.OnFrameworkInitializationCompleted();
 
@@ -145,17 +158,39 @@ public class App : Application, IDisposable
         _settingsService.Load();
     }
 
+    private void ShowMainWindow()
+    {
+        if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            return;
+
+        // Re-use the existing window if it's already visible
+        if (desktopLifetime.MainWindow is { IsVisible: true } existingWindow)
+        {
+            existingWindow.ShowActivateFocus();
+            return;
+        }
+
+        // Otherwise, create a new window (the previous one was closed to free resources)
+        var window = new MainView { DataContext = _mainViewModel };
+        desktopLifetime.MainWindow = window;
+        window.ShowActivateFocus();
+    }
+
     private void Application_OnActualThemeVariantChanged(object? sender, EventArgs args) =>
         // Re-initialize the theme when the system theme changes
         InitializeTheme();
 
-    private void TrayIcon_OnClicked(object? sender, EventArgs args) =>
-        ApplicationLifetime?.TryGetMainWindow()?.Toggle();
+    private void TrayIcon_OnClicked(object? sender, EventArgs args) => ShowMainWindow();
 
     private void ShowSettingsMenuItem_OnClick(object? sender, EventArgs args)
     {
-        ApplicationLifetime?.TryGetMainWindow()?.ShowActivateFocus();
-        _mainViewModel.ShowSettingsCommand.Execute(null);
+        ShowMainWindow();
+
+        // Defer execution so any newly created window has time to finish loading
+        Dispatcher.UIThread.Post(
+            () => _mainViewModel.ShowSettingsCommand.Execute(null),
+            DispatcherPriority.Default
+        );
     }
 
     private void ToggleMenuItem_OnClick(object? sender, EventArgs args) =>
