@@ -108,6 +108,11 @@ public partial class Window(nint handle) : NativeResource(handle)
                 className,
                 "ApplicationManager_DesktopShellWindow",
                 StringComparison.OrdinalIgnoreCase
+            )
+            || string.Equals(
+                className,
+                "XamlExplorerHostIslandWindow",
+                StringComparison.OrdinalIgnoreCase
             );
     }
 
