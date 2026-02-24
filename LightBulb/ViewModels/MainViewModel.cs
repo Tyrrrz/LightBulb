@@ -172,9 +172,15 @@ public partial class MainViewModel(
         await dialogManager.ShowDialogAsync(settingsDialog);
     }
 
+    private bool _isInitialized;
+
     [RelayCommand]
     private async Task InitializeAsync()
     {
+        if (_isInitialized)
+            return;
+        _isInitialized = true;
+
         await FinalizePendingUpdateAsync();
 
         await ShowUkraineSupportMessageAsync();

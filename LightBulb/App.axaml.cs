@@ -3,6 +3,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Platform;
@@ -158,7 +159,7 @@ public class App : Application, IDisposable
         _settingsService.Load();
     }
 
-    private void ShowMainWindow()
+    private void ShowMainWindow(Action? onReady = null)
     {
         if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktopLifetime)
             return;
@@ -167,12 +168,25 @@ public class App : Application, IDisposable
         if (desktopLifetime.MainWindow is { IsVisible: true } existingWindow)
         {
             existingWindow.ShowActivateFocus();
+            onReady?.Invoke();
         }
         // Otherwise, create a new window (the previous one was closed to free resources)
         else
         {
             var window = new MainView { DataContext = _mainViewModel };
             desktopLifetime.MainWindow = window;
+
+            if (onReady is not null)
+            {
+                void OnLoaded(object? _, RoutedEventArgs __)
+                {
+                    window.Loaded -= OnLoaded;
+                    onReady();
+                }
+
+                window.Loaded += OnLoaded;
+            }
+
             window.ShowActivateFocus();
         }
     }
@@ -183,16 +197,8 @@ public class App : Application, IDisposable
 
     private void TrayIcon_OnClicked(object? sender, EventArgs args) => ShowMainWindow();
 
-    private void ShowSettingsMenuItem_OnClick(object? sender, EventArgs args)
-    {
-        ShowMainWindow();
-
-        // Defer execution so any newly created window has time to finish loading
-        Dispatcher.UIThread.Post(
-            () => _mainViewModel.ShowSettingsCommand.Execute(null),
-            DispatcherPriority.Default
-        );
-    }
+    private void ShowSettingsMenuItem_OnClick(object? sender, EventArgs args) =>
+        ShowMainWindow(() => _mainViewModel.ShowSettingsCommand.Execute(null));
 
     private void ToggleMenuItem_OnClick(object? sender, EventArgs args) =>
         _mainViewModel.Dashboard.IsEnabled = !_mainViewModel.Dashboard.IsEnabled;
