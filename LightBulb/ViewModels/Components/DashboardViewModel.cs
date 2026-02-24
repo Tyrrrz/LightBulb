@@ -402,8 +402,8 @@ public partial class DashboardViewModel : ViewModelBase
     [RelayCommand]
     private void DisableTemporarily(TimeSpan duration)
     {
-        _enableAfterDelayRegistration?.Dispose();
         IsEnabled = false;
+        _enableAfterDelayRegistration?.Dispose();
         _enableAfterDelayRegistration = Timer.QueueDelayedAction(
             duration,
             () => Dispatcher.UIThread.Post(() => IsEnabled = true)
