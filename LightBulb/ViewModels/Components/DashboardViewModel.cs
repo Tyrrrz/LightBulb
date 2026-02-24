@@ -403,11 +403,11 @@ public partial class DashboardViewModel : ViewModelBase
     private void DisableTemporarily(TimeSpan duration)
     {
         _enableAfterDelayRegistration?.Dispose();
+        IsEnabled = false;
         _enableAfterDelayRegistration = Timer.QueueDelayedAction(
             duration,
             () => Dispatcher.UIThread.Post(() => IsEnabled = true)
         );
-        IsEnabled = false;
     }
 
     [RelayCommand]
