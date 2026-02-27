@@ -87,10 +87,8 @@ public partial class MainViewModel(
         settingsService.IsUkraineSupportMessageEnabled = false;
         settingsService.Save();
 
-        if (await dialogManager.ShowDialogAsync(dialog) != true)
-            return;
-
-        Process.StartShellExecute("https://tyrrrz.me/ukraine?source=lightbulb");
+        if (await dialogManager.ShowDialogAsync(dialog) == true)
+            Process.StartShellExecute("https://tyrrrz.me/ukraine?source=lightbulb");
     }
 
     private async Task ShowDevelopmentBuildMessageAsync()
