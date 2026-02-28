@@ -15,7 +15,11 @@ public partial class GammaService : IDisposable
     private readonly DisposableCollector _eventRoot = new();
 
     private bool _isUpdatingGamma;
-    private volatile bool _isDisplayOn = true;
+
+    // Tracks whether the locally-attached displays (all monitors in the current Windows
+    // interactive session) are powered on. Used to skip SetDeviceGammaRamp calls while
+    // displays are off so dwm.exe isn't woken up unnecessarily. 0=off, 1=on, 2=dimmed.
+    private volatile bool _areDisplaysOn = true;
 
     private IReadOnlyList<DeviceContext> _deviceContexts = [];
     private bool _areDeviceContextsValid;
@@ -40,7 +44,7 @@ public partial class GammaService : IDisposable
                 PowerSettingNotification.Ids.ConsoleDisplayStateChanged,
                 data =>
                 {
-                    _isDisplayOn = data != 0;
+                    _areDisplaysOn = data != 0;
                     InvalidateGamma();
                 }
             ) ?? Disposable.Null
@@ -63,7 +67,14 @@ public partial class GammaService : IDisposable
         _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.MonitorPowerStateChanged,
-                InvalidateGamma
+                data =>
+                {
+                    // Fallback: restore the flag if we somehow missed the
+                    // ConsoleDisplayStateChanged "display on" notification.
+                    if (data != 0)
+                        _areDisplaysOn = true;
+                    InvalidateGamma();
+                }
             ) ?? Disposable.Null
         );
 
@@ -161,8 +172,8 @@ public partial class GammaService : IDisposable
 
     public void SetGamma(ColorConfiguration configuration)
     {
-        // Skip gamma updates when the display is off to avoid unnecessary GPU/compositor activity
-        if (!_isDisplayOn)
+        // Skip gamma updates when the displays are off to avoid unnecessary GPU/compositor activity
+        if (!_areDisplaysOn)
             return;
 
         // Avoid unnecessary changes as updating too often will cause stuttering
