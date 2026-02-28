@@ -18,7 +18,8 @@ public partial class GammaService : IDisposable
 
     // Tracks whether the locally-attached displays (all monitors in the current Windows
     // interactive session) are powered on. Used to skip SetDeviceGammaRamp calls while
-    // displays are off so dwm.exe isn't woken up unnecessarily. 0=off, 1=on, 2=dimmed.
+    // displays are off so dwm.exe isn't woken up unnecessarily. The underlying setting
+    // uses 0=off, 1=on, 2=dimmed; this boolean is true for any non-zero value (on or dimmed).
     private bool _areDisplaysOn = true;
 
     private IReadOnlyList<DeviceContext> _deviceContexts = [];
