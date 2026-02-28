@@ -15,6 +15,7 @@ public partial class GammaService : IDisposable
     private readonly DisposableCollector _eventRoot = new();
 
     private bool _isUpdatingGamma;
+    private volatile bool _isDisplayOn = true;
 
     private IReadOnlyList<DeviceContext> _deviceContexts = [];
     private bool _areDeviceContextsValid;
@@ -37,7 +38,11 @@ public partial class GammaService : IDisposable
         _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.ConsoleDisplayStateChanged,
-                InvalidateGamma
+                data =>
+                {
+                    _isDisplayOn = data != 0;
+                    InvalidateGamma();
+                }
             ) ?? Disposable.Null
         );
 
@@ -156,6 +161,10 @@ public partial class GammaService : IDisposable
 
     public void SetGamma(ColorConfiguration configuration)
     {
+        // Skip gamma updates when the display is off to avoid unnecessary GPU/compositor activity
+        if (!_isDisplayOn)
+            return;
+
         // Avoid unnecessary changes as updating too often will cause stuttering
         if (!IsGammaStale() && !IsSignificantChange(configuration))
             return;

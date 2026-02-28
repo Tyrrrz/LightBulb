@@ -5,18 +5,22 @@ using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
 
-public partial class PowerSettingNotification(nint handle, Guid powerSettingId, Action callback)
-    : NativeResource(handle)
+public partial class PowerSettingNotification(
+    nint handle,
+    Guid powerSettingId,
+    Action<int> callback
+) : NativeResource(handle)
 {
     private readonly IDisposable _wndProcRegistration = WndProcSponge.Default.Listen(
         0x218,
         m =>
         {
             // Filter out other power events
-            if (m.TryGetLParam<PowerBroadcastSetting>()?.PowerSettingId != powerSettingId)
+            var setting = m.TryGetLParam<PowerBroadcastSetting>();
+            if (setting?.PowerSettingId != powerSettingId)
                 return;
 
-            callback();
+            callback(setting.Value.Data);
         }
     );
 
@@ -37,7 +41,10 @@ public partial class PowerSettingNotification(nint handle, Guid powerSettingId, 
 
 public partial class PowerSettingNotification
 {
-    public static PowerSettingNotification? TryRegister(Guid powerSettingId, Action callback)
+    public static PowerSettingNotification? TryRegister(Guid powerSettingId, Action callback) =>
+        TryRegister(powerSettingId, _ => callback());
+
+    public static PowerSettingNotification? TryRegister(Guid powerSettingId, Action<int> callback)
     {
         var handle = NativeMethods.RegisterPowerSettingNotification(
             WndProcSponge.Default.Handle,
