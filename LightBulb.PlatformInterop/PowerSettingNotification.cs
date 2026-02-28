@@ -41,9 +41,6 @@ public partial class PowerSettingNotification(
 
 public partial class PowerSettingNotification
 {
-    public static PowerSettingNotification? TryRegister(Guid powerSettingId, Action callback) =>
-        TryRegister(powerSettingId, _ => callback());
-
     public static PowerSettingNotification? TryRegister(Guid powerSettingId, Action<int> callback)
     {
         var handle = NativeMethods.RegisterPowerSettingNotification(
@@ -64,6 +61,9 @@ public partial class PowerSettingNotification
 
         return new PowerSettingNotification(handle, powerSettingId, callback);
     }
+
+    public static PowerSettingNotification? TryRegister(Guid powerSettingId, Action callback) =>
+        TryRegister(powerSettingId, _ => callback());
 }
 
 public partial class PowerSettingNotification

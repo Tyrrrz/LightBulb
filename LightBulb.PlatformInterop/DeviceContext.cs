@@ -8,8 +8,6 @@ public partial class DeviceContext(nint handle) : NativeResource(handle)
 {
     private int _gammaChannelOffset;
 
-    public bool IsActive { get; set; } = true;
-
     private void SetGammaRamp(GammaRamp ramp)
     {
         if (!NativeMethods.SetDeviceGammaRamp(Handle, ref ramp))
