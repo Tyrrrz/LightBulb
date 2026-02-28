@@ -70,10 +70,10 @@ public partial class GammaService : IDisposable
                 PowerSettingNotification.Ids.MonitorPowerStateChanged,
                 data =>
                 {
-                    // Fallback: restore the flag if we somehow missed the
-                    // ConsoleDisplayStateChanged "display on" notification.
-                    if (data != 0)
-                        _areDisplaysOn = true;
+                    // Fallback in case ConsoleDisplayStateChanged is missed (e.g. when
+                    // monitors are turned off via SendMessage/nircmd rather than through
+                    // the Windows power plan).
+                    _areDisplaysOn = data != 0;
                     InvalidateGamma();
                 }
             ) ?? Disposable.Null

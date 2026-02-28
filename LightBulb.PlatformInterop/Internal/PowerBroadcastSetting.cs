@@ -21,7 +21,8 @@ internal readonly record struct PowerBroadcastSetting(
         if (DataLength != sizeof(int))
         {
             throw new InvalidOperationException(
-                $"PowerBroadcastSetting.Data has length {DataLength} bytes; expected {sizeof(int)} bytes for a 32-bit integer value.");
+                $"PowerBroadcastSetting.Data has length {DataLength} bytes; expected {sizeof(int)} bytes for a 32-bit integer value."
+            );
         }
 
         return Data;
