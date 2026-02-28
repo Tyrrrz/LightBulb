@@ -41,6 +41,8 @@ public partial class GammaService : IDisposable
                 data =>
                 {
                     _isDisplayOn = data != 0;
+                    foreach (var deviceContext in _deviceContexts)
+                        deviceContext.IsActive = _isDisplayOn;
                     InvalidateGamma();
                 }
             ) ?? Disposable.Null
@@ -104,6 +106,10 @@ public partial class GammaService : IDisposable
             .Select(m => m.TryCreateDeviceContext())
             .WhereNotNull()
             .ToArray();
+
+        // Apply the current display on/off state to newly created contexts
+        foreach (var deviceContext in _deviceContexts)
+            deviceContext.IsActive = _isDisplayOn;
 
         _lastConfiguration = null;
     }
@@ -175,6 +181,9 @@ public partial class GammaService : IDisposable
 
         foreach (var deviceContext in _deviceContexts)
         {
+            if (!deviceContext.IsActive)
+                continue;
+
             deviceContext.SetGamma(
                 GetRed(configuration) * configuration.Brightness,
                 GetGreen(configuration) * configuration.Brightness,
