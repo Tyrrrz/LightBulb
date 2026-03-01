@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using LightBulb.Core;
 using LightBulb.Core.Utils.Extensions;
 using LightBulb.Framework;
+using LightBulb.Localization;
 using LightBulb.Models;
 using LightBulb.PlatformInterop;
 using LightBulb.Services;
@@ -36,13 +37,15 @@ public partial class DashboardViewModel : ViewModelBase
         SettingsService settingsService,
         GammaService gammaService,
         HotKeyService hotKeyService,
-        ExternalApplicationService externalApplicationService
+        ExternalApplicationService externalApplicationService,
+        LocalizationManager localizationManager
     )
     {
         _settingsService = settingsService;
         _gammaService = gammaService;
         _hotKeyService = hotKeyService;
         _externalApplicationService = externalApplicationService;
+        LocalizationManager = localizationManager;
 
         _eventRoot.Add(
             this.WatchProperty(
@@ -94,6 +97,8 @@ public partial class DashboardViewModel : ViewModelBase
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]
     public partial bool IsEnabled { get; set; } = true;
+
+    public LocalizationManager LocalizationManager { get; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]

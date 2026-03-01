@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Core;
+using LightBulb.Localization;
 using LightBulb.Services;
 using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
@@ -13,13 +14,18 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
 {
     private readonly DisposableCollector _eventRoot = new();
 
-    public LocationSettingsTabViewModel(SettingsService settingsService)
-        : base(settingsService, 1, "Location")
+    public LocationSettingsTabViewModel(
+        SettingsService settingsService,
+        LocalizationManager localizationManager
+    )
+        : base(settingsService, localizationManager, 1, "Location")
     {
         _eventRoot.Add(
             this.WatchProperty(o => o.Location, () => LocationQuery = Location?.ToString(), true)
         );
     }
+
+    public override string DisplayName => LocalizationManager.LocationTabName;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AutoResolveLocationCommand))]

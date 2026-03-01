@@ -8,19 +8,19 @@
     x:DataType="settings:LocationSettingsTabViewModel">
     <StackPanel Margin="16" Orientation="Vertical">
         <!--  Manual/location-based configuration  -->
-        <TextBlock Text="Solar configuration:" />
+        <TextBlock Text="{Binding LocalizationManager.SolarConfigLabel}" />
         <DockPanel Margin="0,8,0,0">
             <RadioButton
-                Content="Manual"
+                Content="{Binding LocalizationManager.ManualLabel}"
                 DockPanel.Dock="Left"
                 IsChecked="{Binding IsManualSunriseSunsetEnabled}"
-                ToolTip.Tip="Configure sunrise and sunset manually" />
+                ToolTip.Tip="{Binding LocalizationManager.ManualTooltip}" />
             <RadioButton
                 HorizontalAlignment="Right"
-                Content="Location-based"
+                Content="{Binding LocalizationManager.LocationBasedLabel}"
                 DockPanel.Dock="Right"
                 IsChecked="{Binding !IsManualSunriseSunsetEnabled}"
-                ToolTip.Tip="Configure your location and use it to automatically calculate the sunrise and sunset times" />
+                ToolTip.Tip="{Binding LocalizationManager.LocationBasedTooltip}" />
         </DockPanel>
 
         <!--  Manual  -->
@@ -30,7 +30,7 @@
             Orientation="Vertical">
             <!--  Sunrise time  -->
             <DockPanel>
-                <TextBlock DockPanel.Dock="Left" Text="Sunrise:" />
+                <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.SunriseTimeLabel}" />
                 <TextBox
                     MinWidth="24"
                     HorizontalAlignment="Right"
@@ -48,7 +48,7 @@
 
             <!--  Sunset time  -->
             <DockPanel Margin="0,16,0,0">
-                <TextBlock DockPanel.Dock="Left" Text="Sunset:" />
+                <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.SunsetTimeLabel}" />
                 <TextBox
                     MinWidth="24"
                     HorizontalAlignment="Right"
@@ -71,7 +71,7 @@
             IsVisible="{Binding !IsManualSunriseSunsetEnabled}"
             Orientation="Vertical">
             <!--  Location  -->
-            <TextBlock Text="Your location:" />
+            <TextBlock Text="{Binding LocalizationManager.YourLocationLabel}" />
             <Grid Margin="0,8,0,0" ColumnDefinitions="Auto,*,Auto">
                 <!--  Autodetect  -->
                 <Button
@@ -80,7 +80,7 @@
                     VerticalAlignment="Center"
                     Command="{Binding AutoResolveLocationCommand}"
                     Theme="{DynamicResource MaterialFlatButton}"
-                    ToolTip.Tip="Try to detect the location automatically based on your IP address">
+                    ToolTip.Tip="{Binding LocalizationManager.AutoDetectLocationTooltip}">
                     <materialIcons:MaterialIcon
                         Width="24"
                         Height="24"
@@ -96,20 +96,7 @@
                     Text="{Binding LocationQuery}"
                     Theme="{DynamicResource CompactTextBox}">
                     <ToolTip.Tip>
-                        <TextBlock>
-                            <Run Text="Specify your location using geographic coordinates or a search query" />
-                            <LineBreak />
-                            <LineBreak />
-                            <Run Text="Examples of valid inputs:" />
-                            <LineBreak />
-                            <Run FontWeight="SemiBold" Text="41.25, -120.9762" />
-                            <LineBreak />
-                            <Run FontWeight="SemiBold" Text="41.25°N, 120.9762°W" />
-                            <LineBreak />
-                            <Run FontWeight="SemiBold" Text="New York, USA" />
-                            <LineBreak />
-                            <Run FontWeight="SemiBold" Text="Germany" />
-                        </TextBlock>
+                        <TextBlock MaxWidth="350" Text="{Binding LocalizationManager.LocationQueryTooltip}" TextWrapping="Wrap" />
                     </ToolTip.Tip>
                 </TextBox>
 
@@ -121,7 +108,7 @@
                     Command="{Binding ResolveLocationCommand}"
                     IsDefault="True"
                     Theme="{DynamicResource MaterialFlatButton}"
-                    ToolTip.Tip="Set location">
+                    ToolTip.Tip="{Binding LocalizationManager.SetLocationTooltip}">
                     <materialIcons:MaterialIcon
                         Width="24"
                         Height="24"
@@ -135,7 +122,7 @@
                 HorizontalAlignment="Center"
                 Foreground="DarkRed"
                 IsVisible="{Binding IsLocationError}"
-                Text="Error resolving location, try again" />
+                Text="{Binding LocalizationManager.LocationErrorText}" />
         </StackPanel>
     </StackPanel>
 </UserControl>

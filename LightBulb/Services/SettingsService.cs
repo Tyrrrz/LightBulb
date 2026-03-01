@@ -7,6 +7,7 @@ using Cogwheel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Core;
 using LightBulb.Framework;
+using LightBulb.Localization;
 using LightBulb.Models;
 using LightBulb.PlatformInterop;
 using LightBulb.Utils.Extensions;
@@ -36,6 +37,9 @@ public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerC
 
     [ObservableProperty]
     public partial bool IsUkraineSupportMessageEnabled { get; set; } = true;
+
+    [ObservableProperty]
+    public partial Language Language { get; set; }
 
     [ObservableProperty]
     [JsonIgnore] // comes from registry

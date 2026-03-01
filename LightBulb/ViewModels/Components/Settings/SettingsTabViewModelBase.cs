@@ -1,5 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Framework;
+using LightBulb.Localization;
 using LightBulb.Services;
 using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
@@ -12,13 +13,15 @@ public abstract partial class SettingsTabViewModelBase : ViewModelBase
 
     protected SettingsTabViewModelBase(
         SettingsService settingsService,
+        LocalizationManager localizationManager,
         int order,
         string displayName
     )
     {
         SettingsService = settingsService;
+        LocalizationManager = localizationManager;
         Order = order;
-        DisplayName = displayName;
+        _displayName = displayName;
 
         _eventRoot.Add(
             // Implementing classes will bind to settings properties through
@@ -27,16 +30,20 @@ public abstract partial class SettingsTabViewModelBase : ViewModelBase
             // but it's a simple and reliable solution.
             SettingsService.WatchAllProperties(OnAllPropertiesChanged)
         );
+        _eventRoot.Add(localizationManager.WatchProperty(o => o.Language, OnAllPropertiesChanged));
     }
 
     protected SettingsService SettingsService { get; }
+
+    public LocalizationManager LocalizationManager { get; }
 
     [ObservableProperty]
     public partial bool IsActive { get; set; }
 
     public int Order { get; }
 
-    public string DisplayName { get; }
+    private readonly string _displayName;
+    public virtual string DisplayName => _displayName;
 
     protected override void Dispose(bool disposing)
     {

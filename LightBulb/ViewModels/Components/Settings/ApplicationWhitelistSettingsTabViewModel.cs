@@ -2,6 +2,7 @@
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using LightBulb.Localization;
 using LightBulb.Models;
 using LightBulb.Services;
 using LightBulb.Utils;
@@ -16,9 +17,10 @@ public partial class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewM
 
     public ApplicationWhitelistSettingsTabViewModel(
         SettingsService settingsService,
+        LocalizationManager localizationManager,
         ExternalApplicationService externalApplicationService
     )
-        : base(settingsService, 3, "Application whitelist")
+        : base(settingsService, localizationManager, 3, "Application whitelist")
     {
         _externalApplicationService = externalApplicationService;
 
@@ -29,6 +31,8 @@ public partial class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewM
             )
         );
     }
+
+    public override string DisplayName => LocalizationManager.AppWhitelistTabName;
 
     public bool IsApplicationWhitelistEnabled
     {
