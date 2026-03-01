@@ -16,6 +16,9 @@ public partial class SystemEvent(int eventId, Action callback) : IDisposable
 public partial class SystemEvent
 {
     public static SystemEvent Register(int eventId, Action callback) => new(eventId, callback);
+
+    public static IDisposable Register(int messageId, Action<nint, nint> callback) =>
+        WndProcSponge.Default.Listen(messageId, m => callback(m.WParam, m.LParam));
 }
 
 public partial class SystemEvent
