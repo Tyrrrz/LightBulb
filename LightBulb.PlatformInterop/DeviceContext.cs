@@ -1,11 +1,16 @@
-﻿using System.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
 
-public partial class DeviceContext(nint handle) : NativeResource(handle)
+public partial class DeviceContext(nint handle, IReadOnlyList<PhysicalMonitor> physicalMonitors)
+    : NativeResource(handle)
 {
+    private readonly IReadOnlyList<PhysicalMonitor> _physicalMonitors = physicalMonitors;
     private int _gammaChannelOffset;
 
     private void SetGammaRamp(GammaRamp ramp)
@@ -48,10 +53,46 @@ public partial class DeviceContext(nint handle) : NativeResource(handle)
         SetGammaRamp(ramp);
     }
 
+    public void SetBrightness(double brightness)
+    {
+        // Brightness is a value from 0.0 to 1.0, convert to 0-100
+        var brightnessPercentage = (uint)Math.Clamp(brightness * 100, 0, 100);
+
+        foreach (var physicalMonitor in _physicalMonitors)
+        {
+            if (!NativeMethods.SetMonitorBrightness(physicalMonitor.Handle, brightnessPercentage))
+            {
+                Debug.WriteLine(
+                    $"Failed to set brightness on monitor #{physicalMonitor.Handle}. "
+                        + $"Error {Marshal.GetLastWin32Error()}."
+                );
+            }
+        }
+    }
+
     public void ResetGamma() => SetGamma(1, 1, 1);
 
     protected override void Dispose(bool disposing)
     {
+        if (_physicalMonitors.Any())
+        {
+            // This is a bit of a hack, but we need to convert the read-only list to an array
+            var physicalMonitorsArray = _physicalMonitors.ToArray();
+
+            if (
+                !NativeMethods.DestroyPhysicalMonitors(
+                    (uint)physicalMonitorsArray.Length,
+                    physicalMonitorsArray
+                )
+            )
+            {
+                Debug.WriteLine(
+                    "Failed to destroy physical monitors. "
+                        + $"Error {Marshal.GetLastWin32Error()}."
+                );
+            }
+        }
+
         // Don't reset gamma during dispose because this method is also called whenever
         // the device context gets invalidated.
         // Resetting gamma in such cases will cause unwanted flickering.
@@ -68,7 +109,10 @@ public partial class DeviceContext(nint handle) : NativeResource(handle)
 
 public partial class DeviceContext
 {
-    public static DeviceContext? TryCreate(string deviceName)
+    public static DeviceContext? TryCreate(
+        string deviceName,
+        IReadOnlyList<PhysicalMonitor> physicalMonitors
+    )
     {
         var handle = NativeMethods.CreateDC(deviceName, deviceName, null, 0);
         if (handle == 0)
@@ -80,6 +124,6 @@ public partial class DeviceContext
             return null;
         }
 
-        return new DeviceContext(handle);
+        return new DeviceContext(handle, physicalMonitors);
     }
 }

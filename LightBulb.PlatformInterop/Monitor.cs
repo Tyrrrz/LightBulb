@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using LightBulb.PlatformInterop.Internal;
 
@@ -7,6 +8,35 @@ namespace LightBulb.PlatformInterop;
 
 public partial class Monitor(nint handle) : NativeResource(handle)
 {
+    private PhysicalMonitor[]? TryGetPhysicalMonitors()
+    {
+        if (!NativeMethods.GetNumberOfPhysicalMonitorsFromHMONITOR(Handle, out var count))
+        {
+            Debug.WriteLine(
+                $"Failed to get physical monitor count for monitor #{Handle}. "
+                    + $"Error {Marshal.GetLastWin32Error()}."
+            );
+
+            return null;
+        }
+
+        if (count == 0)
+            return [];
+
+        var monitors = new PhysicalMonitor[count];
+        if (!NativeMethods.GetPhysicalMonitorsFromHMONITOR(Handle, count, monitors))
+        {
+            Debug.WriteLine(
+                $"Failed to get physical monitors for monitor #{Handle}. "
+                    + $"Error {Marshal.GetLastWin32Error()}."
+            );
+
+            return null;
+        }
+
+        return monitors;
+    }
+
     private MonitorInfoEx? TryGetMonitorInfo()
     {
         var monitorInfo = new MonitorInfoEx();
@@ -34,7 +64,11 @@ public partial class Monitor(nint handle) : NativeResource(handle)
         if (string.IsNullOrWhiteSpace(name))
             return null;
 
-        return DeviceContext.TryCreate(name);
+        var physicalMonitors = TryGetPhysicalMonitors();
+        if (physicalMonitors is null)
+            return null;
+
+        return DeviceContext.TryCreate(name, physicalMonitors);
     }
 
     protected override void Dispose(bool disposing) { }
