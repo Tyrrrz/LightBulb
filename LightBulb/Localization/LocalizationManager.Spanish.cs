@@ -85,7 +85,7 @@ public partial class LocalizationManager
             [nameof(AutoDetectLocationTooltip)] =
                 "Intentar detectar la ubicación automáticamente según tu dirección IP",
             [nameof(LocationQueryTooltip)] =
-                "Especifica tu ubicación con coordenadas geográficas o una consulta de búsqueda\n\nEjemplos de entradas válidas:\n41.25, -120.9762\n41.25°N, 120.9762°W\nNew York, USA\nAlemania",
+                "Especifica tu ubicación con coordenadas geográficas o una consulta de búsqueda\n\nEjemplos de entradas válidas:\n**41.25, -120.9762**\n**41.25°N, 120.9762°W**\n**New York, USA**\n**Alemania**",
             [nameof(SetLocationTooltip)] = "Establecer ubicación",
             [nameof(LocationErrorText)] = "Error al resolver la ubicación, inténtalo de nuevo",
             [nameof(ToggleLightBulbHotkeyLabel)] = "Alternar LightBulb",

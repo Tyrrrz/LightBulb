@@ -92,7 +92,7 @@ public partial class LocalizationManager
             [nameof(AutoDetectLocationTooltip)] =
                 "Try to detect the location automatically based on your IP address",
             [nameof(LocationQueryTooltip)] =
-                "Specify your location using geographic coordinates or a search query\n\nExamples of valid inputs:\n41.25, -120.9762\n41.25°N, 120.9762°W\nNew York, USA\nGermany",
+                "Specify your location using geographic coordinates or a search query\n\nExamples of valid inputs:\n**41.25, -120.9762**\n**41.25°N, 120.9762°W**\n**New York, USA**\n**Germany**",
             [nameof(SetLocationTooltip)] = "Set location",
             [nameof(LocationErrorText)] = "Error resolving location, try again",
             // Hot key settings tab

@@ -87,7 +87,7 @@ public partial class LocalizationManager
         [nameof(AutoDetectLocationTooltip)] =
             "Standort automatisch anhand Ihrer IP-Adresse erkennen",
         [nameof(LocationQueryTooltip)] =
-            "Geben Sie Ihren Standort mit geografischen Koordinaten oder einer Suchanfrage an\n\nBeispiele gültiger Eingaben:\n41.25, -120.9762\n41.25°N, 120.9762°W\nNew York, USA\nDeutschland",
+            "Geben Sie Ihren Standort mit geografischen Koordinaten oder einer Suchanfrage an\n\nBeispiele gültiger Eingaben:\n**41.25, -120.9762**\n**41.25°N, 120.9762°W**\n**New York, USA**\n**Deutschland**",
         [nameof(SetLocationTooltip)] = "Standort festlegen",
         [nameof(LocationErrorText)] = "Fehler beim Ermitteln des Standorts, bitte erneut versuchen",
         [nameof(ToggleLightBulbHotkeyLabel)] = "LightBulb umschalten",

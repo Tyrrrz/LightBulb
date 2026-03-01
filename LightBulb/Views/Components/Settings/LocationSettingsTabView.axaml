@@ -96,7 +96,10 @@
                     Text="{Binding LocationQuery}"
                     Theme="{DynamicResource CompactTextBox}">
                     <ToolTip.Tip>
-                        <TextBlock MaxWidth="350" Text="{Binding LocalizationManager.LocationQueryTooltip}" TextWrapping="Wrap" />
+                        <TextBlock
+                            MaxWidth="350"
+                            Inlines="{Binding LocalizationManager.LocationQueryTooltip, Converter={x:Static converters:MarkdownToInlinesConverter.Instance}}"
+                            TextWrapping="Wrap" />
                     </ToolTip.Tip>
                 </TextBox>
 
