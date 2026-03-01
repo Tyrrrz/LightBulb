@@ -67,39 +67,6 @@ public partial class GammaService : IDisposable
 
         _eventRoot.Add(
             PowerSettingNotification.TryRegister(
-                PowerSettingNotification.Ids.MonitorPowerStateChanged,
-                data =>
-                {
-                    // Fallback in case ConsoleDisplayStateChanged is missed (e.g. when
-                    // monitors are turned off via SendMessage/nircmd rather than through
-                    // the Windows power plan).
-                    _areDisplaysOn = data != 0;
-                    InvalidateGamma();
-                }
-            ) ?? Disposable.Null
-        );
-
-        _eventRoot.Add(
-            // WM_SYSCOMMAND = 0x0112: third fallback for SC_MONITORPOWER (0xF170) broadcasts
-            // sent by tools like nircmd and the SC_MONITORPOWER PowerShell snippet.
-            // Power-setting notifications do not fire for these direct display-off commands,
-            // so we intercept the raw WM_SYSCOMMAND message instead.
-            // lParam: 2 = display off, 1 = low-power, -1 = on.
-            SystemEvent.Register(
-                0x0112,
-                (wParam, lParam) =>
-                {
-                    if ((wParam & 0xFFF0) == 0xF170) // SC_MONITORPOWER
-                    {
-                        _areDisplaysOn = (int)lParam != 2;
-                        InvalidateGamma();
-                    }
-                }
-            )
-        );
-
-        _eventRoot.Add(
-            PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.AwayModeChanged,
                 InvalidateGamma
             ) ?? Disposable.Null
