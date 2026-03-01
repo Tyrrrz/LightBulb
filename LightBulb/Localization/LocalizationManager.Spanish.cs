@@ -25,7 +25,7 @@ public partial class LocalizationManager
             [nameof(StartPreviewTooltip)] = "Vista previa del ciclo de 24 horas",
             [nameof(SettingsText)] = "AJUSTES",
             [nameof(OpenSettingsTooltip)] = "Abrir ajustes",
-            [nameof(AboutText)] = "ACERCA DE",
+            [nameof(AboutText)] = "GITHUB",
             [nameof(OpenGitHubTooltip)] = "Abrir LightBulb en GitHub",
             [nameof(ResetButton)] = "RESTABLECER",
             [nameof(ResetTooltip)] = "Restablecer todos los ajustes a sus valores predeterminados",
