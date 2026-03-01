@@ -107,7 +107,7 @@
             IsSnapToTickEnabled="True"
             LargeChange="0.1"
             Maximum="1"
-            Minimum="0.1"
+            Minimum="0.01"
             SmallChange="0.01"
             TickFrequency="0.01"
             Value="{Binding NightBrightness}" />
@@ -143,7 +143,7 @@
         <Slider
             Margin="0,12,0,0"
             LargeChange="0.05"
-            Maximum="1"
+            Maximum="2"
             Minimum="0"
             SmallChange="0.01"
             Value="{Binding ConfigurationTransitionOffset}" />

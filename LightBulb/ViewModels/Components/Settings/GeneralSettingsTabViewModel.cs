@@ -107,6 +107,6 @@ public class GeneralSettingsTabViewModel(SettingsService settingsService)
     public double ConfigurationTransitionOffset
     {
         get => SettingsService.ConfigurationTransitionOffset;
-        set => SettingsService.ConfigurationTransitionOffset = Math.Clamp(value, 0, 1);
+        set => SettingsService.ConfigurationTransitionOffset = Math.Clamp(value, 0, 2);
     }
 }
