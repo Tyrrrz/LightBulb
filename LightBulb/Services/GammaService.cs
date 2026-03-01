@@ -61,7 +61,11 @@ public partial class GammaService : IDisposable
         _eventRoot.Add(
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.SessionDisplayStatusChanged,
-                InvalidateGamma
+                data =>
+                {
+                    _areDisplaysOn = data != 0;
+                    InvalidateGamma();
+                }
             ) ?? Disposable.Null
         );
 
