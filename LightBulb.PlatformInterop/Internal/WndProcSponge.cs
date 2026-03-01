@@ -93,15 +93,20 @@ internal partial class WndProcSponge
         }
 
         var windowHandle = NativeMethods.CreateWindowEx(
-            0,
+            // WS_EX_TOOLWINDOW: exclude from taskbar and Alt+Tab
+            // WS_EX_NOACTIVATE: don't steal focus
+            0x08000080,
             ClassName,
             ClassName,
+            // WS_POPUP: no title bar or border; no WS_VISIBLE so the window is hidden
+            0x80000000,
             0,
             0,
             0,
             0,
+            // NULL parent (not HWND_MESSAGE) so the window receives broadcast messages
+            // like WM_SYSCOMMAND, which message-only windows do not receive
             0,
-            -3, // HWND_MESSAGE
             0,
             0,
             0
