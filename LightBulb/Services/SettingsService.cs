@@ -42,9 +42,6 @@ public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerC
     [JsonIgnore] // comes from registry
     public partial bool IsExtendedGammaRangeUnlocked { get; set; }
 
-    [ObservableProperty]
-    public partial Language Language { get; set; }
-
     // General
 
     public double MinimumTemperature => 500;
@@ -92,6 +89,9 @@ public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerC
 
     [ObservableProperty]
     public partial ThemeVariant Theme { get; set; }
+
+    [ObservableProperty]
+    public partial Language Language { get; set; }
 
     [ObservableProperty]
     [JsonIgnore] // comes from registry
