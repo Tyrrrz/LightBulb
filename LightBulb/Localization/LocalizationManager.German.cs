@@ -64,11 +64,19 @@ public partial class LocalizationManager
         [nameof(NightTemperatureLabel)] = "Nacht-Farbtemperatur:",
         [nameof(NightTemperatureTooltip)] = "Farbtemperatur nachts",
         [nameof(DayBrightnessLabel)] = "Tageshelligkeit:",
-        [nameof(DayBrightnessTooltip)] =
-            "Helligkeit tagsüber\n\nDiese Helligkeitseinstellung wirkt auf das Farbgamma, nicht auf die tatsächliche Bildschirmhelligkeit.\nWenn Ihr Computer bereits in der Lage ist, die Bildschirmhelligkeit automatisch anzupassen (häufig bei Laptops), wird empfohlen, die Helligkeitssteuerung von LightBulb zu deaktivieren, indem beide Helligkeitswerte auf 100% gesetzt werden.",
+        [nameof(DayBrightnessTooltip)] = """
+            Helligkeit tagsüber
+
+            Diese Helligkeitseinstellung wirkt auf das Farbgamma, nicht auf die tatsächliche Bildschirmhelligkeit.
+            Wenn Ihr Computer bereits in der Lage ist, die Bildschirmhelligkeit automatisch anzupassen (häufig bei Laptops), wird empfohlen, die Helligkeitssteuerung von LightBulb zu deaktivieren, indem beide Helligkeitswerte auf 100% gesetzt werden.
+            """,
         [nameof(NightBrightnessLabel)] = "Nachthelligkeit:",
-        [nameof(NightBrightnessTooltip)] =
-            "Helligkeit nachts\n\nDiese Helligkeitseinstellung wirkt auf das Farbgamma, nicht auf die tatsächliche Bildschirmhelligkeit.\nWenn Ihr Computer bereits in der Lage ist, die Bildschirmhelligkeit automatisch anzupassen (häufig bei Laptops), wird empfohlen, die Helligkeitssteuerung von LightBulb zu deaktivieren, indem beide Helligkeitswerte auf 100% gesetzt werden.",
+        [nameof(NightBrightnessTooltip)] = """
+            Helligkeit nachts
+
+            Diese Helligkeitseinstellung wirkt auf das Farbgamma, nicht auf die tatsächliche Bildschirmhelligkeit.
+            Wenn Ihr Computer bereits in der Lage ist, die Bildschirmhelligkeit automatisch anzupassen (häufig bei Laptops), wird empfohlen, die Helligkeitssteuerung von LightBulb zu deaktivieren, indem beide Helligkeitswerte auf 100% gesetzt werden.
+            """,
         [nameof(TransitionDurationLabel)] = "Übergangsdauer:",
         [nameof(TransitionDurationTooltip)] =
             "Zeitdauer für den Wechsel zwischen Tages- und Nachtkonfiguration",
@@ -86,8 +94,15 @@ public partial class LocalizationManager
         [nameof(YourLocationLabel)] = "Ihr Standort:",
         [nameof(AutoDetectLocationTooltip)] =
             "Standort automatisch anhand Ihrer IP-Adresse erkennen",
-        [nameof(LocationQueryTooltip)] =
-            "Geben Sie Ihren Standort mit geografischen Koordinaten oder einer Suchanfrage an\n\nBeispiele gültiger Eingaben:\n**41.25, -120.9762**\n**41.25°N, 120.9762°W**\n**New York, USA**\n**Deutschland**",
+        [nameof(LocationQueryTooltip)] = """
+            Geben Sie Ihren Standort mit geografischen Koordinaten oder einer Suchanfrage an
+
+            Beispiele gültiger Eingaben:
+            **41.25, -120.9762**
+            **41.25°N, 120.9762°W**
+            **New York, USA**
+            **Germany**
+            """,
         [nameof(SetLocationTooltip)] = "Standort festlegen",
         [nameof(LocationErrorText)] = "Fehler beim Ermitteln des Standorts, bitte erneut versuchen",
         [nameof(ToggleLightBulbHotkeyLabel)] = "LightBulb umschalten",
@@ -116,25 +131,41 @@ public partial class LocalizationManager
         [nameof(PauseForWhitelistedTooltip)] =
             "LightBulb pausieren, wenn eine der ausgewählten Anwendungen im Vordergrund ist",
         [nameof(UpdateAvailableTitle)] = "Update verfügbar",
-        [nameof(UpdateAvailableMessage)] =
-            "Update auf {0} v{1} wurde heruntergeladen.\nMöchten Sie es jetzt installieren?",
+        [nameof(UpdateAvailableMessage)] = """
+            Update auf {0} v{1} wurde heruntergeladen.
+            Möchten Sie es jetzt installieren?
+            """,
         [nameof(InstallButton)] = "INSTALLIEREN",
         [nameof(CloseButton)] = "SCHLIESSEN",
         [nameof(UkraineSupportTitle)] = "Danke für Ihre Unterstützung der Ukraine!",
-        [nameof(UkraineSupportMessage)] =
-            "Während Russland einen Vernichtungskrieg gegen mein Land führt, bin ich jedem dankbar, der weiterhin an der Seite der Ukraine in unserem Kampf für die Freiheit steht.\n\nKlicken Sie auf MEHR ERFAHREN, um Möglichkeiten der Unterstützung zu finden.",
+        [nameof(UkraineSupportMessage)] = """
+            Während Russland einen Vernichtungskrieg gegen mein Land führt, bin ich jedem dankbar, der weiterhin an der Seite der Ukraine in unserem Kampf für die Freiheit steht.
+
+            Klicken Sie auf MEHR ERFAHREN, um Möglichkeiten der Unterstützung zu finden.
+            """,
         [nameof(LearnMoreButton)] = "MEHR ERFAHREN",
         [nameof(UnstableBuildTitle)] = "Warnung: Instabiler Build",
-        [nameof(UnstableBuildMessage)] =
-            "Sie verwenden einen Entwicklungs-Build von {0}. Diese Builds wurden nicht gründlich getestet und können Fehler enthalten.\n\nAutomatische Updates sind für Entwicklungs-Builds deaktiviert. Wenn Sie zu einem stabilen Release wechseln möchten, laden Sie ihn bitte manuell herunter.",
+        [nameof(UnstableBuildMessage)] = """
+            Sie verwenden einen Entwicklungs-Build von {0}. Diese Builds wurden nicht gründlich getestet und können Fehler enthalten.
+
+            Automatische Updates sind für Entwicklungs-Builds deaktiviert. Wenn Sie zu einem stabilen Release wechseln möchten, laden Sie ihn bitte manuell herunter.
+            """,
         [nameof(SeeReleasesButton)] = "RELEASES ANZEIGEN",
         [nameof(LimitedGammaRangeTitle)] = "Begrenzter Gamma-Bereich",
-        [nameof(LimitedGammaRangeMessage)] =
-            "{0} hat festgestellt, dass erweiterte Gamma-Bereichssteuerungen auf diesem System nicht aktiviert sind.\nDies kann dazu führen, dass einige Farbkonfigurationen nicht korrekt funktionieren.\n\nDrücken Sie BEHEBEN, um den Gamma-Bereich zu entsperren. Administratorrechte können erforderlich sein.",
+        [nameof(LimitedGammaRangeMessage)] = """
+            {0} hat festgestellt, dass erweiterte Gamma-Bereichssteuerungen auf diesem System nicht aktiviert sind.
+            Dies kann dazu führen, dass einige Farbkonfigurationen nicht korrekt funktionieren.
+
+            Drücken Sie BEHEBEN, um den Gamma-Bereich zu entsperren. Administratorrechte können erforderlich sein.
+            """,
         [nameof(FixButton)] = "BEHEBEN",
         [nameof(WelcomeTitle)] = "Willkommen!",
-        [nameof(WelcomeMessage)] =
-            "Danke für die Installation von {0}!\nFür das beste personalisierte Erlebnis legen Sie bitte Ihre bevorzugte Solarkonfiguration fest.\n\nDrücken Sie OK, um die Einstellungen zu öffnen.",
+        [nameof(WelcomeMessage)] = """
+            Danke für die Installation von {0}!
+            Für das beste personalisierte Erlebnis legen Sie bitte Ihre bevorzugte Solarkonfiguration fest.
+
+            Drücken Sie OK, um die Einstellungen zu öffnen.
+            """,
         [nameof(OkButton)] = "OK",
     };
 }

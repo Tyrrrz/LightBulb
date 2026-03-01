@@ -39,11 +39,11 @@ public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerC
     public partial bool IsUkraineSupportMessageEnabled { get; set; } = true;
 
     [ObservableProperty]
-    public partial Language Language { get; set; }
-
-    [ObservableProperty]
     [JsonIgnore] // comes from registry
     public partial bool IsExtendedGammaRangeUnlocked { get; set; }
+
+    [ObservableProperty]
+    public partial Language Language { get; set; }
 
     // General
 

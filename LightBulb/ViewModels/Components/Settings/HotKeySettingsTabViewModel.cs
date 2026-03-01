@@ -7,9 +7,10 @@ namespace LightBulb.ViewModels.Components.Settings;
 public class HotKeySettingsTabViewModel(
     SettingsService settingsService,
     LocalizationManager localizationManager
-) : SettingsTabViewModelBase(settingsService, localizationManager, 4, "Hotkeys")
+) : SettingsTabViewModelBase(settingsService, localizationManager, 4)
 {
     public override string DisplayName => LocalizationManager.HotkeysTabName;
+
     public HotKey ToggleHotKey
     {
         get => SettingsService.ToggleHotKey;

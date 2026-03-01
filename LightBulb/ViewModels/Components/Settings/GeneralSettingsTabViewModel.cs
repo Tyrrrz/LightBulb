@@ -8,7 +8,7 @@ namespace LightBulb.ViewModels.Components.Settings;
 public class GeneralSettingsTabViewModel(
     SettingsService settingsService,
     LocalizationManager localizationManager
-) : SettingsTabViewModelBase(settingsService, localizationManager, 0, "General")
+) : SettingsTabViewModelBase(settingsService, localizationManager, 0)
 {
     public override string DisplayName => LocalizationManager.GeneralTabName;
 

@@ -20,7 +20,7 @@ public partial class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewM
         LocalizationManager localizationManager,
         ExternalApplicationService externalApplicationService
     )
-        : base(settingsService, localizationManager, 3, "Application whitelist")
+        : base(settingsService, localizationManager, 3)
     {
         _externalApplicationService = externalApplicationService;
 

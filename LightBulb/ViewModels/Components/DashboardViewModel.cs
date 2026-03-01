@@ -35,17 +35,17 @@ public partial class DashboardViewModel : ViewModelBase
 
     public DashboardViewModel(
         SettingsService settingsService,
+        LocalizationManager localizationManager,
         GammaService gammaService,
         HotKeyService hotKeyService,
-        ExternalApplicationService externalApplicationService,
-        LocalizationManager localizationManager
+        ExternalApplicationService externalApplicationService
     )
     {
         _settingsService = settingsService;
+        LocalizationManager = localizationManager;
         _gammaService = gammaService;
         _hotKeyService = hotKeyService;
         _externalApplicationService = externalApplicationService;
-        LocalizationManager = localizationManager;
 
         _eventRoot.Add(
             this.WatchProperty(
@@ -94,11 +94,11 @@ public partial class DashboardViewModel : ViewModelBase
         );
     }
 
+    public LocalizationManager LocalizationManager { get; }
+
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]
     public partial bool IsEnabled { get; set; } = true;
-
-    public LocalizationManager LocalizationManager { get; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]

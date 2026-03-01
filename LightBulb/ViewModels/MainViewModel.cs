@@ -18,8 +18,8 @@ public partial class MainViewModel(
     ViewModelManager viewModelManager,
     DialogManager dialogManager,
     SettingsService settingsService,
-    UpdateService updateService,
-    LocalizationManager localizationManager
+    LocalizationManager localizationManager,
+    UpdateService updateService
 ) : ViewModelBase
 {
     private readonly Timer _checkForUpdatesTimer = new(
@@ -39,9 +39,9 @@ public partial class MainViewModel(
         }
     );
 
-    public DashboardViewModel Dashboard { get; } = viewModelManager.CreateDashboardViewModel();
-
     public LocalizationManager LocalizationManager { get; } = localizationManager;
+
+    public DashboardViewModel Dashboard { get; } = viewModelManager.CreateDashboardViewModel();
 
     private async Task FinalizePendingUpdateAsync()
     {

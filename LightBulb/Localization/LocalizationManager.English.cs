@@ -68,11 +68,19 @@ public partial class LocalizationManager
             [nameof(NightTemperatureLabel)] = "Night-time color temperature:",
             [nameof(NightTemperatureTooltip)] = "Color temperature during the night",
             [nameof(DayBrightnessLabel)] = "Day-time brightness:",
-            [nameof(DayBrightnessTooltip)] =
-                "Brightness during the day\n\nNote that this brightness setting applies to the color gamma, not to the actual brightness of the monitor.\nIf your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops), then it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%.",
+            [nameof(DayBrightnessTooltip)] = """
+                Brightness during the day
+
+                Note that this brightness setting applies to the color gamma, not to the actual brightness of the monitor.
+                If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops), then it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%.
+                """,
             [nameof(NightBrightnessLabel)] = "Night-time brightness:",
-            [nameof(NightBrightnessTooltip)] =
-                "Brightness during the night\n\nNote that this brightness setting applies to the color gamma, not to the actual brightness of the monitor.\nIf your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops), then it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%.",
+            [nameof(NightBrightnessTooltip)] = """
+                Brightness during the night
+
+                Note that this brightness setting applies to the color gamma, not to the actual brightness of the monitor.
+                If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops), then it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%.
+                """,
             [nameof(TransitionDurationLabel)] = "Transition duration:",
             [nameof(TransitionDurationTooltip)] =
                 "Duration of time it takes to switch between day-time and night-time configurations",
@@ -91,8 +99,15 @@ public partial class LocalizationManager
             [nameof(YourLocationLabel)] = "Your location:",
             [nameof(AutoDetectLocationTooltip)] =
                 "Try to detect the location automatically based on your IP address",
-            [nameof(LocationQueryTooltip)] =
-                "Specify your location using geographic coordinates or a search query\n\nExamples of valid inputs:\n**41.25, -120.9762**\n**41.25°N, 120.9762°W**\n**New York, USA**\n**Germany**",
+            [nameof(LocationQueryTooltip)] = """
+                Specify your location using geographic coordinates or a search query
+
+                Examples of valid inputs:
+                **41.25, -120.9762**
+                **41.25°N, 120.9762°W**
+                **New York, USA**
+                **Germany**
+                """,
             [nameof(SetLocationTooltip)] = "Set location",
             [nameof(LocationErrorText)] = "Error resolving location, try again",
             // Hot key settings tab
@@ -123,25 +138,41 @@ public partial class LocalizationManager
                 "Pause LightBulb when one of the selected applications is in the foreground",
             // Dialog messages
             [nameof(UpdateAvailableTitle)] = "Update available",
-            [nameof(UpdateAvailableMessage)] =
-                "Update to {0} v{1} has been downloaded.\nDo you want to install it now?",
+            [nameof(UpdateAvailableMessage)] = """
+                Update to {0} v{1} has been downloaded.
+                Do you want to install it now?
+                """,
             [nameof(InstallButton)] = "INSTALL",
             [nameof(CloseButton)] = "CLOSE",
             [nameof(UkraineSupportTitle)] = "Thank you for supporting Ukraine!",
-            [nameof(UkraineSupportMessage)] =
-                "As Russia wages a genocidal war against my country, I'm grateful to everyone who continues to stand with Ukraine in our fight for freedom.\n\nClick LEARN MORE to find ways that you can help.",
+            [nameof(UkraineSupportMessage)] = """
+                As Russia wages a genocidal war against my country, I'm grateful to everyone who continues to stand with Ukraine in our fight for freedom.
+
+                Click LEARN MORE to find ways that you can help.
+                """,
             [nameof(LearnMoreButton)] = "LEARN MORE",
             [nameof(UnstableBuildTitle)] = "Unstable build warning",
-            [nameof(UnstableBuildMessage)] =
-                "You're using a development build of {0}. These builds are not thoroughly tested and may contain bugs.\n\nAuto-updates are disabled for development builds. If you want to switch to a stable release, please download it manually.",
+            [nameof(UnstableBuildMessage)] = """
+                You're using a development build of {0}. These builds are not thoroughly tested and may contain bugs.
+
+                Auto-updates are disabled for development builds. If you want to switch to a stable release, please download it manually.
+                """,
             [nameof(SeeReleasesButton)] = "SEE RELEASES",
             [nameof(LimitedGammaRangeTitle)] = "Limited gamma range",
-            [nameof(LimitedGammaRangeMessage)] =
-                "{0} has detected that extended gamma range controls are not enabled on this system.\nThis may cause some color configurations to not work correctly.\n\nPress FIX to unlock the gamma range. Administrator privileges may be required.",
+            [nameof(LimitedGammaRangeMessage)] = """
+                {0} has detected that extended gamma range controls are not enabled on this system.
+                This may cause some color configurations to not work correctly.
+
+                Press FIX to unlock the gamma range. Administrator privileges may be required.
+                """,
             [nameof(FixButton)] = "FIX",
             [nameof(WelcomeTitle)] = "Welcome!",
-            [nameof(WelcomeMessage)] =
-                "Thank you for installing {0}!\nTo get the most personalized experience, please set your preferred solar configuration.\n\nPress OK to open settings.",
+            [nameof(WelcomeMessage)] = """
+                Thank you for installing {0}!
+                To get the most personalized experience, please set your preferred solar configuration.
+
+                Press OK to open settings.
+                """,
             [nameof(OkButton)] = "OK",
         };
 }

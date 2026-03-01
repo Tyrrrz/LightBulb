@@ -18,7 +18,7 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
         SettingsService settingsService,
         LocalizationManager localizationManager
     )
-        : base(settingsService, localizationManager, 1, "Location")
+        : base(settingsService, localizationManager, 1)
     {
         _eventRoot.Add(
             this.WatchProperty(o => o.Location, () => LocationQuery = Location?.ToString(), true)

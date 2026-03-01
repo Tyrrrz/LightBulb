@@ -9,7 +9,7 @@ namespace LightBulb.ViewModels.Components.Settings;
 public class AdvancedSettingsTabViewModel(
     SettingsService settingsService,
     LocalizationManager localizationManager
-) : SettingsTabViewModelBase(settingsService, localizationManager, 2, "Advanced")
+) : SettingsTabViewModelBase(settingsService, localizationManager, 2)
 {
     public override string DisplayName => LocalizationManager.AdvancedTabName;
 

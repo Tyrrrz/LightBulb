@@ -64,11 +64,19 @@ public partial class LocalizationManager
         [nameof(NightTemperatureLabel)] = "Température de couleur nocturne :",
         [nameof(NightTemperatureTooltip)] = "Température de couleur pendant la nuit",
         [nameof(DayBrightnessLabel)] = "Luminosité diurne :",
-        [nameof(DayBrightnessTooltip)] =
-            "Luminosité pendant la journée\n\nCe réglage de luminosité s'applique au gamma des couleurs, pas à la luminosité réelle du moniteur.\nSi votre ordinateur est déjà capable d'ajuster automatiquement la luminosité de l'écran en fonction des conditions d'éclairage (courant sur les ordinateurs portables), il est recommandé de désactiver le contrôle de luminosité de LightBulb en maintenant les deux réglages à 100%.",
+        [nameof(DayBrightnessTooltip)] = """
+            Luminosité pendant la journée
+
+            Ce réglage de luminosité s'applique au gamma des couleurs, pas à la luminosité réelle du moniteur.
+            Si votre ordinateur est déjà capable d'ajuster automatiquement la luminosité de l'écran en fonction des conditions d'éclairage (courant sur les ordinateurs portables), il est recommandé de désactiver le contrôle de luminosité de LightBulb en maintenant les deux réglages à 100%.
+            """,
         [nameof(NightBrightnessLabel)] = "Luminosité nocturne :",
-        [nameof(NightBrightnessTooltip)] =
-            "Luminosité pendant la nuit\n\nCe réglage de luminosité s'applique au gamma des couleurs, pas à la luminosité réelle du moniteur.\nSi votre ordinateur est déjà capable d'ajuster automatiquement la luminosité de l'écran en fonction des conditions d'éclairage (courant sur les ordinateurs portables), il est recommandé de désactiver le contrôle de luminosité de LightBulb en maintenant les deux réglages à 100%.",
+        [nameof(NightBrightnessTooltip)] = """
+            Luminosité pendant la nuit
+
+            Ce réglage de luminosité s'applique au gamma des couleurs, pas à la luminosité réelle du moniteur.
+            Si votre ordinateur est déjà capable d'ajuster automatiquement la luminosité de l'écran en fonction des conditions d'éclairage (courant sur les ordinateurs portables), il est recommandé de désactiver le contrôle de luminosité de LightBulb en maintenant les deux réglages à 100%.
+            """,
         [nameof(TransitionDurationLabel)] = "Durée de transition :",
         [nameof(TransitionDurationTooltip)] =
             "Durée nécessaire pour passer de la configuration diurne à nocturne",
@@ -86,8 +94,15 @@ public partial class LocalizationManager
         [nameof(YourLocationLabel)] = "Votre emplacement :",
         [nameof(AutoDetectLocationTooltip)] =
             "Essayer de détecter automatiquement l'emplacement via votre adresse IP",
-        [nameof(LocationQueryTooltip)] =
-            "Spécifiez votre emplacement avec des coordonnées géographiques ou une requête de recherche\n\nExemples d'entrées valides :\n**41.25, -120.9762**\n**41.25°N, 120.9762°W**\n**New York, USA**\n**Allemagne**",
+        [nameof(LocationQueryTooltip)] = """
+            Spécifiez votre emplacement avec des coordonnées géographiques ou une requête de recherche
+
+            Exemples d'entrées valides :
+            **41.25, -120.9762**
+            **41.25°N, 120.9762°W**
+            **New York, USA**
+            **Germany**
+            """,
         [nameof(SetLocationTooltip)] = "Définir l'emplacement",
         [nameof(LocationErrorText)] = "Erreur lors de la résolution de l'emplacement, réessayez",
         [nameof(ToggleLightBulbHotkeyLabel)] = "Basculer LightBulb",
@@ -116,25 +131,41 @@ public partial class LocalizationManager
         [nameof(PauseForWhitelistedTooltip)] =
             "Mettre LightBulb en pause quand une des applications sélectionnées est au premier plan",
         [nameof(UpdateAvailableTitle)] = "Mise à jour disponible",
-        [nameof(UpdateAvailableMessage)] =
-            "La mise à jour vers {0} v{1} a été téléchargée.\nVoulez-vous l'installer maintenant ?",
+        [nameof(UpdateAvailableMessage)] = """
+            La mise à jour vers {0} v{1} a été téléchargée.
+            Voulez-vous l'installer maintenant ?
+            """,
         [nameof(InstallButton)] = "INSTALLER",
         [nameof(CloseButton)] = "FERMER",
         [nameof(UkraineSupportTitle)] = "Merci de soutenir l'Ukraine !",
-        [nameof(UkraineSupportMessage)] =
-            "Alors que la Russie mène une guerre génocidaire contre mon pays, je suis reconnaissant envers tous ceux qui continuent à soutenir l'Ukraine dans notre combat pour la liberté.\n\nCliquez sur EN SAVOIR PLUS pour trouver des moyens d'aider.",
+        [nameof(UkraineSupportMessage)] = """
+            Alors que la Russie mène une guerre génocidaire contre mon pays, je suis reconnaissant envers tous ceux qui continuent à soutenir l'Ukraine dans notre combat pour la liberté.
+
+            Cliquez sur EN SAVOIR PLUS pour trouver des moyens d'aider.
+            """,
         [nameof(LearnMoreButton)] = "EN SAVOIR PLUS",
         [nameof(UnstableBuildTitle)] = "Avertissement de build instable",
-        [nameof(UnstableBuildMessage)] =
-            "Vous utilisez un build de développement de {0}. Ces builds n'ont pas été soigneusement testés et peuvent contenir des bogues.\n\nLes mises à jour automatiques sont désactivées pour les builds de développement. Si vous souhaitez passer à une version stable, veuillez la télécharger manuellement.",
+        [nameof(UnstableBuildMessage)] = """
+            Vous utilisez un build de développement de {0}. Ces builds n'ont pas été soigneusement testés et peuvent contenir des bogues.
+
+            Les mises à jour automatiques sont désactivées pour les builds de développement. Si vous souhaitez passer à une version stable, veuillez la télécharger manuellement.
+            """,
         [nameof(SeeReleasesButton)] = "VOIR LES VERSIONS",
         [nameof(LimitedGammaRangeTitle)] = "Plage gamma limitée",
-        [nameof(LimitedGammaRangeMessage)] =
-            "{0} a détecté que les contrôles de plage gamma étendue ne sont pas activés sur ce système.\nCela peut entraîner un dysfonctionnement de certaines configurations de couleurs.\n\nAppuyez sur CORRIGER pour déverrouiller la plage gamma. Des droits d'administrateur peuvent être requis.",
+        [nameof(LimitedGammaRangeMessage)] = """
+            {0} a détecté que les contrôles de plage gamma étendue ne sont pas activés sur ce système.
+            Cela peut entraîner un dysfonctionnement de certaines configurations de couleurs.
+
+            Appuyez sur CORRIGER pour déverrouiller la plage gamma. Des droits d'administrateur peuvent être requis.
+            """,
         [nameof(FixButton)] = "CORRIGER",
         [nameof(WelcomeTitle)] = "Bienvenue !",
-        [nameof(WelcomeMessage)] =
-            "Merci d'avoir installé {0} !\nPour une expérience plus personnalisée, veuillez définir votre configuration solaire préférée.\n\nAppuyez sur OK pour ouvrir les paramètres.",
+        [nameof(WelcomeMessage)] = """
+            Merci d'avoir installé {0} !
+            Pour une expérience plus personnalisée, veuillez définir votre configuration solaire préférée.
+
+            Appuyez sur OK pour ouvrir les paramètres.
+            """,
         [nameof(OkButton)] = "OK",
     };
 }

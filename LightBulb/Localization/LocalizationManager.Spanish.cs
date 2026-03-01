@@ -62,11 +62,19 @@ public partial class LocalizationManager
             [nameof(NightTemperatureLabel)] = "Temperatura de color nocturna:",
             [nameof(NightTemperatureTooltip)] = "Temperatura de color durante la noche",
             [nameof(DayBrightnessLabel)] = "Brillo diurno:",
-            [nameof(DayBrightnessTooltip)] =
-                "Brillo durante el día\n\nEste ajuste de brillo se aplica al gamma de colores, no al brillo real del monitor.\nSi su ordenador ya puede ajustar automáticamente el brillo de la pantalla según las condiciones de iluminación (común en portátiles), se recomienda deshabilitar el control de brillo de LightBulb manteniendo ambos ajustes de brillo al 100%.",
+            [nameof(DayBrightnessTooltip)] = """
+                Brillo durante el día
+
+                Este ajuste de brillo se aplica al gamma de colores, no al brillo real del monitor.
+                Si su ordenador ya puede ajustar automáticamente el brillo de la pantalla según las condiciones de iluminación (común en portátiles), se recomienda deshabilitar el control de brillo de LightBulb manteniendo ambos ajustes de brillo al 100%.
+                """,
             [nameof(NightBrightnessLabel)] = "Brillo nocturno:",
-            [nameof(NightBrightnessTooltip)] =
-                "Brillo durante la noche\n\nEste ajuste de brillo se aplica al gamma de colores, no al brillo real del monitor.\nSi su ordenador ya puede ajustar automáticamente el brillo de la pantalla según las condiciones de iluminación (común en portátiles), se recomienda deshabilitar el control de brillo de LightBulb manteniendo ambos ajustes de brillo al 100%.",
+            [nameof(NightBrightnessTooltip)] = """
+                Brillo durante la noche
+
+                Este ajuste de brillo se aplica al gamma de colores, no al brillo real del monitor.
+                Si su ordenador ya puede ajustar automáticamente el brillo de la pantalla según las condiciones de iluminación (común en portátiles), se recomienda deshabilitar el control de brillo de LightBulb manteniendo ambos ajustes de brillo al 100%.
+                """,
             [nameof(TransitionDurationLabel)] = "Duración de transición:",
             [nameof(TransitionDurationTooltip)] =
                 "Duración del tiempo que tarda en cambiar entre las configuraciones diurna y nocturna",
@@ -84,8 +92,15 @@ public partial class LocalizationManager
             [nameof(YourLocationLabel)] = "Tu ubicación:",
             [nameof(AutoDetectLocationTooltip)] =
                 "Intentar detectar la ubicación automáticamente según tu dirección IP",
-            [nameof(LocationQueryTooltip)] =
-                "Especifica tu ubicación con coordenadas geográficas o una consulta de búsqueda\n\nEjemplos de entradas válidas:\n**41.25, -120.9762**\n**41.25°N, 120.9762°W**\n**New York, USA**\n**Alemania**",
+            [nameof(LocationQueryTooltip)] = """
+                Especifica tu ubicación con coordenadas geográficas o una consulta de búsqueda
+
+                Ejemplos de entradas válidas:
+                **41.25, -120.9762**
+                **41.25°N, 120.9762°W**
+                **New York, USA**
+                **Germany**
+                """,
             [nameof(SetLocationTooltip)] = "Establecer ubicación",
             [nameof(LocationErrorText)] = "Error al resolver la ubicación, inténtalo de nuevo",
             [nameof(ToggleLightBulbHotkeyLabel)] = "Alternar LightBulb",
@@ -114,25 +129,41 @@ public partial class LocalizationManager
             [nameof(PauseForWhitelistedTooltip)] =
                 "Pausar LightBulb cuando una de las aplicaciones seleccionadas esté en primer plano",
             [nameof(UpdateAvailableTitle)] = "Actualización disponible",
-            [nameof(UpdateAvailableMessage)] =
-                "La actualización a {0} v{1} ha sido descargada.\n¿Deseas instalarla ahora?",
+            [nameof(UpdateAvailableMessage)] = """
+                La actualización a {0} v{1} ha sido descargada.
+                ¿Deseas instalarla ahora?
+                """,
             [nameof(InstallButton)] = "INSTALAR",
             [nameof(CloseButton)] = "CERRAR",
             [nameof(UkraineSupportTitle)] = "¡Gracias por apoyar a Ucrania!",
-            [nameof(UkraineSupportMessage)] =
-                "Mientras Rusia libra una guerra genocida contra mi país, estoy agradecido a todos los que continúan apoyando a Ucrania en nuestra lucha por la libertad.\n\nHaz clic en MÁS INFORMACIÓN para encontrar formas de ayudar.",
+            [nameof(UkraineSupportMessage)] = """
+                Mientras Rusia libra una guerra genocida contra mi país, estoy agradecido a todos los que continúan apoyando a Ucrania en nuestra lucha por la libertad.
+
+                Haz clic en MÁS INFORMACIÓN para encontrar formas de ayudar.
+                """,
             [nameof(LearnMoreButton)] = "MÁS INFORMACIÓN",
             [nameof(UnstableBuildTitle)] = "Advertencia de compilación inestable",
-            [nameof(UnstableBuildMessage)] =
-                "Estás usando una compilación de desarrollo de {0}. Estas compilaciones no han sido probadas exhaustivamente y pueden contener errores.\n\nLas actualizaciones automáticas están desactivadas para compilaciones de desarrollo. Si quieres cambiar a una versión estable, descárgala manualmente.",
+            [nameof(UnstableBuildMessage)] = """
+                Estás usando una compilación de desarrollo de {0}. Estas compilaciones no han sido probadas exhaustivamente y pueden contener errores.
+
+                Las actualizaciones automáticas están desactivadas para compilaciones de desarrollo. Si quieres cambiar a una versión estable, descárgala manualmente.
+                """,
             [nameof(SeeReleasesButton)] = "VER VERSIONES",
             [nameof(LimitedGammaRangeTitle)] = "Rango gamma limitado",
-            [nameof(LimitedGammaRangeMessage)] =
-                "{0} ha detectado que los controles de rango gamma extendido no están habilitados en este sistema.\nEsto puede hacer que algunas configuraciones de color no funcionen correctamente.\n\nPresiona CORREGIR para desbloquear el rango gamma. Pueden requerirse privilegios de administrador.",
+            [nameof(LimitedGammaRangeMessage)] = """
+                {0} ha detectado que los controles de rango gamma extendido no están habilitados en este sistema.
+                Esto puede hacer que algunas configuraciones de color no funcionen correctamente.
+
+                Presiona CORREGIR para desbloquear el rango gamma. Pueden requerirse privilegios de administrador.
+                """,
             [nameof(FixButton)] = "CORREGIR",
             [nameof(WelcomeTitle)] = "¡Bienvenido!",
-            [nameof(WelcomeMessage)] =
-                "¡Gracias por instalar {0}!\nPara una experiencia más personalizada, establece tu configuración solar preferida.\n\nPresiona OK para abrir los ajustes.",
+            [nameof(WelcomeMessage)] = """
+                ¡Gracias por instalar {0}!
+                Para una experiencia más personalizada, establece tu configuración solar preferida.
+
+                Presiona OK para abrir los ajustes.
+                """,
             [nameof(OkButton)] = "OK",
         };
 }

@@ -14,14 +14,12 @@ public abstract partial class SettingsTabViewModelBase : ViewModelBase
     protected SettingsTabViewModelBase(
         SettingsService settingsService,
         LocalizationManager localizationManager,
-        int order,
-        string displayName
+        int order
     )
     {
         SettingsService = settingsService;
         LocalizationManager = localizationManager;
         Order = order;
-        _displayName = displayName;
 
         _eventRoot.Add(
             // Implementing classes will bind to settings properties through
@@ -42,8 +40,7 @@ public abstract partial class SettingsTabViewModelBase : ViewModelBase
 
     public int Order { get; }
 
-    private readonly string _displayName;
-    public virtual string DisplayName => _displayName;
+    public abstract string DisplayName { get; }
 
     protected override void Dispose(bool disposing)
     {
