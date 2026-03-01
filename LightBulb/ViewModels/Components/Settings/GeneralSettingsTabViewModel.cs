@@ -1,12 +1,17 @@
 ﻿using System;
 using LightBulb.Core;
+using LightBulb.Localization;
 using LightBulb.Services;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
-public class GeneralSettingsTabViewModel(SettingsService settingsService)
-    : SettingsTabViewModelBase(settingsService, 0, "General")
+public class GeneralSettingsTabViewModel(
+    SettingsService settingsService,
+    LocalizationManager localizationManager
+) : SettingsTabViewModelBase(settingsService, localizationManager, 0)
 {
+    public override string DisplayName => LocalizationManager.GeneralTabName;
+
     // This value is used for slider bounds, but it's not an actual restriction
     public double RecommendedMaximumDayTemperature => Math.Max(6600, DayTemperature);
 

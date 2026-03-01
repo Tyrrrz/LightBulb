@@ -3,6 +3,7 @@ using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Framework;
+using LightBulb.Localization;
 using LightBulb.Services;
 using LightBulb.ViewModels.Components.Settings;
 
@@ -14,10 +15,12 @@ public partial class SettingsViewModel : DialogViewModelBase
 
     public SettingsViewModel(
         SettingsService settingsService,
+        LocalizationManager localizationManager,
         IEnumerable<SettingsTabViewModelBase> tabs
     )
     {
         _settingsService = settingsService;
+        LocalizationManager = localizationManager;
         Tabs = tabs.OrderBy(t => t.Order).ToArray();
 
         // Pre-select first tab
@@ -25,6 +28,8 @@ public partial class SettingsViewModel : DialogViewModelBase
         if (firstTab is not null)
             ActivateTab(firstTab);
     }
+
+    public LocalizationManager LocalizationManager { get; }
 
     public IReadOnlyList<SettingsTabViewModelBase> Tabs { get; }
 

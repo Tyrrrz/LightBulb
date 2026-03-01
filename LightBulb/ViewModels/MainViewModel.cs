@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Framework;
+using LightBulb.Localization;
 using LightBulb.PlatformInterop;
 using LightBulb.Services;
 using LightBulb.Utils.Extensions;
@@ -17,6 +18,7 @@ public partial class MainViewModel(
     ViewModelManager viewModelManager,
     DialogManager dialogManager,
     SettingsService settingsService,
+    LocalizationManager localizationManager,
     UpdateService updateService
 ) : ViewModelBase
 {
@@ -37,6 +39,8 @@ public partial class MainViewModel(
         }
     );
 
+    public LocalizationManager LocalizationManager { get; } = localizationManager;
+
     public DashboardViewModel Dashboard { get; } = viewModelManager.CreateDashboardViewModel();
 
     private async Task FinalizePendingUpdateAsync()
@@ -46,13 +50,10 @@ public partial class MainViewModel(
             return;
 
         var dialog = viewModelManager.CreateMessageBoxViewModel(
-            "Update available",
-            $"""
-            Update to {Program.Name} v{updateVersion} has been downloaded.
-            Do you want to install it now?
-            """,
-            "INSTALL",
-            "CANCEL"
+            LocalizationManager.UpdateAvailableTitle,
+            string.Format(LocalizationManager.UpdateAvailableMessage, Program.Name, updateVersion),
+            LocalizationManager.InstallButton,
+            LocalizationManager.CancelButton
         );
 
         // Bring the user's attention to this dialog, even if the app is hidden
@@ -73,14 +74,10 @@ public partial class MainViewModel(
             return;
 
         var dialog = viewModelManager.CreateMessageBoxViewModel(
-            "Thank you for supporting Ukraine!",
-            """
-            As Russia wages a genocidal war against my country, I'm grateful to everyone who continues to stand with Ukraine in our fight for freedom.
-
-            Click LEARN MORE to find ways that you can help.
-            """,
-            "LEARN MORE",
-            "CLOSE"
+            LocalizationManager.UkraineSupportTitle,
+            LocalizationManager.UkraineSupportMessage,
+            LocalizationManager.LearnMoreButton,
+            LocalizationManager.CloseButton
         );
 
         // Disable this message in the future
@@ -101,14 +98,10 @@ public partial class MainViewModel(
             return;
 
         var dialog = viewModelManager.CreateMessageBoxViewModel(
-            "Unstable build warning",
-            $"""
-            You're using a development build of {Program.Name}. These builds are not thoroughly tested and may contain bugs.
-
-            Auto-updates are disabled for development builds. If you want to switch to a stable release, please download it manually.
-            """,
-            "SEE RELEASES",
-            "CLOSE"
+            LocalizationManager.UnstableBuildTitle,
+            string.Format(LocalizationManager.UnstableBuildMessage, Program.Name),
+            LocalizationManager.SeeReleasesButton,
+            LocalizationManager.CloseButton
         );
 
         if (await dialogManager.ShowDialogAsync(dialog) == true)
@@ -121,15 +114,10 @@ public partial class MainViewModel(
             return;
 
         var dialog = viewModelManager.CreateMessageBoxViewModel(
-            "Limited gamma range",
-            $"""
-            {Program.Name} has detected that extended gamma range controls are not enabled on this system.
-            This may cause some color configurations to not work correctly.
-
-            Press FIX to unlock the gamma range. Administrator privileges may be required.
-            """,
-            "FIX",
-            "CLOSE"
+            LocalizationManager.LimitedGammaRangeTitle,
+            string.Format(LocalizationManager.LimitedGammaRangeMessage, Program.Name),
+            LocalizationManager.FixButton,
+            LocalizationManager.CloseButton
         );
 
         if (await dialogManager.ShowDialogAsync(dialog) != true)
@@ -145,15 +133,10 @@ public partial class MainViewModel(
             return;
 
         var dialog = viewModelManager.CreateMessageBoxViewModel(
-            "Welcome!",
-            $"""
-            Thank you for installing {Program.Name}!
-            To get the most personalized experience, please set your preferred solar configuration.
-
-            Press OK to open settings.
-            """,
-            "OK",
-            "CLOSE"
+            LocalizationManager.WelcomeTitle,
+            string.Format(LocalizationManager.WelcomeMessage, Program.Name),
+            LocalizationManager.OkButton,
+            LocalizationManager.CloseButton
         );
 
         // Disable this message in the future

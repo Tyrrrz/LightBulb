@@ -8,6 +8,7 @@ using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Threading;
 using LightBulb.Framework;
+using LightBulb.Localization;
 using LightBulb.Services;
 using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
@@ -40,6 +41,7 @@ public class App : Application, IDisposable
 
         // Services
         services.AddSingleton<ExternalApplicationService>();
+        services.AddSingleton<LocalizationManager>();
         services.AddSingleton<GammaService>();
         services.AddSingleton<HotKeyService>();
         services.AddSingleton<SettingsService>();

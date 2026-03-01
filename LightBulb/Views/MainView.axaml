@@ -46,7 +46,7 @@
                             Foreground="{DynamicResource MaterialSecondaryMidForegroundBrush}"
                             IsChecked="{Binding Dashboard.IsEnabled}"
                             Theme="{DynamicResource MaterialIconToggleButton}"
-                            ToolTip.Tip="Toggle LightBulb on/off">
+                            ToolTip.Tip="{Binding Dashboard.LocalizationManager.ToggleLightBulbTooltip}">
                             <ToggleButton.Content>
                                 <materialIcons:MaterialIcon Width="24" Height="24">
                                     <materialIcons:MaterialIcon.Styles>
@@ -85,7 +85,7 @@
                             Click="HideButton_OnClick"
                             Foreground="{DynamicResource MaterialDarkForegroundBrush}"
                             Theme="{DynamicResource MaterialFlatButton}"
-                            ToolTip.Tip="Hide LightBulb to the system tray">
+                            ToolTip.Tip="{Binding Dashboard.LocalizationManager.HideToTrayTooltip}">
                             <materialIcons:MaterialIcon
                                 Width="24"
                                 Height="24"
@@ -113,10 +113,10 @@
                         <Button.Styles>
                             <Style Selector="ToggleButton">
                                 <Style Selector="^:checked">
-                                    <Setter Property="ToolTip.Tip" Value="Stop preview" />
+                                    <Setter Property="ToolTip.Tip" Value="{Binding Dashboard.LocalizationManager.StopPreviewTooltip}" />
                                 </Style>
                                 <Style Selector="^:unchecked">
-                                    <Setter Property="ToolTip.Tip" Value="Preview 24-hour cycle" />
+                                    <Setter Property="ToolTip.Tip" Value="{Binding Dashboard.LocalizationManager.StartPreviewTooltip}" />
                                 </Style>
                             </Style>
                         </Button.Styles>
@@ -134,7 +134,7 @@
                             <TextBlock
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
-                                Text="PREVIEW" />
+                                Text="{Binding Dashboard.LocalizationManager.PreviewText}" />
                         </StackPanel>
                     </ToggleButton>
 
@@ -143,7 +143,7 @@
                         Margin="8"
                         Command="{Binding ShowSettingsCommand}"
                         Theme="{DynamicResource MaterialFlatButton}"
-                        ToolTip.Tip="Open settings">
+                        ToolTip.Tip="{Binding Dashboard.LocalizationManager.OpenSettingsTooltip}">
                         <StackPanel Orientation="Horizontal">
                             <materialIcons:MaterialIcon
                                 Width="24"
@@ -152,7 +152,7 @@
                             <TextBlock
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
-                                Text="SETTINGS" />
+                                Text="{Binding Dashboard.LocalizationManager.SettingsText}" />
                         </StackPanel>
                     </Button>
 
@@ -161,7 +161,7 @@
                         Margin="8"
                         Command="{Binding ShowAboutCommand}"
                         Theme="{DynamicResource MaterialFlatButton}"
-                        ToolTip.Tip="Open LightBulb on GitHub">
+                        ToolTip.Tip="{Binding Dashboard.LocalizationManager.OpenGitHubTooltip}">
                         <StackPanel Orientation="Horizontal">
                             <materialIcons:MaterialIcon
                                 Width="24"
@@ -170,7 +170,7 @@
                             <TextBlock
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
-                                Text="ABOUT" />
+                                Text="{Binding Dashboard.LocalizationManager.AboutText}" />
                         </StackPanel>
                     </Button>
                 </StackPanel>

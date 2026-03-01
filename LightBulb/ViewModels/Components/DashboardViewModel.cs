@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using LightBulb.Core;
 using LightBulb.Core.Utils.Extensions;
 using LightBulb.Framework;
+using LightBulb.Localization;
 using LightBulb.Models;
 using LightBulb.PlatformInterop;
 using LightBulb.Services;
@@ -34,12 +35,14 @@ public partial class DashboardViewModel : ViewModelBase
 
     public DashboardViewModel(
         SettingsService settingsService,
+        LocalizationManager localizationManager,
         GammaService gammaService,
         HotKeyService hotKeyService,
         ExternalApplicationService externalApplicationService
     )
     {
         _settingsService = settingsService;
+        LocalizationManager = localizationManager;
         _gammaService = gammaService;
         _hotKeyService = hotKeyService;
         _externalApplicationService = externalApplicationService;
@@ -90,6 +93,8 @@ public partial class DashboardViewModel : ViewModelBase
             () => Dispatcher.UIThread.Post(UpdateIsPaused)
         );
     }
+
+    public LocalizationManager LocalizationManager { get; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]
