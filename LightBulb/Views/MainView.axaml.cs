@@ -1,5 +1,4 @@
-﻿using Avalonia.Controls;
-using Avalonia.Input;
+﻿using Avalonia.Input;
 using Avalonia.Interactivity;
 using LightBulb.Framework;
 using LightBulb.ViewModels;

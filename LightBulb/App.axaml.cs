@@ -150,7 +150,6 @@ public class App : Application, IDisposable
             {
                 // When starting hidden, initialize the backend without showing the UI
                 _mainViewModel.Dashboard.InitializeCommand.Execute(null);
-                _mainViewModel.InitializeCommand.Execute(null);
             }
         }
 
@@ -201,15 +200,17 @@ public class App : Application, IDisposable
 
     private async void ShowSettingsMenuItem_OnClick(object? sender, EventArgs args)
     {
+        if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            return;
+
         ShowMainWindow();
 
-        if (
-            ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime
-            && desktopLifetime.MainWindow is { } window
-        )
-        {
-            await window.WaitUntilLoadedAsync();
-        }
+        var window = desktopLifetime.MainWindow;
+        if (window is null)
+            return;
+
+        if (!await window.WaitUntilLoadedAsync())
+            return;
 
         _mainViewModel.ShowSettingsCommand.Execute(null);
     }
