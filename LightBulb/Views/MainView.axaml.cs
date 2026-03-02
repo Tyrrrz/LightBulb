@@ -16,5 +16,7 @@ public partial class MainView : Window<MainViewModel>
     private void HeaderBorder_OnPointerPressed(object? sender, PointerPressedEventArgs args) =>
         BeginMoveDrag(args);
 
-    private void HideButton_OnClick(object sender, RoutedEventArgs args) => Close();
+    private void HideButton_OnClick(object sender, RoutedEventArgs args) =>
+        // The window is closed, but the backend and the tray icon will persist
+        Close();
 }
