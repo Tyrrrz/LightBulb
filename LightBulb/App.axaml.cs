@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -159,7 +160,7 @@ public class App : Application, IDisposable
         _settingsService.Load();
     }
 
-    private void ShowMainWindow(Action? onReady = null)
+    private async Task ShowMainWindowAsync()
     {
         if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktopLifetime)
             return;
@@ -168,7 +169,6 @@ public class App : Application, IDisposable
         if (desktopLifetime.MainWindow is { IsVisible: true } existingWindow)
         {
             existingWindow.ShowActivateFocus();
-            onReady?.Invoke();
         }
         // Otherwise, create a new window (the previous one was closed to free resources)
         else
@@ -176,18 +176,19 @@ public class App : Application, IDisposable
             var window = new MainView { DataContext = _mainViewModel };
             desktopLifetime.MainWindow = window;
 
-            if (onReady is not null)
-            {
-                void OnLoaded(object? _, RoutedEventArgs __)
-                {
-                    window.Loaded -= OnLoaded;
-                    onReady();
-                }
+            // Await the window being loaded so callers can be sure the UI is ready
+            var tcs = new TaskCompletionSource();
 
-                window.Loaded += OnLoaded;
+            void OnLoaded(object? _, RoutedEventArgs __)
+            {
+                window.Loaded -= OnLoaded;
+                tcs.SetResult();
             }
 
+            window.Loaded += OnLoaded;
             window.ShowActivateFocus();
+
+            await tcs.Task;
         }
     }
 
@@ -195,10 +196,14 @@ public class App : Application, IDisposable
         // Re-initialize the theme when the system theme changes
         InitializeTheme();
 
-    private void TrayIcon_OnClicked(object? sender, EventArgs args) => ShowMainWindow();
+    private async void TrayIcon_OnClicked(object? sender, EventArgs args) =>
+        await ShowMainWindowAsync();
 
-    private void ShowSettingsMenuItem_OnClick(object? sender, EventArgs args) =>
-        ShowMainWindow(() => _mainViewModel.ShowSettingsCommand.Execute(null));
+    private async void ShowSettingsMenuItem_OnClick(object? sender, EventArgs args)
+    {
+        await ShowMainWindowAsync();
+        _mainViewModel.ShowSettingsCommand.Execute(null);
+    }
 
     private void ToggleMenuItem_OnClick(object? sender, EventArgs args) =>
         _mainViewModel.Dashboard.IsEnabled = !_mainViewModel.Dashboard.IsEnabled;
