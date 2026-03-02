@@ -142,12 +142,15 @@ public class App : Application, IDisposable
             if (!StartOptions.Current.IsInitiallyHidden)
             {
                 // Show the main window on startup
-                desktopLifetime.MainWindow = new MainView { DataContext = _mainViewModel };
+                var startWindow = new MainView { DataContext = _mainViewModel };
+                startWindow.Closed += (_, _) => desktopLifetime.MainWindow = null;
+                desktopLifetime.MainWindow = startWindow;
             }
             else
             {
                 // When starting hidden, initialize the backend without showing the UI
                 _mainViewModel.Dashboard.InitializeCommand.Execute(null);
+                _mainViewModel.InitializeCommand.Execute(null);
             }
         }
 
@@ -165,8 +168,8 @@ public class App : Application, IDisposable
         if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktopLifetime)
             return;
 
-        // Re-use the existing window if it's already visible
-        if (desktopLifetime.MainWindow is { IsVisible: true } existingWindow)
+        // Re-use the existing window if already open (visible or hidden via hotkey)
+        if (desktopLifetime.MainWindow is { } existingWindow)
         {
             existingWindow.ShowActivateFocus();
         }
@@ -174,6 +177,7 @@ public class App : Application, IDisposable
         else
         {
             var window = new MainView { DataContext = _mainViewModel };
+            window.Closed += (_, _) => desktopLifetime.MainWindow = null;
             desktopLifetime.MainWindow = window;
             window.ShowActivateFocus();
         }
@@ -183,7 +187,17 @@ public class App : Application, IDisposable
         // Re-initialize the theme when the system theme changes
         InitializeTheme();
 
-    private void TrayIcon_OnClicked(object? sender, EventArgs args) => ShowMainWindow();
+    private void TrayIcon_OnClicked(object? sender, EventArgs args)
+    {
+        if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            return;
+
+        // Toggle: close the window if it's visible, otherwise show/create it
+        if (desktopLifetime.MainWindow is { IsVisible: true } existingWindow)
+            existingWindow.Close();
+        else
+            ShowMainWindow();
+    }
 
     private async void ShowSettingsMenuItem_OnClick(object? sender, EventArgs args)
     {

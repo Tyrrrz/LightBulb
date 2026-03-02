@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
@@ -58,14 +59,17 @@ internal static class AvaloniaExtensions
             var tcs = new TaskCompletionSource();
 
             void OnLoaded(object? _, RoutedEventArgs __) => tcs.TrySetResult();
+            void OnClosed(object? _, EventArgs __) => tcs.TrySetResult();
 
             window.Loaded += OnLoaded;
+            window.Closed += OnClosed;
 
             if (window.IsLoaded)
                 tcs.TrySetResult();
 
             await tcs.Task;
             window.Loaded -= OnLoaded;
+            window.Closed -= OnClosed;
         }
     }
 }
