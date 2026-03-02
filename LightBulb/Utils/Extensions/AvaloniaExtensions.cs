@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -54,11 +55,13 @@ internal static class AvaloniaExtensions
                 window.ShowActivateFocus();
         }
 
-        public async Task<bool> WaitUntilLoadedAsync()
+        public async Task<bool> WaitUntilLoadedAsync(CancellationToken cancellationToken = default)
         {
             var tcs = new TaskCompletionSource<bool>(
                 TaskCreationOptions.RunContinuationsAsynchronously
             );
+
+            cancellationToken.Register(() => tcs.TrySetCanceled(cancellationToken));
 
             void OnLoaded(object? _, RoutedEventArgs __) => tcs.TrySetResult(true);
             void OnClosed(object? _, EventArgs __) => tcs.TrySetResult(false);

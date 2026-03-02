@@ -142,9 +142,7 @@ public class App : Application, IDisposable
             if (!StartOptions.Current.IsInitiallyHidden)
             {
                 // Show the main window on startup
-                var startWindow = new MainView { DataContext = _mainViewModel };
-                startWindow.Closed += (_, _) => desktopLifetime.MainWindow = null;
-                desktopLifetime.MainWindow = startWindow;
+                ShowMainWindow();
             }
             else
             {
