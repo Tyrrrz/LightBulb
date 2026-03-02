@@ -24,7 +24,7 @@ namespace LightBulb;
 
 public class App : Application, IDisposable
 {
-    public static new App? Current => Application.Current as App;
+    public new static App? Current => Application.Current as App;
 
     private readonly DisposableCollector _eventRoot = new();
 
@@ -178,10 +178,10 @@ public class App : Application, IDisposable
         _settingsService.Load();
     }
 
-    internal void ShowMainWindow()
+    internal Window? ShowMainWindow()
     {
         if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktopLifetime)
-            return;
+            return null;
 
         // Re-use the existing window if already open
         if (desktopLifetime.MainWindow is { } existingWindow)
@@ -196,15 +196,15 @@ public class App : Application, IDisposable
             desktopLifetime.MainWindow = window;
             window.ShowActivateFocus();
         }
+        
+        return desktopLifetime.MainWindow;
     }
 
     internal void ToggleMainWindow()
     {
-        if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktopLifetime)
-            return;
+        var existingWindow = ApplicationLifetime?.TryGetMainWindow();
 
-        // Toggle: close the window if it's visible, otherwise show/create it
-        if (desktopLifetime.MainWindow is { IsVisible: true } existingWindow)
+        if (existingWindow is { IsVisible: true })
             existingWindow.Close();
         else
             ShowMainWindow();
@@ -218,15 +218,12 @@ public class App : Application, IDisposable
 
     private async void ShowSettingsMenuItem_OnClick(object? sender, EventArgs args)
     {
-        if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktopLifetime)
-            return;
-
-        ShowMainWindow();
-
-        var window = desktopLifetime.MainWindow;
+        var window = ShowMainWindow();
         if (window is null)
             return;
 
+        // Wait until the window is loaded to avoid potential issues
+        // with showing a dialog too early in the lifecycle.
         try
         {
             await window.WaitUntilLoadedAsync();

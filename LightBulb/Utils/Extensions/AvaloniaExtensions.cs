@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
-using Avalonia.VisualTree;
 
 namespace LightBulb.Utils.Extensions;
 
@@ -16,10 +15,6 @@ internal static class AvaloniaExtensions
             lifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime
                 ? desktopLifetime.MainWindow
                 : null;
-
-        public TopLevel? TryGetTopLevel() =>
-            lifetime.TryGetMainWindow()
-            ?? (lifetime as ISingleViewApplicationLifetime)?.MainView?.GetVisualRoot() as TopLevel;
 
         public bool TryShutdown(int exitCode = 0)
         {
@@ -47,24 +42,15 @@ internal static class AvaloniaExtensions
             window.Focus();
         }
 
-        public void Toggle()
-        {
-            if (window.IsVisible)
-                window.Hide();
-            else
-                window.ShowActivateFocus();
-        }
-
         public async Task WaitUntilLoadedAsync(CancellationToken cancellationToken = default)
         {
             var tcs = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
-
-            cancellationToken.Register(() => tcs.TrySetCanceled(cancellationToken));
+            await using var registration = cancellationToken.Register(() => tcs.TrySetCanceled(cancellationToken));
 
             void OnLoaded(object? _, RoutedEventArgs __) => tcs.TrySetResult();
-            void OnClosed(object? _, EventArgs __) => tcs.TrySetCanceled();
-
             window.Loaded += OnLoaded;
+
+            void OnClosed(object? _, EventArgs __) => tcs.TrySetCanceled();
             window.Closed += OnClosed;
 
             if (window.IsLoaded)
