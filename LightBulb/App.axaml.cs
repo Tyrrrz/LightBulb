@@ -165,7 +165,7 @@ public class App : Application, IDisposable
         if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktopLifetime)
             return;
 
-        // Re-use the existing window if already open (visible or hidden via hotkey)
+        // Re-use the existing window if already open
         if (desktopLifetime.MainWindow is { } existingWindow)
         {
             existingWindow.ShowActivateFocus();
