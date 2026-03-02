@@ -32,15 +32,19 @@ public partial class StartOptions
                 Environment.GetEnvironmentVariable("LIGHTBULB_SETTINGS_PATH") is { } path
                 && !string.IsNullOrWhiteSpace(path)
                     ? Path.EndsInDirectorySeparator(path) || Directory.Exists(path)
+                        // Provided environment override, it's a directory path
                         ? Path.Combine(path, "Settings.json")
+                        // Provided environment override, it's a file path
                         : path
                     : File.Exists(Path.Combine(Program.ExecutableDirPath, ".installed"))
                     || !Directory.CheckWriteAccess(Program.ExecutableDirPath)
+                        // Cannot write to the program directory
                         ? Path.Combine(
                             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                             Program.Name,
                             "Settings.json"
                         )
+                        // Can write to the program directory
                         : Path.Combine(Program.ExecutableDirPath, "Settings.json"),
         };
 }
