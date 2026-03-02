@@ -11,7 +11,7 @@ public partial class StartOptions
 {
     public bool IsInitiallyHidden { get; init; }
 
-    public string SettingsPath { get; init; } = default!;
+    public required string SettingsPath { get; init; }
 }
 
 public partial class StartOptions
