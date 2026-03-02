@@ -140,7 +140,7 @@ public class App : Application, IDisposable
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
         {
             desktopLifetime.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-            
+
             void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs args)
             {
                 if (sender is IControlledApplicationLifetime lifetime)
