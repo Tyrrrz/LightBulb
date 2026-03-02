@@ -22,6 +22,39 @@ public partial class Window(nint handle) : NativeResource(handle)
             return null;
         }
 
+        // UWP apps are hosted by ApplicationFrameHost.exe, so the window's process is not
+        // the actual app process. Enumerate child windows to find the real UWP app process.
+        if (
+            string.Equals(
+                TryGetClassName(),
+                "ApplicationFrameWindow",
+                StringComparison.OrdinalIgnoreCase
+            )
+        )
+        {
+            Process? uwpProcess = null;
+
+            NativeMethods.EnumChildWindows(
+                Handle,
+                (hWnd, lParam) =>
+                {
+                    _ = NativeMethods.GetWindowThreadProcessId(hWnd, out var childProcessId);
+                    if (childProcessId != 0 && childProcessId != processId)
+                    {
+                        uwpProcess = Process.TryGet((int)childProcessId);
+                        if (uwpProcess is not null)
+                            return false;
+                    }
+
+                    return true;
+                },
+                0
+            );
+
+            if (uwpProcess is not null)
+                return uwpProcess;
+        }
+
         return Process.TryGet((int)processId);
     }
 
@@ -61,6 +94,12 @@ public partial class Window(nint handle) : NativeResource(handle)
 
         return string.Equals(className, "Progman", StringComparison.OrdinalIgnoreCase)
             || string.Equals(className, "WorkerW", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(className, "Shell_TrayWnd", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(
+                className,
+                "Shell_SecondaryTrayWnd",
+                StringComparison.OrdinalIgnoreCase
+            )
             || string.Equals(className, "ImmersiveLauncher", StringComparison.OrdinalIgnoreCase)
             || string.Equals(className, "ImmersiveSwitchList", StringComparison.OrdinalIgnoreCase)
             || string.Equals(className, "MultitaskingViewFrame", StringComparison.OrdinalIgnoreCase)
@@ -68,6 +107,11 @@ public partial class Window(nint handle) : NativeResource(handle)
             || string.Equals(
                 className,
                 "ApplicationManager_DesktopShellWindow",
+                StringComparison.OrdinalIgnoreCase
+            )
+            || string.Equals(
+                className,
+                "XamlExplorerHostIslandWindow",
                 StringComparison.OrdinalIgnoreCase
             );
     }

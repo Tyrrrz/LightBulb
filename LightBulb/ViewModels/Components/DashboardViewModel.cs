@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Linq;
 using Avalonia;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Core;
 using LightBulb.Core.Utils.Extensions;
 using LightBulb.Framework;
+using LightBulb.Localization;
 using LightBulb.Models;
 using LightBulb.PlatformInterop;
 using LightBulb.Services;
@@ -33,12 +35,14 @@ public partial class DashboardViewModel : ViewModelBase
 
     public DashboardViewModel(
         SettingsService settingsService,
+        LocalizationManager localizationManager,
         GammaService gammaService,
         HotKeyService hotKeyService,
         ExternalApplicationService externalApplicationService
     )
     {
         _settingsService = settingsService;
+        LocalizationManager = localizationManager;
         _gammaService = gammaService;
         _hotKeyService = hotKeyService;
         _externalApplicationService = externalApplicationService;
@@ -76,10 +80,21 @@ public partial class DashboardViewModel : ViewModelBase
             )
         );
 
-        _updateConfigurationTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateConfiguration);
-        _updateInstantTimer = new Timer(TimeSpan.FromMilliseconds(50), UpdateInstant);
-        _updateIsPausedTimer = new Timer(TimeSpan.FromSeconds(1), UpdateIsPaused);
+        _updateConfigurationTimer = new Timer(
+            TimeSpan.FromMilliseconds(50),
+            () => Dispatcher.UIThread.Post(UpdateConfiguration)
+        );
+        _updateInstantTimer = new Timer(
+            TimeSpan.FromMilliseconds(50),
+            () => Dispatcher.UIThread.Post(UpdateInstant)
+        );
+        _updateIsPausedTimer = new Timer(
+            TimeSpan.FromSeconds(1),
+            () => Dispatcher.UIThread.Post(UpdateIsPaused)
+        );
     }
+
+    public LocalizationManager LocalizationManager { get; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]
@@ -392,9 +407,12 @@ public partial class DashboardViewModel : ViewModelBase
     [RelayCommand]
     private void DisableTemporarily(TimeSpan duration)
     {
-        _enableAfterDelayRegistration?.Dispose();
-        _enableAfterDelayRegistration = Timer.QueueDelayedAction(duration, () => IsEnabled = true);
         IsEnabled = false;
+        _enableAfterDelayRegistration?.Dispose();
+        _enableAfterDelayRegistration = Timer.QueueDelayedAction(
+            duration,
+            () => Dispatcher.UIThread.Post(() => IsEnabled = true)
+        );
     }
 
     [RelayCommand]

@@ -70,22 +70,22 @@
                 <Button
                     Margin="8"
                     Command="{Binding ResetCommand}"
-                    Content="RESET"
+                    Content="{Binding LocalizationManager.ResetButton}"
                     Theme="{DynamicResource MaterialFlatButton}"
-                    ToolTip.Tip="Reset all settings to their defaults" />
+                    ToolTip.Tip="{Binding LocalizationManager.ResetTooltip}" />
 
                 <!--  Cancel  -->
                 <Button
                     Margin="8"
                     Command="{Binding CancelCommand}"
-                    Content="CANCEL"
+                    Content="{Binding LocalizationManager.CancelButton}"
                     Theme="{DynamicResource MaterialFlatButton}" />
 
                 <!--  Save  -->
                 <Button
                     Margin="8"
                     Command="{Binding SaveCommand}"
-                    Content="SAVE"
+                    Content="{Binding LocalizationManager.SaveButton}"
                     Theme="{DynamicResource MaterialFlatButton}" />
             </StackPanel>
         </Grid>

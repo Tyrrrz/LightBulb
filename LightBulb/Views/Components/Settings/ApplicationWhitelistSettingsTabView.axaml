@@ -15,7 +15,7 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="Application whitelist" />
+                Text="{Binding LocalizationManager.AppWhitelistLabel}" />
 
             <!--  Refresh  -->
             <Button
@@ -25,7 +25,7 @@
                 VerticalAlignment="Center"
                 Command="{Binding RefreshApplicationsCommand}"
                 Theme="{DynamicResource MaterialFlatButton}"
-                ToolTip.Tip="Refresh running applications">
+                ToolTip.Tip="{Binding LocalizationManager.RefreshAppsTooltip}">
                 <materialIcons:MaterialIcon
                     Width="24"
                     Height="24"
@@ -39,7 +39,7 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 IsChecked="{Binding IsApplicationWhitelistEnabled}"
-                ToolTip.Tip="Pause LightBulb when one of the selected applications is in the foreground" />
+                ToolTip.Tip="{Binding LocalizationManager.PauseForWhitelistedTooltip}" />
         </Grid>
 
         <!--  Whitelisted applications  -->

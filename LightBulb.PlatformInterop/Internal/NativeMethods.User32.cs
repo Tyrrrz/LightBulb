@@ -75,6 +75,13 @@ internal static partial class NativeMethods
     public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, nint lParam);
 
     [DllImport(User32, SetLastError = true)]
+    public static extern bool EnumChildWindows(
+        nint hWndParent,
+        EnumWindowsProc lpEnumFunc,
+        nint lParam
+    );
+
+    [DllImport(User32, SetLastError = true)]
     public static extern nint SetWinEventHook(
         uint eventMin,
         uint eventMax,

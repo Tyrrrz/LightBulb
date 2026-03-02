@@ -6,20 +6,26 @@
     x:DataType="settings:AdvancedSettingsTabViewModel">
     <StackPanel Margin="16" Orientation="Vertical">
         <!--  Theme  -->
-        <DockPanel LastChildFill="False" ToolTip.Tip="Preferred user interface theme">
-            <TextBlock DockPanel.Dock="Left" Text="Theme" />
+        <DockPanel LastChildFill="False" ToolTip.Tip="{Binding LocalizationManager.ThemeTooltip}">
+            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.ThemeLabel}" />
             <ComboBox
                 DockPanel.Dock="Right"
                 ItemsSource="{Binding AvailableThemes}"
                 SelectedItem="{Binding Theme}" />
         </DockPanel>
 
+        <!--  Language  -->
+        <DockPanel Margin="0,16,0,0" LastChildFill="False" ToolTip.Tip="{Binding LocalizationManager.LanguageTooltip}">
+            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.LanguageLabel}" />
+            <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding Language}" />
+        </DockPanel>
+
         <!--  Auto start  -->
         <DockPanel
             Margin="0,16,0,0"
             LastChildFill="False"
-            ToolTip.Tip="Launch LightBulb at Windows startup">
-            <TextBlock DockPanel.Dock="Left" Text="Start with Windows" />
+            ToolTip.Tip="{Binding LocalizationManager.StartWithWindowsTooltip}">
+            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.StartWithWindowsLabel}" />
             <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsAutoStartEnabled}" />
         </DockPanel>
 
@@ -27,8 +33,8 @@
         <DockPanel
             Margin="0,16,0,0"
             LastChildFill="False"
-            ToolTip.Tip="Keep LightBulb updated by automatically installing new versions as they become available">
-            <TextBlock DockPanel.Dock="Left" Text="Auto-update" />
+            ToolTip.Tip="{Binding LocalizationManager.AutoUpdateTooltip}">
+            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.AutoUpdateLabel}" />
             <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsAutoUpdateEnabled}" />
         </DockPanel>
 
@@ -36,8 +42,8 @@
         <DockPanel
             Margin="0,16,0,0"
             LastChildFill="False"
-            ToolTip.Tip="When LightBulb is disabled or paused, restore the configured day-time temperature and brightness instead of the default monitor gamma">
-            <TextBlock DockPanel.Dock="Left" Text="Default to day-time configuration" />
+            ToolTip.Tip="{Binding LocalizationManager.DefaultToDayConfigTooltip}">
+            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.DefaultToDayConfigLabel}" />
             <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsDefaultToDayConfigurationEnabled}" />
         </DockPanel>
 
@@ -45,8 +51,8 @@
         <DockPanel
             Margin="0,16,0,0"
             LastChildFill="False"
-            ToolTip.Tip="Pause LightBulb when any fullscreen window is in the foreground">
-            <TextBlock DockPanel.Dock="Left" Text="Pause when fullscreen" />
+            ToolTip.Tip="{Binding LocalizationManager.PauseWhenFullscreenTooltip}">
+            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.PauseWhenFullscreenLabel}" />
             <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsPauseWhenFullScreenEnabled}" />
         </DockPanel>
 
@@ -54,8 +60,8 @@
         <DockPanel
             Margin="0,16,0,0"
             LastChildFill="False"
-            ToolTip.Tip="Transition slowly when enabling or disabling LightBulb to give time for eyes to adjust">
-            <TextBlock DockPanel.Dock="Left" Text="Gamma smoothing" />
+            ToolTip.Tip="{Binding LocalizationManager.GammaSmoothingTooltip}">
+            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.GammaSmoothingLabel}" />
             <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsConfigurationSmoothingEnabled}" />
         </DockPanel>
 
@@ -63,8 +69,8 @@
         <DockPanel
             Margin="0,16,0,0"
             LastChildFill="False"
-            ToolTip.Tip="Force-refresh monitor gamma at regular intervals to prevent other programs from overriding it">
-            <TextBlock DockPanel.Dock="Left" Text="Gamma polling" />
+            ToolTip.Tip="{Binding LocalizationManager.GammaPollingTooltip}">
+            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.GammaPollingLabel}" />
             <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsGammaPollingEnabled}" />
         </DockPanel>
     </StackPanel>

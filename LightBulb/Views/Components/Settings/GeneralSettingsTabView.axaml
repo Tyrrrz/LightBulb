@@ -7,8 +7,8 @@
     x:DataType="settings:GeneralSettingsTabViewModel">
     <StackPanel Margin="16" Orientation="Vertical">
         <!--  Day temperature  -->
-        <DockPanel ToolTip.Tip="Color temperature during the day">
-            <TextBlock DockPanel.Dock="Left" Text="Day-time color temperature:" />
+        <DockPanel ToolTip.Tip="{Binding LocalizationManager.DayTemperatureTooltip}">
+            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.DayTemperatureLabel}" />
             <TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
@@ -27,8 +27,8 @@
             Value="{Binding DayTemperature}" />
 
         <!--  Night temperature  -->
-        <DockPanel Margin="0,24,0,0" ToolTip.Tip="Color temperature during the night">
-            <TextBlock DockPanel.Dock="Left" Text="Night-time color temperature:" />
+        <DockPanel Margin="0,24,0,0" ToolTip.Tip="{Binding LocalizationManager.NightTemperatureTooltip}">
+            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.NightTemperatureLabel}" />
             <TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
@@ -49,19 +49,9 @@
         <!--  Day brightness  -->
         <DockPanel Margin="0,24,0,0">
             <ToolTip.Tip>
-                <TextBlock>
-                    <Run Text="Brightness during the day" />
-                    <LineBreak />
-                    <LineBreak />
-                    <Run Text="Note that this brightness setting applies to the color gamma, not to the actual brightness of the monitor." />
-                    <LineBreak />
-                    <Run Text="If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops)," />
-                    <LineBreak />
-                    <Run Text=" " />
-                    <Run Text="then it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
-                </TextBlock>
+                <TextBlock MaxWidth="350" Text="{Binding LocalizationManager.DayBrightnessTooltip}" TextWrapping="Wrap" />
             </ToolTip.Tip>
-            <TextBlock DockPanel.Dock="Left" Text="Day-time brightness:" />
+            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.DayBrightnessLabel}" />
             <TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
@@ -82,19 +72,9 @@
         <!--  Night brightness  -->
         <DockPanel Margin="0,24,0,0">
             <ToolTip.Tip>
-                <TextBlock>
-                    <Run Text="Brightness during the night" />
-                    <LineBreak />
-                    <LineBreak />
-                    <Run Text="Note that this brightness setting applies to the color gamma, not to the actual brightness of the monitor." />
-                    <LineBreak />
-                    <Run Text="If your computer is already capable of auto-adjusting screen brightness based on lighting conditions (common for laptops)," />
-                    <LineBreak />
-                    <Run Text=" " />
-                    <Run Text="then it's recommended to disable LightBulb's brightness control by keeping both brightness settings at 100%." />
-                </TextBlock>
+                <TextBlock MaxWidth="350" Text="{Binding LocalizationManager.NightBrightnessTooltip}" TextWrapping="Wrap" />
             </ToolTip.Tip>
-            <TextBlock DockPanel.Dock="Left" Text="Night-time brightness:" />
+            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.NightBrightnessLabel}" />
             <TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
@@ -113,8 +93,8 @@
             Value="{Binding NightBrightness}" />
 
         <!--  Configuration transition duration  -->
-        <DockPanel Margin="0,24,0,0" ToolTip.Tip="Duration of time it takes to switch between day-time and night-time configurations">
-            <TextBlock DockPanel.Dock="Left" Text="Transition duration:" />
+        <DockPanel Margin="0,24,0,0" ToolTip.Tip="{Binding LocalizationManager.TransitionDurationTooltip}">
+            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.TransitionDurationLabel}" />
             <TextBox
                 MinWidth="48"
                 HorizontalAlignment="Right"
@@ -131,8 +111,8 @@
             Value="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToHoursDoubleConverter.Instance}}" />
 
         <!--  Configuration transition offset  -->
-        <DockPanel Margin="0,24,0,0" ToolTip.Tip="Offset that specifies how early or late the transition starts, relative to the sunrise and sunset">
-            <TextBlock DockPanel.Dock="Left" Text="Transition offset:" />
+        <DockPanel Margin="0,24,0,0" ToolTip.Tip="{Binding LocalizationManager.TransitionOffsetTooltip}">
+            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.TransitionOffsetLabel}" />
             <TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
