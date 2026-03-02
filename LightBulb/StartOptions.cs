@@ -9,7 +9,7 @@ namespace LightBulb;
 
 public partial class StartOptions
 {
-    public bool IsInitiallyHidden { get; init; }
+    public required bool IsInitiallyHidden { get; init; }
 
     public required string SettingsPath { get; init; }
 }
