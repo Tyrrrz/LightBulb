@@ -229,7 +229,7 @@ public partial class DashboardViewModel : ViewModelBase
         {
             _hotKeyService.RegisterHotKey(
                 _settingsService.ToggleWindowHotKey,
-                () => Application.Current?.ApplicationLifetime?.TryGetMainWindow()?.Toggle()
+                () => App.Current?.ToggleMainWindow()
             );
         }
 

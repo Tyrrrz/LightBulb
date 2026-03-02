@@ -12,9 +12,7 @@
     Height="350"
     x:DataType="viewModels:MainViewModel"
     CanResize="False"
-    Closing="Window_OnClosing"
     Icon="/favicon.ico"
-    Loaded="Window_OnLoaded"
     RenderOptions.BitmapInterpolationMode="HighQuality"
     SystemDecorations="None"
     WindowStartupLocation="CenterScreen">

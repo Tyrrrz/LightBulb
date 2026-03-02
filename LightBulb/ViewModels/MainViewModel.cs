@@ -39,6 +39,8 @@ public partial class MainViewModel(
         }
     );
 
+    private bool _isInitialized;
+
     public LocalizationManager LocalizationManager { get; } = localizationManager;
 
     public DashboardViewModel Dashboard { get; } = viewModelManager.CreateDashboardViewModel();
@@ -156,6 +158,11 @@ public partial class MainViewModel(
     [RelayCommand]
     private async Task InitializeAsync()
     {
+        if (_isInitialized)
+            return;
+
+        _isInitialized = true;
+
         await FinalizePendingUpdateAsync();
 
         await ShowUkraineSupportMessageAsync();
