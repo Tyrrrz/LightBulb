@@ -24,6 +24,8 @@ namespace LightBulb;
 
 public class App : Application, IDisposable
 {
+    public static new App Current => (App)Application.Current!;
+
     private readonly DisposableCollector _eventRoot = new();
 
     private readonly ServiceProvider _services;
