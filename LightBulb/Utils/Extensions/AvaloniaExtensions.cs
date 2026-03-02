@@ -48,15 +48,11 @@ internal static class AvaloniaExtensions
                 window.ShowActivateFocus();
         }
 
-        public Task WaitUntilLoadedAsync()
+        public async Task WaitUntilLoadedAsync()
         {
             var tcs = new TaskCompletionSource();
 
-            void OnLoaded(object? _, RoutedEventArgs __)
-            {
-                window.Loaded -= OnLoaded;
-                tcs.TrySetResult();
-            }
+            void OnLoaded(object? _, RoutedEventArgs __) => tcs.TrySetResult();
 
             window.Loaded += OnLoaded;
 
@@ -65,7 +61,9 @@ internal static class AvaloniaExtensions
             if (window.IsLoaded)
                 tcs.TrySetResult();
 
-            return tcs.Task;
+            await tcs.Task;
+
+            window.Loaded -= OnLoaded;
         }
     }
 }
