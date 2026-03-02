@@ -34,24 +34,13 @@ public partial class StartOptions
                     ? Path.EndsInDirectorySeparator(path) || Directory.Exists(path)
                         ? Path.Combine(path, "Settings.json")
                         : path
-                    : GetDefaultSettingsPath(),
+                    : File.Exists(Path.Combine(Program.ExecutableDirPath, ".installed"))
+                    || !Directory.CheckWriteAccess(Program.ExecutableDirPath)
+                        ? Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                            Program.Name,
+                            "Settings.json"
+                        )
+                        : Path.Combine(Program.ExecutableDirPath, "Settings.json"),
         };
-
-    private static string GetDefaultSettingsPath()
-    {
-        var isInstalled = File.Exists(Path.Combine(Program.ExecutableDirPath, ".installed"));
-
-        // Prefer storing settings in appdata when installed or when the current directory is write-protected
-        if (isInstalled || !Directory.CheckWriteAccess(Program.ExecutableDirPath))
-        {
-            return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                Program.Name,
-                "Settings.json"
-            );
-        }
-
-        // Otherwise, store them in the current directory
-        return Path.Combine(Program.ExecutableDirPath, "Settings.json");
-    }
 }
