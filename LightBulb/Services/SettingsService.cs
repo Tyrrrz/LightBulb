@@ -202,6 +202,17 @@ public partial class SettingsService
 {
     private static string GetFilePath()
     {
+        // Allow overriding the settings path via an environment variable
+        if (
+            Environment.GetEnvironmentVariable("LIGHTBULB_SETTINGS_PATH") is { } path
+            && !string.IsNullOrWhiteSpace(path)
+        )
+        {
+            return Path.EndsInDirectorySeparator(path) || Directory.Exists(path)
+                ? Path.Combine(path, "Settings.json")
+                : path;
+        }
+
         var isInstalled = File.Exists(Path.Combine(Program.ExecutableDirPath, ".installed"));
 
         // Prefer storing settings in appdata when installed or when the current directory is write-protected
