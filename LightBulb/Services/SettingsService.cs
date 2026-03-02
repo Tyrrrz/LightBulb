@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Text.Json.Serialization;
 using Cogwheel;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -10,13 +9,13 @@ using LightBulb.Framework;
 using LightBulb.Localization;
 using LightBulb.Models;
 using LightBulb.PlatformInterop;
-using LightBulb.Utils.Extensions;
 using Microsoft.Win32;
 
 namespace LightBulb.Services;
 
 [ObservableObject]
-public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerContext.Default)
+public partial class SettingsService()
+    : SettingsBase(StartOptions.Current.SettingsPath, SerializerContext.Default)
 {
     private readonly RegistrySwitch<int> _extendedGammaRangeSwitch = new(
         RegistryHive.LocalMachine,
@@ -195,27 +194,6 @@ public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerC
         OnPropertyChanged(string.Empty);
 
         return wasLoaded;
-    }
-}
-
-public partial class SettingsService
-{
-    private static string GetFilePath()
-    {
-        var isInstalled = File.Exists(Path.Combine(Program.ExecutableDirPath, ".installed"));
-
-        // Prefer storing settings in appdata when installed or when the current directory is write-protected
-        if (isInstalled || !Directory.CheckWriteAccess(Program.ExecutableDirPath))
-        {
-            return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                Program.Name,
-                "Settings.json"
-            );
-        }
-
-        // Otherwise, store them in the current directory
-        return Path.Combine(Program.ExecutableDirPath, "Settings.json");
     }
 }
 
