@@ -50,18 +50,21 @@ internal static class AvaloniaExtensions
 
         public Task WaitUntilLoadedAsync()
         {
-            if (window.IsLoaded)
-                return Task.CompletedTask;
-
             var tcs = new TaskCompletionSource();
 
             void OnLoaded(object? _, RoutedEventArgs __)
             {
                 window.Loaded -= OnLoaded;
-                tcs.SetResult();
+                tcs.TrySetResult();
             }
 
             window.Loaded += OnLoaded;
+
+            // Check after subscribing to avoid missing the event if the window
+            // finishes loading between the check and the subscription
+            if (window.IsLoaded)
+                tcs.TrySetResult();
+
             return tcs.Task;
         }
     }
