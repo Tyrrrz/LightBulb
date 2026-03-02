@@ -55,26 +55,24 @@ internal static class AvaloniaExtensions
                 window.ShowActivateFocus();
         }
 
-        public async Task<bool> WaitUntilLoadedAsync(CancellationToken cancellationToken = default)
+        public async Task WaitUntilLoadedAsync(CancellationToken cancellationToken = default)
         {
-            var tcs = new TaskCompletionSource<bool>(
-                TaskCreationOptions.RunContinuationsAsynchronously
-            );
+            var tcs = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
 
             cancellationToken.Register(() => tcs.TrySetCanceled(cancellationToken));
 
-            void OnLoaded(object? _, RoutedEventArgs __) => tcs.TrySetResult(true);
-            void OnClosed(object? _, EventArgs __) => tcs.TrySetResult(false);
+            void OnLoaded(object? _, RoutedEventArgs __) => tcs.TrySetResult();
+            void OnClosed(object? _, EventArgs __) => tcs.TrySetCanceled();
 
             window.Loaded += OnLoaded;
             window.Closed += OnClosed;
 
             if (window.IsLoaded)
-                tcs.TrySetResult(true);
+                tcs.TrySetResult();
 
             try
             {
-                return await tcs.Task;
+                await tcs.Task;
             }
             finally
             {

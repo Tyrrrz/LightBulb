@@ -207,8 +207,14 @@ public class App : Application, IDisposable
         if (window is null)
             return;
 
-        if (!await window.WaitUntilLoadedAsync())
+        try
+        {
+            await window.WaitUntilLoadedAsync();
+        }
+        catch (OperationCanceledException)
+        {
             return;
+        }
 
         _mainViewModel.ShowSettingsCommand.Execute(null);
     }
