@@ -179,6 +179,7 @@ public partial class MainViewModel(
     {
         if (_isInitialized)
             return;
+
         _isInitialized = true;
 
         await FinalizePendingUpdateAsync();
