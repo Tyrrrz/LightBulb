@@ -61,13 +61,10 @@ internal static class AvaloniaExtensions
 
             window.Loaded += OnLoaded;
 
-            // Check after subscribing to avoid missing the event if the window
-            // finishes loading between the check and the subscription
             if (window.IsLoaded)
                 tcs.TrySetResult();
 
             await tcs.Task;
-
             window.Loaded -= OnLoaded;
         }
     }
