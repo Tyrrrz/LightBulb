@@ -45,7 +45,10 @@ internal static class AvaloniaExtensions
         public async Task WaitUntilLoadedAsync(CancellationToken cancellationToken = default)
         {
             var tcs = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
-            await using var registration = cancellationToken.Register(() => tcs.TrySetCanceled(cancellationToken));
+
+            await using var registration = cancellationToken.Register(() =>
+                tcs.TrySetCanceled(cancellationToken)
+            );
 
             void OnLoaded(object? _, RoutedEventArgs __) => tcs.TrySetResult();
             window.Loaded += OnLoaded;

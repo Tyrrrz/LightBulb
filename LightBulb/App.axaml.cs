@@ -24,7 +24,7 @@ namespace LightBulb;
 
 public class App : Application, IDisposable
 {
-    public new static App? Current => Application.Current as App;
+    public static new App? Current => Application.Current as App;
 
     private readonly DisposableCollector _eventRoot = new();
 
@@ -196,7 +196,7 @@ public class App : Application, IDisposable
             desktopLifetime.MainWindow = window;
             window.ShowActivateFocus();
         }
-        
+
         return desktopLifetime.MainWindow;
     }
 
