@@ -1,5 +1,7 @@
-﻿using Avalonia.Controls;
+﻿using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Interactivity;
 
 namespace LightBulb.Utils.Extensions;
 
@@ -44,6 +46,23 @@ internal static class AvaloniaExtensions
                 window.Hide();
             else
                 window.ShowActivateFocus();
+        }
+
+        public Task WaitUntilLoadedAsync()
+        {
+            if (window.IsLoaded)
+                return Task.CompletedTask;
+
+            var tcs = new TaskCompletionSource();
+
+            void OnLoaded(object? _, RoutedEventArgs __)
+            {
+                window.Loaded -= OnLoaded;
+                tcs.SetResult();
+            }
+
+            window.Loaded += OnLoaded;
+            return tcs.Task;
         }
     }
 }

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Platform;
@@ -175,20 +174,8 @@ public class App : Application, IDisposable
         {
             var window = new MainView { DataContext = _mainViewModel };
             desktopLifetime.MainWindow = window;
-
-            // Await the window being loaded so callers can be sure the UI is ready
-            var tcs = new TaskCompletionSource();
-
-            void OnLoaded(object? _, RoutedEventArgs __)
-            {
-                window.Loaded -= OnLoaded;
-                tcs.SetResult();
-            }
-
-            window.Loaded += OnLoaded;
             window.ShowActivateFocus();
-
-            await tcs.Task;
+            await window.WaitUntilLoadedAsync();
         }
     }
 
