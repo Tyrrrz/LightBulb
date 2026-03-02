@@ -176,7 +176,7 @@ public class App : Application, IDisposable
         _settingsService.Load();
     }
 
-    private void ShowMainWindow()
+    internal void ShowMainWindow()
     {
         if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktopLifetime)
             return;
