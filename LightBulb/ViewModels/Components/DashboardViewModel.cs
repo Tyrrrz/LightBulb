@@ -229,17 +229,7 @@ public partial class DashboardViewModel : ViewModelBase
         {
             _hotKeyService.RegisterHotKey(
                 _settingsService.ToggleWindowHotKey,
-                () =>
-                {
-                    if (Application.Current is not App app)
-                        return;
-
-                    // Toggle: close the window if it's visible, otherwise show/create it
-                    if (app.ApplicationLifetime?.TryGetMainWindow() is { IsVisible: true } window)
-                        window.Close();
-                    else
-                        app.ShowMainWindow();
-                }
+                () => (Application.Current as App)?.ToggleMainWindow()
             );
         }
 

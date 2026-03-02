@@ -196,11 +196,7 @@ public class App : Application, IDisposable
         }
     }
 
-    private void Application_OnActualThemeVariantChanged(object? sender, EventArgs args) =>
-        // Re-initialize the theme when the system theme changes
-        InitializeTheme();
-
-    private void TrayIcon_OnClicked(object? sender, EventArgs args)
+    internal void ToggleMainWindow()
     {
         if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktopLifetime)
             return;
@@ -211,6 +207,12 @@ public class App : Application, IDisposable
         else
             ShowMainWindow();
     }
+
+    private void Application_OnActualThemeVariantChanged(object? sender, EventArgs args) =>
+        // Re-initialize the theme when the system theme changes
+        InitializeTheme();
+
+    private void TrayIcon_OnClicked(object? sender, EventArgs args) => ToggleMainWindow();
 
     private async void ShowSettingsMenuItem_OnClick(object? sender, EventArgs args)
     {
