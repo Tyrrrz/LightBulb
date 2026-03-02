@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -161,7 +160,7 @@ public class App : Application, IDisposable
         _settingsService.Load();
     }
 
-    private async Task ShowMainWindowAsync()
+    private void ShowMainWindow()
     {
         if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktopLifetime)
             return;
@@ -177,7 +176,6 @@ public class App : Application, IDisposable
             var window = new MainView { DataContext = _mainViewModel };
             desktopLifetime.MainWindow = window;
             window.ShowActivateFocus();
-            await window.WaitUntilLoadedAsync();
         }
     }
 
@@ -185,12 +183,20 @@ public class App : Application, IDisposable
         // Re-initialize the theme when the system theme changes
         InitializeTheme();
 
-    private async void TrayIcon_OnClicked(object? sender, EventArgs args) =>
-        await ShowMainWindowAsync();
+    private void TrayIcon_OnClicked(object? sender, EventArgs args) => ShowMainWindow();
 
     private async void ShowSettingsMenuItem_OnClick(object? sender, EventArgs args)
     {
-        await ShowMainWindowAsync();
+        ShowMainWindow();
+
+        if (
+            ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime
+            && desktopLifetime.MainWindow is { } window
+        )
+        {
+            await window.WaitUntilLoadedAsync();
+        }
+
         _mainViewModel.ShowSettingsCommand.Execute(null);
     }
 

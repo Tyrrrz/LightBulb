@@ -39,6 +39,8 @@ public partial class MainViewModel(
         }
     );
 
+    private bool _isInitialized;
+
     public LocalizationManager LocalizationManager { get; } = localizationManager;
 
     public DashboardViewModel Dashboard { get; } = viewModelManager.CreateDashboardViewModel();
@@ -152,8 +154,6 @@ public partial class MainViewModel(
 
         await dialogManager.ShowDialogAsync(settingsDialog);
     }
-
-    private bool _isInitialized;
 
     [RelayCommand]
     private async Task InitializeAsync()
