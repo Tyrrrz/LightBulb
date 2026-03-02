@@ -14,7 +14,8 @@ using Microsoft.Win32;
 namespace LightBulb.Services;
 
 [ObservableObject]
-public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerContext.Default)
+public partial class SettingsService()
+    : SettingsBase(StartOptions.Current.SettingsPath, SerializerContext.Default)
 {
     private readonly RegistrySwitch<int> _extendedGammaRangeSwitch = new(
         RegistryHive.LocalMachine,
@@ -194,11 +195,6 @@ public partial class SettingsService() : SettingsBase(GetFilePath(), SerializerC
 
         return wasLoaded;
     }
-}
-
-public partial class SettingsService
-{
-    private static string GetFilePath() => StartOptions.Current.SettingsPath;
 }
 
 public partial class SettingsService
