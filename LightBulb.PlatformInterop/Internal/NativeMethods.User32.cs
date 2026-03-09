@@ -113,21 +113,4 @@ internal static partial class NativeMethods
 
     [DllImport(User32, SetLastError = true)]
     public static extern bool UnregisterPowerSettingNotification(nint handle);
-
-    [DllImport(User32)]
-    public static extern int GetMessage(
-        out Msg lpMsg,
-        nint hWnd,
-        uint wMsgFilterMin,
-        uint wMsgFilterMax
-    );
-
-    [DllImport(User32)]
-    public static extern bool TranslateMessage(ref Msg lpMsg);
-
-    [DllImport(User32)]
-    public static extern nint DispatchMessage(ref Msg lpMsg);
-
-    [DllImport(User32)]
-    public static extern void PostQuitMessage(int nExitCode);
 }

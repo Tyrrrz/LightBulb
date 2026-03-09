@@ -29,7 +29,21 @@ public static class Program
     public static string ProjectReleasesUrl { get; } = $"{ProjectUrl}/releases";
 
     public static AppBuilder BuildAvaloniaApp() =>
-        AppBuilder.Configure<App>().UsePlatformDetect().LogToTrace();
+        AppBuilder
+            .Configure<App>()
+            .UsePlatformDetect()
+            .With(
+                new Win32PlatformOptions
+                {
+                    // Use redirection surface composition to avoid Avalonia's WinUI Composition
+                    // renderer (WinUiCompositorConnection) from ticking endlessly via dcomp.dll
+                    // when the application is idle, which would otherwise wake up dwm.exe
+                    // continuously even when monitors are powered off.
+                    CompositionMode = [Win32CompositionMode.RedirectionSurface],
+                    RenderingMode = [Win32RenderingMode.AngleEgl, Win32RenderingMode.Software],
+                }
+            )
+            .LogToTrace();
 
     [STAThread]
     public static int Main(string[] args)
