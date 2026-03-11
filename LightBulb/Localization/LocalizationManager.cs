@@ -190,6 +190,24 @@ public partial class LocalizationManager
     public string RefreshAppsTooltip => Get();
     public string PauseForWhitelistedTooltip => Get();
 
+    // ---- Tray icon context menu ----
+
+    public string TrayShowHideMenuItem => Get();
+    public string TraySettingsMenuItem => Get();
+    public string TrayToggleMenuItem => Get();
+    public string TrayDisableMenuItem => Get();
+    public string TrayDisableUntilSunriseMenuItem => Get();
+    public string TrayDisableFor1DayMenuItem => Get();
+    public string TrayDisableFor12HoursMenuItem => Get();
+    public string TrayDisableFor6HoursMenuItem => Get();
+    public string TrayDisableFor3HoursMenuItem => Get();
+    public string TrayDisableFor1HourMenuItem => Get();
+    public string TrayDisableFor30MinutesMenuItem => Get();
+    public string TrayDisableFor15MinutesMenuItem => Get();
+    public string TrayDisableFor5MinutesMenuItem => Get();
+    public string TrayDisableFor1MinuteMenuItem => Get();
+    public string TrayExitMenuItem => Get();
+
     // ---- Dialog messages ----
 
     public string UpdateAvailableTitle => Get();

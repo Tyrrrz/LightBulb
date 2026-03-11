@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Platform;
-using Avalonia.Threading;
 using LightBulb.Framework;
 using LightBulb.Localization;
 using LightBulb.Services;
@@ -22,7 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LightBulb;
 
-public class App : Application, IDisposable
+public partial class App : Application, IDisposable
 {
     public static new App? Current => Application.Current as App;
 
@@ -30,6 +28,7 @@ public class App : Application, IDisposable
 
     private readonly ServiceProvider _services;
     private readonly SettingsService _settingsService;
+    private readonly LocalizationManager _localizationManager;
     private readonly MainViewModel _mainViewModel;
 
     private bool _isDisposed;
@@ -64,6 +63,7 @@ public class App : Application, IDisposable
 
         _services = services.BuildServiceProvider(true);
         _settingsService = _services.GetRequiredService<SettingsService>();
+        _localizationManager = _services.GetRequiredService<LocalizationManager>();
         _mainViewModel = _services.GetRequiredService<ViewModelManager>().CreateMainViewModel();
 
         // Re-initialize the theme when the user changes it
@@ -84,35 +84,7 @@ public class App : Application, IDisposable
             )
         );
 
-        // Tray icon does not support binding so we use this hack to synchronize its tooltip
-        _eventRoot.Add(
-            _mainViewModel.Dashboard.WatchProperties(
-                [o => o.IsActive, o => o.CurrentConfiguration],
-                () =>
-                {
-                    var status =
-                        _mainViewModel.Dashboard.CurrentConfiguration.Temperature.ToString("F0")
-                        + " / "
-                        + _mainViewModel.Dashboard.CurrentConfiguration.Brightness.ToString("P0");
-
-                    var tooltip =
-                        "LightBulb"
-                        + Environment.NewLine
-                        + (_mainViewModel.Dashboard.IsActive ? status : "Disabled");
-
-                    try
-                    {
-                        Dispatcher.UIThread.Invoke(() =>
-                        {
-                            if (TrayIcon.GetIcons(this)?.FirstOrDefault() is { } trayIcon)
-                                trayIcon.ToolTipText = tooltip;
-                        });
-                    }
-                    // Ignore exceptions when the application is shutting down
-                    catch (OperationCanceledException) { }
-                }
-            )
-        );
+        RegisterTrayIconEvents();
     }
 
     public override void Initialize()
@@ -174,6 +146,9 @@ public class App : Application, IDisposable
         // Set up custom theme colors
         InitializeTheme();
 
+        // Build the tray icon and menu in code so we hold direct references to each item
+        InitializeTrayIcon();
+
         // Load settings
         _settingsService.Load();
     }
@@ -213,67 +188,6 @@ public class App : Application, IDisposable
     private void Application_OnActualThemeVariantChanged(object? sender, EventArgs args) =>
         // Re-initialize the theme when the system theme changes
         InitializeTheme();
-
-    private void TrayIcon_OnClicked(object? sender, EventArgs args) => ToggleMainWindow();
-
-    private async void ShowSettingsMenuItem_OnClick(object? sender, EventArgs args)
-    {
-        var window = ShowMainWindow();
-        if (window is null)
-            return;
-
-        // Wait until the window is loaded to avoid potential issues
-        // with showing a dialog too early in the lifecycle.
-        try
-        {
-            await window.WaitUntilLoadedAsync();
-        }
-        catch (OperationCanceledException)
-        {
-            return;
-        }
-
-        _mainViewModel.ShowSettingsCommand.Execute(null);
-    }
-
-    private void ToggleMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.IsEnabled = !_mainViewModel.Dashboard.IsEnabled;
-
-    private void DisableUntilSunriseMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableUntilSunriseCommand.Execute(null);
-
-    private void DisableTemporarily1DayMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromDays(1));
-
-    private void DisableTemporarily12HoursMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(12));
-
-    private void DisableTemporarily6HoursMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(6));
-
-    private void DisableTemporarily3HoursMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(3));
-
-    private void DisableTemporarily1HourMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(1));
-
-    private void DisableTemporarily30MinutesMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(30));
-
-    private void DisableTemporarily15MinutesMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(15));
-
-    private void DisableTemporarily5MinutesMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(5));
-
-    private void DisableTemporarily1MinuteMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(1));
-
-    private void ExitMenuItem_OnClick(object? sender, EventArgs args)
-    {
-        if (ApplicationLifetime?.TryShutdown() != true)
-            Environment.Exit(0);
-    }
 
     public void Dispose()
     {

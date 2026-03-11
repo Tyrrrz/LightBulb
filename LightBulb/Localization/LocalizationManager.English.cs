@@ -136,6 +136,22 @@ public partial class LocalizationManager
             [nameof(RefreshAppsTooltip)] = "Refresh running applications",
             [nameof(PauseForWhitelistedTooltip)] =
                 "Pause LightBulb when one of the selected applications is in the foreground",
+            // Tray icon context menu
+            [nameof(TrayShowHideMenuItem)] = "Show/hide",
+            [nameof(TraySettingsMenuItem)] = "Settings",
+            [nameof(TrayToggleMenuItem)] = "Enable/disable",
+            [nameof(TrayDisableMenuItem)] = "Disable...",
+            [nameof(TrayDisableUntilSunriseMenuItem)] = "Until sunrise",
+            [nameof(TrayDisableFor1DayMenuItem)] = "For 1 day",
+            [nameof(TrayDisableFor12HoursMenuItem)] = "For 12 hours",
+            [nameof(TrayDisableFor6HoursMenuItem)] = "For 6 hours",
+            [nameof(TrayDisableFor3HoursMenuItem)] = "For 3 hours",
+            [nameof(TrayDisableFor1HourMenuItem)] = "For 1 hour",
+            [nameof(TrayDisableFor30MinutesMenuItem)] = "For 30 minutes",
+            [nameof(TrayDisableFor15MinutesMenuItem)] = "For 15 minutes",
+            [nameof(TrayDisableFor5MinutesMenuItem)] = "For 5 minutes",
+            [nameof(TrayDisableFor1MinuteMenuItem)] = "For 1 minute",
+            [nameof(TrayExitMenuItem)] = "Exit",
             // Dialog messages
             [nameof(UpdateAvailableTitle)] = "Update available",
             [nameof(UpdateAvailableMessage)] = """
