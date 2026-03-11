@@ -125,60 +125,89 @@ public partial class App
         _trayShowHideItem.Click += TrayIcon_OnClicked;
 
         _traySettingsItem = new NativeMenuItem(_localizationManager.TraySettingsMenuItem);
-        _traySettingsItem.Click += ShowSettingsMenuItem_OnClick;
+        _traySettingsItem.Click += async (_, _) =>
+        {
+            var window = ShowMainWindow();
+            if (window is null)
+                return;
+
+            // Wait until the window is loaded to avoid potential issues
+            // with showing a dialog too early in the lifecycle.
+            try
+            {
+                await window.WaitUntilLoadedAsync();
+            }
+            catch (OperationCanceledException)
+            {
+                return;
+            }
+
+            _mainViewModel.ShowSettingsCommand.Execute(null);
+        };
 
         _trayToggleItem = new NativeMenuItem(_localizationManager.TrayToggleMenuItem);
-        _trayToggleItem.Click += ToggleMenuItem_OnClick;
+        _trayToggleItem.Click += (_, _) =>
+            _mainViewModel.Dashboard.IsEnabled = !_mainViewModel.Dashboard.IsEnabled;
 
         _trayDisableUntilSunriseItem = new NativeMenuItem(
             _localizationManager.TrayDisableUntilSunriseMenuItem
         );
-        _trayDisableUntilSunriseItem.Click += DisableUntilSunriseMenuItem_OnClick;
+        _trayDisableUntilSunriseItem.Click += (_, _) =>
+            _mainViewModel.Dashboard.DisableUntilSunriseCommand.Execute(null);
 
         _trayDisableFor1DayItem = new NativeMenuItem(
             _localizationManager.TrayDisableFor1DayMenuItem
         );
-        _trayDisableFor1DayItem.Click += DisableTemporarily1DayMenuItem_OnClick;
+        _trayDisableFor1DayItem.Click += (_, _) =>
+            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromDays(1));
 
         _trayDisableFor12HoursItem = new NativeMenuItem(
             _localizationManager.TrayDisableFor12HoursMenuItem
         );
-        _trayDisableFor12HoursItem.Click += DisableTemporarily12HoursMenuItem_OnClick;
+        _trayDisableFor12HoursItem.Click += (_, _) =>
+            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(12));
 
         _trayDisableFor6HoursItem = new NativeMenuItem(
             _localizationManager.TrayDisableFor6HoursMenuItem
         );
-        _trayDisableFor6HoursItem.Click += DisableTemporarily6HoursMenuItem_OnClick;
+        _trayDisableFor6HoursItem.Click += (_, _) =>
+            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(6));
 
         _trayDisableFor3HoursItem = new NativeMenuItem(
             _localizationManager.TrayDisableFor3HoursMenuItem
         );
-        _trayDisableFor3HoursItem.Click += DisableTemporarily3HoursMenuItem_OnClick;
+        _trayDisableFor3HoursItem.Click += (_, _) =>
+            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(3));
 
         _trayDisableFor1HourItem = new NativeMenuItem(
             _localizationManager.TrayDisableFor1HourMenuItem
         );
-        _trayDisableFor1HourItem.Click += DisableTemporarily1HourMenuItem_OnClick;
+        _trayDisableFor1HourItem.Click += (_, _) =>
+            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(1));
 
         _trayDisableFor30MinutesItem = new NativeMenuItem(
             _localizationManager.TrayDisableFor30MinutesMenuItem
         );
-        _trayDisableFor30MinutesItem.Click += DisableTemporarily30MinutesMenuItem_OnClick;
+        _trayDisableFor30MinutesItem.Click += (_, _) =>
+            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(30));
 
         _trayDisableFor15MinutesItem = new NativeMenuItem(
             _localizationManager.TrayDisableFor15MinutesMenuItem
         );
-        _trayDisableFor15MinutesItem.Click += DisableTemporarily15MinutesMenuItem_OnClick;
+        _trayDisableFor15MinutesItem.Click += (_, _) =>
+            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(15));
 
         _trayDisableFor5MinutesItem = new NativeMenuItem(
             _localizationManager.TrayDisableFor5MinutesMenuItem
         );
-        _trayDisableFor5MinutesItem.Click += DisableTemporarily5MinutesMenuItem_OnClick;
+        _trayDisableFor5MinutesItem.Click += (_, _) =>
+            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(5));
 
         _trayDisableFor1MinuteItem = new NativeMenuItem(
             _localizationManager.TrayDisableFor1MinuteMenuItem
         );
-        _trayDisableFor1MinuteItem.Click += DisableTemporarily1MinuteMenuItem_OnClick;
+        _trayDisableFor1MinuteItem.Click += (_, _) =>
+            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(1));
 
         var disableSubMenu = new NativeMenu();
         disableSubMenu.Items.Add(_trayDisableUntilSunriseItem);
@@ -198,7 +227,11 @@ public partial class App
         };
 
         _trayExitItem = new NativeMenuItem(_localizationManager.TrayExitMenuItem);
-        _trayExitItem.Click += ExitMenuItem_OnClick;
+        _trayExitItem.Click += (_, _) =>
+        {
+            if (ApplicationLifetime?.TryShutdown() != true)
+                Environment.Exit(0);
+        };
 
         var menu = new NativeMenu();
         menu.Items.Add(_trayShowHideItem);
@@ -221,63 +254,4 @@ public partial class App
     }
 
     private void TrayIcon_OnClicked(object? sender, EventArgs args) => ToggleMainWindow();
-
-    private async void ShowSettingsMenuItem_OnClick(object? sender, EventArgs args)
-    {
-        var window = ShowMainWindow();
-        if (window is null)
-            return;
-
-        // Wait until the window is loaded to avoid potential issues
-        // with showing a dialog too early in the lifecycle.
-        try
-        {
-            await window.WaitUntilLoadedAsync();
-        }
-        catch (OperationCanceledException)
-        {
-            return;
-        }
-
-        _mainViewModel.ShowSettingsCommand.Execute(null);
-    }
-
-    private void ToggleMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.IsEnabled = !_mainViewModel.Dashboard.IsEnabled;
-
-    private void DisableUntilSunriseMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableUntilSunriseCommand.Execute(null);
-
-    private void DisableTemporarily1DayMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromDays(1));
-
-    private void DisableTemporarily12HoursMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(12));
-
-    private void DisableTemporarily6HoursMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(6));
-
-    private void DisableTemporarily3HoursMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(3));
-
-    private void DisableTemporarily1HourMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(1));
-
-    private void DisableTemporarily30MinutesMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(30));
-
-    private void DisableTemporarily15MinutesMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(15));
-
-    private void DisableTemporarily5MinutesMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(5));
-
-    private void DisableTemporarily1MinuteMenuItem_OnClick(object? sender, EventArgs args) =>
-        _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(1));
-
-    private void ExitMenuItem_OnClick(object? sender, EventArgs args)
-    {
-        if (ApplicationLifetime?.TryShutdown() != true)
-            Environment.Exit(0);
-    }
 }
