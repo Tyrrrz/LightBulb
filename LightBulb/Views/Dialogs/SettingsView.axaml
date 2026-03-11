@@ -62,32 +62,47 @@
                 Fill="{DynamicResource MaterialDividerBrush}" />
 
             <!--  Buttons  -->
-            <StackPanel
-                Grid.Row="2"
-                HorizontalAlignment="Right"
-                Orientation="Horizontal">
+            <UniformGrid Grid.Row="2" Columns="3">
                 <!--  Reset  -->
                 <Button
                     Margin="8"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
                     Command="{Binding ResetCommand}"
-                    Content="{Binding LocalizationManager.ResetButton}"
                     Theme="{DynamicResource MaterialFlatButton}"
-                    ToolTip.Tip="{Binding LocalizationManager.ResetTooltip}" />
+                    ToolTip.Tip="{Binding LocalizationManager.ResetTooltip}">
+                    <TextBlock
+                        Text="{Binding LocalizationManager.ResetButton}"
+                        TextAlignment="Center"
+                        TextTrimming="CharacterEllipsis" />
+                </Button>
 
                 <!--  Cancel  -->
                 <Button
                     Margin="8"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
                     Command="{Binding CancelCommand}"
-                    Content="{Binding LocalizationManager.CancelButton}"
-                    Theme="{DynamicResource MaterialFlatButton}" />
+                    Theme="{DynamicResource MaterialFlatButton}">
+                    <TextBlock
+                        Text="{Binding LocalizationManager.CancelButton}"
+                        TextAlignment="Center"
+                        TextTrimming="CharacterEllipsis" />
+                </Button>
 
                 <!--  Save  -->
                 <Button
                     Margin="8"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
                     Command="{Binding SaveCommand}"
-                    Content="{Binding LocalizationManager.SaveButton}"
-                    Theme="{DynamicResource MaterialFlatButton}" />
-            </StackPanel>
+                    Theme="{DynamicResource MaterialFlatButton}">
+                    <TextBlock
+                        Text="{Binding LocalizationManager.SaveButton}"
+                        TextAlignment="Center"
+                        TextTrimming="CharacterEllipsis" />
+                </Button>
+            </UniformGrid>
         </Grid>
     </Grid>
 </UserControl>
