@@ -156,40 +156,4 @@
         </ResourceDictionary>
     </Application.Resources>
 
-    <!--  Tray icon  -->
-    <TrayIcon.Icons>
-        <TrayIcons>
-            <TrayIcon
-                Clicked="TrayIcon_OnClicked"
-                Icon="/favicon.ico"
-                ToolTipText="LightBulb">
-                <TrayIcon.Menu>
-                    <NativeMenu>
-                        <NativeMenuItem Click="TrayIcon_OnClicked" Header="Show/hide" />
-                        <NativeMenuItem Click="ShowSettingsMenuItem_OnClick" Header="Settings" />
-                        <NativeMenuItemSeparator />
-
-                        <NativeMenuItem Click="ToggleMenuItem_OnClick" Header="Enable/disable" />
-                        <NativeMenuItem Header="Disable...">
-                            <NativeMenu>
-                                <NativeMenuItem Click="DisableUntilSunriseMenuItem_OnClick" Header="Until sunrise" />
-                                <NativeMenuItem Click="DisableTemporarily1DayMenuItem_OnClick" Header="For 1 day" />
-                                <NativeMenuItem Click="DisableTemporarily12HoursMenuItem_OnClick" Header="For 12 hours" />
-                                <NativeMenuItem Click="DisableTemporarily6HoursMenuItem_OnClick" Header="For 6 hours" />
-                                <NativeMenuItem Click="DisableTemporarily3HoursMenuItem_OnClick" Header="For 3 hours" />
-                                <NativeMenuItem Click="DisableTemporarily1HourMenuItem_OnClick" Header="For 1 hour" />
-                                <NativeMenuItem Click="DisableTemporarily30MinutesMenuItem_OnClick" Header="For 30 minutes" />
-                                <NativeMenuItem Click="DisableTemporarily15MinutesMenuItem_OnClick" Header="For 15 minutes" />
-                                <NativeMenuItem Click="DisableTemporarily5MinutesMenuItem_OnClick" Header="For 5 minutes" />
-                                <NativeMenuItem Click="DisableTemporarily1MinuteMenuItem_OnClick" Header="For 1 minute" />
-                            </NativeMenu>
-                        </NativeMenuItem>
-                        <NativeMenuItemSeparator />
-
-                        <NativeMenuItem Click="ExitMenuItem_OnClick" Header="Exit" />
-                    </NativeMenu>
-                </TrayIcon.Menu>
-            </TrayIcon>
-        </TrayIcons>
-    </TrayIcon.Icons>
 </Application>
