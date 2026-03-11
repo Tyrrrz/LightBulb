@@ -7,9 +7,9 @@ using LightBulb.Utils.Extensions;
 
 namespace LightBulb;
 
+// Tray icon and its menu do not support XAML binding, so we construct it in code and update it ourselves
 public partial class App
 {
-    // Tray menu items — kept as fields so headers can be updated without index-based lookups
     private NativeMenuItem? _trayShowHideItem;
     private NativeMenuItem? _traySettingsItem;
     private NativeMenuItem? _trayToggleItem;
