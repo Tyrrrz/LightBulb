@@ -122,7 +122,7 @@ public partial class App
     private void InitializeTrayIcon()
     {
         _trayShowHideItem = new NativeMenuItem(_localizationManager.TrayShowHideMenuItem);
-        _trayShowHideItem.Click += TrayIcon_OnClicked;
+        _trayShowHideItem.Click += (_, _) => ToggleMainWindow();
 
         _traySettingsItem = new NativeMenuItem(_localizationManager.TraySettingsMenuItem);
         _traySettingsItem.Click += async (_, _) =>
@@ -248,10 +248,8 @@ public partial class App
             ToolTipText = "LightBulb",
             Menu = menu,
         };
-        _trayIcon.Clicked += TrayIcon_OnClicked;
+        _trayIcon.Clicked += (_, _) => ToggleMainWindow();
 
         TrayIcon.SetIcons(this, new TrayIcons { _trayIcon });
     }
-
-    private void TrayIcon_OnClicked(object? sender, EventArgs args) => ToggleMainWindow();
 }
