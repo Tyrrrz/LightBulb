@@ -83,8 +83,6 @@ public partial class App : Application, IDisposable
                 }
             )
         );
-
-        RegisterTrayIconEvents();
     }
 
     public override void Initialize()
