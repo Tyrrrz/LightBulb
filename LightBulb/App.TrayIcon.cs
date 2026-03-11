@@ -29,7 +29,6 @@ public partial class App
 
     private void RegisterTrayIconEvents()
     {
-        // Tray icon does not support binding so we use this hack to synchronize its menu and tooltip
         _eventRoot.Add(
             _localizationManager.WatchProperty(
                 o => o.Language,
