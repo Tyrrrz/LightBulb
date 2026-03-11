@@ -53,7 +53,8 @@ public partial class LocalizationManager
             [nameof(AutoUpdateLabel)] = "自动更新",
             [nameof(AutoUpdateTooltip)] = "自动安装新版本以保持 LightBulb 为最新状态",
             [nameof(DefaultToDayConfigLabel)] = "默认为日间配置",
-            [nameof(DefaultToDayConfigTooltip)] = "当 LightBulb 被禁用或暂停时，恢复配置的日间色温和亮度，而不是默认的显示器伽马值",
+            [nameof(DefaultToDayConfigTooltip)] =
+                "当 LightBulb 被禁用或暂停时，恢复配置的日间色温和亮度，而不是默认的显示器伽马值",
             [nameof(PauseWhenFullscreenLabel)] = "全屏时暂停",
             [nameof(PauseWhenFullscreenTooltip)] = "当任何全屏窗口处于前台时暂停 LightBulb",
             [nameof(GammaSmoothingLabel)] = "伽马平滑",
