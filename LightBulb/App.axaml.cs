@@ -94,7 +94,61 @@ public class App : Application, IDisposable
                 {
                     try
                     {
-                        Dispatcher.UIThread.Invoke(UpdateTrayMenuLocalization);
+                        Dispatcher.UIThread.Invoke(() =>
+                        {
+                            if (TrayIcon.GetIcons(this)?.FirstOrDefault() is not { } trayIcon)
+                                return;
+                            if (trayIcon.Menu is not { } menu)
+                                return;
+
+                            if (menu.Items[0] is NativeMenuItem showHideItem)
+                                showHideItem.Header = _localizationManager.TrayShowHideMenuItem;
+                            if (menu.Items[1] is NativeMenuItem settingsItem)
+                                settingsItem.Header = _localizationManager.TraySettingsMenuItem;
+                            if (menu.Items[3] is NativeMenuItem toggleItem)
+                                toggleItem.Header = _localizationManager.TrayToggleMenuItem;
+                            if (
+                                menu.Items[4] is NativeMenuItem
+                                {
+                                    Menu: { } disableSubMenu
+                                } disableItem
+                            )
+                            {
+                                disableItem.Header = _localizationManager.TrayDisableMenuItem;
+                                if (disableSubMenu.Items[0] is NativeMenuItem untilSunriseItem)
+                                    untilSunriseItem.Header =
+                                        _localizationManager.TrayDisableUntilSunriseMenuItem;
+                                if (disableSubMenu.Items[1] is NativeMenuItem for1DayItem)
+                                    for1DayItem.Header =
+                                        _localizationManager.TrayDisableFor1DayMenuItem;
+                                if (disableSubMenu.Items[2] is NativeMenuItem for12HoursItem)
+                                    for12HoursItem.Header =
+                                        _localizationManager.TrayDisableFor12HoursMenuItem;
+                                if (disableSubMenu.Items[3] is NativeMenuItem for6HoursItem)
+                                    for6HoursItem.Header =
+                                        _localizationManager.TrayDisableFor6HoursMenuItem;
+                                if (disableSubMenu.Items[4] is NativeMenuItem for3HoursItem)
+                                    for3HoursItem.Header =
+                                        _localizationManager.TrayDisableFor3HoursMenuItem;
+                                if (disableSubMenu.Items[5] is NativeMenuItem for1HourItem)
+                                    for1HourItem.Header =
+                                        _localizationManager.TrayDisableFor1HourMenuItem;
+                                if (disableSubMenu.Items[6] is NativeMenuItem for30MinutesItem)
+                                    for30MinutesItem.Header =
+                                        _localizationManager.TrayDisableFor30MinutesMenuItem;
+                                if (disableSubMenu.Items[7] is NativeMenuItem for15MinutesItem)
+                                    for15MinutesItem.Header =
+                                        _localizationManager.TrayDisableFor15MinutesMenuItem;
+                                if (disableSubMenu.Items[8] is NativeMenuItem for5MinutesItem)
+                                    for5MinutesItem.Header =
+                                        _localizationManager.TrayDisableFor5MinutesMenuItem;
+                                if (disableSubMenu.Items[9] is NativeMenuItem for1MinuteItem)
+                                    for1MinuteItem.Header =
+                                        _localizationManager.TrayDisableFor1MinuteMenuItem;
+                            }
+                            if (menu.Items[6] is NativeMenuItem exitItem)
+                                exitItem.Header = _localizationManager.TrayExitMenuItem;
+                        });
                     }
                     // Ignore exceptions when the application is shutting down
                     catch (OperationCanceledException) { }
@@ -193,9 +247,6 @@ public class App : Application, IDisposable
 
         // Load settings
         _settingsService.Load();
-
-        // Update tray menu localization after settings (and language) are loaded
-        UpdateTrayMenuLocalization();
     }
 
     internal Window? ShowMainWindow()
@@ -233,47 +284,6 @@ public class App : Application, IDisposable
     private void Application_OnActualThemeVariantChanged(object? sender, EventArgs args) =>
         // Re-initialize the theme when the system theme changes
         InitializeTheme();
-
-    private void UpdateTrayMenuLocalization()
-    {
-        if (TrayIcon.GetIcons(this)?.FirstOrDefault() is not { } trayIcon)
-            return;
-        if (trayIcon.Menu is not { } menu)
-            return;
-
-        if (menu.Items[0] is NativeMenuItem showHideItem)
-            showHideItem.Header = _localizationManager.TrayShowHideMenuItem;
-        if (menu.Items[1] is NativeMenuItem settingsItem)
-            settingsItem.Header = _localizationManager.TraySettingsMenuItem;
-        if (menu.Items[3] is NativeMenuItem toggleItem)
-            toggleItem.Header = _localizationManager.TrayToggleMenuItem;
-        if (menu.Items[4] is NativeMenuItem { Menu: { } disableSubMenu } disableItem)
-        {
-            disableItem.Header = _localizationManager.TrayDisableMenuItem;
-            if (disableSubMenu.Items[0] is NativeMenuItem untilSunriseItem)
-                untilSunriseItem.Header = _localizationManager.TrayDisableUntilSunriseMenuItem;
-            if (disableSubMenu.Items[1] is NativeMenuItem for1DayItem)
-                for1DayItem.Header = _localizationManager.TrayDisableFor1DayMenuItem;
-            if (disableSubMenu.Items[2] is NativeMenuItem for12HoursItem)
-                for12HoursItem.Header = _localizationManager.TrayDisableFor12HoursMenuItem;
-            if (disableSubMenu.Items[3] is NativeMenuItem for6HoursItem)
-                for6HoursItem.Header = _localizationManager.TrayDisableFor6HoursMenuItem;
-            if (disableSubMenu.Items[4] is NativeMenuItem for3HoursItem)
-                for3HoursItem.Header = _localizationManager.TrayDisableFor3HoursMenuItem;
-            if (disableSubMenu.Items[5] is NativeMenuItem for1HourItem)
-                for1HourItem.Header = _localizationManager.TrayDisableFor1HourMenuItem;
-            if (disableSubMenu.Items[6] is NativeMenuItem for30MinutesItem)
-                for30MinutesItem.Header = _localizationManager.TrayDisableFor30MinutesMenuItem;
-            if (disableSubMenu.Items[7] is NativeMenuItem for15MinutesItem)
-                for15MinutesItem.Header = _localizationManager.TrayDisableFor15MinutesMenuItem;
-            if (disableSubMenu.Items[8] is NativeMenuItem for5MinutesItem)
-                for5MinutesItem.Header = _localizationManager.TrayDisableFor5MinutesMenuItem;
-            if (disableSubMenu.Items[9] is NativeMenuItem for1MinuteItem)
-                for1MinuteItem.Header = _localizationManager.TrayDisableFor1MinuteMenuItem;
-        }
-        if (menu.Items[6] is NativeMenuItem exitItem)
-            exitItem.Header = _localizationManager.TrayExitMenuItem;
-    }
 
     private void TrayIcon_OnClicked(object? sender, EventArgs args) => ToggleMainWindow();
 
