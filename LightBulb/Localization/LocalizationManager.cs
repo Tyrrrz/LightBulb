@@ -51,12 +51,14 @@ public partial class LocalizationManager : ObservableObject, IDisposable
                     "deu" => GermanLocalization,
                     "fra" => FrenchLocalization,
                     "spa" => SpanishLocalization,
+                    "zho" => SimplifiedChineseLocalization,
                     _ => EnglishLocalization,
                 },
             Language.Ukrainian => UkrainianLocalization,
             Language.German => GermanLocalization,
             Language.French => FrenchLocalization,
             Language.Spanish => SpanishLocalization,
+            Language.SimplifiedChinese => SimplifiedChineseLocalization,
             _ => EnglishLocalization,
         };
 

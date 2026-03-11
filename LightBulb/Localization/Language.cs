@@ -8,4 +8,5 @@ public enum Language
     German,
     French,
     Spanish,
+    SimplifiedChinese,
 }
