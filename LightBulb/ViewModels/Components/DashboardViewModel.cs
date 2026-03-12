@@ -48,13 +48,6 @@ public partial class DashboardViewModel : ViewModelBase
         _externalApplicationService = externalApplicationService;
 
         _eventRoot.Add(
-            localizationManager.WatchProperty(
-                o => o.Language,
-                () => OnPropertyChanged(nameof(TrayTooltip))
-            )
-        );
-
-        _eventRoot.Add(
             this.WatchProperty(
                 o => o.IsEnabled,
                 () =>
@@ -68,6 +61,13 @@ public partial class DashboardViewModel : ViewModelBase
                         _gammaService.InvalidateDeviceContexts();
                     }
                 }
+            )
+        );
+
+        _eventRoot.Add(
+            localizationManager.WatchProperty(
+                o => o.Language,
+                () => OnPropertyChanged(nameof(TrayTooltip))
             )
         );
 
