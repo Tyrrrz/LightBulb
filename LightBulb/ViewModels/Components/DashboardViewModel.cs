@@ -439,6 +439,36 @@ public partial class DashboardViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    private void DisableFor1Day() => DisableTemporarily(TimeSpan.FromDays(1));
+
+    [RelayCommand]
+    private void DisableFor12Hours() => DisableTemporarily(TimeSpan.FromHours(12));
+
+    [RelayCommand]
+    private void DisableFor6Hours() => DisableTemporarily(TimeSpan.FromHours(6));
+
+    [RelayCommand]
+    private void DisableFor3Hours() => DisableTemporarily(TimeSpan.FromHours(3));
+
+    [RelayCommand]
+    private void DisableFor1Hour() => DisableTemporarily(TimeSpan.FromHours(1));
+
+    [RelayCommand]
+    private void DisableFor30Minutes() => DisableTemporarily(TimeSpan.FromMinutes(30));
+
+    [RelayCommand]
+    private void DisableFor15Minutes() => DisableTemporarily(TimeSpan.FromMinutes(15));
+
+    [RelayCommand]
+    private void DisableFor5Minutes() => DisableTemporarily(TimeSpan.FromMinutes(5));
+
+    [RelayCommand]
+    private void DisableFor1Minute() => DisableTemporarily(TimeSpan.FromMinutes(1));
+
+    [RelayCommand]
+    private void Toggle() => IsEnabled = !IsEnabled;
+
+    [RelayCommand]
     private void ResetConfigurationOffset()
     {
         TemperatureOffset = 0;

@@ -178,6 +178,37 @@ public partial class MainViewModel(
         await dialogManager.ShowDialogAsync(viewModelManager.CreateSettingsViewModel());
 
     [RelayCommand]
+    private async Task ShowSettingsFromTrayAsync()
+    {
+        var window = App.Current?.ShowMainWindow();
+        if (window is null)
+            return;
+
+        // Wait until the window is loaded to avoid potential issues
+        // with showing a dialog too early in the lifecycle.
+        try
+        {
+            await window.WaitUntilLoadedAsync();
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
+
+        await ShowSettingsAsync();
+    }
+
+    [RelayCommand]
+    private void ToggleWindow() => App.Current?.ToggleMainWindow();
+
+    [RelayCommand]
+    private void Exit()
+    {
+        if (Application.Current?.ApplicationLifetime?.TryShutdown() != true)
+            Environment.Exit(0);
+    }
+
+    [RelayCommand]
     private void ShowAbout() => Process.StartShellExecute(Program.ProjectUrl);
 
     protected override void Dispose(bool disposing)

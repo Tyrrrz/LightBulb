@@ -7,11 +7,80 @@
     xmlns:materialAssists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
+    xmlns:vm="clr-namespace:LightBulb.ViewModels"
     Name="LightBulb"
     ActualThemeVariantChanged="Application_OnActualThemeVariantChanged">
     <Application.DataTemplates>
         <framework:ViewManager />
     </Application.DataTemplates>
+
+    <!--  Tray icon  -->
+    <TrayIcon.Icons>
+        <TrayIcons>
+            <TrayIcon
+                x:CompileBindings="False"
+                x:DataType="vm:MainViewModel"
+                Command="{Binding ToggleWindowCommand}"
+                Icon="/favicon.ico"
+                ToolTipText="{Binding Dashboard.TrayTooltip}">
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem
+                            Command="{Binding ToggleWindowCommand}"
+                            Header="{Binding LocalizationManager.TrayShowHideMenuItem}" />
+                        <NativeMenuItem
+                            Command="{Binding ShowSettingsFromTrayCommand}"
+                            Header="{Binding LocalizationManager.TraySettingsMenuItem}" />
+                        <NativeMenuItemSeparator />
+                        <NativeMenuItem
+                            Command="{Binding Dashboard.ToggleCommand}"
+                            Header="{Binding LocalizationManager.TrayToggleMenuItem}" />
+                        <NativeMenuItem Header="{Binding LocalizationManager.TrayDisableMenuItem}">
+                            <NativeMenuItem.Menu>
+                                <NativeMenu>
+                                    <NativeMenuItem
+                                        Command="{Binding Dashboard.DisableUntilSunriseCommand}"
+                                        Header="{Binding LocalizationManager.TrayDisableUntilSunriseMenuItem}" />
+                                    <NativeMenuItem
+                                        Command="{Binding Dashboard.DisableFor1DayCommand}"
+                                        Header="{Binding LocalizationManager.TrayDisableFor1DayMenuItem}" />
+                                    <NativeMenuItem
+                                        Command="{Binding Dashboard.DisableFor12HoursCommand}"
+                                        Header="{Binding LocalizationManager.TrayDisableFor12HoursMenuItem}" />
+                                    <NativeMenuItem
+                                        Command="{Binding Dashboard.DisableFor6HoursCommand}"
+                                        Header="{Binding LocalizationManager.TrayDisableFor6HoursMenuItem}" />
+                                    <NativeMenuItem
+                                        Command="{Binding Dashboard.DisableFor3HoursCommand}"
+                                        Header="{Binding LocalizationManager.TrayDisableFor3HoursMenuItem}" />
+                                    <NativeMenuItem
+                                        Command="{Binding Dashboard.DisableFor1HourCommand}"
+                                        Header="{Binding LocalizationManager.TrayDisableFor1HourMenuItem}" />
+                                    <NativeMenuItem
+                                        Command="{Binding Dashboard.DisableFor30MinutesCommand}"
+                                        Header="{Binding LocalizationManager.TrayDisableFor30MinutesMenuItem}" />
+                                    <NativeMenuItem
+                                        Command="{Binding Dashboard.DisableFor15MinutesCommand}"
+                                        Header="{Binding LocalizationManager.TrayDisableFor15MinutesMenuItem}" />
+                                    <NativeMenuItem
+                                        Command="{Binding Dashboard.DisableFor5MinutesCommand}"
+                                        Header="{Binding LocalizationManager.TrayDisableFor5MinutesMenuItem}" />
+                                    <NativeMenuItem
+                                        Command="{Binding Dashboard.DisableFor1MinuteCommand}"
+                                        Header="{Binding LocalizationManager.TrayDisableFor1MinuteMenuItem}" />
+                                </NativeMenu>
+                            </NativeMenuItem.Menu>
+                        </NativeMenuItem>
+                        <NativeMenuItemSeparator />
+                        <NativeMenuItem
+                            Command="{Binding ExitCommand}"
+                            Header="{Binding LocalizationManager.TrayExitMenuItem}" />
+                    </NativeMenu>
+                </TrayIcon.Menu>
+            </TrayIcon>
+        </TrayIcons>
+    </TrayIcon.Icons>
+
     <Application.Styles>
         <!--  This theme is used as a stub to pre-load default resources, the actual colors are set through code  -->
         <materialStyles:MaterialTheme

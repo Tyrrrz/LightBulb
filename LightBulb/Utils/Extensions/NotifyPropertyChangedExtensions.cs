@@ -96,49 +96,5 @@ internal static class NotifyPropertyChangedExtensions
 
             return Disposable.Create(() => owner.PropertyChanged -= OnPropertyChanged);
         }
-
-        /// <summary>
-        /// Returns an <see cref="IObservable{T}"/> that emits the current value immediately and
-        /// then on each subsequent change to the specified property.
-        /// </summary>
-        /// <param name="propertyName">
-        /// The name of the property to observe, typically provided via <c>nameof</c>.
-        /// </param>
-        /// <param name="getValue">A function that reads the property value from the owner.</param>
-        public IObservable<TProperty> ObserveProperty<TProperty>(
-            string propertyName,
-            Func<TOwner, TProperty> getValue
-        ) => new InpcObservable<TOwner, TProperty>(owner, propertyName, getValue);
-    }
-
-    /// <summary>
-    /// A trimming-safe <see cref="IObservable{T}"/> that emits values from an
-    /// <see cref="INotifyPropertyChanged"/> source without using reflection.
-    /// </summary>
-    private sealed class InpcObservable<TOwner, TProperty>(
-        TOwner source,
-        string propertyName,
-        Func<TOwner, TProperty> getValue
-    ) : IObservable<TProperty>
-        where TOwner : INotifyPropertyChanged
-    {
-        public IDisposable Subscribe(IObserver<TProperty> observer)
-        {
-            void OnPropertyChanged(object? sender, PropertyChangedEventArgs args)
-            {
-                if (
-                    string.IsNullOrWhiteSpace(args.PropertyName)
-                    || string.Equals(args.PropertyName, propertyName, StringComparison.Ordinal)
-                )
-                {
-                    observer.OnNext(getValue(source));
-                }
-            }
-
-            source.PropertyChanged += OnPropertyChanged;
-            observer.OnNext(getValue(source));
-
-            return Disposable.Create(() => source.PropertyChanged -= OnPropertyChanged);
-        }
     }
 }

@@ -28,7 +28,6 @@ public partial class App : Application, IDisposable
 
     private readonly ServiceProvider _services;
     private readonly SettingsService _settingsService;
-    private readonly LocalizationManager _localizationManager;
     private readonly MainViewModel _mainViewModel;
 
     private bool _isDisposed;
@@ -63,7 +62,6 @@ public partial class App : Application, IDisposable
 
         _services = services.BuildServiceProvider(true);
         _settingsService = _services.GetRequiredService<SettingsService>();
-        _localizationManager = _services.GetRequiredService<LocalizationManager>();
         _mainViewModel = _services.GetRequiredService<ViewModelManager>().CreateMainViewModel();
 
         // Re-initialize the theme when the user changes it
@@ -144,8 +142,9 @@ public partial class App : Application, IDisposable
         // Set up custom theme colors
         InitializeTheme();
 
-        // Build the tray icon and menu in code so we hold direct references to each item
-        InitializeTrayIcon();
+        // Expose the main view model as the application DataContext so that
+        // the TrayIcon bindings declared in App.axaml can reach it.
+        DataContext = _mainViewModel;
 
         // Load settings
         _settingsService.Load();
