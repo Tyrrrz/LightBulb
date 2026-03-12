@@ -2,119 +2,19 @@
     x:Class="LightBulb.App"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:LightBulb.Views.Controls"
     xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:framework="clr-namespace:LightBulb.Framework"
     xmlns:materialAssists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
     xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+    xmlns:vm="clr-namespace:LightBulb.ViewModels"
     Name="LightBulb"
     ActualThemeVariantChanged="Application_OnActualThemeVariantChanged">
     <Application.DataTemplates>
         <framework:ViewManager />
     </Application.DataTemplates>
-
-    <!--  Tray icon  -->
-    <TrayIcon.Icons>
-        <TrayIcons>
-            <TrayIcon
-                x:CompileBindings="False"
-                Command="{Binding ToggleWindowCommand, Source={StaticResource MainViewModel}}"
-                Icon="/favicon.ico"
-                ToolTipText="{Binding Dashboard.TrayTooltip, Source={StaticResource MainViewModel}}">
-                <TrayIcon.Menu>
-                    <NativeMenu>
-                        <NativeMenuItem
-                            Command="{Binding ToggleWindowCommand, Source={StaticResource MainViewModel}}"
-                            Header="{Binding LocalizationManager.TrayShowHideMenuItem, Source={StaticResource MainViewModel}}" />
-                        <NativeMenuItem
-                            Command="{Binding ShowSettingsFromTrayCommand, Source={StaticResource MainViewModel}}"
-                            Header="{Binding LocalizationManager.TraySettingsMenuItem, Source={StaticResource MainViewModel}}" />
-                        <NativeMenuItemSeparator />
-                        <NativeMenuItem
-                            Command="{Binding Dashboard.ToggleCommand, Source={StaticResource MainViewModel}}"
-                            Header="{Binding LocalizationManager.TrayToggleMenuItem, Source={StaticResource MainViewModel}}" />
-                        <NativeMenuItem Header="{Binding LocalizationManager.TrayDisableMenuItem, Source={StaticResource MainViewModel}}">
-                            <NativeMenuItem.Menu>
-                                <NativeMenu>
-                                    <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableUntilSunriseCommand, Source={StaticResource MainViewModel}}"
-                                        Header="{Binding LocalizationManager.TrayDisableUntilSunriseMenuItem, Source={StaticResource MainViewModel}}" />
-                                    <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor1DayMenuItem, Source={StaticResource MainViewModel}}">
-                                        <NativeMenuItem.CommandParameter>
-                                            <sys:TimeSpan>1.00:00:00</sys:TimeSpan>
-                                        </NativeMenuItem.CommandParameter>
-                                    </NativeMenuItem>
-                                    <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor12HoursMenuItem, Source={StaticResource MainViewModel}}">
-                                        <NativeMenuItem.CommandParameter>
-                                            <sys:TimeSpan>0.12:00:00</sys:TimeSpan>
-                                        </NativeMenuItem.CommandParameter>
-                                    </NativeMenuItem>
-                                    <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor6HoursMenuItem, Source={StaticResource MainViewModel}}">
-                                        <NativeMenuItem.CommandParameter>
-                                            <sys:TimeSpan>0.06:00:00</sys:TimeSpan>
-                                        </NativeMenuItem.CommandParameter>
-                                    </NativeMenuItem>
-                                    <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor3HoursMenuItem, Source={StaticResource MainViewModel}}">
-                                        <NativeMenuItem.CommandParameter>
-                                            <sys:TimeSpan>0.03:00:00</sys:TimeSpan>
-                                        </NativeMenuItem.CommandParameter>
-                                    </NativeMenuItem>
-                                    <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor1HourMenuItem, Source={StaticResource MainViewModel}}">
-                                        <NativeMenuItem.CommandParameter>
-                                            <sys:TimeSpan>0.01:00:00</sys:TimeSpan>
-                                        </NativeMenuItem.CommandParameter>
-                                    </NativeMenuItem>
-                                    <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor30MinutesMenuItem, Source={StaticResource MainViewModel}}">
-                                        <NativeMenuItem.CommandParameter>
-                                            <sys:TimeSpan>0.00:30:00</sys:TimeSpan>
-                                        </NativeMenuItem.CommandParameter>
-                                    </NativeMenuItem>
-                                    <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor15MinutesMenuItem, Source={StaticResource MainViewModel}}">
-                                        <NativeMenuItem.CommandParameter>
-                                            <sys:TimeSpan>0.00:15:00</sys:TimeSpan>
-                                        </NativeMenuItem.CommandParameter>
-                                    </NativeMenuItem>
-                                    <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor5MinutesMenuItem, Source={StaticResource MainViewModel}}">
-                                        <NativeMenuItem.CommandParameter>
-                                            <sys:TimeSpan>0.00:05:00</sys:TimeSpan>
-                                        </NativeMenuItem.CommandParameter>
-                                    </NativeMenuItem>
-                                    <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor1MinuteMenuItem, Source={StaticResource MainViewModel}}">
-                                        <NativeMenuItem.CommandParameter>
-                                            <sys:TimeSpan>0.00:01:00</sys:TimeSpan>
-                                        </NativeMenuItem.CommandParameter>
-                                    </NativeMenuItem>
-                                </NativeMenu>
-                            </NativeMenuItem.Menu>
-                        </NativeMenuItem>
-                        <NativeMenuItemSeparator />
-                        <NativeMenuItem
-                            Command="{Binding ExitCommand, Source={StaticResource MainViewModel}}"
-                            Header="{Binding LocalizationManager.TrayExitMenuItem, Source={StaticResource MainViewModel}}" />
-                    </NativeMenu>
-                </TrayIcon.Menu>
-            </TrayIcon>
-        </TrayIcons>
-    </TrayIcon.Icons>
 
     <Application.Styles>
         <!--  This theme is used as a stub to pre-load default resources, the actual colors are set through code  -->
@@ -229,6 +129,96 @@
 
     <Application.Resources>
         <ResourceDictionary>
+            <!--  Tray icon  -->
+            <controls:BindableTrayIcon
+                x:Key="AppTrayIcon"
+                x:DataType="vm:MainViewModel"
+                Command="{Binding ToggleWindowCommand}"
+                Icon="/favicon.ico"
+                ToolTipText="{Binding Dashboard.TrayTooltip}">
+                <controls:BindableNativeMenuItem
+                    Command="{Binding ToggleWindowCommand}"
+                    Header="{Binding LocalizationManager.TrayShowHideMenuItem}" />
+                <controls:BindableNativeMenuItem
+                    Command="{Binding ShowSettingsFromTrayCommand}"
+                    Header="{Binding LocalizationManager.TraySettingsMenuItem}" />
+                <NativeMenuItemSeparator />
+                <controls:BindableNativeMenuItem
+                    Command="{Binding Dashboard.ToggleCommand}"
+                    Header="{Binding LocalizationManager.TrayToggleMenuItem}" />
+                <controls:BindableNativeMenuItem Header="{Binding LocalizationManager.TrayDisableMenuItem}">
+                    <controls:BindableNativeMenuItem
+                        Command="{Binding Dashboard.DisableUntilSunriseCommand}"
+                        Header="{Binding LocalizationManager.TrayDisableUntilSunriseMenuItem}" />
+                    <controls:BindableNativeMenuItem
+                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                        Header="{Binding LocalizationManager.TrayDisableFor1DayMenuItem}">
+                        <controls:BindableNativeMenuItem.CommandParameter>
+                            <sys:TimeSpan>1.00:00:00</sys:TimeSpan>
+                        </controls:BindableNativeMenuItem.CommandParameter>
+                    </controls:BindableNativeMenuItem>
+                    <controls:BindableNativeMenuItem
+                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                        Header="{Binding LocalizationManager.TrayDisableFor12HoursMenuItem}">
+                        <controls:BindableNativeMenuItem.CommandParameter>
+                            <sys:TimeSpan>0.12:00:00</sys:TimeSpan>
+                        </controls:BindableNativeMenuItem.CommandParameter>
+                    </controls:BindableNativeMenuItem>
+                    <controls:BindableNativeMenuItem
+                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                        Header="{Binding LocalizationManager.TrayDisableFor6HoursMenuItem}">
+                        <controls:BindableNativeMenuItem.CommandParameter>
+                            <sys:TimeSpan>0.06:00:00</sys:TimeSpan>
+                        </controls:BindableNativeMenuItem.CommandParameter>
+                    </controls:BindableNativeMenuItem>
+                    <controls:BindableNativeMenuItem
+                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                        Header="{Binding LocalizationManager.TrayDisableFor3HoursMenuItem}">
+                        <controls:BindableNativeMenuItem.CommandParameter>
+                            <sys:TimeSpan>0.03:00:00</sys:TimeSpan>
+                        </controls:BindableNativeMenuItem.CommandParameter>
+                    </controls:BindableNativeMenuItem>
+                    <controls:BindableNativeMenuItem
+                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                        Header="{Binding LocalizationManager.TrayDisableFor1HourMenuItem}">
+                        <controls:BindableNativeMenuItem.CommandParameter>
+                            <sys:TimeSpan>0.01:00:00</sys:TimeSpan>
+                        </controls:BindableNativeMenuItem.CommandParameter>
+                    </controls:BindableNativeMenuItem>
+                    <controls:BindableNativeMenuItem
+                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                        Header="{Binding LocalizationManager.TrayDisableFor30MinutesMenuItem}">
+                        <controls:BindableNativeMenuItem.CommandParameter>
+                            <sys:TimeSpan>0.00:30:00</sys:TimeSpan>
+                        </controls:BindableNativeMenuItem.CommandParameter>
+                    </controls:BindableNativeMenuItem>
+                    <controls:BindableNativeMenuItem
+                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                        Header="{Binding LocalizationManager.TrayDisableFor15MinutesMenuItem}">
+                        <controls:BindableNativeMenuItem.CommandParameter>
+                            <sys:TimeSpan>0.00:15:00</sys:TimeSpan>
+                        </controls:BindableNativeMenuItem.CommandParameter>
+                    </controls:BindableNativeMenuItem>
+                    <controls:BindableNativeMenuItem
+                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                        Header="{Binding LocalizationManager.TrayDisableFor5MinutesMenuItem}">
+                        <controls:BindableNativeMenuItem.CommandParameter>
+                            <sys:TimeSpan>0.00:05:00</sys:TimeSpan>
+                        </controls:BindableNativeMenuItem.CommandParameter>
+                    </controls:BindableNativeMenuItem>
+                    <controls:BindableNativeMenuItem
+                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                        Header="{Binding LocalizationManager.TrayDisableFor1MinuteMenuItem}">
+                        <controls:BindableNativeMenuItem.CommandParameter>
+                            <sys:TimeSpan>0.00:01:00</sys:TimeSpan>
+                        </controls:BindableNativeMenuItem.CommandParameter>
+                    </controls:BindableNativeMenuItem>
+                </controls:BindableNativeMenuItem>
+                <NativeMenuItemSeparator />
+                <controls:BindableNativeMenuItem
+                    Command="{Binding ExitCommand}"
+                    Header="{Binding LocalizationManager.TrayExitMenuItem}" />
+            </controls:BindableTrayIcon>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Default">
                     <SolidColorBrush x:Key="ToggleBackgroundBrush" Color="#FFFFFF" />

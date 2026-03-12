@@ -15,6 +15,7 @@ using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
 using LightBulb.ViewModels.Dialogs;
 using LightBulb.Views;
+using LightBulb.Views.Controls;
 using Material.Styles.Themes;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -89,11 +90,16 @@ public partial class App : Application, IDisposable
 
         AvaloniaXamlLoader.Load(this);
 
-        // Expose the main view model as an application resource so that
-        // the TrayIcon bindings declared in App.axaml can reach it via
-        // Source={StaticResource MainViewModel}, without polluting the
-        // application-wide DataContext.
-        Resources["MainViewModel"] = _mainViewModel;
+        // Set the DataContext on the tray icon resource and register it with the application.
+        // DataContext propagates to all BindableNativeMenuItems via the logical tree, so their
+        // compiled bindings (Header, Command, etc.) resolve against MainViewModel at runtime.
+        var trayIcon =
+            Resources["AppTrayIcon"] as BindableTrayIcon
+            ?? throw new InvalidOperationException(
+                "AppTrayIcon resource is missing or has the wrong type."
+            );
+        trayIcon.DataContext = _mainViewModel;
+        trayIcon.AttachToApplication(this);
     }
 
     private void InitializeTheme()
