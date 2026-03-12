@@ -5,7 +5,7 @@
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:dialogs="clr-namespace:LightBulb.ViewModels.Dialogs"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-    Width="350"
+    Width="400"
     Height="270"
     x:DataType="dialogs:SettingsViewModel">
     <Grid ColumnDefinitions="Auto,*">
@@ -62,32 +62,51 @@
                 Fill="{DynamicResource MaterialDividerBrush}" />
 
             <!--  Buttons  -->
-            <StackPanel
+            <UniformGrid
                 Grid.Row="2"
-                HorizontalAlignment="Right"
-                Orientation="Horizontal">
+                Margin="4"
+                Columns="3">
                 <!--  Reset  -->
                 <Button
-                    Margin="8"
+                    Margin="4"
+                    HorizontalContentAlignment="Stretch"
                     Command="{Binding ResetCommand}"
-                    Content="{Binding LocalizationManager.ResetButton}"
                     Theme="{DynamicResource MaterialFlatButton}"
-                    ToolTip.Tip="{Binding LocalizationManager.ResetTooltip}" />
+                    ToolTip.Tip="{Binding LocalizationManager.ResetTooltip}">
+                    <TextBlock
+                        Text="{Binding LocalizationManager.ResetButton}"
+                        TextAlignment="Center"
+                        TextTrimming="CharacterEllipsis" />
+                </Button>
 
                 <!--  Cancel  -->
                 <Button
-                    Margin="8"
+                    Margin="4"
+                    HorizontalContentAlignment="Stretch"
                     Command="{Binding CancelCommand}"
-                    Content="{Binding LocalizationManager.CancelButton}"
-                    Theme="{DynamicResource MaterialFlatButton}" />
+                    IsCancel="True"
+                    Theme="{DynamicResource MaterialFlatButton}"
+                    ToolTip.Tip="{Binding LocalizationManager.CancelButton}">
+                    <TextBlock
+                        Text="{Binding LocalizationManager.CancelButton}"
+                        TextAlignment="Center"
+                        TextTrimming="CharacterEllipsis" />
+                </Button>
 
                 <!--  Save  -->
                 <Button
-                    Margin="8"
+                    Margin="4"
+                    HorizontalContentAlignment="Stretch"
                     Command="{Binding SaveCommand}"
-                    Content="{Binding LocalizationManager.SaveButton}"
-                    Theme="{DynamicResource MaterialFlatButton}" />
-            </StackPanel>
+                    IsDefault="True"
+                    Theme="{DynamicResource MaterialFlatButton}"
+                    ToolTip.Tip="{Binding LocalizationManager.SaveButton}">
+                    <TextBlock
+                        Text="{Binding LocalizationManager.SaveButton}"
+                        TextAlignment="Center"
+                        TextTrimming="CharacterEllipsis" />
+                </Button>
+            </UniformGrid>
         </Grid>
     </Grid>
 </UserControl>

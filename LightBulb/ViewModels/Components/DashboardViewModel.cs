@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using Avalonia;
 using Avalonia.Threading;
@@ -46,6 +47,14 @@ public partial class DashboardViewModel : ViewModelBase
         _gammaService = gammaService;
         _hotKeyService = hotKeyService;
         _externalApplicationService = externalApplicationService;
+        
+        _eventRoot.Add(
+            // Refresh tray icon tooltip when the language changes
+            localizationManager.WatchProperty(
+                o => o.Language,
+                () => OnPropertyChanged(nameof(TrayTooltip))
+            )
+        );
 
         _eventRoot.Add(
             this.WatchProperty(
@@ -65,9 +74,14 @@ public partial class DashboardViewModel : ViewModelBase
         );
 
         _eventRoot.Add(
+            // Refresh transition tooltips when the language changes
             localizationManager.WatchProperty(
                 o => o.Language,
-                () => OnPropertyChanged(nameof(TrayTooltip))
+                () =>
+                {
+                    OnPropertyChanged(nameof(SunsetTransitionTooltip));
+                    OnPropertyChanged(nameof(SunriseTransitionTooltip));
+                }
             )
         );
 
@@ -137,6 +151,8 @@ public partial class DashboardViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(SunriseEnd))]
     [NotifyPropertyChangedFor(nameof(SunsetStart))]
     [NotifyPropertyChangedFor(nameof(SunsetEnd))]
+    [NotifyPropertyChangedFor(nameof(SunriseTransitionTooltip))]
+    [NotifyPropertyChangedFor(nameof(SunsetTransitionTooltip))]
     [NotifyPropertyChangedFor(nameof(TargetConfiguration))]
     [NotifyPropertyChangedFor(nameof(CycleState))]
     public partial DateTimeOffset Instant { get; set; } = DateTimeOffset.Now;
@@ -193,6 +209,20 @@ public partial class DashboardViewModel : ViewModelBase
             SolarTimes.Sunset,
             _settingsService.ConfigurationTransitionDuration,
             _settingsService.ConfigurationTransitionOffset
+        );
+
+    public string SunsetTransitionTooltip =>
+        string.Format(
+            LocalizationManager.SunsetTransitionTooltip,
+            SunsetStart.ToString(CultureInfo.CurrentCulture),
+            SunsetEnd.ToString(CultureInfo.CurrentCulture)
+        );
+
+    public string SunriseTransitionTooltip =>
+        string.Format(
+            LocalizationManager.SunriseTransitionTooltip,
+            SunriseStart.ToString(CultureInfo.CurrentCulture),
+            SunriseEnd.ToString(CultureInfo.CurrentCulture)
         );
 
     public bool IsOffsetEnabled => Math.Abs(TemperatureOffset) + Math.Abs(BrightnessOffset) >= 0.01;

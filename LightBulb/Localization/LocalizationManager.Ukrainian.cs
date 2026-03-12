@@ -7,11 +7,12 @@ public partial class LocalizationManager
     private static readonly IReadOnlyDictionary<string, string> UkrainianLocalization =
         new Dictionary<string, string>
         {
-            [nameof(SunsetLabel)] = "Захід сонця",
-            [nameof(SunriseLabel)] = "Схід сонця",
-            [nameof(SunsetTransitionStartsAt)] = "Перехід до заходу сонця починається о",
-            [nameof(SunriseTransitionStartsAt)] = "Перехід до сходу сонця починається о",
-            [nameof(AndEndsAt)] = "і закінчується о",
+            [nameof(SunsetLabel)] = "Захід",
+            [nameof(SunriseLabel)] = "Схід",
+            [nameof(SunsetTransitionTooltip)] =
+                "Перехід до заходу сонця починається о **{0}** і закінчується о **{1}**",
+            [nameof(SunriseTransitionTooltip)] =
+                "Перехід до сходу сонця починається о **{0}** і закінчується о **{1}**",
             [nameof(OffsetTooltipHeader)] =
                 "Поточні значення температури та яскравості скориговані зміщенням:",
             [nameof(TemperatureOffsetLabel)] = "Зміщення температури:",
@@ -20,13 +21,11 @@ public partial class LocalizationManager
             [nameof(OffsetLabel)] = "зміщення",
             [nameof(ToggleLightBulbTooltip)] = "Увімкнути/вимкнути LightBulb",
             [nameof(HideToTrayTooltip)] = "Сховати LightBulb у системний трей",
-            [nameof(PreviewText)] = "ПЕРЕГЛЯД",
-            [nameof(StopPreviewTooltip)] = "Зупинити перегляд",
-            [nameof(StartPreviewTooltip)] = "Переглянути 24-годинний цикл",
+            [nameof(PreviewText)] = "ДЕМОНСТРАЦІЯ",
+            [nameof(StopPreviewTooltip)] = "Зупинити демонстрацію",
+            [nameof(StartPreviewTooltip)] = "Запустити демонстрацію 24-годинного циклу",
             [nameof(SettingsText)] = "НАЛАШТУВАННЯ",
             [nameof(OpenSettingsTooltip)] = "Відкрити налаштування",
-            [nameof(AboutText)] = "GITHUB",
-            [nameof(OpenGitHubTooltip)] = "Відкрити LightBulb на GitHub",
             [nameof(ResetButton)] = "СКИНУТИ",
             [nameof(ResetTooltip)] = "Скинути всі налаштування до типових",
             [nameof(CancelButton)] = "СКАСУВАТИ",
@@ -43,9 +42,8 @@ public partial class LocalizationManager
             [nameof(StartWithWindowsLabel)] = "Запускати з Windows",
             [nameof(StartWithWindowsTooltip)] = "Запускати LightBulb при старті Windows",
             [nameof(AutoUpdateLabel)] = "Авто-оновлення",
-            [nameof(AutoUpdateTooltip)] =
-                "Підтримувати LightBulb оновленим, автоматично встановлюючи нові версії",
-            [nameof(DefaultToDayConfigLabel)] = "За замовчуванням денна конфігурація",
+            [nameof(AutoUpdateTooltip)] = "Автоматично оновлювати LightBulb до останньої версії",
+            [nameof(DefaultToDayConfigLabel)] = "Повертатись до денної конфігурації",
             [nameof(DefaultToDayConfigTooltip)] =
                 "Коли LightBulb вимкнено або призупинено, відновлювати налаштовану денну температуру та яскравість замість гами монітора за замовчуванням",
             [nameof(PauseWhenFullscreenLabel)] = "Призупиняти при повноекранному режимі",
@@ -82,7 +80,7 @@ public partial class LocalizationManager
             [nameof(TransitionOffsetTooltip)] =
                 "Зміщення, що визначає, наскільки раніше або пізніше починається перехід відносно сходу та заходу сонця",
             [nameof(SolarConfigLabel)] = "Сонячна конфігурація:",
-            [nameof(ManualLabel)] = "Вручну",
+            [nameof(ManualLabel)] = "Ручна",
             [nameof(ManualTooltip)] = "Налаштувати схід та захід сонця вручну",
             [nameof(LocationBasedLabel)] = "За місцезнаходженням",
             [nameof(LocationBasedTooltip)] =
