@@ -132,6 +132,7 @@
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
                                 Text="{Binding Dashboard.LocalizationManager.PreviewText}"
+                                TextAlignment="Center"
                                 TextTrimming="CharacterEllipsis" />
                         </Grid>
                     </ToggleButton>
@@ -153,6 +154,7 @@
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
                                 Text="{Binding Dashboard.LocalizationManager.SettingsText}"
+                                TextAlignment="Center"
                                 TextTrimming="CharacterEllipsis" />
                         </Grid>
                     </Button>
