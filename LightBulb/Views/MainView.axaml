@@ -9,7 +9,7 @@
     x:Name="Window"
     Title="{x:Static lightBulb:Program.Name}"
     Width="520"
-    Height="400"
+    Height="350"
     x:DataType="viewModels:MainViewModel"
     CanResize="False"
     Icon="/favicon.ico"
