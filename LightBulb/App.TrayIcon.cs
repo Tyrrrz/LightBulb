@@ -1,5 +1,4 @@
 using System;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform;
 using Avalonia.Threading;
@@ -29,65 +28,7 @@ public partial class App
 
     private void RegisterTrayIconEvents()
     {
-        _eventRoot.Add(
-            _localizationManager.WatchProperty(
-                o => o.Language,
-                () =>
-                {
-                    try
-                    {
-                        Dispatcher.UIThread.Invoke(() =>
-                        {
-                            if (_trayShowHideItem is not null)
-                                _trayShowHideItem.Header =
-                                    _localizationManager.TrayShowHideMenuItem;
-                            if (_traySettingsItem is not null)
-                                _traySettingsItem.Header =
-                                    _localizationManager.TraySettingsMenuItem;
-                            if (_trayToggleItem is not null)
-                                _trayToggleItem.Header = _localizationManager.TrayToggleMenuItem;
-                            if (_trayDisableItem is not null)
-                                _trayDisableItem.Header = _localizationManager.TrayDisableMenuItem;
-                            if (_trayDisableUntilSunriseItem is not null)
-                                _trayDisableUntilSunriseItem.Header =
-                                    _localizationManager.TrayDisableUntilSunriseMenuItem;
-                            if (_trayDisableFor1DayItem is not null)
-                                _trayDisableFor1DayItem.Header =
-                                    _localizationManager.TrayDisableFor1DayMenuItem;
-                            if (_trayDisableFor12HoursItem is not null)
-                                _trayDisableFor12HoursItem.Header =
-                                    _localizationManager.TrayDisableFor12HoursMenuItem;
-                            if (_trayDisableFor6HoursItem is not null)
-                                _trayDisableFor6HoursItem.Header =
-                                    _localizationManager.TrayDisableFor6HoursMenuItem;
-                            if (_trayDisableFor3HoursItem is not null)
-                                _trayDisableFor3HoursItem.Header =
-                                    _localizationManager.TrayDisableFor3HoursMenuItem;
-                            if (_trayDisableFor1HourItem is not null)
-                                _trayDisableFor1HourItem.Header =
-                                    _localizationManager.TrayDisableFor1HourMenuItem;
-                            if (_trayDisableFor30MinutesItem is not null)
-                                _trayDisableFor30MinutesItem.Header =
-                                    _localizationManager.TrayDisableFor30MinutesMenuItem;
-                            if (_trayDisableFor15MinutesItem is not null)
-                                _trayDisableFor15MinutesItem.Header =
-                                    _localizationManager.TrayDisableFor15MinutesMenuItem;
-                            if (_trayDisableFor5MinutesItem is not null)
-                                _trayDisableFor5MinutesItem.Header =
-                                    _localizationManager.TrayDisableFor5MinutesMenuItem;
-                            if (_trayDisableFor1MinuteItem is not null)
-                                _trayDisableFor1MinuteItem.Header =
-                                    _localizationManager.TrayDisableFor1MinuteMenuItem;
-                            if (_trayExitItem is not null)
-                                _trayExitItem.Header = _localizationManager.TrayExitMenuItem;
-                        });
-                    }
-                    // Ignore exceptions when the application is shutting down
-                    catch (OperationCanceledException) { }
-                }
-            )
-        );
-
+        // Update the tooltip when the dashboard state changes
         _eventRoot.Add(
             _mainViewModel.Dashboard.WatchProperties(
                 [o => o.IsActive, o => o.CurrentConfiguration],
@@ -109,6 +50,49 @@ public partial class App
                         {
                             if (_trayIcon is { } trayIcon)
                                 trayIcon.ToolTipText = tooltip;
+                        });
+                    }
+                    // Ignore exceptions when the application is shutting down
+                    catch (OperationCanceledException) { }
+                }
+            )
+        );
+
+        // Update menu item headers when the language changes
+        _eventRoot.Add(
+            _localizationManager.WatchProperty(
+                o => o.Language,
+                () =>
+                {
+                    try
+                    {
+                        Dispatcher.UIThread.Invoke(() =>
+                        {
+                            _trayShowHideItem?.Header = _localizationManager.TrayShowHideMenuItem;
+                            _traySettingsItem?.Header = _localizationManager.TraySettingsMenuItem;
+                            _trayToggleItem?.Header = _localizationManager.TrayToggleMenuItem;
+                            _trayDisableItem?.Header = _localizationManager.TrayDisableMenuItem;
+                            _trayDisableUntilSunriseItem?.Header =
+                                _localizationManager.TrayDisableUntilSunriseMenuItem;
+                            _trayDisableFor1DayItem?.Header =
+                                _localizationManager.TrayDisableFor1DayMenuItem;
+                            _trayDisableFor12HoursItem?.Header =
+                                _localizationManager.TrayDisableFor12HoursMenuItem;
+                            _trayDisableFor6HoursItem?.Header =
+                                _localizationManager.TrayDisableFor6HoursMenuItem;
+                            _trayDisableFor3HoursItem?.Header =
+                                _localizationManager.TrayDisableFor3HoursMenuItem;
+                            _trayDisableFor1HourItem?.Header =
+                                _localizationManager.TrayDisableFor1HourMenuItem;
+                            _trayDisableFor30MinutesItem?.Header =
+                                _localizationManager.TrayDisableFor30MinutesMenuItem;
+                            _trayDisableFor15MinutesItem?.Header =
+                                _localizationManager.TrayDisableFor15MinutesMenuItem;
+                            _trayDisableFor5MinutesItem?.Header =
+                                _localizationManager.TrayDisableFor5MinutesMenuItem;
+                            _trayDisableFor1MinuteItem?.Header =
+                                _localizationManager.TrayDisableFor1MinuteMenuItem;
+                            _trayExitItem?.Header = _localizationManager.TrayExitMenuItem;
                         });
                     }
                     // Ignore exceptions when the application is shutting down
@@ -208,21 +192,24 @@ public partial class App
         _trayDisableFor1MinuteItem.Click += (_, _) =>
             _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(1));
 
-        var disableSubMenu = new NativeMenu();
-        disableSubMenu.Items.Add(_trayDisableUntilSunriseItem);
-        disableSubMenu.Items.Add(_trayDisableFor1DayItem);
-        disableSubMenu.Items.Add(_trayDisableFor12HoursItem);
-        disableSubMenu.Items.Add(_trayDisableFor6HoursItem);
-        disableSubMenu.Items.Add(_trayDisableFor3HoursItem);
-        disableSubMenu.Items.Add(_trayDisableFor1HourItem);
-        disableSubMenu.Items.Add(_trayDisableFor30MinutesItem);
-        disableSubMenu.Items.Add(_trayDisableFor15MinutesItem);
-        disableSubMenu.Items.Add(_trayDisableFor5MinutesItem);
-        disableSubMenu.Items.Add(_trayDisableFor1MinuteItem);
-
         _trayDisableItem = new NativeMenuItem(_localizationManager.TrayDisableMenuItem)
         {
-            Menu = disableSubMenu,
+            Menu = new NativeMenu
+            {
+                Items =
+                {
+                    _trayDisableUntilSunriseItem,
+                    _trayDisableFor1DayItem,
+                    _trayDisableFor12HoursItem,
+                    _trayDisableFor6HoursItem,
+                    _trayDisableFor3HoursItem,
+                    _trayDisableFor1HourItem,
+                    _trayDisableFor30MinutesItem,
+                    _trayDisableFor15MinutesItem,
+                    _trayDisableFor5MinutesItem,
+                    _trayDisableFor1MinuteItem,
+                },
+            },
         };
 
         _trayExitItem = new NativeMenuItem(_localizationManager.TrayExitMenuItem);
@@ -232,23 +219,26 @@ public partial class App
                 Environment.Exit(0);
         };
 
-        var menu = new NativeMenu();
-        menu.Items.Add(_trayShowHideItem);
-        menu.Items.Add(_traySettingsItem);
-        menu.Items.Add(new NativeMenuItemSeparator());
-        menu.Items.Add(_trayToggleItem);
-        menu.Items.Add(_trayDisableItem);
-        menu.Items.Add(new NativeMenuItemSeparator());
-        menu.Items.Add(_trayExitItem);
-
         _trayIcon = new TrayIcon
         {
             Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://LightBulb/favicon.ico"))),
             ToolTipText = "LightBulb",
-            Menu = menu,
+            Menu = new NativeMenu
+            {
+                Items =
+                {
+                    _trayShowHideItem,
+                    _traySettingsItem,
+                    new NativeMenuItemSeparator(),
+                    _trayToggleItem,
+                    _trayDisableItem,
+                    new NativeMenuItemSeparator(),
+                    _trayExitItem,
+                },
+            },
         };
         _trayIcon.Clicked += (_, _) => ToggleMainWindow();
 
-        TrayIcon.SetIcons(this, new TrayIcons { _trayIcon });
+        TrayIcon.SetIcons(this, [_trayIcon]);
     }
 }
