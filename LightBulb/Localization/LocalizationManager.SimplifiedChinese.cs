@@ -10,9 +10,8 @@ public partial class LocalizationManager
             // Dashboard (仪表盘)
             [nameof(SunsetLabel)] = "日落",
             [nameof(SunriseLabel)] = "日出",
-            [nameof(SunsetTransitionStartsAt)] = "日落过渡开始于",
-            [nameof(SunriseTransitionStartsAt)] = "日出过渡开始于",
-            [nameof(AndEndsAt)] = "结束于",
+            [nameof(SunsetTransitionTooltip)] = "日落过渡开始于 **{0}**，结束于 **{1}**",
+            [nameof(SunriseTransitionTooltip)] = "日出过渡开始于 **{0}**，结束于 **{1}**",
             [nameof(OffsetTooltipHeader)] = "当前的色温和亮度值已应用偏移量：",
             [nameof(TemperatureOffsetLabel)] = "色温偏移：",
             [nameof(BrightnessOffsetLabel)] = "亮度偏移：",
@@ -51,7 +50,7 @@ public partial class LocalizationManager
             [nameof(StartWithWindowsLabel)] = "随 Windows 启动",
             [nameof(StartWithWindowsTooltip)] = "在 Windows 启动时运行 LightBulb",
             [nameof(AutoUpdateLabel)] = "自动更新",
-            [nameof(AutoUpdateTooltip)] = "自动安装新版本以保持 LightBulb 为最新状态",
+            [nameof(AutoUpdateTooltip)] = "自动将 LightBulb 更新至最新版本",
             [nameof(DefaultToDayConfigLabel)] = "默认为日间配置",
             [nameof(DefaultToDayConfigTooltip)] =
                 "当 LightBulb 被禁用或暂停时，恢复配置的日间色温和亮度，而不是默认的显示器伽马值",

@@ -82,9 +82,8 @@ public partial class LocalizationManager
 
     public string SunsetLabel => Get();
     public string SunriseLabel => Get();
-    public string SunsetTransitionStartsAt => Get();
-    public string SunriseTransitionStartsAt => Get();
-    public string AndEndsAt => Get();
+    public string SunsetTransitionTooltip => Get();
+    public string SunriseTransitionTooltip => Get();
     public string OffsetTooltipHeader => Get();
     public string TemperatureOffsetLabel => Get();
     public string BrightnessOffsetLabel => Get();

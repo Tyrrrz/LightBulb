@@ -18,12 +18,7 @@
             FontSize="19"
             TextAlignment="Center">
             <ToolTip.Tip>
-                <TextBlock>
-                    <Run Text="{Binding LocalizationManager.SunsetTransitionStartsAt}" />
-                    <Run FontWeight="SemiBold" Text="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
-                    <Run Text="{Binding LocalizationManager.AndEndsAt}" />
-                    <Run FontWeight="SemiBold" Text="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
-                </TextBlock>
+                <TextBlock Inlines="{Binding SunsetTransitionTooltip, Converter={x:Static converters:MarkdownToInlinesConverter.Instance}}" />
             </ToolTip.Tip>
             <Run FontWeight="Light" Text="{Binding LocalizationManager.SunsetLabel}" />
             <LineBreak />
@@ -220,12 +215,7 @@
             FontSize="19"
             TextAlignment="Center">
             <ToolTip.Tip>
-                <TextBlock>
-                    <Run Text="{Binding LocalizationManager.SunriseTransitionStartsAt}" />
-                    <Run FontWeight="SemiBold" Text="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
-                    <Run Text="{Binding LocalizationManager.AndEndsAt}" />
-                    <Run FontWeight="SemiBold" Text="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, Mode=OneWay}" />
-                </TextBlock>
+                <TextBlock Inlines="{Binding SunriseTransitionTooltip, Converter={x:Static converters:MarkdownToInlinesConverter.Instance}}" />
             </ToolTip.Tip>
 
             <Run FontWeight="Light" Text="{Binding LocalizationManager.SunriseLabel}" />
