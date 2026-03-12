@@ -8,7 +8,7 @@
     xmlns:viewModels="clr-namespace:LightBulb.ViewModels"
     x:Name="Window"
     Title="{x:Static lightBulb:Program.Name}"
-    Width="520"
+    Width="470"
     Height="350"
     x:DataType="viewModels:MainViewModel"
     CanResize="False"
@@ -103,7 +103,7 @@
                     <!--  Start/stop cycle preview  -->
                     <ToggleButton
                         Margin="8"
-                        HorizontalContentAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
                         IsChecked="{Binding Dashboard.IsCyclePreviewEnabled}"
                         Theme="{DynamicResource MaterialFlatToggleButton}">
                         <Button.Styles>
@@ -116,7 +116,7 @@
                                 </Style>
                             </Style>
                         </Button.Styles>
-                        <Grid ColumnDefinitions="Auto, *">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <materialIcons:MaterialIcon Width="24" Height="24">
                                 <materialIcons:MaterialIcon.Styles>
                                     <Style Selector="ToggleButton materialIcons|MaterialIcon">
@@ -128,35 +128,31 @@
                                 </materialIcons:MaterialIcon.Styles>
                             </materialIcons:MaterialIcon>
                             <TextBlock
-                                Grid.Column="1"
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
                                 Text="{Binding Dashboard.LocalizationManager.PreviewText}"
-                                TextAlignment="Center"
                                 TextTrimming="CharacterEllipsis" />
-                        </Grid>
+                        </StackPanel>
                     </ToggleButton>
 
                     <!--  Settings  -->
                     <Button
                         Margin="8"
-                        HorizontalContentAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
                         Command="{Binding ShowSettingsCommand}"
                         Theme="{DynamicResource MaterialFlatButton}"
                         ToolTip.Tip="{Binding Dashboard.LocalizationManager.OpenSettingsTooltip}">
-                        <Grid ColumnDefinitions="Auto, *">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <materialIcons:MaterialIcon
                                 Width="24"
                                 Height="24"
                                 Kind="Settings" />
                             <TextBlock
-                                Grid.Column="1"
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
                                 Text="{Binding Dashboard.LocalizationManager.SettingsText}"
-                                TextAlignment="Center"
                                 TextTrimming="CharacterEllipsis" />
-                        </Grid>
+                        </StackPanel>
                     </Button>
                 </UniformGrid>
             </Grid>
