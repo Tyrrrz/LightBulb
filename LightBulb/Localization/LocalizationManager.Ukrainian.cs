@@ -7,8 +7,8 @@ public partial class LocalizationManager
     private static readonly IReadOnlyDictionary<string, string> UkrainianLocalization =
         new Dictionary<string, string>
         {
-            [nameof(SunsetLabel)] = "Захід сонця",
-            [nameof(SunriseLabel)] = "Схід сонця",
+            [nameof(SunsetLabel)] = "Захід",
+            [nameof(SunriseLabel)] = "Схід",
             [nameof(SunsetTransitionStartsAt)] = "Перехід до заходу сонця починається о",
             [nameof(SunriseTransitionStartsAt)] = "Перехід до сходу сонця починається о",
             [nameof(AndEndsAt)] = "і закінчується о",

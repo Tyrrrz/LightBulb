@@ -10,7 +10,7 @@
     Unloaded="UserControl_OnUnloaded">
     <StackPanel Margin="16" Orientation="Vertical">
         <!--  Is enabled  -->
-        <Grid ColumnDefinitions="*, Auto, Auto">
+        <Grid ColumnDefinitions="*,Auto,Auto">
             <!--  Label  -->
             <TextBlock
                 Grid.Column="0"

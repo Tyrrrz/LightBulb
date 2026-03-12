@@ -9,8 +9,8 @@ public partial class LocalizationManager
         string
     >
     {
-        [nameof(SunsetLabel)] = "Coucher de soleil",
-        [nameof(SunriseLabel)] = "Lever de soleil",
+        [nameof(SunsetLabel)] = "Coucher",
+        [nameof(SunriseLabel)] = "Lever",
         [nameof(SunsetTransitionStartsAt)] = "La transition du coucher de soleil commence à",
         [nameof(SunriseTransitionStartsAt)] = "La transition du lever de soleil commence à",
         [nameof(AndEndsAt)] = "et se termine à",

@@ -6,7 +6,7 @@
     x:DataType="settings:AdvancedSettingsTabViewModel">
     <StackPanel Margin="16" Orientation="Vertical">
         <!--  Theme  -->
-        <Grid ColumnDefinitions="*, Auto" ToolTip.Tip="{Binding LocalizationManager.ThemeTooltip}">
+        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.ThemeTooltip}">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -19,7 +19,7 @@
         </Grid>
 
         <!--  Language  -->
-        <Grid Margin="0,16,0,0" ColumnDefinitions="*, Auto" ToolTip.Tip="{Binding LocalizationManager.LanguageTooltip}">
+        <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.LanguageTooltip}">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -31,7 +31,7 @@
         <!--  Auto start  -->
         <Grid
             Margin="0,16,0,0"
-            ColumnDefinitions="*, Auto"
+            ColumnDefinitions="*,Auto"
             ToolTip.Tip="{Binding LocalizationManager.StartWithWindowsTooltip}">
             <TextBlock
                 Grid.Column="0"
@@ -44,7 +44,7 @@
         <!--  Auto update  -->
         <Grid
             Margin="0,16,0,0"
-            ColumnDefinitions="*, Auto"
+            ColumnDefinitions="*,Auto"
             ToolTip.Tip="{Binding LocalizationManager.AutoUpdateTooltip}">
             <TextBlock
                 Grid.Column="0"
@@ -57,7 +57,7 @@
         <!--  Default to day time  -->
         <Grid
             Margin="0,16,0,0"
-            ColumnDefinitions="*, Auto"
+            ColumnDefinitions="*,Auto"
             ToolTip.Tip="{Binding LocalizationManager.DefaultToDayConfigTooltip}">
             <TextBlock
                 Grid.Column="0"
@@ -70,7 +70,7 @@
         <!--  Pause when full screen  -->
         <Grid
             Margin="0,16,0,0"
-            ColumnDefinitions="*, Auto"
+            ColumnDefinitions="*,Auto"
             ToolTip.Tip="{Binding LocalizationManager.PauseWhenFullscreenTooltip}">
             <TextBlock
                 Grid.Column="0"
@@ -83,7 +83,7 @@
         <!--  Configuration smoothing  -->
         <Grid
             Margin="0,16,0,0"
-            ColumnDefinitions="*, Auto"
+            ColumnDefinitions="*,Auto"
             ToolTip.Tip="{Binding LocalizationManager.GammaSmoothingTooltip}">
             <TextBlock
                 Grid.Column="0"
@@ -96,7 +96,7 @@
         <!--  Gamma polling  -->
         <Grid
             Margin="0,16,0,0"
-            ColumnDefinitions="*, Auto"
+            ColumnDefinitions="*,Auto"
             ToolTip.Tip="{Binding LocalizationManager.GammaPollingTooltip}">
             <TextBlock
                 Grid.Column="0"

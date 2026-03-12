@@ -7,7 +7,7 @@ public partial class LocalizationManager
     private static readonly IReadOnlyDictionary<string, string> SpanishLocalization =
         new Dictionary<string, string>
         {
-            [nameof(SunsetLabel)] = "Puesta de sol",
+            [nameof(SunsetLabel)] = "Puesta",
             [nameof(SunriseLabel)] = "Amanecer",
             [nameof(SunsetTransitionStartsAt)] = "La transición del atardecer comienza a las",
             [nameof(SunriseTransitionStartsAt)] = "La transición del amanecer comienza a las",

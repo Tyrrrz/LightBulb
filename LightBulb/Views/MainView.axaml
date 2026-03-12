@@ -32,7 +32,7 @@
                     Padding="8,12"
                     Background="{DynamicResource MaterialDarkBackgroundBrush}"
                     PointerPressed="HeaderBorder_OnPointerPressed">
-                    <Grid ColumnDefinitions="Auto, Auto, *, Auto">
+                    <Grid ColumnDefinitions="Auto,Auto,*,Auto">
                         <!--  On/Off button and logo  -->
                         <ToggleButton
                             Grid.Column="0"
