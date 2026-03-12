@@ -5,7 +5,7 @@
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:dialogs="clr-namespace:LightBulb.ViewModels.Dialogs"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-    MinWidth="350"
+    Width="350"
     Height="270"
     x:DataType="dialogs:SettingsViewModel">
     <Grid ColumnDefinitions="Auto,*">
@@ -66,7 +66,6 @@
                 <!--  Reset  -->
                 <Button
                     Margin="8"
-                    HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Stretch"
                     Command="{Binding ResetCommand}"
                     Theme="{DynamicResource MaterialFlatButton}"
@@ -80,7 +79,6 @@
                 <!--  Cancel  -->
                 <Button
                     Margin="8"
-                    HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Stretch"
                     Command="{Binding CancelCommand}"
                     Theme="{DynamicResource MaterialFlatButton}">
@@ -93,7 +91,6 @@
                 <!--  Save  -->
                 <Button
                     Margin="8"
-                    HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Stretch"
                     Command="{Binding SaveCommand}"
                     Theme="{DynamicResource MaterialFlatButton}">

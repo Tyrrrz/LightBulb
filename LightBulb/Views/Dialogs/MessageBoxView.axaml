@@ -34,29 +34,36 @@
         <UniformGrid
             Grid.Row="2"
             Margin="16"
-            HorizontalAlignment="Right"
             Columns="{Binding ButtonsCount}">
             <!--  OK  -->
             <Button
+                HorizontalContentAlignment="Stretch"
                 Command="{Binding CloseCommand}"
-                Content="{Binding DefaultButtonText}"
                 IsDefault="True"
                 IsVisible="{Binding IsDefaultButtonVisible}"
                 Theme="{DynamicResource MaterialOutlineButton}">
                 <Button.CommandParameter>
                     <system:Boolean>True</system:Boolean>
                 </Button.CommandParameter>
+                <TextBlock
+                    Text="{Binding DefaultButtonText}"
+                    TextAlignment="Center"
+                    TextTrimming="CharacterEllipsis" />
             </Button>
 
             <!--  Cancel  -->
             <Button
                 Margin="16,0,0,0"
-                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
                 Command="{Binding CloseCommand}"
-                Content="{Binding CancelButtonText}"
                 IsCancel="True"
                 IsVisible="{Binding IsCancelButtonVisible}"
-                Theme="{DynamicResource MaterialOutlineButton}" />
+                Theme="{DynamicResource MaterialOutlineButton}">
+                <TextBlock
+                    Text="{Binding CancelButtonText}"
+                    TextAlignment="Center"
+                    TextTrimming="CharacterEllipsis" />
+            </Button>
         </UniformGrid>
     </Grid>
 </UserControl>
