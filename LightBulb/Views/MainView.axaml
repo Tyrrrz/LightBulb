@@ -99,13 +99,11 @@
                     Content="{Binding Dashboard}" />
 
                 <!--  Buttons  -->
-                <StackPanel
-                    Grid.Row="2"
-                    HorizontalAlignment="Center"
-                    Orientation="Horizontal">
+                <UniformGrid Grid.Row="2" Columns="3">
                     <!--  Start/stop cycle preview  -->
                     <ToggleButton
                         Margin="8"
+                        HorizontalContentAlignment="Stretch"
                         IsChecked="{Binding Dashboard.IsCyclePreviewEnabled}"
                         Theme="{DynamicResource MaterialFlatToggleButton}">
                         <Button.Styles>
@@ -118,7 +116,7 @@
                                 </Style>
                             </Style>
                         </Button.Styles>
-                        <StackPanel Orientation="Horizontal">
+                        <Grid ColumnDefinitions="Auto,*">
                             <materialIcons:MaterialIcon Width="24" Height="24">
                                 <materialIcons:MaterialIcon.Styles>
                                     <Style Selector="ToggleButton materialIcons|MaterialIcon">
@@ -130,48 +128,56 @@
                                 </materialIcons:MaterialIcon.Styles>
                             </materialIcons:MaterialIcon>
                             <TextBlock
+                                Grid.Column="1"
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
-                                Text="{Binding Dashboard.LocalizationManager.PreviewText}" />
-                        </StackPanel>
+                                Text="{Binding Dashboard.LocalizationManager.PreviewText}"
+                                TextTrimming="CharacterEllipsis" />
+                        </Grid>
                     </ToggleButton>
 
                     <!--  Settings  -->
                     <Button
                         Margin="8"
+                        HorizontalContentAlignment="Stretch"
                         Command="{Binding ShowSettingsCommand}"
                         Theme="{DynamicResource MaterialFlatButton}"
                         ToolTip.Tip="{Binding Dashboard.LocalizationManager.OpenSettingsTooltip}">
-                        <StackPanel Orientation="Horizontal">
+                        <Grid ColumnDefinitions="Auto,*">
                             <materialIcons:MaterialIcon
                                 Width="24"
                                 Height="24"
                                 Kind="Settings" />
                             <TextBlock
+                                Grid.Column="1"
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
-                                Text="{Binding Dashboard.LocalizationManager.SettingsText}" />
-                        </StackPanel>
+                                Text="{Binding Dashboard.LocalizationManager.SettingsText}"
+                                TextTrimming="CharacterEllipsis" />
+                        </Grid>
                     </Button>
 
                     <!--  About  -->
                     <Button
                         Margin="8"
+                        HorizontalContentAlignment="Stretch"
                         Command="{Binding ShowAboutCommand}"
                         Theme="{DynamicResource MaterialFlatButton}"
                         ToolTip.Tip="{Binding Dashboard.LocalizationManager.OpenGitHubTooltip}">
-                        <StackPanel Orientation="Horizontal">
+                        <Grid ColumnDefinitions="Auto,*">
                             <materialIcons:MaterialIcon
                                 Width="24"
                                 Height="24"
                                 Kind="Web" />
                             <TextBlock
+                                Grid.Column="1"
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
-                                Text="{Binding Dashboard.LocalizationManager.AboutText}" />
-                        </StackPanel>
+                                Text="{Binding Dashboard.LocalizationManager.AboutText}"
+                                TextTrimming="CharacterEllipsis" />
+                        </Grid>
                     </Button>
-                </StackPanel>
+                </UniformGrid>
             </Grid>
         </dialogHostAvalonia:DialogHost>
     </Border>
