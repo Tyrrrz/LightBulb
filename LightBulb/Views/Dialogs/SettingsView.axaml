@@ -5,7 +5,7 @@
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:dialogs="clr-namespace:LightBulb.ViewModels.Dialogs"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-    Width="370"
+    Width="400"
     Height="270"
     x:DataType="dialogs:SettingsViewModel">
     <Grid ColumnDefinitions="Auto, *">
