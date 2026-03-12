@@ -134,23 +134,27 @@ public partial class App
         trayDisableFor1MinuteItem.Click += (_, _) =>
             _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(1));
 
-        var disableSubMenu = new NativeMenu();
-        disableSubMenu.Items.Add(trayDisableUntilSunriseItem);
-        disableSubMenu.Items.Add(trayDisableFor1DayItem);
-        disableSubMenu.Items.Add(trayDisableFor12HoursItem);
-        disableSubMenu.Items.Add(trayDisableFor6HoursItem);
-        disableSubMenu.Items.Add(trayDisableFor3HoursItem);
-        disableSubMenu.Items.Add(trayDisableFor1HourItem);
-        disableSubMenu.Items.Add(trayDisableFor30MinutesItem);
-        disableSubMenu.Items.Add(trayDisableFor15MinutesItem);
-        disableSubMenu.Items.Add(trayDisableFor5MinutesItem);
-        disableSubMenu.Items.Add(trayDisableFor1MinuteItem);
-
         var trayDisableItem = CreateLocalizedItem(
             nameof(LocalizationManager.TrayDisableMenuItem),
             static m => m.TrayDisableMenuItem
         );
-        trayDisableItem.Menu = disableSubMenu;
+
+        trayDisableItem.Menu = new NativeMenu
+        {
+            Items =
+            {
+                _trayDisableUntilSunriseItem,
+                _trayDisableFor1DayItem,
+                _trayDisableFor12HoursItem,
+                _trayDisableFor6HoursItem,
+                _trayDisableFor3HoursItem,
+                _trayDisableFor1HourItem,
+                _trayDisableFor30MinutesItem,
+                _trayDisableFor15MinutesItem,
+                _trayDisableFor5MinutesItem,
+                _trayDisableFor1MinuteItem,
+            },
+        };
 
         var trayExitItem = CreateLocalizedItem(
             nameof(LocalizationManager.TrayExitMenuItem),
@@ -162,20 +166,25 @@ public partial class App
                 Environment.Exit(0);
         };
 
-        var menu = new NativeMenu();
-        menu.Items.Add(trayShowHideItem);
-        menu.Items.Add(traySettingsItem);
-        menu.Items.Add(new NativeMenuItemSeparator());
-        menu.Items.Add(trayToggleItem);
-        menu.Items.Add(trayDisableItem);
-        menu.Items.Add(new NativeMenuItemSeparator());
-        menu.Items.Add(trayExitItem);
-
         _trayIcon = new BindableTrayIcon
         {
             Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://LightBulb/favicon.ico"))),
-            Menu = menu,
+            ToolTipText = "LightBulb",
+            Menu = new NativeMenu
+            {
+                Items =
+                {
+                    _trayShowHideItem,
+                    _traySettingsItem,
+                    new NativeMenuItemSeparator(),
+                    _trayToggleItem,
+                    _trayDisableItem,
+                    new NativeMenuItemSeparator(),
+                    _trayExitItem,
+                },
+            },
         };
+
         _trayIcon.Bind(
             TrayIcon.ToolTipTextProperty,
             _mainViewModel.Dashboard.ObserveProperty(
@@ -183,6 +192,7 @@ public partial class App
                 static d => d.TrayTooltip
             )
         );
+
         _trayIcon.Clicked += (_, _) => ToggleMainWindow();
         _trayIcon.AttachToApplication(this);
     }
