@@ -98,31 +98,17 @@ public partial class DashboardViewModel : ViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]
-    [NotifyPropertyChangedFor(nameof(TrayTooltip))]
     public partial bool IsEnabled { get; set; } = true;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]
-    [NotifyPropertyChangedFor(nameof(TrayTooltip))]
     public partial bool IsPaused { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]
-    [NotifyPropertyChangedFor(nameof(TrayTooltip))]
     public partial bool IsCyclePreviewEnabled { get; set; }
 
     public bool IsActive => IsEnabled && !IsPaused || IsCyclePreviewEnabled;
-
-    public string TrayTooltip =>
-        "LightBulb"
-        + Environment.NewLine
-        + (
-            IsActive
-                ? CurrentConfiguration.Temperature.ToString("F0")
-                    + " / "
-                    + CurrentConfiguration.Brightness.ToString("P0")
-                : "Disabled"
-        );
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(SolarTimes))]
@@ -151,7 +137,6 @@ public partial class DashboardViewModel : ViewModelBase
     public partial double BrightnessOffset { get; set; }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(TrayTooltip))]
     public partial ColorConfiguration CurrentConfiguration { get; set; } =
         ColorConfiguration.Default;
 
