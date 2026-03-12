@@ -99,7 +99,7 @@
                     Content="{Binding Dashboard}" />
 
                 <!--  Buttons  -->
-                <UniformGrid Grid.Row="2" Columns="3">
+                <UniformGrid Grid.Row="2" Columns="2">
                     <!--  Start/stop cycle preview  -->
                     <ToggleButton
                         Margin="8"
@@ -153,27 +153,6 @@
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
                                 Text="{Binding Dashboard.LocalizationManager.SettingsText}"
-                                TextTrimming="CharacterEllipsis" />
-                        </Grid>
-                    </Button>
-
-                    <!--  About  -->
-                    <Button
-                        Margin="8"
-                        HorizontalContentAlignment="Stretch"
-                        Command="{Binding ShowAboutCommand}"
-                        Theme="{DynamicResource MaterialFlatButton}"
-                        ToolTip.Tip="{Binding Dashboard.LocalizationManager.OpenGitHubTooltip}">
-                        <Grid ColumnDefinitions="Auto, *">
-                            <materialIcons:MaterialIcon
-                                Width="24"
-                                Height="24"
-                                Kind="Web" />
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="4,0,0,0"
-                                VerticalAlignment="Center"
-                                Text="{Binding Dashboard.LocalizationManager.AboutText}"
                                 TextTrimming="CharacterEllipsis" />
                         </Grid>
                     </Button>

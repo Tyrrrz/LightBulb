@@ -25,8 +25,6 @@ public partial class LocalizationManager
             [nameof(StartPreviewTooltip)] = "Переглянути 24-годинний цикл",
             [nameof(SettingsText)] = "НАЛАШТУВАННЯ",
             [nameof(OpenSettingsTooltip)] = "Відкрити налаштування",
-            [nameof(AboutText)] = "GITHUB",
-            [nameof(OpenGitHubTooltip)] = "Відкрити LightBulb на GitHub",
             [nameof(ResetButton)] = "СКИНУТИ",
             [nameof(ResetTooltip)] = "Скинути всі налаштування до типових",
             [nameof(CancelButton)] = "СКАСУВАТИ",

@@ -177,9 +177,6 @@ public partial class MainViewModel(
     private async Task ShowSettingsAsync() =>
         await dialogManager.ShowDialogAsync(viewModelManager.CreateSettingsViewModel());
 
-    [RelayCommand]
-    private void ShowAbout() => Process.StartShellExecute(Program.ProjectUrl);
-
     protected override void Dispose(bool disposing)
     {
         if (disposing)

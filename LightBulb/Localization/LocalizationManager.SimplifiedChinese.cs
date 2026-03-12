@@ -27,8 +27,6 @@ public partial class LocalizationManager
             [nameof(StartPreviewTooltip)] = "预览 24 小时循环",
             [nameof(SettingsText)] = "设置",
             [nameof(OpenSettingsTooltip)] = "打开设置",
-            [nameof(AboutText)] = "GITHUB",
-            [nameof(OpenGitHubTooltip)] = "在 GitHub 上打开 LightBulb",
 
             // Settings dialog (设置对话框)
             [nameof(ResetButton)] = "重置",

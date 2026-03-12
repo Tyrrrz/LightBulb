@@ -81,7 +81,8 @@
                     Margin="8"
                     HorizontalContentAlignment="Stretch"
                     Command="{Binding CancelCommand}"
-                    Theme="{DynamicResource MaterialFlatButton}">
+                    Theme="{DynamicResource MaterialFlatButton}"
+                    ToolTip.Tip="{Binding LocalizationManager.CancelButton}">
                     <TextBlock
                         Text="{Binding LocalizationManager.CancelButton}"
                         TextAlignment="Center"
@@ -93,7 +94,8 @@
                     Margin="8"
                     HorizontalContentAlignment="Stretch"
                     Command="{Binding SaveCommand}"
-                    Theme="{DynamicResource MaterialFlatButton}">
+                    Theme="{DynamicResource MaterialFlatButton}"
+                    ToolTip.Tip="{Binding LocalizationManager.SaveButton}">
                     <TextBlock
                         Text="{Binding LocalizationManager.SaveButton}"
                         TextAlignment="Center"

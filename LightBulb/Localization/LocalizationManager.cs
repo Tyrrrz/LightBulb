@@ -100,8 +100,6 @@ public partial class LocalizationManager
     public string StartPreviewTooltip => Get();
     public string SettingsText => Get();
     public string OpenSettingsTooltip => Get();
-    public string AboutText => Get();
-    public string OpenGitHubTooltip => Get();
 
     // ---- Settings dialog ----
 
