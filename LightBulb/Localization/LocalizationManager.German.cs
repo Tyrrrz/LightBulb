@@ -11,9 +11,10 @@ public partial class LocalizationManager
     {
         [nameof(SunsetLabel)] = "Untergang",
         [nameof(SunriseLabel)] = "Aufgang",
-        [nameof(SunsetTransitionStartsAt)] = "Sonnenuntergangsübergang beginnt um",
-        [nameof(SunriseTransitionStartsAt)] = "Sonnenaufgangsübergang beginnt um",
-        [nameof(AndEndsAt)] = "und endet um",
+        [nameof(SunsetTransitionTooltip)] =
+            "Sonnenuntergangsübergang beginnt um **{0}** und endet um **{1}**",
+        [nameof(SunriseTransitionTooltip)] =
+            "Sonnenaufgangsübergang beginnt um **{0}** und endet um **{1}**",
         [nameof(OffsetTooltipHeader)] =
             "Aktuelle Temperatur- und Helligkeitswerte werden durch einen Versatz angepasst:",
         [nameof(TemperatureOffsetLabel)] = "Temperaturversatz:",
@@ -43,9 +44,8 @@ public partial class LocalizationManager
         [nameof(StartWithWindowsLabel)] = "Mit Windows starten",
         [nameof(StartWithWindowsTooltip)] = "LightBulb beim Windows-Start automatisch starten",
         [nameof(AutoUpdateLabel)] = "Automatische Updates",
-        [nameof(AutoUpdateTooltip)] =
-            "LightBulb aktuell halten, indem neue Versionen automatisch installiert werden",
-        [nameof(DefaultToDayConfigLabel)] = "Standard: Tageskonfiguration",
+        [nameof(AutoUpdateTooltip)] = "LightBulb automatisch auf die neueste Version aktualisieren",
+        [nameof(DefaultToDayConfigLabel)] = "Zur Tageskonfiguration zurückkehren",
         [nameof(DefaultToDayConfigTooltip)] =
             "Wenn LightBulb deaktiviert oder pausiert ist, die konfigurierte Tagestemperatur und -helligkeit anstelle des Standard-Monitor-Gammas wiederherstellen",
         [nameof(PauseWhenFullscreenLabel)] = "Bei Vollbild pausieren",

@@ -9,9 +9,10 @@ public partial class LocalizationManager
         {
             [nameof(SunsetLabel)] = "Захід",
             [nameof(SunriseLabel)] = "Схід",
-            [nameof(SunsetTransitionStartsAt)] = "Перехід до заходу сонця починається о",
-            [nameof(SunriseTransitionStartsAt)] = "Перехід до сходу сонця починається о",
-            [nameof(AndEndsAt)] = "і закінчується о",
+            [nameof(SunsetTransitionTooltip)] =
+                "Перехід до заходу сонця починається о **{0}** і закінчується о **{1}**",
+            [nameof(SunriseTransitionTooltip)] =
+                "Перехід до сходу сонця починається о **{0}** і закінчується о **{1}**",
             [nameof(OffsetTooltipHeader)] =
                 "Поточні значення температури та яскравості скориговані зміщенням:",
             [nameof(TemperatureOffsetLabel)] = "Зміщення температури:",
@@ -41,9 +42,8 @@ public partial class LocalizationManager
             [nameof(StartWithWindowsLabel)] = "Запускати з Windows",
             [nameof(StartWithWindowsTooltip)] = "Запускати LightBulb при старті Windows",
             [nameof(AutoUpdateLabel)] = "Авто-оновлення",
-            [nameof(AutoUpdateTooltip)] =
-                "Підтримувати LightBulb оновленим, автоматично встановлюючи нові версії",
-            [nameof(DefaultToDayConfigLabel)] = "За замовчуванням денна конфігурація",
+            [nameof(AutoUpdateTooltip)] = "Автоматично оновлювати LightBulb до останньої версії",
+            [nameof(DefaultToDayConfigLabel)] = "Повертатись до денної конфігурації",
             [nameof(DefaultToDayConfigTooltip)] =
                 "Коли LightBulb вимкнено або призупинено, відновлювати налаштовану денну температуру та яскравість замість гами монітора за замовчуванням",
             [nameof(PauseWhenFullscreenLabel)] = "Призупиняти при повноекранному режимі",
@@ -80,7 +80,7 @@ public partial class LocalizationManager
             [nameof(TransitionOffsetTooltip)] =
                 "Зміщення, що визначає, наскільки раніше або пізніше починається перехід відносно сходу та заходу сонця",
             [nameof(SolarConfigLabel)] = "Сонячна конфігурація:",
-            [nameof(ManualLabel)] = "Вручну",
+            [nameof(ManualLabel)] = "Ручна",
             [nameof(ManualTooltip)] = "Налаштувати схід та захід сонця вручну",
             [nameof(LocationBasedLabel)] = "За місцезнаходженням",
             [nameof(LocationBasedTooltip)] =

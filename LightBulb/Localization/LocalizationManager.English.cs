@@ -10,9 +10,10 @@ public partial class LocalizationManager
             // Dashboard
             [nameof(SunsetLabel)] = "Sunset",
             [nameof(SunriseLabel)] = "Sunrise",
-            [nameof(SunsetTransitionStartsAt)] = "Sunset transition starts at",
-            [nameof(SunriseTransitionStartsAt)] = "Sunrise transition starts at",
-            [nameof(AndEndsAt)] = "and ends at",
+            [nameof(SunsetTransitionTooltip)] =
+                "Sunset transition starts at **{0}** and ends at **{1}**",
+            [nameof(SunriseTransitionTooltip)] =
+                "Sunrise transition starts at **{0}** and ends at **{1}**",
             [nameof(OffsetTooltipHeader)] =
                 "Current temperature and brightness values are adjusted by an offset:",
             [nameof(TemperatureOffsetLabel)] = "Temperature offset:",
