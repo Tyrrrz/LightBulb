@@ -7,7 +7,7 @@
     x:DataType="settings:GeneralSettingsTabViewModel">
     <StackPanel Margin="16" Orientation="Vertical">
         <!--  Day temperature  -->
-        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.DayTemperatureTooltip}">
+        <Grid ColumnDefinitions="*, Auto" ToolTip.Tip="{Binding LocalizationManager.DayTemperatureTooltip}">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -31,7 +31,7 @@
             Value="{Binding DayTemperature}" />
 
         <!--  Night temperature  -->
-        <Grid Margin="0,24,0,0" ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.NightTemperatureTooltip}">
+        <Grid Margin="0,24,0,0" ColumnDefinitions="*, Auto" ToolTip.Tip="{Binding LocalizationManager.NightTemperatureTooltip}">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -55,7 +55,7 @@
             Value="{Binding NightTemperature}" />
 
         <!--  Day brightness  -->
-        <Grid Margin="0,24,0,0" ColumnDefinitions="*,Auto">
+        <Grid Margin="0,24,0,0" ColumnDefinitions="*, Auto">
             <ToolTip.Tip>
                 <TextBlock MaxWidth="350" Text="{Binding LocalizationManager.DayBrightnessTooltip}" TextWrapping="Wrap" />
             </ToolTip.Tip>
@@ -82,7 +82,7 @@
             Value="{Binding DayBrightness}" />
 
         <!--  Night brightness  -->
-        <Grid Margin="0,24,0,0" ColumnDefinitions="*,Auto">
+        <Grid Margin="0,24,0,0" ColumnDefinitions="*, Auto">
             <ToolTip.Tip>
                 <TextBlock MaxWidth="350" Text="{Binding LocalizationManager.NightBrightnessTooltip}" TextWrapping="Wrap" />
             </ToolTip.Tip>
@@ -109,7 +109,7 @@
             Value="{Binding NightBrightness}" />
 
         <!--  Configuration transition duration  -->
-        <Grid Margin="0,24,0,0" ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.TransitionDurationTooltip}">
+        <Grid Margin="0,24,0,0" ColumnDefinitions="*, Auto" ToolTip.Tip="{Binding LocalizationManager.TransitionDurationTooltip}">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -131,7 +131,7 @@
             Value="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToHoursDoubleConverter.Instance}}" />
 
         <!--  Configuration transition offset  -->
-        <Grid Margin="0,24,0,0" ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.TransitionOffsetTooltip}">
+        <Grid Margin="0,24,0,0" ColumnDefinitions="*, Auto" ToolTip.Tip="{Binding LocalizationManager.TransitionOffsetTooltip}">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"

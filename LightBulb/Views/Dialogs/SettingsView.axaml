@@ -8,7 +8,7 @@
     Width="350"
     Height="270"
     x:DataType="dialogs:SettingsViewModel">
-    <Grid ColumnDefinitions="Auto,*">
+    <Grid ColumnDefinitions="Auto, *">
         <!--  Settings tab selection  -->
         <Border
             Grid.Column="0"

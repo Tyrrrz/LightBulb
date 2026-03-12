@@ -29,7 +29,7 @@
             IsVisible="{Binding IsManualSunriseSunsetEnabled}"
             Orientation="Vertical">
             <!--  Sunrise time  -->
-            <Grid ColumnDefinitions="*,Auto">
+            <Grid ColumnDefinitions="*, Auto">
                 <TextBlock
                     Grid.Column="0"
                     VerticalAlignment="Center"
@@ -51,7 +51,7 @@
                 Value="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}" />
 
             <!--  Sunset time  -->
-            <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto">
+            <Grid Margin="0,16,0,0" ColumnDefinitions="*, Auto">
                 <TextBlock
                     Grid.Column="0"
                     VerticalAlignment="Center"
@@ -80,7 +80,7 @@
             Orientation="Vertical">
             <!--  Location  -->
             <TextBlock Text="{Binding LocalizationManager.YourLocationLabel}" />
-            <Grid Margin="0,8,0,0" ColumnDefinitions="Auto,*,Auto">
+            <Grid Margin="0,8,0,0" ColumnDefinitions="Auto, *, Auto">
                 <!--  Autodetect  -->
                 <Button
                     Grid.Column="0"
