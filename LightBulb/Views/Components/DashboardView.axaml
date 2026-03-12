@@ -65,86 +65,86 @@
 
             <!--  Night time arc  -->
             <controls:Arc
-                Width="180"
-                Height="180"
+                Width="207"
+                Height="207"
                 EndAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 Stroke="{DynamicResource SundialNightBorderBrush}"
-                StrokeThickness="28" />
+                StrokeThickness="32" />
             <controls:Arc
-                Width="180"
-                Height="180"
+                Width="207"
+                Height="207"
                 EndAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 Stroke="{DynamicResource SundialNightBrush}"
-                StrokeThickness="26" />
+                StrokeThickness="30" />
 
             <!--  Day time arc  -->
             <controls:Arc
-                Width="180"
-                Height="180"
+                Width="207"
+                Height="207"
                 EndAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 Stroke="{DynamicResource SundialDayBorderBrush}"
-                StrokeThickness="28" />
+                StrokeThickness="32" />
             <controls:Arc
-                Width="180"
-                Height="180"
+                Width="207"
+                Height="207"
                 EndAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 Stroke="{DynamicResource SundialDayBrush}"
-                StrokeThickness="26" />
+                StrokeThickness="30" />
 
             <!--  Sunrise transition  -->
             <controls:Arc
-                Width="180"
-                Height="180"
+                Width="207"
+                Height="207"
                 EndAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 Stroke="{DynamicResource SundialSunriseBorderBrush}"
-                StrokeThickness="28" />
+                StrokeThickness="32" />
             <controls:Arc
-                Width="180"
-                Height="180"
+                Width="207"
+                Height="207"
                 EndAngle="{Binding SunriseEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunriseStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 Stroke="{DynamicResource SundialSunriseBrush}"
-                StrokeThickness="26" />
+                StrokeThickness="30" />
 
             <!--  Sunset transition  -->
             <controls:Arc
-                Width="180"
-                Height="180"
+                Width="207"
+                Height="207"
                 EndAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 Stroke="{DynamicResource SundialSunsetBorderBrush}"
-                StrokeThickness="28" />
+                StrokeThickness="32" />
             <controls:Arc
-                Width="180"
-                Height="180"
+                Width="207"
+                Height="207"
                 EndAngle="{Binding SunsetEnd, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 StartAngle="{Binding SunsetStart, Converter={x:Static converters:TimeOnlyToDegreesDoubleConverter.Instance}}"
                 Stroke="{DynamicResource SundialSunsetBrush}"
-                StrokeThickness="26" />
+                StrokeThickness="30" />
 
             <!--  Current time position  -->
             <controls:ArcPoint
-                Width="180"
-                Height="180"
+                Width="207"
+                Height="207"
                 Angle="{Binding Instant.TimeOfDay.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
                 Fill="{DynamicResource SundialMarkerBorderBrush}"
-                Size="28" />
+                Size="32" />
             <controls:ArcPoint
-                Width="180"
-                Height="180"
+                Width="207"
+                Height="207"
                 Angle="{Binding Instant.TimeOfDay.TotalDays, Converter={x:Static converters:FractionToDegreesConverter.Instance}}"
                 Fill="{DynamicResource SundialMarkerBrush}"
-                Size="26" />
+                Size="30" />
 
             <!--  Configuration offset  -->
             <StackPanel
                 x:Name="ConfigurationOffsetStackPanel"
-                Margin="0,50,0,0"
+                Margin="0,58,0,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 Background="Transparent"
@@ -184,8 +184,8 @@
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
                 <materialIcons:MaterialIcon
-                    Width="48"
-                    Height="48"
+                    Width="55"
+                    Height="55"
                     Kind="{Binding CycleState, Converter={x:Static converters:CycleStateToMaterialIconKindConverter.Instance}}" />
                 <TextBlock Margin="8,0,0,0" FontSize="20">
                     <Run Text="{Binding CurrentConfiguration.Temperature, StringFormat={}{0:F0} K, Mode=OneWay}" />
@@ -196,7 +196,7 @@
 
             <!--  Current time  -->
             <StackPanel
-                Margin="0,0,0,50"
+                Margin="0,0,0,58"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 Orientation="Horizontal">
