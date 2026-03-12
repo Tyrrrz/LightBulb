@@ -37,6 +37,7 @@
             Columns="{Binding ButtonsCount}">
             <!--  OK  -->
             <Button
+                Margin="0,0,4,0"
                 HorizontalContentAlignment="Stretch"
                 Command="{Binding CloseCommand}"
                 IsDefault="True"
@@ -54,6 +55,7 @@
 
             <!--  Cancel  -->
             <Button
+                Margin="4,0,0,0"
                 HorizontalContentAlignment="Stretch"
                 Command="{Binding CloseCommand}"
                 IsCancel="True"
