@@ -16,7 +16,8 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="19"
-            TextAlignment="Center">
+            TextAlignment="Center"
+            TextTrimming="CharacterEllipsis">
             <ToolTip.Tip>
                 <TextBlock>
                     <Run Text="{Binding LocalizationManager.SunsetTransitionStartsAt}" />
@@ -218,7 +219,8 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="19"
-            TextAlignment="Center">
+            TextAlignment="Center"
+            TextTrimming="CharacterEllipsis">
             <ToolTip.Tip>
                 <TextBlock>
                     <Run Text="{Binding LocalizationManager.SunriseTransitionStartsAt}" />
