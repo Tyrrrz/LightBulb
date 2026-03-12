@@ -45,7 +45,7 @@ public partial class LocalizationManager
             [nameof(StartWithWindowsTooltip)] = "Iniciar LightBulb al arrancar Windows",
             [nameof(AutoUpdateLabel)] = "Actualización automática",
             [nameof(AutoUpdateTooltip)] =
-                "Mantener LightBulb actualizado instalando automáticamente nuevas versiones",
+                "Actualizar LightBulb automáticamente a la última versión",
             [nameof(DefaultToDayConfigLabel)] = "Usar configuración diurna por defecto",
             [nameof(DefaultToDayConfigTooltip)] =
                 "Cuando LightBulb está desactivado o en pausa, restaurar la temperatura y el brillo diurnos configurados en lugar del gamma predeterminado del monitor",

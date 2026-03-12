@@ -46,9 +46,8 @@ public partial class LocalizationManager
         [nameof(StartWithWindowsLabel)] = "Mit Windows starten",
         [nameof(StartWithWindowsTooltip)] = "LightBulb beim Windows-Start automatisch starten",
         [nameof(AutoUpdateLabel)] = "Automatische Updates",
-        [nameof(AutoUpdateTooltip)] =
-            "LightBulb aktuell halten, indem neue Versionen automatisch installiert werden",
-        [nameof(DefaultToDayConfigLabel)] = "Standard: Tageskonfiguration",
+        [nameof(AutoUpdateTooltip)] = "LightBulb automatisch auf die neueste Version aktualisieren",
+        [nameof(DefaultToDayConfigLabel)] = "Zur Tageskonfiguration zurückkehren",
         [nameof(DefaultToDayConfigTooltip)] =
             "Wenn LightBulb deaktiviert oder pausiert ist, die konfigurierte Tagestemperatur und -helligkeit anstelle des Standard-Monitor-Gammas wiederherstellen",
         [nameof(PauseWhenFullscreenLabel)] = "Bei Vollbild pausieren",
