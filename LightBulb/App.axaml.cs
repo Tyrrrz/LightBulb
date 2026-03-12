@@ -87,6 +87,12 @@ public partial class App : Application, IDisposable
     {
         base.Initialize();
 
+        // Expose the main view model as an application resource so that
+        // the TrayIcon bindings declared in App.axaml can reach it via
+        // Source={StaticResource MainViewModel}, without polluting the
+        // application-wide DataContext.
+        Resources["MainViewModel"] = _mainViewModel;
+
         AvaloniaXamlLoader.Load(this);
     }
 
@@ -141,10 +147,6 @@ public partial class App : Application, IDisposable
 
         // Set up custom theme colors
         InitializeTheme();
-
-        // Expose the main view model as the application DataContext so that
-        // the TrayIcon bindings declared in App.axaml can reach it.
-        DataContext = _mainViewModel;
 
         // Load settings
         _settingsService.Load();

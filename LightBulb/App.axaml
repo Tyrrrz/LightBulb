@@ -8,7 +8,6 @@
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
     xmlns:sys="clr-namespace:System;assembly=System.Runtime"
-    xmlns:vm="clr-namespace:LightBulb.ViewModels"
     Name="LightBulb"
     ActualThemeVariantChanged="Application_OnActualThemeVariantChanged">
     <Application.DataTemplates>
@@ -20,71 +19,70 @@
         <TrayIcons>
             <TrayIcon
                 x:CompileBindings="False"
-                x:DataType="vm:MainViewModel"
-                Command="{Binding ToggleWindowCommand}"
+                Command="{Binding ToggleWindowCommand, Source={StaticResource MainViewModel}}"
                 Icon="/favicon.ico"
-                ToolTipText="{Binding Dashboard.TrayTooltip}">
+                ToolTipText="{Binding Dashboard.TrayTooltip, Source={StaticResource MainViewModel}}">
                 <TrayIcon.Menu>
                     <NativeMenu>
                         <NativeMenuItem
-                            Command="{Binding ToggleWindowCommand}"
-                            Header="{Binding LocalizationManager.TrayShowHideMenuItem}" />
+                            Command="{Binding ToggleWindowCommand, Source={StaticResource MainViewModel}}"
+                            Header="{Binding LocalizationManager.TrayShowHideMenuItem, Source={StaticResource MainViewModel}}" />
                         <NativeMenuItem
-                            Command="{Binding ShowSettingsFromTrayCommand}"
-                            Header="{Binding LocalizationManager.TraySettingsMenuItem}" />
+                            Command="{Binding ShowSettingsFromTrayCommand, Source={StaticResource MainViewModel}}"
+                            Header="{Binding LocalizationManager.TraySettingsMenuItem, Source={StaticResource MainViewModel}}" />
                         <NativeMenuItemSeparator />
                         <NativeMenuItem
-                            Command="{Binding Dashboard.ToggleCommand}"
-                            Header="{Binding LocalizationManager.TrayToggleMenuItem}" />
-                        <NativeMenuItem Header="{Binding LocalizationManager.TrayDisableMenuItem}">
+                            Command="{Binding Dashboard.ToggleCommand, Source={StaticResource MainViewModel}}"
+                            Header="{Binding LocalizationManager.TrayToggleMenuItem, Source={StaticResource MainViewModel}}" />
+                        <NativeMenuItem Header="{Binding LocalizationManager.TrayDisableMenuItem, Source={StaticResource MainViewModel}}">
                             <NativeMenuItem.Menu>
                                 <NativeMenu>
                                     <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableUntilSunriseCommand}"
-                                        Header="{Binding LocalizationManager.TrayDisableUntilSunriseMenuItem}" />
+                                        Command="{Binding Dashboard.DisableUntilSunriseCommand, Source={StaticResource MainViewModel}}"
+                                        Header="{Binding LocalizationManager.TrayDisableUntilSunriseMenuItem, Source={StaticResource MainViewModel}}" />
                                     <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
                                         CommandParameter="{StaticResource TrayDisable1Day}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor1DayMenuItem}" />
+                                        Header="{Binding LocalizationManager.TrayDisableFor1DayMenuItem, Source={StaticResource MainViewModel}}" />
                                     <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
                                         CommandParameter="{StaticResource TrayDisable12Hours}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor12HoursMenuItem}" />
+                                        Header="{Binding LocalizationManager.TrayDisableFor12HoursMenuItem, Source={StaticResource MainViewModel}}" />
                                     <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
                                         CommandParameter="{StaticResource TrayDisable6Hours}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor6HoursMenuItem}" />
+                                        Header="{Binding LocalizationManager.TrayDisableFor6HoursMenuItem, Source={StaticResource MainViewModel}}" />
                                     <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
                                         CommandParameter="{StaticResource TrayDisable3Hours}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor3HoursMenuItem}" />
+                                        Header="{Binding LocalizationManager.TrayDisableFor3HoursMenuItem, Source={StaticResource MainViewModel}}" />
                                     <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
                                         CommandParameter="{StaticResource TrayDisable1Hour}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor1HourMenuItem}" />
+                                        Header="{Binding LocalizationManager.TrayDisableFor1HourMenuItem, Source={StaticResource MainViewModel}}" />
                                     <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
                                         CommandParameter="{StaticResource TrayDisable30Minutes}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor30MinutesMenuItem}" />
+                                        Header="{Binding LocalizationManager.TrayDisableFor30MinutesMenuItem, Source={StaticResource MainViewModel}}" />
                                     <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
                                         CommandParameter="{StaticResource TrayDisable15Minutes}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor15MinutesMenuItem}" />
+                                        Header="{Binding LocalizationManager.TrayDisableFor15MinutesMenuItem, Source={StaticResource MainViewModel}}" />
                                     <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
                                         CommandParameter="{StaticResource TrayDisable5Minutes}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor5MinutesMenuItem}" />
+                                        Header="{Binding LocalizationManager.TrayDisableFor5MinutesMenuItem, Source={StaticResource MainViewModel}}" />
                                     <NativeMenuItem
-                                        Command="{Binding Dashboard.DisableTemporarilyCommand}"
+                                        Command="{Binding Dashboard.DisableTemporarilyCommand, Source={StaticResource MainViewModel}}"
                                         CommandParameter="{StaticResource TrayDisable1Minute}"
-                                        Header="{Binding LocalizationManager.TrayDisableFor1MinuteMenuItem}" />
+                                        Header="{Binding LocalizationManager.TrayDisableFor1MinuteMenuItem, Source={StaticResource MainViewModel}}" />
                                 </NativeMenu>
                             </NativeMenuItem.Menu>
                         </NativeMenuItem>
                         <NativeMenuItemSeparator />
                         <NativeMenuItem
-                            Command="{Binding ExitCommand}"
-                            Header="{Binding LocalizationManager.TrayExitMenuItem}" />
+                            Command="{Binding ExitCommand, Source={StaticResource MainViewModel}}"
+                            Header="{Binding LocalizationManager.TrayExitMenuItem, Source={StaticResource MainViewModel}}" />
                     </NativeMenu>
                 </TrayIcon.Menu>
             </TrayIcon>
