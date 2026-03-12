@@ -29,61 +29,61 @@ public class MarkdownToInlinesConverter : IValueConverter
         switch (markdownInline)
         {
             case LiteralInline literal:
-            {
-                var run = new Run(literal.Content.ToString());
-
-                if (fontWeight is not null)
-                    run.FontWeight = fontWeight.Value;
-                if (fontStyle is not null)
-                    run.FontStyle = fontStyle.Value;
-                if (textDecorations is not null)
-                    run.TextDecorations = textDecorations;
-
-                inlines.Add(run);
-                break;
-            }
-
-            case LineBreakInline:
-            {
-                inlines.Add(new LineBreak());
-                break;
-            }
-
-            case EmphasisInline emphasis:
-            {
-                var newWeight = fontWeight;
-                var newStyle = fontStyle;
-                var newDecorations = textDecorations;
-
-                switch (emphasis.DelimiterChar)
                 {
-                    case '*' or '_' when emphasis.DelimiterCount == 2:
-                        newWeight = FontWeight.SemiBold;
-                        break;
-                    case '*' or '_':
-                        newStyle = FontStyle.Italic;
-                        break;
-                    case '~':
-                        newDecorations = TextDecorations.Strikethrough;
-                        break;
-                    case '+':
-                        newDecorations = TextDecorations.Underline;
-                        break;
+                    var run = new Run(literal.Content.ToString());
+
+                    if (fontWeight is not null)
+                        run.FontWeight = fontWeight.Value;
+                    if (fontStyle is not null)
+                        run.FontStyle = fontStyle.Value;
+                    if (textDecorations is not null)
+                        run.TextDecorations = textDecorations;
+
+                    inlines.Add(run);
+                    break;
                 }
 
-                foreach (var child in emphasis)
-                    ProcessInline(inlines, child, newWeight, newStyle, newDecorations);
+            case LineBreakInline:
+                {
+                    inlines.Add(new LineBreak());
+                    break;
+                }
 
-                break;
-            }
+            case EmphasisInline emphasis:
+                {
+                    var newWeight = fontWeight;
+                    var newStyle = fontStyle;
+                    var newDecorations = textDecorations;
+
+                    switch (emphasis.DelimiterChar)
+                    {
+                        case '*' or '_' when emphasis.DelimiterCount == 2:
+                            newWeight = FontWeight.SemiBold;
+                            break;
+                        case '*' or '_':
+                            newStyle = FontStyle.Italic;
+                            break;
+                        case '~':
+                            newDecorations = TextDecorations.Strikethrough;
+                            break;
+                        case '+':
+                            newDecorations = TextDecorations.Underline;
+                            break;
+                    }
+
+                    foreach (var child in emphasis)
+                        ProcessInline(inlines, child, newWeight, newStyle, newDecorations);
+
+                    break;
+                }
 
             case ContainerInline container:
-            {
-                foreach (var child in container)
-                    ProcessInline(inlines, child, fontWeight, fontStyle, textDecorations);
+                {
+                    foreach (var child in container)
+                        ProcessInline(inlines, child, fontWeight, fontStyle, textDecorations);
 
-                break;
-            }
+                    break;
+                }
         }
     }
 

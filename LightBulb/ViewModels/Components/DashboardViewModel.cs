@@ -47,7 +47,7 @@ public partial class DashboardViewModel : ViewModelBase
         _gammaService = gammaService;
         _hotKeyService = hotKeyService;
         _externalApplicationService = externalApplicationService;
-        
+
         _eventRoot.Add(
             // Refresh tray icon tooltip when the language changes
             localizationManager.WatchProperty(
