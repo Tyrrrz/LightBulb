@@ -143,6 +143,7 @@ public partial class LocalizationManager
             [nameof(TrayDisableFor5MinutesMenuItem)] = "Durante 5 minutos",
             [nameof(TrayDisableFor1MinuteMenuItem)] = "Durante 1 minuto",
             [nameof(TrayExitMenuItem)] = "Salir",
+            [nameof(TrayTooltipDisabled)] = "Desactivado",
             [nameof(UpdateAvailableTitle)] = "Actualización disponible",
             [nameof(UpdateAvailableMessage)] = """
                 La actualización a {0} v{1} ha sido descargada.

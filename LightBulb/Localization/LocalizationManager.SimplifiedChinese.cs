@@ -145,6 +145,7 @@ public partial class LocalizationManager
             [nameof(TrayDisableFor5MinutesMenuItem)] = "禁用 5 分钟",
             [nameof(TrayDisableFor1MinuteMenuItem)] = "禁用 1 分钟",
             [nameof(TrayExitMenuItem)] = "退出",
+            [nameof(TrayTooltipDisabled)] = "已禁用",
 
             // Dialog messages (对话框消息)
             [nameof(UpdateAvailableTitle)] = "可用更新",

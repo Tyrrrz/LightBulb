@@ -208,6 +208,8 @@ public partial class LocalizationManager
     public string TrayDisableFor1MinuteMenuItem => Get();
     public string TrayExitMenuItem => Get();
 
+    public string TrayTooltipDisabled => Get();
+
     // ---- Dialog messages ----
 
     public string UpdateAvailableTitle => Get();

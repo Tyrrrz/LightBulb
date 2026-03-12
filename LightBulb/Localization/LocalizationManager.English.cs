@@ -152,6 +152,7 @@ public partial class LocalizationManager
             [nameof(TrayDisableFor5MinutesMenuItem)] = "For 5 minutes",
             [nameof(TrayDisableFor1MinuteMenuItem)] = "For 1 minute",
             [nameof(TrayExitMenuItem)] = "Exit",
+            [nameof(TrayTooltipDisabled)] = "Disabled",
             // Dialog messages
             [nameof(UpdateAvailableTitle)] = "Update available",
             [nameof(UpdateAvailableMessage)] = """

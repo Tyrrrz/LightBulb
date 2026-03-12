@@ -143,6 +143,7 @@ public partial class LocalizationManager
             [nameof(TrayDisableFor5MinutesMenuItem)] = "На 5 хвилин",
             [nameof(TrayDisableFor1MinuteMenuItem)] = "На 1 хвилину",
             [nameof(TrayExitMenuItem)] = "Вийти",
+            [nameof(TrayTooltipDisabled)] = "Вимкнено",
             [nameof(UpdateAvailableTitle)] = "Доступне оновлення",
             [nameof(UpdateAvailableMessage)] = """
                 Оновлення до {0} v{1} завантажено.

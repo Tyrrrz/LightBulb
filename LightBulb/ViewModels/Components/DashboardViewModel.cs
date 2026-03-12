@@ -48,6 +48,13 @@ public partial class DashboardViewModel : ViewModelBase
         _externalApplicationService = externalApplicationService;
 
         _eventRoot.Add(
+            localizationManager.WatchProperty(
+                o => o.Language,
+                () => OnPropertyChanged(nameof(TrayTooltip))
+            )
+        );
+
+        _eventRoot.Add(
             this.WatchProperty(
                 o => o.IsEnabled,
                 () =>
@@ -121,7 +128,7 @@ public partial class DashboardViewModel : ViewModelBase
                 ? CurrentConfiguration.Temperature.ToString("F0")
                     + " / "
                     + CurrentConfiguration.Brightness.ToString("P0")
-                : "Disabled"
+                : LocalizationManager.TrayTooltipDisabled
         );
 
     [ObservableProperty]
