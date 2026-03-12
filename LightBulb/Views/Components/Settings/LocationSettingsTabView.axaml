@@ -29,18 +29,19 @@
             IsVisible="{Binding IsManualSunriseSunsetEnabled}"
             Orientation="Vertical">
             <!--  Sunrise time  -->
-            <DockPanel>
-                <TextBox
-                    MinWidth="24"
-                    HorizontalAlignment="Right"
-                    DockPanel.Dock="Right"
-                    Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
-                    Theme="{DynamicResource CompactTextBox}" />
+            <Grid ColumnDefinitions="*,Auto">
                 <TextBlock
-                    DockPanel.Dock="Left"
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
                     Text="{Binding LocalizationManager.SunriseTimeLabel}"
                     TextTrimming="CharacterEllipsis" />
-            </DockPanel>
+                <TextBox
+                    Grid.Column="1"
+                    MinWidth="24"
+                    VerticalAlignment="Center"
+                    Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                    Theme="{DynamicResource CompactTextBox}" />
+            </Grid>
             <Slider
                 Margin="0,12,0,0"
                 LargeChange="0.5"
@@ -50,18 +51,19 @@
                 Value="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}" />
 
             <!--  Sunset time  -->
-            <DockPanel Margin="0,16,0,0">
-                <TextBox
-                    MinWidth="24"
-                    HorizontalAlignment="Right"
-                    DockPanel.Dock="Right"
-                    Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
-                    Theme="{DynamicResource CompactTextBox}" />
+            <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto">
                 <TextBlock
-                    DockPanel.Dock="Left"
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
                     Text="{Binding LocalizationManager.SunsetTimeLabel}"
                     TextTrimming="CharacterEllipsis" />
-            </DockPanel>
+                <TextBox
+                    Grid.Column="1"
+                    MinWidth="24"
+                    VerticalAlignment="Center"
+                    Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                    Theme="{DynamicResource CompactTextBox}" />
+            </Grid>
             <Slider
                 Margin="0,12,0,0"
                 LargeChange="0.5"
