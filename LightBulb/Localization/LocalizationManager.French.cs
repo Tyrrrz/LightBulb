@@ -11,9 +11,10 @@ public partial class LocalizationManager
     {
         [nameof(SunsetLabel)] = "Coucher de soleil",
         [nameof(SunriseLabel)] = "Lever de soleil",
-        [nameof(SunsetTransitionStartsAt)] = "La transition du coucher de soleil commence à",
-        [nameof(SunriseTransitionStartsAt)] = "La transition du lever de soleil commence à",
-        [nameof(AndEndsAt)] = "et se termine à",
+        [nameof(SunsetTransitionTooltip)] =
+            "La transition du coucher de soleil commence à **{0}** et se termine à **{1}**",
+        [nameof(SunriseTransitionTooltip)] =
+            "La transition du lever de soleil commence à **{0}** et se termine à **{1}**",
         [nameof(OffsetTooltipHeader)] =
             "Les valeurs actuelles de température et de luminosité sont ajustées par un décalage :",
         [nameof(TemperatureOffsetLabel)] = "Décalage de température :",

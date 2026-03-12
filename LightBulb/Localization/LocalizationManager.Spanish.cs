@@ -9,9 +9,10 @@ public partial class LocalizationManager
         {
             [nameof(SunsetLabel)] = "Puesta de sol",
             [nameof(SunriseLabel)] = "Amanecer",
-            [nameof(SunsetTransitionStartsAt)] = "La transición del atardecer comienza a las",
-            [nameof(SunriseTransitionStartsAt)] = "La transición del amanecer comienza a las",
-            [nameof(AndEndsAt)] = "y termina a las",
+            [nameof(SunsetTransitionTooltip)] =
+                "La transición del atardecer comienza a las **{0}** y termina a las **{1}**",
+            [nameof(SunriseTransitionTooltip)] =
+                "La transición del amanecer comienza a las **{0}** y termina a las **{1}**",
             [nameof(OffsetTooltipHeader)] =
                 "Los valores actuales de temperatura y brillo están ajustados por un desplazamiento:",
             [nameof(TemperatureOffsetLabel)] = "Desplazamiento de temperatura:",

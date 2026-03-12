@@ -11,9 +11,10 @@ public partial class LocalizationManager
     {
         [nameof(SunsetLabel)] = "Sonnenuntergang",
         [nameof(SunriseLabel)] = "Sonnenaufgang",
-        [nameof(SunsetTransitionStartsAt)] = "Sonnenuntergangsübergang beginnt um",
-        [nameof(SunriseTransitionStartsAt)] = "Sonnenaufgangsübergang beginnt um",
-        [nameof(AndEndsAt)] = "und endet um",
+        [nameof(SunsetTransitionTooltip)] =
+            "Sonnenuntergangsübergang beginnt um **{0}** und endet um **{1}**",
+        [nameof(SunriseTransitionTooltip)] =
+            "Sonnenaufgangsübergang beginnt um **{0}** und endet um **{1}**",
         [nameof(OffsetTooltipHeader)] =
             "Aktuelle Temperatur- und Helligkeitswerte werden durch einen Versatz angepasst:",
         [nameof(TemperatureOffsetLabel)] = "Temperaturversatz:",
