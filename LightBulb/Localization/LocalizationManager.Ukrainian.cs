@@ -22,7 +22,7 @@ public partial class LocalizationManager
             [nameof(HideToTrayTooltip)] = "Сховати LightBulb у системний трей",
             [nameof(PreviewText)] = "ДЕМОНСТРАЦІЯ",
             [nameof(StopPreviewTooltip)] = "Зупинити демонстрацію",
-            [nameof(StartPreviewTooltip)] = "Демонстрація 24-годинного циклу",
+            [nameof(StartPreviewTooltip)] = "Запустити демонстрацію 24-годинного циклу",
             [nameof(SettingsText)] = "НАЛАШТУВАННЯ",
             [nameof(OpenSettingsTooltip)] = "Відкрити налаштування",
             [nameof(AboutText)] = "GITHUB",
