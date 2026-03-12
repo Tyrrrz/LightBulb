@@ -7,7 +7,6 @@
     xmlns:materialAssists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:materialStyles="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
-    xmlns:lightBulb="clr-namespace:LightBulb"
     xmlns:sys="clr-namespace:System;assembly=System.Runtime"
     Name="LightBulb"
     ActualThemeVariantChanged="Application_OnActualThemeVariantChanged">
@@ -22,7 +21,7 @@
                 x:CompileBindings="False"
                 Command="{Binding ToggleWindowCommand, Source={StaticResource MainViewModel}}"
                 Icon="/favicon.ico"
-                ToolTipText="{x:Static lightBulb:Program.Name}">
+                ToolTipText="{Binding Dashboard.TrayTooltip, Source={StaticResource MainViewModel}}">
                 <TrayIcon.Menu>
                     <NativeMenu>
                         <NativeMenuItem
