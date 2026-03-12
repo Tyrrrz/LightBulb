@@ -7,8 +7,8 @@ public partial class LocalizationManager
     private static readonly IReadOnlyDictionary<string, string> UkrainianLocalization =
         new Dictionary<string, string>
         {
-            [nameof(SunsetLabel)] = "Захід сонця",
-            [nameof(SunriseLabel)] = "Схід сонця",
+            [nameof(SunsetLabel)] = "Захід",
+            [nameof(SunriseLabel)] = "Схід",
             [nameof(SunsetTransitionTooltip)] =
                 "Перехід до заходу сонця починається о **{0}** і закінчується о **{1}**",
             [nameof(SunriseTransitionTooltip)] =
@@ -26,8 +26,6 @@ public partial class LocalizationManager
             [nameof(StartPreviewTooltip)] = "Запустити демонстрацію 24-годинного циклу",
             [nameof(SettingsText)] = "НАЛАШТУВАННЯ",
             [nameof(OpenSettingsTooltip)] = "Відкрити налаштування",
-            [nameof(AboutText)] = "GITHUB",
-            [nameof(OpenGitHubTooltip)] = "Відкрити LightBulb на GitHub",
             [nameof(ResetButton)] = "СКИНУТИ",
             [nameof(ResetTooltip)] = "Скинути всі налаштування до типових",
             [nameof(CancelButton)] = "СКАСУВАТИ",

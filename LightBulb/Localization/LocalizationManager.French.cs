@@ -9,8 +9,8 @@ public partial class LocalizationManager
         string
     >
     {
-        [nameof(SunsetLabel)] = "Coucher de soleil",
-        [nameof(SunriseLabel)] = "Lever de soleil",
+        [nameof(SunsetLabel)] = "Coucher",
+        [nameof(SunriseLabel)] = "Lever",
         [nameof(SunsetTransitionTooltip)] =
             "La transition du coucher de soleil commence à **{0}** et se termine à **{1}**",
         [nameof(SunriseTransitionTooltip)] =
@@ -28,8 +28,6 @@ public partial class LocalizationManager
         [nameof(StartPreviewTooltip)] = "Aperçu du cycle de 24 heures",
         [nameof(SettingsText)] = "PARAMÈTRES",
         [nameof(OpenSettingsTooltip)] = "Ouvrir les paramètres",
-        [nameof(AboutText)] = "GITHUB",
-        [nameof(OpenGitHubTooltip)] = "Ouvrir LightBulb sur GitHub",
         [nameof(ResetButton)] = "RÉINITIALISER",
         [nameof(ResetTooltip)] = "Réinitialiser tous les paramètres à leurs valeurs par défaut",
         [nameof(CancelButton)] = "ANNULER",

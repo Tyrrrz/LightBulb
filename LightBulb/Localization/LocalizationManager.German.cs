@@ -9,8 +9,8 @@ public partial class LocalizationManager
         string
     >
     {
-        [nameof(SunsetLabel)] = "Sonnenuntergang",
-        [nameof(SunriseLabel)] = "Sonnenaufgang",
+        [nameof(SunsetLabel)] = "Untergang",
+        [nameof(SunriseLabel)] = "Aufgang",
         [nameof(SunsetTransitionTooltip)] =
             "Sonnenuntergangsübergang beginnt um **{0}** und endet um **{1}**",
         [nameof(SunriseTransitionTooltip)] =
@@ -28,8 +28,6 @@ public partial class LocalizationManager
         [nameof(StartPreviewTooltip)] = "24-Stunden-Zyklus vorschauen",
         [nameof(SettingsText)] = "EINSTELLUNGEN",
         [nameof(OpenSettingsTooltip)] = "Einstellungen öffnen",
-        [nameof(AboutText)] = "GITHUB",
-        [nameof(OpenGitHubTooltip)] = "LightBulb auf GitHub öffnen",
         [nameof(ResetButton)] = "ZURÜCKSETZEN",
         [nameof(ResetTooltip)] = "Alle Einstellungen auf die Standardwerte zurücksetzen",
         [nameof(CancelButton)] = "ABBRECHEN",

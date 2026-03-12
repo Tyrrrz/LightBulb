@@ -6,72 +6,104 @@
     x:DataType="settings:AdvancedSettingsTabViewModel">
     <StackPanel Margin="16" Orientation="Vertical">
         <!--  Theme  -->
-        <DockPanel LastChildFill="False" ToolTip.Tip="{Binding LocalizationManager.ThemeTooltip}">
-            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.ThemeLabel}" />
+        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.ThemeTooltip}">
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="{Binding LocalizationManager.ThemeLabel}"
+                TextTrimming="CharacterEllipsis" />
             <ComboBox
-                DockPanel.Dock="Right"
+                Grid.Column="1"
                 ItemsSource="{Binding AvailableThemes}"
                 SelectedItem="{Binding Theme}" />
-        </DockPanel>
+        </Grid>
 
         <!--  Language  -->
-        <DockPanel Margin="0,16,0,0" LastChildFill="False" ToolTip.Tip="{Binding LocalizationManager.LanguageTooltip}">
-            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.LanguageLabel}" />
-            <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding Language}" />
-        </DockPanel>
+        <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.LanguageTooltip}">
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="{Binding LocalizationManager.LanguageLabel}"
+                TextTrimming="CharacterEllipsis" />
+            <ComboBox Grid.Column="1" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding Language}" />
+        </Grid>
 
         <!--  Auto start  -->
-        <DockPanel
+        <Grid
             Margin="0,16,0,0"
-            LastChildFill="False"
+            ColumnDefinitions="*,Auto"
             ToolTip.Tip="{Binding LocalizationManager.StartWithWindowsTooltip}">
-            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.StartWithWindowsLabel}" />
-            <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsAutoStartEnabled}" />
-        </DockPanel>
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="{Binding LocalizationManager.StartWithWindowsLabel}"
+                TextTrimming="CharacterEllipsis" />
+            <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsAutoStartEnabled}" />
+        </Grid>
 
         <!--  Auto update  -->
-        <DockPanel
+        <Grid
             Margin="0,16,0,0"
-            LastChildFill="False"
+            ColumnDefinitions="*,Auto"
             ToolTip.Tip="{Binding LocalizationManager.AutoUpdateTooltip}">
-            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.AutoUpdateLabel}" />
-            <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsAutoUpdateEnabled}" />
-        </DockPanel>
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="{Binding LocalizationManager.AutoUpdateLabel}"
+                TextTrimming="CharacterEllipsis" />
+            <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsAutoUpdateEnabled}" />
+        </Grid>
 
         <!--  Default to day time  -->
-        <DockPanel
+        <Grid
             Margin="0,16,0,0"
-            LastChildFill="False"
+            ColumnDefinitions="*,Auto"
             ToolTip.Tip="{Binding LocalizationManager.DefaultToDayConfigTooltip}">
-            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.DefaultToDayConfigLabel}" />
-            <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsDefaultToDayConfigurationEnabled}" />
-        </DockPanel>
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="{Binding LocalizationManager.DefaultToDayConfigLabel}"
+                TextTrimming="CharacterEllipsis" />
+            <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsDefaultToDayConfigurationEnabled}" />
+        </Grid>
 
         <!--  Pause when full screen  -->
-        <DockPanel
+        <Grid
             Margin="0,16,0,0"
-            LastChildFill="False"
+            ColumnDefinitions="*,Auto"
             ToolTip.Tip="{Binding LocalizationManager.PauseWhenFullscreenTooltip}">
-            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.PauseWhenFullscreenLabel}" />
-            <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsPauseWhenFullScreenEnabled}" />
-        </DockPanel>
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="{Binding LocalizationManager.PauseWhenFullscreenLabel}"
+                TextTrimming="CharacterEllipsis" />
+            <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsPauseWhenFullScreenEnabled}" />
+        </Grid>
 
         <!--  Configuration smoothing  -->
-        <DockPanel
+        <Grid
             Margin="0,16,0,0"
-            LastChildFill="False"
+            ColumnDefinitions="*,Auto"
             ToolTip.Tip="{Binding LocalizationManager.GammaSmoothingTooltip}">
-            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.GammaSmoothingLabel}" />
-            <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsConfigurationSmoothingEnabled}" />
-        </DockPanel>
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="{Binding LocalizationManager.GammaSmoothingLabel}"
+                TextTrimming="CharacterEllipsis" />
+            <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsConfigurationSmoothingEnabled}" />
+        </Grid>
 
         <!--  Gamma polling  -->
-        <DockPanel
+        <Grid
             Margin="0,16,0,0"
-            LastChildFill="False"
+            ColumnDefinitions="*,Auto"
             ToolTip.Tip="{Binding LocalizationManager.GammaPollingTooltip}">
-            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.GammaPollingLabel}" />
-            <ToggleSwitch DockPanel.Dock="Right" IsChecked="{Binding IsGammaPollingEnabled}" />
-        </DockPanel>
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="{Binding LocalizationManager.GammaPollingLabel}"
+                TextTrimming="CharacterEllipsis" />
+            <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsGammaPollingEnabled}" />
+        </Grid>
     </StackPanel>
 </UserControl>

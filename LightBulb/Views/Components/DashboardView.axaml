@@ -13,10 +13,12 @@
         <!--  Sunset time  -->
         <TextBlock
             Grid.Column="0"
+            Margin="4,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="19"
-            TextAlignment="Center">
+            TextAlignment="Center"
+            TextTrimming="CharacterEllipsis">
             <ToolTip.Tip>
                 <TextBlock Inlines="{Binding SunsetTransitionTooltip, Converter={x:Static converters:MarkdownToInlinesConverter.Instance}}" />
             </ToolTip.Tip>
@@ -58,7 +60,7 @@
                 </ResourceDictionary>
             </Panel.Resources>
 
-            <!--  Night time arc  -->
+            <!--  Night-time arc  -->
             <controls:Arc
                 Width="180"
                 Height="180"
@@ -74,7 +76,7 @@
                 Stroke="{DynamicResource SundialNightBrush}"
                 StrokeThickness="26" />
 
-            <!--  Day time arc  -->
+            <!--  Day-time arc  -->
             <controls:Arc
                 Width="180"
                 Height="180"
@@ -210,10 +212,12 @@
         <!--  Sunrise time  -->
         <TextBlock
             Grid.Column="2"
+            Margin="4,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="19"
-            TextAlignment="Center">
+            TextAlignment="Center"
+            TextTrimming="CharacterEllipsis">
             <ToolTip.Tip>
                 <TextBlock Inlines="{Binding SunriseTransitionTooltip, Converter={x:Static converters:MarkdownToInlinesConverter.Instance}}" />
             </ToolTip.Tip>

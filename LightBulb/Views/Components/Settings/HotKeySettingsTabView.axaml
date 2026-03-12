@@ -7,94 +7,101 @@
     x:DataType="settings:HotKeySettingsTabViewModel">
     <StackPanel Margin="16" Orientation="Vertical">
         <!--  Toggle hotkey  -->
-        <DockPanel>
+        <Grid ColumnDefinitions="*,Auto">
             <TextBlock
-                DockPanel.Dock="Left"
+                Grid.Column="0"
+                VerticalAlignment="Center"
                 Text="{Binding LocalizationManager.ToggleLightBulbHotkeyLabel}"
+                TextTrimming="CharacterEllipsis"
                 ToolTip.Tip="{Binding LocalizationManager.ToggleLightBulbHotkeyTooltip}" />
             <controls:HotKeyTextBox
+                Grid.Column="1"
                 Width="120"
-                HorizontalAlignment="Right"
-                DockPanel.Dock="Right"
                 HotKey="{Binding ToggleHotKey}" />
-        </DockPanel>
+        </Grid>
 
         <!--  Toggle window hotkey  -->
-        <DockPanel Margin="0,16,0,0">
+        <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto">
             <TextBlock
-                DockPanel.Dock="Left"
+                Grid.Column="0"
+                VerticalAlignment="Center"
                 Text="{Binding LocalizationManager.ToggleWindowLabel}"
+                TextTrimming="CharacterEllipsis"
                 ToolTip.Tip="{Binding LocalizationManager.ToggleWindowHotkeyTooltip}" />
             <controls:HotKeyTextBox
+                Grid.Column="1"
                 Width="120"
-                HorizontalAlignment="Right"
-                DockPanel.Dock="Right"
                 HotKey="{Binding ToggleWindowHotKey}" />
-        </DockPanel>
+        </Grid>
 
         <!--  Increase temperature offset hotkey  -->
-        <DockPanel Margin="0,16,0,0">
+        <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto">
             <TextBlock
-                DockPanel.Dock="Left"
+                Grid.Column="0"
+                VerticalAlignment="Center"
                 Text="{Binding LocalizationManager.IncreaseTemperatureOffsetLabel}"
+                TextTrimming="CharacterEllipsis"
                 ToolTip.Tip="{Binding LocalizationManager.IncreaseTemperatureOffsetTooltip}" />
             <controls:HotKeyTextBox
+                Grid.Column="1"
                 Width="120"
-                HorizontalAlignment="Right"
-                DockPanel.Dock="Right"
                 HotKey="{Binding IncreaseTemperatureOffsetHotKey}" />
-        </DockPanel>
+        </Grid>
 
         <!--  Decrease temperature offset hotkey  -->
-        <DockPanel Margin="0,16,0,0">
+        <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto">
             <TextBlock
-                DockPanel.Dock="Left"
+                Grid.Column="0"
+                VerticalAlignment="Center"
                 Text="{Binding LocalizationManager.DecreaseTemperatureOffsetLabel}"
+                TextTrimming="CharacterEllipsis"
                 ToolTip.Tip="{Binding LocalizationManager.DecreaseTemperatureOffsetTooltip}" />
             <controls:HotKeyTextBox
+                Grid.Column="1"
                 Width="120"
-                HorizontalAlignment="Right"
-                DockPanel.Dock="Right"
                 HotKey="{Binding DecreaseTemperatureOffsetHotKey}" />
-        </DockPanel>
+        </Grid>
 
         <!--  Increase brightness offset hotkey  -->
-        <DockPanel Margin="0,16,0,0">
+        <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto">
             <TextBlock
-                DockPanel.Dock="Left"
+                Grid.Column="0"
+                VerticalAlignment="Center"
                 Text="{Binding LocalizationManager.IncreaseBrightnessOffsetLabel}"
+                TextTrimming="CharacterEllipsis"
                 ToolTip.Tip="{Binding LocalizationManager.IncreaseBrightnessOffsetTooltip}" />
             <controls:HotKeyTextBox
+                Grid.Column="1"
                 Width="120"
-                HorizontalAlignment="Right"
-                DockPanel.Dock="Right"
                 HotKey="{Binding IncreaseBrightnessOffsetHotKey}" />
-        </DockPanel>
+        </Grid>
 
         <!--  Decrease brightness offset hotkey  -->
-        <DockPanel Margin="0,16,0,0">
+        <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto">
             <TextBlock
-                DockPanel.Dock="Left"
+                Grid.Column="0"
+                VerticalAlignment="Center"
                 Text="{Binding LocalizationManager.DecreaseBrightnessOffsetLabel}"
+                TextTrimming="CharacterEllipsis"
                 ToolTip.Tip="{Binding LocalizationManager.DecreaseBrightnessOffsetTooltip}" />
             <controls:HotKeyTextBox
+                Grid.Column="1"
                 Width="120"
-                HorizontalAlignment="Right"
-                DockPanel.Dock="Right"
                 HotKey="{Binding DecreaseBrightnessOffsetHotKey}" />
-        </DockPanel>
+        </Grid>
 
         <!--  Reset offset hotkey  -->
-        <DockPanel Margin="0,16,0,0">
+        <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto">
             <TextBlock
-                DockPanel.Dock="Left"
+                Grid.Column="0"
+                VerticalAlignment="Center"
                 Text="{Binding LocalizationManager.ResetOffsetLabel}"
+                TextTrimming="CharacterEllipsis"
                 ToolTip.Tip="{Binding LocalizationManager.ResetOffsetHotkeyTooltip}" />
             <controls:HotKeyTextBox
+                Grid.Column="1"
                 Width="120"
-                HorizontalAlignment="Right"
-                DockPanel.Dock="Right"
                 HotKey="{Binding ResetConfigurationOffsetHotKey}" />
-        </DockPanel>
+        </Grid>
     </StackPanel>
 </UserControl>

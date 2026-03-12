@@ -7,7 +7,7 @@ public partial class LocalizationManager
     private static readonly IReadOnlyDictionary<string, string> SpanishLocalization =
         new Dictionary<string, string>
         {
-            [nameof(SunsetLabel)] = "Puesta de sol",
+            [nameof(SunsetLabel)] = "Puesta",
             [nameof(SunriseLabel)] = "Amanecer",
             [nameof(SunsetTransitionTooltip)] =
                 "La transición del atardecer comienza a las **{0}** y termina a las **{1}**",
@@ -26,8 +26,6 @@ public partial class LocalizationManager
             [nameof(StartPreviewTooltip)] = "Vista previa del ciclo de 24 horas",
             [nameof(SettingsText)] = "AJUSTES",
             [nameof(OpenSettingsTooltip)] = "Abrir ajustes",
-            [nameof(AboutText)] = "GITHUB",
-            [nameof(OpenGitHubTooltip)] = "Abrir LightBulb en GitHub",
             [nameof(ResetButton)] = "RESTABLECER",
             [nameof(ResetTooltip)] = "Restablecer todos los ajustes a sus valores predeterminados",
             [nameof(CancelButton)] = "CANCELAR",
