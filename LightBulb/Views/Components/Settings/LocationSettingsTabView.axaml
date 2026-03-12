@@ -30,13 +30,16 @@
             Orientation="Vertical">
             <!--  Sunrise time  -->
             <DockPanel>
-                <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.SunriseTimeLabel}" />
                 <TextBox
                     MinWidth="24"
                     HorizontalAlignment="Right"
                     DockPanel.Dock="Right"
                     Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
                     Theme="{DynamicResource CompactTextBox}" />
+                <TextBlock
+                    DockPanel.Dock="Left"
+                    Text="{Binding LocalizationManager.SunriseTimeLabel}"
+                    TextTrimming="CharacterEllipsis" />
             </DockPanel>
             <Slider
                 Margin="0,12,0,0"
@@ -48,13 +51,16 @@
 
             <!--  Sunset time  -->
             <DockPanel Margin="0,16,0,0">
-                <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.SunsetTimeLabel}" />
                 <TextBox
                     MinWidth="24"
                     HorizontalAlignment="Right"
                     DockPanel.Dock="Right"
                     Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
                     Theme="{DynamicResource CompactTextBox}" />
+                <TextBlock
+                    DockPanel.Dock="Left"
+                    Text="{Binding LocalizationManager.SunsetTimeLabel}"
+                    TextTrimming="CharacterEllipsis" />
             </DockPanel>
             <Slider
                 Margin="0,12,0,0"

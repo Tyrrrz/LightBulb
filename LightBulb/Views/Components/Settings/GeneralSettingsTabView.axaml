@@ -8,13 +8,16 @@
     <StackPanel Margin="16" Orientation="Vertical">
         <!--  Day temperature  -->
         <DockPanel ToolTip.Tip="{Binding LocalizationManager.DayTemperatureTooltip}">
-            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.DayTemperatureLabel}" />
             <TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
                 Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
                 Theme="{DynamicResource CompactTextBox}" />
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="{Binding LocalizationManager.DayTemperatureLabel}"
+                TextTrimming="CharacterEllipsis" />
         </DockPanel>
         <Slider
             Margin="0,12,0,0"
@@ -28,13 +31,16 @@
 
         <!--  Night temperature  -->
         <DockPanel Margin="0,24,0,0" ToolTip.Tip="{Binding LocalizationManager.NightTemperatureTooltip}">
-            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.NightTemperatureLabel}" />
             <TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
                 Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
                 Theme="{DynamicResource CompactTextBox}" />
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="{Binding LocalizationManager.NightTemperatureLabel}"
+                TextTrimming="CharacterEllipsis" />
         </DockPanel>
         <Slider
             Margin="0,12,0,0"
@@ -51,13 +57,16 @@
             <ToolTip.Tip>
                 <TextBlock MaxWidth="350" Text="{Binding LocalizationManager.DayBrightnessTooltip}" TextWrapping="Wrap" />
             </ToolTip.Tip>
-            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.DayBrightnessLabel}" />
             <TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
                 Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
                 Theme="{DynamicResource CompactTextBox}" />
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="{Binding LocalizationManager.DayBrightnessLabel}"
+                TextTrimming="CharacterEllipsis" />
         </DockPanel>
         <Slider
             Margin="0,12,0,0"
@@ -74,13 +83,16 @@
             <ToolTip.Tip>
                 <TextBlock MaxWidth="350" Text="{Binding LocalizationManager.NightBrightnessTooltip}" TextWrapping="Wrap" />
             </ToolTip.Tip>
-            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.NightBrightnessLabel}" />
             <TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
                 Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
                 Theme="{DynamicResource CompactTextBox}" />
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="{Binding LocalizationManager.NightBrightnessLabel}"
+                TextTrimming="CharacterEllipsis" />
         </DockPanel>
         <Slider
             Margin="0,12,0,0"
@@ -94,13 +106,16 @@
 
         <!--  Configuration transition duration  -->
         <DockPanel Margin="0,24,0,0" ToolTip.Tip="{Binding LocalizationManager.TransitionDurationTooltip}">
-            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.TransitionDurationLabel}" />
             <TextBox
                 MinWidth="48"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
                 Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
                 Theme="{DynamicResource CompactTextBox}" />
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="{Binding LocalizationManager.TransitionDurationLabel}"
+                TextTrimming="CharacterEllipsis" />
         </DockPanel>
         <Slider
             Margin="0,12,0,0"
@@ -112,13 +127,16 @@
 
         <!--  Configuration transition offset  -->
         <DockPanel Margin="0,24,0,0" ToolTip.Tip="{Binding LocalizationManager.TransitionOffsetTooltip}">
-            <TextBlock DockPanel.Dock="Left" Text="{Binding LocalizationManager.TransitionOffsetLabel}" />
             <TextBox
                 MinWidth="24"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
                 Text="{Binding ConfigurationTransitionOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
                 Theme="{DynamicResource CompactTextBox}" />
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="{Binding LocalizationManager.TransitionOffsetLabel}"
+                TextTrimming="CharacterEllipsis" />
         </DockPanel>
         <Slider
             Margin="0,12,0,0"

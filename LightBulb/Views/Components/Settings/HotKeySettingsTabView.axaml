@@ -8,93 +8,100 @@
     <StackPanel Margin="16" Orientation="Vertical">
         <!--  Toggle hotkey  -->
         <DockPanel>
-            <TextBlock
-                DockPanel.Dock="Left"
-                Text="{Binding LocalizationManager.ToggleLightBulbHotkeyLabel}"
-                ToolTip.Tip="{Binding LocalizationManager.ToggleLightBulbHotkeyTooltip}" />
             <controls:HotKeyTextBox
                 Width="120"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
                 HotKey="{Binding ToggleHotKey}" />
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="{Binding LocalizationManager.ToggleLightBulbHotkeyLabel}"
+                TextTrimming="CharacterEllipsis"
+                ToolTip.Tip="{Binding LocalizationManager.ToggleLightBulbHotkeyTooltip}" />
         </DockPanel>
 
         <!--  Toggle window hotkey  -->
         <DockPanel Margin="0,16,0,0">
-            <TextBlock
-                DockPanel.Dock="Left"
-                Text="{Binding LocalizationManager.ToggleWindowLabel}"
-                ToolTip.Tip="{Binding LocalizationManager.ToggleWindowHotkeyTooltip}" />
             <controls:HotKeyTextBox
                 Width="120"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
                 HotKey="{Binding ToggleWindowHotKey}" />
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="{Binding LocalizationManager.ToggleWindowLabel}"
+                TextTrimming="CharacterEllipsis"
+                ToolTip.Tip="{Binding LocalizationManager.ToggleWindowHotkeyTooltip}" />
         </DockPanel>
 
         <!--  Increase temperature offset hotkey  -->
         <DockPanel Margin="0,16,0,0">
-            <TextBlock
-                DockPanel.Dock="Left"
-                Text="{Binding LocalizationManager.IncreaseTemperatureOffsetLabel}"
-                ToolTip.Tip="{Binding LocalizationManager.IncreaseTemperatureOffsetTooltip}" />
             <controls:HotKeyTextBox
                 Width="120"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
                 HotKey="{Binding IncreaseTemperatureOffsetHotKey}" />
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="{Binding LocalizationManager.IncreaseTemperatureOffsetLabel}"
+                TextTrimming="CharacterEllipsis"
+                ToolTip.Tip="{Binding LocalizationManager.IncreaseTemperatureOffsetTooltip}" />
         </DockPanel>
 
         <!--  Decrease temperature offset hotkey  -->
         <DockPanel Margin="0,16,0,0">
-            <TextBlock
-                DockPanel.Dock="Left"
-                Text="{Binding LocalizationManager.DecreaseTemperatureOffsetLabel}"
-                ToolTip.Tip="{Binding LocalizationManager.DecreaseTemperatureOffsetTooltip}" />
             <controls:HotKeyTextBox
                 Width="120"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
                 HotKey="{Binding DecreaseTemperatureOffsetHotKey}" />
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="{Binding LocalizationManager.DecreaseTemperatureOffsetLabel}"
+                TextTrimming="CharacterEllipsis"
+                ToolTip.Tip="{Binding LocalizationManager.DecreaseTemperatureOffsetTooltip}" />
         </DockPanel>
 
         <!--  Increase brightness offset hotkey  -->
         <DockPanel Margin="0,16,0,0">
-            <TextBlock
-                DockPanel.Dock="Left"
-                Text="{Binding LocalizationManager.IncreaseBrightnessOffsetLabel}"
-                ToolTip.Tip="{Binding LocalizationManager.IncreaseBrightnessOffsetTooltip}" />
             <controls:HotKeyTextBox
                 Width="120"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
                 HotKey="{Binding IncreaseBrightnessOffsetHotKey}" />
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="{Binding LocalizationManager.IncreaseBrightnessOffsetLabel}"
+                TextTrimming="CharacterEllipsis"
+                ToolTip.Tip="{Binding LocalizationManager.IncreaseBrightnessOffsetTooltip}" />
         </DockPanel>
 
         <!--  Decrease brightness offset hotkey  -->
         <DockPanel Margin="0,16,0,0">
-            <TextBlock
-                DockPanel.Dock="Left"
-                Text="{Binding LocalizationManager.DecreaseBrightnessOffsetLabel}"
-                ToolTip.Tip="{Binding LocalizationManager.DecreaseBrightnessOffsetTooltip}" />
             <controls:HotKeyTextBox
                 Width="120"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
                 HotKey="{Binding DecreaseBrightnessOffsetHotKey}" />
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="{Binding LocalizationManager.DecreaseBrightnessOffsetLabel}"
+                TextTrimming="CharacterEllipsis"
+                ToolTip.Tip="{Binding LocalizationManager.DecreaseBrightnessOffsetTooltip}" />
         </DockPanel>
 
         <!--  Reset offset hotkey  -->
         <DockPanel Margin="0,16,0,0">
-            <TextBlock
-                DockPanel.Dock="Left"
-                Text="{Binding LocalizationManager.ResetOffsetLabel}"
-                ToolTip.Tip="{Binding LocalizationManager.ResetOffsetHotkeyTooltip}" />
             <controls:HotKeyTextBox
                 Width="120"
                 HorizontalAlignment="Right"
                 DockPanel.Dock="Right"
                 HotKey="{Binding ResetConfigurationOffsetHotKey}" />
+            <TextBlock
+                DockPanel.Dock="Left"
+                Text="{Binding LocalizationManager.ResetOffsetLabel}"
+                TextTrimming="CharacterEllipsis"
+                ToolTip.Tip="{Binding LocalizationManager.ResetOffsetHotkeyTooltip}" />
         </DockPanel>
     </StackPanel>
 </UserControl>

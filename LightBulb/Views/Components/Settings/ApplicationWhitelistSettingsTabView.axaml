@@ -15,7 +15,8 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.AppWhitelistLabel}" />
+                Text="{Binding LocalizationManager.AppWhitelistLabel}"
+                TextTrimming="CharacterEllipsis" />
 
             <!--  Refresh  -->
             <Button
