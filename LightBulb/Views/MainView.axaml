@@ -99,7 +99,10 @@
                     Content="{Binding Dashboard}" />
 
                 <!--  Buttons  -->
-                <UniformGrid Grid.Row="2" Columns="2">
+                <UniformGrid
+                    Grid.Row="2"
+                    Margin="8,0"
+                    Columns="2">
                     <!--  Start/stop cycle preview  -->
                     <ToggleButton
                         Margin="8"

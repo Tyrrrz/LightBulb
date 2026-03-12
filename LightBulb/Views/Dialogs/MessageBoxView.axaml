@@ -33,11 +33,11 @@
 
         <UniformGrid
             Grid.Row="2"
-            Margin="16"
+            Margin="8"
             Columns="{Binding ButtonsCount}">
             <!--  OK  -->
             <Button
-                Margin="0,0,4,0"
+                Margin="8"
                 HorizontalContentAlignment="Stretch"
                 Command="{Binding CloseCommand}"
                 IsDefault="True"
@@ -55,7 +55,7 @@
 
             <!--  Cancel  -->
             <Button
-                Margin="4,0,0,0"
+                Margin="8"
                 HorizontalContentAlignment="Stretch"
                 Command="{Binding CloseCommand}"
                 IsCancel="True"

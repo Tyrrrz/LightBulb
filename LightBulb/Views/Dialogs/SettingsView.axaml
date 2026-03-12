@@ -62,10 +62,13 @@
                 Fill="{DynamicResource MaterialDividerBrush}" />
 
             <!--  Buttons  -->
-            <UniformGrid Grid.Row="2" Columns="3">
+            <UniformGrid
+                Grid.Row="2"
+                Margin="4"
+                Columns="3">
                 <!--  Reset  -->
                 <Button
-                    Margin="8"
+                    Margin="4"
                     HorizontalContentAlignment="Stretch"
                     Command="{Binding ResetCommand}"
                     Theme="{DynamicResource MaterialFlatButton}"
@@ -78,7 +81,7 @@
 
                 <!--  Cancel  -->
                 <Button
-                    Margin="8"
+                    Margin="4"
                     HorizontalContentAlignment="Stretch"
                     Command="{Binding CancelCommand}"
                     Theme="{DynamicResource MaterialFlatButton}"
@@ -91,7 +94,7 @@
 
                 <!--  Save  -->
                 <Button
-                    Margin="8"
+                    Margin="4"
                     HorizontalContentAlignment="Stretch"
                     Command="{Binding SaveCommand}"
                     Theme="{DynamicResource MaterialFlatButton}"
