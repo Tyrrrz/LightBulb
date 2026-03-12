@@ -116,7 +116,7 @@
                                 </Style>
                             </Style>
                         </Button.Styles>
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Grid ColumnDefinitions="Auto,*">
                             <materialIcons:MaterialIcon Width="24" Height="24">
                                 <materialIcons:MaterialIcon.Styles>
                                     <Style Selector="ToggleButton materialIcons|MaterialIcon">
@@ -128,11 +128,13 @@
                                 </materialIcons:MaterialIcon.Styles>
                             </materialIcons:MaterialIcon>
                             <TextBlock
+                                Grid.Column="1"
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
                                 Text="{Binding Dashboard.LocalizationManager.PreviewText}"
+                                TextAlignment="Center"
                                 TextTrimming="CharacterEllipsis" />
-                        </StackPanel>
+                        </Grid>
                     </ToggleButton>
 
                     <!--  Settings  -->
@@ -142,17 +144,19 @@
                         Command="{Binding ShowSettingsCommand}"
                         Theme="{DynamicResource MaterialFlatButton}"
                         ToolTip.Tip="{Binding Dashboard.LocalizationManager.OpenSettingsTooltip}">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Grid ColumnDefinitions="Auto,*">
                             <materialIcons:MaterialIcon
                                 Width="24"
                                 Height="24"
                                 Kind="Settings" />
                             <TextBlock
+                                Grid.Column="1"
                                 Margin="4,0,0,0"
                                 VerticalAlignment="Center"
                                 Text="{Binding Dashboard.LocalizationManager.SettingsText}"
+                                TextAlignment="Center"
                                 TextTrimming="CharacterEllipsis" />
-                        </StackPanel>
+                        </Grid>
                     </Button>
                 </UniformGrid>
             </Grid>
