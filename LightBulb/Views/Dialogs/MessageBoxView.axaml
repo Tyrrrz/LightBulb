@@ -54,7 +54,6 @@
 
             <!--  Cancel  -->
             <Button
-                Margin="16,0,0,0"
                 HorizontalContentAlignment="Stretch"
                 Command="{Binding CloseCommand}"
                 IsCancel="True"
