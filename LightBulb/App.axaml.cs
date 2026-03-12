@@ -87,13 +87,13 @@ public partial class App : Application, IDisposable
     {
         base.Initialize();
 
+        AvaloniaXamlLoader.Load(this);
+
         // Expose the main view model as an application resource so that
         // the TrayIcon bindings declared in App.axaml can reach it via
         // Source={StaticResource MainViewModel}, without polluting the
         // application-wide DataContext.
         Resources["MainViewModel"] = _mainViewModel;
-
-        AvaloniaXamlLoader.Load(this);
     }
 
     private void InitializeTheme()
