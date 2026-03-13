@@ -28,7 +28,6 @@ public partial class App : Application, IDisposable
 
     private readonly ServiceProvider _services;
     private readonly SettingsService _settingsService;
-    private readonly LocalizationManager _localizationManager;
     private readonly MainViewModel _mainViewModel;
 
     private bool _isDisposed;
@@ -63,7 +62,6 @@ public partial class App : Application, IDisposable
 
         _services = services.BuildServiceProvider(true);
         _settingsService = _services.GetRequiredService<SettingsService>();
-        _localizationManager = _services.GetRequiredService<LocalizationManager>();
         _mainViewModel = _services.GetRequiredService<ViewModelManager>().CreateMainViewModel();
 
         // Re-initialize the theme when the user changes it
@@ -83,8 +81,6 @@ public partial class App : Application, IDisposable
                 }
             )
         );
-
-        RegisterTrayIconEvents();
     }
 
     public override void Initialize()
@@ -92,6 +88,12 @@ public partial class App : Application, IDisposable
         base.Initialize();
 
         AvaloniaXamlLoader.Load(this);
+
+        // Expose the main view model as an application resource so that
+        // the DataContext="{DynamicResource MainViewModel}" binding on the
+        // controls:TrayIcon element in App.axaml can resolve without polluting
+        // the application-wide DataContext.
+        Resources["MainViewModel"] = _mainViewModel;
     }
 
     private void InitializeTheme()
@@ -146,9 +148,6 @@ public partial class App : Application, IDisposable
         // Set up custom theme colors
         InitializeTheme();
 
-        // Build the tray icon and menu in code so we hold direct references to each item
-        InitializeTrayIcon();
-
         // Load settings
         _settingsService.Load();
     }
@@ -167,11 +166,16 @@ public partial class App : Application, IDisposable
         else
         {
             var window = new MainView { DataContext = _mainViewModel };
-            window.Closed += (_, _) => desktopLifetime.MainWindow = null;
+            window.Closed += (_, _) =>
+            {
+                desktopLifetime.MainWindow = null;
+                _mainViewModel.Tray.IsWindowVisible = false;
+            };
             desktopLifetime.MainWindow = window;
             window.ShowActivateFocus();
         }
 
+        _mainViewModel.Tray.IsWindowVisible = true;
         return desktopLifetime.MainWindow;
     }
 
