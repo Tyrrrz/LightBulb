@@ -49,18 +49,6 @@ public partial class DashboardViewModel : ViewModelBase
         _externalApplicationService = externalApplicationService;
 
         _eventRoot.Add(
-            // Refresh tray icon tooltip when the language changes
-            localizationManager.WatchProperty(
-                o => o.Language,
-                () =>
-                {
-                    OnPropertyChanged(nameof(TrayTooltip));
-                    OnPropertyChanged(nameof(TrayToggleMenuItemHeader));
-                }
-            )
-        );
-
-        _eventRoot.Add(
             this.WatchProperty(
                 o => o.IsEnabled,
                 () =>
@@ -123,37 +111,17 @@ public partial class DashboardViewModel : ViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]
-    [NotifyPropertyChangedFor(nameof(TrayTooltip))]
-    [NotifyPropertyChangedFor(nameof(TrayToggleMenuItemHeader))]
     public partial bool IsEnabled { get; set; } = true;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]
-    [NotifyPropertyChangedFor(nameof(TrayTooltip))]
     public partial bool IsPaused { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]
-    [NotifyPropertyChangedFor(nameof(TrayTooltip))]
     public partial bool IsCyclePreviewEnabled { get; set; }
 
     public bool IsActive => IsEnabled && !IsPaused || IsCyclePreviewEnabled;
-
-    public string TrayTooltip =>
-        Program.Name
-        + Environment.NewLine
-        + (
-            IsActive
-                ? CurrentConfiguration.Temperature.ToString("F0")
-                    + " / "
-                    + CurrentConfiguration.Brightness.ToString("P0")
-                : LocalizationManager.TrayTooltipDisabled
-        );
-
-    public string TrayToggleMenuItemHeader =>
-        IsEnabled
-            ? LocalizationManager.TrayDisableOnlyMenuItem
-            : LocalizationManager.TrayEnableMenuItem;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(SolarTimes))]
@@ -184,7 +152,6 @@ public partial class DashboardViewModel : ViewModelBase
     public partial double BrightnessOffset { get; set; }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(TrayTooltip))]
     public partial ColorConfiguration CurrentConfiguration { get; set; } =
         ColorConfiguration.Default;
 

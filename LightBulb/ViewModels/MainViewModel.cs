@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Framework;
 using LightBulb.Localization;
@@ -33,14 +32,7 @@ public partial class MainViewModel : ViewModelBase
 
     public DashboardViewModel Dashboard { get; }
 
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(TrayShowHideMenuItemHeader))]
-    public partial bool IsWindowVisible { get; set; }
-
-    public string TrayShowHideMenuItemHeader =>
-        IsWindowVisible
-            ? LocalizationManager.TrayHideMenuItem
-            : LocalizationManager.TrayShowMenuItem;
+    public TrayIconViewModel Tray { get; }
 
     public MainViewModel(
         ViewModelManager viewModelManager,
@@ -57,6 +49,7 @@ public partial class MainViewModel : ViewModelBase
 
         LocalizationManager = localizationManager;
         Dashboard = viewModelManager.CreateDashboardViewModel();
+        Tray = viewModelManager.CreateTrayIconViewModel(Dashboard);
 
         _checkForUpdatesTimer = new Timer(
             TimeSpan.FromHours(3),
@@ -73,13 +66,6 @@ public partial class MainViewModel : ViewModelBase
                     // Failure to update shouldn't crash the application
                 }
             }
-        );
-
-        _eventRoot.Add(
-            localizationManager.WatchProperty(
-                o => o.Language,
-                () => OnPropertyChanged(nameof(TrayShowHideMenuItemHeader))
-            )
         );
     }
 
@@ -216,37 +202,6 @@ public partial class MainViewModel : ViewModelBase
         await _dialogManager.ShowDialogAsync(_viewModelManager.CreateSettingsViewModel());
 
     [RelayCommand]
-    private async Task ShowSettingsFromTrayAsync()
-    {
-        var window = App.Current?.ShowMainWindow();
-        if (window is null)
-            return;
-
-        // Wait until the window is loaded to avoid potential issues
-        // with showing a dialog too early in the lifecycle.
-        try
-        {
-            await window.WaitUntilLoadedAsync();
-        }
-        catch (OperationCanceledException)
-        {
-            return;
-        }
-
-        await ShowSettingsAsync();
-    }
-
-    [RelayCommand]
-    private void ToggleWindow() => App.Current?.ToggleMainWindow();
-
-    [RelayCommand]
-    private void Exit()
-    {
-        if (Application.Current?.ApplicationLifetime?.TryShutdown() != true)
-            Environment.Exit(0);
-    }
-
-    [RelayCommand]
     private void ShowAbout() => Process.StartShellExecute(Program.ProjectUrl);
 
     protected override void Dispose(bool disposing)
@@ -255,6 +210,7 @@ public partial class MainViewModel : ViewModelBase
         {
             _checkForUpdatesTimer.Dispose();
             _eventRoot.Dispose();
+            Tray.Dispose();
         }
 
         base.Dispose(disposing);

@@ -169,13 +169,13 @@ public partial class App : Application, IDisposable
             window.Closed += (_, _) =>
             {
                 desktopLifetime.MainWindow = null;
-                _mainViewModel.IsWindowVisible = false;
+                _mainViewModel.Tray.IsWindowVisible = false;
             };
             desktopLifetime.MainWindow = window;
             window.ShowActivateFocus();
         }
 
-        _mainViewModel.IsWindowVisible = true;
+        _mainViewModel.Tray.IsWindowVisible = true;
         return desktopLifetime.MainWindow;
     }
 
