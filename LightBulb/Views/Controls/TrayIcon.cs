@@ -15,11 +15,21 @@ namespace LightBulb.Views.Controls;
 /// Exposes typed Avalonia styled properties that accept compiled XAML bindings;
 /// each property change is forwarded to the inner <see cref="NativeTrayIcon"/> so the
 /// native tray icon always reflects the current values.
-/// Call <see cref="AttachToApplication"/> after setting
-/// <see cref="StyledElement.DataContext"/> to register the icon with the application.
+/// Declare this as <c>controls:TrayIcon.Icons</c> on the <see cref="Application"/> element
+/// in XAML; after XAML loads, set <see cref="StyledElement.DataContext"/> via
+/// <see cref="GetIcons"/> and the icon will be registered with the platform automatically.
 /// </summary>
 public class TrayIcon : StyledElement
 {
+    /// <summary>
+    /// Attached property that registers a <see cref="TrayIcon"/> with an
+    /// <see cref="Application"/>, mirroring the familiar <c>TrayIcon.Icons</c> pattern.
+    /// Setting this property on an Application automatically calls
+    /// <see cref="AttachToApplication"/>.
+    /// </summary>
+    public static readonly AttachedProperty<TrayIcon?> IconsProperty =
+        AvaloniaProperty.RegisterAttached<TrayIcon, Application, TrayIcon?>("Icons");
+
     public static readonly StyledProperty<string?> ToolTipTextProperty = AvaloniaProperty.Register<
         TrayIcon,
         string?
@@ -39,6 +49,13 @@ public class TrayIcon : StyledElement
 
     static TrayIcon()
     {
+        IconsProperty.Changed.AddClassHandler<Application>(
+            (app, e) =>
+            {
+                if (e.NewValue is TrayIcon icon)
+                    icon.AttachToApplication(app);
+            }
+        );
         ToolTipTextProperty.Changed.AddClassHandler<TrayIcon>(
             (x, _) => x._trayIcon.ToolTipText = x.ToolTipText ?? string.Empty
         );
@@ -47,6 +64,12 @@ public class TrayIcon : StyledElement
         );
         IconProperty.Changed.AddClassHandler<TrayIcon>((x, _) => x._trayIcon.Icon = x.Icon);
     }
+
+    public static TrayIcon? GetIcons(Application application) =>
+        application.GetValue(IconsProperty);
+
+    public static void SetIcons(Application application, TrayIcon? value) =>
+        application.SetValue(IconsProperty, value);
 
     public TrayIcon()
     {

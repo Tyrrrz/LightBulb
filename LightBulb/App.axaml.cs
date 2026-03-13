@@ -89,16 +89,13 @@ public partial class App : Application, IDisposable
 
         AvaloniaXamlLoader.Load(this);
 
-        // Set the DataContext on the tray icon resource and register it with the application.
-        // DataContext propagates to all NativeMenuItems via the logical tree, so their
-        // compiled bindings (Header, Command, etc.) resolve against MainViewModel at runtime.
-        var trayIcon =
-            Resources["AppTrayIcon"] as Views.Controls.TrayIcon
-            ?? throw new InvalidOperationException(
-                "AppTrayIcon resource is missing or has the wrong type."
-            );
-        trayIcon.DataContext = _mainViewModel;
-        trayIcon.AttachToApplication(this);
+        // Set the DataContext on the tray icon so its compiled bindings resolve against
+        // MainViewModel. Registration with the platform is handled automatically when the
+        // controls:TrayIcon.Icons attached property is set during XAML load above.
+        (
+            Views.Controls.TrayIcon.GetIcons(this)
+            ?? throw new InvalidOperationException("AppTrayIcon is missing or was not loaded.")
+        ).DataContext = _mainViewModel;
     }
 
     private void InitializeTheme()
