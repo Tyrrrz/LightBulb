@@ -170,14 +170,14 @@
             ToolTipText="{Binding Dashboard.TrayTooltip}">
             <controls:NativeMenuItem
                 Command="{Binding ToggleWindowCommand}"
-                Header="{Binding LocalizationManager.TrayShowHideMenuItem}" />
+                Header="{Binding TrayShowHideMenuItemHeader}" />
             <controls:NativeMenuItem
                 Command="{Binding ShowSettingsFromTrayCommand}"
                 Header="{Binding LocalizationManager.TraySettingsMenuItem}" />
             <NativeMenuItemSeparator />
             <controls:NativeMenuItem
                 Command="{Binding Dashboard.ToggleCommand}"
-                Header="{Binding LocalizationManager.TrayToggleMenuItem}" />
+                Header="{Binding Dashboard.TrayToggleMenuItemHeader}" />
             <controls:NativeMenuItem Header="{Binding LocalizationManager.TrayDisableMenuItem}">
                 <controls:NativeMenuItem
                     Command="{Binding Dashboard.DisableUntilSunriseCommand}"

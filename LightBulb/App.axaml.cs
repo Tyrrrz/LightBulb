@@ -166,11 +166,16 @@ public partial class App : Application, IDisposable
         else
         {
             var window = new MainView { DataContext = _mainViewModel };
-            window.Closed += (_, _) => desktopLifetime.MainWindow = null;
+            window.Closed += (_, _) =>
+            {
+                desktopLifetime.MainWindow = null;
+                _mainViewModel.IsWindowVisible = false;
+            };
             desktopLifetime.MainWindow = window;
             window.ShowActivateFocus();
         }
 
+        _mainViewModel.IsWindowVisible = true;
         return desktopLifetime.MainWindow;
     }
 

@@ -189,9 +189,11 @@ public partial class LocalizationManager
 
     // ---- Tray icon context menu ----
 
-    public string TrayShowHideMenuItem => Get();
+    public string TrayShowMenuItem => Get();
+    public string TrayHideMenuItem => Get();
     public string TraySettingsMenuItem => Get();
-    public string TrayToggleMenuItem => Get();
+    public string TrayEnableMenuItem => Get();
+    public string TrayDisableOnlyMenuItem => Get();
     public string TrayDisableMenuItem => Get();
     public string TrayDisableUntilSunriseMenuItem => Get();
     public string TrayDisableFor1DayMenuItem => Get();

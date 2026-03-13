@@ -126,9 +126,11 @@ public partial class LocalizationManager
             [nameof(RefreshAppsTooltip)] = "Оновити список запущених програм",
             [nameof(PauseForWhitelistedTooltip)] =
                 "Призупиняти LightBulb, коли одна з вибраних програм знаходиться на передньому плані",
-            [nameof(TrayShowHideMenuItem)] = "Показати/приховати",
+            [nameof(TrayShowMenuItem)] = "Показати",
+            [nameof(TrayHideMenuItem)] = "Приховати",
             [nameof(TraySettingsMenuItem)] = "Налаштування",
-            [nameof(TrayToggleMenuItem)] = "Увімкнути/вимкнути",
+            [nameof(TrayEnableMenuItem)] = "Увімкнути",
+            [nameof(TrayDisableOnlyMenuItem)] = "Вимкнути",
             [nameof(TrayDisableMenuItem)] = "Вимкнути...",
             [nameof(TrayDisableUntilSunriseMenuItem)] = "До сходу сонця",
             [nameof(TrayDisableFor1DayMenuItem)] = "На 1 день",

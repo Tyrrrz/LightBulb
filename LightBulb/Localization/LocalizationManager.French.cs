@@ -129,9 +129,11 @@ public partial class LocalizationManager
         [nameof(RefreshAppsTooltip)] = "Actualiser les applications en cours d'exécution",
         [nameof(PauseForWhitelistedTooltip)] =
             "Mettre LightBulb en pause quand une des applications sélectionnées est au premier plan",
-        [nameof(TrayShowHideMenuItem)] = "Afficher/masquer",
+        [nameof(TrayShowMenuItem)] = "Afficher",
+        [nameof(TrayHideMenuItem)] = "Masquer",
         [nameof(TraySettingsMenuItem)] = "Paramètres",
-        [nameof(TrayToggleMenuItem)] = "Activer/désactiver",
+        [nameof(TrayEnableMenuItem)] = "Activer",
+        [nameof(TrayDisableOnlyMenuItem)] = "Désactiver",
         [nameof(TrayDisableMenuItem)] = "Désactiver...",
         [nameof(TrayDisableUntilSunriseMenuItem)] = "Jusqu'au lever du soleil",
         [nameof(TrayDisableFor1DayMenuItem)] = "Pour 1 jour",

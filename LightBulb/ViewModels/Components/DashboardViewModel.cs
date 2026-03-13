@@ -52,7 +52,11 @@ public partial class DashboardViewModel : ViewModelBase
             // Refresh tray icon tooltip when the language changes
             localizationManager.WatchProperty(
                 o => o.Language,
-                () => OnPropertyChanged(nameof(TrayTooltip))
+                () =>
+                {
+                    OnPropertyChanged(nameof(TrayTooltip));
+                    OnPropertyChanged(nameof(TrayToggleMenuItemHeader));
+                }
             )
         );
 
@@ -120,6 +124,7 @@ public partial class DashboardViewModel : ViewModelBase
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]
     [NotifyPropertyChangedFor(nameof(TrayTooltip))]
+    [NotifyPropertyChangedFor(nameof(TrayToggleMenuItemHeader))]
     public partial bool IsEnabled { get; set; } = true;
 
     [ObservableProperty]
@@ -144,6 +149,11 @@ public partial class DashboardViewModel : ViewModelBase
                     + CurrentConfiguration.Brightness.ToString("P0")
                 : LocalizationManager.TrayTooltipDisabled
         );
+
+    public string TrayToggleMenuItemHeader =>
+        IsEnabled
+            ? LocalizationManager.TrayDisableOnlyMenuItem
+            : LocalizationManager.TrayEnableMenuItem;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(SolarTimes))]
