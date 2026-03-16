@@ -128,10 +128,27 @@ public partial class App : Application, IDisposable
             // handler to ensure timely disposal as a safeguard.
             // https://github.com/Tyrrrz/YoutubeDownloader/issues/795
             desktopLifetime.Exit += OnExit;
+        }
 
+        base.OnFrameworkInitializationCompleted();
+
+        // Load settings first so the saved theme is applied before showing the window.
+        // Previously, settings were loaded after InitializeTheme(), which caused the saved
+        // theme to not take effect on the first render (the WatchProperty callback triggered
+        // an async Material.Avalonia theme update that raced with the window's initial paint).
+        _settingsService.Load();
+
+        // Set up custom theme colors based on the now-loaded settings
+        InitializeTheme();
+
+        // Build the tray icon and menu in code so we hold direct references to each item
+        InitializeTrayIcon();
+
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime dl)
+        {
             if (!StartOptions.Current.IsInitiallyHidden)
             {
-                // Show the main window on startup
+                // Show the main window on startup (after theme is configured)
                 ShowMainWindow();
             }
             else
@@ -140,17 +157,6 @@ public partial class App : Application, IDisposable
                 _mainViewModel.Dashboard.InitializeCommand.Execute(null);
             }
         }
-
-        base.OnFrameworkInitializationCompleted();
-
-        // Set up custom theme colors
-        InitializeTheme();
-
-        // Build the tray icon and menu in code so we hold direct references to each item
-        InitializeTrayIcon();
-
-        // Load settings
-        _settingsService.Load();
     }
 
     internal Window? ShowMainWindow()
