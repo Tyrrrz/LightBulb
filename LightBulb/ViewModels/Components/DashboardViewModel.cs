@@ -453,6 +453,9 @@ public partial class DashboardViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    private void Toggle() => IsEnabled = !IsEnabled;
+
+    [RelayCommand]
     private void ResetConfigurationOffset()
     {
         TemperatureOffset = 0;

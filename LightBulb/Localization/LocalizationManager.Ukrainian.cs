@@ -126,9 +126,11 @@ public partial class LocalizationManager
             [nameof(RefreshAppsTooltip)] = "Оновити список запущених програм",
             [nameof(PauseForWhitelistedTooltip)] =
                 "Призупиняти LightBulb, коли одна з вибраних програм знаходиться на передньому плані",
-            [nameof(TrayShowHideMenuItem)] = "Показати/приховати",
+            [nameof(TrayShowMenuItem)] = "Показати",
+            [nameof(TrayHideMenuItem)] = "Приховати",
             [nameof(TraySettingsMenuItem)] = "Налаштування",
-            [nameof(TrayToggleMenuItem)] = "Увімкнути/вимкнути",
+            [nameof(TrayEnableMenuItem)] = "Увімкнути",
+            [nameof(TrayDisableOnlyMenuItem)] = "Вимкнути",
             [nameof(TrayDisableMenuItem)] = "Вимкнути...",
             [nameof(TrayDisableUntilSunriseMenuItem)] = "До сходу сонця",
             [nameof(TrayDisableFor1DayMenuItem)] = "На 1 день",
@@ -141,6 +143,7 @@ public partial class LocalizationManager
             [nameof(TrayDisableFor5MinutesMenuItem)] = "На 5 хвилин",
             [nameof(TrayDisableFor1MinuteMenuItem)] = "На 1 хвилину",
             [nameof(TrayExitMenuItem)] = "Вийти",
+            [nameof(TrayTooltipDisabled)] = "Вимкнено",
             [nameof(UpdateAvailableTitle)] = "Доступне оновлення",
             [nameof(UpdateAvailableMessage)] = """
                 Оновлення до {0} v{1} завантажено.
