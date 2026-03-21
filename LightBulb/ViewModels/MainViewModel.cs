@@ -35,6 +35,7 @@ public partial class MainViewModel : ViewModelBase
     public TrayIconViewModel Tray { get; }
 
     public MainViewModel(
+        DashboardViewModel dashboard,
         ViewModelManager viewModelManager,
         DialogManager dialogManager,
         SettingsService settingsService,
@@ -48,8 +49,8 @@ public partial class MainViewModel : ViewModelBase
         _updateService = updateService;
 
         LocalizationManager = localizationManager;
+        Dashboard = dashboard;
         Tray = viewModelManager.CreateTrayIconViewModel();
-        Dashboard = Tray.Dashboard;
 
         _checkForUpdatesTimer = new Timer(
             TimeSpan.FromHours(3),
