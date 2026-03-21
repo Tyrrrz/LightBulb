@@ -48,8 +48,8 @@ public partial class MainViewModel : ViewModelBase
         _updateService = updateService;
 
         LocalizationManager = localizationManager;
-        Dashboard = viewModelManager.CreateDashboardViewModel();
-        Tray = viewModelManager.CreateTrayIconViewModel(Dashboard);
+        Tray = viewModelManager.CreateTrayIconViewModel();
+        Dashboard = Tray.Dashboard;
 
         _checkForUpdatesTimer = new Timer(
             TimeSpan.FromHours(3),

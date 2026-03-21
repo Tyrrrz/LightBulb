@@ -13,13 +13,8 @@ public class ViewModelManager(IServiceProvider services)
     public DashboardViewModel CreateDashboardViewModel() =>
         services.GetRequiredService<DashboardViewModel>();
 
-    public TrayIconViewModel CreateTrayIconViewModel(DashboardViewModel dashboard) =>
-        new(
-            dashboard,
-            this,
-            services.GetRequiredService<DialogManager>(),
-            services.GetRequiredService<LightBulb.Localization.LocalizationManager>()
-        );
+    public TrayIconViewModel CreateTrayIconViewModel() =>
+        services.GetRequiredService<TrayIconViewModel>();
 
     public MessageBoxViewModel CreateMessageBoxViewModel(
         string title,
