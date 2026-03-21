@@ -12,6 +12,8 @@ public partial class StartOptions
     public required bool IsInitiallyHidden { get; init; }
 
     public required string SettingsPath { get; init; }
+
+    public required bool IsAutoUpdateAllowed { get; init; }
 }
 
 public partial class StartOptions
@@ -46,5 +48,9 @@ public partial class StartOptions
                         )
                         // Can write to the program directory
                         : Path.Combine(Program.ExecutableDirPath, "Settings.json"),
+            IsAutoUpdateAllowed = !(
+                Environment.GetEnvironmentVariable("LIGHTBULB_ALLOW_AUTO_UPDATE") is { } env
+                && env.Equals("false", StringComparison.OrdinalIgnoreCase)
+            ),
         };
 }

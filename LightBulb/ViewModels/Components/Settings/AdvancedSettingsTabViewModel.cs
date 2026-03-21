@@ -35,6 +35,8 @@ public class AdvancedSettingsTabViewModel(
         set => SettingsService.IsAutoStartEnabled = value;
     }
 
+    public bool IsAutoUpdateAllowed { get; } = StartOptions.Current.IsAutoUpdateAllowed;
+
     public bool IsAutoUpdateEnabled
     {
         get => SettingsService.IsAutoUpdateEnabled;
