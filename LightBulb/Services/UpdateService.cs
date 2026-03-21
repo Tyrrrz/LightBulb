@@ -10,22 +10,24 @@ namespace LightBulb.Services;
 
 public class UpdateService(SettingsService settingsService) : IDisposable
 {
-    private readonly IUpdateManager _updateManager = new UpdateManager(
-        new GithubPackageResolver(
-            "Tyrrrz",
-            "LightBulb",
-            // Examples:
-            // LightBulb.win-arm64.zip
-            // LightBulb.win-x64.zip
-            // LightBulb.linux-x64.zip
-            $"LightBulb.{RuntimeInformation.RuntimeIdentifier}.zip"
-        ),
-        new ZipPackageExtractor()
-    );
+    private readonly IUpdateManager? _updateManager = StartOptions.Current.IsAutoUpdateAllowed
+        ? new UpdateManager(
+            new GithubPackageResolver(
+                "Tyrrrz",
+                "LightBulb",
+                // Examples:
+                // LightBulb.win-arm64.zip
+                // LightBulb.win-x64.zip
+                // LightBulb.linux-x64.zip
+                $"LightBulb.{RuntimeInformation.RuntimeIdentifier}.zip"
+            ),
+            new ZipPackageExtractor()
+        )
+        : null;
 
     public async Task<Version?> CheckForUpdatesAsync()
     {
-        if (!settingsService.IsAutoUpdateEnabled)
+        if (_updateManager is null || !settingsService.IsAutoUpdateEnabled)
             return null;
 
         var check = await _updateManager.CheckForUpdatesAsync();
@@ -34,7 +36,7 @@ public class UpdateService(SettingsService settingsService) : IDisposable
 
     public Version? TryGetLastPreparedUpdate()
     {
-        if (!settingsService.IsAutoUpdateEnabled)
+        if (_updateManager is null || !settingsService.IsAutoUpdateEnabled)
             return null;
 
         var version = _updateManager.GetPreparedUpdates().Max();
@@ -46,7 +48,7 @@ public class UpdateService(SettingsService settingsService) : IDisposable
 
     public async Task PrepareUpdateAsync(Version version)
     {
-        if (!settingsService.IsAutoUpdateEnabled)
+        if (_updateManager is null || !settingsService.IsAutoUpdateEnabled)
             return;
 
         try
@@ -68,7 +70,7 @@ public class UpdateService(SettingsService settingsService) : IDisposable
 
     public void FinalizeUpdate(Version version)
     {
-        if (!settingsService.IsAutoUpdateEnabled)
+        if (_updateManager is null || !settingsService.IsAutoUpdateEnabled)
             return;
 
         try
@@ -85,5 +87,5 @@ public class UpdateService(SettingsService settingsService) : IDisposable
         }
     }
 
-    public void Dispose() => _updateManager.Dispose();
+    public void Dispose() => _updateManager?.Dispose();
 }
