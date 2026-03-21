@@ -42,6 +42,11 @@ To learn more about the war and how you can help, [click here](https://tyrrrz.me
 - 🟢 [**Stable release**](https://github.com/Tyrrrz/LightBulb/releases)
 - 🟠 [CI build](https://github.com/Tyrrrz/LightBulb/actions/workflows/main.yml)
 - 📦 [WinGet](https://github.com/microsoft/winget-cli): `winget install Tyrrrz.LightBulb` (community-maintained)
+- 📦 [Scoop](https://scoop.sh): `scoop install extras/lightbulb` (community-maintained)
+- 📦 [Chocolatey](https://community.chocolatey.org): `choco install lightbulb` (community-maintained)
+
+> [!NOTE]
+> Community-maintained packages are published independently from this repository and may not always be up to date with the latest release.
 
 > [!NOTE]
 > If you're unsure which build is right for your system, consult with [this page](https://useragent.cc) to determine your OS and CPU architecture.
