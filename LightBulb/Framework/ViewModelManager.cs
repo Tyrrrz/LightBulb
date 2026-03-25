@@ -13,6 +13,9 @@ public class ViewModelManager(IServiceProvider services)
     public DashboardViewModel CreateDashboardViewModel() =>
         services.GetRequiredService<DashboardViewModel>();
 
+    public TrayIconViewModel CreateTrayIconViewModel() =>
+        services.GetRequiredService<TrayIconViewModel>();
+
     public MessageBoxViewModel CreateMessageBoxViewModel(
         string title,
         string message,

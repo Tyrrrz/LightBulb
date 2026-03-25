@@ -127,9 +127,11 @@ public partial class LocalizationManager
             [nameof(PauseForWhitelistedTooltip)] = "当选定的应用程序之一处于前台时暂停 LightBulb",
 
             // Tray icon context menu (托盘图标上下文菜单)
-            [nameof(TrayShowHideMenuItem)] = "显示/隐藏",
+            [nameof(TrayShowMenuItem)] = "显示",
+            [nameof(TrayHideMenuItem)] = "隐藏",
             [nameof(TraySettingsMenuItem)] = "设置",
-            [nameof(TrayToggleMenuItem)] = "启用/禁用",
+            [nameof(TrayEnableMenuItem)] = "启用",
+            [nameof(TrayDisableOnlyMenuItem)] = "禁用",
             [nameof(TrayDisableMenuItem)] = "禁用...",
             [nameof(TrayDisableUntilSunriseMenuItem)] = "直到日出",
             [nameof(TrayDisableFor1DayMenuItem)] = "禁用 1 天",
@@ -142,6 +144,7 @@ public partial class LocalizationManager
             [nameof(TrayDisableFor5MinutesMenuItem)] = "禁用 5 分钟",
             [nameof(TrayDisableFor1MinuteMenuItem)] = "禁用 1 分钟",
             [nameof(TrayExitMenuItem)] = "退出",
+            [nameof(TrayTooltipDisabled)] = "已禁用",
 
             // Dialog messages (对话框消息)
             [nameof(UpdateAvailableTitle)] = "可用更新",

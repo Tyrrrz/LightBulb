@@ -129,9 +129,11 @@ public partial class LocalizationManager
         [nameof(RefreshAppsTooltip)] = "Actualiser les applications en cours d'exécution",
         [nameof(PauseForWhitelistedTooltip)] =
             "Mettre LightBulb en pause quand une des applications sélectionnées est au premier plan",
-        [nameof(TrayShowHideMenuItem)] = "Afficher/masquer",
+        [nameof(TrayShowMenuItem)] = "Afficher",
+        [nameof(TrayHideMenuItem)] = "Masquer",
         [nameof(TraySettingsMenuItem)] = "Paramètres",
-        [nameof(TrayToggleMenuItem)] = "Activer/désactiver",
+        [nameof(TrayEnableMenuItem)] = "Activer",
+        [nameof(TrayDisableOnlyMenuItem)] = "Désactiver",
         [nameof(TrayDisableMenuItem)] = "Désactiver...",
         [nameof(TrayDisableUntilSunriseMenuItem)] = "Jusqu'au lever du soleil",
         [nameof(TrayDisableFor1DayMenuItem)] = "Pour 1 jour",
@@ -144,6 +146,7 @@ public partial class LocalizationManager
         [nameof(TrayDisableFor5MinutesMenuItem)] = "Pour 5 minutes",
         [nameof(TrayDisableFor1MinuteMenuItem)] = "Pour 1 minute",
         [nameof(TrayExitMenuItem)] = "Quitter",
+        [nameof(TrayTooltipDisabled)] = "Désactivé",
         [nameof(UpdateAvailableTitle)] = "Mise à jour disponible",
         [nameof(UpdateAvailableMessage)] = """
             La mise à jour vers {0} v{1} a été téléchargée.
