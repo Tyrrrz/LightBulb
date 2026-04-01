@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29318.209
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBulb", "LightBulb\LightBulb.csproj", "{0A32502C-95DD-4CDA-B98F-36891AD566C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBulb.PlatformInterop", "LightBulb.PlatformInterop\LightBulb.PlatformInterop.csproj", "{966EE539-7568-40BE-85D7-362D8922DEA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBulb.PlatformInterop.Windows", "LightBulb.PlatformInterop.Windows\LightBulb.PlatformInterop.Windows.csproj", "{966EE539-7568-40BE-85D7-362D8922DEA8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightBulb.PlatformInterop.Linux", "LightBulb.PlatformInterop.Linux\LightBulb.PlatformInterop.Linux.csproj", "{7B3C2A1D-4F5E-6A7B-8C9D-0E1F2A3B4C5D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{BE19AEAD-02BC-4F40-AC14-D30082A5E78B}"
 	ProjectSection(SolutionItems) = preProject
@@ -35,6 +37,10 @@ Global
 		{966EE539-7568-40BE-85D7-362D8922DEA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{966EE539-7568-40BE-85D7-362D8922DEA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{966EE539-7568-40BE-85D7-362D8922DEA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B3C2A1D-4F5E-6A7B-8C9D-0E1F2A3B4C5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B3C2A1D-4F5E-6A7B-8C9D-0E1F2A3B4C5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B3C2A1D-4F5E-6A7B-8C9D-0E1F2A3B4C5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B3C2A1D-4F5E-6A7B-8C9D-0E1F2A3B4C5D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6DE898D9-0BAF-4C96-B19A-FCFCF8CE046F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6DE898D9-0BAF-4C96-B19A-FCFCF8CE046F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DE898D9-0BAF-4C96-B19A-FCFCF8CE046F}.Release|Any CPU.ActiveCfg = Release|Any CPU

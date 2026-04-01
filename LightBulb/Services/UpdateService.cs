@@ -10,20 +10,21 @@ namespace LightBulb.Services;
 
 public class UpdateService(SettingsService settingsService) : IDisposable
 {
-    private readonly IUpdateManager? _updateManager = StartOptions.Current.IsAutoUpdateAllowed
-        ? new UpdateManager(
-            new GithubPackageResolver(
-                "Tyrrrz",
-                "LightBulb",
-                // Examples:
-                // LightBulb.win-arm64.zip
-                // LightBulb.win-x64.zip
-                // LightBulb.linux-x64.zip
-                $"LightBulb.{RuntimeInformation.RuntimeIdentifier}.zip"
-            ),
-            new ZipPackageExtractor()
-        )
-        : null;
+    private readonly IUpdateManager? _updateManager =
+        StartOptions.Current.IsAutoUpdateAllowed && OperatingSystem.IsWindows()
+            ? new UpdateManager(
+                new GithubPackageResolver(
+                    "Tyrrrz",
+                    "LightBulb",
+                    // Examples:
+                    // LightBulb.win-arm64.zip
+                    // LightBulb.win-x64.zip
+                    // LightBulb.linux-x64.zip
+                    $"LightBulb.{RuntimeInformation.RuntimeIdentifier}.zip"
+                ),
+                new ZipPackageExtractor()
+            )
+            : null;
 
     public async Task<Version?> CheckForUpdatesAsync()
     {

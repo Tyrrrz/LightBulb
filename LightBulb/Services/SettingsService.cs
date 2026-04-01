@@ -17,19 +17,23 @@ namespace LightBulb.Services;
 public partial class SettingsService()
     : SettingsBase(StartOptions.Current.SettingsPath, SerializerContext.Default)
 {
-    private readonly RegistrySwitch<int> _extendedGammaRangeSwitch = new(
-        RegistryHive.LocalMachine,
-        @"Software\Microsoft\Windows NT\CurrentVersion\ICM",
-        "GdiICMGammaRange",
-        256
-    );
+    private readonly RegistrySwitch<int>? _extendedGammaRangeSwitch = OperatingSystem.IsWindows()
+        ? new(
+            RegistryHive.LocalMachine,
+            @"Software\Microsoft\Windows NT\CurrentVersion\ICM",
+            "GdiICMGammaRange",
+            256
+        )
+        : null;
 
-    private readonly RegistrySwitch<string> _autoStartSwitch = new(
-        RegistryHive.CurrentUser,
-        @"Software\Microsoft\Windows\CurrentVersion\Run",
-        Program.Name,
-        $"\"{Program.ExecutableFilePath}\" {StartOptions.IsInitiallyHiddenArgument}"
-    );
+    private readonly RegistrySwitch<string>? _autoStartSwitch = OperatingSystem.IsWindows()
+        ? new(
+            RegistryHive.CurrentUser,
+            @"Software\Microsoft\Windows\CurrentVersion\Run",
+            Program.Name,
+            $"\"{Program.ExecutableFilePath}\" {StartOptions.IsInitiallyHiddenArgument}"
+        )
+        : null;
 
     [ObservableProperty]
     public partial bool IsFirstTimeExperienceEnabled { get; set; } = true;
@@ -167,8 +171,10 @@ public partial class SettingsService()
         // Update values in the registry
         try
         {
-            _extendedGammaRangeSwitch.IsSet = IsExtendedGammaRangeUnlocked;
-            _autoStartSwitch.IsSet = IsAutoStartEnabled;
+            if (_extendedGammaRangeSwitch is not null)
+                _extendedGammaRangeSwitch.IsSet = IsExtendedGammaRangeUnlocked;
+            if (_autoStartSwitch is not null)
+                _autoStartSwitch.IsSet = IsAutoStartEnabled;
         }
         catch (Win32Exception)
         {
@@ -187,8 +193,8 @@ public partial class SettingsService()
         var wasLoaded = base.Load();
 
         // Get values from the registry
-        IsExtendedGammaRangeUnlocked = _extendedGammaRangeSwitch.IsSet;
-        IsAutoStartEnabled = _autoStartSwitch.IsSet;
+        IsExtendedGammaRangeUnlocked = _extendedGammaRangeSwitch?.IsSet ?? false;
+        IsAutoStartEnabled = _autoStartSwitch?.IsSet ?? false;
 
         // Trigger UI updates
         OnPropertyChanged(string.Empty);

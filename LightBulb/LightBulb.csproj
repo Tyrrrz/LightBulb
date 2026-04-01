@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <ApplicationIcon>..\favicon.ico</ApplicationIcon>
     <PublishTrimmed>true</PublishTrimmed>
@@ -11,7 +12,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LightBulb.Core\LightBulb.Core.csproj" />
-    <ProjectReference Include="..\LightBulb.PlatformInterop\LightBulb.PlatformInterop.csproj" />
+    <ProjectReference
+      Include="..\LightBulb.PlatformInterop.Windows\LightBulb.PlatformInterop.Windows.csproj"
+      Condition="'$(TargetPlatformIdentifier)' == 'windows'" />
+    <ProjectReference
+      Include="..\LightBulb.PlatformInterop.Linux\LightBulb.PlatformInterop.Linux.csproj"
+      Condition="'$(TargetPlatformIdentifier)' != 'windows'" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" />
