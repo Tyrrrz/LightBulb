@@ -1,12 +1,17 @@
 using System;
 using System.Diagnostics;
-using SystemProcess = System.Diagnostics.Process;
+using System.Threading.Tasks;
+using CliWrap;
 
 namespace LightBulb.PlatformInterop;
 
 public partial class DeviceContext(string outputName) : IDisposable
 {
-    public void SetGamma(double redMultiplier, double greenMultiplier, double blueMultiplier)
+    public async ValueTask SetGammaAsync(
+        double redMultiplier,
+        double greenMultiplier,
+        double blueMultiplier
+    )
     {
         // Use xrandr to apply per-channel gamma on X11/XWayland
         var gamma = FormattableString.Invariant(
@@ -15,21 +20,9 @@ public partial class DeviceContext(string outputName) : IDisposable
 
         try
         {
-            var startInfo = new ProcessStartInfo
-            {
-                FileName = "xrandr",
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-            };
-            startInfo.ArgumentList.Add("--output");
-            startInfo.ArgumentList.Add(outputName);
-            startInfo.ArgumentList.Add("--gamma");
-            startInfo.ArgumentList.Add(gamma);
-
-            using var process = SystemProcess.Start(startInfo);
-            process?.WaitForExit();
+            await Cli.Wrap("xrandr")
+                .WithArguments(["--output", outputName, "--gamma", gamma])
+                .ExecuteAsync();
         }
         catch (Exception ex)
         {
@@ -37,7 +30,7 @@ public partial class DeviceContext(string outputName) : IDisposable
         }
     }
 
-    public void ResetGamma() => SetGamma(1, 1, 1);
+    public ValueTask ResetGammaAsync() => SetGammaAsync(1, 1, 1);
 
     public void Dispose() { }
 }

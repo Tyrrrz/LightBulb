@@ -3,6 +3,7 @@
     <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="CliWrap" />
     <PackageReference Include="CSharpier.MsBuild" PrivateAssets="all" />
   </ItemGroup>
 </Project>

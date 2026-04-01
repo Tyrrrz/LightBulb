@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Avalonia;
@@ -346,64 +347,71 @@ public partial class DashboardViewModel : ViewModelBase
         }
     }
 
-    private void UpdateConfiguration()
+    private async void UpdateConfiguration()
     {
-        var isSmooth =
-            !IsCyclePreviewEnabled
-            && CurrentConfiguration != TargetConfiguration
-            && _settingsService.IsConfigurationSmoothingEnabled
-            && _settingsService.ConfigurationSmoothingMaxDuration.TotalSeconds >= 0.1;
-
-        if (isSmooth)
+        try
         {
-            // Check if the target configuration has changed since the last transition started
-            if (
-                _configurationSmoothingTarget != TargetConfiguration
-                || _configurationSmoothingSource is null
-            )
+            var isSmooth =
+                !IsCyclePreviewEnabled
+                && CurrentConfiguration != TargetConfiguration
+                && _settingsService.IsConfigurationSmoothingEnabled
+                && _settingsService.ConfigurationSmoothingMaxDuration.TotalSeconds >= 0.1;
+
+            if (isSmooth)
             {
-                _configurationSmoothingSource = CurrentConfiguration;
-                _configurationSmoothingTarget = TargetConfiguration;
+                // Check if the target configuration has changed since the last transition started
+                if (
+                    _configurationSmoothingTarget != TargetConfiguration
+                    || _configurationSmoothingSource is null
+                )
+                {
+                    _configurationSmoothingSource = CurrentConfiguration;
+                    _configurationSmoothingTarget = TargetConfiguration;
+                }
+
+                var brightnessDelta = Math.Abs(
+                    _configurationSmoothingTarget.Value.Brightness
+                        - _configurationSmoothingSource.Value.Brightness
+                );
+
+                var brightnessStep = Math.Max(
+                    brightnessDelta
+                        / _settingsService.ConfigurationSmoothingMaxDuration.TotalSeconds
+                        * _updateConfigurationTimer.Interval.TotalSeconds,
+                    0.08
+                );
+
+                var temperatureDelta = Math.Abs(
+                    _configurationSmoothingTarget.Value.Temperature
+                        - _configurationSmoothingSource.Value.Temperature
+                );
+
+                var temperatureStep = Math.Max(
+                    temperatureDelta
+                        / _settingsService.ConfigurationSmoothingMaxDuration.TotalSeconds
+                        * _updateConfigurationTimer.Interval.TotalSeconds,
+                    30
+                );
+
+                CurrentConfiguration = CurrentConfiguration.StepTo(
+                    TargetConfiguration,
+                    temperatureStep,
+                    brightnessStep
+                );
+            }
+            else
+            {
+                CurrentConfiguration = TargetConfiguration;
+                _configurationSmoothingSource = null;
+                _configurationSmoothingTarget = null;
             }
 
-            var brightnessDelta = Math.Abs(
-                _configurationSmoothingTarget.Value.Brightness
-                    - _configurationSmoothingSource.Value.Brightness
-            );
-
-            var brightnessStep = Math.Max(
-                brightnessDelta
-                    / _settingsService.ConfigurationSmoothingMaxDuration.TotalSeconds
-                    * _updateConfigurationTimer.Interval.TotalSeconds,
-                0.08
-            );
-
-            var temperatureDelta = Math.Abs(
-                _configurationSmoothingTarget.Value.Temperature
-                    - _configurationSmoothingSource.Value.Temperature
-            );
-
-            var temperatureStep = Math.Max(
-                temperatureDelta
-                    / _settingsService.ConfigurationSmoothingMaxDuration.TotalSeconds
-                    * _updateConfigurationTimer.Interval.TotalSeconds,
-                30
-            );
-
-            CurrentConfiguration = CurrentConfiguration.StepTo(
-                TargetConfiguration,
-                temperatureStep,
-                brightnessStep
-            );
+            await _gammaService.SetGammaAsync(CurrentConfiguration);
         }
-        else
+        catch (Exception ex)
         {
-            CurrentConfiguration = TargetConfiguration;
-            _configurationSmoothingSource = null;
-            _configurationSmoothingTarget = null;
+            Debug.WriteLine($"Error updating configuration: {ex}");
         }
-
-        _gammaService.SetGamma(CurrentConfiguration);
     }
 
     private void UpdateIsPaused()

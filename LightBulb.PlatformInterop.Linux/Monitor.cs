@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using System.Text.RegularExpressions;
-using SystemProcess = System.Diagnostics.Process;
+using System.Threading.Tasks;
+using CliWrap;
 
 namespace LightBulb.PlatformInterop;
 
@@ -25,31 +27,20 @@ public partial class Monitor
         RegexOptions.Compiled
     );
 
-    public static IReadOnlyList<Monitor> GetAll()
+    public static async Task<IReadOnlyList<Monitor>> GetAllAsync()
     {
         var monitors = new List<Monitor>();
 
         try
         {
-            var startInfo = new ProcessStartInfo
-            {
-                FileName = "xrandr",
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-            };
-            startInfo.ArgumentList.Add("--listmonitors");
+            var stdout = new StringBuilder();
 
-            using var process = SystemProcess.Start(startInfo);
+            await Cli.Wrap("xrandr")
+                .WithArguments(["--listmonitors"])
+                .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdout))
+                .ExecuteAsync();
 
-            if (process is null)
-                return monitors;
-
-            var output = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
-
-            foreach (var line in output.Split('\n'))
+            foreach (var line in stdout.ToString().Split('\n'))
             {
                 var match = MonitorLineRegex.Match(line);
                 if (match.Success)

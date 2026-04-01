@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using LightBulb.Core;
 using LightBulb.PlatformInterop;
 using LightBulb.Utils.Extensions;
@@ -32,7 +33,7 @@ public partial class GammaService : IDisposable
         );
     }
 
-    private void EnsureValidDeviceContexts()
+    private async Task EnsureValidDeviceContextsAsync()
     {
         if (_areDeviceContextsValid)
             return;
@@ -40,8 +41,7 @@ public partial class GammaService : IDisposable
         _areDeviceContextsValid = true;
 
         _deviceContexts.DisposeAll();
-        _deviceContexts = Monitor
-            .GetAll()
+        _deviceContexts = (await Monitor.GetAllAsync())
             .Select(m => m.TryCreateDeviceContext())
             .WhereNotNull()
             .ToArray();
@@ -100,19 +100,19 @@ public partial class GammaService : IDisposable
         InvalidateGamma();
     }
 
-    public void SetGamma(ColorConfiguration configuration)
+    public async Task SetGammaAsync(ColorConfiguration configuration)
     {
         // Avoid unnecessary changes as updating too often will cause stuttering
         if (!IsGammaStale() && !IsSignificantChange(configuration))
             return;
 
-        EnsureValidDeviceContexts();
+        await EnsureValidDeviceContextsAsync();
 
         _isUpdatingGamma = true;
 
         foreach (var deviceContext in _deviceContexts)
         {
-            deviceContext.SetGamma(
+            await deviceContext.SetGammaAsync(
                 GetRed(configuration) * configuration.Brightness,
                 GetGreen(configuration) * configuration.Brightness,
                 GetBlue(configuration) * configuration.Brightness
@@ -128,9 +128,19 @@ public partial class GammaService : IDisposable
 
     public void Dispose()
     {
-        // Reset gamma on all contexts
+        // Best-effort gamma reset on all contexts.
+        // On Windows, ResetGammaAsync completes synchronously; on Linux xrandr is short-lived.
+        // Attach a continuation to log any unobserved failures rather than swallowing them silently.
         foreach (var deviceContext in _deviceContexts)
-            deviceContext.ResetGamma();
+        {
+            deviceContext
+                .ResetGammaAsync()
+                .AsTask()
+                .ContinueWith(
+                    t => Debug.WriteLine($"Failed to reset gamma on dispose: {t.Exception}"),
+                    TaskContinuationOptions.OnlyOnFaulted
+                );
+        }
 
         _displayStateWatcher.Dispose();
         _deviceContexts.DisposeAll();

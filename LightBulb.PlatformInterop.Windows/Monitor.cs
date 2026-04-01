@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
@@ -66,4 +67,6 @@ public partial class Monitor
 
         return monitors;
     }
+
+    public static Task<IReadOnlyList<Monitor>> GetAllAsync() => Task.FromResult(GetAll());
 }
