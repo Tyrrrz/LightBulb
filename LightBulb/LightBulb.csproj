@@ -10,15 +10,22 @@
   <ItemGroup>
     <AvaloniaResource Include="..\favicon.ico" Link="favicon.ico" />
   </ItemGroup>
+  <!-- Derive TargetOS from TargetPlatformIdentifier if not explicitly set -->
+  <PropertyGroup>
+    <TargetOS Condition="'$(TargetOS)' == '' and '$(TargetPlatformIdentifier)' == 'windows'"
+      >windows</TargetOS
+    >
+    <TargetOS Condition="'$(TargetOS)' == ''">linux</TargetOS>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\LightBulb.Core\LightBulb.Core.csproj" />
     <ProjectReference
       Include="..\LightBulb.PlatformInterop.Windows\LightBulb.PlatformInterop.Windows.csproj"
-      Condition="'$(TargetPlatformIdentifier)' == 'windows'"
+      Condition="'$(TargetOS)' == 'windows'"
     />
     <ProjectReference
       Include="..\LightBulb.PlatformInterop.Linux\LightBulb.PlatformInterop.Linux.csproj"
-      Condition="'$(TargetPlatformIdentifier)' != 'windows'"
+      Condition="'$(TargetOS)' == 'linux'"
     />
   </ItemGroup>
   <ItemGroup>
