@@ -37,23 +37,22 @@ public partial class Timer : IDisposable
 
     private void Tick()
     {
-        if (_isBusy)
+        if (Interlocked.Exchange(ref _isBusy, true))
             return;
 
-        lock (_lock)
+        try
         {
-            if (_isDisposed)
-                return;
-
-            try
+            lock (_lock)
             {
-                _isBusy = true;
+                if (_isDisposed)
+                    return;
+
                 _tick();
             }
-            finally
-            {
-                _isBusy = false;
-            }
+        }
+        finally
+        {
+            Interlocked.Exchange(ref _isBusy, false);
         }
     }
 
