@@ -14,10 +14,12 @@
     <ProjectReference Include="..\LightBulb.Core\LightBulb.Core.csproj" />
     <ProjectReference
       Include="..\LightBulb.PlatformInterop.Windows\LightBulb.PlatformInterop.Windows.csproj"
-      Condition="'$(TargetPlatformIdentifier)' == 'windows'" />
+      Condition="'$(TargetPlatformIdentifier)' == 'windows'"
+    />
     <ProjectReference
       Include="..\LightBulb.PlatformInterop.Linux\LightBulb.PlatformInterop.Linux.csproj"
-      Condition="'$(TargetPlatformIdentifier)' != 'windows'" />
+      Condition="'$(TargetPlatformIdentifier)' != 'windows'"
+    />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" />

@@ -11,6 +11,5 @@ public partial class GlobalHotKey : IDisposable
 
 public partial class GlobalHotKey
 {
-    public static GlobalHotKey? TryRegister(int virtualKey, int modifiers, Action callback) =>
-        null;
+    public static GlobalHotKey? TryRegister(int virtualKey, int modifiers, Action callback) => null;
 }
