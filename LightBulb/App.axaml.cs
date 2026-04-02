@@ -14,7 +14,6 @@ using LightBulb.ViewModels;
 using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
 using LightBulb.ViewModels.Dialogs;
-using LightBulb.Views;
 using Material.Styles.Themes;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,12 +23,8 @@ public partial class App : Application, IDisposable
 {
     public static new App? Current => Application.Current as App;
 
-    private readonly DisposableCollector _eventRoot = new();
-
     private readonly ServiceProvider _services;
-    private readonly SettingsService _settingsService;
-    private readonly LocalizationManager _localizationManager;
-    private readonly MainViewModel _mainViewModel;
+    private readonly DisposableCollector _eventRoot = new();
 
     private bool _isDisposed;
 
@@ -62,36 +57,30 @@ public partial class App : Application, IDisposable
         services.AddTransient<SettingsTabViewModelBase, LocationSettingsTabViewModel>();
 
         _services = services.BuildServiceProvider(true);
-        _settingsService = _services.GetRequiredService<SettingsService>();
-        _localizationManager = _services.GetRequiredService<LocalizationManager>();
-        _mainViewModel = _services.GetRequiredService<ViewModelManager>().CreateMainViewModel();
 
         // Re-initialize the theme when the user changes it
         _eventRoot.Add(
-            _settingsService.WatchProperty(
-                o => o.Theme,
-                () =>
-                {
-                    RequestedThemeVariant = _settingsService.Theme switch
+            _services
+                .GetRequiredService<SettingsService>()
+                .WatchProperty(
+                    o => o.Theme,
+                    () =>
                     {
-                        ThemeVariant.Light => Avalonia.Styling.ThemeVariant.Light,
-                        ThemeVariant.Dark => Avalonia.Styling.ThemeVariant.Dark,
-                        _ => Avalonia.Styling.ThemeVariant.Default,
-                    };
+                        RequestedThemeVariant = _services
+                            .GetRequiredService<SettingsService>()
+                            .Theme switch
+                        {
+                            ThemeVariant.Light => Avalonia.Styling.ThemeVariant.Light,
+                            ThemeVariant.Dark => Avalonia.Styling.ThemeVariant.Dark,
+                            _ => Avalonia.Styling.ThemeVariant.Default,
+                        };
 
-                    InitializeTheme();
-                }
-            )
+                        InitializeTheme();
+                    }
+                )
         );
 
         RegisterTrayIconEvents();
-    }
-
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        AvaloniaXamlLoader.Load(this);
     }
 
     private void InitializeTheme()
@@ -109,25 +98,24 @@ public partial class App : Application, IDisposable
                 : Theme.Create(Theme.Dark, Color.Parse("#E8E8E8"), Color.Parse("#F9A825"));
     }
 
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        AvaloniaXamlLoader.Load(this);
+    }
+
     public override void OnFrameworkInitializationCompleted()
     {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktopLifetime.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-
-            void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs args)
-            {
-                if (sender is IControlledApplicationLifetime lifetime)
-                    lifetime.Exit -= OnExit;
-
-                Dispose();
-            }
+            desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
             // Although `App.Dispose()` is invoked from `Program.Main(...)`, on some platforms
             // it may be called too late in the shutdown lifecycle. Attach an exit
             // handler to ensure timely disposal as a safeguard.
             // https://github.com/Tyrrrz/YoutubeDownloader/issues/795
-            desktopLifetime.Exit += OnExit;
+            desktop.Exit += (_, _) => Dispose();
 
             if (!StartOptions.Current.IsInitiallyHidden)
             {
@@ -137,7 +125,10 @@ public partial class App : Application, IDisposable
             else
             {
                 // When starting hidden, initialize the backend without showing the UI
-                _mainViewModel.Dashboard.InitializeCommand.Execute(null);
+                _ = _services
+                    .GetRequiredService<ViewModelManager>()
+                    .GetMainViewModel()
+                    .Dashboard.InitializeAsync();
             }
         }
 
@@ -150,29 +141,33 @@ public partial class App : Application, IDisposable
         InitializeTrayIcon();
 
         // Load settings
-        _settingsService.Load();
+        _services.GetRequiredService<SettingsService>().Load();
     }
 
     internal Window? ShowMainWindow()
     {
-        if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktopLifetime)
+        if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop)
             return null;
 
         // Re-use the existing window if already open
-        if (desktopLifetime.MainWindow is { } existingWindow)
+        if (desktop.MainWindow is { } existingWindow)
         {
             existingWindow.ShowActivateFocus();
         }
         // Otherwise, create a new window (the previous one was closed to free resources)
         else
         {
-            var window = new MainView { DataContext = _mainViewModel };
-            window.Closed += (_, _) => desktopLifetime.MainWindow = null;
-            desktopLifetime.MainWindow = window;
-            window.ShowActivateFocus();
+            var window = _services
+                .GetRequiredService<ViewManager>()
+                .TryBindWindow(_services.GetRequiredService<ViewModelManager>().GetMainViewModel());
+
+            window?.Closed += (_, _) => desktop.MainWindow = null;
+            desktop.MainWindow = window;
+
+            window?.ShowActivateFocus();
         }
 
-        return desktopLifetime.MainWindow;
+        return desktop.MainWindow;
     }
 
     internal void ToggleMainWindow()

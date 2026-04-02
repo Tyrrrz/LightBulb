@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using Avalonia;
+using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -422,8 +422,7 @@ public partial class DashboardViewModel : ViewModelBase
         IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
     }
 
-    [RelayCommand]
-    private void Initialize()
+    public override Task InitializeAsync()
     {
         _updateInstantTimer.Start();
         _updateConfigurationTimer.Start();
@@ -431,6 +430,8 @@ public partial class DashboardViewModel : ViewModelBase
 
         // Hack: feign property changes to refresh the tray icon
         OnAllPropertiesChanged();
+
+        return Task.CompletedTask;
     }
 
     [RelayCommand]

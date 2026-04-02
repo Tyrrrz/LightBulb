@@ -36,8 +36,23 @@ public partial class ViewManager
 
         view.DataContext ??= viewModel;
 
+        if (view.IsInitialized)
+        {
+            _ = viewModel.InitializeAsync();
+        }
+        else
+        {
+            view.Initialized += async (_, _) => await viewModel.InitializeAsync();
+        }
+
         return view;
     }
+
+    public UserControl<T>? TryBindUserControl<T>(T viewModel)
+        where T : ViewModelBase => TryBindView(viewModel) as UserControl<T>;
+
+    public Window<T>? TryBindWindow<T>(T viewModel)
+        where T : ViewModelBase => TryBindView(viewModel) as Window<T>;
 }
 
 public partial class ViewManager : IDataTemplate

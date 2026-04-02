@@ -2,7 +2,10 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Platform;
 using Avalonia.Threading;
+using LightBulb.Framework;
+using LightBulb.Localization;
 using LightBulb.Utils.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LightBulb;
 
@@ -30,84 +33,126 @@ public partial class App
     {
         // Update the tooltip when the dashboard state changes
         _eventRoot.Add(
-            _mainViewModel.Dashboard.WatchProperties(
-                [o => o.IsActive, o => o.CurrentConfiguration],
-                () =>
-                {
-                    var status =
-                        _mainViewModel.Dashboard.CurrentConfiguration.Temperature.ToString("F0")
-                        + " / "
-                        + _mainViewModel.Dashboard.CurrentConfiguration.Brightness.ToString("P0");
-
-                    var tooltip =
-                        "LightBulb"
-                        + Environment.NewLine
-                        + (_mainViewModel.Dashboard.IsActive ? status : "Disabled");
-
-                    try
+            _services
+                .GetRequiredService<ViewModelManager>()
+                .GetMainViewModel()
+                .Dashboard.WatchProperties(
+                    [o => o.IsActive, o => o.CurrentConfiguration],
+                    () =>
                     {
-                        Dispatcher.UIThread.Invoke(() =>
+                        var status =
+                            _services
+                                .GetRequiredService<ViewModelManager>()
+                                .GetMainViewModel()
+                                .Dashboard.CurrentConfiguration.Temperature.ToString("F0")
+                            + " / "
+                            + _services
+                                .GetRequiredService<ViewModelManager>()
+                                .GetMainViewModel()
+                                .Dashboard.CurrentConfiguration.Brightness.ToString("P0");
+
+                        var tooltip =
+                            "LightBulb"
+                            + Environment.NewLine
+                            + (
+                                _services
+                                    .GetRequiredService<ViewModelManager>()
+                                    .GetMainViewModel()
+                                    .Dashboard.IsActive
+                                    ? status
+                                    : "Disabled"
+                            );
+
+                        try
                         {
-                            if (_trayIcon is { } trayIcon)
-                                trayIcon.ToolTipText = tooltip;
-                        });
+                            Dispatcher.UIThread.Invoke(() =>
+                            {
+                                if (_trayIcon is { } trayIcon)
+                                    trayIcon.ToolTipText = tooltip;
+                            });
+                        }
+                        // Ignore exceptions when the application is shutting down
+                        catch (OperationCanceledException) { }
                     }
-                    // Ignore exceptions when the application is shutting down
-                    catch (OperationCanceledException) { }
-                }
-            )
+                )
         );
 
         // Update menu item headers when the language changes
         _eventRoot.Add(
-            _localizationManager.WatchProperty(
-                o => o.Language,
-                () =>
-                {
-                    try
+            _services
+                .GetRequiredService<LocalizationManager>()
+                .WatchProperty(
+                    o => o.Language,
+                    () =>
                     {
-                        Dispatcher.UIThread.Invoke(() =>
+                        try
                         {
-                            _trayShowHideItem?.Header = _localizationManager.TrayShowHideMenuItem;
-                            _traySettingsItem?.Header = _localizationManager.TraySettingsMenuItem;
-                            _trayToggleItem?.Header = _localizationManager.TrayToggleMenuItem;
-                            _trayDisableItem?.Header = _localizationManager.TrayDisableMenuItem;
-                            _trayDisableUntilSunriseItem?.Header =
-                                _localizationManager.TrayDisableUntilSunriseMenuItem;
-                            _trayDisableFor1DayItem?.Header =
-                                _localizationManager.TrayDisableFor1DayMenuItem;
-                            _trayDisableFor12HoursItem?.Header =
-                                _localizationManager.TrayDisableFor12HoursMenuItem;
-                            _trayDisableFor6HoursItem?.Header =
-                                _localizationManager.TrayDisableFor6HoursMenuItem;
-                            _trayDisableFor3HoursItem?.Header =
-                                _localizationManager.TrayDisableFor3HoursMenuItem;
-                            _trayDisableFor1HourItem?.Header =
-                                _localizationManager.TrayDisableFor1HourMenuItem;
-                            _trayDisableFor30MinutesItem?.Header =
-                                _localizationManager.TrayDisableFor30MinutesMenuItem;
-                            _trayDisableFor15MinutesItem?.Header =
-                                _localizationManager.TrayDisableFor15MinutesMenuItem;
-                            _trayDisableFor5MinutesItem?.Header =
-                                _localizationManager.TrayDisableFor5MinutesMenuItem;
-                            _trayDisableFor1MinuteItem?.Header =
-                                _localizationManager.TrayDisableFor1MinuteMenuItem;
-                            _trayExitItem?.Header = _localizationManager.TrayExitMenuItem;
-                        });
+                            Dispatcher.UIThread.Invoke(() =>
+                            {
+                                _trayShowHideItem?.Header = _services
+                                    .GetRequiredService<LocalizationManager>()
+                                    .TrayShowHideMenuItem;
+                                _traySettingsItem?.Header = _services
+                                    .GetRequiredService<LocalizationManager>()
+                                    .TraySettingsMenuItem;
+                                _trayToggleItem?.Header = _services
+                                    .GetRequiredService<LocalizationManager>()
+                                    .TrayToggleMenuItem;
+                                _trayDisableItem?.Header = _services
+                                    .GetRequiredService<LocalizationManager>()
+                                    .TrayDisableMenuItem;
+                                _trayDisableUntilSunriseItem?.Header = _services
+                                    .GetRequiredService<LocalizationManager>()
+                                    .TrayDisableUntilSunriseMenuItem;
+                                _trayDisableFor1DayItem?.Header = _services
+                                    .GetRequiredService<LocalizationManager>()
+                                    .TrayDisableFor1DayMenuItem;
+                                _trayDisableFor12HoursItem?.Header = _services
+                                    .GetRequiredService<LocalizationManager>()
+                                    .TrayDisableFor12HoursMenuItem;
+                                _trayDisableFor6HoursItem?.Header = _services
+                                    .GetRequiredService<LocalizationManager>()
+                                    .TrayDisableFor6HoursMenuItem;
+                                _trayDisableFor3HoursItem?.Header = _services
+                                    .GetRequiredService<LocalizationManager>()
+                                    .TrayDisableFor3HoursMenuItem;
+                                _trayDisableFor1HourItem?.Header = _services
+                                    .GetRequiredService<LocalizationManager>()
+                                    .TrayDisableFor1HourMenuItem;
+                                _trayDisableFor30MinutesItem?.Header = _services
+                                    .GetRequiredService<LocalizationManager>()
+                                    .TrayDisableFor30MinutesMenuItem;
+                                _trayDisableFor15MinutesItem?.Header = _services
+                                    .GetRequiredService<LocalizationManager>()
+                                    .TrayDisableFor15MinutesMenuItem;
+                                _trayDisableFor5MinutesItem?.Header = _services
+                                    .GetRequiredService<LocalizationManager>()
+                                    .TrayDisableFor5MinutesMenuItem;
+                                _trayDisableFor1MinuteItem?.Header = _services
+                                    .GetRequiredService<LocalizationManager>()
+                                    .TrayDisableFor1MinuteMenuItem;
+                                _trayExitItem?.Header = _services
+                                    .GetRequiredService<LocalizationManager>()
+                                    .TrayExitMenuItem;
+                            });
+                        }
+                        // Ignore exceptions when the application is shutting down
+                        catch (OperationCanceledException) { }
                     }
-                    // Ignore exceptions when the application is shutting down
-                    catch (OperationCanceledException) { }
-                }
-            )
+                )
         );
     }
 
     private void InitializeTrayIcon()
     {
-        _trayShowHideItem = new NativeMenuItem(_localizationManager.TrayShowHideMenuItem);
+        _trayShowHideItem = new NativeMenuItem(
+            _services.GetRequiredService<LocalizationManager>().TrayShowHideMenuItem
+        );
         _trayShowHideItem.Click += (_, _) => ToggleMainWindow();
 
-        _traySettingsItem = new NativeMenuItem(_localizationManager.TraySettingsMenuItem);
+        _traySettingsItem = new NativeMenuItem(
+            _services.GetRequiredService<LocalizationManager>().TraySettingsMenuItem
+        );
         _traySettingsItem.Click += async (_, _) =>
         {
             var window = ShowMainWindow();
@@ -125,74 +170,117 @@ public partial class App
                 return;
             }
 
-            _mainViewModel.ShowSettingsCommand.Execute(null);
+            _services
+                .GetRequiredService<ViewModelManager>()
+                .GetMainViewModel()
+                .ShowSettingsCommand.Execute(null);
         };
 
-        _trayToggleItem = new NativeMenuItem(_localizationManager.TrayToggleMenuItem);
+        _trayToggleItem = new NativeMenuItem(
+            _services.GetRequiredService<LocalizationManager>().TrayToggleMenuItem
+        );
         _trayToggleItem.Click += (_, _) =>
-            _mainViewModel.Dashboard.IsEnabled = !_mainViewModel.Dashboard.IsEnabled;
+            _services
+                .GetRequiredService<ViewModelManager>()
+                .GetMainViewModel()
+                .Dashboard.IsEnabled = !_services
+                .GetRequiredService<ViewModelManager>()
+                .GetMainViewModel()
+                .Dashboard.IsEnabled;
 
         _trayDisableUntilSunriseItem = new NativeMenuItem(
-            _localizationManager.TrayDisableUntilSunriseMenuItem
+            _services.GetRequiredService<LocalizationManager>().TrayDisableUntilSunriseMenuItem
         );
         _trayDisableUntilSunriseItem.Click += (_, _) =>
-            _mainViewModel.Dashboard.DisableUntilSunriseCommand.Execute(null);
+            _services
+                .GetRequiredService<ViewModelManager>()
+                .GetMainViewModel()
+                .Dashboard.DisableUntilSunriseCommand.Execute(null);
 
         _trayDisableFor1DayItem = new NativeMenuItem(
-            _localizationManager.TrayDisableFor1DayMenuItem
+            _services.GetRequiredService<LocalizationManager>().TrayDisableFor1DayMenuItem
         );
         _trayDisableFor1DayItem.Click += (_, _) =>
-            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromDays(1));
+            _services
+                .GetRequiredService<ViewModelManager>()
+                .GetMainViewModel()
+                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromDays(1));
 
         _trayDisableFor12HoursItem = new NativeMenuItem(
-            _localizationManager.TrayDisableFor12HoursMenuItem
+            _services.GetRequiredService<LocalizationManager>().TrayDisableFor12HoursMenuItem
         );
         _trayDisableFor12HoursItem.Click += (_, _) =>
-            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(12));
+            _services
+                .GetRequiredService<ViewModelManager>()
+                .GetMainViewModel()
+                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(12));
 
         _trayDisableFor6HoursItem = new NativeMenuItem(
-            _localizationManager.TrayDisableFor6HoursMenuItem
+            _services.GetRequiredService<LocalizationManager>().TrayDisableFor6HoursMenuItem
         );
         _trayDisableFor6HoursItem.Click += (_, _) =>
-            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(6));
+            _services
+                .GetRequiredService<ViewModelManager>()
+                .GetMainViewModel()
+                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(6));
 
         _trayDisableFor3HoursItem = new NativeMenuItem(
-            _localizationManager.TrayDisableFor3HoursMenuItem
+            _services.GetRequiredService<LocalizationManager>().TrayDisableFor3HoursMenuItem
         );
         _trayDisableFor3HoursItem.Click += (_, _) =>
-            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(3));
+            _services
+                .GetRequiredService<ViewModelManager>()
+                .GetMainViewModel()
+                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(3));
 
         _trayDisableFor1HourItem = new NativeMenuItem(
-            _localizationManager.TrayDisableFor1HourMenuItem
+            _services.GetRequiredService<LocalizationManager>().TrayDisableFor1HourMenuItem
         );
         _trayDisableFor1HourItem.Click += (_, _) =>
-            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(1));
+            _services
+                .GetRequiredService<ViewModelManager>()
+                .GetMainViewModel()
+                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(1));
 
         _trayDisableFor30MinutesItem = new NativeMenuItem(
-            _localizationManager.TrayDisableFor30MinutesMenuItem
+            _services.GetRequiredService<LocalizationManager>().TrayDisableFor30MinutesMenuItem
         );
         _trayDisableFor30MinutesItem.Click += (_, _) =>
-            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(30));
+            _services
+                .GetRequiredService<ViewModelManager>()
+                .GetMainViewModel()
+                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(30));
 
         _trayDisableFor15MinutesItem = new NativeMenuItem(
-            _localizationManager.TrayDisableFor15MinutesMenuItem
+            _services.GetRequiredService<LocalizationManager>().TrayDisableFor15MinutesMenuItem
         );
         _trayDisableFor15MinutesItem.Click += (_, _) =>
-            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(15));
+            _services
+                .GetRequiredService<ViewModelManager>()
+                .GetMainViewModel()
+                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(15));
 
         _trayDisableFor5MinutesItem = new NativeMenuItem(
-            _localizationManager.TrayDisableFor5MinutesMenuItem
+            _services.GetRequiredService<LocalizationManager>().TrayDisableFor5MinutesMenuItem
         );
         _trayDisableFor5MinutesItem.Click += (_, _) =>
-            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(5));
+            _services
+                .GetRequiredService<ViewModelManager>()
+                .GetMainViewModel()
+                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(5));
 
         _trayDisableFor1MinuteItem = new NativeMenuItem(
-            _localizationManager.TrayDisableFor1MinuteMenuItem
+            _services.GetRequiredService<LocalizationManager>().TrayDisableFor1MinuteMenuItem
         );
         _trayDisableFor1MinuteItem.Click += (_, _) =>
-            _mainViewModel.Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(1));
+            _services
+                .GetRequiredService<ViewModelManager>()
+                .GetMainViewModel()
+                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(1));
 
-        _trayDisableItem = new NativeMenuItem(_localizationManager.TrayDisableMenuItem)
+        _trayDisableItem = new NativeMenuItem(
+            _services.GetRequiredService<LocalizationManager>().TrayDisableMenuItem
+        )
         {
             Menu = new NativeMenu
             {
@@ -212,7 +300,9 @@ public partial class App
             },
         };
 
-        _trayExitItem = new NativeMenuItem(_localizationManager.TrayExitMenuItem);
+        _trayExitItem = new NativeMenuItem(
+            _services.GetRequiredService<LocalizationManager>().TrayExitMenuItem
+        );
         _trayExitItem.Click += (_, _) =>
         {
             if (ApplicationLifetime?.TryShutdown() != true)
