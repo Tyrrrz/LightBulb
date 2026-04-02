@@ -158,9 +158,7 @@ public partial class App : Application, IDisposable
         // Otherwise, create a new window (the previous one was closed to free resources)
         else
         {
-            var window = _services
-                .GetRequiredService<ViewManager>()
-                .TryBindWindow(_mainViewModel);
+            var window = _services.GetRequiredService<ViewManager>().TryBindWindow(_mainViewModel);
 
             window?.Closed += (_, _) =>
             {
