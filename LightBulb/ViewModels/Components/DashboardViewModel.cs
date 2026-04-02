@@ -51,9 +51,9 @@ public partial class DashboardViewModel : ViewModelBase
         _eventRoot.Add(
             this.WatchProperty(
                 o => o.IsEnabled,
-                () =>
+                v =>
                 {
-                    if (IsEnabled)
+                    if (v)
                     {
                         // Cancel any activate 'disable temporarily' timers
                         _enableAfterDelayRegistration?.Dispose();
@@ -69,7 +69,7 @@ public partial class DashboardViewModel : ViewModelBase
             // Refresh transition tooltips when the language changes
             localizationManager.WatchProperty(
                 o => o.Language,
-                () =>
+                _ =>
                 {
                     OnPropertyChanged(nameof(SunsetTransitionTooltip));
                     OnPropertyChanged(nameof(SunriseTransitionTooltip));
