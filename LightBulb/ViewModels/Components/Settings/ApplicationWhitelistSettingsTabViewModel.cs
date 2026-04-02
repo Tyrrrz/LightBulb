@@ -27,7 +27,7 @@ public partial class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewM
         _eventRoot.Add(
             this.WatchProperty(
                 o => o.IsApplicationWhitelistEnabled,
-                () => RefreshApplicationsCommand.NotifyCanExecuteChanged()
+                _ => RefreshApplicationsCommand.NotifyCanExecuteChanged()
             )
         );
     }

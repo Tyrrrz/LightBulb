@@ -14,18 +14,12 @@ public partial class LocalizationManager : ObservableObject, IDisposable
 
     public LocalizationManager(SettingsService settingsService)
     {
-        _eventRoot.Add(
-            settingsService.WatchProperty(
-                o => o.Language,
-                () => Language = settingsService.Language,
-                true
-            )
-        );
+        _eventRoot.Add(settingsService.WatchProperty(o => o.Language, v => Language = v, true));
 
         _eventRoot.Add(
             this.WatchProperty(
                 o => o.Language,
-                () =>
+                _ =>
                 {
                     foreach (var propertyName in EnglishLocalization.Keys)
                         OnPropertyChanged(propertyName);

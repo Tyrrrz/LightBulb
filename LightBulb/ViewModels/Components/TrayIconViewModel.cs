@@ -61,7 +61,7 @@ public partial class TrayIconViewModel : ViewModelBase
         _eventRoot.Add(
             localizationManager.WatchProperty(
                 o => o.Language,
-                () =>
+                _ =>
                 {
                     OnPropertyChanged(nameof(ShowHideMenuItemHeader));
                     OnPropertyChanged(nameof(ToolTipText));
@@ -73,7 +73,7 @@ public partial class TrayIconViewModel : ViewModelBase
         _eventRoot.Add(
             dashboard.WatchProperty(
                 o => o.IsEnabled,
-                () =>
+                _ =>
                 {
                     OnPropertyChanged(nameof(ToolTipText));
                     OnPropertyChanged(nameof(ToggleMenuItemHeader));
@@ -82,20 +82,20 @@ public partial class TrayIconViewModel : ViewModelBase
         );
 
         _eventRoot.Add(
-            dashboard.WatchProperty(o => o.IsPaused, () => OnPropertyChanged(nameof(ToolTipText)))
+            dashboard.WatchProperty(o => o.IsPaused, _ => OnPropertyChanged(nameof(ToolTipText)))
         );
 
         _eventRoot.Add(
             dashboard.WatchProperty(
                 o => o.IsCyclePreviewEnabled,
-                () => OnPropertyChanged(nameof(ToolTipText))
+                _ => OnPropertyChanged(nameof(ToolTipText))
             )
         );
 
         _eventRoot.Add(
             dashboard.WatchProperty(
                 o => o.CurrentConfiguration,
-                () => OnPropertyChanged(nameof(ToolTipText))
+                _ => OnPropertyChanged(nameof(ToolTipText))
             )
         );
     }

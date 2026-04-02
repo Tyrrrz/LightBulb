@@ -28,7 +28,9 @@ public abstract partial class SettingsTabViewModelBase : ViewModelBase
             // but it's a simple and reliable solution.
             SettingsService.WatchAllProperties(OnAllPropertiesChanged)
         );
-        _eventRoot.Add(localizationManager.WatchProperty(o => o.Language, OnAllPropertiesChanged));
+        _eventRoot.Add(
+            localizationManager.WatchProperty(o => o.Language, _ => OnAllPropertiesChanged())
+        );
     }
 
     protected SettingsService SettingsService { get; }
