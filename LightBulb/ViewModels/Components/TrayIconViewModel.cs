@@ -118,7 +118,7 @@ public partial class TrayIconViewModel : ViewModelBase
             return;
         }
 
-        await _dialogManager.ShowDialogAsync(_viewModelManager.CreateSettingsViewModel());
+        await _dialogManager.ShowDialogAsync(_viewModelManager.GetSettingsViewModel());
     }
 
     [RelayCommand]

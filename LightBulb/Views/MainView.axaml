@@ -20,10 +20,7 @@
         Background="{DynamicResource MaterialCardBackgroundBrush}"
         BorderBrush="{DynamicResource MaterialDividerBrush}"
         BorderThickness="1">
-        <dialogHostAvalonia:DialogHost
-            x:Name="DialogHost"
-            CloseOnClickAway="False"
-            Loaded="DialogHost_OnLoaded">
+        <dialogHostAvalonia:DialogHost x:Name="DialogHost" CloseOnClickAway="False">
             <Grid RowDefinitions="Auto,*,Auto">
                 <!--  Header  -->
                 <Border

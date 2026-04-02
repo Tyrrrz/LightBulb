@@ -45,6 +45,7 @@
         <Grid
             Margin="0,16,0,0"
             ColumnDefinitions="*,Auto"
+            IsVisible="{Binding IsAutoUpdateAllowed}"
             ToolTip.Tip="{Binding LocalizationManager.AutoUpdateTooltip}">
             <TextBlock
                 Grid.Column="0"
