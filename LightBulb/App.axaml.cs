@@ -23,8 +23,9 @@ public partial class App : Application, IDisposable
 {
     public static new App? Current => Application.Current as App;
 
-    private readonly ServiceProvider _services;
     private readonly DisposableCollector _eventRoot = new();
+    private readonly ServiceProvider _services;
+    private readonly MainViewModel _mainViewModel;
 
     private bool _isDisposed;
 
@@ -47,7 +48,8 @@ public partial class App : Application, IDisposable
 
         // View models
         services.AddTransient<MainViewModel>();
-        services.AddTransient<DashboardViewModel>();
+        services.AddSingleton<DashboardViewModel>();
+        services.AddTransient<TrayIconViewModel>();
         services.AddTransient<MessageBoxViewModel>();
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<SettingsTabViewModelBase, AdvancedSettingsTabViewModel>();
@@ -57,6 +59,7 @@ public partial class App : Application, IDisposable
         services.AddTransient<SettingsTabViewModelBase, LocationSettingsTabViewModel>();
 
         _services = services.BuildServiceProvider(true);
+        _mainViewModel = _services.GetRequiredService<ViewModelManager>().GetMainViewModel();
 
         // Re-initialize the theme when the user changes it
         _eventRoot.Add(
@@ -77,8 +80,19 @@ public partial class App : Application, IDisposable
                     }
                 )
         );
+    }
 
-        RegisterTrayIconEvents();
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        AvaloniaXamlLoader.Load(this);
+
+        // Expose the main view model as an application resource so that
+        // the DataContext="{DynamicResource MainViewModel}" binding on the
+        // controls:TrayIcon element in App.axaml can resolve without polluting
+        // the application-wide DataContext.
+        Resources["MainViewModel"] = _mainViewModel;
     }
 
     private void InitializeTheme()
@@ -94,13 +108,6 @@ public partial class App : Application, IDisposable
             actualTheme == PlatformThemeVariant.Light
                 ? Theme.Create(Theme.Light, Color.Parse("#343838"), Color.Parse("#F9A825"))
                 : Theme.Create(Theme.Dark, Color.Parse("#E8E8E8"), Color.Parse("#F9A825"));
-    }
-
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        AvaloniaXamlLoader.Load(this);
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -123,10 +130,7 @@ public partial class App : Application, IDisposable
             else
             {
                 // When starting hidden, initialize the backend without showing the UI
-                _ = _services
-                    .GetRequiredService<ViewModelManager>()
-                    .GetMainViewModel()
-                    .Dashboard.InitializeAsync();
+                _ = _mainViewModel.Dashboard.InitializeAsync();
             }
         }
 
@@ -134,9 +138,6 @@ public partial class App : Application, IDisposable
 
         // Set up custom theme colors
         InitializeTheme();
-
-        // Build the tray icon and menu in code so we hold direct references to each item
-        InitializeTrayIcon();
 
         // Load settings
         _services.GetRequiredService<SettingsService>().Load();
@@ -155,16 +156,19 @@ public partial class App : Application, IDisposable
         // Otherwise, create a new window (the previous one was closed to free resources)
         else
         {
-            var window = _services
-                .GetRequiredService<ViewManager>()
-                .TryBindWindow(_services.GetRequiredService<ViewModelManager>().GetMainViewModel());
+            var window = _services.GetRequiredService<ViewManager>().TryBindWindow(_mainViewModel);
 
-            window?.Closed += (_, _) => desktop.MainWindow = null;
+            window?.Closed += (_, _) =>
+            {
+                desktop.MainWindow = null;
+                _mainViewModel.Tray.IsWindowVisible = false;
+            };
             desktop.MainWindow = window;
 
             window?.ShowActivateFocus();
         }
 
+        _mainViewModel.Tray.IsWindowVisible = true;
         return desktop.MainWindow;
     }
 

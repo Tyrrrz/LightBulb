@@ -136,9 +136,11 @@ public partial class LocalizationManager
             [nameof(PauseForWhitelistedTooltip)] =
                 "Pause LightBulb when one of the selected applications is in the foreground",
             // Tray icon context menu
-            [nameof(TrayShowHideMenuItem)] = "Show/hide",
+            [nameof(TrayShowMenuItem)] = "Show",
+            [nameof(TrayHideMenuItem)] = "Hide",
             [nameof(TraySettingsMenuItem)] = "Settings",
-            [nameof(TrayToggleMenuItem)] = "Enable/disable",
+            [nameof(TrayEnableMenuItem)] = "Enable",
+            [nameof(TrayDisableOnlyMenuItem)] = "Disable",
             [nameof(TrayDisableMenuItem)] = "Disable...",
             [nameof(TrayDisableUntilSunriseMenuItem)] = "Until sunrise",
             [nameof(TrayDisableFor1DayMenuItem)] = "For 1 day",
@@ -151,6 +153,7 @@ public partial class LocalizationManager
             [nameof(TrayDisableFor5MinutesMenuItem)] = "For 5 minutes",
             [nameof(TrayDisableFor1MinuteMenuItem)] = "For 1 minute",
             [nameof(TrayExitMenuItem)] = "Exit",
+            [nameof(TrayTooltipDisabled)] = "Disabled",
             // Dialog messages
             [nameof(UpdateAvailableTitle)] = "Update available",
             [nameof(UpdateAvailableMessage)] = """

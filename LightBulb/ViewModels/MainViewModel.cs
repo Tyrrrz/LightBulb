@@ -7,6 +7,7 @@ using LightBulb.Framework;
 using LightBulb.Localization;
 using LightBulb.PlatformInterop;
 using LightBulb.Services;
+using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
 using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
@@ -15,6 +16,7 @@ using Process = System.Diagnostics.Process;
 namespace LightBulb.ViewModels;
 
 public partial class MainViewModel(
+    DashboardViewModel dashboard,
     ViewModelManager viewModelManager,
     DialogManager dialogManager,
     SettingsService settingsService,
@@ -22,7 +24,9 @@ public partial class MainViewModel(
     UpdateService updateService
 ) : ViewModelBase
 {
-    private readonly Timer _checkForUpdatesTimer = new(
+    private readonly DisposableCollector _eventRoot = new();
+
+    private readonly Timer _checkForUpdatesTimer = new Timer(
         TimeSpan.FromHours(3),
         async () =>
         {
@@ -43,7 +47,9 @@ public partial class MainViewModel(
 
     public LocalizationManager LocalizationManager { get; } = localizationManager;
 
-    public DashboardViewModel Dashboard { get; } = viewModelManager.GetDashboardViewModel();
+    public DashboardViewModel Dashboard { get; } = dashboard;
+
+    public TrayIconViewModel Tray { get; } = viewModelManager.CreateTrayIconViewModel();
 
     private async Task FinalizePendingUpdateAsync()
     {
@@ -176,10 +182,17 @@ public partial class MainViewModel(
     private async Task ShowSettingsAsync() =>
         await dialogManager.ShowDialogAsync(viewModelManager.GetSettingsViewModel());
 
+    [RelayCommand]
+    private void ShowAbout() => Process.StartShellExecute(Program.ProjectUrl);
+
     protected override void Dispose(bool disposing)
     {
         if (disposing)
+        {
             _checkForUpdatesTimer.Dispose();
+            _eventRoot.Dispose();
+            Tray.Dispose();
+        }
 
         base.Dispose(disposing);
     }
