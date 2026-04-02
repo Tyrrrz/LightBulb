@@ -173,7 +173,7 @@ public partial class App
             _services
                 .GetRequiredService<ViewModelManager>()
                 .GetMainViewModel()
-                .ShowSettingsCommand.Execute(null);
+                .ShowSettingsCommand.ExecuteIfCan(null);
         };
 
         _trayToggleItem = new NativeMenuItem(
@@ -195,7 +195,7 @@ public partial class App
             _services
                 .GetRequiredService<ViewModelManager>()
                 .GetMainViewModel()
-                .Dashboard.DisableUntilSunriseCommand.Execute(null);
+                .Dashboard.DisableUntilSunriseCommand.ExecuteIfCan(null);
 
         _trayDisableFor1DayItem = new NativeMenuItem(
             _services.GetRequiredService<LocalizationManager>().TrayDisableFor1DayMenuItem
@@ -204,7 +204,7 @@ public partial class App
             _services
                 .GetRequiredService<ViewModelManager>()
                 .GetMainViewModel()
-                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromDays(1));
+                .Dashboard.DisableTemporarilyCommand.ExecuteIfCan(TimeSpan.FromDays(1));
 
         _trayDisableFor12HoursItem = new NativeMenuItem(
             _services.GetRequiredService<LocalizationManager>().TrayDisableFor12HoursMenuItem
@@ -213,7 +213,7 @@ public partial class App
             _services
                 .GetRequiredService<ViewModelManager>()
                 .GetMainViewModel()
-                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(12));
+                .Dashboard.DisableTemporarilyCommand.ExecuteIfCan(TimeSpan.FromHours(12));
 
         _trayDisableFor6HoursItem = new NativeMenuItem(
             _services.GetRequiredService<LocalizationManager>().TrayDisableFor6HoursMenuItem
@@ -222,7 +222,7 @@ public partial class App
             _services
                 .GetRequiredService<ViewModelManager>()
                 .GetMainViewModel()
-                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(6));
+                .Dashboard.DisableTemporarilyCommand.ExecuteIfCan(TimeSpan.FromHours(6));
 
         _trayDisableFor3HoursItem = new NativeMenuItem(
             _services.GetRequiredService<LocalizationManager>().TrayDisableFor3HoursMenuItem
@@ -231,7 +231,7 @@ public partial class App
             _services
                 .GetRequiredService<ViewModelManager>()
                 .GetMainViewModel()
-                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(3));
+                .Dashboard.DisableTemporarilyCommand.ExecuteIfCan(TimeSpan.FromHours(3));
 
         _trayDisableFor1HourItem = new NativeMenuItem(
             _services.GetRequiredService<LocalizationManager>().TrayDisableFor1HourMenuItem
@@ -240,7 +240,7 @@ public partial class App
             _services
                 .GetRequiredService<ViewModelManager>()
                 .GetMainViewModel()
-                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromHours(1));
+                .Dashboard.DisableTemporarilyCommand.ExecuteIfCan(TimeSpan.FromHours(1));
 
         _trayDisableFor30MinutesItem = new NativeMenuItem(
             _services.GetRequiredService<LocalizationManager>().TrayDisableFor30MinutesMenuItem
@@ -249,7 +249,7 @@ public partial class App
             _services
                 .GetRequiredService<ViewModelManager>()
                 .GetMainViewModel()
-                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(30));
+                .Dashboard.DisableTemporarilyCommand.ExecuteIfCan(TimeSpan.FromMinutes(30));
 
         _trayDisableFor15MinutesItem = new NativeMenuItem(
             _services.GetRequiredService<LocalizationManager>().TrayDisableFor15MinutesMenuItem
@@ -258,7 +258,7 @@ public partial class App
             _services
                 .GetRequiredService<ViewModelManager>()
                 .GetMainViewModel()
-                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(15));
+                .Dashboard.DisableTemporarilyCommand.ExecuteIfCan(TimeSpan.FromMinutes(15));
 
         _trayDisableFor5MinutesItem = new NativeMenuItem(
             _services.GetRequiredService<LocalizationManager>().TrayDisableFor5MinutesMenuItem
@@ -267,7 +267,7 @@ public partial class App
             _services
                 .GetRequiredService<ViewModelManager>()
                 .GetMainViewModel()
-                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(5));
+                .Dashboard.DisableTemporarilyCommand.ExecuteIfCan(TimeSpan.FromMinutes(5));
 
         _trayDisableFor1MinuteItem = new NativeMenuItem(
             _services.GetRequiredService<LocalizationManager>().TrayDisableFor1MinuteMenuItem
@@ -276,7 +276,7 @@ public partial class App
             _services
                 .GetRequiredService<ViewModelManager>()
                 .GetMainViewModel()
-                .Dashboard.DisableTemporarilyCommand.Execute(TimeSpan.FromMinutes(1));
+                .Dashboard.DisableTemporarilyCommand.ExecuteIfCan(TimeSpan.FromMinutes(1));
 
         _trayDisableItem = new NativeMenuItem(
             _services.GetRequiredService<LocalizationManager>().TrayDisableMenuItem

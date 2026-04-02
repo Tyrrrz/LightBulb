@@ -1,5 +1,6 @@
 ﻿using Avalonia.Input;
 using LightBulb.Framework;
+using LightBulb.Utils.Extensions;
 using LightBulb.ViewModels.Components;
 
 namespace LightBulb.Views.Components;
@@ -11,5 +12,5 @@ public partial class DashboardView : UserControl<DashboardViewModel>
     private void ConfigurationOffsetStackPanel_OnPointerReleased(
         object? sender,
         PointerReleasedEventArgs args
-    ) => DataContext.ResetConfigurationOffsetCommand.Execute(null);
+    ) => DataContext.ResetConfigurationOffsetCommand.ExecuteIfCan(null);
 }
