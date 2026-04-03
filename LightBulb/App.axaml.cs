@@ -23,9 +23,11 @@ public partial class App : Application, IDisposable
 {
     public static new App? Current => Application.Current as App;
 
-    private readonly DisposableCollector _eventRoot = new();
     private readonly ServiceProvider _services;
+    private readonly SettingsService _settingsService;
     private readonly MainViewModel _mainViewModel;
+
+    private readonly DisposableCollector _eventRoot = new();
 
     private bool _isDisposed;
 
@@ -59,26 +61,25 @@ public partial class App : Application, IDisposable
         services.AddTransient<SettingsTabViewModelBase, LocationSettingsTabViewModel>();
 
         _services = services.BuildServiceProvider(true);
+        _settingsService = _services.GetRequiredService<SettingsService>();
         _mainViewModel = _services.GetRequiredService<ViewModelManager>().GetMainViewModel();
 
         // Re-initialize the theme when the user changes it
         _eventRoot.Add(
-            _services
-                .GetRequiredService<SettingsService>()
-                .WatchProperty(
-                    o => o.Theme,
-                    v =>
+            _settingsService.WatchProperty(
+                o => o.Theme,
+                v =>
+                {
+                    RequestedThemeVariant = v switch
                     {
-                        RequestedThemeVariant = v switch
-                        {
-                            ThemeVariant.Light => Avalonia.Styling.ThemeVariant.Light,
-                            ThemeVariant.Dark => Avalonia.Styling.ThemeVariant.Dark,
-                            _ => Avalonia.Styling.ThemeVariant.Default,
-                        };
+                        ThemeVariant.Light => Avalonia.Styling.ThemeVariant.Light,
+                        ThemeVariant.Dark => Avalonia.Styling.ThemeVariant.Dark,
+                        _ => Avalonia.Styling.ThemeVariant.Default,
+                    };
 
-                        InitializeTheme();
-                    }
-                )
+                    InitializeTheme();
+                }
+            )
         );
     }
 
@@ -112,6 +113,13 @@ public partial class App : Application, IDisposable
 
     public override void OnFrameworkInitializationCompleted()
     {
+        // Initialize the default theme, before a custom one (if any) is applied by loading settings
+        InitializeTheme();
+
+        // Load settings
+        _settingsService.Load();
+
+        // Initialize the lifetime
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
@@ -135,12 +143,6 @@ public partial class App : Application, IDisposable
         }
 
         base.OnFrameworkInitializationCompleted();
-
-        // Set up custom theme colors
-        InitializeTheme();
-
-        // Load settings
-        _services.GetRequiredService<SettingsService>().Load();
     }
 
     internal Window? ShowMainWindow()
@@ -156,7 +158,8 @@ public partial class App : Application, IDisposable
         // Otherwise, create a new window (the previous one was closed to free resources)
         else
         {
-            var window = _services.GetRequiredService<ViewManager>().TryBindWindow(_mainViewModel);
+            var viewManager = _services.GetRequiredService<ViewManager>();
+            var window = viewManager.TryBindWindow(_mainViewModel);
 
             window?.Closed += (_, _) =>
             {
