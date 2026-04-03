@@ -35,15 +35,7 @@ public partial class ViewManager
             return null;
 
         view.DataContext ??= viewModel;
-
-        if (view.IsInitialized)
-        {
-            _ = viewModel.InitializeAsync();
-        }
-        else
-        {
-            view.Initialized += async (_, _) => await viewModel.InitializeAsync();
-        }
+        view.Loaded += async (_, _) => await viewModel.InitializeAsync();
 
         return view;
     }
