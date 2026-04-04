@@ -51,14 +51,12 @@ public class LinuxXorgDisplayGammaController : IDisplayGammaController
             ColorTemperatureConversion.GetBlueMultiplier(configuration.Temperature)
             * configuration.Brightness;
 
-        foreach (var dc in _deviceContexts)
-            await dc.SetGammaAsync(r, g, b);
+        await Task.WhenAll(_deviceContexts.Select(dc => dc.SetGammaAsync(r, g, b).AsTask()));
     }
 
     public async ValueTask ResetGammaAsync()
     {
-        foreach (var dc in _deviceContexts)
-            await dc.ResetGammaAsync();
+        await Task.WhenAll(_deviceContexts.Select(dc => dc.ResetGammaAsync().AsTask()));
     }
 
     public void NotifyDisplayConfigurationChanged()
