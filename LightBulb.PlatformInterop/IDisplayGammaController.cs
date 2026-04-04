@@ -5,15 +5,12 @@ using LightBulb.Core;
 namespace LightBulb.PlatformInterop;
 
 /// <summary>
-/// Abstraction for controlling display gamma (color temperature and optionally brightness).
+/// Abstraction for controlling display color (temperature and optionally brightness).
 /// </summary>
-public interface IDisplayGammaController : IDisposable
+public interface IDisplayColorController : IDisposable
 {
     /// <summary>Stable identifier used for persistence in settings.</summary>
     string Id { get; }
-
-    /// <summary>Human-readable name shown in the settings UI.</summary>
-    string DisplayName { get; }
 
     /// <summary>Whether this controller supports adjusting brightness (as opposed to temperature only).</summary>
     bool IsBrightnessSupported { get; }
@@ -29,5 +26,5 @@ public interface IDisplayGammaController : IDisposable
     /// Implementations that hold device contexts or cached display handles should invalidate
     /// their internal state so they re-enumerate on the next <see cref="SetGammaAsync"/> call.
     /// </summary>
-    void NotifyDisplayConfigurationChanged();
+    void Invalidate();
 }

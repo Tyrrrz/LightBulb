@@ -11,13 +11,12 @@ namespace LightBulb.PlatformInterop;
 /// Controls display gamma through the Windows GDI gamma-ramp API (via <see cref="DeviceContext"/>).
 /// Supports both color temperature and brightness. Works on any display without additional software.
 /// </summary>
-public class WindowsNativeDisplayGammaController : IDisplayGammaController
+public class WindowsGdiNativeDisplayGammaController : IDisplayColorController
 {
     private IReadOnlyList<DeviceContext> _deviceContexts = [];
     private bool _areDeviceContextsValid;
 
-    public string Id => "windows-native";
-    public string DisplayName => "Windows (native gamma ramp)";
+    public string Id => "windows-gdi-native";
     public bool IsBrightnessSupported => true;
 
     private async Task EnsureDeviceContextsValidAsync()
@@ -42,13 +41,12 @@ public class WindowsNativeDisplayGammaController : IDisplayGammaController
         await EnsureDeviceContextsValidAsync();
 
         var r =
-            ColorTemperatureConversion.GetRedMultiplier(configuration.Temperature)
-            * configuration.Brightness;
+            ColorTemperature.GetRedMultiplier(configuration.Temperature) * configuration.Brightness;
         var g =
-            ColorTemperatureConversion.GetGreenMultiplier(configuration.Temperature)
+            ColorTemperature.GetGreenMultiplier(configuration.Temperature)
             * configuration.Brightness;
         var b =
-            ColorTemperatureConversion.GetBlueMultiplier(configuration.Temperature)
+            ColorTemperature.GetBlueMultiplier(configuration.Temperature)
             * configuration.Brightness;
 
         foreach (var dc in _deviceContexts)
@@ -63,12 +61,10 @@ public class WindowsNativeDisplayGammaController : IDisplayGammaController
         return ValueTask.CompletedTask;
     }
 
-    public void NotifyDisplayConfigurationChanged()
+    public void Invalidate()
     {
         _areDeviceContextsValid = false;
-        Debug.WriteLine(
-            $"[{DisplayName}] Display configuration changed — device contexts invalidated."
-        );
+        Debug.WriteLine($"[{Id}] Display configuration changed — device contexts invalidated.");
     }
 
     public void Dispose()

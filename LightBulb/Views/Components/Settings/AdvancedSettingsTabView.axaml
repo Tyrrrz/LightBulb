@@ -2,6 +2,7 @@
     x:Class="LightBulb.Views.Components.Settings.AdvancedSettingsTabView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
     x:DataType="settings:AdvancedSettingsTabViewModel">
     <StackPanel Margin="16" Orientation="Vertical">
@@ -17,7 +18,7 @@
                 TextTrimming="CharacterEllipsis" />
             <ComboBox
                 Grid.Column="1"
-                DisplayMemberBinding="{Binding DisplayName}"
+                DisplayMemberBinding="{Binding Converter={x:Static converters:DisplayColorControllerToNameConverter.Instance}}"
                 ItemsSource="{Binding AvailableControllers}"
                 SelectedItem="{Binding SelectedController}" />
         </Grid>

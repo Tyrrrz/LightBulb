@@ -71,12 +71,12 @@ public class AdvancedSettingsTabViewModel(
     }
 
     // Controller selection — only shown when more than one controller is available
-    public IReadOnlyList<IDisplayGammaController> AvailableControllers =>
+    public IReadOnlyList<IDisplayColorController> AvailableControllers =>
         gammaService.AvailableControllers;
 
     public bool IsControllerSelectionVisible => AvailableControllers.Count > 1;
 
-    public IDisplayGammaController? SelectedController
+    public IDisplayColorController? SelectedController
     {
         get =>
             AvailableControllers.FirstOrDefault(c =>

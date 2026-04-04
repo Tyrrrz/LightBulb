@@ -11,7 +11,7 @@ namespace LightBulb.Services;
 public partial class GammaService : IDisposable
 {
     private readonly SettingsService _settingsService;
-    private readonly IReadOnlyList<IDisplayGammaController> _availableControllers;
+    private readonly IReadOnlyList<IDisplayColorController> _availableControllers;
     private readonly DisplayStateWatcher _displayStateWatcher;
 
     private bool _isUpdatingGamma;
@@ -20,12 +20,12 @@ public partial class GammaService : IDisposable
     private ColorConfiguration? _lastConfiguration;
     private DateTimeOffset _lastUpdateTimestamp = DateTimeOffset.MinValue;
 
-    public IReadOnlyList<IDisplayGammaController> AvailableControllers => _availableControllers;
+    public IReadOnlyList<IDisplayColorController> AvailableControllers => _availableControllers;
 
     public GammaService(SettingsService settingsService)
     {
         _settingsService = settingsService;
-        _availableControllers = DisplayGammaControllerProvider.GetAvailable();
+        _availableControllers = GammaController.GetAvailable();
 
         _displayStateWatcher = DisplayStateWatcher.Create(
             InvalidateGamma,
@@ -33,10 +33,10 @@ public partial class GammaService : IDisposable
         );
     }
 
-    private IDisplayGammaController GetActiveController()
+    private IDisplayColorController GetActiveController()
     {
         if (_availableControllers.Count == 0)
-            throw new InvalidOperationException("No display gamma controllers are available.");
+            throw new InvalidOperationException("No display color controllers are available.");
 
         var id = _settingsService.DisplayGammaControllerId;
         if (id is not null)
@@ -90,7 +90,7 @@ public partial class GammaService : IDisposable
 
     public void InvalidateDisplayConfiguration()
     {
-        GetActiveController().NotifyDisplayConfigurationChanged();
+        GetActiveController().Invalidate();
         Debug.WriteLine("Display configuration invalidated.");
         InvalidateGamma();
     }

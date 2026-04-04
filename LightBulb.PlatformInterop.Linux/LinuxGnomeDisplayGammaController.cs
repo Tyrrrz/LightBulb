@@ -11,22 +11,18 @@ namespace LightBulb.PlatformInterop;
 /// Delegates native display calls to the GNOME compositor, keeping system settings in sync.
 /// Brightness is not supported — GNOME Night Light is temperature-only.
 /// </summary>
-public class LinuxGnomeDisplayGammaController : IDisplayGammaController
+public class LinuxGnomeDisplayGammaController : IDisplayColorController
 {
     public string Id => "linux-gnome";
-    public string DisplayName => "GNOME Night Light";
     public bool IsBrightnessSupported => false;
 
-    public static bool IsAvailable() =>
-        (Environment.GetEnvironmentVariable("XDG_CURRENT_DESKTOP") ?? string.Empty).Contains(
-            "GNOME",
-            StringComparison.OrdinalIgnoreCase
-        );
+    public static bool IsAvailable =>
+        Environment
+            .GetEnvironmentVariable("XDG_CURRENT_DESKTOP")
+            ?.Contains("GNOME", StringComparison.OrdinalIgnoreCase) == true;
 
     public async ValueTask SetGammaAsync(ColorConfiguration configuration)
     {
-        var temperature = (int)Math.Round(configuration.Temperature);
-
         try
         {
             // Enable night light so the temperature setting takes effect
@@ -45,13 +41,13 @@ public class LinuxGnomeDisplayGammaController : IDisplayGammaController
                     "set",
                     "org.gnome.settings-daemon.plugins.color",
                     "night-light-temperature",
-                    temperature.ToString(),
+                    ((int)Math.Round(configuration.Temperature)).ToString(),
                 ])
                 .ExecuteAsync();
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"[{DisplayName}] Failed to set gamma: {ex.Message}");
+            Debug.WriteLine($"[{Id}] Failed to set gamma: {ex.Message}");
         }
     }
 
@@ -70,11 +66,11 @@ public class LinuxGnomeDisplayGammaController : IDisplayGammaController
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"[{DisplayName}] Failed to reset gamma: {ex.Message}");
+            Debug.WriteLine($"[{Id}] Failed to reset gamma: {ex.Message}");
         }
     }
 
-    public void NotifyDisplayConfigurationChanged() { }
+    public void Invalidate() { }
 
     public void Dispose() { }
 }

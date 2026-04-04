@@ -11,21 +11,22 @@ namespace LightBulb.PlatformInterop;
 /// Delegates native display calls to the KWin compositor, keeping system settings in sync.
 /// Brightness is not supported — KDE Night Color is temperature-only.
 /// </summary>
-public class LinuxPlasmaDisplayGammaController : IDisplayGammaController
+public class LinuxPlasmaDisplayGammaController : IDisplayColorController
 {
     // kwriteconfig executable name: Plasma 5 uses kwriteconfig5, Plasma 6 uses kwriteconfig6.
     // Try kwriteconfig6 first (newer), fall back to kwriteconfig5.
     private static readonly string[] KWriteConfigCandidates = ["kwriteconfig6", "kwriteconfig5"];
 
+    // qdbus executable name: Plasma 6 uses qdbus6, Plasma 5 uses qdbus.
+    private static readonly string[] DbusCandidates = ["qdbus6", "qdbus"];
+
     public string Id => "linux-plasma";
-    public string DisplayName => "KDE Plasma Night Color";
     public bool IsBrightnessSupported => false;
 
-    public static bool IsAvailable() =>
-        (Environment.GetEnvironmentVariable("XDG_CURRENT_DESKTOP") ?? string.Empty).Contains(
-            "KDE",
-            StringComparison.OrdinalIgnoreCase
-        );
+    public static bool IsAvailable =>
+        Environment
+            .GetEnvironmentVariable("XDG_CURRENT_DESKTOP")
+            ?.Contains("KDE", StringComparison.OrdinalIgnoreCase) == true;
 
     private static async Task<bool> TryRunKWriteConfigAsync(params string[] args)
     {
@@ -49,12 +50,11 @@ public class LinuxPlasmaDisplayGammaController : IDisplayGammaController
     {
         // Signal KWin to pick up changed night-color settings.
         // Try qdbus6 (Plasma 6), then qdbus (Plasma 5), then dbus-send as a last resort.
-        string[] dbusCandidates = ["qdbus6", "qdbus"];
-        foreach (var exe in dbusCandidates)
+        foreach (var dbus in DbusCandidates)
         {
             try
             {
-                await Cli.Wrap(exe)
+                await Cli.Wrap(dbus)
                     .WithArguments([
                         "org.kde.KWin",
                         "/ColorCorrect",
@@ -95,19 +95,17 @@ public class LinuxPlasmaDisplayGammaController : IDisplayGammaController
         try
         {
             // Mode 3 = "Always on" (constant temperature, ignores time/location schedule)
-            var wrote = await TryRunKWriteConfigAsync(
-                "--file",
-                "kwinrc",
-                "--group",
-                "NightColor",
-                "--key",
-                "Mode",
-                "3"
-            );
-
-            if (wrote)
-            {
+            if (
                 await TryRunKWriteConfigAsync(
+                    "--file",
+                    "kwinrc",
+                    "--group",
+                    "NightColor",
+                    "--key",
+                    "Mode",
+                    "3"
+                )
+                && await TryRunKWriteConfigAsync(
                     "--file",
                     "kwinrc",
                     "--group",
@@ -115,14 +113,15 @@ public class LinuxPlasmaDisplayGammaController : IDisplayGammaController
                     "--key",
                     "NightTemperature",
                     temperature
-                );
-
+                )
+            )
+            {
                 await TryReconfigureKWinAsync();
             }
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"[{DisplayName}] Failed to set gamma: {ex.Message}");
+            Debug.WriteLine($"[{Id}] Failed to set gamma: {ex.Message}");
         }
     }
 
@@ -132,26 +131,26 @@ public class LinuxPlasmaDisplayGammaController : IDisplayGammaController
         {
             // Restore Mode to "Automatic" (0) which follows the sunset/sunrise schedule,
             // effectively turning off the forced temperature.
-            var wrote = await TryRunKWriteConfigAsync(
-                "--file",
-                "kwinrc",
-                "--group",
-                "NightColor",
-                "--key",
-                "Mode",
-                "0"
-            );
-
-            if (wrote)
+            if (
+                await TryRunKWriteConfigAsync(
+                    "--file",
+                    "kwinrc",
+                    "--group",
+                    "NightColor",
+                    "--key",
+                    "Mode",
+                    "0"
+                )
+            )
                 await TryReconfigureKWinAsync();
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"[{DisplayName}] Failed to reset gamma: {ex.Message}");
+            Debug.WriteLine($"[{Id}] Failed to reset gamma: {ex.Message}");
         }
     }
 
-    public void NotifyDisplayConfigurationChanged() { }
+    public void Invalidate() { }
 
     public void Dispose() { }
 }

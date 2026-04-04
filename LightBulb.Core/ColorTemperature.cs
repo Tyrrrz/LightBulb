@@ -1,13 +1,13 @@
 using System;
 
-namespace LightBulb.PlatformInterop;
+namespace LightBulb.Core;
 
 /// <summary>
 /// Converts a color temperature (in Kelvin) to linear RGB multipliers suitable
 /// for a hardware gamma ramp. Algorithm from
 /// http://tannerhelland.com/4435/convert-temperature-rgb-algorithm-code
 /// </summary>
-public static class ColorTemperatureConversion
+public static class ColorTemperature
 {
     public static double GetRedMultiplier(double temperature)
     {
