@@ -35,6 +35,9 @@ public partial class GammaService : IDisposable
 
     private IDisplayGammaController GetActiveController()
     {
+        if (_availableControllers.Count == 0)
+            throw new InvalidOperationException("No display gamma controllers are available.");
+
         var id = _settingsService.DisplayGammaControllerId;
         if (id is not null)
         {
