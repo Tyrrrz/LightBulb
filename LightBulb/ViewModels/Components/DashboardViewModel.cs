@@ -59,8 +59,8 @@ public partial class DashboardViewModel : ViewModelBase
                         // Cancel any activate 'disable temporarily' timers
                         _enableAfterDelayRegistration?.Dispose();
 
-                        // Invalidate device contexts
-                        _gammaService.InvalidateDeviceContexts();
+                        // Invalidate display configuration
+                        _gammaService.InvalidateDisplayConfiguration();
                     }
                 }
             )

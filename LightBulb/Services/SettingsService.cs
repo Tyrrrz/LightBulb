@@ -115,6 +115,9 @@ public partial class SettingsService()
     [ObservableProperty]
     public partial bool IsGammaPollingEnabled { get; set; }
 
+    [ObservableProperty]
+    public partial string? DisplayGammaControllerId { get; set; }
+
     // Application whitelist
 
     [ObservableProperty]

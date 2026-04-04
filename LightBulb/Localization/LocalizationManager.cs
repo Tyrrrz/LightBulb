@@ -127,6 +127,8 @@ public partial class LocalizationManager
     public string GammaSmoothingTooltip => Get();
     public string GammaPollingLabel => Get();
     public string GammaPollingTooltip => Get();
+    public string GammaControllerLabel => Get();
+    public string GammaControllerTooltip => Get();
 
     // ---- General settings tab ----
 

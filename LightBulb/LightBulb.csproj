@@ -19,6 +19,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\LightBulb.Core\LightBulb.Core.csproj" />
+    <ProjectReference Include="..\LightBulb.PlatformInterop\LightBulb.PlatformInterop.csproj" />
     <ProjectReference
       Include="..\LightBulb.PlatformInterop.Windows\LightBulb.PlatformInterop.Windows.csproj"
       Condition="'$(TargetOS)' == 'windows'"
