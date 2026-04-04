@@ -8,12 +8,15 @@ namespace LightBulb.Framework;
 
 public class ViewModelManager(IServiceProvider services)
 {
-    public MainViewModel CreateMainViewModel() => services.GetRequiredService<MainViewModel>();
+    public MainViewModel GetMainViewModel() => services.GetRequiredService<MainViewModel>();
 
-    public DashboardViewModel CreateDashboardViewModel() =>
+    public DashboardViewModel GetDashboardViewModel() =>
         services.GetRequiredService<DashboardViewModel>();
 
-    public MessageBoxViewModel CreateMessageBoxViewModel(
+    public TrayIconViewModel CreateTrayIconViewModel() =>
+        services.GetRequiredService<TrayIconViewModel>();
+
+    public MessageBoxViewModel GetMessageBoxViewModel(
         string title,
         string message,
         string? okButtonText,
@@ -30,6 +33,6 @@ public class ViewModelManager(IServiceProvider services)
         return viewModel;
     }
 
-    public SettingsViewModel CreateSettingsViewModel() =>
+    public SettingsViewModel GetSettingsViewModel() =>
         services.GetRequiredService<SettingsViewModel>();
 }

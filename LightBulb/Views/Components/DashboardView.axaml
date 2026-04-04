@@ -7,8 +7,7 @@
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     x:Name="UserControl"
-    x:DataType="components:DashboardViewModel"
-    Loaded="UserControl_OnLoaded">
+    x:DataType="components:DashboardViewModel">
     <Grid ColumnDefinitions="*,Auto,*">
         <!--  Sunset time  -->
         <TextBlock

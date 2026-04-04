@@ -9,9 +9,6 @@ public partial class MainView : Window<MainViewModel>
 {
     public MainView() => InitializeComponent();
 
-    private void DialogHost_OnLoaded(object? sender, RoutedEventArgs args) =>
-        DataContext.InitializeCommand.Execute(null);
-
     private void HeaderBorder_OnPointerPressed(object? sender, PointerPressedEventArgs args) =>
         BeginMoveDrag(args);
 

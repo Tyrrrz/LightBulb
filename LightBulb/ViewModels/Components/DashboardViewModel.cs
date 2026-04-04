@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using Avalonia;
+using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -52,9 +52,9 @@ public partial class DashboardViewModel : ViewModelBase
         _eventRoot.Add(
             this.WatchProperty(
                 o => o.IsEnabled,
-                () =>
+                v =>
                 {
-                    if (IsEnabled)
+                    if (v)
                     {
                         // Cancel any activate 'disable temporarily' timers
                         _enableAfterDelayRegistration?.Dispose();
@@ -70,7 +70,7 @@ public partial class DashboardViewModel : ViewModelBase
             // Refresh transition tooltips when the language changes
             localizationManager.WatchProperty(
                 o => o.Language,
-                () =>
+                _ =>
                 {
                     OnPropertyChanged(nameof(SunsetTransitionTooltip));
                     OnPropertyChanged(nameof(SunriseTransitionTooltip));
@@ -430,8 +430,7 @@ public partial class DashboardViewModel : ViewModelBase
         IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
     }
 
-    [RelayCommand]
-    private void Initialize()
+    public override Task InitializeAsync()
     {
         _updateInstantTimer.Start();
         _updateConfigurationTimer.Start();
@@ -439,6 +438,8 @@ public partial class DashboardViewModel : ViewModelBase
 
         // Hack: feign property changes to refresh the tray icon
         OnAllPropertiesChanged();
+
+        return Task.CompletedTask;
     }
 
     [RelayCommand]
@@ -459,6 +460,9 @@ public partial class DashboardViewModel : ViewModelBase
         var timeUntilSunrise = SolarTimes.Sunrise.NextAfter(now) - now;
         DisableTemporarily(timeUntilSunrise);
     }
+
+    [RelayCommand]
+    private void Toggle() => IsEnabled = !IsEnabled;
 
     [RelayCommand]
     private void ResetConfigurationOffset()

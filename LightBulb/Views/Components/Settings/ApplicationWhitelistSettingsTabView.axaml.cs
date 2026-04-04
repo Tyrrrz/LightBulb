@@ -21,15 +21,15 @@ public partial class ApplicationWhitelistSettingsTabView
 
     private void UserControl_OnLoaded(object? sender, RoutedEventArgs args)
     {
-        DataContext.RefreshApplicationsCommand.Execute(null);
+        DataContext.RefreshApplicationsCommand.ExecuteIfCan(null);
 
         _eventRoot.Add(
             // This hack is required to avoid having to use an ObservableCollection<T> on the view model
             DataContext.WatchProperty(
                 o => o.WhitelistedApplications,
-                () =>
+                v =>
                     WhitelistedApplicationsListBox.SelectedItems = new AvaloniaList<object>(
-                        DataContext.WhitelistedApplications ?? []
+                        v ?? []
                     ),
                 true
             )
