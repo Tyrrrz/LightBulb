@@ -7,17 +7,11 @@ namespace LightBulb.PlatformInterop;
 /// </summary>
 public class PlatformSettings : IPlatformSettings
 {
-    // Stored for future use when implementing auto-start via ~/.config/autostart/
-    private readonly string _appName;
-    private readonly string _autoStartCommand;
+    // Parameters accepted for API symmetry with the Windows implementation.
+    // TODO: use appName and autoStartCommand to configure
+    // auto-start via ~/.config/autostart/<appName>.desktop
+    public PlatformSettings(string appName, string autoStartCommand) { }
 
-    public PlatformSettings(string appName, string autoStartCommand)
-    {
-        _appName = appName;
-        _autoStartCommand = autoStartCommand;
-    }
-
-    // TODO: implement auto-start via ~/.config/autostart/<_appName>.desktop using _autoStartCommand
     public bool IsAutoStartEnabled { get; set; }
     public bool IsExtendedGammaRangeUnlocked { get; set; }
 }
