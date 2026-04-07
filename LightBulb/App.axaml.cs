@@ -113,9 +113,6 @@ public partial class App : Application, IDisposable
 
     public override void OnFrameworkInitializationCompleted()
     {
-        // Initialize the default theme, before a custom one (if any) is applied by loading settings
-        InitializeTheme();
-
         // Load settings
         _settingsService.Load();
 
@@ -169,6 +166,9 @@ public partial class App : Application, IDisposable
             desktop.MainWindow = window;
 
             window?.ShowActivateFocus();
+
+            // Initialize the theme for the first time; must be done after the main window is created
+            InitializeTheme();
         }
 
         _mainViewModel.Tray.IsWindowVisible = true;
