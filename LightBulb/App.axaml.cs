@@ -16,6 +16,7 @@ using LightBulb.ViewModels.Components.Settings;
 using LightBulb.ViewModels.Dialogs;
 using Material.Styles.Themes;
 using Microsoft.Extensions.DependencyInjection;
+using PlatformInterop = LightBulb.PlatformInterop;
 
 namespace LightBulb;
 
@@ -39,6 +40,14 @@ public partial class App : Application, IDisposable
         services.AddSingleton<DialogManager>();
         services.AddSingleton<ViewManager>();
         services.AddSingleton<ViewModelManager>();
+
+        // Platform settings
+        services.AddSingleton<PlatformInterop.IPlatformSettings>(
+            _ => new PlatformInterop.PlatformSettings(
+                Program.Name,
+                $"\"{Program.ExecutableFilePath}\" {StartOptions.IsInitiallyHiddenArgument}"
+            )
+        );
 
         // Services
         services.AddSingleton<ExternalApplicationService>();

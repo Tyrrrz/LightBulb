@@ -2,11 +2,29 @@
     x:Class="LightBulb.Views.Components.Settings.AdvancedSettingsTabView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
     x:DataType="settings:AdvancedSettingsTabViewModel">
     <StackPanel Margin="16" Orientation="Vertical">
+        <!--  Gamma controller  -->
+        <Grid
+            ColumnDefinitions="*,Auto"
+            IsVisible="{Binding IsControllerSelectionVisible}"
+            ToolTip.Tip="{Binding LocalizationManager.GammaControllerTooltip}">
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="{Binding LocalizationManager.GammaControllerLabel}"
+                TextTrimming="CharacterEllipsis" />
+            <ComboBox
+                Grid.Column="1"
+                DisplayMemberBinding="{Binding Converter={x:Static converters:DisplayColorControllerToNameConverter.Instance}}"
+                ItemsSource="{Binding AvailableControllers}"
+                SelectedItem="{Binding SelectedController}" />
+        </Grid>
+
         <!--  Theme  -->
-        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.ThemeTooltip}">
+        <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.ThemeTooltip}">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"

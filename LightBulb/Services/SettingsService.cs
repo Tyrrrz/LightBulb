@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Text.Json.Serialization;
 using Cogwheel;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -9,28 +8,13 @@ using LightBulb.Framework;
 using LightBulb.Localization;
 using LightBulb.Models;
 using LightBulb.PlatformInterop;
-using Microsoft.Win32;
 
 namespace LightBulb.Services;
 
 [ObservableObject]
-public partial class SettingsService()
+public partial class SettingsService(IPlatformSettings platformSettings)
     : SettingsBase(StartOptions.Current.SettingsPath, SerializerContext.Default)
 {
-    private readonly RegistrySwitch<int> _extendedGammaRangeSwitch = new(
-        RegistryHive.LocalMachine,
-        @"Software\Microsoft\Windows NT\CurrentVersion\ICM",
-        "GdiICMGammaRange",
-        256
-    );
-
-    private readonly RegistrySwitch<string> _autoStartSwitch = new(
-        RegistryHive.CurrentUser,
-        @"Software\Microsoft\Windows\CurrentVersion\Run",
-        Program.Name,
-        $"\"{Program.ExecutableFilePath}\" {StartOptions.IsInitiallyHiddenArgument}"
-    );
-
     [ObservableProperty]
     public partial bool IsFirstTimeExperienceEnabled { get; set; } = true;
 
@@ -38,7 +22,7 @@ public partial class SettingsService()
     public partial bool IsUkraineSupportMessageEnabled { get; set; } = true;
 
     [ObservableProperty]
-    [JsonIgnore] // comes from registry
+    [JsonIgnore] // comes from platform settings
     public partial bool IsExtendedGammaRangeUnlocked { get; set; }
 
     // General
@@ -111,6 +95,9 @@ public partial class SettingsService()
     [ObservableProperty]
     public partial bool IsGammaPollingEnabled { get; set; }
 
+    [ObservableProperty]
+    public partial string? DisplayGammaControllerId { get; set; }
+
     // Application whitelist
 
     [ObservableProperty]
@@ -164,19 +151,9 @@ public partial class SettingsService()
 
         base.Save();
 
-        // Update values in the registry
-        try
-        {
-            _extendedGammaRangeSwitch.IsSet = IsExtendedGammaRangeUnlocked;
-            _autoStartSwitch.IsSet = IsAutoStartEnabled;
-        }
-        catch (Win32Exception)
-        {
-            // This can happen if the user doesn't have the necessary permissions to update
-            // the corresponding registry keys, and privilege elevation has failed.
-            // Throwing an exception here is very messy, so we'll just ignore it.
-            // https://github.com/Tyrrrz/LightBulb/issues/335
-        }
+        // Persist values through platform-specific settings
+        platformSettings.IsExtendedGammaRangeUnlocked = IsExtendedGammaRangeUnlocked;
+        platformSettings.IsAutoStartEnabled = IsAutoStartEnabled;
 
         // Trigger UI updates
         OnPropertyChanged(string.Empty);
@@ -186,9 +163,9 @@ public partial class SettingsService()
     {
         var wasLoaded = base.Load();
 
-        // Get values from the registry
-        IsExtendedGammaRangeUnlocked = _extendedGammaRangeSwitch.IsSet;
-        IsAutoStartEnabled = _autoStartSwitch.IsSet;
+        // Get values from platform-specific settings
+        IsExtendedGammaRangeUnlocked = platformSettings.IsExtendedGammaRangeUnlocked;
+        IsAutoStartEnabled = platformSettings.IsAutoStartEnabled;
 
         // Trigger UI updates
         OnPropertyChanged(string.Empty);

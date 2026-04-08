@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using LightBulb.Framework;
 using LightBulb.Localization;
+using LightBulb.PlatformInterop;
 using LightBulb.Services;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
 public class AdvancedSettingsTabViewModel(
     SettingsService settingsService,
-    LocalizationManager localizationManager
+    LocalizationManager localizationManager,
+    GammaService gammaService
 ) : SettingsTabViewModelBase(settingsService, localizationManager, 2)
 {
     public override string DisplayName => LocalizationManager.AdvancedTabName;
@@ -65,5 +68,20 @@ public class AdvancedSettingsTabViewModel(
     {
         get => SettingsService.IsGammaPollingEnabled;
         set => SettingsService.IsGammaPollingEnabled = value;
+    }
+
+    // Controller selection — only shown when more than one controller is available
+    public IReadOnlyList<IDisplayColorController> AvailableControllers =>
+        gammaService.AvailableControllers;
+
+    public bool IsControllerSelectionVisible => AvailableControllers.Count > 1;
+
+    public IDisplayColorController? SelectedController
+    {
+        get =>
+            AvailableControllers.FirstOrDefault(c =>
+                c.Id == SettingsService.DisplayGammaControllerId
+            ) ?? AvailableControllers.FirstOrDefault();
+        set => SettingsService.DisplayGammaControllerId = value?.Id;
     }
 }

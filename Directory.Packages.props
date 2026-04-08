@@ -7,6 +7,7 @@
     <PackageVersion Include="Avalonia" Version="11.3.13" />
     <PackageVersion Include="Avalonia.Desktop" Version="11.3.13" />
     <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.13" />
+    <PackageVersion Include="CliWrap" Version="3.10.1" />
     <PackageVersion Include="Cogwheel" Version="2.1.1" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageVersion Include="coverlet.collector" Version="8.0.1" />

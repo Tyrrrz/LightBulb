@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using LightBulb.PlatformInterop.Internal;
 
 namespace LightBulb.PlatformInterop;
@@ -49,6 +50,22 @@ public partial class DeviceContext(nint handle) : NativeResource(handle)
     }
 
     public void ResetGamma() => SetGamma(1, 1, 1);
+
+    public ValueTask SetGammaAsync(
+        double redMultiplier,
+        double greenMultiplier,
+        double blueMultiplier
+    )
+    {
+        SetGamma(redMultiplier, greenMultiplier, blueMultiplier);
+        return ValueTask.CompletedTask;
+    }
+
+    public ValueTask ResetGammaAsync()
+    {
+        ResetGamma();
+        return ValueTask.CompletedTask;
+    }
 
     protected override void Dispose(bool disposing)
     {

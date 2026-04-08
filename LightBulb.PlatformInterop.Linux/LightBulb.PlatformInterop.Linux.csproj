@@ -3,7 +3,8 @@
     <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LightBulb.PlatformInterop\LightBulb.PlatformInterop.csproj" />
+    <PackageReference Include="CliWrap" />
     <PackageReference Include="CSharpier.MsBuild" PrivateAssets="all" />
-    <PackageReference Include="JsonExtensions" />
   </ItemGroup>
 </Project>

@@ -61,6 +61,9 @@ public partial class LocalizationManager
             [nameof(GammaPollingLabel)] = "Gamma polling",
             [nameof(GammaPollingTooltip)] =
                 "Force-refresh monitor gamma at regular intervals to prevent other programs from overriding it",
+            [nameof(GammaControllerLabel)] = "Gamma controller",
+            [nameof(GammaControllerTooltip)] =
+                "Method used to adjust display color temperature and brightness. DE-integrated options (GNOME Night Light, KDE Plasma Night Color) keep system settings in sync but do not support brightness adjustment.",
             // General settings tab
             [nameof(DayTemperatureLabel)] = "Day-time color temperature:",
             [nameof(DayTemperatureTooltip)] = "Color temperature during the day",

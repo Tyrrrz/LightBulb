@@ -2,105 +2,51 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using LightBulb.Core;
 using LightBulb.PlatformInterop;
-using LightBulb.Utils;
-using LightBulb.Utils.Extensions;
 
 namespace LightBulb.Services;
 
 public partial class GammaService : IDisposable
 {
     private readonly SettingsService _settingsService;
-    private readonly DisposableCollector _eventRoot = new();
+    private readonly IReadOnlyList<IDisplayColorController> _availableControllers;
+    private readonly DisplayStateWatcher _displayStateWatcher;
 
     private bool _isUpdatingGamma;
 
-    private IReadOnlyList<DeviceContext> _deviceContexts = [];
-    private bool _areDeviceContextsValid;
     private DateTimeOffset _lastGammaInvalidationTimestamp = DateTimeOffset.MinValue;
-
     private ColorConfiguration? _lastConfiguration;
     private DateTimeOffset _lastUpdateTimestamp = DateTimeOffset.MinValue;
+
+    public IReadOnlyList<IDisplayColorController> AvailableControllers => _availableControllers;
 
     public GammaService(SettingsService settingsService)
     {
         _settingsService = settingsService;
+        _availableControllers = GammaController.GetAvailable();
 
-        // Listen to all system events that may indicate that the device context or gamma was changed from the outside
-        _eventRoot.Add(
-            // https://github.com/Tyrrrz/LightBulb/issues/223
-            SystemHook.TryRegister(SystemHook.Ids.ForegroundWindowChanged, InvalidateGamma)
-                ?? Disposable.Null
-        );
-
-        _eventRoot.Add(
-            PowerSettingNotification.TryRegister(
-                PowerSettingNotification.Ids.ConsoleDisplayStateChanged,
-                InvalidateGamma
-            ) ?? Disposable.Null
-        );
-
-        _eventRoot.Add(
-            PowerSettingNotification.TryRegister(
-                PowerSettingNotification.Ids.PowerSavingStatusChanged,
-                InvalidateGamma
-            ) ?? Disposable.Null
-        );
-
-        _eventRoot.Add(
-            PowerSettingNotification.TryRegister(
-                PowerSettingNotification.Ids.SessionDisplayStatusChanged,
-                InvalidateGamma
-            ) ?? Disposable.Null
-        );
-
-        _eventRoot.Add(
-            PowerSettingNotification.TryRegister(
-                PowerSettingNotification.Ids.MonitorPowerStateChanged,
-                InvalidateGamma
-            ) ?? Disposable.Null
-        );
-
-        _eventRoot.Add(
-            PowerSettingNotification.TryRegister(
-                PowerSettingNotification.Ids.AwayModeChanged,
-                InvalidateGamma
-            ) ?? Disposable.Null
-        );
-
-        _eventRoot.Add(
-            SystemEvent.Register(SystemEvent.Ids.DisplayChanged, InvalidateDeviceContexts)
-        );
-
-        _eventRoot.Add(
-            SystemEvent.Register(SystemEvent.Ids.PaletteChanged, InvalidateDeviceContexts)
-        );
-
-        _eventRoot.Add(
-            SystemEvent.Register(SystemEvent.Ids.SettingsChanged, InvalidateDeviceContexts)
-        );
-
-        _eventRoot.Add(
-            SystemEvent.Register(SystemEvent.Ids.SystemColorsChanged, InvalidateDeviceContexts)
+        _displayStateWatcher = DisplayStateWatcher.Create(
+            InvalidateGamma,
+            InvalidateDisplayConfiguration
         );
     }
 
-    private void EnsureValidDeviceContexts()
+    private IDisplayColorController GetActiveController()
     {
-        if (_areDeviceContextsValid)
-            return;
+        if (_availableControllers.Count == 0)
+            throw new InvalidOperationException("No display color controllers are available.");
 
-        _areDeviceContextsValid = true;
+        var id = _settingsService.DisplayGammaControllerId;
+        if (id is not null)
+        {
+            var match = _availableControllers.FirstOrDefault(c => c.Id == id);
+            if (match is not null)
+                return match;
+        }
 
-        _deviceContexts.DisposeAll();
-        _deviceContexts = Monitor
-            .GetAll()
-            .Select(m => m.TryCreateDeviceContext())
-            .WhereNotNull()
-            .ToArray();
-
-        _lastConfiguration = null;
+        return _availableControllers[0];
     }
 
     private bool IsGammaStale()
@@ -109,18 +55,14 @@ public partial class GammaService : IDisposable
 
         // Assume gamma continues to be stale for some time after it has been invalidated
         if ((instant - _lastGammaInvalidationTimestamp).Duration() <= TimeSpan.FromSeconds(0.3))
-        {
             return true;
-        }
 
         // If polling is enabled, assume gamma is stale after some time has passed since the last update
         if (
             _settingsService.IsGammaPollingEnabled
             && (instant - _lastUpdateTimestamp).Duration() > TimeSpan.FromSeconds(1)
         )
-        {
             return true;
-        }
 
         return false;
     }
@@ -146,32 +88,22 @@ public partial class GammaService : IDisposable
         Debug.WriteLine("Gamma invalidated.");
     }
 
-    public void InvalidateDeviceContexts()
+    public void InvalidateDisplayConfiguration()
     {
-        _areDeviceContextsValid = false;
-        Debug.WriteLine("Device contexts invalidated.");
-
+        GetActiveController().Invalidate();
+        Debug.WriteLine("Display configuration invalidated.");
         InvalidateGamma();
     }
 
-    public void SetGamma(ColorConfiguration configuration)
+    public async Task SetGammaAsync(ColorConfiguration configuration)
     {
         // Avoid unnecessary changes as updating too often will cause stuttering
         if (!IsGammaStale() && !IsSignificantChange(configuration))
             return;
 
-        EnsureValidDeviceContexts();
-
         _isUpdatingGamma = true;
 
-        foreach (var deviceContext in _deviceContexts)
-        {
-            deviceContext.SetGamma(
-                GetRed(configuration) * configuration.Brightness,
-                GetGreen(configuration) * configuration.Brightness,
-                GetBlue(configuration) * configuration.Brightness
-            );
-        }
+        await GetActiveController().SetGammaAsync(configuration);
 
         _isUpdatingGamma = false;
 
@@ -182,70 +114,21 @@ public partial class GammaService : IDisposable
 
     public void Dispose()
     {
-        // Reset gamma on all contexts
-        foreach (var deviceContext in _deviceContexts)
-            deviceContext.ResetGamma();
-
-        _eventRoot.Dispose();
-        _deviceContexts.DisposeAll();
-    }
-}
-
-public partial class GammaService
-{
-    private static double GetRed(ColorConfiguration configuration)
-    {
-        // Algorithm taken from http://tannerhelland.com/4435/convert-temperature-rgb-algorithm-code
-
-        if (configuration.Temperature > 6600)
+        foreach (var controller in _availableControllers)
         {
-            return Math.Clamp(
-                Math.Pow(configuration.Temperature / 100 - 60, -0.1332047592) * 329.698727446 / 255,
-                0,
-                1
-            );
+            controller
+                .ResetGammaAsync()
+                .AsTask()
+                .ContinueWith(
+                    t =>
+                        Debug.WriteLine(
+                            $"Failed to reset gamma on dispose for '{controller.Id}': {t.Exception}"
+                        ),
+                    TaskContinuationOptions.OnlyOnFaulted
+                );
+            controller.Dispose();
         }
 
-        return 1;
-    }
-
-    private static double GetGreen(ColorConfiguration configuration)
-    {
-        // Algorithm taken from http://tannerhelland.com/4435/convert-temperature-rgb-algorithm-code
-
-        if (configuration.Temperature > 6600)
-        {
-            return Math.Clamp(
-                Math.Pow(configuration.Temperature / 100 - 60, -0.0755148492)
-                    * 288.1221695283
-                    / 255,
-                0,
-                1
-            );
-        }
-
-        return Math.Clamp(
-            (Math.Log(configuration.Temperature / 100) * 99.4708025861 - 161.1195681661) / 255,
-            0,
-            1
-        );
-    }
-
-    private static double GetBlue(ColorConfiguration configuration)
-    {
-        // Algorithm taken from http://tannerhelland.com/4435/convert-temperature-rgb-algorithm-code
-
-        if (configuration.Temperature >= 6600)
-            return 1;
-
-        if (configuration.Temperature <= 1900)
-            return 0;
-
-        return Math.Clamp(
-            (Math.Log(configuration.Temperature / 100 - 10) * 138.5177312231 - 305.0447927307)
-                / 255,
-            0,
-            1
-        );
+        _displayStateWatcher.Dispose();
     }
 }

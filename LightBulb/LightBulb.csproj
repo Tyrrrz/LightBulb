@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <ApplicationIcon>..\favicon.ico</ApplicationIcon>
     <PublishTrimmed>true</PublishTrimmed>
@@ -9,9 +10,24 @@
   <ItemGroup>
     <AvaloniaResource Include="..\favicon.ico" Link="favicon.ico" />
   </ItemGroup>
+  <!-- Derive TargetOS from TargetPlatformIdentifier if not explicitly set -->
+  <PropertyGroup>
+    <TargetOS Condition="'$(TargetOS)' == '' and '$(TargetPlatformIdentifier)' == 'windows'"
+      >windows</TargetOS
+    >
+    <TargetOS Condition="'$(TargetOS)' == ''">linux</TargetOS>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\LightBulb.Core\LightBulb.Core.csproj" />
     <ProjectReference Include="..\LightBulb.PlatformInterop\LightBulb.PlatformInterop.csproj" />
+    <ProjectReference
+      Include="..\LightBulb.PlatformInterop.Windows\LightBulb.PlatformInterop.Windows.csproj"
+      Condition="'$(TargetOS)' == 'windows'"
+    />
+    <ProjectReference
+      Include="..\LightBulb.PlatformInterop.Linux\LightBulb.PlatformInterop.Linux.csproj"
+      Condition="'$(TargetOS)' == 'linux'"
+    />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" />
