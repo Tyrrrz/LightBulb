@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Services;
@@ -45,14 +46,18 @@ public partial class LocalizationManager : ObservableObject, IDisposable
                     "deu" => GermanLocalization,
                     "fra" => FrenchLocalization,
                     "spa" => SpanishLocalization,
-                    "zho" => SimplifiedChineseLocalization,
+                    "zho" when CultureInfo
+                            .CurrentUICulture.GetSelfAndParents()
+                            .Any(c =>
+                                string.Equals(c.Name, "zh-Hans", StringComparison.OrdinalIgnoreCase)
+                            ) => ChineseSimplifiedLocalization,
                     _ => EnglishLocalization,
                 },
             Language.Ukrainian => UkrainianLocalization,
             Language.German => GermanLocalization,
             Language.French => FrenchLocalization,
             Language.Spanish => SpanishLocalization,
-            Language.SimplifiedChinese => SimplifiedChineseLocalization,
+            Language.ChineseSimplified => ChineseSimplifiedLocalization,
             _ => EnglishLocalization,
         };
 

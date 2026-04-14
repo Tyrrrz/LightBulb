@@ -4,7 +4,7 @@ namespace LightBulb.Localization;
 
 public partial class LocalizationManager
 {
-    private static readonly IReadOnlyDictionary<string, string> SimplifiedChineseLocalization =
+    private static readonly IReadOnlyDictionary<string, string> ChineseSimplifiedLocalization =
         new Dictionary<string, string>
         {
             // Dashboard (仪表盘)
