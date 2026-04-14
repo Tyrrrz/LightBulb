@@ -46,7 +46,7 @@ public partial class LocalizationManager : ObservableObject, IDisposable
                     "deu" => GermanLocalization,
                     "fra" => FrenchLocalization,
                     "spa" => SpanishLocalization,
-                    _ when CultureInfo
+                    "zho" when CultureInfo
                             .CurrentUICulture.GetSelfAndParents()
                             .Any(c =>
                                 string.Equals(c.Name, "zh-Hans", StringComparison.OrdinalIgnoreCase)
