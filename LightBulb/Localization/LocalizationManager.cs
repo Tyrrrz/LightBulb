@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Services;
@@ -45,8 +46,11 @@ public partial class LocalizationManager : ObservableObject, IDisposable
                     "deu" => GermanLocalization,
                     "fra" => FrenchLocalization,
                     "spa" => SpanishLocalization,
-                    _ when IsSimplifiedChinese(CultureInfo.CurrentUICulture) =>
-                        ChineseSimplifiedLocalization,
+                    _ when CultureInfo
+                            .CurrentUICulture.GetSelfAndParents()
+                            .Any(c =>
+                                string.Equals(c.Name, "zh-Hans", StringComparison.OrdinalIgnoreCase)
+                            ) => ChineseSimplifiedLocalization,
                     _ => EnglishLocalization,
                 },
             Language.Ukrainian => UkrainianLocalization,
@@ -66,17 +70,6 @@ public partial class LocalizationManager : ObservableObject, IDisposable
         }
 
         return $"Missing localization for '{key}'";
-    }
-
-    private static bool IsSimplifiedChinese(CultureInfo culture)
-    {
-        for (var c = culture; c.Name != string.Empty; c = c.Parent)
-        {
-            if (string.Equals(c.Name, "zh-Hans", StringComparison.OrdinalIgnoreCase))
-                return true;
-        }
-
-        return false;
     }
 
     public void Dispose() => _eventRoot.Dispose();
