@@ -27,6 +27,5 @@
     <PackageReference Include="Material.Icons.Avalonia" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Onova" />
-    <PackageReference Include="Tmds.DBus.Protocol" />
   </ItemGroup>
 </Project>
