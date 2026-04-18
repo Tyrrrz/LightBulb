@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using LightBulb.Utils.Extensions;
+using PowerKit;
 
 namespace LightBulb.Utils;
 
@@ -22,7 +22,7 @@ internal class DisposableCollector : IDisposable
     {
         lock (_lock)
         {
-            _items.DisposeAll();
+            Disposable.Merge(_items).Dispose();
             _items.Clear();
         }
     }

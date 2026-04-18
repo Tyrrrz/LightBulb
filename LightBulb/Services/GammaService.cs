@@ -5,7 +5,8 @@ using System.Linq;
 using LightBulb.Core;
 using LightBulb.PlatformInterop;
 using LightBulb.Utils;
-using LightBulb.Utils.Extensions;
+using PowerKit;
+using PowerKit.Extensions;
 
 namespace LightBulb.Services;
 
@@ -93,7 +94,7 @@ public partial class GammaService : IDisposable
 
         _areDeviceContextsValid = true;
 
-        _deviceContexts.DisposeAll();
+        Disposable.Merge(_deviceContexts).Dispose();
         _deviceContexts = Monitor
             .GetAll()
             .Select(m => m.TryCreateDeviceContext())
@@ -187,7 +188,7 @@ public partial class GammaService : IDisposable
             deviceContext.ResetGamma();
 
         _eventRoot.Dispose();
-        _deviceContexts.DisposeAll();
+        Disposable.Merge(_deviceContexts).Dispose();
     }
 }
 
