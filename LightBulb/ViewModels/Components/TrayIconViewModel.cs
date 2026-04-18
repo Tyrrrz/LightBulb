@@ -5,8 +5,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Framework;
 using LightBulb.Localization;
-using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
+using PowerKit;
 
 namespace LightBulb.ViewModels.Components;
 
@@ -15,7 +15,7 @@ public partial class TrayIconViewModel : ViewModelBase
     private readonly ViewModelManager _viewModelManager;
     private readonly DialogManager _dialogManager;
 
-    private readonly DisposableCollector _eventRoot = new();
+    private readonly IDisposable _eventRoot;
 
     public LocalizationManager LocalizationManager { get; }
 
@@ -58,7 +58,7 @@ public partial class TrayIconViewModel : ViewModelBase
         _dialogManager = dialogManager;
         LocalizationManager = localizationManager;
 
-        _eventRoot.Add(
+        _eventRoot = Disposable.Merge(
             localizationManager.WatchProperty(
                 o => o.Language,
                 _ =>
@@ -67,10 +67,7 @@ public partial class TrayIconViewModel : ViewModelBase
                     OnPropertyChanged(nameof(ToolTipText));
                     OnPropertyChanged(nameof(ToggleMenuItemHeader));
                 }
-            )
-        );
-
-        _eventRoot.Add(
+            ),
             dashboard.WatchProperty(
                 o => o.IsEnabled,
                 _ =>
@@ -78,21 +75,12 @@ public partial class TrayIconViewModel : ViewModelBase
                     OnPropertyChanged(nameof(ToolTipText));
                     OnPropertyChanged(nameof(ToggleMenuItemHeader));
                 }
-            )
-        );
-
-        _eventRoot.Add(
-            dashboard.WatchProperty(o => o.IsPaused, _ => OnPropertyChanged(nameof(ToolTipText)))
-        );
-
-        _eventRoot.Add(
+            ),
+            dashboard.WatchProperty(o => o.IsPaused, _ => OnPropertyChanged(nameof(ToolTipText))),
             dashboard.WatchProperty(
                 o => o.IsCyclePreviewEnabled,
                 _ => OnPropertyChanged(nameof(ToolTipText))
-            )
-        );
-
-        _eventRoot.Add(
+            ),
             dashboard.WatchProperty(
                 o => o.CurrentConfiguration,
                 _ => OnPropertyChanged(nameof(ToolTipText))

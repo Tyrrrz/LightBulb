@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using LightBulb.Core;
 using LightBulb.PlatformInterop;
-using LightBulb.Utils;
 using PowerKit;
 using PowerKit.Extensions;
 
@@ -13,7 +12,7 @@ namespace LightBulb.Services;
 public partial class GammaService : IDisposable
 {
     private readonly SettingsService _settingsService;
-    private readonly DisposableCollector _eventRoot = new();
+    private readonly IDisposable _eventRoot;
 
     private bool _isUpdatingGamma;
 
@@ -29,60 +28,33 @@ public partial class GammaService : IDisposable
         _settingsService = settingsService;
 
         // Listen to all system events that may indicate that the device context or gamma was changed from the outside
-        _eventRoot.Add(
+        _eventRoot = Disposable.Merge(
             // https://github.com/Tyrrrz/LightBulb/issues/223
             SystemHook.TryRegister(SystemHook.Ids.ForegroundWindowChanged, InvalidateGamma)
-                ?? Disposable.Null
-        );
-
-        _eventRoot.Add(
+                ?? Disposable.Null,
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.ConsoleDisplayStateChanged,
                 InvalidateGamma
-            ) ?? Disposable.Null
-        );
-
-        _eventRoot.Add(
+            ) ?? Disposable.Null,
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.PowerSavingStatusChanged,
                 InvalidateGamma
-            ) ?? Disposable.Null
-        );
-
-        _eventRoot.Add(
+            ) ?? Disposable.Null,
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.SessionDisplayStatusChanged,
                 InvalidateGamma
-            ) ?? Disposable.Null
-        );
-
-        _eventRoot.Add(
+            ) ?? Disposable.Null,
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.MonitorPowerStateChanged,
                 InvalidateGamma
-            ) ?? Disposable.Null
-        );
-
-        _eventRoot.Add(
+            ) ?? Disposable.Null,
             PowerSettingNotification.TryRegister(
                 PowerSettingNotification.Ids.AwayModeChanged,
                 InvalidateGamma
-            ) ?? Disposable.Null
-        );
-
-        _eventRoot.Add(
-            SystemEvent.Register(SystemEvent.Ids.DisplayChanged, InvalidateDeviceContexts)
-        );
-
-        _eventRoot.Add(
-            SystemEvent.Register(SystemEvent.Ids.PaletteChanged, InvalidateDeviceContexts)
-        );
-
-        _eventRoot.Add(
-            SystemEvent.Register(SystemEvent.Ids.SettingsChanged, InvalidateDeviceContexts)
-        );
-
-        _eventRoot.Add(
+            ) ?? Disposable.Null,
+            SystemEvent.Register(SystemEvent.Ids.DisplayChanged, InvalidateDeviceContexts),
+            SystemEvent.Register(SystemEvent.Ids.PaletteChanged, InvalidateDeviceContexts),
+            SystemEvent.Register(SystemEvent.Ids.SettingsChanged, InvalidateDeviceContexts),
             SystemEvent.Register(SystemEvent.Ids.SystemColorsChanged, InvalidateDeviceContexts)
         );
     }

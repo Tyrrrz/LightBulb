@@ -1,15 +1,16 @@
+using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Framework;
 using LightBulb.Localization;
 using LightBulb.Services;
-using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
+using PowerKit;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
 public abstract partial class SettingsTabViewModelBase : ViewModelBase
 {
-    private readonly DisposableCollector _eventRoot = new();
+    private readonly IDisposable _eventRoot;
 
     protected SettingsTabViewModelBase(
         SettingsService settingsService,
@@ -21,14 +22,12 @@ public abstract partial class SettingsTabViewModelBase : ViewModelBase
         LocalizationManager = localizationManager;
         Order = order;
 
-        _eventRoot.Add(
+        _eventRoot = Disposable.Merge(
             // Implementing classes will bind to settings properties through
             // their own properties, so make sure they stay in sync.
             // This is a bit overkill as it triggers a lot of unnecessary events,
             // but it's a simple and reliable solution.
-            SettingsService.WatchAllProperties(OnAllPropertiesChanged)
-        );
-        _eventRoot.Add(
+            SettingsService.WatchAllProperties(OnAllPropertiesChanged),
             localizationManager.WatchProperty(o => o.Language, _ => OnAllPropertiesChanged())
         );
     }

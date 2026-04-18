@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Localization;
 using LightBulb.Models;
 using LightBulb.Services;
-using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
 
 namespace LightBulb.ViewModels.Components.Settings;
@@ -13,7 +13,7 @@ namespace LightBulb.ViewModels.Components.Settings;
 public partial class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewModelBase
 {
     private readonly ExternalApplicationService _externalApplicationService;
-    private readonly DisposableCollector _eventRoot = new();
+    private readonly IDisposable _eventRoot;
 
     public ApplicationWhitelistSettingsTabViewModel(
         SettingsService settingsService,
@@ -24,11 +24,9 @@ public partial class ApplicationWhitelistSettingsTabViewModel : SettingsTabViewM
     {
         _externalApplicationService = externalApplicationService;
 
-        _eventRoot.Add(
-            this.WatchProperty(
-                o => o.IsApplicationWhitelistEnabled,
-                _ => RefreshApplicationsCommand.NotifyCanExecuteChanged()
-            )
+        _eventRoot = this.WatchProperty(
+            o => o.IsApplicationWhitelistEnabled,
+            _ => RefreshApplicationsCommand.NotifyCanExecuteChanged()
         );
     }
 

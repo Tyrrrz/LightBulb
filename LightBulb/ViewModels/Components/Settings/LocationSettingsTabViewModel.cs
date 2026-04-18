@@ -5,14 +5,13 @@ using CommunityToolkit.Mvvm.Input;
 using LightBulb.Core;
 using LightBulb.Localization;
 using LightBulb.Services;
-using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
 public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
 {
-    private readonly DisposableCollector _eventRoot = new();
+    private readonly IDisposable _eventRoot;
 
     public LocationSettingsTabViewModel(
         SettingsService settingsService,
@@ -20,9 +19,7 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
     )
         : base(settingsService, localizationManager, 1)
     {
-        _eventRoot.Add(
-            this.WatchProperty(o => o.Location, v => LocationQuery = v?.ToString(), true)
-        );
+        _eventRoot = this.WatchProperty(o => o.Location, v => LocationQuery = v?.ToString(), true);
     }
 
     public override string DisplayName => LocalizationManager.LocationTabName;
