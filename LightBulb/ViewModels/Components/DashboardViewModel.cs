@@ -24,7 +24,7 @@ public partial class DashboardViewModel : ViewModelBase
     private readonly HotKeyService _hotKeyService;
     private readonly ExternalApplicationService _externalApplicationService;
 
-    private readonly IDisposable _eventRoot;
+    private readonly IDisposable _eventSubscription;
 
     private readonly Timer _updateInstantTimer;
     private readonly Timer _updateConfigurationTimer;
@@ -48,7 +48,7 @@ public partial class DashboardViewModel : ViewModelBase
         _hotKeyService = hotKeyService;
         _externalApplicationService = externalApplicationService;
 
-        _eventRoot = Disposable.Merge(
+        _eventSubscription = Disposable.Merge(
             this.WatchProperty(
                 o => o.IsEnabled,
                 v =>
@@ -461,7 +461,7 @@ public partial class DashboardViewModel : ViewModelBase
     {
         if (disposing)
         {
-            _eventRoot.Dispose();
+            _eventSubscription.Dispose();
 
             _updateInstantTimer.Dispose();
             _updateConfigurationTimer.Dispose();

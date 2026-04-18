@@ -15,7 +15,7 @@ public partial class TrayIconViewModel : ViewModelBase
     private readonly ViewModelManager _viewModelManager;
     private readonly DialogManager _dialogManager;
 
-    private readonly IDisposable _eventRoot;
+    private readonly IDisposable _eventSubscription;
 
     public LocalizationManager LocalizationManager { get; }
 
@@ -58,7 +58,7 @@ public partial class TrayIconViewModel : ViewModelBase
         _dialogManager = dialogManager;
         LocalizationManager = localizationManager;
 
-        _eventRoot = Disposable.Merge(
+        _eventSubscription = Disposable.Merge(
             localizationManager.WatchProperty(
                 o => o.Language,
                 _ =>
@@ -123,7 +123,7 @@ public partial class TrayIconViewModel : ViewModelBase
     {
         if (disposing)
         {
-            _eventRoot.Dispose();
+            _eventSubscription.Dispose();
         }
 
         base.Dispose(disposing);

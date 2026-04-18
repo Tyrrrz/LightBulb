@@ -10,7 +10,7 @@ namespace LightBulb.ViewModels.Components.Settings;
 
 public abstract partial class SettingsTabViewModelBase : ViewModelBase
 {
-    private readonly IDisposable _eventRoot;
+    private readonly IDisposable _eventSubscription;
 
     protected SettingsTabViewModelBase(
         SettingsService settingsService,
@@ -22,7 +22,7 @@ public abstract partial class SettingsTabViewModelBase : ViewModelBase
         LocalizationManager = localizationManager;
         Order = order;
 
-        _eventRoot = Disposable.Merge(
+        _eventSubscription = Disposable.Merge(
             // Implementing classes will bind to settings properties through
             // their own properties, so make sure they stay in sync.
             // This is a bit overkill as it triggers a lot of unnecessary events,
@@ -46,7 +46,7 @@ public abstract partial class SettingsTabViewModelBase : ViewModelBase
     protected override void Dispose(bool disposing)
     {
         if (disposing)
-            _eventRoot.Dispose();
+            _eventSubscription.Dispose();
 
         base.Dispose(disposing);
     }

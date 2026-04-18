@@ -12,7 +12,7 @@ namespace LightBulb.Services;
 public partial class GammaService : IDisposable
 {
     private readonly SettingsService _settingsService;
-    private readonly IDisposable _eventRoot;
+    private readonly IDisposable _eventSubscription;
 
     private bool _isUpdatingGamma;
 
@@ -28,7 +28,7 @@ public partial class GammaService : IDisposable
         _settingsService = settingsService;
 
         // Listen to all system events that may indicate that the device context or gamma was changed from the outside
-        _eventRoot = Disposable.Merge(
+        _eventSubscription = Disposable.Merge(
             // https://github.com/Tyrrrz/LightBulb/issues/223
             SystemHook.TryRegister(SystemHook.Ids.ForegroundWindowChanged, InvalidateGamma)
                 ?? Disposable.Null,
@@ -159,7 +159,7 @@ public partial class GammaService : IDisposable
         foreach (var deviceContext in _deviceContexts)
             deviceContext.ResetGamma();
 
-        _eventRoot.Dispose();
+        _eventSubscription.Dispose();
         Disposable.Merge(_deviceContexts).Dispose();
     }
 }

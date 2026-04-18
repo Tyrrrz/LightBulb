@@ -26,7 +26,7 @@ public partial class App : Application, IDisposable
     private readonly SettingsService _settingsService;
     private readonly MainViewModel _mainViewModel;
 
-    private readonly IDisposable _eventRoot;
+    private readonly IDisposable _eventSubscription;
 
     private bool _isDisposed;
 
@@ -64,7 +64,7 @@ public partial class App : Application, IDisposable
         _mainViewModel = _services.GetRequiredService<ViewModelManager>().GetMainViewModel();
 
         // Re-initialize the theme when the user changes it
-        _eventRoot = _settingsService.WatchProperty(
+        _eventSubscription = _settingsService.WatchProperty(
             o => o.Theme,
             v =>
             {
@@ -193,7 +193,7 @@ public partial class App : Application, IDisposable
 
         _isDisposed = true;
 
-        _eventRoot.Dispose();
+        _eventSubscription.Dispose();
         _services.Dispose();
     }
 }

@@ -11,7 +11,7 @@ namespace LightBulb.ViewModels.Components.Settings;
 
 public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
 {
-    private readonly IDisposable _eventRoot;
+    private readonly IDisposable _eventSubscription;
 
     public LocationSettingsTabViewModel(
         SettingsService settingsService,
@@ -19,7 +19,11 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
     )
         : base(settingsService, localizationManager, 1)
     {
-        _eventRoot = this.WatchProperty(o => o.Location, v => LocationQuery = v?.ToString(), true);
+        _eventSubscription = this.WatchProperty(
+            o => o.Location,
+            v => LocationQuery = v?.ToString(),
+            true
+        );
     }
 
     public override string DisplayName => LocalizationManager.LocationTabName;
@@ -121,7 +125,7 @@ public partial class LocationSettingsTabViewModel : SettingsTabViewModelBase
     protected override void Dispose(bool disposing)
     {
         if (disposing)
-            _eventRoot.Dispose();
+            _eventSubscription.Dispose();
 
         base.Dispose(disposing);
     }

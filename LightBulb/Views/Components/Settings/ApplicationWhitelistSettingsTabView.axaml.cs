@@ -14,7 +14,7 @@ public partial class ApplicationWhitelistSettingsTabView
     : UserControl<ApplicationWhitelistSettingsTabViewModel>,
         IDisposable
 {
-    private IDisposable? _eventRoot;
+    private IDisposable? _eventSubscription;
 
     public ApplicationWhitelistSettingsTabView() => InitializeComponent();
 
@@ -23,7 +23,7 @@ public partial class ApplicationWhitelistSettingsTabView
         DataContext.RefreshApplicationsCommand.ExecuteIfCan(null);
 
         // This hack is required to avoid having to use an ObservableCollection<T> on the view model
-        _eventRoot = DataContext.WatchProperty(
+        _eventSubscription = DataContext.WatchProperty(
             o => o.WhitelistedApplications,
             v => WhitelistedApplicationsListBox.SelectedItems = new AvaloniaList<object>(v ?? []),
             true
@@ -32,8 +32,8 @@ public partial class ApplicationWhitelistSettingsTabView
 
     private void UserControl_OnUnloaded(object? sender, RoutedEventArgs args)
     {
-        _eventRoot?.Dispose();
-        _eventRoot = null;
+        _eventSubscription?.Dispose();
+        _eventSubscription = null;
     }
 
     // This hack is required to avoid having to use an ObservableCollection<T> on the view model
@@ -62,7 +62,7 @@ public partial class ApplicationWhitelistSettingsTabView
 
     public void Dispose()
     {
-        _eventRoot?.Dispose();
-        _eventRoot = null;
+        _eventSubscription?.Dispose();
+        _eventSubscription = null;
     }
 }
