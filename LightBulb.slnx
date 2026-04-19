@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/Misc/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+    <File Path="License.txt" />
+    <File Path="NuGet.config" />
+    <File Path="ReadMe.md" />
+  </Folder>
+
+  <Project Path="LightBulb/LightBulb.csproj" />
+  <Project Path="LightBulb.Core.Tests/LightBulb.Core.Tests.csproj" />
+  <Project Path="LightBulb.Core/LightBulb.Core.csproj" />
+  <Project Path="LightBulb.PlatformInterop/LightBulb.PlatformInterop.csproj" />
+</Solution>
