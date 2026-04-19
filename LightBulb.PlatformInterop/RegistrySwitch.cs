@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security;
+using System.Threading;
 using LightBulb.PlatformInterop.Utils;
 using Microsoft.Win32;
 using PowerKit.Extensions;
