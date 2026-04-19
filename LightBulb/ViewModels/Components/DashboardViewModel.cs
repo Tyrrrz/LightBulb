@@ -14,6 +14,7 @@ using LightBulb.PlatformInterop;
 using LightBulb.Services;
 using LightBulb.Utils.Extensions;
 using PowerKit;
+using PowerKit.Extensions;
 
 namespace LightBulb.ViewModels.Components;
 

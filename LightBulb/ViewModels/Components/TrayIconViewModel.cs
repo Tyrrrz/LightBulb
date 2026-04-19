@@ -7,6 +7,7 @@ using LightBulb.Framework;
 using LightBulb.Localization;
 using LightBulb.Utils.Extensions;
 using PowerKit;
+using PowerKit.Extensions;
 
 namespace LightBulb.ViewModels.Components;
 

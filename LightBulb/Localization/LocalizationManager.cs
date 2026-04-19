@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Services;
-using LightBulb.Utils.Extensions;
 using PowerKit;
 using PowerKit.Extensions;
 

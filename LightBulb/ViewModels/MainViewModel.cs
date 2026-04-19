@@ -10,6 +10,7 @@ using LightBulb.Services;
 using LightBulb.Utils.Extensions;
 using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
+using PowerKit.Extensions;
 using Process = System.Diagnostics.Process;
 
 namespace LightBulb.ViewModels;

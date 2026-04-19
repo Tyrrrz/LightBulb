@@ -5,8 +5,8 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using LightBulb.Framework;
 using LightBulb.Models;
-using LightBulb.Utils.Extensions;
 using LightBulb.ViewModels.Components.Settings;
+using PowerKit.Extensions;
 
 namespace LightBulb.Views.Components.Settings;
 

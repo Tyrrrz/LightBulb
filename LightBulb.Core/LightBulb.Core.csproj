@@ -2,5 +2,6 @@
   <ItemGroup>
     <PackageReference Include="CSharpier.MsBuild" PrivateAssets="all" />
     <PackageReference Include="JsonExtensions" />
+    <PackageReference Include="PowerKit" PrivateAssets="all" />
   </ItemGroup>
 </Project>

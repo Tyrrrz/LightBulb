@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using LightBulb.Localization;
 using LightBulb.Models;
 using LightBulb.Services;
-using LightBulb.Utils.Extensions;
+using PowerKit.Extensions;
 
 namespace LightBulb.ViewModels.Components.Settings;
 

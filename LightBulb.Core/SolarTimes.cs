@@ -1,5 +1,5 @@
 ﻿using System;
-using LightBulb.Core.Utils.Extensions;
+using PowerKit.Extensions;
 
 namespace LightBulb.Core;
 

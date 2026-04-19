@@ -15,6 +15,7 @@ using LightBulb.ViewModels.Components.Settings;
 using LightBulb.ViewModels.Dialogs;
 using Material.Styles.Themes;
 using Microsoft.Extensions.DependencyInjection;
+using PowerKit.Extensions;
 
 namespace LightBulb;
 
