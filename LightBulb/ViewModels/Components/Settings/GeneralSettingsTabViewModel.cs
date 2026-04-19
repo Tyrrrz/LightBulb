@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using LightBulb.Core;
 using LightBulb.Localization;
 using LightBulb.Services;

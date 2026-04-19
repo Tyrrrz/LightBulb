@@ -1,4 +1,4 @@
-﻿using LightBulb.Localization;
+using LightBulb.Localization;
 using LightBulb.Models;
 using LightBulb.Services;
 

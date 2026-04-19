@@ -1,4 +1,4 @@
-﻿namespace LightBulb.PlatformInterop.Internal;
+namespace LightBulb.PlatformInterop.Internal;
 
 internal delegate bool EnumMonitorsProc(
     nint hMonitor,

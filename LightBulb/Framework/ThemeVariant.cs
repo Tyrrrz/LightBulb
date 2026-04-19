@@ -1,4 +1,4 @@
-﻿namespace LightBulb.Framework;
+namespace LightBulb.Framework;
 
 public enum ThemeVariant
 {

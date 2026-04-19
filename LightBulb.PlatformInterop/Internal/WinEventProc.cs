@@ -1,4 +1,4 @@
-﻿namespace LightBulb.PlatformInterop.Internal;
+namespace LightBulb.PlatformInterop.Internal;
 
 internal delegate void WinEventProc(
     nint hWinEventHook,

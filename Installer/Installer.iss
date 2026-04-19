@@ -1,4 +1,4 @@
-﻿#define AppName "LightBulb"
+#define AppName "LightBulb"
 #define AppVersion GetEnv("INSTALLER_APP_VERSION")
 
 [Setup]

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using LightBulb.ViewModels;
 using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Dialogs;

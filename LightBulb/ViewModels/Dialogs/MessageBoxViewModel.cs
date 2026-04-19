@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Framework;
 
 namespace LightBulb.ViewModels.Dialogs;

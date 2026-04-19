@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using PowerKit.Extensions;
 
 namespace LightBulb.Core;
