@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 
 namespace LightBulb.Core.Utils.Extensions;
 
-public static class DateTimeExtensions
+public static class DateTimeOffsetExtensions
 {
     extension(DateTimeOffset dateTime)
     {
@@ -16,18 +16,5 @@ public static class DateTimeExtensions
 
         public DateTimeOffset AtTimeOfDay(TimeOnly timeOfDay) =>
             dateTime.AtTimeOfDay(timeOfDay.ToTimeSpan());
-    }
-
-    extension(TimeOnly time)
-    {
-        public DateTimeOffset NextAfter(DateTimeOffset anchor) =>
-            anchor.ToTimeOnly() <= time
-                ? anchor.AtTimeOfDay(time)
-                : anchor.AddDays(1).AtTimeOfDay(time);
-
-        public DateTimeOffset PreviousBefore(DateTimeOffset anchor) =>
-            anchor.ToTimeOnly() > time
-                ? anchor.AtTimeOfDay(time)
-                : anchor.AddDays(-1).AtTimeOfDay(time);
     }
 }

@@ -5,9 +5,8 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using LightBulb.Framework;
 using LightBulb.Models;
-using LightBulb.Utils;
-using LightBulb.Utils.Extensions;
 using LightBulb.ViewModels.Components.Settings;
+using PowerKit.Extensions;
 
 namespace LightBulb.Views.Components.Settings;
 
@@ -15,7 +14,7 @@ public partial class ApplicationWhitelistSettingsTabView
     : UserControl<ApplicationWhitelistSettingsTabViewModel>,
         IDisposable
 {
-    private readonly DisposableCollector _eventRoot = new();
+    private IDisposable? _eventSubscription;
 
     public ApplicationWhitelistSettingsTabView() => InitializeComponent();
 
@@ -23,21 +22,19 @@ public partial class ApplicationWhitelistSettingsTabView
     {
         DataContext.RefreshApplicationsCommand.ExecuteIfCan(null);
 
-        _eventRoot.Add(
-            // This hack is required to avoid having to use an ObservableCollection<T> on the view model
-            DataContext.WatchProperty(
-                o => o.WhitelistedApplications,
-                v =>
-                    WhitelistedApplicationsListBox.SelectedItems = new AvaloniaList<object>(
-                        v ?? []
-                    ),
-                true
-            )
+        // This hack is required to avoid having to use an ObservableCollection<T> on the view model
+        _eventSubscription = DataContext.WatchProperty(
+            o => o.WhitelistedApplications,
+            v => WhitelistedApplicationsListBox.SelectedItems = new AvaloniaList<object>(v ?? []),
+            true
         );
     }
 
-    private void UserControl_OnUnloaded(object? sender, RoutedEventArgs args) =>
-        _eventRoot.Dispose();
+    private void UserControl_OnUnloaded(object? sender, RoutedEventArgs args)
+    {
+        _eventSubscription?.Dispose();
+        _eventSubscription = null;
+    }
 
     // This hack is required to avoid having to use an ObservableCollection<T> on the view model
     private void WhitelistedApplicationsListBox_OnSelectionChanged(
@@ -63,5 +60,9 @@ public partial class ApplicationWhitelistSettingsTabView
         DataContext.WhitelistedApplications = applications;
     }
 
-    public void Dispose() => _eventRoot.Dispose();
+    public void Dispose()
+    {
+        _eventSubscription?.Dispose();
+        _eventSubscription = null;
+    }
 }

@@ -7,10 +7,10 @@ using LightBulb.Framework;
 using LightBulb.Localization;
 using LightBulb.PlatformInterop;
 using LightBulb.Services;
-using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
 using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Components.Settings;
+using PowerKit.Extensions;
 using Process = System.Diagnostics.Process;
 
 namespace LightBulb.ViewModels;
@@ -24,8 +24,6 @@ public partial class MainViewModel(
     UpdateService updateService
 ) : ViewModelBase
 {
-    private readonly DisposableCollector _eventRoot = new();
-
     private readonly Timer _checkForUpdatesTimer = new Timer(
         TimeSpan.FromHours(3),
         async () =>
@@ -190,7 +188,6 @@ public partial class MainViewModel(
         if (disposing)
         {
             _checkForUpdatesTimer.Dispose();
-            _eventRoot.Dispose();
             Tray.Dispose();
         }
 

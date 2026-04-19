@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using LightBulb.PlatformInterop.Utils;
+using PowerKit;
 
 namespace LightBulb.PlatformInterop.Internal;
 

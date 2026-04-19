@@ -2,6 +2,7 @@
 using LightBulb.Core;
 using LightBulb.Localization;
 using LightBulb.Services;
+using PowerKit.Extensions;
 
 namespace LightBulb.ViewModels.Components.Settings;
 
@@ -24,11 +25,7 @@ public class GeneralSettingsTabViewModel(
         set
         {
             SettingsService.DayConfiguration = new ColorConfiguration(
-                Math.Clamp(
-                    value,
-                    SettingsService.MinimumTemperature,
-                    SettingsService.MaximumTemperature
-                ),
+                value.Clamp(SettingsService.MinimumTemperature, SettingsService.MaximumTemperature),
                 DayBrightness
             );
 
@@ -49,11 +46,7 @@ public class GeneralSettingsTabViewModel(
         set
         {
             SettingsService.NightConfiguration = new ColorConfiguration(
-                Math.Clamp(
-                    value,
-                    SettingsService.MinimumTemperature,
-                    SettingsService.MaximumTemperature
-                ),
+                value.Clamp(SettingsService.MinimumTemperature, SettingsService.MaximumTemperature),
                 NightBrightness
             );
 
@@ -69,11 +62,7 @@ public class GeneralSettingsTabViewModel(
         {
             SettingsService.DayConfiguration = new ColorConfiguration(
                 DayTemperature,
-                Math.Clamp(
-                    value,
-                    SettingsService.MinimumBrightness,
-                    SettingsService.MaximumBrightness
-                )
+                value.Clamp(SettingsService.MinimumBrightness, SettingsService.MaximumBrightness)
             );
 
             if (DayBrightness < NightBrightness)
@@ -88,11 +77,7 @@ public class GeneralSettingsTabViewModel(
         {
             SettingsService.NightConfiguration = new ColorConfiguration(
                 NightTemperature,
-                Math.Clamp(
-                    value,
-                    SettingsService.MinimumBrightness,
-                    SettingsService.MaximumBrightness
-                )
+                value.Clamp(SettingsService.MinimumBrightness, SettingsService.MaximumBrightness)
             );
 
             if (NightBrightness > DayBrightness)
@@ -105,13 +90,13 @@ public class GeneralSettingsTabViewModel(
         get => SettingsService.ConfigurationTransitionDuration;
         set =>
             SettingsService.ConfigurationTransitionDuration = TimeSpan.FromHours(
-                Math.Clamp(value.TotalHours, 0, 5)
+                value.TotalHours.Clamp(0, 5)
             );
     }
 
     public double ConfigurationTransitionOffset
     {
         get => SettingsService.ConfigurationTransitionOffset;
-        set => SettingsService.ConfigurationTransitionOffset = Math.Clamp(value, 0, 1);
+        set => SettingsService.ConfigurationTransitionOffset = value.Clamp(0, 1);
     }
 }

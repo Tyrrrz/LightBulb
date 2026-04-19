@@ -5,7 +5,7 @@ using Avalonia.Input;
 using Avalonia.Win32.Input;
 using LightBulb.Models;
 using LightBulb.PlatformInterop;
-using LightBulb.Utils.Extensions;
+using PowerKit;
 
 namespace LightBulb.Services;
 
@@ -29,7 +29,7 @@ public class HotKeyService : IDisposable
 
     public void UnregisterAllHotKeys()
     {
-        _hotKeyRegistrations.DisposeAll();
+        Disposable.Merge(_hotKeyRegistrations).Dispose();
         _hotKeyRegistrations.Clear();
     }
 

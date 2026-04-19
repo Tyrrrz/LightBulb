@@ -4,20 +4,19 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LightBulb.Services;
-using LightBulb.Utils;
-using LightBulb.Utils.Extensions;
+using PowerKit;
+using PowerKit.Extensions;
 
 namespace LightBulb.Localization;
 
 public partial class LocalizationManager : ObservableObject, IDisposable
 {
-    private readonly DisposableCollector _eventRoot = new();
+    private readonly IDisposable _eventSubscription;
 
     public LocalizationManager(SettingsService settingsService)
     {
-        _eventRoot.Add(settingsService.WatchProperty(o => o.Language, v => Language = v, true));
-
-        _eventRoot.Add(
+        _eventSubscription = Disposable.Merge(
+            settingsService.WatchProperty(o => o.Language, v => Language = v, true),
             this.WatchProperty(
                 o => o.Language,
                 _ =>
@@ -73,7 +72,7 @@ public partial class LocalizationManager : ObservableObject, IDisposable
         return $"Missing localization for '{key}'";
     }
 
-    public void Dispose() => _eventRoot.Dispose();
+    public void Dispose() => _eventSubscription.Dispose();
 }
 
 public partial class LocalizationManager

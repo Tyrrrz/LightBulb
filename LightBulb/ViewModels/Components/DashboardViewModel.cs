@@ -12,8 +12,9 @@ using LightBulb.Localization;
 using LightBulb.Models;
 using LightBulb.PlatformInterop;
 using LightBulb.Services;
-using LightBulb.Utils;
 using LightBulb.Utils.Extensions;
+using PowerKit;
+using PowerKit.Extensions;
 
 namespace LightBulb.ViewModels.Components;
 
@@ -24,7 +25,7 @@ public partial class DashboardViewModel : ViewModelBase
     private readonly HotKeyService _hotKeyService;
     private readonly ExternalApplicationService _externalApplicationService;
 
-    private readonly DisposableCollector _eventRoot = new();
+    private readonly IDisposable _eventSubscription;
 
     private readonly Timer _updateInstantTimer;
     private readonly Timer _updateConfigurationTimer;
@@ -48,7 +49,7 @@ public partial class DashboardViewModel : ViewModelBase
         _hotKeyService = hotKeyService;
         _externalApplicationService = externalApplicationService;
 
-        _eventRoot.Add(
+        _eventSubscription = Disposable.Merge(
             this.WatchProperty(
                 o => o.IsEnabled,
                 v =>
@@ -62,10 +63,7 @@ public partial class DashboardViewModel : ViewModelBase
                         _gammaService.InvalidateDeviceContexts();
                     }
                 }
-            )
-        );
-
-        _eventRoot.Add(
+            ),
             // Refresh transition tooltips when the language changes
             localizationManager.WatchProperty(
                 o => o.Language,
@@ -74,10 +72,7 @@ public partial class DashboardViewModel : ViewModelBase
                     OnPropertyChanged(nameof(SunsetTransitionTooltip));
                     OnPropertyChanged(nameof(SunriseTransitionTooltip));
                 }
-            )
-        );
-
-        _eventRoot.Add(
+            ),
             // Re-register hotkeys when they get updated
             settingsService.WatchProperties(
                 [
@@ -467,7 +462,7 @@ public partial class DashboardViewModel : ViewModelBase
     {
         if (disposing)
         {
-            _eventRoot.Dispose();
+            _eventSubscription.Dispose();
 
             _updateInstantTimer.Dispose();
             _updateConfigurationTimer.Dispose();

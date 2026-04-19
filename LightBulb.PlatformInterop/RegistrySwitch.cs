@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security;
+using System.Threading;
 using LightBulb.PlatformInterop.Utils;
-using LightBulb.PlatformInterop.Utils.Extensions;
 using Microsoft.Win32;
+using PowerKit.Extensions;
 
 namespace LightBulb.PlatformInterop;
 
 public class RegistrySwitch<T>(RegistryHive hive, string keyName, string entryName, T enabledValue)
     where T : notnull
 {
-    private readonly object _lock = new();
+    private readonly Lock _lock = new();
 
     public bool IsSet
     {
         get
         {
-            lock (_lock)
+            using (_lock.EnterScope())
             {
                 // This should always be accessible without elevation
                 var value = hive.OpenKey().OpenSubKey(keyName, false)?.GetValue(entryName);
@@ -28,7 +29,7 @@ public class RegistrySwitch<T>(RegistryHive hive, string keyName, string entryNa
         }
         set
         {
-            lock (_lock)
+            using (_lock.EnterScope())
             {
                 // Avoid unnecessary changes
                 if (IsSet == value)
@@ -48,15 +49,11 @@ public class RegistrySwitch<T>(RegistryHive hive, string keyName, string entryNa
                     // Run reg.exe with elevation
                     if (value)
                     {
-                        Reg.SetValue(
-                            hive.GetShortMoniker() + '\\' + keyName,
-                            entryName,
-                            enabledValue
-                        );
+                        Reg.SetValue(hive.Moniker + '\\' + keyName, entryName, enabledValue);
                     }
                     else
                     {
-                        Reg.DeleteValue(hive.GetShortMoniker() + '\\' + keyName, entryName);
+                        Reg.DeleteValue(hive.Moniker + '\\' + keyName, entryName);
                     }
                 }
             }
