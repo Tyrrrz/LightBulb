@@ -6,81 +6,88 @@
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
     x:DataType="settings:LocationSettingsTabViewModel">
-    <StackPanel Margin="16" Orientation="Vertical">
+    <StackPanel
+        Margin="16"
+        Orientation="Vertical"
+        Spacing="24">
         <!--  Manual/location-based configuration  -->
-        <TextBlock Text="{Binding LocalizationManager.SolarConfigLabel}" />
-        <DockPanel Margin="0,8,0,0">
-            <RadioButton
-                Content="{Binding LocalizationManager.ManualLabel}"
-                DockPanel.Dock="Left"
-                IsChecked="{Binding IsManualSunriseSunsetEnabled}"
-                ToolTip.Tip="{Binding LocalizationManager.ManualTooltip}" />
-            <RadioButton
-                HorizontalAlignment="Right"
-                Content="{Binding LocalizationManager.LocationBasedLabel}"
-                DockPanel.Dock="Right"
-                IsChecked="{Binding !IsManualSunriseSunsetEnabled}"
-                ToolTip.Tip="{Binding LocalizationManager.LocationBasedTooltip}" />
-        </DockPanel>
+        <StackPanel Orientation="Vertical" Spacing="8">
+            <TextBlock Text="{Binding LocalizationManager.SolarConfigLabel}" />
+            <DockPanel>
+                <RadioButton
+                    Content="{Binding LocalizationManager.ManualLabel}"
+                    DockPanel.Dock="Left"
+                    IsChecked="{Binding IsManualSunriseSunsetEnabled}"
+                    ToolTip.Tip="{Binding LocalizationManager.ManualTooltip}" />
+                <RadioButton
+                    HorizontalAlignment="Right"
+                    Content="{Binding LocalizationManager.LocationBasedLabel}"
+                    DockPanel.Dock="Right"
+                    IsChecked="{Binding !IsManualSunriseSunsetEnabled}"
+                    ToolTip.Tip="{Binding LocalizationManager.LocationBasedTooltip}" />
+            </DockPanel>
+        </StackPanel>
 
         <!--  Manual  -->
         <StackPanel
-            Margin="0,24,0,0"
             IsVisible="{Binding IsManualSunriseSunsetEnabled}"
-            Orientation="Vertical">
+            Orientation="Vertical"
+            Spacing="16">
             <!--  Sunrise time  -->
-            <Grid ColumnDefinitions="*,Auto">
-                <TextBlock
-                    Grid.Column="0"
-                    VerticalAlignment="Center"
-                    Text="{Binding LocalizationManager.SunriseTimeLabel}"
-                    TextTrimming="CharacterEllipsis" />
-                <TextBox
-                    Grid.Column="1"
-                    MinWidth="24"
-                    VerticalAlignment="Center"
-                    Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
-                    Theme="{DynamicResource CompactTextBox}" />
-            </Grid>
-            <Slider
-                Margin="0,12,0,0"
-                LargeChange="0.5"
-                Maximum="23.99999"
-                Minimum="0"
-                SmallChange="0.25"
-                Value="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}" />
+            <StackPanel Orientation="Vertical" Spacing="12">
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="{Binding LocalizationManager.SunriseTimeLabel}"
+                        TextTrimming="CharacterEllipsis" />
+                    <TextBox
+                        Grid.Column="1"
+                        MinWidth="24"
+                        VerticalAlignment="Center"
+                        Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                        Theme="{DynamicResource CompactTextBox}" />
+                </Grid>
+                <Slider
+                    LargeChange="0.5"
+                    Maximum="23.99999"
+                    Minimum="0"
+                    SmallChange="0.25"
+                    Value="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}" />
+            </StackPanel>
 
             <!--  Sunset time  -->
-            <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto">
-                <TextBlock
-                    Grid.Column="0"
-                    VerticalAlignment="Center"
-                    Text="{Binding LocalizationManager.SunsetTimeLabel}"
-                    TextTrimming="CharacterEllipsis" />
-                <TextBox
-                    Grid.Column="1"
-                    MinWidth="24"
-                    VerticalAlignment="Center"
-                    Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
-                    Theme="{DynamicResource CompactTextBox}" />
-            </Grid>
-            <Slider
-                Margin="0,12,0,0"
-                LargeChange="0.5"
-                Maximum="23.99999"
-                Minimum="0"
-                SmallChange="0.25"
-                Value="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}" />
+            <StackPanel Orientation="Vertical" Spacing="12">
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="{Binding LocalizationManager.SunsetTimeLabel}"
+                        TextTrimming="CharacterEllipsis" />
+                    <TextBox
+                        Grid.Column="1"
+                        MinWidth="24"
+                        VerticalAlignment="Center"
+                        Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                        Theme="{DynamicResource CompactTextBox}" />
+                </Grid>
+                <Slider
+                    LargeChange="0.5"
+                    Maximum="23.99999"
+                    Minimum="0"
+                    SmallChange="0.25"
+                    Value="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}" />
+            </StackPanel>
         </StackPanel>
 
         <!--  Location-based  -->
         <StackPanel
-            Margin="0,24,0,0"
             IsVisible="{Binding !IsManualSunriseSunsetEnabled}"
-            Orientation="Vertical">
+            Orientation="Vertical"
+            Spacing="8">
             <!--  Location  -->
             <TextBlock Text="{Binding LocalizationManager.YourLocationLabel}" />
-            <Grid Margin="0,8,0,0" ColumnDefinitions="Auto,*,Auto">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
                 <!--  Autodetect  -->
                 <Button
                     Grid.Column="0"
@@ -98,7 +105,6 @@
                 <!--  Location query  -->
                 <TextBox
                     Grid.Column="1"
-                    Margin="8,0"
                     VerticalAlignment="Center"
                     IsEnabled="{Binding !IsBusy}"
                     Text="{Binding LocationQuery}"
@@ -129,7 +135,6 @@
 
             <!--  Location error  -->
             <TextBlock
-                Margin="0,8,0,0"
                 HorizontalAlignment="Center"
                 Foreground="DarkRed"
                 IsVisible="{Binding IsLocationError}"

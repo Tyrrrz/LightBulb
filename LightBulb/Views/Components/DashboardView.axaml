@@ -147,7 +147,8 @@
                 Cursor="Hand"
                 IsVisible="{Binding IsOffsetEnabled}"
                 Orientation="Horizontal"
-                PointerReleased="ConfigurationOffsetStackPanel_OnPointerReleased">
+                PointerReleased="ConfigurationOffsetStackPanel_OnPointerReleased"
+                Spacing="4">
                 <ToolTip.Tip>
                     <TextBlock>
                         <Run Text="{Binding LocalizationManager.OffsetTooltipHeader}" />
@@ -168,22 +169,20 @@
                     Width="16"
                     Height="16"
                     Kind="SwapVertical" />
-                <TextBlock
-                    Margin="4,0,0,0"
-                    FontSize="15"
-                    Text="{Binding LocalizationManager.OffsetLabel}" />
+                <TextBlock FontSize="15" Text="{Binding LocalizationManager.OffsetLabel}" />
             </StackPanel>
 
             <!--  Current temperature and brightness  -->
             <StackPanel
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Orientation="Horizontal">
+                Orientation="Horizontal"
+                Spacing="8">
                 <materialIcons:MaterialIcon
                     Width="48"
                     Height="48"
                     Kind="{Binding CycleState, Converter={x:Static converters:CycleStateToMaterialIconKindConverter.Instance}}" />
-                <TextBlock Margin="8,0,0,0" FontSize="20">
+                <TextBlock FontSize="20">
                     <Run Text="{Binding CurrentConfiguration.Temperature, StringFormat={}{0:F0} K, Mode=OneWay}" />
                     <LineBreak />
                     <Run Text="{Binding CurrentConfiguration.Brightness, StringFormat={}{0:P0}, Mode=OneWay}" />
@@ -195,13 +194,13 @@
                 Margin="0,0,0,50"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
-                Orientation="Horizontal">
+                Orientation="Horizontal"
+                Spacing="4">
                 <materialIcons:MaterialIcon
                     Width="16"
                     Height="16"
                     Kind="ClockOutline" />
                 <TextBlock
-                    Margin="4,0,0,0"
                     FontSize="14"
                     FontWeight="Light"
                     Text="{Binding Instant, StringFormat={}{0:t}}" />

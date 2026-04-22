@@ -5,151 +5,166 @@
     xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
     x:DataType="settings:GeneralSettingsTabViewModel">
-    <StackPanel Margin="16" Orientation="Vertical">
+    <StackPanel
+        Margin="16"
+        Orientation="Vertical"
+        Spacing="24">
         <!--  Day temperature  -->
-        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.DayTemperatureTooltip}">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.DayTemperatureLabel}"
-                TextTrimming="CharacterEllipsis" />
-            <TextBox
-                Grid.Column="1"
-                MinWidth="24"
-                VerticalAlignment="Center"
-                Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
-                Theme="{DynamicResource CompactTextBox}" />
-        </Grid>
-        <Slider
-            Margin="0,12,0,0"
-            IsSnapToTickEnabled="True"
-            LargeChange="500"
-            Maximum="{Binding RecommendedMaximumDayTemperature}"
-            Minimum="{Binding RecommendedMinimumDayTemperature}"
-            SmallChange="100"
-            TickFrequency="20"
-            Value="{Binding DayTemperature}" />
+        <StackPanel Orientation="Vertical" Spacing="12">
+            <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.DayTemperatureTooltip}">
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Text="{Binding LocalizationManager.DayTemperatureLabel}"
+                    TextTrimming="CharacterEllipsis" />
+                <TextBox
+                    Grid.Column="1"
+                    MinWidth="24"
+                    VerticalAlignment="Center"
+                    Text="{Binding DayTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                    Theme="{DynamicResource CompactTextBox}" />
+            </Grid>
+            <Slider
+                IsSnapToTickEnabled="True"
+                LargeChange="500"
+                Maximum="{Binding RecommendedMaximumDayTemperature}"
+                Minimum="{Binding RecommendedMinimumDayTemperature}"
+                SmallChange="100"
+                TickFrequency="20"
+                Value="{Binding DayTemperature}" />
+        </StackPanel>
 
         <!--  Night temperature  -->
-        <Grid Margin="0,24,0,0" ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.NightTemperatureTooltip}">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.NightTemperatureLabel}"
-                TextTrimming="CharacterEllipsis" />
-            <TextBox
-                Grid.Column="1"
-                MinWidth="24"
-                VerticalAlignment="Center"
-                Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
-                Theme="{DynamicResource CompactTextBox}" />
-        </Grid>
-        <Slider
-            Margin="0,12,0,0"
-            IsSnapToTickEnabled="True"
-            LargeChange="500"
-            Maximum="{Binding RecommendedMaximumNightTemperature}"
-            Minimum="{Binding RecommendedMinimumNightTemperature}"
-            SmallChange="100"
-            TickFrequency="20"
-            Value="{Binding NightTemperature}" />
+        <StackPanel Orientation="Vertical" Spacing="12">
+            <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.NightTemperatureTooltip}">
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Text="{Binding LocalizationManager.NightTemperatureLabel}"
+                    TextTrimming="CharacterEllipsis" />
+                <TextBox
+                    Grid.Column="1"
+                    MinWidth="24"
+                    VerticalAlignment="Center"
+                    Text="{Binding NightTemperature, Converter={x:Static converters:DoubleToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                    Theme="{DynamicResource CompactTextBox}" />
+            </Grid>
+            <Slider
+                IsSnapToTickEnabled="True"
+                LargeChange="500"
+                Maximum="{Binding RecommendedMaximumNightTemperature}"
+                Minimum="{Binding RecommendedMinimumNightTemperature}"
+                SmallChange="100"
+                TickFrequency="20"
+                Value="{Binding NightTemperature}" />
+        </StackPanel>
 
         <!--  Day brightness  -->
-        <Grid Margin="0,24,0,0" ColumnDefinitions="*,Auto">
-            <ToolTip.Tip>
-                <TextBlock MaxWidth="350" Text="{Binding LocalizationManager.DayBrightnessTooltip}" TextWrapping="Wrap" />
-            </ToolTip.Tip>
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.DayBrightnessLabel}"
-                TextTrimming="CharacterEllipsis" />
-            <TextBox
-                Grid.Column="1"
-                MinWidth="24"
-                VerticalAlignment="Center"
-                Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
-                Theme="{DynamicResource CompactTextBox}" />
-        </Grid>
-        <Slider
-            Margin="0,12,0,0"
-            IsSnapToTickEnabled="True"
-            LargeChange="0.1"
-            Maximum="1"
-            Minimum="0.1"
-            SmallChange="0.01"
-            TickFrequency="0.01"
-            Value="{Binding DayBrightness}" />
+        <StackPanel Orientation="Vertical" Spacing="12">
+            <Grid ColumnDefinitions="*,Auto">
+                <ToolTip.Tip>
+                    <TextBlock
+                        MaxWidth="350"
+                        Text="{Binding LocalizationManager.DayBrightnessTooltip}"
+                        TextWrapping="Wrap" />
+                </ToolTip.Tip>
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Text="{Binding LocalizationManager.DayBrightnessLabel}"
+                    TextTrimming="CharacterEllipsis" />
+                <TextBox
+                    Grid.Column="1"
+                    MinWidth="24"
+                    VerticalAlignment="Center"
+                    Text="{Binding DayBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                    Theme="{DynamicResource CompactTextBox}" />
+            </Grid>
+            <Slider
+                IsSnapToTickEnabled="True"
+                LargeChange="0.1"
+                Maximum="1"
+                Minimum="0.1"
+                SmallChange="0.01"
+                TickFrequency="0.01"
+                Value="{Binding DayBrightness}" />
+        </StackPanel>
 
         <!--  Night brightness  -->
-        <Grid Margin="0,24,0,0" ColumnDefinitions="*,Auto">
-            <ToolTip.Tip>
-                <TextBlock MaxWidth="350" Text="{Binding LocalizationManager.NightBrightnessTooltip}" TextWrapping="Wrap" />
-            </ToolTip.Tip>
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.NightBrightnessLabel}"
-                TextTrimming="CharacterEllipsis" />
-            <TextBox
-                Grid.Column="1"
-                MinWidth="24"
-                VerticalAlignment="Center"
-                Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
-                Theme="{DynamicResource CompactTextBox}" />
-        </Grid>
-        <Slider
-            Margin="0,12,0,0"
-            IsSnapToTickEnabled="True"
-            LargeChange="0.1"
-            Maximum="1"
-            Minimum="0.1"
-            SmallChange="0.01"
-            TickFrequency="0.01"
-            Value="{Binding NightBrightness}" />
+        <StackPanel Orientation="Vertical" Spacing="12">
+            <Grid ColumnDefinitions="*,Auto">
+                <ToolTip.Tip>
+                    <TextBlock
+                        MaxWidth="350"
+                        Text="{Binding LocalizationManager.NightBrightnessTooltip}"
+                        TextWrapping="Wrap" />
+                </ToolTip.Tip>
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Text="{Binding LocalizationManager.NightBrightnessLabel}"
+                    TextTrimming="CharacterEllipsis" />
+                <TextBox
+                    Grid.Column="1"
+                    MinWidth="24"
+                    VerticalAlignment="Center"
+                    Text="{Binding NightBrightness, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                    Theme="{DynamicResource CompactTextBox}" />
+            </Grid>
+            <Slider
+                IsSnapToTickEnabled="True"
+                LargeChange="0.1"
+                Maximum="1"
+                Minimum="0.1"
+                SmallChange="0.01"
+                TickFrequency="0.01"
+                Value="{Binding NightBrightness}" />
+        </StackPanel>
 
         <!--  Configuration transition duration  -->
-        <Grid Margin="0,24,0,0" ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.TransitionDurationTooltip}">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.TransitionDurationLabel}"
-                TextTrimming="CharacterEllipsis" />
-            <TextBox
-                Grid.Column="1"
-                MinWidth="48"
-                VerticalAlignment="Center"
-                Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
-                Theme="{DynamicResource CompactTextBox}" />
-        </Grid>
-        <Slider
-            Margin="0,12,0,0"
-            LargeChange="0.5"
-            Maximum="3"
-            Minimum="0"
-            SmallChange="0.08"
-            Value="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToHoursDoubleConverter.Instance}}" />
+        <StackPanel Orientation="Vertical" Spacing="12">
+            <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.TransitionDurationTooltip}">
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Text="{Binding LocalizationManager.TransitionDurationLabel}"
+                    TextTrimming="CharacterEllipsis" />
+                <TextBox
+                    Grid.Column="1"
+                    MinWidth="48"
+                    VerticalAlignment="Center"
+                    Text="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToDurationStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                    Theme="{DynamicResource CompactTextBox}" />
+            </Grid>
+            <Slider
+                LargeChange="0.5"
+                Maximum="3"
+                Minimum="0"
+                SmallChange="0.08"
+                Value="{Binding ConfigurationTransitionDuration, Converter={x:Static converters:TimeSpanToHoursDoubleConverter.Instance}}" />
+        </StackPanel>
 
         <!--  Configuration transition offset  -->
-        <Grid Margin="0,24,0,0" ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.TransitionOffsetTooltip}">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.TransitionOffsetLabel}"
-                TextTrimming="CharacterEllipsis" />
-            <TextBox
-                Grid.Column="1"
-                MinWidth="24"
-                VerticalAlignment="Center"
-                Text="{Binding ConfigurationTransitionOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
-                Theme="{DynamicResource CompactTextBox}" />
-        </Grid>
-        <Slider
-            Margin="0,12,0,0"
-            LargeChange="0.05"
-            Maximum="1"
-            Minimum="0"
-            SmallChange="0.01"
-            Value="{Binding ConfigurationTransitionOffset}" />
+        <StackPanel Orientation="Vertical" Spacing="12">
+            <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.TransitionOffsetTooltip}">
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Text="{Binding LocalizationManager.TransitionOffsetLabel}"
+                    TextTrimming="CharacterEllipsis" />
+                <TextBox
+                    Grid.Column="1"
+                    MinWidth="24"
+                    VerticalAlignment="Center"
+                    Text="{Binding ConfigurationTransitionOffset, Converter={x:Static converters:FractionToPercentageStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+                    Theme="{DynamicResource CompactTextBox}" />
+            </Grid>
+            <Slider
+                LargeChange="0.05"
+                Maximum="1"
+                Minimum="0"
+                SmallChange="0.01"
+                Value="{Binding ConfigurationTransitionOffset}" />
+        </StackPanel>
     </StackPanel>
 </UserControl>

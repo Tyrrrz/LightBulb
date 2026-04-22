@@ -5,7 +5,10 @@
     xmlns:controls="clr-namespace:LightBulb.Views.Controls"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
     x:DataType="settings:HotKeySettingsTabViewModel">
-    <StackPanel Margin="16" Orientation="Vertical">
+    <StackPanel
+        Margin="16"
+        Orientation="Vertical"
+        Spacing="16">
         <!--  Toggle hotkey  -->
         <Grid ColumnDefinitions="*,Auto">
             <TextBlock
@@ -21,7 +24,7 @@
         </Grid>
 
         <!--  Toggle window hotkey  -->
-        <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto">
+        <Grid ColumnDefinitions="*,Auto">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -35,7 +38,7 @@
         </Grid>
 
         <!--  Increase temperature offset hotkey  -->
-        <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto">
+        <Grid ColumnDefinitions="*,Auto">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -49,7 +52,7 @@
         </Grid>
 
         <!--  Decrease temperature offset hotkey  -->
-        <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto">
+        <Grid ColumnDefinitions="*,Auto">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -63,7 +66,7 @@
         </Grid>
 
         <!--  Increase brightness offset hotkey  -->
-        <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto">
+        <Grid ColumnDefinitions="*,Auto">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -77,7 +80,7 @@
         </Grid>
 
         <!--  Decrease brightness offset hotkey  -->
-        <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto">
+        <Grid ColumnDefinitions="*,Auto">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -91,7 +94,7 @@
         </Grid>
 
         <!--  Reset offset hotkey  -->
-        <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto">
+        <Grid ColumnDefinitions="*,Auto">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"

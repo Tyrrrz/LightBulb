@@ -4,7 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
     x:DataType="settings:AdvancedSettingsTabViewModel">
-    <StackPanel Margin="16" Orientation="Vertical">
+    <StackPanel
+        Margin="16"
+        Orientation="Vertical"
+        Spacing="16">
         <!--  Theme  -->
         <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.ThemeTooltip}">
             <TextBlock
@@ -19,20 +22,20 @@
         </Grid>
 
         <!--  Language  -->
-        <Grid Margin="0,16,0,0" ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.LanguageTooltip}">
+        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.LanguageTooltip}">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 Text="{Binding LocalizationManager.LanguageLabel}"
                 TextTrimming="CharacterEllipsis" />
-            <ComboBox Grid.Column="1" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding Language}" />
+            <ComboBox
+                Grid.Column="1"
+                ItemsSource="{Binding AvailableLanguages}"
+                SelectedItem="{Binding Language}" />
         </Grid>
 
         <!--  Auto start  -->
-        <Grid
-            Margin="0,16,0,0"
-            ColumnDefinitions="*,Auto"
-            ToolTip.Tip="{Binding LocalizationManager.StartWithWindowsTooltip}">
+        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.StartWithWindowsTooltip}">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -43,7 +46,6 @@
 
         <!--  Auto update  -->
         <Grid
-            Margin="0,16,0,0"
             ColumnDefinitions="*,Auto"
             IsVisible="{Binding IsAutoUpdateAllowed}"
             ToolTip.Tip="{Binding LocalizationManager.AutoUpdateTooltip}">
@@ -56,10 +58,7 @@
         </Grid>
 
         <!--  Default to day time  -->
-        <Grid
-            Margin="0,16,0,0"
-            ColumnDefinitions="*,Auto"
-            ToolTip.Tip="{Binding LocalizationManager.DefaultToDayConfigTooltip}">
+        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.DefaultToDayConfigTooltip}">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -69,10 +68,7 @@
         </Grid>
 
         <!--  Pause when full screen  -->
-        <Grid
-            Margin="0,16,0,0"
-            ColumnDefinitions="*,Auto"
-            ToolTip.Tip="{Binding LocalizationManager.PauseWhenFullscreenTooltip}">
+        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.PauseWhenFullscreenTooltip}">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -82,10 +78,7 @@
         </Grid>
 
         <!--  Configuration smoothing  -->
-        <Grid
-            Margin="0,16,0,0"
-            ColumnDefinitions="*,Auto"
-            ToolTip.Tip="{Binding LocalizationManager.GammaSmoothingTooltip}">
+        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.GammaSmoothingTooltip}">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
@@ -95,10 +88,7 @@
         </Grid>
 
         <!--  Gamma polling  -->
-        <Grid
-            Margin="0,16,0,0"
-            ColumnDefinitions="*,Auto"
-            ToolTip.Tip="{Binding LocalizationManager.GammaPollingTooltip}">
+        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.GammaPollingTooltip}">
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"

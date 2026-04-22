@@ -8,7 +8,10 @@
     x:DataType="settings:ApplicationWhitelistSettingsTabViewModel"
     Loaded="UserControl_OnLoaded"
     Unloaded="UserControl_OnUnloaded">
-    <StackPanel Margin="16" Orientation="Vertical">
+    <StackPanel
+        Margin="16"
+        Orientation="Vertical"
+        Spacing="8">
         <!--  Is enabled  -->
         <Grid ColumnDefinitions="*,Auto,Auto">
             <!--  Label  -->
@@ -46,7 +49,6 @@
         <!--  Whitelisted applications  -->
         <ListBox
             x:Name="WhitelistedApplicationsListBox"
-            Margin="0,8,0,0"
             IsEnabled="{Binding IsApplicationWhitelistEnabled}"
             ItemsSource="{Binding Applications}"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
