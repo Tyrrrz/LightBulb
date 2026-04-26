@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace LightBulb.Localization;
 
 public enum Language
@@ -8,5 +10,7 @@ public enum Language
     German,
     French,
     Spanish,
+
+    [Display(Name = "Simplified Chinese")]
     ChineseSimplified,
 }

@@ -2,6 +2,7 @@
     x:Class="LightBulb.Views.Components.Settings.AdvancedSettingsTabView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:LightBulb.Converters"
     xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
     x:DataType="settings:AdvancedSettingsTabViewModel">
     <StackPanel
@@ -31,7 +32,13 @@
             <ComboBox
                 Grid.Column="1"
                 ItemsSource="{Binding AvailableLanguages}"
-                SelectedItem="{Binding Language}" />
+                SelectedItem="{Binding Language}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={x:Static converters:EnumDisplayNameConverter.Instance}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </Grid>
 
         <!--  Auto start  -->
