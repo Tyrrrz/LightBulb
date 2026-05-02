@@ -14,7 +14,7 @@
     CanResize="False"
     Icon="/favicon.ico"
     RenderOptions.BitmapInterpolationMode="HighQuality"
-    SystemDecorations="None"
+    WindowDecorations="None"
     WindowStartupLocation="CenterScreen">
     <Border
         Background="{DynamicResource MaterialCardBackgroundBrush}"
