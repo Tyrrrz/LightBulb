@@ -28,7 +28,6 @@ public partial class App : Application, IDisposable
     private readonly MainViewModel _mainViewModel;
 
     private readonly IDisposable _eventSubscription;
-
     private bool _isDisposed;
 
     public App()
@@ -51,7 +50,6 @@ public partial class App : Application, IDisposable
         // View models
         services.AddTransient<MainViewModel>();
         services.AddSingleton<DashboardViewModel>();
-        services.AddTransient<TrayIconViewModel>();
         services.AddTransient<MessageBoxViewModel>();
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<SettingsTabViewModelBase, AdvancedSettingsTabViewModel>();
@@ -87,11 +85,8 @@ public partial class App : Application, IDisposable
 
         AvaloniaXamlLoader.Load(this);
 
-        // Expose the main view model as an application resource so that
-        // the DataContext="{DynamicResource MainViewModel}" binding on the
-        // controls:TrayIcon element in App.axaml can resolve without polluting
-        // the application-wide DataContext.
-        Resources["MainViewModel"] = _mainViewModel;
+        // TrayIcon bindings resolve through the application's DataContext
+        DataContext = _mainViewModel;
     }
 
     private void InitializeTheme()
@@ -156,11 +151,8 @@ public partial class App : Application, IDisposable
             var viewManager = _services.GetRequiredService<ViewManager>();
             var window = viewManager.TryBindWindow(_mainViewModel);
 
-            window?.Closed += (_, _) =>
-            {
-                desktop.MainWindow = null;
-                _mainViewModel.Tray.IsWindowVisible = false;
-            };
+            window?.Closed += (_, _) => desktop.MainWindow = null;
+
             desktop.MainWindow = window;
 
             window?.ShowActivateFocus();
@@ -169,7 +161,6 @@ public partial class App : Application, IDisposable
             InitializeTheme();
         }
 
-        _mainViewModel.Tray.IsWindowVisible = true;
         return desktop.MainWindow;
     }
 
@@ -186,6 +177,37 @@ public partial class App : Application, IDisposable
     private void Application_OnActualThemeVariantChanged(object? sender, EventArgs args) =>
         // Re-initialize the theme when the system theme changes
         InitializeTheme();
+
+    private void TrayIcon_OnClicked(object? sender, EventArgs args) => ToggleMainWindow();
+
+    private void TrayToggleWindowMenuItem_OnClick(object? sender, EventArgs args) =>
+        ToggleMainWindow();
+
+    private async void TrayShowSettingsMenuItem_OnClick(object? sender, EventArgs args)
+    {
+        var window = ShowMainWindow();
+        if (window is null)
+            return;
+
+        // Wait until the window is loaded to avoid potential issues
+        // with showing a dialog too early in the lifecycle.
+        try
+        {
+            await window.WaitUntilLoadedAsync();
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
+
+        await _mainViewModel.ShowSettingsCommand.ExecuteAsync(null);
+    }
+
+    private void TrayExitMenuItem_OnClick(object? sender, EventArgs args)
+    {
+        if (Application.Current?.ApplicationLifetime?.TryShutdown() != true)
+            Environment.Exit(0);
+    }
 
     public void Dispose()
     {

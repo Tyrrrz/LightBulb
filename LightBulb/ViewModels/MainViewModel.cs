@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LightBulb.Framework;
 using LightBulb.Localization;
@@ -24,7 +25,7 @@ public partial class MainViewModel(
     UpdateService updateService
 ) : ViewModelBase
 {
-    private readonly Timer _checkForUpdatesTimer = new Timer(
+    private readonly Timer _checkForUpdatesTimer = new(
         TimeSpan.FromHours(3),
         async () =>
         {
@@ -47,7 +48,8 @@ public partial class MainViewModel(
 
     public DashboardViewModel Dashboard { get; } = dashboard;
 
-    public TrayIconViewModel Tray { get; } = viewModelManager.CreateTrayIconViewModel();
+    [ObservableProperty]
+    public partial bool IsOpen { get; set; }
 
     private async Task FinalizePendingUpdateAsync()
     {
@@ -188,7 +190,6 @@ public partial class MainViewModel(
         if (disposing)
         {
             _checkForUpdatesTimer.Dispose();
-            Tray.Dispose();
         }
 
         base.Dispose(disposing);

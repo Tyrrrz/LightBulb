@@ -71,6 +71,7 @@ public partial class DashboardViewModel : ViewModelBase
                 {
                     OnPropertyChanged(nameof(SunsetTransitionTooltip));
                     OnPropertyChanged(nameof(SunriseTransitionTooltip));
+                    OnPropertyChanged(nameof(StatusText));
                 }
             ),
             // Re-register hotkeys when they get updated
@@ -106,14 +107,17 @@ public partial class DashboardViewModel : ViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]
+    [NotifyPropertyChangedFor(nameof(StatusText))]
     public partial bool IsEnabled { get; set; } = true;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]
+    [NotifyPropertyChangedFor(nameof(StatusText))]
     public partial bool IsPaused { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsActive))]
+    [NotifyPropertyChangedFor(nameof(StatusText))]
     public partial bool IsCyclePreviewEnabled { get; set; }
 
     public bool IsActive => IsEnabled && !IsPaused || IsCyclePreviewEnabled;
@@ -147,6 +151,7 @@ public partial class DashboardViewModel : ViewModelBase
     public partial double BrightnessOffset { get; set; }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(StatusText))]
     public partial ColorConfiguration CurrentConfiguration { get; set; } =
         ColorConfiguration.Default;
 
@@ -236,6 +241,17 @@ public partial class DashboardViewModel : ViewModelBase
             _ when CurrentConfiguration == AdjustedNightConfiguration => CycleState.Night,
             _ => CycleState.Transition,
         };
+
+    public string StatusText =>
+        Program.Name
+        + Environment.NewLine
+        + (
+            IsActive
+                ? CurrentConfiguration.Temperature.ToString("F0")
+                    + " / "
+                    + CurrentConfiguration.Brightness.ToString("P0")
+                : LocalizationManager.TrayTooltipDisabled
+        );
 
     private void RegisterHotKeys()
     {

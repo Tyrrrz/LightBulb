@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using LightBulb.Framework;
@@ -8,6 +9,10 @@ namespace LightBulb.Views;
 public partial class MainView : Window<MainViewModel>
 {
     public MainView() => InitializeComponent();
+
+    private void Window_OnOpened(object? sender, EventArgs args) => DataContext.IsOpen = true;
+
+    private void Window_OnClosed(object? sender, EventArgs args) => DataContext.IsOpen = false;
 
     private void HeaderBorder_OnPointerPressed(object? sender, PointerPressedEventArgs args) =>
         BeginMoveDrag(args);

@@ -192,8 +192,8 @@ public partial class LocalizationManager
     public string TrayHideMenuItem => Get();
     public string TraySettingsMenuItem => Get();
     public string TrayEnableMenuItem => Get();
-    public string TrayDisableOnlyMenuItem => Get();
     public string TrayDisableMenuItem => Get();
+    public string TrayDisableTemporarilyMenuItem => Get();
     public string TrayDisableUntilSunriseMenuItem => Get();
     public string TrayDisableFor1DayMenuItem => Get();
     public string TrayDisableFor12HoursMenuItem => Get();
