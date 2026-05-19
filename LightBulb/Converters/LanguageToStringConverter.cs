@@ -18,12 +18,6 @@ public class LanguageToStringConverter : IValueConverter
         value is Language language
             ? language switch
             {
-                Language.System => nameof(Language.System),
-                Language.English => nameof(Language.English),
-                Language.Ukrainian => nameof(Language.Ukrainian),
-                Language.German => nameof(Language.German),
-                Language.French => nameof(Language.French),
-                Language.Spanish => nameof(Language.Spanish),
                 Language.ChineseSimplified => "Simplified Chinese",
                 _ => language.ToString(),
             }
