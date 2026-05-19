@@ -1,0 +1,38 @@
+using System;
+using System.Globalization;
+using Avalonia.Data.Converters;
+using LightBulb.Localization;
+
+namespace LightBulb.Converters;
+
+public class LanguageToStringConverter : IValueConverter
+{
+    public static LanguageToStringConverter Instance { get; } = new();
+
+    public object? Convert(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture
+    ) =>
+        value is Language language
+            ? language switch
+            {
+                Language.System => nameof(Language.System),
+                Language.English => nameof(Language.English),
+                Language.Ukrainian => nameof(Language.Ukrainian),
+                Language.German => nameof(Language.German),
+                Language.French => nameof(Language.French),
+                Language.Spanish => nameof(Language.Spanish),
+                Language.ChineseSimplified => "Simplified Chinese",
+                _ => language.ToString(),
+            }
+            : default;
+
+    public object ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture
+    ) => throw new NotSupportedException();
+}
