@@ -72,8 +72,7 @@ public partial class MainViewModel(
 
         updateService.FinalizeUpdate(updateVersion);
 
-        if (Application.Current?.ApplicationLifetime?.TryShutdown(2) != true)
-            Environment.Exit(2);
+        App.Shutdown(2);
     }
 
     private async Task ShowUkraineSupportMessageAsync()

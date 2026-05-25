@@ -203,11 +203,7 @@ public partial class App : Application, IDisposable
         await _mainViewModel.ShowSettingsCommand.ExecuteAsync(null);
     }
 
-    private void TrayExitMenuItem_OnClick(object? sender, EventArgs args)
-    {
-        if (Application.Current?.ApplicationLifetime?.TryShutdown() != true)
-            Environment.Exit(0);
-    }
+    private void TrayExitMenuItem_OnClick(object? sender, EventArgs args) => Shutdown();
 
     public void Dispose()
     {
@@ -218,5 +214,14 @@ public partial class App : Application, IDisposable
 
         _eventSubscription.Dispose();
         _services.Dispose();
+    }
+}
+
+public partial class App
+{
+    public static void Shutdown(int exitCode = 0)
+    {
+        if (Current?.ApplicationLifetime?.TryShutdown(exitCode) != true)
+            Environment.Exit(exitCode);
     }
 }
