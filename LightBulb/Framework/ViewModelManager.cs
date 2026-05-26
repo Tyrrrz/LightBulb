@@ -1,4 +1,5 @@
 using System;
+using LightBulb.Localization;
 using LightBulb.ViewModels;
 using LightBulb.ViewModels.Components;
 using LightBulb.ViewModels.Dialogs;
@@ -6,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LightBulb.Framework;
 
-public class ViewModelManager(IServiceProvider services)
+public class ViewModelManager(IServiceProvider services, LocalizationManager localizationManager)
 {
     public MainViewModel GetMainViewModel() => services.GetRequiredService<MainViewModel>();
 
@@ -29,6 +30,9 @@ public class ViewModelManager(IServiceProvider services)
 
         return viewModel;
     }
+
+    public MessageBoxViewModel GetMessageBoxViewModel(string title, string message) =>
+        GetMessageBoxViewModel(title, message, localizationManager.CloseButton, null);
 
     public SettingsViewModel GetSettingsViewModel() =>
         services.GetRequiredService<SettingsViewModel>();
