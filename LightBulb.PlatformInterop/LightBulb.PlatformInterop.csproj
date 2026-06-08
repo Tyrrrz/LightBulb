@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <PackageReference Include="CSharpier.MsBuild" PrivateAssets="all" />
-    <PackageReference Include="PowerKit" PrivateAssets="all" />
+    <PackageReference Include="PowerKit" />
   </ItemGroup>
 </Project>

@@ -16,14 +16,14 @@
     <PackageReference Include="Cogwheel" />
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="CSharpier.MsBuild" PrivateAssets="all" />
-    <PackageReference Include="Deorcify" PrivateAssets="all" />
+    <PackageReference Include="Deorcify" />
     <PackageReference Include="DialogHost.Avalonia" />
     <PackageReference Include="Markdig" />
     <PackageReference Include="Material.Avalonia" />
     <PackageReference Include="Material.Icons.Avalonia" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Onova" />
-    <PackageReference Include="PowerKit" PrivateAssets="all" />
+    <PackageReference Include="PowerKit" />
   </ItemGroup>
 
   <ItemGroup>
