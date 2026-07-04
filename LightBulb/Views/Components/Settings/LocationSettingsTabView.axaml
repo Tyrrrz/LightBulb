@@ -1,144 +1,151 @@
 <UserControl
-    x:Class="LightBulb.Views.Components.Settings.LocationSettingsTabView"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:LightBulb.Converters"
-    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-    xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
-    x:DataType="settings:LocationSettingsTabViewModel">
-    <StackPanel
-        Margin="16"
-        Orientation="Vertical"
-        Spacing="24">
-        <!--  Manual/location-based configuration  -->
-        <StackPanel Orientation="Vertical" Spacing="8">
-            <TextBlock Text="{Binding LocalizationManager.SolarConfigLabel}" />
-            <DockPanel>
-                <RadioButton
-                    Content="{Binding LocalizationManager.ManualLabel}"
-                    DockPanel.Dock="Left"
-                    IsChecked="{Binding IsManualSunriseSunsetEnabled}"
-                    ToolTip.Tip="{Binding LocalizationManager.ManualTooltip}" />
-                <RadioButton
-                    HorizontalAlignment="Right"
-                    Content="{Binding LocalizationManager.LocationBasedLabel}"
-                    DockPanel.Dock="Right"
-                    IsChecked="{Binding !IsManualSunriseSunsetEnabled}"
-                    ToolTip.Tip="{Binding LocalizationManager.LocationBasedTooltip}" />
-            </DockPanel>
-        </StackPanel>
-
-        <!--  Manual  -->
-        <StackPanel
-            IsVisible="{Binding IsManualSunriseSunsetEnabled}"
-            Orientation="Vertical"
-            Spacing="16">
-            <!--  Sunrise time  -->
-            <StackPanel Orientation="Vertical" Spacing="12">
-                <Grid ColumnDefinitions="*,Auto">
-                    <TextBlock
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Text="{Binding LocalizationManager.SunriseTimeLabel}"
-                        TextTrimming="CharacterEllipsis" />
-                    <TextBox
-                        Grid.Column="1"
-                        MinWidth="24"
-                        VerticalAlignment="Center"
-                        Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
-                        Theme="{DynamicResource CompactTextBox}" />
-                </Grid>
-                <Slider
-                    LargeChange="0.5"
-                    Maximum="23.99999"
-                    Minimum="0"
-                    SmallChange="0.25"
-                    Value="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}" />
-            </StackPanel>
-
-            <!--  Sunset time  -->
-            <StackPanel Orientation="Vertical" Spacing="12">
-                <Grid ColumnDefinitions="*,Auto">
-                    <TextBlock
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Text="{Binding LocalizationManager.SunsetTimeLabel}"
-                        TextTrimming="CharacterEllipsis" />
-                    <TextBox
-                        Grid.Column="1"
-                        MinWidth="24"
-                        VerticalAlignment="Center"
-                        Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
-                        Theme="{DynamicResource CompactTextBox}" />
-                </Grid>
-                <Slider
-                    LargeChange="0.5"
-                    Maximum="23.99999"
-                    Minimum="0"
-                    SmallChange="0.25"
-                    Value="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}" />
-            </StackPanel>
-        </StackPanel>
-
-        <!--  Location-based  -->
-        <StackPanel
-            IsVisible="{Binding !IsManualSunriseSunsetEnabled}"
-            Orientation="Vertical"
-            Spacing="8">
-            <!--  Location  -->
-            <TextBlock Text="{Binding LocalizationManager.YourLocationLabel}" />
-            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
-                <!--  Autodetect  -->
-                <Button
-                    Grid.Column="0"
-                    Padding="4"
-                    VerticalAlignment="Center"
-                    Command="{Binding AutoResolveLocationCommand}"
-                    Theme="{DynamicResource MaterialFlatButton}"
-                    ToolTip.Tip="{Binding LocalizationManager.AutoDetectLocationTooltip}">
-                    <materialIcons:MaterialIcon
-                        Width="24"
-                        Height="24"
-                        Kind="Location" />
-                </Button>
-
-                <!--  Location query  -->
-                <TextBox
-                    Grid.Column="1"
-                    VerticalAlignment="Center"
-                    IsEnabled="{Binding !IsBusy}"
-                    Text="{Binding LocationQuery}"
-                    Theme="{DynamicResource CompactTextBox}">
-                    <ToolTip.Tip>
-                        <TextBlock
-                            MaxWidth="350"
-                            Inlines="{Binding LocalizationManager.LocationQueryTooltip, Converter={x:Static converters:MarkdownToInlinesConverter.Instance}}"
-                            TextWrapping="Wrap" />
-                    </ToolTip.Tip>
-                </TextBox>
-
-                <!--  Set  -->
-                <Button
-                    Grid.Column="2"
-                    Padding="4"
-                    VerticalAlignment="Center"
-                    Command="{Binding ResolveLocationCommand}"
-                    IsDefault="True"
-                    Theme="{DynamicResource MaterialFlatButton}"
-                    ToolTip.Tip="{Binding LocalizationManager.SetLocationTooltip}">
-                    <materialIcons:MaterialIcon
-                        Width="24"
-                        Height="24"
-                        Kind="Tick" />
-                </Button>
-            </Grid>
-
-            <!--  Location error  -->
-            <TextBlock
-                HorizontalAlignment="Center"
-                Foreground="DarkRed"
-                IsVisible="{Binding IsLocationError}"
-                Text="{Binding LocalizationManager.LocationErrorText}" />
-        </StackPanel>
+  x:Class="LightBulb.Views.Components.Settings.LocationSettingsTabView"
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:converters="clr-namespace:LightBulb.Converters"
+  xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+  xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
+  x:DataType="settings:LocationSettingsTabViewModel"
+>
+  <StackPanel Margin="16" Orientation="Vertical" Spacing="24">
+    <!--  Manual/location-based configuration  -->
+    <StackPanel Orientation="Vertical" Spacing="8">
+      <TextBlock Text="{Binding LocalizationManager.SolarConfigLabel}" />
+      <DockPanel>
+        <RadioButton
+          Content="{Binding LocalizationManager.ManualLabel}"
+          DockPanel.Dock="Left"
+          IsChecked="{Binding IsManualSunriseSunsetEnabled}"
+          ToolTip.Tip="{Binding LocalizationManager.ManualTooltip}"
+        />
+        <RadioButton
+          HorizontalAlignment="Right"
+          Content="{Binding LocalizationManager.LocationBasedLabel}"
+          DockPanel.Dock="Right"
+          IsChecked="{Binding !IsManualSunriseSunsetEnabled}"
+          ToolTip.Tip="{Binding LocalizationManager.LocationBasedTooltip}"
+        />
+      </DockPanel>
     </StackPanel>
+
+    <!--  Manual  -->
+    <StackPanel
+      IsVisible="{Binding IsManualSunriseSunsetEnabled}"
+      Orientation="Vertical"
+      Spacing="16"
+    >
+      <!--  Sunrise time  -->
+      <StackPanel Orientation="Vertical" Spacing="12">
+        <Grid ColumnDefinitions="*,Auto">
+          <TextBlock
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            Text="{Binding LocalizationManager.SunriseTimeLabel}"
+            TextTrimming="CharacterEllipsis"
+          />
+          <TextBox
+            Grid.Column="1"
+            MinWidth="24"
+            VerticalAlignment="Center"
+            Text="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+            Theme="{DynamicResource CompactTextBox}"
+          />
+        </Grid>
+        <Slider
+          LargeChange="0.5"
+          Maximum="23.99999"
+          Minimum="0"
+          SmallChange="0.25"
+          Value="{Binding ManualSunrise, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}"
+        />
+      </StackPanel>
+
+      <!--  Sunset time  -->
+      <StackPanel Orientation="Vertical" Spacing="12">
+        <Grid ColumnDefinitions="*,Auto">
+          <TextBlock
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            Text="{Binding LocalizationManager.SunsetTimeLabel}"
+            TextTrimming="CharacterEllipsis"
+          />
+          <TextBox
+            Grid.Column="1"
+            MinWidth="24"
+            VerticalAlignment="Center"
+            Text="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToStringConverter.Instance}, UpdateSourceTrigger=LostFocus}"
+            Theme="{DynamicResource CompactTextBox}"
+          />
+        </Grid>
+        <Slider
+          LargeChange="0.5"
+          Maximum="23.99999"
+          Minimum="0"
+          SmallChange="0.25"
+          Value="{Binding ManualSunset, Converter={x:Static converters:TimeOnlyToHoursDoubleConverter.Instance}}"
+        />
+      </StackPanel>
+    </StackPanel>
+
+    <!--  Location-based  -->
+    <StackPanel
+      IsVisible="{Binding !IsManualSunriseSunsetEnabled}"
+      Orientation="Vertical"
+      Spacing="8"
+    >
+      <!--  Location  -->
+      <TextBlock Text="{Binding LocalizationManager.YourLocationLabel}" />
+      <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+        <!--  Autodetect  -->
+        <Button
+          Grid.Column="0"
+          Padding="4"
+          VerticalAlignment="Center"
+          Command="{Binding AutoResolveLocationCommand}"
+          Theme="{DynamicResource MaterialFlatButton}"
+          ToolTip.Tip="{Binding LocalizationManager.AutoDetectLocationTooltip}"
+        >
+          <materialIcons:MaterialIcon Width="24" Height="24" Kind="Location" />
+        </Button>
+
+        <!--  Location query  -->
+        <TextBox
+          Grid.Column="1"
+          VerticalAlignment="Center"
+          IsEnabled="{Binding !IsBusy}"
+          Text="{Binding LocationQuery}"
+          Theme="{DynamicResource CompactTextBox}"
+        >
+          <ToolTip.Tip>
+            <TextBlock
+              MaxWidth="350"
+              Inlines="{Binding LocalizationManager.LocationQueryTooltip, Converter={x:Static converters:MarkdownToInlinesConverter.Instance}}"
+              TextWrapping="Wrap"
+            />
+          </ToolTip.Tip>
+        </TextBox>
+
+        <!--  Set  -->
+        <Button
+          Grid.Column="2"
+          Padding="4"
+          VerticalAlignment="Center"
+          Command="{Binding ResolveLocationCommand}"
+          IsDefault="True"
+          Theme="{DynamicResource MaterialFlatButton}"
+          ToolTip.Tip="{Binding LocalizationManager.SetLocationTooltip}"
+        >
+          <materialIcons:MaterialIcon Width="24" Height="24" Kind="Tick" />
+        </Button>
+      </Grid>
+
+      <!--  Location error  -->
+      <TextBlock
+        HorizontalAlignment="Center"
+        Foreground="DarkRed"
+        IsVisible="{Binding IsLocationError}"
+        Text="{Binding LocalizationManager.LocationErrorText}"
+      />
+    </StackPanel>
+  </StackPanel>
 </UserControl>

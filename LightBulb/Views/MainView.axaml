@@ -1,167 +1,169 @@
 <Window
-    x:Class="LightBulb.Views.MainView"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
-    xmlns:lightBulb="clr-namespace:LightBulb"
-    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-    xmlns:viewModels="clr-namespace:LightBulb.ViewModels"
-    x:Name="Window"
-    Title="{x:Static lightBulb:Program.Name}"
-    Width="470"
-    Height="350"
-    x:DataType="viewModels:MainViewModel"
-    CanResize="False"
-    Closed="Window_OnClosed"
-    Icon="/favicon.ico"
-    Opened="Window_OnOpened"
-    RenderOptions.BitmapInterpolationMode="HighQuality"
-    WindowDecorations="None"
-    WindowStartupLocation="CenterScreen">
-    <Border
-        Background="{DynamicResource MaterialCardBackgroundBrush}"
-        BorderBrush="{DynamicResource MaterialDividerBrush}"
-        BorderThickness="1">
-        <dialogHostAvalonia:DialogHost x:Name="DialogHost" CloseOnClickAway="False">
-            <Grid RowDefinitions="Auto,*,Auto">
-                <!--  Header  -->
-                <Border
-                    x:Name="HeaderBorder"
-                    Grid.Row="0"
-                    Padding="8,12"
-                    Background="{DynamicResource MaterialDarkBackgroundBrush}"
-                    PointerPressed="HeaderBorder_OnPointerPressed">
-                    <Grid ColumnDefinitions="Auto,Auto,*,Auto">
-                        <!--  On/Off button and logo  -->
-                        <ToggleButton
-                            Grid.Column="0"
-                            Width="32"
-                            Height="32"
-                            Padding="0"
-                            VerticalAlignment="Center"
-                            Background="{DynamicResource MaterialSecondaryMidBrush}"
-                            Foreground="{DynamicResource MaterialSecondaryMidForegroundBrush}"
-                            IsChecked="{Binding Dashboard.IsEnabled}"
-                            Theme="{DynamicResource MaterialIconToggleButton}"
-                            ToolTip.Tip="{Binding Dashboard.LocalizationManager.ToggleLightBulbTooltip}">
-                            <ToggleButton.Content>
-                                <materialIcons:MaterialIcon Width="24" Height="24">
-                                    <materialIcons:MaterialIcon.Styles>
-                                        <Style Selector="ToggleButton materialIcons|MaterialIcon">
-                                            <Setter Property="Kind" Value="LightbulbOutline" />
-                                        </Style>
-                                        <Style Selector="ToggleButton:unchecked materialIcons|MaterialIcon">
-                                            <Setter Property="Kind" Value="LightbulbOffOutline" />
-                                            <Setter Property="Opacity" Value="0.5" />
-                                        </Style>
-                                    </materialIcons:MaterialIcon.Styles>
-                                </materialIcons:MaterialIcon>
-                            </ToggleButton.Content>
-                        </ToggleButton>
+  x:Class="LightBulb.Views.MainView"
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:dialogHostAvalonia="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+  xmlns:lightBulb="clr-namespace:LightBulb"
+  xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+  xmlns:viewModels="clr-namespace:LightBulb.ViewModels"
+  x:Name="Window"
+  Title="{x:Static lightBulb:Program.Name}"
+  Width="470"
+  Height="350"
+  x:DataType="viewModels:MainViewModel"
+  CanResize="False"
+  Closed="Window_OnClosed"
+  Icon="/favicon.ico"
+  Opened="Window_OnOpened"
+  RenderOptions.BitmapInterpolationMode="HighQuality"
+  WindowDecorations="None"
+  WindowStartupLocation="CenterScreen"
+>
+  <Border
+    Background="{DynamicResource MaterialCardBackgroundBrush}"
+    BorderBrush="{DynamicResource MaterialDividerBrush}"
+    BorderThickness="1"
+  >
+    <dialogHostAvalonia:DialogHost x:Name="DialogHost" CloseOnClickAway="False">
+      <Grid RowDefinitions="Auto,*,Auto">
+        <!--  Header  -->
+        <Border
+          x:Name="HeaderBorder"
+          Grid.Row="0"
+          Padding="8,12"
+          Background="{DynamicResource MaterialDarkBackgroundBrush}"
+          PointerPressed="HeaderBorder_OnPointerPressed"
+        >
+          <Grid ColumnDefinitions="Auto,Auto,*,Auto">
+            <!--  On/Off button and logo  -->
+            <ToggleButton
+              Grid.Column="0"
+              Width="32"
+              Height="32"
+              Padding="0"
+              VerticalAlignment="Center"
+              Background="{DynamicResource MaterialSecondaryMidBrush}"
+              Foreground="{DynamicResource MaterialSecondaryMidForegroundBrush}"
+              IsChecked="{Binding Dashboard.IsEnabled}"
+              Theme="{DynamicResource MaterialIconToggleButton}"
+              ToolTip.Tip="{Binding Dashboard.LocalizationManager.ToggleLightBulbTooltip}"
+            >
+              <ToggleButton.Content>
+                <materialIcons:MaterialIcon Width="24" Height="24">
+                  <materialIcons:MaterialIcon.Styles>
+                    <Style Selector="ToggleButton materialIcons|MaterialIcon">
+                      <Setter Property="Kind" Value="LightbulbOutline" />
+                    </Style>
+                    <Style Selector="ToggleButton:unchecked materialIcons|MaterialIcon">
+                      <Setter Property="Kind" Value="LightbulbOffOutline" />
+                      <Setter Property="Opacity" Value="0.5" />
+                    </Style>
+                  </materialIcons:MaterialIcon.Styles>
+                </materialIcons:MaterialIcon>
+              </ToggleButton.Content>
+            </ToggleButton>
 
-                        <!--  Application name and version  -->
-                        <TextBlock
-                            Grid.Column="1"
-                            Margin="8,1,0,0"
-                            VerticalAlignment="Center"
-                            FontSize="16"
-                            Foreground="{DynamicResource MaterialDarkForegroundBrush}">
-                            <Run
-                                FontSize="19"
-                                FontWeight="Medium"
-                                Text="{x:Static lightBulb:Program.Name}" />
-                            <Run FontWeight="Light" Text="v" /><Run FontWeight="Light" Text="{x:Static lightBulb:Program.VersionString}" />
-                        </TextBlock>
+            <!--  Application name and version  -->
+            <TextBlock
+              Grid.Column="1"
+              Margin="8,1,0,0"
+              VerticalAlignment="Center"
+              FontSize="16"
+              Foreground="{DynamicResource MaterialDarkForegroundBrush}"
+            >
+              <Run FontSize="19" FontWeight="Medium" Text="{x:Static lightBulb:Program.Name}" />
+              <Run FontWeight="Light" Text="v" />
+              <Run FontWeight="Light" Text="{x:Static lightBulb:Program.VersionString}" />
+            </TextBlock>
 
-                        <!--  Hide button  -->
-                        <Button
-                            x:Name="HideButton"
-                            Grid.Column="3"
-                            Padding="4"
-                            VerticalAlignment="Center"
-                            Click="HideButton_OnClick"
-                            Foreground="{DynamicResource MaterialDarkForegroundBrush}"
-                            Theme="{DynamicResource MaterialFlatButton}"
-                            ToolTip.Tip="{Binding Dashboard.LocalizationManager.HideToTrayTooltip}">
-                            <materialIcons:MaterialIcon
-                                Width="24"
-                                Height="24"
-                                Kind="WindowMinimize" />
-                        </Button>
-                    </Grid>
-                </Border>
+            <!--  Hide button  -->
+            <Button
+              x:Name="HideButton"
+              Grid.Column="3"
+              Padding="4"
+              VerticalAlignment="Center"
+              Click="HideButton_OnClick"
+              Foreground="{DynamicResource MaterialDarkForegroundBrush}"
+              Theme="{DynamicResource MaterialFlatButton}"
+              ToolTip.Tip="{Binding Dashboard.LocalizationManager.HideToTrayTooltip}"
+            >
+              <materialIcons:MaterialIcon Width="24" Height="24" Kind="WindowMinimize" />
+            </Button>
+          </Grid>
+        </Border>
 
-                <!--  Body  -->
-                <ContentControl
-                    Grid.Row="1"
-                    Margin="0,16,0,8"
-                    Content="{Binding Dashboard}" />
+        <!--  Body  -->
+        <ContentControl Grid.Row="1" Margin="0,16,0,8" Content="{Binding Dashboard}" />
 
-                <!--  Buttons  -->
-                <UniformGrid
-                    Grid.Row="2"
-                    Margin="8,0"
-                    Columns="2">
-                    <!--  Start/stop cycle preview  -->
-                    <ToggleButton
-                        Margin="8"
-                        HorizontalContentAlignment="Center"
-                        IsChecked="{Binding Dashboard.IsCyclePreviewEnabled}"
-                        Theme="{DynamicResource MaterialFlatToggleButton}">
-                        <Button.Styles>
-                            <Style Selector="ToggleButton">
-                                <Style Selector="^:checked">
-                                    <Setter Property="ToolTip.Tip" Value="{Binding Dashboard.LocalizationManager.StopPreviewTooltip}" />
-                                </Style>
-                                <Style Selector="^:unchecked">
-                                    <Setter Property="ToolTip.Tip" Value="{Binding Dashboard.LocalizationManager.StartPreviewTooltip}" />
-                                </Style>
-                            </Style>
-                        </Button.Styles>
-                        <Grid ColumnDefinitions="Auto,*">
-                            <materialIcons:MaterialIcon Width="24" Height="24">
-                                <materialIcons:MaterialIcon.Styles>
-                                    <Style Selector="ToggleButton materialIcons|MaterialIcon">
-                                        <Setter Property="Kind" Value="PlayCircleOutline" />
-                                    </Style>
-                                    <Style Selector="ToggleButton:checked materialIcons|MaterialIcon">
-                                        <Setter Property="Kind" Value="StopCircleOutline" />
-                                    </Style>
-                                </materialIcons:MaterialIcon.Styles>
-                            </materialIcons:MaterialIcon>
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="4,0,0,0"
-                                VerticalAlignment="Center"
-                                Text="{Binding Dashboard.LocalizationManager.PreviewText}"
-                                TextAlignment="Center"
-                                TextTrimming="CharacterEllipsis" />
-                        </Grid>
-                    </ToggleButton>
-
-                    <!--  Settings  -->
-                    <Button
-                        Margin="8"
-                        HorizontalContentAlignment="Center"
-                        Command="{Binding ShowSettingsCommand}"
-                        Theme="{DynamicResource MaterialFlatButton}"
-                        ToolTip.Tip="{Binding Dashboard.LocalizationManager.OpenSettingsTooltip}">
-                        <Grid ColumnDefinitions="Auto,*">
-                            <materialIcons:MaterialIcon
-                                Width="24"
-                                Height="24"
-                                Kind="Settings" />
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="4,0,0,0"
-                                VerticalAlignment="Center"
-                                Text="{Binding Dashboard.LocalizationManager.SettingsText}"
-                                TextAlignment="Center"
-                                TextTrimming="CharacterEllipsis" />
-                        </Grid>
-                    </Button>
-                </UniformGrid>
+        <!--  Buttons  -->
+        <UniformGrid Grid.Row="2" Margin="8,0" Columns="2">
+          <!--  Start/stop cycle preview  -->
+          <ToggleButton
+            Margin="8"
+            HorizontalContentAlignment="Center"
+            IsChecked="{Binding Dashboard.IsCyclePreviewEnabled}"
+            Theme="{DynamicResource MaterialFlatToggleButton}"
+          >
+            <Button.Styles>
+              <Style Selector="ToggleButton">
+                <Style Selector="^:checked">
+                  <Setter
+                    Property="ToolTip.Tip"
+                    Value="{Binding Dashboard.LocalizationManager.StopPreviewTooltip}"
+                  />
+                </Style>
+                <Style Selector="^:unchecked">
+                  <Setter
+                    Property="ToolTip.Tip"
+                    Value="{Binding Dashboard.LocalizationManager.StartPreviewTooltip}"
+                  />
+                </Style>
+              </Style>
+            </Button.Styles>
+            <Grid ColumnDefinitions="Auto,*">
+              <materialIcons:MaterialIcon Width="24" Height="24">
+                <materialIcons:MaterialIcon.Styles>
+                  <Style Selector="ToggleButton materialIcons|MaterialIcon">
+                    <Setter Property="Kind" Value="PlayCircleOutline" />
+                  </Style>
+                  <Style Selector="ToggleButton:checked materialIcons|MaterialIcon">
+                    <Setter Property="Kind" Value="StopCircleOutline" />
+                  </Style>
+                </materialIcons:MaterialIcon.Styles>
+              </materialIcons:MaterialIcon>
+              <TextBlock
+                Grid.Column="1"
+                Margin="4,0,0,0"
+                VerticalAlignment="Center"
+                Text="{Binding Dashboard.LocalizationManager.PreviewText}"
+                TextAlignment="Center"
+                TextTrimming="CharacterEllipsis"
+              />
             </Grid>
-        </dialogHostAvalonia:DialogHost>
-    </Border>
+          </ToggleButton>
+
+          <!--  Settings  -->
+          <Button
+            Margin="8"
+            HorizontalContentAlignment="Center"
+            Command="{Binding ShowSettingsCommand}"
+            Theme="{DynamicResource MaterialFlatButton}"
+            ToolTip.Tip="{Binding Dashboard.LocalizationManager.OpenSettingsTooltip}"
+          >
+            <Grid ColumnDefinitions="Auto,*">
+              <materialIcons:MaterialIcon Width="24" Height="24" Kind="Settings" />
+              <TextBlock
+                Grid.Column="1"
+                Margin="4,0,0,0"
+                VerticalAlignment="Center"
+                Text="{Binding Dashboard.LocalizationManager.SettingsText}"
+                TextAlignment="Center"
+                TextTrimming="CharacterEllipsis"
+              />
+            </Grid>
+          </Button>
+        </UniformGrid>
+      </Grid>
+    </dialogHostAvalonia:DialogHost>
+  </Border>
 </Window>

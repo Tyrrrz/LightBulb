@@ -1,107 +1,131 @@
 <UserControl
-    x:Class="LightBulb.Views.Components.Settings.AdvancedSettingsTabView"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:LightBulb.Converters"
-    xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
-    x:DataType="settings:AdvancedSettingsTabViewModel">
-    <StackPanel
-        Margin="16"
-        Orientation="Vertical"
-        Spacing="16">
-        <!--  Theme  -->
-        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.ThemeTooltip}">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.ThemeLabel}"
-                TextTrimming="CharacterEllipsis" />
-            <ComboBox
-                Grid.Column="1"
-                ItemsSource="{Binding AvailableThemes}"
-                SelectedItem="{Binding Theme}" />
-        </Grid>
+  x:Class="LightBulb.Views.Components.Settings.AdvancedSettingsTabView"
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:converters="clr-namespace:LightBulb.Converters"
+  xmlns:settings="clr-namespace:LightBulb.ViewModels.Components.Settings"
+  x:DataType="settings:AdvancedSettingsTabViewModel"
+>
+  <StackPanel Margin="16" Orientation="Vertical" Spacing="16">
+    <!--  Theme  -->
+    <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.ThemeTooltip}">
+      <TextBlock
+        Grid.Column="0"
+        VerticalAlignment="Center"
+        Text="{Binding LocalizationManager.ThemeLabel}"
+        TextTrimming="CharacterEllipsis"
+      />
+      <ComboBox
+        Grid.Column="1"
+        ItemsSource="{Binding AvailableThemes}"
+        SelectedItem="{Binding Theme}"
+      />
+    </Grid>
 
-        <!--  Language  -->
-        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.LanguageTooltip}">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.LanguageLabel}"
-                TextTrimming="CharacterEllipsis" />
-            <ComboBox
-                Grid.Column="1"
-                ItemsSource="{Binding AvailableLanguages}"
-                SelectedItem="{Binding Language}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Converter={x:Static converters:LanguageToStringConverter.Instance}}" />
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-        </Grid>
+    <!--  Language  -->
+    <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.LanguageTooltip}">
+      <TextBlock
+        Grid.Column="0"
+        VerticalAlignment="Center"
+        Text="{Binding LocalizationManager.LanguageLabel}"
+        TextTrimming="CharacterEllipsis"
+      />
+      <ComboBox
+        Grid.Column="1"
+        ItemsSource="{Binding AvailableLanguages}"
+        SelectedItem="{Binding Language}"
+      >
+        <ComboBox.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding Converter={x:Static converters:LanguageToStringConverter.Instance}}" />
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+    </Grid>
 
-        <!--  Auto start  -->
-        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.StartWithWindowsTooltip}">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.StartWithWindowsLabel}"
-                TextTrimming="CharacterEllipsis" />
-            <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsAutoStartEnabled}" />
-        </Grid>
+    <!--  Auto start  -->
+    <Grid
+      ColumnDefinitions="*,Auto"
+      ToolTip.Tip="{Binding LocalizationManager.StartWithWindowsTooltip}"
+    >
+      <TextBlock
+        Grid.Column="0"
+        VerticalAlignment="Center"
+        Text="{Binding LocalizationManager.StartWithWindowsLabel}"
+        TextTrimming="CharacterEllipsis"
+      />
+      <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsAutoStartEnabled}" />
+    </Grid>
 
-        <!--  Auto update  -->
-        <Grid
-            ColumnDefinitions="*,Auto"
-            IsVisible="{Binding IsAutoUpdateAllowed}"
-            ToolTip.Tip="{Binding LocalizationManager.AutoUpdateTooltip}">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.AutoUpdateLabel}"
-                TextTrimming="CharacterEllipsis" />
-            <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsAutoUpdateEnabled}" />
-        </Grid>
+    <!--  Auto update  -->
+    <Grid
+      ColumnDefinitions="*,Auto"
+      IsVisible="{Binding IsAutoUpdateAllowed}"
+      ToolTip.Tip="{Binding LocalizationManager.AutoUpdateTooltip}"
+    >
+      <TextBlock
+        Grid.Column="0"
+        VerticalAlignment="Center"
+        Text="{Binding LocalizationManager.AutoUpdateLabel}"
+        TextTrimming="CharacterEllipsis"
+      />
+      <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsAutoUpdateEnabled}" />
+    </Grid>
 
-        <!--  Default to day time  -->
-        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.DefaultToDayConfigTooltip}">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.DefaultToDayConfigLabel}"
-                TextTrimming="CharacterEllipsis" />
-            <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsDefaultToDayConfigurationEnabled}" />
-        </Grid>
+    <!--  Default to day time  -->
+    <Grid
+      ColumnDefinitions="*,Auto"
+      ToolTip.Tip="{Binding LocalizationManager.DefaultToDayConfigTooltip}"
+    >
+      <TextBlock
+        Grid.Column="0"
+        VerticalAlignment="Center"
+        Text="{Binding LocalizationManager.DefaultToDayConfigLabel}"
+        TextTrimming="CharacterEllipsis"
+      />
+      <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsDefaultToDayConfigurationEnabled}" />
+    </Grid>
 
-        <!--  Pause when full screen  -->
-        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.PauseWhenFullscreenTooltip}">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.PauseWhenFullscreenLabel}"
-                TextTrimming="CharacterEllipsis" />
-            <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsPauseWhenFullScreenEnabled}" />
-        </Grid>
+    <!--  Pause when full screen  -->
+    <Grid
+      ColumnDefinitions="*,Auto"
+      ToolTip.Tip="{Binding LocalizationManager.PauseWhenFullscreenTooltip}"
+    >
+      <TextBlock
+        Grid.Column="0"
+        VerticalAlignment="Center"
+        Text="{Binding LocalizationManager.PauseWhenFullscreenLabel}"
+        TextTrimming="CharacterEllipsis"
+      />
+      <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsPauseWhenFullScreenEnabled}" />
+    </Grid>
 
-        <!--  Configuration smoothing  -->
-        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.GammaSmoothingTooltip}">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.GammaSmoothingLabel}"
-                TextTrimming="CharacterEllipsis" />
-            <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsConfigurationSmoothingEnabled}" />
-        </Grid>
+    <!--  Configuration smoothing  -->
+    <Grid
+      ColumnDefinitions="*,Auto"
+      ToolTip.Tip="{Binding LocalizationManager.GammaSmoothingTooltip}"
+    >
+      <TextBlock
+        Grid.Column="0"
+        VerticalAlignment="Center"
+        Text="{Binding LocalizationManager.GammaSmoothingLabel}"
+        TextTrimming="CharacterEllipsis"
+      />
+      <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsConfigurationSmoothingEnabled}" />
+    </Grid>
 
-        <!--  Gamma polling  -->
-        <Grid ColumnDefinitions="*,Auto" ToolTip.Tip="{Binding LocalizationManager.GammaPollingTooltip}">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                Text="{Binding LocalizationManager.GammaPollingLabel}"
-                TextTrimming="CharacterEllipsis" />
-            <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsGammaPollingEnabled}" />
-        </Grid>
-    </StackPanel>
+    <!--  Gamma polling  -->
+    <Grid
+      ColumnDefinitions="*,Auto"
+      ToolTip.Tip="{Binding LocalizationManager.GammaPollingTooltip}"
+    >
+      <TextBlock
+        Grid.Column="0"
+        VerticalAlignment="Center"
+        Text="{Binding LocalizationManager.GammaPollingLabel}"
+        TextTrimming="CharacterEllipsis"
+      />
+      <ToggleSwitch Grid.Column="1" IsChecked="{Binding IsGammaPollingEnabled}" />
+    </Grid>
+  </StackPanel>
 </UserControl>
