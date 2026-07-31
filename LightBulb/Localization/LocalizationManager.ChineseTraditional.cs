@@ -51,9 +51,11 @@ public partial class LocalizationManager
             [nameof(PauseWhenFullscreenLabel)] = "全螢幕時暫停",
             [nameof(PauseWhenFullscreenTooltip)] = "當前台有任何全螢幕視窗時暫停 LightBulb",
             [nameof(GammaSmoothingLabel)] = "Gamma 平滑化",
-            [nameof(GammaSmoothingTooltip)] = "在啟用或停用 LightBulb 時緩慢過渡，以便讓眼睛有時間適應",
+            [nameof(GammaSmoothingTooltip)] =
+                "在啟用或停用 LightBulb 時緩慢過渡，以便讓眼睛有時間適應",
             [nameof(GammaPollingLabel)] = "Gamma 輪詢",
-            [nameof(GammaPollingTooltip)] = "定期強制重新整理顯示器 Gamma 值，以防止其他程式覆蓋此設定",
+            [nameof(GammaPollingTooltip)] =
+                "定期強制重新整理顯示器 Gamma 值，以防止其他程式覆蓋此設定",
             // General settings tab
             [nameof(DayTemperatureLabel)] = "白天色溫：",
             [nameof(DayTemperatureTooltip)] = "白天時的色溫",
@@ -76,7 +78,8 @@ public partial class LocalizationManager
             [nameof(TransitionDurationLabel)] = "過渡時間：",
             [nameof(TransitionDurationTooltip)] = "在白天和夜晚設定之間切換所需的時間長度",
             [nameof(TransitionOffsetLabel)] = "過渡偏移：",
-            [nameof(TransitionOffsetTooltip)] = "相對於日出和日落，指定過渡效果提前或延後開始的偏移時間",
+            [nameof(TransitionOffsetTooltip)] =
+                "相對於日出和日落，指定過渡效果提前或延後開始的偏移時間",
             // Location settings tab
             [nameof(SolarConfigLabel)] = "太陽週期設定：",
             [nameof(ManualLabel)] = "手動",
