@@ -46,7 +46,7 @@ public partial class LocalizationManager
             [nameof(AutoUpdateLabel)] = "自動更新",
             [nameof(AutoUpdateTooltip)] = "當有新版本可用時自動安裝，保持 LightBulb 為最新狀態",
             [nameof(DefaultToDayConfigLabel)] = "預設採用白天設定",
-            [nameof(DefaultToDayConfigTooltip)] = 
+            [nameof(DefaultToDayConfigTooltip)] =
                 "當 LightBulb 停用或暫停時，還原為設定的白天色溫與亮度，而非預設的顯示器 Gamma 值",
             [nameof(PauseWhenFullscreenLabel)] = "全螢幕時暫停",
             [nameof(PauseWhenFullscreenTooltip)] = "當前台有任何全螢幕視窗時暫停 LightBulb",
