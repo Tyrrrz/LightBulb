@@ -44,20 +44,15 @@ public partial class LocalizationManager
             [nameof(StartWithWindowsLabel)] = "隨 Windows 啟動",
             [nameof(StartWithWindowsTooltip)] = "在 Windows 啟動時自動執行 LightBulb",
             [nameof(AutoUpdateLabel)] = "自動更新",
-            [nameof(AutoUpdateTooltip)] =
-                "當有新版本可用時自動安裝，保持 LightBulb 為最新狀態",
+            [nameof(AutoUpdateTooltip)] = "當有新版本可用時自動安裝，保持 LightBulb 為最新狀態",
             [nameof(DefaultToDayConfigLabel)] = "預設採用白天設定",
-            [nameof(DefaultToDayConfigTooltip)] =
-                "當 LightBulb 停用或暫停時，還原為設定的白天色溫與亮度，而非預設的顯示器 Gamma 值",
+            [nameof(DefaultToDayConfigTooltip)] = "當 LightBulb 停用或暫停時，還原為設定的白天色溫與亮度，而非預設的顯示器 Gamma 值",
             [nameof(PauseWhenFullscreenLabel)] = "全螢幕時暫停",
-            [nameof(PauseWhenFullscreenTooltip)] =
-                "當前台有任何全螢幕視窗時暫停 LightBulb",
+            [nameof(PauseWhenFullscreenTooltip)] = "當前台有任何全螢幕視窗時暫停 LightBulb",
             [nameof(GammaSmoothingLabel)] = "Gamma 平滑化",
-            [nameof(GammaSmoothingTooltip)] =
-                "在啟用或停用 LightBulb 時緩慢過渡，以便讓眼睛有時間適應",
+            [nameof(GammaSmoothingTooltip)] = "在啟用或停用 LightBulb 時緩慢過渡，以便讓眼睛有時間適應",
             [nameof(GammaPollingLabel)] = "Gamma 輪詢",
-            [nameof(GammaPollingTooltip)] =
-                "定期強制重新整理顯示器 Gamma 值，以防止其他程式覆蓋此設定",
+            [nameof(GammaPollingTooltip)] = "定期強制重新整理顯示器 Gamma 值，以防止其他程式覆蓋此設定",
             // General settings tab
             [nameof(DayTemperatureLabel)] = "白天色溫：",
             [nameof(DayTemperatureTooltip)] = "白天時的色溫",
@@ -78,23 +73,19 @@ public partial class LocalizationManager
                 如果您的電腦已經能夠根據光線條件自動調整螢幕亮度（常見於筆記型電腦），建議將兩種亮度設定都保持在 100% 以停用 LightBulb 的亮度控制。
                 """,
             [nameof(TransitionDurationLabel)] = "過渡時間：",
-            [nameof(TransitionDurationTooltip)] =
-                "在白天和夜晚設定之間切換所需的時間長度",
+            [nameof(TransitionDurationTooltip)] = "在白天和夜晚設定之間切換所需的時間長度",
             [nameof(TransitionOffsetLabel)] = "過渡偏移：",
-            [nameof(TransitionOffsetTooltip)] =
-                "相對於日出和日落，指定過渡效果提前或延後開始的偏移時間",
+            [nameof(TransitionOffsetTooltip)] = "相對於日出和日落，指定過渡效果提前或延後開始的偏移時間",
             // Location settings tab
             [nameof(SolarConfigLabel)] = "太陽週期設定：",
             [nameof(ManualLabel)] = "手動",
             [nameof(ManualTooltip)] = "手動設定日出與日落時間",
             [nameof(LocationBasedLabel)] = "基於位置",
-            [nameof(LocationBasedTooltip)] =
-                "設定您的位置並自動計算日出與日落時間",
+            [nameof(LocationBasedTooltip)] = "設定您的位置並自動計算日出與日落時間",
             [nameof(SunriseTimeLabel)] = "日出：",
             [nameof(SunsetTimeLabel)] = "日落：",
             [nameof(YourLocationLabel)] = "您的位置：",
-            [nameof(AutoDetectLocationTooltip)] =
-                "嘗試根據您的 IP 位址自動偵測位置",
+            [nameof(AutoDetectLocationTooltip)] = "嘗試根據您的 IP 位址自動偵測位置",
             [nameof(LocationQueryTooltip)] = """
                 使用地理座標或搜尋關鍵字來指定您的位置
 
@@ -110,28 +101,21 @@ public partial class LocalizationManager
             [nameof(ToggleLightBulbHotkeyLabel)] = "切換 LightBulb",
             [nameof(ToggleLightBulbHotkeyTooltip)] = "全域快捷鍵，用於開啟/關閉 LightBulb",
             [nameof(ToggleWindowLabel)] = "切換視窗",
-            [nameof(ToggleWindowHotkeyTooltip)] =
-                "全域快捷鍵，用於顯示/隱藏 LightBulb 主視窗",
+            [nameof(ToggleWindowHotkeyTooltip)] = "全域快捷鍵，用於顯示/隱藏 LightBulb 主視窗",
             [nameof(IncreaseTemperatureOffsetLabel)] = "色溫微調 ↑",
-            [nameof(IncreaseTemperatureOffsetTooltip)] =
-                "全域快捷鍵，用於增加目前的色溫微調值",
+            [nameof(IncreaseTemperatureOffsetTooltip)] = "全域快捷鍵，用於增加目前的色溫微調值",
             [nameof(DecreaseTemperatureOffsetLabel)] = "色溫微調 ↓",
-            [nameof(DecreaseTemperatureOffsetTooltip)] =
-                "全域快捷鍵，用於減少目前的色溫微調值",
+            [nameof(DecreaseTemperatureOffsetTooltip)] = "全域快捷鍵，用於減少目前的色溫微調值",
             [nameof(IncreaseBrightnessOffsetLabel)] = "亮度微調 ↑",
-            [nameof(IncreaseBrightnessOffsetTooltip)] =
-                "全域快捷鍵，用於增加目前的亮度微調值",
+            [nameof(IncreaseBrightnessOffsetTooltip)] = "全域快捷鍵，用於增加目前的亮度微調值",
             [nameof(DecreaseBrightnessOffsetLabel)] = "亮度微調 ↓",
-            [nameof(DecreaseBrightnessOffsetTooltip)] =
-                "全域快捷鍵，用於減少目前的亮度微調值",
+            [nameof(DecreaseBrightnessOffsetTooltip)] = "全域快捷鍵，用於減少目前的亮度微調值",
             [nameof(ResetOffsetLabel)] = "重設微調",
-            [nameof(ResetOffsetHotkeyTooltip)] =
-                "全域快捷鍵，用於重設目前的色溫與亮度微調值",
+            [nameof(ResetOffsetHotkeyTooltip)] = "全域快捷鍵，用於重設目前的色溫與亮度微調值",
             // Application whitelist settings tab
             [nameof(AppWhitelistLabel)] = "應用程式白名單",
             [nameof(RefreshAppsTooltip)] = "重新整理執行中的應用程式",
-            [nameof(PauseForWhitelistedTooltip)] =
-                "當選定的應用程式之一在前台執行時暫停 LightBulb",
+            [nameof(PauseForWhitelistedTooltip)] = "當選定的應用程式之一在前台執行時暫停 LightBulb",
             // Tray icon context menu
             [nameof(TrayShowMenuItem)] = "顯示",
             [nameof(TrayHideMenuItem)] = "隱藏",
