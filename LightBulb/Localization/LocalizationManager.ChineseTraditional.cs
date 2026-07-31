@@ -119,8 +119,7 @@ public partial class LocalizationManager
             // Application whitelist settings tab
             [nameof(AppWhitelistLabel)] = "應用程式白名單",
             [nameof(RefreshAppsTooltip)] = "重新整理執行中的應用程式",
-            [nameof(PauseForWhitelistedTooltip)] =
-                "當選定的應用程式之一在前景執行時暫停 LightBulb",
+            [nameof(PauseForWhitelistedTooltip)] = "當選定的應用程式之一在前景執行時暫停 LightBulb",
             // Tray icon context menu
             [nameof(TrayShowMenuItem)] = "顯示",
             [nameof(TrayHideMenuItem)] = "隱藏",
