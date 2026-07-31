@@ -10,12 +10,9 @@ public partial class LocalizationManager
             // Dashboard
             [nameof(SunsetLabel)] = "日落",
             [nameof(SunriseLabel)] = "日出",
-            [nameof(SunsetTransitionTooltip)] =
-                "日落過渡效果開始於 {0}，結束於 {1}",
-            [nameof(SunriseTransitionTooltip)] =
-                "日出過渡效果開始於 {0}，結束於 {1}",
-            [nameof(OffsetTooltipHeader)] =
-                "目前的色溫與亮度值已透過微調值進行調整：",
+            [nameof(SunsetTransitionTooltip)] = "日落過渡效果開始於 {0}，結束於 {1}",
+            [nameof(SunriseTransitionTooltip)] = "日出過渡效果開始於 {0}，結束於 {1}",
+            [nameof(OffsetTooltipHeader)] = "目前的色溫與亮度值已透過微調值進行調整：",
             [nameof(TemperatureOffsetLabel)] = "色溫微調：",
             [nameof(BrightnessOffsetLabel)] = "亮度微調：",
             [nameof(ClickToResetLabel)] = "點擊重設",
