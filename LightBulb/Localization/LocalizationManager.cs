@@ -51,6 +51,12 @@ public partial class LocalizationManager : ObservableObject, IDisposable
                             .Any(c =>
                                 string.Equals(c.Name, "zh-Hans", StringComparison.OrdinalIgnoreCase)
                             ) => ChineseSimplifiedLocalization,
+                    "zho"
+                        when CultureInfo
+                            .CurrentUICulture.GetSelfAndParents()
+                            .Any(c =>
+                                string.Equals(c.Name, "zh-Hant", StringComparison.OrdinalIgnoreCase)
+                            ) => ChineseTraditionalLocalization,                  
                     _ => EnglishLocalization,
                 },
             Language.Ukrainian => UkrainianLocalization,
@@ -58,6 +64,7 @@ public partial class LocalizationManager : ObservableObject, IDisposable
             Language.French => FrenchLocalization,
             Language.Spanish => SpanishLocalization,
             Language.ChineseSimplified => ChineseSimplifiedLocalization,
+            Language.ChineseTraditional => ChineseTraditionalLocalization,
             _ => EnglishLocalization,
         };
 
