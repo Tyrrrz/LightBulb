@@ -49,8 +49,7 @@ public partial class LocalizationManager
             [nameof(DefaultToDayConfigTooltip)] =
                 "當 LightBulb 停用或暫停時，還原為設定的白天色溫與亮度，而非預設的顯示器 Gamma 值",
             [nameof(PauseWhenFullscreenLabel)] = "全螢幕時暫停",
-            [nameof(PauseWhenFullscreenTooltip)] =
-                "當前景有任何全螢幕視窗時暫停 LightBulb",
+            [nameof(PauseWhenFullscreenTooltip)] = "當前景有任何全螢幕視窗時暫停 LightBulb",
             [nameof(GammaSmoothingLabel)] = "Gamma 平滑化",
             [nameof(GammaSmoothingTooltip)] =
                 "在啟用或停用 LightBulb 時緩慢過渡，以便讓眼睛有時間適應",
