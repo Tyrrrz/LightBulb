@@ -120,6 +120,11 @@ public partial class App : Application, IDisposable
             // https://github.com/Tyrrrz/YoutubeDownloader/issues/795
             desktop.Exit += (_, _) => Dispose();
 
+            // Initialize the theme regardless of whether the main window is shown on
+            // startup, otherwise it may not be applied correctly when starting hidden.
+            // https://github.com/Tyrrrz/LightBulb/issues/432
+            InitializeTheme();
+
             if (!StartOptions.Current.IsInitiallyHidden)
             {
                 // Show the main window on startup
@@ -157,7 +162,8 @@ public partial class App : Application, IDisposable
 
             window?.ShowActivateFocus();
 
-            // Initialize the theme for the first time; must be done after the main window is created
+            // Re-initialize the theme in case the window was recycled and the platform
+            // theme changed while it was closed.
             InitializeTheme();
         }
 
