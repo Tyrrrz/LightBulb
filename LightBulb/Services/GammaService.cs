@@ -88,7 +88,8 @@ public partial class GammaService : IDisposable
         // https://github.com/Tyrrrz/LightBulb/issues/448
         if ((instant - _lastGammaInvalidationTimestamp).Duration() <= TimeSpan.FromSeconds(2))
         {
-            return true;
+            // Avoid spamming gamma updates on frequent invalidation sources (e.g. foreground window changes).
+            return (instant - _lastUpdateTimestamp).Duration() >= TimeSpan.FromMilliseconds(200);
         }
 
         // If polling is enabled, assume gamma is stale after some time has passed since the last update
