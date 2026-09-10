@@ -80,10 +80,16 @@ public partial class GammaService : IDisposable
     {
         var instant = DateTimeOffset.Now;
 
-        // Assume gamma continues to be stale for some time after it has been invalidated
-        if ((instant - _lastGammaInvalidationTimestamp).Duration() <= TimeSpan.FromSeconds(0.3))
+        // Assume gamma continues to be stale for some time after it has been invalidated.
+        // This needs to be reasonably long because some external overrides (e.g. Windows
+        // applying its own gamma ramp when the Quick Settings panel is opened for the
+        // first time) don't happen immediately after the triggering event, but shortly
+        // after it -- so we need to keep re-checking for a while to catch and correct them.
+        // https://github.com/Tyrrrz/LightBulb/issues/448
+        if ((instant - _lastGammaInvalidationTimestamp).Duration() <= TimeSpan.FromSeconds(2))
         {
-            return true;
+            // Avoid spamming gamma updates on frequent invalidation sources (e.g. foreground window changes).
+            return (instant - _lastUpdateTimestamp).Duration() >= TimeSpan.FromMilliseconds(200);
         }
 
         // If polling is enabled, assume gamma is stale after some time has passed since the last update
