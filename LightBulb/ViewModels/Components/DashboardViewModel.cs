@@ -353,6 +353,8 @@ public partial class DashboardViewModel : ViewModelBase
         // Otherwise, synchronize the instant with the system clock
         else
         {
+            // Local time zone is cached by the runtime, so reset it to pick up system time zone changes
+            TimeZoneInfo.ClearCachedData();
             Instant = DateTimeOffset.Now;
         }
     }
