@@ -101,7 +101,7 @@ internal partial class WndProcSponge
             0,
             0,
             0,
-            -3, // HWND_MESSAGE
+            0, // Hidden top-level window, so it receives system broadcasts unlike HWND_MESSAGE
             0,
             0,
             0

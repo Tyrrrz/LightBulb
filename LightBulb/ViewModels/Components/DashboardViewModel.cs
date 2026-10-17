@@ -27,8 +27,6 @@ public partial class DashboardViewModel : ViewModelBase
 
     private readonly IDisposable _eventSubscription;
 
-    private DateTimeOffset _lastTimeZoneRefreshTimestamp = DateTimeOffset.MinValue;
-
     private readonly Timer _updateInstantTimer;
     private readonly Timer _updateConfigurationTimer;
     private readonly Timer _updateIsPausedTimer;
@@ -52,6 +50,9 @@ public partial class DashboardViewModel : ViewModelBase
         _externalApplicationService = externalApplicationService;
 
         _eventSubscription = Disposable.Merge(
+            // Invalidate the cached local time zone when the system clock or time zone changes
+            SystemEvent.Register(SystemEvent.Ids.TimeChanged, TimeZoneInfo.ClearCachedData),
+            SystemEvent.Register(SystemEvent.Ids.SettingsChanged, TimeZoneInfo.ClearCachedData),
             this.WatchProperty(
                 o => o.IsEnabled,
                 v =>
@@ -355,15 +356,6 @@ public partial class DashboardViewModel : ViewModelBase
         // Otherwise, synchronize the instant with the system clock
         else
         {
-            // Local time zone is cached by the runtime, so periodically reset it
-            // to pick up system time zone changes (without doing it on every tick).
-            var now = DateTimeOffset.UtcNow;
-            if (now - _lastTimeZoneRefreshTimestamp >= TimeSpan.FromSeconds(5))
-            {
-                TimeZoneInfo.ClearCachedData();
-                _lastTimeZoneRefreshTimestamp = now;
-            }
-
             Instant = DateTimeOffset.Now;
         }
     }
