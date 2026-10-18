@@ -51,6 +51,7 @@ public partial class DashboardViewModel : ViewModelBase
 
         _eventSubscription = Disposable.Merge(
             // Invalidate the cached local time zone when the system clock or time zone changes
+            // https://github.com/Tyrrrz/LightBulb/issues/465
             SystemEvent.Register(SystemEvent.Ids.TimeChanged, TimeZoneInfo.ClearCachedData),
             SystemEvent.Register(SystemEvent.Ids.SettingsChanged, TimeZoneInfo.ClearCachedData),
             this.WatchProperty(
