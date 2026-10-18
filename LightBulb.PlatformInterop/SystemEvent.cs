@@ -26,5 +26,6 @@ public partial class SystemEvent
         public static int PaletteChanged => 785;
         public static int SystemColorsChanged => 21;
         public static int SettingsChanged => 26;
+        public static int TimeChanged => 30;
     }
 }
