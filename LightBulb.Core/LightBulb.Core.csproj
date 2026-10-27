@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <PackageReference Include="CSharpier.MsBuild" PrivateAssets="all" />
-    <PackageReference Include="JsonExtensions" />
     <PackageReference Include="PowerKit" />
+    <PackageReference Include="PowerKit.Json" />
   </ItemGroup>
 </Project>
