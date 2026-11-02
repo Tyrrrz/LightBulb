@@ -6,6 +6,11 @@
     <CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <!-- Opt out of CET compatibility in the generated apphost to support older operating systems -->
+    <CetCompat>false</CetCompat>
+  </PropertyGroup>
+
   <ItemGroup>
     <AvaloniaResource Include="../favicon.ico" Link="favicon.ico" />
   </ItemGroup>
