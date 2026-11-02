@@ -4,6 +4,8 @@
     <ApplicationIcon>../favicon.ico</ApplicationIcon>
     <PublishTrimmed>true</PublishTrimmed>
     <CopyOutputSymbolsToPublishDirectory>false</CopyOutputSymbolsToPublishDirectory>
+    <!-- Opt out of CET compatibility in the generated apphost, so the app can still be launched on Windows 10 -->
+    <CetCompat>false</CetCompat>
   </PropertyGroup>
 
   <ItemGroup>
