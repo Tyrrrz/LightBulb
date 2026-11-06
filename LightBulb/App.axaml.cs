@@ -110,20 +110,19 @@ public partial class App : Application, IDisposable
         // Initialize the lifetime
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            var viewManager = _services.GetRequiredService<ViewManager>();
+
+            desktop.MainWindow = viewManager.TryBindWindow(_mainViewModel);
+
             // Although `App.Dispose()` is invoked from `Program.Main(...)`, on some platforms
             // it may be called too late in the shutdown lifecycle. Attach an exit
             // handler to ensure timely disposal as a safeguard.
             // https://github.com/Tyrrrz/YoutubeDownloader/issues/795
             desktop.Exit += (_, _) => Dispose();
-
-            // Initialize the theme regardless of whether the main window is shown on
-            // startup, otherwise it may not be applied correctly when starting hidden.
-            // https://github.com/Tyrrrz/LightBulb/issues/432
-            InitializeTheme();
-
-            var viewManager = _services.GetRequiredService<ViewManager>();
-            desktop.MainWindow = viewManager.TryBindWindow(_mainViewModel);
         }
+
+        // Initialize the theme for the first time; must be done after the main window is created
+        InitializeTheme();
 
         base.OnFrameworkInitializationCompleted();
     }
