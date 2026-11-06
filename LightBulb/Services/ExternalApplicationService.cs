@@ -59,6 +59,20 @@ public class ExternalApplicationService
             : null;
     }
 
+    public bool IsForegroundApplicationIgnored()
+    {
+        using var window = Window.TryGetForeground();
+        using var process = window?.TryGetProcess();
+
+        var executableFilePath = process?.TryGetExecutableFilePath();
+        var executableFileName = !string.IsNullOrWhiteSpace(executableFilePath)
+            ? Path.GetFileNameWithoutExtension(executableFilePath)
+            : null;
+
+        return !string.IsNullOrWhiteSpace(executableFileName)
+            && _ignoredApplicationNames.Contains(executableFileName);
+    }
+
     public bool IsForegroundApplicationFullScreen()
     {
         using var window = Window.TryGetForeground();

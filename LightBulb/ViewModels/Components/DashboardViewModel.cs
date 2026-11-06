@@ -424,6 +424,10 @@ public partial class DashboardViewModel : ViewModelBase
 
     private void UpdateIsPaused()
     {
+        // Interacting with shell components (e.g. taskbar) should not affect the paused state
+        if (_externalApplicationService.IsForegroundApplicationIgnored())
+            return;
+
         bool IsPausedByFullScreen() =>
             _settingsService.IsPauseWhenFullScreenEnabled
             && _externalApplicationService.IsForegroundApplicationFullScreen();
