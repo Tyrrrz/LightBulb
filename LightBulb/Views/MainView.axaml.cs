@@ -1,4 +1,3 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -10,14 +9,6 @@ namespace LightBulb.Views;
 public partial class MainView : Window<MainViewModel>
 {
     public MainView() => InitializeComponent();
-
-    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-    {
-        base.OnPropertyChanged(change);
-
-        if (change.Property == IsVisibleProperty && DataContext is not null)
-            DataContext.IsOpen = IsVisible;
-    }
 
     private void Window_OnLoaded(object? sender, RoutedEventArgs args)
     {
