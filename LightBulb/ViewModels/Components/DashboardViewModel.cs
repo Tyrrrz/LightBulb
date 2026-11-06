@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -273,7 +274,7 @@ public partial class DashboardViewModel : ViewModelBase
         {
             _hotKeyService.RegisterHotKey(
                 _settingsService.ToggleWindowHotKey,
-                () => App.Current?.ToggleMainWindow()
+                () => Application.Current?.ApplicationLifetime?.TryGetMainWindow()?.Toggle()
             );
         }
 

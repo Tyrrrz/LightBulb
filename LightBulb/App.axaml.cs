@@ -21,8 +21,6 @@ namespace LightBulb;
 
 public partial class App : Application, IDisposable
 {
-    public static new App? Current => Application.Current as App;
-
     private readonly ServiceProvider _services;
     private readonly SettingsService _settingsService;
     private readonly MainViewModel _mainViewModel;
@@ -112,8 +110,6 @@ public partial class App : Application, IDisposable
         // Initialize the lifetime
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-
             // Although `App.Dispose()` is invoked from `Program.Main(...)`, on some platforms
             // it may be called too late in the shutdown lifecycle. Attach an exit
             // handler to ensure timely disposal as a safeguard.
@@ -125,88 +121,27 @@ public partial class App : Application, IDisposable
             // https://github.com/Tyrrrz/LightBulb/issues/432
             InitializeTheme();
 
-            if (!StartOptions.Current.IsInitiallyHidden)
-            {
-                // Show the main window on startup
-                ShowMainWindow();
-            }
-            else
-            {
-                // When starting hidden, initialize the backend without showing the UI
-                _ = _mainViewModel.Dashboard.InitializeAsync();
-            }
+            var viewManager = _services.GetRequiredService<ViewManager>();
+            desktop.MainWindow = viewManager.TryBindWindow(_mainViewModel);
         }
 
         base.OnFrameworkInitializationCompleted();
-    }
-
-    internal Window? ShowMainWindow()
-    {
-        if (ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop)
-            return null;
-
-        // Re-use the existing window if already open
-        if (desktop.MainWindow is { } existingWindow)
-        {
-            existingWindow.ShowActivateFocus();
-        }
-        // Otherwise, create a new window (the previous one was closed to free resources)
-        else
-        {
-            var viewManager = _services.GetRequiredService<ViewManager>();
-            var window = viewManager.TryBindWindow(_mainViewModel);
-
-            window?.Closed += (_, _) => desktop.MainWindow = null;
-
-            desktop.MainWindow = window;
-
-            window?.ShowActivateFocus();
-
-            // Re-initialize the theme in case the window was recycled and the platform
-            // theme changed while it was closed.
-            InitializeTheme();
-        }
-
-        return desktop.MainWindow;
-    }
-
-    internal void ToggleMainWindow()
-    {
-        var existingWindow = ApplicationLifetime?.TryGetMainWindow();
-
-        if (existingWindow is { IsVisible: true })
-            existingWindow.Close();
-        else
-            ShowMainWindow();
     }
 
     private void Application_OnActualThemeVariantChanged(object? sender, EventArgs args) =>
         // Re-initialize the theme when the system theme changes
         InitializeTheme();
 
-    private void TrayIcon_OnClicked(object? sender, EventArgs args) => ToggleMainWindow();
+    private void TrayIcon_OnClicked(object? sender, EventArgs args) =>
+        ApplicationLifetime?.TryGetMainWindow()?.Toggle();
 
     private void TrayToggleWindowMenuItem_OnClick(object? sender, EventArgs args) =>
-        ToggleMainWindow();
+        ApplicationLifetime?.TryGetMainWindow()?.Toggle();
 
-    private async void TrayShowSettingsMenuItem_OnClick(object? sender, EventArgs args)
+    private void TrayShowSettingsMenuItem_OnClick(object? sender, EventArgs args)
     {
-        var window = ShowMainWindow();
-        if (window is null)
-            return;
-
-        // Wait until the window is loaded to avoid potential issues
-        // with showing a dialog too early in the lifecycle.
-        try
-        {
-            await window.WaitUntilLoadedAsync();
-        }
-        catch (OperationCanceledException)
-        {
-            return;
-        }
-
-        await _mainViewModel.ShowSettingsCommand.ExecuteAsync(null);
+        ApplicationLifetime?.TryGetMainWindow()?.ShowActivateFocus();
+        _mainViewModel.ShowSettingsCommand.Execute(null);
     }
 
     private void TrayExitMenuItem_OnClick(object? sender, EventArgs args) => Shutdown();
