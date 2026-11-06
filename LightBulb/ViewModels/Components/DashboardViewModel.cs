@@ -424,18 +424,36 @@ public partial class DashboardViewModel : ViewModelBase
 
     private void UpdateIsPaused()
     {
-        bool IsPausedByFullScreen() =>
+        // Pause on fullscreen applications
+        if (
             _settingsService.IsPauseWhenFullScreenEnabled
-            && _externalApplicationService.IsForegroundApplicationFullScreen();
+            && _externalApplicationService.IsForegroundApplicationFullScreen()
+        )
+        {
+            IsPaused = true;
+            return;
+        }
 
-        bool IsPausedByWhitelistedApplication() =>
+        // Ignored or unidentifiable foreground applications should not affect whitelist pausing.
+        // This prevents brief flashes when switching from a fullscreen/whitelisted application
+        // to an ignored application (e.g., taskbar), and back.
+        // https://github.com/Tyrrrz/LightBulb/issues/451
+        var foregroundApplication = _externalApplicationService.TryGetForegroundApplication();
+        if (foregroundApplication is null)
+            return;
+
+        // Pause on whitelisted applications
+        if (
             _settingsService.IsApplicationWhitelistEnabled
             && _settingsService.WhitelistedApplications is not null
-            && _settingsService.WhitelistedApplications.Contains(
-                _externalApplicationService.TryGetForegroundApplication()
-            );
+            && _settingsService.WhitelistedApplications.Contains(foregroundApplication)
+        )
+        {
+            IsPaused = true;
+            return;
+        }
 
-        IsPaused = IsPausedByFullScreen() || IsPausedByWhitelistedApplication();
+        IsPaused = false;
     }
 
     public override Task InitializeAsync()
