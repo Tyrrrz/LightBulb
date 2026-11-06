@@ -12,7 +12,21 @@ public partial class MainView : Window<MainViewModel>
 
     private void Window_OnOpened(object? sender, EventArgs args) => DataContext.IsOpen = true;
 
-    private void Window_OnClosed(object? sender, EventArgs args) => DataContext.IsOpen = false;
+    private void Window_OnClosed(object? sender, EventArgs args)
+    {
+        DataContext.IsOpen = false;
+
+        // Close any open dialog, otherwise the dialog task never completes
+        // and the dialog commands remain disabled after the window is re-opened.
+        try
+        {
+            DialogHost.CurrentSession?.Close();
+        }
+        catch (InvalidOperationException)
+        {
+            // Dialog host is already processing a close operation
+        }
+    }
 
     private void HeaderBorder_OnPointerPressed(object? sender, PointerPressedEventArgs args) =>
         BeginMoveDrag(args);
