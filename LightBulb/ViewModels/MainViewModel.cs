@@ -42,8 +42,6 @@ public partial class MainViewModel(
         }
     );
 
-    private bool _isInitialized;
-
     public LocalizationManager LocalizationManager { get; } = localizationManager;
 
     public DashboardViewModel Dashboard { get; } = dashboard;
@@ -162,11 +160,6 @@ public partial class MainViewModel(
 
     public override async Task InitializeAsync()
     {
-        if (_isInitialized)
-            return;
-
-        _isInitialized = true;
-
         await FinalizePendingUpdateAsync();
 
         await ShowUkraineSupportMessageAsync();
