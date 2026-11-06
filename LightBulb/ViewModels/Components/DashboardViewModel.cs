@@ -424,11 +424,15 @@ public partial class DashboardViewModel : ViewModelBase
 
     private void UpdateIsPaused()
     {
-        // Ignored or unidentifiable foreground applications (e.g. taskbar) should not affect the paused state
+        // Ignored or unidentifiable foreground applications should not affect the paused state.
+        // This prevents brief flashes when switching from a fullscreen/whitelisted application
+        // to an ignored application (e.g., taskbar), and back.
+        // https://github.com/Tyrrrz/LightBulb/issues/451
         var foregroundApplication = _externalApplicationService.TryGetForegroundApplication();
         if (foregroundApplication is null)
             return;
 
+        // Pause on fullscreen applications
         if (
             _settingsService.IsPauseWhenFullScreenEnabled
             && _externalApplicationService.IsForegroundApplicationFullScreen()
@@ -438,6 +442,7 @@ public partial class DashboardViewModel : ViewModelBase
             return;
         }
 
+        // Pause on whitelisted applications
         if (
             _settingsService.IsApplicationWhitelistEnabled
             && _settingsService.WhitelistedApplications is not null
