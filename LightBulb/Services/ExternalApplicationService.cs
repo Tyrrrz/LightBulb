@@ -23,9 +23,7 @@ public class ExternalApplicationService
     private static string? TryGetExecutableFilePath(Window? window)
     {
         using var process = window?.TryGetProcess();
-        var executableFilePath = process?.TryGetExecutableFilePath();
-
-        return !string.IsNullOrWhiteSpace(executableFilePath) ? executableFilePath : null;
+        return process?.TryGetExecutableFilePath();
     }
 
     private bool IsIgnored(string executableFilePath)
@@ -46,7 +44,7 @@ public class ExternalApplicationService
                 continue;
 
             var executableFilePath = TryGetExecutableFilePath(window);
-            if (executableFilePath is null || IsIgnored(executableFilePath))
+            if (string.IsNullOrWhiteSpace(executableFilePath) || IsIgnored(executableFilePath))
                 continue;
 
             yield return new ExternalApplication(executableFilePath);
@@ -58,7 +56,7 @@ public class ExternalApplicationService
         using var window = Window.TryGetForeground();
 
         var executableFilePath = TryGetExecutableFilePath(window);
-        if (executableFilePath is null || IsIgnored(executableFilePath))
+        if (string.IsNullOrWhiteSpace(executableFilePath) || IsIgnored(executableFilePath))
             return null;
 
         return new ExternalApplication(executableFilePath);
@@ -71,7 +69,7 @@ public class ExternalApplicationService
             return false;
 
         var executableFilePath = TryGetExecutableFilePath(window);
-        if (executableFilePath is not null && IsIgnored(executableFilePath))
+        if (string.IsNullOrWhiteSpace(executableFilePath) && IsIgnored(executableFilePath))
             return false;
 
         return window.IsFullScreen();
