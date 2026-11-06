@@ -424,22 +424,31 @@ public partial class DashboardViewModel : ViewModelBase
 
     private void UpdateIsPaused()
     {
-        bool IsPausedByFullScreen() =>
-            _settingsService.IsPauseWhenFullScreenEnabled
-            && _externalApplicationService.IsForegroundApplicationFullScreen();
-
-        bool IsPausedByWhitelistedApplication(ExternalApplication application) =>
-            _settingsService.IsApplicationWhitelistEnabled
-            && _settingsService.WhitelistedApplications is not null
-            && _settingsService.WhitelistedApplications.Contains(application);
-
         // Ignored or unidentifiable foreground applications (e.g. taskbar) should not affect the paused state
         var foregroundApplication = _externalApplicationService.TryGetForegroundApplication();
         if (foregroundApplication is null)
             return;
 
-        IsPaused =
-            IsPausedByFullScreen() || IsPausedByWhitelistedApplication(foregroundApplication);
+        if (
+            _settingsService.IsPauseWhenFullScreenEnabled
+            && _externalApplicationService.IsForegroundApplicationFullScreen()
+        )
+        {
+            IsPaused = true;
+            return;
+        }
+
+        if (
+            _settingsService.IsApplicationWhitelistEnabled
+            && _settingsService.WhitelistedApplications is not null
+            && _settingsService.WhitelistedApplications.Contains(foregroundApplication)
+        )
+        {
+            IsPaused = true;
+            return;
+        }
+
+        IsPaused = false;
     }
 
     public override Task InitializeAsync()

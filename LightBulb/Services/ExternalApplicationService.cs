@@ -20,6 +20,22 @@ public class ExternalApplicationService
         "StartMenuExperienceHost",
     };
 
+    private static string? TryGetExecutableFilePath(Window? window)
+    {
+        using var process = window?.TryGetProcess();
+        var executableFilePath = process?.TryGetExecutableFilePath();
+
+        return !string.IsNullOrWhiteSpace(executableFilePath) ? executableFilePath : null;
+    }
+
+    private bool IsIgnored(string executableFilePath)
+    {
+        var executableFileName = Path.GetFileNameWithoutExtension(executableFilePath);
+
+        return string.IsNullOrWhiteSpace(executableFileName)
+            || _ignoredApplicationNames.Contains(executableFileName);
+    }
+
     public IEnumerable<ExternalApplication> GetAllRunningApplications()
     {
         foreach (var window in Window.GetAll())
@@ -29,18 +45,8 @@ public class ExternalApplicationService
             if (!window.IsVisible() || window.IsSystemWindow())
                 continue;
 
-            using var process = window.TryGetProcess();
-
-            var executableFilePath = process?.TryGetExecutableFilePath();
-            var executableFileName = Path.GetFileNameWithoutExtension(executableFilePath);
-
-            if (
-                string.IsNullOrWhiteSpace(executableFilePath)
-                || string.IsNullOrWhiteSpace(executableFileName)
-            )
-                continue;
-
-            if (_ignoredApplicationNames.Contains(executableFileName))
+            var executableFilePath = TryGetExecutableFilePath(window);
+            if (executableFilePath is null || IsIgnored(executableFilePath))
                 continue;
 
             yield return new ExternalApplication(executableFilePath);
@@ -50,16 +56,9 @@ public class ExternalApplicationService
     public ExternalApplication? TryGetForegroundApplication()
     {
         using var window = Window.TryGetForeground();
-        using var process = window?.TryGetProcess();
 
-        var executableFilePath = process?.TryGetExecutableFilePath();
-        var executableFileName = Path.GetFileNameWithoutExtension(executableFilePath);
-
-        if (
-            string.IsNullOrWhiteSpace(executableFilePath)
-            || string.IsNullOrWhiteSpace(executableFileName)
-            || _ignoredApplicationNames.Contains(executableFileName)
-        )
+        var executableFilePath = TryGetExecutableFilePath(window);
+        if (executableFilePath is null || IsIgnored(executableFilePath))
             return null;
 
         return new ExternalApplication(executableFilePath);
@@ -71,16 +70,8 @@ public class ExternalApplicationService
         if (window is null || !window.IsVisible() || window.IsSystemWindow())
             return false;
 
-        using var process = window.TryGetProcess();
-        var executableFilePath = process?.TryGetExecutableFilePath();
-        var executableFileName = executableFilePath is not null
-            ? Path.GetFileNameWithoutExtension(executableFilePath)
-            : null;
-
-        if (
-            !string.IsNullOrWhiteSpace(executableFileName)
-            && _ignoredApplicationNames.Contains(executableFileName)
-        )
+        var executableFilePath = TryGetExecutableFilePath(window);
+        if (executableFilePath is not null && IsIgnored(executableFilePath))
             return false;
 
         return window.IsFullScreen();
