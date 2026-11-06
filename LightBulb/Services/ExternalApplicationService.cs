@@ -69,7 +69,7 @@ public class ExternalApplicationService
             return false;
 
         var executableFilePath = TryGetExecutableFilePath(window);
-        if (string.IsNullOrWhiteSpace(executableFilePath) && IsIgnored(executableFilePath))
+        if (!string.IsNullOrWhiteSpace(executableFilePath) && IsIgnored(executableFilePath))
             return false;
 
         return window.IsFullScreen();
